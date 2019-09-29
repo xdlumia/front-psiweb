@@ -1,6 +1,13 @@
+/*
+ * @Author: web.王晓冬
+ * @Date: 2019-09-26 11:19:17
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-09-29 11:03:00
+ * @Description: file content
+ */
 <template>
   <d-layout v-model="isLockkScreen">
-    <img slot="logo" src="@/assets/img/alogo.svg" alt>
+    <img slot="logo" src="@/assets/img/logo.png" alt>
     <div style="height: 100vh" v-loading="loading">
       <el-container class="d-container">
         <!-- 头部区域 -->
@@ -15,10 +22,10 @@
             <el-menu-item class="header-logo pl0" index="/">
               <img
                 class="header-img"
-                :src="this.$store.state.company.companyInfo.picUrl?this.$store.state.company.companyInfo.picUrl:require('@/assets/img/alogo.svg')">
+                :src="this.$store.state.company.companyInfo.picUrl?this.$store.state.company.companyInfo.picUrl:require('@/assets/img/logo.png')">
               <div class="d-inline">
                 <h3>
-                  <strong>{{this.$store.state.company.companyInfo.picName ? this.$store.state.company.companyInfo.picName : 'α公寓管理系统'}}</strong>
+                  <strong>{{this.$store.state.company.companyInfo.picName ? this.$store.state.company.companyInfo.picName : '经销存战役'}}</strong>
                 </h3>
                 <!-- <p> 帮助房地产中介提升企业产能 </p> -->
               </div>

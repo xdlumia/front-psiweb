@@ -1,19 +1,17 @@
 /*
  * @Author: web.王晓冬
- * @Date: 2019-06-13 17:33:33
+ * @Date: 2019-08-19 17:50:45
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-09-29 10:28:55
- * @Description: 登录页
+ * @LastEditTime: 2019-09-29 10:47:14
+ * @Description: file content
  */
 <template>
   <div style="height:100vh;">
     <div class="login-content">
       <div class="login-mian">
         <div class="login-header">
-          <img class="logo" src="@/assets/img/alogo.svg" alt="">
-          <h2>经销存系统</h2>
-          <!-- <h2>α公寓管理系统</h2> -->
-          <!-- <p>分散式公寓-租住平台</p> -->
+          <img class="logo" :src="require('@/assets/img/logo.png')" alt="">
+          <h2>经销存战役</h2>
         </div>
         <el-form :model="loginForm" ref="loginForm" class="login-info">
           <!-- 帐号 -->
@@ -26,7 +24,7 @@
           </el-form-item>
           <!-- 密码 -->
           <el-form-item>
-            <el-input type="password" prefix-icon="iconfont icon-password" v-model="password" placeholder="请输入密码" v-on:keyup.13.native="loginBtn"></el-input>
+            <el-input type="password" prefix-icon="iconfont icon-password" v-model="password" show-password placeholder="请输入密码" v-on:keyup.13.native="loginBtn"></el-input>
           </el-form-item>
           <div style="margin-bottom:10px; height:25px;">
             <el-checkbox-group v-model="remember">
@@ -113,6 +111,7 @@ export default {
         pwd: '', // 加密后的
         verifyPwd: ''
       },
+
       pwVerify: {
         upperCase: false,
         upperLower: false,
@@ -129,7 +128,7 @@ export default {
       },
       // 确认新密码验证
       vePassword: (rule, value, callback) => {
-        if (this.updateForm.pwd != this.updateForm.verifyPwd) {
+        if (this.updateForm.pwd !== this.updateForm.verifyPwd) {
           callback(new Error('两次输入的密码不一致'))
         } else {
           callback()
@@ -150,7 +149,7 @@ export default {
   },
   computed: {
     syscode () {
-      return this.isRentSystem ? 'asystem' : 'asysbusiness'
+      return 'pmdwebset'
     }
   },
   created () {
@@ -192,7 +191,7 @@ export default {
             axios.defaults.headers.token = localStorage.token
             this.updateForm.id = res.data.id
             // 判断用户是否修改过密码 1修改过 0 没有修过
-            if (res.data.modifyPwdState == 0) {
+            if (res.data.modifyPwdState === 0) {
               // 显示修改密码弹出框
               this.updatePasswordVisible = true
               this.loading = false
@@ -202,7 +201,7 @@ export default {
             // 获取用户详情
             this.getUserDetail()
             // 获取其他平台系统列表
-            this.getsyslist()
+            // this.getsyslist()
           })
           .catch(ero => {
             this.loading = false
@@ -226,7 +225,7 @@ export default {
               // 获取用户详情
               this.getUserDetail()
               // 获取其他平台系统列表
-              this.getsyslist()
+              // this.getsyslist()
             })
         }
       })
@@ -251,13 +250,14 @@ export default {
     },
     // 获取用户详情
     getUserDetail () {
-      this.$api.bizSystemService.getUserDetail({syscode: this.$local.fetch('userInfo').syscode})
+      this.$api.bizSystemService.getUserDetail({syscode: this.syscode})
         .then(res => {
           let data = res.data || {}
           let rmDeptEntity = data.rmDeptEntity || {} // 部门
           let rmRoleEntities = data.rmRoleEntities || [] // 人员
           // 存储用户信息
           this.$local.save('userInfo', {
+            avatarUrl: data.avatarUrl || '',
             userName: data.name,
             userId: data.id,
             deptId: data.deptId, // 部门id
@@ -268,30 +268,63 @@ export default {
             companyName: res.data.companyEntity.companyName, // 公司名字
             roleType: rmRoleEntities[0] && rmRoleEntities[0].id, // 人员权
             deptName: rmDeptEntity.deptName, // 部门名字
-            roleName: rmRoleEntities[0] && rmRoleEntities[0].roleName // 角色名字
+            roleName: rmRoleEntities[0] && rmRoleEntities[0].roleName, // 角色名字
+            type: data.type
           })
+          if (data.type === 1) {
+            // 获取用户权限
+            this.getUserAuth()
+          } else {
+            this.cfgcitysettingGetDefaultCity()
+          }
           // 用户数据权限
           this.$local.save('dataAuthList', data.dataAuthList || [])
           // 用户按钮数据权限
           this.$local.save('bizDataAuthCfgList', data.bizDataAuthCfgList || [])
+        })
+    },
+    cfgcitysettingGetDefaultCity () {
+      this.$api.seeBaseinfoService.cfgcitysettingGetDefaultCity() // 获取当前用户的默认城市
+        .then(res => {
+          let cityInfo = res.data || {}
+          this.$local.save('cityInfo', cityInfo)
           // 获取用户权限
           this.getUserAuth()
         })
     },
+
     // 获取用户权限
     getUserAuth () {
       this.$api.bizSystemService.getUserAuth(this.syscode)
         .then(res => {
-          const loginData = res.data || [{url: '/'}]
-          localStorage.setItem('navData', JSON.stringify(loginData)) // 存储导航信息
+          let navData = res.data || [{url: '/'}]
           this.authorityBtn = {} // 按钮权限
-          this.authorityHandle(loginData)
-          localStorage.setItem(
-            'authorityBtn',
-            JSON.stringify(this.authorityBtn)
-          )
-          // 登录成功后跳转到 登录前的页面 或首页
-          let routerReplace = sessionStorage.getItem('loginRedirect') || '/'
+          // this.authorityHandle(navData)
+          // this.$local.save('authorityBtn', this.authorityBtn)
+          // 取消资源列表里系统管理的路由 因为要放到辅助管理里
+          // 读取用户信息
+          let userInfo = this.$local.fetch('userInfo')
+          // type==1是管理员帐号
+          // 管理员帐号登录的时候系统管理不去除业务字典路由
+          if (userInfo.type !== 1) {
+            navData.forEach(item => {
+              if (item.name === '系统管理') {
+                let childred = item.children
+                childred.forEach((subItem, i) => {
+                  if (subItem.code === 'asystem_assist_dict') {
+                    childred.splice(i, 1)
+                  }
+                })
+              }
+            })
+          }
+
+          this.$local.save('navData', navData)
+
+          // 登录成功后跳转到 登录前的页面 或获取路由的第一个
+          let redirectRouter = navData[0].children ? navData[0].children[0].url : navData[0].url
+          let routerReplace = sessionStorage.getItem('loginRedirect') || redirectRouter
+          // eslint-disable-next-line no-undef
           router.replace({
             path: routerReplace
           })
@@ -300,15 +333,7 @@ export default {
           this.loadingText = '立即登陆'
         })
     },
-    // 获取其他平台系统列表
-    getsyslist () {
-      this.$api.bizSystemService.getsyslist() // 获取当前用户可操作的系统/平台列表
-        .then(res => {
-          let syslist = res.data
-          localStorage.setItem('syslist', JSON.stringify(syslist))// 存储该用户拥有的平台权限
-        })
-    },
-    // 递归获取所有目录下的权限按钮
+    // 获取用户权限
     authorityHandle (authorityData) {
       authorityData.forEach((item, index) => {
         if (item.code !== '') {
@@ -320,6 +345,15 @@ export default {
         }
       })
     }
+
+    // 获取其他平台系统列表
+    // getsyslist () {
+    //   this.$api.bizSystemService.getsyslist() // 获取当前用户可操作的系统/平台列表
+    //     .then(res => {
+    //       let syslist = res.data
+    //       localStorage.setItem('syslist', JSON.stringify(syslist))// 存储该用户拥有的平台权限
+    //     })
+    // },
   }
 }
 </script>

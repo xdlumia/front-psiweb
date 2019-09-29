@@ -1,30 +1,44 @@
+/*
+ * @Author: web.王晓冬
+ * @Date: 2019-09-24 14:11:28
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-09-24 14:11:28
+ * @Description: file content
+ */
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import 'babel-polyfill'
 import Vue from 'vue'
 import App from './App'
-import router from './router'
-import store from './store/index'
-import VueDND from 'awe-dnd'
+import store from './store'
 
-import ElementUI from 'element-ui'
+// element ui
 import 'element-ui/lib/theme-chalk/index.css'
 
-// 项目主体css
-import './assets/css/style.css'
-import './api'
+import ElementUI from 'element-ui'
+import router from './router' // 路由
+import './assets/css/common.css'
 import './utils/verify.js'
-import {globalConfig} from 'see-web-basic'
-// see-web-system公共包的vuex 不使用see-web-system可以删除
+import citys from './utils/citys'
+import './api'
+// basic配置
+import { globalConfig } from 'see-web-basic'
 import { systemStoreConfig } from 'see-web-system'
+// 公共组件
+import {uploadFile} from './components/index'
+import seeWebCustomerService from 'see-web-customer-service'
+
+// 修改element ui 默认参数
+ElementUI.Image.props.fit = {default: 'cover', type: String}
+
+Vue.prototype.$store=store;
+Vue.use(seeWebCustomerService)
+Vue.use(citys)
 Vue.use(systemStoreConfig)
-Vue.use(VueDND)
 Vue.use(ElementUI)
 Vue.use(globalConfig)
-
+Vue.use(uploadFile)
 Vue.config.productionTip = false
-
-/* eslint-disable no-new */
+// eslint-disable-next-line no-new
 new Vue({
   el: '#app',
   router,
@@ -32,5 +46,4 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
-
 window.router = router

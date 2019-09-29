@@ -9,8 +9,3 @@ export default {
   name: 'App'
 }
 </script>
-<style scoped lang="scss">
-  #app {
-    min-width: 1250px;
-  }
-</style>

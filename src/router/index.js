@@ -1,60 +1,76 @@
+/*
+ * @Author: web.王晓冬
+ * @Date: 2019-09-24 14:11:28
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-09-29 10:49:52
+ * @Description: 路由文件
+ */
 import Vue from 'vue'
 import Router from 'vue-router'
-
-import {systemRoute} from 'see-web-system'
-
+import { systemRoute, systemRouteConfig } from 'see-web-system'
+import { customerServiceRoute } from 'see-web-customer-service'
 // 登录
 import Login from '@/components/login'
-import Example from '@/views/example'
+import common from '@/views/businessSetting/common'
+import recharge from '@/views/businessSetting/recharge'
+
 // 框架
 import Layout from '@/components/layout'
+let routers = [{ component: common, componentName: 'common', label: '公共' }]
+systemRouteConfig(systemRoute.BusinessSetting, routers)
+
+const College = () => import('@/views/contents/college') // 店长服务
+
 Vue.use(Router)
 
-let routes = [
-  // 登录
-  {
+export default new Router({
+  mode: 'history',
+  routes: [{
     path: '/login',
     name: 'login',
     component: Login,
     meta: {
-      title: 'a系统平台'
+      title: '铺脉动后台管理系统'
     }
   },
   {
     path: '/',
     component: Layout,
-    // redirect: '/login',
-    children: [
-      // 示例页面
-      {
-        path: '/example',
-        name: '/example',
-        component: Example,
-        meta: {
-          parent: '示例页面',
-          title: '示例页面'
-        }
-      },
-      ...Object.values(systemRoute)
+    redirect: '/house/rent',
+    children: [{
+      path: '/contents/college',
+      name: '/contents/college',
+      component: College,
+      meta: {
+        parent: '房源管理',
+        title: '出租商铺'
+      }
+    },{
+      path: '/contents/college',
+      name: '/contents/college',
+      component: College,
+      meta: {
+        parent: '内容管理',
+        title: '店长学院'
+      }
+    },
+    {
+      path: '/businessSetting/recharge',
+      name: '/businessSetting/recharge',
+      component: recharge,
+      meta: {
+        parent: '辅助设置',
+        title: '充值记录'
+      }
+    },
+    ...Object.values(systemRoute), // 系统设置
+    ...Object.values(customerServiceRoute)
     ]
   },
+    // 404
   {
     path: '*', // 如果找不到页面跳转到404
     redirect: '/404'
   }
-]
-
-if (process.env.NODE_ENV === 'development') {
-  const Example = () => import('@/views/example')
-
-  routes[1].children.unshift({
-    path: '/example',
-    name: 'example',
-    component: Example
-  })
-}
-
-export default new Router({
-  mode: 'history',
-  routes
+  ]
 })

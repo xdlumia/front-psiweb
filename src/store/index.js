@@ -1,15 +1,14 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
-import demoStore from './modules/demo-store'
-
+import Vuex, { Store } from 'vuex'
+import { state, getters, mutations, actions } from './root'
+import modules from './modules'
 Vue.use(Vuex)
-
-const store = new Vuex.Store({
-  modules: {
-    demoStore
-  }
+const store = new Store({
+  state,
+  getters,
+  mutations,
+  actions,
+  strict: true,
+  modules
 })
-
-Vue.$store = store
-
 export default store
