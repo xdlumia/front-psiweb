@@ -1,10 +1,17 @@
+/*
+ * @Author: web.王晓冬
+ * @Date: 2019-06-13 17:33:33
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-09-29 10:28:55
+ * @Description: 登录页
+ */
 <template>
   <div style="height:100vh;">
     <div class="login-content">
       <div class="login-mian">
         <div class="login-header">
           <img class="logo" src="@/assets/img/alogo.svg" alt="">
-          <h2>α公寓管理系统</h2>
+          <h2>经销存系统</h2>
           <!-- <h2>α公寓管理系统</h2> -->
           <!-- <p>分散式公寓-租住平台</p> -->
         </div>
