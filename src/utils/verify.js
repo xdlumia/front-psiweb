@@ -1,4 +1,11 @@
-/* eslint-disable no-mixed-operators */
+/*
+ * @Author: web.王晓冬
+ * @Date: 2019-06-18 17:34:58
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-06-18 17:34:58
+ * @Description: 验证过文件
+ */
+
 /**
 * @desc 公共验证方法
 * @author web-王晓冬
