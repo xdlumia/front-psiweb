@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-09-29 10:49:52
+ * @LastEditTime: 2019-09-30 10:56:17
  * @Description: 路由文件
  */
 import Vue from 'vue'
@@ -39,7 +39,6 @@ export default new Router({
     redirect: '/house/rent',
     children: [{
       path: '/contents/college',
-      name: '/contents/college',
       component: College,
       meta: {
         parent: '房源管理',
@@ -47,7 +46,6 @@ export default new Router({
       }
     },{
       path: '/contents/college',
-      name: '/contents/college',
       component: College,
       meta: {
         parent: '内容管理',

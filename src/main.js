@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-09-24 14:11:28
+ * @LastEditTime: 2019-09-30 10:29:11
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -40,10 +40,9 @@ Vue.use(uploadFile)
 Vue.config.productionTip = false
 // eslint-disable-next-line no-new
 new Vue({
-  el: '#app',
   router,
   store,
-  components: { App },
-  template: '<App/>'
-})
+  render: h => h(App)
+}).$mount('#app')
 window.router = router
+
