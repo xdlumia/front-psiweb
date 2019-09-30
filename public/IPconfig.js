@@ -2,12 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:29
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-09-30 10:34:56
+ * @LastEditTime: 2019-09-30 11:50:42
  * @Description: ip配置文件
  */
 // let model = 'build' // dev 为开发环境 build 为测试环境  product 为生产环境
 let apis = '/apis/'
-// let apis = 'https://pmdwebset.fangmaidong.com/apis/'
+apis = 'http://39.105.103.188:7011/'
 
 // if (model === 'dev') {
 //   apis = 'http://10.168.1.145:7011/'
