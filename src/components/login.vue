@@ -1,9 +1,10 @@
+
 /*
  * @Author: web.王晓冬
- * @Date: 2019-08-19 17:50:45
+ * @Date: 2019-09-23 10:45:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-09-29 10:47:14
- * @Description: file content
+ * @LastEditTime: 2019-09-30 11:33:44
+ * @Description: 登录页
  */
 <template>
   <div style="height:100vh;">
@@ -178,7 +179,7 @@ export default {
       // 获取浏览器指纹
       new Fingerprint2({
         excludeSessionStorage: true
-      }).get((finger, components) => {
+      }).get((finger) => {
         localStorage.setItem('finger', finger)
         this.loginForm.finger = finger // 获取指纹
         this.loginForm.pwd = Base64.encode(this.password)
@@ -203,7 +204,7 @@ export default {
             // 获取其他平台系统列表
             // this.getsyslist()
           })
-          .catch(ero => {
+          .catch(() => {
             this.loading = false
             this.loadingText = '立即登录'
           })
@@ -219,7 +220,7 @@ export default {
             id: this.updateForm.id
           }
           this.$api.systemService.updatePassword(params)
-            .then(res => {
+            .then(() => {
               // 保存成功之后在获取数据
               this.loginForm.pwd = params.pwd
               // 获取用户详情
@@ -335,7 +336,7 @@ export default {
     },
     // 获取用户权限
     authorityHandle (authorityData) {
-      authorityData.forEach((item, index) => {
+      authorityData.forEach((item) => {
         if (item.code !== '') {
           this.authorityBtn[item.code] = item.buttonsCode
         }

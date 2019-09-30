@@ -1,3 +1,10 @@
+/*
+ * @Author: web.王晓冬
+ * @Date: 2019-05-14 18:08:11
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-09-30 11:20:50
+ * @Description: file content
+ */
  <!--
  /**
   * @desc 表单卡片
@@ -49,7 +56,7 @@ export default {
   methods: {}
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss"  scoped>
 /* 弹出框标题 */
 .form-card-title{ line-height: 16px; font-size: 16px; border-left: 2px solid #409eff; margin-top: 20px; margin-bottom: 10px; padding-left:10px;}
 </style>
