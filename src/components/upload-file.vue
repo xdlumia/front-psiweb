@@ -1,9 +1,10 @@
-/* eslint-disable no-undef */
- <!--
- /**
-  * @desc 文件上传工具
-  * @author web-吴森
-  * @param  limit          上传的条件
+/*
+ * @Author: web.王晓冬
+ * @Date: 2019-10-18 09:36:32
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-18 11:01:38
+ * @Description: 件上传工具
+ * @param  limit          上传的条件
   * @param  limit [ type ]   limit type  允许上传的后缀名字
   * @param  size 上传文件的大小，默认2M
   * @slot  默认 <i class="el-icon-upload"></i>
@@ -13,8 +14,9 @@
             obj = {
               type: []  [ ipg, png, txt, js, gif, ....]
             }
-  **/
--->
+*/
+/* eslint-disable no-undef */
+
 
 <template>
   <div v-loading.fullscreen.lock="fullscreenLoading" element-loading-text="正在上传中">
@@ -162,7 +164,7 @@ export default {
       }
       this.fullscreenLoading = true
       let companyCode = this.$local.fetch('userInfo').companyCode
-      const client = new OSS.Wrapper({
+      const client = new OSS({
         region: this.region,
         accessKeyId: this.OSS.accessKeyId,
         accessKeySecret: this.OSS.accessKeySecret,

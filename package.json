@@ -9,6 +9,7 @@
     "dev": "vue-cli-service serve"
   },
   "dependencies": {
+    "ali-oss": "^6.1.1",
     "axios": "^0.18.0",
     "core-js": "^3.3.2",
     "echarts": "^4.1.0",
