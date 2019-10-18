@@ -1,4 +1,4 @@
-# word
+# front-psiweb
 
 ## Project setup
 ```
