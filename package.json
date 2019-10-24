@@ -1,71 +1,74 @@
 {
-    "name": "front-psiweb",
-    "version": "0.1.0",
-    "private": true,
-    "scripts": {
-        "serve": "vue-cli-service serve",
-        "build": "vue-cli-service build",
-        "lint": "vue-cli-service lint",
-        "dev": "vue-cli-service serve",
-        "fix": "eslint --ext .js,.vue src --fix"
+  "name": "front-psiweb",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "dev": "vue-cli-service serve",
+    "fix": "eslint --ext .js,.vue src --fix"
+  },
+  "dependencies": {
+    "ali-oss": "^6.1.1",
+    "axios": "^0.19.0",
+    "core-js": "^3.3.3",
+    "echarts": "^4.1.0",
+    "element-ui": "~2.12.0",
+    "fingerprintjs2": "^1.8.2",
+    "js-base64": "^2.4.9",
+    "moment": "^2.24.0",
+    "see-web-basic": "~1.3.96-beta6",
+    "see-web-customer-service": "~1.0.16",
+    "see-web-system": "~1.3.56-beta3",
+    "vue": "^2.6.10",
+    "vue-baidu-map": "^0.21.11",
+    "vue-echarts": "^4.0.1",
+    "vue-quill-editor": "^3.0.6",
+    "vue-router": "^3.0.1",
+    "vuedraggable": "^2.19.0",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "@vue/cli-plugin-babel": "^4.0.5",
+    "@vue/cli-plugin-eslint": "^4.0.5",
+    "@vue/cli-service": "^4.0.5",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-loader": "^3.0.2",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-vue": "^5.2.3",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.0",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
     },
-    "dependencies": {
-        "ali-oss": "^6.1.1",
-        "axios": "^0.19.0",
-        "core-js": "^3.3.3",
-        "echarts": "^4.1.0",
-        "element-ui": "~2.12.0",
-        "fingerprintjs2": "^1.8.2",
-        "js-base64": "^2.4.9",
-        "moment": "^2.24.0",
-        "see-web-basic": "~1.3.96-beta6",
-        "see-web-customer-service": "~1.0.16",
-        "see-web-system": "~1.3.56-beta3",
-        "vue": "^2.6.10",
-        "vue-baidu-map": "^0.21.11",
-        "vue-echarts": "^4.0.1",
-        "vue-quill-editor": "^3.0.6",
-        "vue-router": "^3.0.1",
-        "vuedraggable": "^2.19.0",
-        "vuex": "^3.0.1"
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {
+      "vue/no-async-in-computed-properties": "warning",
+      "vue/no-dupe-keys": "off"
     },
-    "devDependencies": {
-        "eslint-plugin-jsx-a11y": "^6.2.3",
-        "@vue/cli-plugin-babel": "^4.0.5",
-        "@vue/cli-plugin-eslint": "^4.0.5",
-        "@vue/cli-service": "^4.0.5",
-        "babel-eslint": "^10.0.1",
-        "eslint": "^6.5.1",
-        "eslint-config-airbnb": "^18.0.1",
-        "eslint-config-airbnb-base": "^14.0.0",
-        "eslint-loader": "^3.0.2",
-        "eslint-plugin-import": "^2.18.2",
-        "eslint-plugin-vue": "^5.2.3",
-        "node-sass": "^4.12.0",
-        "sass-loader": "^8.0.0",
-        "vue-template-compiler": "^2.6.10"
-    },
-    "eslintConfig": {
-        "root": true,
-        "env": {
-            "node": true
-        },
-        "extends": [
-            "plugin:vue/essential",
-            "eslint:recommended"
-        ],
-        "rules": {},
-        "parserOptions": {
-            "parser": "babel-eslint"
-        }
-    },
-    "postcss": {
-        "plugins": {
-            "autoprefixer": {}
-        }
-    },
-    "browserslist": [
-        "> 1%",
-        "last 2 versions"
-    ]
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
 }
