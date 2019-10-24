@@ -2,13 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-24 13:22:35
+ * @LastEditTime: 2019-10-24 18:48:30
  * @Description: 路由文件
  */
 import Vue from 'vue'
 import Router from 'vue-router'
 import { systemRoute, systemRouteConfig } from 'see-web-system'
-import { customerServiceRoute } from 'see-web-customer-service'
 // 登录
 import Login from '@/components/login'
 
@@ -61,8 +60,7 @@ export default new Router({
           title: '充值记录'
         }
       },
-      ...Object.values(systemRoute), // 系统设置
-      ...Object.values(customerServiceRoute)
+      ...Object.values(systemRoute) // 系统设置
     ]
   },
   // 404

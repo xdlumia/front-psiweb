@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-09-30 10:29:11
+ * @LastEditTime: 2019-10-24 18:47:42
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -25,13 +25,13 @@ import { globalConfig } from 'see-web-basic'
 import { systemStoreConfig } from 'see-web-system'
 // 公共组件
 import { uploadFile } from './components/index'
-import seeWebCustomerService from 'see-web-customer-service'
+// import seeWebCustomerService from 'see-web-customer-service'
 
 // 修改element ui 默认参数
 ElementUI.Image.props.fit = { default: 'cover', type: String }
 
 Vue.prototype.$store = store;
-Vue.use(seeWebCustomerService)
+// Vue.use(seeWebCustomerService)
 Vue.use(citys)
 Vue.use(systemStoreConfig)
 Vue.use(ElementUI)
