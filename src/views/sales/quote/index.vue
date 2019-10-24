@@ -2,66 +2,20 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-24 20:02:18
+ * @LastEditTime: 2019-10-24 20:11:12
  * @Description: 店长学院
  */
 <template>
-  <div class="d-content main-content" v-loading="loading" element-loading-text="正在初始化">
-    <el-form ref="queryForm" :model="queryForm" label-width="80px" size="small" inline>
-      <div class="mb10">
-        <el-form-item
-          v-if="authorityButtons.includes('pmdwebset_contents_college_1004')"
-          label="标题:"
-          prop="title"
-          class="mb0"
-        >
-          <el-input v-model="queryForm.title" placeholder="请输入标题"></el-input>
-        </el-form-item>
-        <el-form-item
-          v-if="authorityButtons.includes('pmdwebset_contents_college_1004')"
-          label="发布人:"
-          prop="issuerName"
-          class="mb0"
-        >
-          <el-input v-model="queryForm.issuerName" placeholder="请输入发布人"></el-input>
-        </el-form-item>
-
-        <el-button
-          v-if="authorityButtons.includes('pmdwebset_contents_college_1004')"
-          size="small"
-          type="primary"
-          @click="$refs.companyTable.reload(1)"
-        >查 询</el-button>
-        <el-button
-          v-if="authorityButtons.includes('pmdwebset_contents_college_1004')"
-          size="small"
-          @click="reset"
-        >重 置</el-button>
-        <el-button
-          v-if="authorityButtons.includes('pmdwebset_contents_college_1001')"
-          size="small"
-          type="primary"
-          icon="el-icon-plus"
-          @click="updateCompany('add')"
-          class="fr mr30"
-        >新建</el-button>
-      </div>
-    </el-form>
-    <el-row v-if="tableList[0] && authorityButtons.includes('pmdwebset_contents_college_1003')">
-      <el-col :span="24">
-        <div class="grid-content bg-purple ml10 d-text-gray lh35">
-          <div class="d-inline ml20">
-            <el-button plain size="small" @click="delCompany(tableList)">批量删除</el-button>
-          </div>
-        </div>
-      </el-col>
+  <div class="main-content" v-loading="loading" element-loading-text="正在初始化">
+    <el-row class="p15" style="border:1px solid #efefef; border-bottom:none; border-radius:5px 5px 0 0;">
+      <div class="b f16">报价单</div>
     </el-row>
     <!-- 表格数据 -->
     <d-table
       api="seePumaidongService.collegeManagerList"
       :params="queryForm"
       ref="companyTable"
-      class="mt10 college-main"
+      class="college-main"
       style="height:calc(100% - 40px)"
     >
       <el-table-column type="selection" :reserve-selection="true" width="55"></el-table-column>

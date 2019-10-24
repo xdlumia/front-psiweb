@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:29
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-24 18:21:39
+ * @LastEditTime: 2019-10-24 20:04:33
  * @Description: ip配置文件
  */
 // let model = 'build' // dev 为开发环境 build 为测试环境  product 为生产环境
@@ -27,6 +27,6 @@ let baseURL = {
 //   seeHouseConfigService: apisUrl + 'see-baseinfo-service', // 在这个项目里 seeHouseConfigService 的公共部分都转移到 see-baseinfo-service服务里
 //   seeBaseinfoService: apisUrl + 'see-baseinfo-service', // 基础服务
 }
-// window.g = {
-//   ApiUrl: baseURL,
-// }
+window.g = {
+  ApiUrl: baseURL,
+}
