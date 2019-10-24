@@ -1,6 +1,5 @@
 .DS_Store
 node_modules/
-saas-business/
 /dist/
 npm-debug.log*
 yarn-debug.log*
