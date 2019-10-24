@@ -25,6 +25,9 @@ module.exports = {
 
   //   build输出文件
   outputDir: 'dist',
+
   //   是否生成map文件
-  productionSourceMap: true
+  productionSourceMap: true,
+
+  lintOnSave: false
 }

@@ -59,7 +59,9 @@
       "vue/no-dupe-keys": "warning",
       "vue/no-duplicate-attributes": "warning",
       "vue/html-closing-bracket-spacing": "warning",
-      "vue/script-indent": "warning"
+      "vue/script-indent": "warning",
+      "vue/use-v-on-exact": "warning",
+      "vue/valid-v-on": "warning"
     },
     "parserOptions": {
       "parser": "babel-eslint"
