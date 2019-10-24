@@ -6,14 +6,14 @@
  */
 
 import { Api } from 'see-web-basic'
-let baseURL = window.g.ApiUrl
+const baseURL = window.g.ApiUrl
 
 export default {
   /**
      * @description  获取oss凭证信息
      */
 
-  getOssTicket () {
+  getOssTicket() {
     return Api.get(baseURL.seeExternService + '/oss/getOssTicket')
   }
 

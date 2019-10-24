@@ -54,7 +54,7 @@ export default {
     },
     toolbar: {
       required: false,
-      default: function () {
+      default: function() {
         return toolbarOptions
       }
     }
@@ -62,7 +62,7 @@ export default {
   components: {
     quillEditor
   },
-  data () {
+  data() {
     return {
       obj: {
         size: '1',
@@ -81,7 +81,7 @@ export default {
             handlers: {
               image: (value) => {
                 if (value) {
-                  let uploadEl = this.$refs.activeUpload.$el
+                  const uploadEl = this.$refs.activeUpload.$el
                   uploadEl.querySelector('input').click()
                   // 触发input框选择图片文件
                   // document.querySelector(`.${this.refs}.active-upload input`).click()
@@ -97,28 +97,28 @@ export default {
   },
   methods: {
     // 获取上传文件后ossurl
-    uploadSuccess (obj) {
-      let quill = this.$refs.myQuillEditor.quill
+    uploadSuccess(obj) {
+      const quill = this.$refs.myQuillEditor.quill
       // 获取光标所在位置
-      let length = quill.getSelection().index
+      const length = quill.getSelection().index
       // 插入图片  res.info为服务器返回的图片地址
       quill.insertEmbed(length, 'image', obj.url)
       // 调整光标到最后
       quill.setSelection(length + 1)
     }
   },
-  mounted () {
+  mounted() {
     // this.detailContent = this.editorData
   },
-  created () {
+  created() {
 
   },
   computed: {
     editorContent: {
-      set: function (newVal) {
+      set: function(newVal) {
         this.$emit('input', newVal)
       },
-      get: function () {
+      get: function() {
         return this.value
       }
     }

@@ -31,8 +31,8 @@
 <script>
 export default {
   props: ['dialogMeta'],
-  beforeDestroy () {
-    let data = {
+  beforeDestroy() {
+    const data = {
       businessId: this.dialogMeta.data.id,
       type: 0
     }

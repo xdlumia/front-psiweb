@@ -12,4 +12,4 @@ const quillEditor = {
     Vue.component('quillEditor', QuillEditor)
   }
 }
-export {uploadFile, quillEditor}
+export { uploadFile, quillEditor }

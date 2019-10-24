@@ -9,39 +9,39 @@
 **/
 // 验证正则
 import Vue from 'vue'
-import {Api} from 'see-web-basic'
+import { Api } from 'see-web-basic'
 var baseURL = window.g.ApiUrl
 // 存放城市缓存
 var cityCache = {}
-var getCityArr = function (type) {
+var getCityArr = function(type) {
   var cityArr = cityCache['city']
   if (!cityArr) {
     Vue.util.defineReactive(cityCache, 'city', [])
     cityArr = cityCache['city']
     var success = false
     Api.get(baseURL.seeBaseinfoService + '/common/getAllCity')
-      .then(function (res) {
-        let data = res.data || {}
+      .then(function(res) {
+        const data = res.data || {}
         cityCache['city'] = Object.values(data).reduce((total, item) => {
           total = [...total, ...item]
           return total
         }, [])
         success = true
-      }).finally(function () {
+      }).finally(function() {
         // 简单处理下，如果没加载成功，下次重新加载
         !success && delete cityCache['city']
       })
   }
   return cityArr
 }
-let city = {
+const city = {
   methods: {
-    citys () {
+    citys() {
       return getCityArr()
     }
   }}
 export default {
-  install: function install (vm) {
+  install: function install(vm) {
     vm.mixin(city)
   }
 }

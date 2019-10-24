@@ -24,13 +24,13 @@ import './api'
 import { globalConfig } from 'see-web-basic'
 import { systemStoreConfig } from 'see-web-system'
 // 公共组件
-import {uploadFile} from './components/index'
+import { uploadFile } from './components/index'
 import seeWebCustomerService from 'see-web-customer-service'
 
 // 修改element ui 默认参数
-ElementUI.Image.props.fit = {default: 'cover', type: String}
+ElementUI.Image.props.fit = { default: 'cover', type: String }
 
-Vue.prototype.$store=store;
+Vue.prototype.$store = store;
 Vue.use(seeWebCustomerService)
 Vue.use(citys)
 Vue.use(systemStoreConfig)

@@ -5,7 +5,7 @@
  * @host 8113
  */
 import { Api } from 'see-web-basic'
-let baseURL = window.g.ApiUrl
+const baseURL = window.g.ApiUrl
 
 const apiURL = {
   /**
@@ -170,40 +170,40 @@ export default {
   /**
    * @description  楼盘信息
    */
-  getBuildingNameList (params) {
+  getBuildingNameList(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getBuildingNameList,
       params
     )
   },
-  getBuildingList (params) {
+  getBuildingList(params) {
     return Api.get(baseURL.seeBaseHouseService + apiURL.getBuildingList, params)
   },
-  getBuildingInfo (params) {
+  getBuildingInfo(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getBuildingInfo + params
     )
   },
-  saveBuildingInfo (params) {
+  saveBuildingInfo(params) {
     return Api.post(
       baseURL.seeBaseHouseService + apiURL.saveBuildingInfo,
       params
     )
   },
-  delBuilding (params) {
+  delBuilding(params) {
     return Api.del(baseURL.seeBaseHouseService + apiURL.delBuilding, params)
   },
-  getQueryGroupRoomNumber (params) {
+  getQueryGroupRoomNumber(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getQueryGroupRoomNumber + params
     )
   },
-  getQueryRoomNumber (params) {
+  getQueryRoomNumber(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getQueryRoomNumber + params
     )
   },
-  getBuildingImport (params) {
+  getBuildingImport(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getBuildingImport,
       params
@@ -214,7 +214,7 @@ export default {
     return Api.post(baseURL.seeBaseHouseService + '/basecommunity/convertHotel', params);
   },
   // 商业楼盘转招商操作
-  getBuildingConvertBusiness (params) {
+  getBuildingConvertBusiness(params) {
     return Api.post(
       baseURL.seeBaseHouseService + '/basecommunity/convertBusiness',
       params
@@ -223,99 +223,99 @@ export default {
   // 楼盘单元房间拖拽
   fdragReorder(params) {
     return Api.post(
-      baseURL.seeBaseHouseService + '/basecommunity/dragReorder',params
+      baseURL.seeBaseHouseService + '/basecommunity/dragReorder', params
     )
   },
-  //获取楼盘统计信息
-  getCommunityStatisticInfo(params){
+  // 获取楼盘统计信息
+  getCommunityStatisticInfo(params) {
   	return Api.get(
-      baseURL.seeBaseHouseService + '/basecommunity/getCommunityStatisticInfo',params
+      baseURL.seeBaseHouseService + '/basecommunity/getCommunityStatisticInfo', params
     )
   },
-   //获取楼盘统计信息
-  getHaveSameName(params){
+  // 获取楼盘统计信息
+  getHaveSameName(params) {
   	return Api.get(
-      baseURL.seeBaseHouseService + '/basecommunity/isHaveSameNameInBusinessCircle',params
+      baseURL.seeBaseHouseService + '/basecommunity/isHaveSameNameInBusinessCircle', params
     )
   },
   /**
    * @description  楼盘权限
    */
-  getAuthorization(params){
+  getAuthorization(params) {
   	return Api.post(
-      baseURL.seeBaseHouseService + '/basecommunity/authorization',params
+      baseURL.seeBaseHouseService + '/basecommunity/authorization', params
     )
   },
   /**
    * @description  酒店房型
    */
-  //保存/编辑房型详情
-  getBaseRoomTypeEdit(params){
+  // 保存/编辑房型详情
+  getBaseRoomTypeEdit(params) {
   	return Api.post(
-      baseURL.seeBaseHouseService + '/baseRoomType/edit',params
+      baseURL.seeBaseHouseService + '/baseRoomType/edit', params
     )
   },
-  //获取房型列表
-  getBaseRoomTypeList(params){
+  // 获取房型列表
+  getBaseRoomTypeList(params) {
   	return Api.get(
       baseURL.seeBaseHouseService + '/baseRoomType/list/' + params
     )
   },
-  //获取房型详情
-  getBaseRoomTypeInfo(params){
+  // 获取房型详情
+  getBaseRoomTypeInfo(params) {
   	return Api.get(
       baseURL.seeBaseHouseService + '/baseRoomType/queryObject/' + params
     )
   },
-  //删除房型
-  deleteBaseRoomTypeInfo(params){
+  // 删除房型
+  deleteBaseRoomTypeInfo(params) {
   	return Api.del(
-      baseURL.seeBaseHouseService + '/baseRoomType/delete',params
+      baseURL.seeBaseHouseService + '/baseRoomType/delete', params
     )
   },
-  
+
   /**
    * @description  栋座信息
    */
-  getBuildingBlockList (params) {
+  getBuildingBlockList(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getBuildingBlockList,
       params
     )
   },
-  copyBuildingBlock (params) {
+  copyBuildingBlock(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.copyBuildingBlock + params
     )
   },
-  delBuildingBlock (params) {
+  delBuildingBlock(params) {
     return Api.del(
       baseURL.seeBaseHouseService + apiURL.delBuildingBlock,
       params
     )
   },
-  saveBuildingBlock (params) {
+  saveBuildingBlock(params) {
     return Api.post(
       baseURL.seeBaseHouseService + apiURL.saveBuildingBlock,
       params
     )
   },
 
-  getBuildingBlock (params) {
+  getBuildingBlock(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getBuildingBlock + params
     )
   },
-  getBuildingJurisdiction (params) {
+  getBuildingJurisdiction(params) {
     return Api.post(
       baseURL.seeBaseHouseService + apiURL.getBuildingJurisdiction,
       params
     )
   },
-  deleteBatch (params) {
+  deleteBatch(params) {
     return Api.del(baseURL.seeBaseHouseService + apiURL.deleteBatch, params)
   },
-  getDongRoomNumber (params) {
+  getDongRoomNumber(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getDongRoomNumber + params
     )
@@ -323,19 +323,19 @@ export default {
   /**
    * @description  单元信息
    */
-  getBaseunitList (params) {
+  getBaseunitList(params) {
     return Api.get(baseURL.seeBaseHouseService + apiURL.getBaseunitList, params)
   },
-  saveBaseunitInfo (params) {
+  saveBaseunitInfo(params) {
     return Api.post(
       baseURL.seeBaseHouseService + apiURL.saveBaseunitInfo,
       params
     )
   },
-  delBaseunitInfo (params) {
+  delBaseunitInfo(params) {
     return Api.del(baseURL.seeBaseHouseService + apiURL.delBaseunitInfo, params)
   },
-  getBaseunitInfo (params) {
+  getBaseunitInfo(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getBaseunitInfo + params
     )
@@ -345,20 +345,20 @@ export default {
    * @description  户型信息表
    */
 
-  getBaseRoommoList (params) {
+  getBaseRoommoList(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getBaseRoommoList,
       params
     )
   },
-  saveBaseRoommo (params) {
+  saveBaseRoommo(params) {
     return Api.post(baseURL.seeBaseHouseService + apiURL.saveBaseRoommo, params)
   },
-  delBaseRoommo (params) {
+  delBaseRoommo(params) {
     return Api.del(baseURL.seeBaseHouseService + apiURL.delBaseRoommo, params)
   },
 
-  getBaseRoommoInfo (params) {
+  getBaseRoommoInfo(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getBaseRoommoInfo + params
     )
@@ -368,28 +368,28 @@ export default {
    * @description  房间信息表
    */
 
-  getBaseRoomList (params) {
+  getBaseRoomList(params) {
     return Api.get(baseURL.seeBaseHouseService + apiURL.getBaseRoomList, params)
   },
-  saveBaseRoom (params) {
+  saveBaseRoom(params) {
     return Api.post(baseURL.seeBaseHouseService + apiURL.saveBaseRoom, params)
   },
-  editOwnerTenant (params) {
+  editOwnerTenant(params) {
     return Api.post(
       baseURL.seeBaseHouseService + apiURL.editOwnerTenant,
       params
     )
   },
-  delBaseRoom (params) {
+  delBaseRoom(params) {
     return Api.del(baseURL.seeBaseHouseService + apiURL.delBaseRoom, params)
   },
-  getBaseRoomInfo (params) {
+  getBaseRoomInfo(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getBaseRoomInfo + params
     )
   },
   // 通过房间code查看房间位置信息
-  queryHousingResources (params) {
+  queryHousingResources(params) {
     return Api.get(
       baseURL.seeBaseHouseService +
         '/baseroominfo/queryHousingResources/' +
@@ -400,13 +400,13 @@ export default {
    * @description  楼层信息
    */
 
-  saveFloorInfo (params) {
+  saveFloorInfo(params) {
     return Api.post(baseURL.seeBaseHouseService + apiURL.saveFloorInfo, params)
   },
-  delFloorInfo (params) {
+  delFloorInfo(params) {
     return Api.del(baseURL.seeBaseHouseService + apiURL.delFloorInfo, params)
   },
-  getFloorInfo (params) {
+  getFloorInfo(params) {
     return Api.get(baseURL.seeBaseHouseService + apiURL.getFloorInfo + params)
   },
 
@@ -414,40 +414,40 @@ export default {
    * @description  房间信息表
    */
 
-  getHouseFollowList (params) {
+  getHouseFollowList(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getHouseFollowList,
       params
     )
   },
-  delHouseFollow (params) {
+  delHouseFollow(params) {
     return Api.get(baseURL.seeBaseHouseService + apiURL.delHouseFollow + params)
   },
-  getHouseFollowInfo (params) {
+  getHouseFollowInfo(params) {
     return Api.del(
       baseURL.seeBaseHouseService + apiURL.getHouseFollowInfo,
       params
     )
   },
-  saveHouseFollow (params) {
+  saveHouseFollow(params) {
     return Api.post(
       baseURL.seeBaseHouseService + apiURL.saveHouseFollow,
       params
     )
   },
-  updateHouseFollow (params) {
+  updateHouseFollow(params) {
     return Api.del(
       baseURL.seeBaseHouseService + apiURL.updateHouseFollow,
       params
     )
   },
-  getClientPhoneVo (params) {
+  getClientPhoneVo(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getClientPhoneVo,
       params
     )
   },
-  savePhoneList (params) {
+  savePhoneList(params) {
     return Api.post(baseURL.seeBaseHouseService + apiURL.savePhoneList, params)
   },
 
@@ -455,7 +455,7 @@ export default {
    * @description  房间信息表
    */
 
-  delLabelController (params) {
+  delLabelController(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.delLabelController,
       params
@@ -476,45 +476,45 @@ export default {
    * @description  房屋照片
    */
 
-  getHousePicturelist (params) {
+  getHousePicturelist(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getHousePicturelist,
       params
     )
   },
-  editHousePicture (params) {
+  editHousePicture(params) {
     return Api.post(
       baseURL.seeBaseHouseService + apiURL.editHousePicture,
       params
     )
   },
-  deleteHousePicture (params) {
+  deleteHousePicture(params) {
     return Api.del(
       baseURL.seeBaseHouseService + apiURL.deleteHousePicture,
       params
     )
   },
-  editMasterGraph (params) {
+  editMasterGraph(params) {
     return Api.post(
       baseURL.seeBaseHouseService + apiURL.editMasterGraph,
       params
     )
   },
 
-  queryTopRoomInfo (params) {
+  queryTopRoomInfo(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.queryTopRoomInfo + params
     )
   },
-  queryInfo (params) {
+  queryInfo(params) {
     return Api.get(baseURL.seeBaseHouseService + apiURL.queryInfo + params)
   },
-  queryObjectByHouseCode (params) {
+  queryObjectByHouseCode(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.queryObjectByHouseCode + params
     )
   },
-  transferRoom (params) {
+  transferRoom(params) {
     return Api.post(
       baseURL.seeBaseHouseService +
         apiURL.transferRoom +
@@ -523,61 +523,61 @@ export default {
         params
     )
   },
-  houseEntryInfo (params) {
+  houseEntryInfo(params) {
     return Api.get(baseURL.seeBaseHouseService + apiURL.houseEntryInfo, params)
   },
-  transferRoomInfo (params) {
+  transferRoomInfo(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.transferRoomInfo,
       params
     )
   },
-  publishNewRoom (params) {
+  publishNewRoom(params) {
     return Api.post(baseURL.seeBaseHouseService + apiURL.publishNewRoom, params)
   },
-  transferBusinessLease (params) {
+  transferBusinessLease(params) {
     return Api.post(
       baseURL.seeBaseHouseService + apiURL.transferBusinessLease,
       params
     )
   },
-  transferBusinessSell (params) {
+  transferBusinessSell(params) {
     return Api.post(
       baseURL.seeBaseHouseService + apiURL.transferBusinessSell,
       params
     )
   },
-  transferDispersedApartment (params) {
+  transferDispersedApartment(params) {
     return Api.post(
       baseURL.seeBaseHouseService + apiURL.transferDispersedApartment,
       params
     )
   },
-  transferHouseLease (params) {
+  transferHouseLease(params) {
     return Api.post(
       baseURL.seeBaseHouseService + apiURL.transferHouseLease,
       params
     )
   },
-  transferHouseSell (params) {
+  transferHouseSell(params) {
     return Api.post(
       baseURL.seeBaseHouseService + apiURL.transferHouseSell,
       params
     )
   },
-  transferNewHouse (params) {
+  transferNewHouse(params) {
     return Api.post(
       baseURL.seeBaseHouseService + apiURL.transferNewHouse,
       params
     )
   },
-  getConvertBusinessRoom (params) {
+  getConvertBusinessRoom(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.getConvertBusinessRoom,
       params
     )
   },
-  querySynchFmdInfo (params) {
+  querySynchFmdInfo(params) {
     return Api.get(
       baseURL.seeBaseHouseService + apiURL.querySynchFmdInfo + params
     )

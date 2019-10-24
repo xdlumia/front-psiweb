@@ -19,7 +19,7 @@ import Schema from 'async-validator'
 const verify = {
   // 付款周期，只能从1到12。（以月为单位）
   payCycle: (_rule, value, callback) => {
-    let reg = new RegExp('^(0|([1-9][0-9]*))$')
+    const reg = new RegExp('^(0|([1-9][0-9]*))$')
     if (value === '' || reg.test(value) && value <= 12 && value >= 1) {
       callback()
     } else {
@@ -28,7 +28,7 @@ const verify = {
   },
   // 合同期限年数上限，暂时设置为最大10年。
   maxYear: (_rule, value, callback) => {
-    let reg = new RegExp('^(0|([1-9][0-9]*))$')
+    const reg = new RegExp('^(0|([1-9][0-9]*))$')
     if (value === '' || reg.test(value) && value <= 30) {
       callback()
     } else {
@@ -37,7 +37,7 @@ const verify = {
   },
   // 合同期限月数上限(月份到达12个月就相当于1年)
   maxMonth: (_rule, value, callback) => {
-    let reg = new RegExp('^(0|([1-9][0-9]*))$')
+    const reg = new RegExp('^(0|([1-9][0-9]*))$')
     if (value === '' || reg.test(value) && value <= 11) {
       callback()
     } else {
@@ -46,7 +46,7 @@ const verify = {
   },
   // 合同期限天数上限(天数到达30天就相当于1个月)
   maxDay: (_rule, value, callback) => {
-    let reg = new RegExp('^(0|([1-9][0-9]*))$')
+    const reg = new RegExp('^(0|([1-9][0-9]*))$')
     if (value === '' || reg.test(value) && value <= 29) {
       callback()
     } else {
@@ -55,7 +55,7 @@ const verify = {
   },
   // 最大指定日。主要用在指定付款日里，不能超过28，因为2月份有可能只有28天。
   maxDesignationDay: (_rule, value, callback) => {
-    let reg = new RegExp('^(0|([1-9][0-9]*))$')
+    const reg = new RegExp('^(0|([1-9][0-9]*))$')
     if (value === '' || reg.test(value) && value <= 28 && value >= 1) {
       callback()
     } else {
@@ -63,7 +63,7 @@ const verify = {
     }
   }
 }
-for (let key of Object.keys(verify)) {
+for (const key of Object.keys(verify)) {
   Schema.register(key, verify[key])
 }
 

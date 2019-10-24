@@ -40,7 +40,7 @@
 <script>
 
 export default {
-  name: 'form-card',
+  name: 'FormCard',
   props: {
     title: {
       default: false
@@ -49,10 +49,10 @@ export default {
       default: 'never'
     }
   },
-  data () {
+  data() {
     return {}
   },
-  created () {},
+  created() {},
   methods: {}
 }
 </script>

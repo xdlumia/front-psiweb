@@ -1,5 +1,5 @@
 const MOCK_ADDRESS = '/mock/5cf4761ea7e73d3d4b295f59/pmd'
-let isMock = false
+const isMock = false
 export default {
   __mockAddress: MOCK_ADDRESS,
   /* =============广告管理start=========== */

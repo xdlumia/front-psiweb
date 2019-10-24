@@ -98,7 +98,7 @@ export default {
     quillEditor,
     uploadFile
   },
-  data () {
+  data() {
     return {
       loading: false,
       dataSource: [], // 数据源
@@ -118,12 +118,12 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     this.initCompanyAdd()
   },
   methods: {
     // 编辑和新增
-    initCompanyAdd () {
+    initCompanyAdd() {
       if (this.dialogMeta.type === 'add') {
         // 清空form表单
         this.$nextTick(() => {
@@ -131,8 +131,8 @@ export default {
           this.addForm.id = ''
         })
       } else {
-        let data = this.dialogMeta.data
-        for (let key in this.addForm) {
+        const data = this.dialogMeta.data
+        for (const key in this.addForm) {
           this.addForm[key] = data[key]
         }
         this.addForm.start_date = [
@@ -142,10 +142,10 @@ export default {
       }
     },
     // 保存表单数据
-    saveHandle (formName) {
+    saveHandle(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          let [currCity] = this.citys().filter(
+          const [currCity] = this.citys().filter(
             item => item.id === this.addForm.cityId
           )
           this.addForm.cityName = currCity.name
@@ -169,11 +169,11 @@ export default {
         }
       })
     },
-    changeTime (time) {
+    changeTime(time) {
       this.addForm.startTime = time[0]
       this.addForm.endTime = time[1]
     },
-    QuillEditor (val) {
+    QuillEditor(val) {
       this.addForm.content = val
     }
   }

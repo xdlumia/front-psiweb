@@ -20,8 +20,8 @@
             <el-option :label="item.name" :value="item.id" v-for="(item,index) in citys()" :key="index"></el-option>
           </el-select>
         </el-form-item> -->
-        <el-button v-if="authorityButtons.includes('pmdwebset_contents_college_1004')" size="small" type="primary" @click="$refs.companyTable.reload()" >查 询</el-button>
-        <el-button v-if="authorityButtons.includes('pmdwebset_contents_college_1004')" size="small" @click="reset()">重 置</el-button>
+        <el-button v-if="authorityButtons.includes('pmdwebset_contents_college_1004')" size="small" type="primary" @click="$refs.companyTable.reload" >查 询</el-button>
+        <el-button v-if="authorityButtons.includes('pmdwebset_contents_college_1004')" size="small" @click="reset">重 置</el-button>
         <el-button v-if="authorityButtons.includes('pmdwebset_contents_college_1001')" size="small" type="primary" icon="el-icon-plus" @click="updateCompany('add')" class="fr mr30">新建</el-button>
     </div>
   </el-form>
@@ -68,7 +68,7 @@
 </d-table>
 <!-- 新增 / 编辑 弹出框-->
 <el-dialog :title="dialogMeta.title" :visible.sync="dialogMeta.visible" :width="dialogMeta.width" v-dialogDrag @close="closeBefore">
-    <components :is="dialogMeta.component" :dialogMeta="dialogMeta" v-if="dialogMeta.visible" @submit="$refs.companyTable.reload()"></components>
+    <components :is="dialogMeta.component" :dialogMeta="dialogMeta" v-if="dialogMeta.visible" @submit="$refs.companyTable.reload"></components>
 </el-dialog>
 </div>
 </template>
@@ -80,7 +80,7 @@ export default {
     collegeAdd,
     collegeRecord
   },
-  data () {
+  data() {
     return {
       loading: false,
       // 查询表单
@@ -109,7 +109,7 @@ export default {
   },
   methods: {
     // 配置公司
-    setCompany (row) {
+    setCompany(row) {
       this.dialogMeta.visible = true
       this.dialogMeta.type = ''
       this.dialogMeta.width = '720px'
@@ -118,12 +118,12 @@ export default {
       this.dialogMeta.component = 'collegeRecord'
     },
     // 重置
-    reset () {
+    reset() {
       this.$refs.queryForm.resetFields()
       this.$refs.companyTable.reload()
     },
     // 初始化公司
-    initCompany (row) {
+    initCompany(row) {
       this.$confirm('确定初始化?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -138,7 +138,7 @@ export default {
             })
             return
           }
-          let params = {
+          const params = {
             companyCode: row.companyCode,
             companyId: row.id
           }
@@ -154,7 +154,7 @@ export default {
         })
     },
     // 编辑和新增用户
-    updateCompany (type, data) {
+    updateCompany(type, data) {
       let title = '新增'
       if (type === 'edit') {
         title = '编辑'
@@ -171,7 +171,7 @@ export default {
       this.dialogMeta.data = data
     },
     // 删除公司
-    delCompany (row) {
+    delCompany(row) {
       this.$confirm('此操作将永久删除, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -191,16 +191,16 @@ export default {
         })
     },
     // 获取权限
-    getPower (val) {
+    getPower(val) {
       return this.buttonsCode.some(item => item === val)
     },
-    handleSelectionChange (val) {
+    handleSelectionChange(val) {
       this.tableList = []
       val[0] && val.map(item => {
         this.tableList.push(item.id)
       })
     },
-    closeBefore () {
+    closeBefore() {
       if (this.dialogMeta.component === 'collegeRecord') {
         this.$refs.companyTable.reload()
       }

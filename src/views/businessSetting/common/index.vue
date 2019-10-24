@@ -150,7 +150,7 @@ export default {
   components: {
   },
   props: [],
-  data () {
+  data() {
     return {
       loading: false,
       activeArea: '0', //  0商铺出租 1其他 // 自定义价格 自定义面积类型
@@ -178,7 +178,7 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     // 获取房源配置
     this.getUserCfg()
   },
@@ -187,11 +187,11 @@ export default {
   methods: {
 
     // 获取房源配置
-    getUserCfg () {
+    getUserCfg() {
       this.loading = true
       this.$api.seePumaidongService.commonusercfgupGetUserCfg()
         .then(res => {
-          let data = res.data || []
+          const data = res.data || []
           this.configForm.brokerCardLogo = data.brokerCardLogo || '' // logo
           this.configForm.servicePhone = data.servicePhone || '' // 电话
           this.configForm.cityId = data.commonUserCfgUnderneathEntity.cityId || '' // 城市id
@@ -204,8 +204,8 @@ export default {
         })
     },
     // 添加空置期
-    addArea (currData) {
-      let lastItem = currData[currData.length - 1]
+    addArea(currData) {
+      const lastItem = currData[currData.length - 1]
       if (currData.length && (!String(lastItem.maxValue) || !String(lastItem.minValue))) {
         this.$message({
           message: '请输入下限和上限的值',
@@ -224,18 +224,18 @@ export default {
         })
     },
     // 删除方法
-    delHandle (currData, index) {
+    delHandle(currData, index) {
       currData.splice(index, 1)
     },
     // 城市切换 获取租金列表
-    cityChange (cityId) {
-      let params = {
+    cityChange(cityId) {
+      const params = {
         cityId: this.configForm.cityId,
         type: this.priceType
       }
       this.$api.seePumaidongService.commonusercfgunderneathGetCfg(params)
         .then(res => {
-          let data = res.data || {}
+          const data = res.data || {}
           if (this.priceType === '0') {
             this.configForm.shopsMonthlyRents = data.params || [] // 月租金
           } else if (this.priceType === '1') {
@@ -244,7 +244,7 @@ export default {
         })
     },
     // 图片保存
-    saveHandle () {
+    saveHandle() {
       // 开始保存数据
       this.loading = true
       this.$api.seePumaidongService.commonusercfgupSave(this.configForm)
@@ -256,7 +256,7 @@ export default {
         })
     },
     // 恢复默认
-    recoverHouseDefault () {
+    recoverHouseDefault() {
       this.$confirm('是否要恢复默认设置？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

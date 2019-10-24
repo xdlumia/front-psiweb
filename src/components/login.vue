@@ -16,7 +16,8 @@
         </div>
         <el-form :model="loginForm" ref="loginForm" class="login-info">
           <!-- 帐号 -->
-          <el-form-item prop="account"
+          <el-form-item
+prop="account"
           :rules="[
             { required: true, message: '请输入用户名',},
             { min: 2, max: 15, message: '长度在 2 到 15 个字符',}
@@ -33,7 +34,7 @@
             </el-checkbox-group>
           </div>
           <el-form-item>
-            <el-button style="width: 100%" type="primary" :loading="loading" @click="loginBtn()">{{loadingText}}</el-button>
+            <el-button style="width: 100%" type="primary" :loading="loading" @click="loginBtn">{{loadingText}}</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -102,8 +103,8 @@ import axios from 'axios'
 import Fingerprint2 from 'fingerprintjs2'
 import { Base64 } from 'js-base64'
 export default {
-  name: 'login',
-  data () {
+  name: 'Login',
+  data() {
     return {
       authorityBtn: {},
       updatePasswordVisible: false, // 修改密码是否显示
@@ -149,15 +150,15 @@ export default {
     }
   },
   computed: {
-    syscode () {
+    syscode() {
       return 'pmdwebset'
     }
   },
-  created () {
+  created() {
     // 读取用户信息
-    let userInfo = this.$local.fetch('userInfo')
+    const userInfo = this.$local.fetch('userInfo')
     // 记住密码
-    let account = userInfo.account
+    const account = userInfo.account
     let pwd = ''
     try {
       pwd = Base64.decode(userInfo.pwd)
@@ -170,10 +171,10 @@ export default {
     // 载入页面获取当前页面名称
     document.title = this.$route.meta.title
   },
-  mounted () {},
+  mounted() {},
   methods: {
     // 登录
-    loginBtn () {
+    loginBtn() {
       this.loading = true
       this.loadingText = '登录中'
       // 获取浏览器指纹
@@ -185,7 +186,7 @@ export default {
         this.loginForm.pwd = Base64.encode(this.password)
         this.$api.systemService.login(this.loginForm)
           .then(res => {
-            let token = res.data.token || ''
+            const token = res.data.token || ''
             localStorage.token = token
             // return
             axios.defaults.headers.finger = localStorage.finger
@@ -211,10 +212,10 @@ export default {
       })
     },
     // 保存修改过的密码
-    savePassword () {
+    savePassword() {
       this.$refs.updateForm.validate((valid) => {
         if (valid) {
-          let params = {
+          const params = {
             operationSource: 1,
             pwd: Base64.encode(this.updateForm.pwd),
             id: this.updateForm.id
@@ -232,30 +233,30 @@ export default {
       })
     },
     // 关闭修改密码弹出框
-    closeUpdatepwd () {
+    closeUpdatepwd() {
       this.updatePasswordVisible = false
       localStorage.token = ''
       axios.defaults.headers.token = ''
     },
     // 验证所更改的密码
-    verifyPassword (val) {
-      let reg = {
+    verifyPassword(val) {
+      const reg = {
         upperCase: /[A-Z]/,
         upperLower: /[a-z]/,
         number: /[0-9]/,
         length: /^.{8,20}$/
       }
-      for (let key in reg) {
+      for (const key in reg) {
         this.pwVerify[key] = reg[key].test(val)
       }
     },
     // 获取用户详情
-    getUserDetail () {
-      this.$api.bizSystemService.getUserDetail({syscode: this.syscode})
+    getUserDetail() {
+      this.$api.bizSystemService.getUserDetail({ syscode: this.syscode })
         .then(res => {
-          let data = res.data || {}
-          let rmDeptEntity = data.rmDeptEntity || {} // 部门
-          let rmRoleEntities = data.rmRoleEntities || [] // 人员
+          const data = res.data || {}
+          const rmDeptEntity = data.rmDeptEntity || {} // 部门
+          const rmRoleEntities = data.rmRoleEntities || [] // 人员
           // 存储用户信息
           this.$local.save('userInfo', {
             avatarUrl: data.avatarUrl || '',
@@ -284,10 +285,10 @@ export default {
           this.$local.save('bizDataAuthCfgList', data.bizDataAuthCfgList || [])
         })
     },
-    cfgcitysettingGetDefaultCity () {
+    cfgcitysettingGetDefaultCity() {
       this.$api.seeBaseinfoService.cfgcitysettingGetDefaultCity() // 获取当前用户的默认城市
         .then(res => {
-          let cityInfo = res.data || {}
+          const cityInfo = res.data || {}
           this.$local.save('cityInfo', cityInfo)
           // 获取用户权限
           this.getUserAuth()
@@ -295,22 +296,22 @@ export default {
     },
 
     // 获取用户权限
-    getUserAuth () {
+    getUserAuth() {
       this.$api.bizSystemService.getUserAuth(this.syscode)
         .then(res => {
-          let navData = res.data || [{url: '/'}]
+          const navData = res.data || [{ url: '/' }]
           this.authorityBtn = {} // 按钮权限
           // this.authorityHandle(navData)
           // this.$local.save('authorityBtn', this.authorityBtn)
           // 取消资源列表里系统管理的路由 因为要放到辅助管理里
           // 读取用户信息
-          let userInfo = this.$local.fetch('userInfo')
+          const userInfo = this.$local.fetch('userInfo')
           // type==1是管理员帐号
           // 管理员帐号登录的时候系统管理不去除业务字典路由
           if (userInfo.type !== 1) {
             navData.forEach(item => {
               if (item.name === '系统管理') {
-                let childred = item.children
+                const childred = item.children
                 childred.forEach((subItem, i) => {
                   if (subItem.code === 'asystem_assist_dict') {
                     childred.splice(i, 1)
@@ -323,8 +324,8 @@ export default {
           this.$local.save('navData', navData)
 
           // 登录成功后跳转到 登录前的页面 或获取路由的第一个
-          let redirectRouter = navData[0].children ? navData[0].children[0].url : navData[0].url
-          let routerReplace = sessionStorage.getItem('loginRedirect') || redirectRouter
+          const redirectRouter = navData[0].children ? navData[0].children[0].url : navData[0].url
+          const routerReplace = sessionStorage.getItem('loginRedirect') || redirectRouter
           // eslint-disable-next-line no-undef
           router.replace({
             path: routerReplace
@@ -335,7 +336,7 @@ export default {
         })
     },
     // 获取用户权限
-    authorityHandle (authorityData) {
+    authorityHandle(authorityData) {
       authorityData.forEach((item) => {
         if (item.code !== '') {
           this.authorityBtn[item.code] = item.buttonsCode

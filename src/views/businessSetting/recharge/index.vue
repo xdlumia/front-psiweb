@@ -1,11 +1,10 @@
-<!--私有组件：
-/**
-* 辅助管理-公共设置-私有组件：充值记录
-* @/components/asistant/common 组件存放位置
-* @author web-徐贺
-* @date 2019 9 11
-**/
--->
+/*
+ * @Author: web.徐贺
+ * @Date: 2019-10-18 09:36:32
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-24 09:33:41
+ * @Description: 辅助管理-公共设置-私有组件：充值记录
+*/
 <template>
   <div v-loading="loading" class=" main-content">
     <el-form ref="queryForm" :model="queryForm" size="small" inline>
@@ -21,7 +20,7 @@
         <el-form-item label="开通套餐:" prop="state" class="mb0">
           <el-select v-model="queryForm.state" placeholder="请选择">
             <el-option label="请选择" value=""></el-option>
-            <el-option label="" :value="key" :label="val" v-for="(val,key) of biddingState" :key="key"></el-option>
+            <el-option :value="key" :label="val" v-for="(val,key) of biddingState" :key="key"></el-option>
           </el-select>
         </el-form-item>
         <el-button size="small" type="primary" @click="$refs.table.reload(1)" icon="el-icon-search">查询</el-button>
@@ -62,7 +61,7 @@ export default {
   components: {
   },
   props: [],
-  data () {
+  data() {
     return {
       loading: false,
       queryForm: {
@@ -71,7 +70,7 @@ export default {
       }
     }
   },
-  created () {
+  created() {
   },
   computed: {
   },

@@ -16,21 +16,21 @@
 <script>
 
 export default {
-  name: 'crumbs',
+  name: 'Crumbs',
   props: {
   },
-  data () {
+  data() {
     return {
       crumbsTitle: ''
     }
   },
-  created () {
+  created() {
     // 初始化面包屑
     this.crumbsTitle = this.$route.meta.title
   },
   watch: {
     // 实时监控当前面包屑
-    '$route' () {
+    '$route'() {
       this.crumbsTitle = this.$route.meta.title
     }
   },

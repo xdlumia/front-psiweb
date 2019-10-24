@@ -1,16 +1,16 @@
-let state = {
+const state = {
   navList: []
 }
-let getters = {
+const getters = {
 
 }
-let mutations = {
+const mutations = {
   // 储存按钮权限
-  changeNavList (state, action) {
+  changeNavList(state, action) {
     state.navList = action.type
   }
 }
-let actions = {
+const actions = {
 
 }
 export default {
