@@ -6,8 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "dev": "vue-cli-service serve",
-    "fix": "eslint --ext .js,.vue src --fix"
+    "dev": "vue-cli-service serve"
   },
   "dependencies": {
     "ali-oss": "^6.1.1",
@@ -51,12 +50,15 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/strongly-recommended",
       "eslint:recommended"
     ],
     "rules": {
       "vue/no-async-in-computed-properties": "warning",
-      "vue/no-dupe-keys": "off"
+      "vue/no-dupe-keys": "warning",
+      "vue/no-duplicate-attributes": "warning",
+      "vue/html-closing-bracket-spacing": "warning",
+      "vue/script-indent": "warning"
     },
     "parserOptions": {
       "parser": "babel-eslint"
