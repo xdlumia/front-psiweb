@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 09:22:59
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-24 09:27:28
+ * @LastEditTime: 2019-10-24 13:16:41
  * @Description: file content
  */
 module.exports = {
@@ -78,7 +78,7 @@ module.exports = {
       'newIsCap': true,
       'capIsNew': false
     }], // 要求构造函数首字母大写
-    'new-parens': 2, // 要求调用无参构造函数时有圆括号
+    'new-parens': 2, // 要求调用无参构造函数时有    圆括号
     'no-array-constructor': 2, // 禁用 Array 构造函数
     'no-implicit-coercion': 'off',
     'no-caller': 2, // 禁用 arguments.caller 或 arguments.callee

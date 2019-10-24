@@ -1,3 +1,10 @@
+/*
+ * @Author: web.王晓冬
+ * @Date: 2019-10-24 12:33:49
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-24 17:14:10
+ * @Description: file content
+ */
 const MOCK_ADDRESS = '/mock/5cf4761ea7e73d3d4b295f59/pmd'
 const isMock = false
 export default {

@@ -1,29 +1,7 @@
-# front-psiweb
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+<!--
+ * @Author: web.王晓冬
+ * @Date: 2019-10-18 09:41:01
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-24 09:57:26
+ * @Description: file content
+ -->
