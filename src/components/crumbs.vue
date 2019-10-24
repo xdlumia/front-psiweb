@@ -1,13 +1,10 @@
- <!--
- /**
-  * @desc 面包屑
-  * @author web-王晓冬
-  * @date 2019年5月24日
-  * @example 使用示例
-  *        <crumbs><crumbs>
-  **/
-
--->
+/*
+ * @Author: web.王晓冬
+ * @Date: 2019-10-18 09:36:32
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-24 09:39:18
+ * @Description: 使用示例 <crumbs><crumbs>
+*/
 <template>
     <div>
         <h2 class="bb pb5" style="margin-bottom:10px;">{{crumbsTitle}}</h2>
