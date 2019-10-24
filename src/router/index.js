@@ -14,12 +14,15 @@ import Login from '@/components/login'
 import common from '@/views/businessSetting/common'
 import recharge from '@/views/businessSetting/recharge'
 
+// 采购
+import BuyingRequisition from '@/views/procurement/buyingRequisition'
+
 // 框架
 import Layout from '@/components/layout'
-let routers = [{ component: common, componentName: 'common', label: '公共' }]
+const routers = [{ component: common, componentName: 'common', label: '公共' }]
 systemRouteConfig(systemRoute.BusinessSetting, routers)
 
-const College = () => import('@/views/contents/college') // 店长服务
+const College = () => require('@/views/contents/college') // 店长服务
 
 Vue.use(Router)
 
@@ -44,7 +47,7 @@ export default new Router({
         parent: '房源管理',
         title: '出租商铺'
       }
-    },{
+    }, {
       path: '/contents/college',
       component: College,
       meta: {
@@ -61,11 +64,20 @@ export default new Router({
         title: '充值记录'
       }
     },
+    {
+      path: '/procurement/buyingRequisition',
+      name: '/procurement/buyingRequisition',
+      component: BuyingRequisition,
+      meta: {
+        parent: '采购',
+        title: '采购请购单'
+      }
+    },
     ...Object.values(systemRoute), // 系统设置
     ...Object.values(customerServiceRoute)
     ]
   },
-    // 404
+  // 404
   {
     path: '*', // 如果找不到页面跳转到404
     redirect: '/404'
