@@ -12,7 +12,7 @@
       <div class="login-mian">
         <div class="login-header">
           <img class="logo" :src="require('@/assets/img/logo.png')" alt="">
-          <h2>经销存战役</h2>
+          <h2>进销存战役</h2>
         </div>
         <el-form :model="loginForm" ref="loginForm" class="login-info">
           <!-- 帐号 -->

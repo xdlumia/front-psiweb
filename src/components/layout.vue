@@ -21,7 +21,7 @@
               />
               <div class="d-inline">
                 <h3>
-                  <strong>{{this.$store.state.company.companyInfo.picName ? this.$store.state.company.companyInfo.picName : '经销存战役'}}</strong>
+                  <strong>{{this.$store.state.company.companyInfo.picName ? this.$store.state.company.companyInfo.picName : '进销存战役'}}</strong>
                 </h3>
                 <!-- <p> 帮助房地产中介提升企业产能 </p> -->
               </div>
