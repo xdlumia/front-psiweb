@@ -3,7 +3,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-24 19:37:40
+ * @LastEditTime: 2019-10-25 11:36:35
  * @Description: 登录页
  */
 <template>
@@ -17,7 +17,7 @@
         <el-form :model="loginForm" ref="loginForm" class="login-info">
           <!-- 帐号 -->
           <el-form-item
-prop="account"
+          prop="account"
           :rules="[
             { required: true, message: '请输入用户名',},
             { min: 2, max: 15, message: '长度在 2 到 15 个字符',}
@@ -150,7 +150,7 @@ export default {
   },
   computed: {
     syscode() {
-      return 'pmdwebset'
+      return 'psi'
     }
   },
   created() {

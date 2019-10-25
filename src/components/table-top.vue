@@ -2,7 +2,7 @@
 * @Author: web.王晓冬
 * @Date: 2019-05-14 18:08:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 11:02:21
+ * @LastEditTime: 2019-10-25 12:00:52
 * @Description: 表单卡片
 * @param  title 表单title
 * @param  shadow 卡片阴影出现的时机  默认never
@@ -84,18 +84,19 @@
     <!-- 自定义列弹出框 -->
     <el-dialog :visible="showCustomColumn" @close="close" center title="自定义列" v-dialogDrag>
       <div class="custom-column-view">
-        <div>已显示列（拖拽可调整排序）</div>
+        <div>选择显示示列</div>
         <div>
-          <draggable v-model="list">
+          <draggable v-model="showList">
             <transition-group>
               <el-button
-                :key="item"
                 class="drag-btn"
-                plain
+                :key="item.id"
+                :plain="!item.selected"
+                @click="item.selected=!item.selected"
                 size="mini"
                 type="primary"
-                v-for="item of list"
-              >{{item}}</el-button>
+                v-for="(item) of showList"
+              >{{item.name}}</el-button>
             </transition-group>
           </draggable>
         </div>
@@ -120,6 +121,7 @@
   </div>
 </template>
 <script>
+import draggable from "vuedraggable";
 export default {
   name: "table-top",
   props: {
