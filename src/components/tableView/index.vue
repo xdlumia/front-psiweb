@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 18:07:47
+ * @LastEditTime: 2019-10-25 18:23:13
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -15,7 +15,11 @@
  * @slot moreButton 自定义更多操作下拉按钮
  */
 <template>
-  <div class="main-content" v-loading="loading" element-loading-text="正在初始化">
+  <div
+    class="main-content"
+    v-loading="loading"
+    element-loading-text="正在初始化"
+  >
     <tableTop
       @staHandle="staHandle"
       @moreHandle="moreHandle"
@@ -40,7 +44,10 @@
     </tableTop>
 
     <!-- 表格内容 -->
-    <div class="ac mt35 d-text-gray" v-if="!headers.length">暂无列内容</div>
+    <div
+      class="ac mt35 d-text-gray"
+      v-if="!headers.length"
+    >暂无列内容</div>
     <d-table
       v-if="headers.length"
       @selectionChange="selectionChange"
@@ -49,7 +56,12 @@
       ref="table"
       :style="{height:height}"
     >
-      <el-table-column v-if="selection" :fixed="true" width="50" type="selection"></el-table-column>
+      <el-table-column
+        v-if="selection"
+        :fixed="true"
+        width="50"
+        type="selection"
+      ></el-table-column>
       <el-table-column
         :fixed="item.fixed"
         :key="index"
@@ -58,7 +70,11 @@
         v-for="(item,index) of headers"
       >
         <template slot-scope="scope">
-          <slot :column="item" :row="scope.row" :value="scope.row[item.prop]" />
+          <slot
+            :column="item"
+            :row="scope.row"
+            :value="scope.row[item.prop]"
+          />
         </template>
       </el-table-column>
     </d-table>
@@ -84,7 +100,7 @@ export default {
     //filter参数
     params: {
       type: [Object, String, Number],
-      default: function() {
+      default: function () {
         return { page: 1, limit: 15 };
       }
     },
