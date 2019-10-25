@@ -74,7 +74,7 @@
   </div>
 </template>
 <script>
-import FullscreenElement from './fullscreenElement';
+import FullscreenElement from '@/components/fullscreenElement';
 import CustomColumn from './customColumn';
 /**
  * @author 赵伦 2019-10-24
