@@ -6,16 +6,19 @@
         <span v-else>{{value}}</span>
       </template>
     </TableView>
+    <OrderBuyingDetail />
   </div>
 </template>
 <script>
 import TableView from '@/components/tableView';
+import OrderBuyingDetail from './detail';
 /**
  * 采购-请购单
  */
 export default {
   components: {
-    TableView
+    TableView,
+    OrderBuyingDetail
   },
   data() {
     return {

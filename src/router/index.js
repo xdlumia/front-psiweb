@@ -13,7 +13,7 @@ import Login from '@/components/login'
 
 
 // 采购
-import BuyingRequisition from '@/views/procurement/buyingRequisition'
+import OrderBuying from '@/views/order/buying'
 
 // 框架
 import Layout from '@/components/layout'
@@ -66,7 +66,7 @@ export default new Router({
       {
         path: '/procurement/buyingRequisition',
         name: '/procurement/buyingRequisition',
-        component: BuyingRequisition,
+        component: OrderBuying,
         meta: {
           parent: '采购',
           title: '采购请购单'

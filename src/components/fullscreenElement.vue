@@ -15,6 +15,9 @@
 /**
  * @author 赵伦 2019-10-24
  * @description 全屏化某个局部dom节点
+ * @example
+ *
+ * <FullscreenElement :element="$refs.tableView" :visible.sync="showInFullscreen" />
  */
 export default {
   props: {
