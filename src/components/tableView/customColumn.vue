@@ -1,5 +1,12 @@
+/*
+ * @Author: web.王晓冬
+ * @Date: 2019-10-25 09:10:36
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-25 12:07:39
+ * @Description: file content
+*/
 <template>
-  <el-dialog :visible="visible" @close="close" center title="自定义列" v-dialogDrag>
+  <el-dialog :visible="visible" center title="自定义列" v-dialogDrag>
     <div class="custom-column-view">
       <div>已显示列（拖拽可调整排序）</div>
       <div>

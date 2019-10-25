@@ -2,17 +2,18 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:29
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-24 20:04:33
+ * @LastEditTime: 2019-10-25 12:03:41
  * @Description: ip配置文件
  */
 // let model = 'build' // dev 为开发环境 build 为测试环境  product 为生产环境
 let apisUrl = '/apis/'
-// apis = 'http://39.105.103.188:7011/'
+// apis = 'http://39.99.132.95:7011/'
+apis = 'http://39.105.103.188:7011/'
 
 // if (model === 'dev') {
 //   apis = 'http://10.168.1.145:7011'
 // } else if (model === 'build') {
-// apis = 'http://39.105.103.188:7011'
+// apis = 'http://39.99.132.95:8080:7011'
 // } else if (model === 'product') {
 //   apis = 'http://gy.fangmaidong.com:7011/'
 // }

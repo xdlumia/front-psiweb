@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-06-13 17:33:33
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-24 16:31:50
+ * @LastEditTime: 2019-10-25 12:04:24
  * @Description: 配置文件
  */
 module.exports = {
@@ -10,6 +10,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/apis': {
+        // target: 'http://39.99.132.95:7011/',
         target: 'http://39.105.103.188:7011/',
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
         pathRewrite: {
