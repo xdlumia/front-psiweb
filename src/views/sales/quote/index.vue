@@ -2,13 +2,14 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 19:44:50
+ * @LastEditTime: 2019-10-25 19:56:19
  * @Description: 销售-请购单
  */
 <template>
   <div>
     <table-view
       type="1"
+      ref="table"
       :filter="true"
       :moreButton="true"
       :column="true"
@@ -18,6 +19,7 @@
       @selection-change="selectionChange"
     >
       <template v-slot:filter>自定义筛选列</template>
+      <!-- 自定义按钮功能 -->
       <template v-slot:button>
         <el-button
           size="mini"
@@ -50,7 +52,8 @@
     >
       <components
         :is="drawerData.component"
-        :drawerData="drawerData"
+        :visible.sync="dialogVisible"
+        :dialogData="drawerData"
         v-if="dialogVisible"
         @submit="$refs.table.reload"
       ></components>
@@ -61,7 +64,7 @@
       :title="drawerData.title"
       :visible.sync="drawerVisible"
       :size="drawerData.width"
-    >312312
+    >
       <components
         :is="drawerData.component"
         :drawerData="drawerData"
@@ -118,7 +121,7 @@ export default {
         sales: { comp: 'salesDetails', title: '新增报价单' },
       }
       // 如果是新增复制合并调用dialog弹出框
-      if (type == "add" && type == "copy" && type == "merge") {
+      if (type == "add" || type == "copy" || type == "merge") {
         this.dialogVisible = true;
       } else {
         // 否则调用抽屉弹出框
