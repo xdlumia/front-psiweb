@@ -196,7 +196,7 @@ export default {
             this.$refs.companyTable.reload();
           });
       });
-    },
+    }
   }
 };
 </script>

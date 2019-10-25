@@ -177,9 +177,11 @@ export default {
       this.loading = true
       this.loadingText = '登录中'
       // 获取浏览器指纹
-      new Fingerprint2({
-        excludeSessionStorage: true
-      }).get((finger) => {
+      Fingerprint2.getV18({
+        exclude: {
+          sessionStorage: true
+        }
+      }, (finger) => {
         localStorage.setItem('finger', finger)
         this.loginForm.finger = finger // 获取指纹
         this.loginForm.pwd = Base64.encode(this.password)

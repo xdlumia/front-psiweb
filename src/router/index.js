@@ -12,6 +12,9 @@ import { systemRoute, systemRouteConfig } from 'see-web-system'
 import Login from '@/components/login'
 
 
+// 采购
+import BuyingRequisition from '@/views/procurement/buyingRequisition'
+
 // 框架
 import Layout from '@/components/layout'
 
@@ -58,6 +61,15 @@ export default new Router({
         meta: {
           parent: '辅助设置',
           title: '充值记录'
+        }
+      },
+      {
+        path: '/procurement/buyingRequisition',
+        name: '/procurement/buyingRequisition',
+        component: BuyingRequisition,
+        meta: {
+          parent: '采购',
+          title: '采购请购单'
         }
       },
       ...Object.values(systemRoute) // 系统设置

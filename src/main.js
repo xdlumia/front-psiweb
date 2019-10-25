@@ -17,7 +17,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import ElementUI from 'element-ui'
 import router from './router' // 路由
 import './assets/css/common.css'
+import './assets/css/iconfont.css'
 import './utils/verify.js'
+import './utils/anchor.js'
 import citys from './utils/citys'
 import './api'
 // basic配置

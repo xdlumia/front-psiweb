@@ -11,7 +11,7 @@
     <div style="height: 100vh" v-loading="loading">
       <el-container class="d-container">
         <!-- 头部区域 -->
-        <el-header height="60px" class="header-top">
+        <el-header height="60px" class="header-top d-hidden">
           <!-- 菜单 -->
           <el-menu :default-active="path" mode="horizontal" :router="true" :unique-opened="true">
             <el-menu-item class="header-logo pl0" index="/">
