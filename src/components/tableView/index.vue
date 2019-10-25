@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 18:23:13
+ * @LastEditTime: 2019-10-25 18:46:00
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -134,6 +134,9 @@ export default {
     console.log(this.selection);
   },
   methods: {
+    reload() {
+      this.$refs.table.reload(1);
+    },
     // 统计点击筛选
     staHandle(row) {
       this.params.id = row.id;

@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 18:08:21
- * @Description: 请购单
+ * @LastEditTime: 2019-10-25 18:55:40
+ * @Description: 销售-请购单
  */
 <template>
   <div>
@@ -21,10 +21,24 @@
       <template v-slot:button>自定义按钮</template>
       <template v-slot:moreButton>自定义更多按钮</template>
       <template slot-scope="{column,row,value}">
+        <span @click="click(row)">点击以下哈哈</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
+    <!-- 抽屉弹出框 -->
+    <el-drawer
+      title="我是标题"
+      :visible.sync="drawer.visible"
+      :size="drawer.size"
+    >312312
+      <components
+        :is="drawer.component"
+        :drawer="drawer"
+        v-if="drawer.visible"
+      ></components>
+    </el-drawer>
+
   </div>
 </template>
 <script>
@@ -42,18 +56,28 @@ export default {
         status: "",
         page: 1,
         limit: 20
+      },
+      drawer: {
+        title: true,
+        visible: true,
+        type: '',
+        size: '820px',
+        data: '',
+        width: ''
       }
     };
   },
   methods: {
     // 配置公司
-    setCompany(row) {
-      this.dialogMeta.visible = true;
-      this.dialogMeta.type = "";
-      this.dialogMeta.width = "720px";
-      this.dialogMeta.title = "报名记录";
-      this.dialogMeta.data = row;
-      this.dialogMeta.component = "collegeRecord";
+    click(row) {
+      console.log(11);
+
+      this.drawer.visible = true;
+      this.drawer.type = "";
+      this.drawer.width = "820px";
+      this.drawer.title = "报名记录";
+      this.drawer.data = row;
+      // this.drawer.component = "collegeRecord";
     },
     // 重置
     reset() {
@@ -66,16 +90,16 @@ export default {
       if (type === "edit") {
         title = "编辑";
       }
-      this.dialogMeta.component = "collegeAdd";
+      this.drawer.component = "collegeAdd";
       if (type === "check") {
         title = "查看消息";
-        this.dialogMeta.component = "collegeRecord";
+        this.drawer.component = "collegeRecord";
       }
-      this.dialogMeta.visible = true;
-      this.dialogMeta.type = type;
-      this.dialogMeta.width = "720px";
-      this.dialogMeta.title = title;
-      this.dialogMeta.data = data;
+      this.drawer.visible = true;
+      this.drawer.type = type;
+      this.drawer.width = "720px";
+      this.drawer.title = title;
+      this.drawer.data = data;
     },
     // 删除公司
     delCompany(row) {

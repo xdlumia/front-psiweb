@@ -4,7 +4,12 @@
 	padding-right: 16px;
 	display: inline-block;
 }
-
+.el-drawer__header{
+  margin-bottom: 0;
+}
+.el-drawer__body{
+  padding:10px 20px;
+}
 .main-content{height: calc(100vh - 80px);}
 
 
