@@ -2,7 +2,7 @@
  * @Author: 徐贺 
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-10-25 16:36:22
+ * @Last Modified time: 2019-10-25 18:02:01
  * @Description: 库房  销售单
  */
 <template>
@@ -24,7 +24,7 @@
       <el-table-column prop="cityName" min-width="100" label="客户名称" show-overflow-tooltip></el-table-column>
       <el-table-column prop="title" label="销售单编号" min-width="140" show-overflow-tooltip>
         <template slot-scope="scope">
-          <span @click="getTableVisible(scope.row)" class="d-text-blue">XSD20190201000001</span>
+          <span @click="getTableVisible(scope.row)" class="d-text-blue ac">XSD20190201000001</span>
         </template>
       </el-table-column>
       <el-table-column prop="cityName" min-width="100" label="出库状态" show-overflow-tooltip></el-table-column>
