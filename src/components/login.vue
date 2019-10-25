@@ -3,7 +3,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 11:36:35
+ * @LastEditTime: 2019-10-25 12:05:16
  * @Description: 登录页
  */
 <template>
@@ -150,7 +150,7 @@ export default {
   },
   computed: {
     syscode() {
-      return 'psi'
+      return 'pmdwebset'
     }
   },
   created() {

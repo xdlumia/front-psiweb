@@ -2,12 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 10:25:21
+ * @LastEditTime: 2019-10-25 12:37:55
  * @Description: 店长学院
  */
 <template>
   <div class="main-content" v-loading="loading" element-loading-text="正在初始化">
-    <table-top></table-top>
+    <table-top>
+    </table-top>
     <!-- 表格数据 -->
     <d-table
       api="seePumaidongService.collegeManagerList"

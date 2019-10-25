@@ -2,7 +2,7 @@
 * @Author: web.王晓冬
 * @Date: 2019-05-14 18:08:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 12:00:52
+ * @LastEditTime: 2019-10-25 12:40:40
 * @Description: 表单卡片
 * @param  title 表单title
 * @param  shadow 卡片阴影出现的时机  默认never
@@ -56,7 +56,9 @@
                 ></el-link>
               </el-header>
               <el-main style="max-height:500px;">
-                <slot name="filter">自定义筛选slot name = filter</slot>
+                <slot name="filter">
+                  自定义筛选 使用示例: <br/> &lt;template v-slot:filter> content&lt;/template>
+                </slot>
               </el-main>
               <div class="pl10 pr10" style="height:30px; line-height:30px;">
                 <el-link
@@ -82,36 +84,22 @@
       </section>
     </div>
     <!-- 自定义列弹出框 -->
-    <el-dialog :visible="showCustomColumn" @close="close" center title="自定义列" v-dialogDrag>
+    <el-dialog :visible="showCustomColumn" center title="自定义列" v-dialogDrag>
       <div class="custom-column-view">
-        <div>选择显示示列</div>
-        <div>
-          <draggable v-model="showList">
-            <transition-group>
-              <el-button
-                class="drag-btn"
-                :key="item.id"
-                :plain="!item.selected"
-                @click="item.selected=!item.selected"
-                size="mini"
-                type="primary"
-                v-for="(item) of showList"
-              >{{item.name}}</el-button>
-            </transition-group>
-          </draggable>
-        </div>
-        <div>选择显示示列</div>
-        <div>
-          <el-button
-            :key="item.name"
-            :plain="!item.selected"
-            @click="item.selected=!item.selected"
-            class="choose-btn"
-            size="mini"
-            type="primary"
-            v-for="(item) of showList"
-          >{{item.name}}</el-button>
-        </div>
+        <div>选择显示列</div>
+        <draggable v-model="showList">
+          <transition-group>
+            <el-button
+              class="drag-btn mt10"
+              :key="index"
+              :plain="!item.selected"
+              @click="item.selected=!item.selected"
+              size="mini"
+              type="primary"
+              v-for="(item,index) of showList"
+            >{{item.name}}</el-button>
+          </transition-group>
+        </draggable>
       </div>
       <span class="dialog-footer" slot="footer">
         <el-button @click="showCustomColumn = false" size="small">取 消</el-button>
@@ -124,6 +112,9 @@
 import draggable from "vuedraggable";
 export default {
   name: "table-top",
+  components: {
+    draggable
+  },
   props: {
     title: {
       default: false
@@ -134,12 +125,24 @@ export default {
   },
   data() {
     return {
+      // 筛选框是否显示
       filterPopover: false,
-      showCustomColumn: false
+      // 自定义列是否显示
+      showCustomColumn: false,
+      // 自定义列数据
+      showList: Array(30)
+        .fill('')
+        .map((str, i) => ({
+          name: i + 1,
+          selected: true
+        }))
     };
   },
   created() {},
-  methods: {}
+  methods: {
+    // 自定义列提交
+    confirm(){},
+  }
 };
 </script>
 <style lang="scss" scoped>
