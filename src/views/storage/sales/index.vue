@@ -2,7 +2,7 @@
  * @Author: 徐贺 
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-10-25 15:47:28
+ * @Last Modified time: 2019-10-25 16:36:22
  * @Description: 库房  销售单
  */
 <template>
@@ -42,6 +42,7 @@
       <el-table-column prop="cityName" min-width="100" label="单据创建人" show-overflow-tooltip></el-table-column>
       <el-table-column prop="cityName" min-width="100" label="创建部门" show-overflow-tooltip></el-table-column>
     </d-table>
+    <!-- 右侧滑出 -->
     <el-drawer
       :title="visibleMeta.title"
       :visible.sync="tableVisible"
@@ -57,8 +58,9 @@
           <el-tab-pane label="借入单"></el-tab-pane>
           <el-tab-pane label="应收账单"></el-tab-pane>
         </el-tabs>
+        <components :is='visibleMeta.component' :visibleMeta="visibleMeta">
+        </components>
       </div>
-      
     </el-drawer>
   </div>
 </template>
@@ -66,8 +68,10 @@
 /**
  * 采购-请购单
  */
+import Details from './details.vue'
 export default {
   components: {
+    Details
   },
   data() {
     return {
@@ -81,9 +85,11 @@ export default {
         page: 1,
         limit: 20
       },
+      componentActive:'',//当前的组件
       tableVisible:false,//销售单右侧抽屉
       visibleMeta:{//弹框的相关数据
         title:'',
+        component:'Details'
       },
       activeName:''
     };
