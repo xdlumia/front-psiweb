@@ -4,11 +4,11 @@ import Vue from 'vue'
  * @author 赵伦 2019-10-24
  * @description 在滚动区域内滚动到指定区域
  *
- * @example 在例子中，需要声明ref变量，变量需要保证唯一性
+ * @example 在例子中，需要声明ref变量，变量需要保证唯一性，可使用ref或者id
  *
  * <span v-anchor:target>点击后滚动到目标滚动区域</span>
  *
- * <div ref="target">目标滚动区域</div>
+ * <div ref="target" id="target">目标滚动区域</div>
  *
  */
 
@@ -20,15 +20,22 @@ Vue.directive('anchor', {
       while (!targetRefContext.$refs[targetRefName] && targetRefContext.$parent) {
         targetRefContext = targetRefContext.$parent;
       }
+      let el = null;
       if (targetRefContext) {
         const node = targetRefContext.$refs[targetRefName]
-        let el = node;
-        if (!(node instanceof HTMLElement)) {
-          el = node.$el;
+        el = node;
+      } else {
+        if (targetRefName) {
+          el = document.getElementById(targetRefName);
+        } else if (bind.value) {
+          el = document.querySelector(bind.value)
         }
-        if (el) {
-          el.scrollIntoView(true)
-        }
+      }
+      if (!(el instanceof HTMLElement)) {
+        el = el.$el;
+      }
+      if (el) {
+        el.scrollIntoView(true)
       }
     }, this)
   }
