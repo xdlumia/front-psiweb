@@ -10,11 +10,11 @@ module.exports = {
   devServer: {
     proxy: {
       '/apis': {
-        target: 'http://39.105.103.188:7011/'   ,
+        target: 'http://39.105.103.188:7011/',
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
         pathRewrite: {
-            '^/apis': ''
-          }
+          '^/apis': ''
+        }
       },
       '/mock': {
         target: 'http://10.168.1.145:7300/', // 接口的域名
@@ -25,6 +25,9 @@ module.exports = {
 
   //   build输出文件
   outputDir: 'dist',
-//   是否生成map文件
-  productionSourceMap: true
+
+  //   是否生成map文件
+  productionSourceMap: true,
+
+  lintOnSave: false
 }

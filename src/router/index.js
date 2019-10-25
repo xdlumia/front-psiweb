@@ -2,13 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-24 13:22:35
+ * @LastEditTime: 2019-10-24 19:51:42
  * @Description: 路由文件
  */
 import Vue from 'vue'
 import Router from 'vue-router'
 import { systemRoute, systemRouteConfig } from 'see-web-system'
-import { customerServiceRoute } from 'see-web-customer-service'
 // 登录
 import Login from '@/components/login'
 
@@ -24,7 +23,7 @@ import Layout from '@/components/layout'
 
 import common from '@/views/businessSetting/common'
 import recharge from '@/views/businessSetting/recharge'
-import college from '@/views/contents/college'
+import Quote from '@/views/sales/quote'
 
 const routers = [{ component: common, componentName: 'common', label: '公共' }]
 systemRouteConfig(systemRoute.BusinessSetting, routers)
@@ -48,8 +47,8 @@ export default new Router({
     redirect: '/house/rent',
     children: [
       {
-        path: '/contents/college',
-        component: college,
+        path: '/sales/quote',
+        component: Quote,
         meta: {
           parent: '内容管理',
           title: '店长学院'
@@ -73,8 +72,7 @@ export default new Router({
           title: '采购请购单'
         }
       },
-      ...Object.values(systemRoute), // 系统设置
-      ...Object.values(customerServiceRoute)
+      ...Object.values(systemRoute) // 系统设置
     ]
   },
   // 404

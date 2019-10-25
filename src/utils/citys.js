@@ -1,3 +1,10 @@
+/*
+ * @Author: web.王晓冬
+ * @Date: 2019-10-24 12:33:49
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-24 18:53:10
+ * @Description: file content
+ */
 /* eslint-disable no-mixed-operators */
 /**
 * @desc 公共验证方法
@@ -10,7 +17,10 @@
 // 验证正则
 import Vue from 'vue'
 import { Api } from 'see-web-basic'
-var baseURL = window.g.ApiUrl
+const baseURL = window.g && window.g.ApiUrl ? window.g.ApiUrl : {}
+if (!baseURL.seeBaseinfoService) {
+  baseURL.seeBaseinfoService = '/apis/' + 'see-baseinfo-service'
+}
 // 存放城市缓存
 var cityCache = {}
 var getCityArr = function(type) {

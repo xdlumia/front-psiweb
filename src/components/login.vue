@@ -3,7 +3,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-09-30 11:33:44
+ * @LastEditTime: 2019-10-24 19:37:40
  * @Description: 登录页
  */
 <template>
@@ -113,7 +113,6 @@ export default {
         pwd: '', // 加密后的
         verifyPwd: ''
       },
-
       pwVerify: {
         upperCase: false,
         upperLower: false,
