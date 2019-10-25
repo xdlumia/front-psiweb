@@ -15,7 +15,7 @@
     "core-js": "^3.3.3",
     "echarts": "^4.1.0",
     "element-ui": "~2.12.0",
-    "fingerprintjs2": "^1.8.2",
+    "fingerprintjs2": "^2.1.0",
     "js-base64": "^2.4.9",
     "moment": "^2.24.0",
     "see-web-basic": "~1.3.96-beta6",
