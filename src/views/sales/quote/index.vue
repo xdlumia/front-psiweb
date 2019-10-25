@@ -2,13 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 19:33:10
+ * @LastEditTime: 2019-10-25 19:44:50
  * @Description: 销售-请购单
  */
 <template>
   <div>
     <table-view
-      selection
       type="1"
       :filter="true"
       :moreButton="true"
@@ -16,6 +15,7 @@
       title="请购单"
       api="bizSystemService.getEmployeeList"
       :params="queryForm"
+      @selection-change="selectionChange"
     >
       <template v-slot:filter>自定义筛选列</template>
       <template v-slot:button>
@@ -43,30 +43,29 @@
     </table-view>
     <!-- 新增 / 编辑 弹出框-->
     <el-dialog
-      :title="dialogData.title"
-      :visible.sync="dialogData.visible"
-      :width="dialogData.width"
+      :title="drawerData.title"
+      :visible.sync="dialogVisible"
+      :width="drawerData.width"
       v-dialogDrag
-      @close="closeBefore"
     >
       <components
-        :is="dialogData.component"
-        :dialogData="dialogData"
-        v-if="dialogData.visible"
-        @submit="$refs.companyTable.reload"
+        :is="drawerData.component"
+        :drawerData="drawerData"
+        v-if="dialogVisible"
+        @submit="$refs.table.reload"
       ></components>
     </el-dialog>
 
     <!-- 抽屉弹出框 -->
     <el-drawer
       :title="drawerData.title"
-      :visible.sync="drawerData.visible"
+      :visible.sync="drawerVisible"
       :size="drawerData.width"
     >312312
       <components
         :is="drawerData.component"
         :drawerData="drawerData"
-        v-if="drawerData.visible"
+        v-if="drawerVisible"
       ></components>
     </el-drawer>
 
@@ -79,9 +78,9 @@ import add from './add' //新增
 import merge from './merge' //合并
 export default {
   components: {
-    details,
+    quotoDetails,
+    salesDetails,
     add,
-    copy,
     merge
   },
   data() {
@@ -97,14 +96,8 @@ export default {
         page: 1,
         limit: 20
       },
-      dialogData: {
-        visible: false,
-        width: '40%',
-        title: '', // dialog标题
-        component: '',
-        data: '', // 编辑的时候存放数据
-        type: '' // 是编辑还是新增
-      },
+      dialogVisible: false, //dialog弹出框
+      drawerVisible: false, //抽屉弹出框
       drawerData: {
         title: '',
         visible: false,
@@ -121,15 +114,31 @@ export default {
         add: { comp: 'add', title: '新增报价单' },
         copy: { comp: 'copy', title: '复制报价单' },
         merge: { comp: 'merge', title: '合并生成销售出库单' },
-        quoto: { comp: 'quotoDetails', title: '新增报价单' },
+        quoto: { comp: 'quotoDetails', title: '报价单' },
         sales: { comp: 'salesDetails', title: '新增报价单' },
       }
-      this.drawerData.visible = true;
-      this.drawerData.type = "";
+      // 如果是新增复制合并调用dialog弹出框
+      if (type == "add" && type == "copy" && type == "merge") {
+        this.dialogVisible = true;
+      } else {
+        // 否则调用抽屉弹出框
+        this.drawerVisible = true;
+      }
+      // 非新增才会有row数据
+      if (type != 'add') {
+        this.drawerData.data = row;
+      }
+
+      this.drawerData.type = type;
       this.drawerData.width = "820px";
-      this.drawerData.title = "报名记录";
-      this.drawerData.data = row;
-      this.drawerData.component = typeObj[type]
+      this.drawerData.title = typeObj[type].title
+
+      this.drawerData.component = typeObj[type].comp
+    },
+    // 多选
+    selectionChange(val) {
+      console.log(val);
+
     },
     // 重置
     reset() {
