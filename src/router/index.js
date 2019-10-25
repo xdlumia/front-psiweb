@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-24 19:51:42
+ * @LastEditTime: 2019-10-25 09:30:55
  * @Description: 路由文件
  */
 import Vue from 'vue'
@@ -18,7 +18,7 @@ import BuyingRequisition from '@/views/procurement/buyingRequisition'
 // 框架
 import Layout from '@/components/layout'
 
-// TODO 使用这种方式报错
+// TODO 使用这种方式报错 谁懂看一下?
 // const college = () => import('@/views/contents/college') // 店长服务
 
 import common from '@/views/businessSetting/common'

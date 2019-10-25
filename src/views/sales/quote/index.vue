@@ -2,19 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 09:02:01
+ * @LastEditTime: 2019-10-25 10:25:21
  * @Description: 店长学院
  */
 <template>
   <div class="main-content" v-loading="loading" element-loading-text="正在初始化">
-    <div class="pl15 pr15 d-flex-lr" style="height:45px; border:1px solid #efefef; border-bottom:none; border-radius:5px 5px 0 0;">
-      <div class="b f16" style="margin-right:40px;">报价单</div>
-      <div class="f14 d-text-gray">
-          <span class="mr30">报价单</span>
-          <span class="mr30">报价单</span>
-          <span class="mr30">报价单</span>
-      </div>
-    </div>
+    <table-top></table-top>
     <!-- 表格数据 -->
     <d-table
       api="seePumaidongService.collegeManagerList"
