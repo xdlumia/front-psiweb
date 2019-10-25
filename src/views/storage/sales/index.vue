@@ -123,9 +123,8 @@
     </d-table>
     <!-- 右侧滑出 -->
     <el-drawer
-      :title="drawer.title"
+      :title="drawerData.title"
       :visible.sync="tableVisible"
-      direction="rtl"
       size="50%"
     >
       <div class='p10'>
@@ -142,8 +141,8 @@
           <el-tab-pane label="应收账单"></el-tab-pane>
         </el-tabs>
         <components
-          :is='drawer.component'
-          :drawer="drawer"
+          :is='drawerData.component'
+          :drawerData="drawerData"
         >
         </components>
       </div>
@@ -173,7 +172,7 @@ export default {
       },
       componentActive: '',//当前的组件
       tableVisible: false,//销售单右侧抽屉
-      drawer: {//弹框的相关数据
+      drawerData: {//弹框的相关数据
         title: '',
         component: 'Details'
       },
@@ -184,7 +183,7 @@ export default {
     //点击打开右侧边栏
     getTableVisible(data) {
       this.tableVisible = true
-      this.drawer.title = '销售单' + data.id
+      this.drawerData.title = '销售单' + data.id
     },
     //tab换组件
     handleClick() {
