@@ -150,7 +150,7 @@ export default {
   },
   computed: {
     syscode() {
-      return 'pmdwebset'
+      return 'psi'
     }
   },
   created() {

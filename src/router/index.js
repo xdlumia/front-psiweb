@@ -25,6 +25,10 @@ import common from '@/views/businessSetting/common'
 import recharge from '@/views/businessSetting/recharge'
 import Quote from '@/views/sales/quote'
 
+//库房
+//销售 销售单
+import sales from '@/views/storage/sales'
+
 const routers = [{ component: common, componentName: 'common', label: '公共' }]
 systemRouteConfig(systemRoute.BusinessSetting, routers)
 
@@ -70,6 +74,15 @@ export default new Router({
         meta: {
           parent: '采购',
           title: '采购请购单'
+        }
+      },
+      {
+        path: '/storage/sales',
+        name: '/storage/sales',
+        component: sales,
+        meta: {
+          parent: '库房',
+          title: '库房销售单'
         }
       },
       ...Object.values(systemRoute) // 系统设置
