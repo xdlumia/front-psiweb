@@ -1,26 +1,41 @@
 /*
- * @Author: 赵伦 
- * @Date: 2019-10-25 18:31:35 
- * @Last Modified by: 赵伦
- * @Last Modified time: 2019-10-25 18:39:59
- */
+ * @Author: 赵伦
+ * @Date: 2019-10-26 10:12:11
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-10-26 13:20:23
+ * @Description: 采购单详情
+*/
 <template>
-  <side-popup :visible="true">
+  <side-popup :visible.sync="showPop">
     <SideStatusbar />
     <ApprovePanel />
     <CustomInfo />
+    <CompanyInfo />
+    <PayExpire />
+    <ExtrasInfo />
   </side-popup>
 </template>
 <script>
 import SideStatusbar from '@/views/common/side-statusbar';
 import ApprovePanel from '@/views/common/approve-panel';
-import CustomInfo from '@/views/common/custom-info';
+import CustomInfo from '@/views/common/custom-info'; 
+import CompanyInfo from '@/views/common/company-info'; 
+import PayExpire from '@/views/common/pay-expire'; 
+import ExtrasInfo from '@/views/common/extras-info'; 
 
 export default {
   components: {
     SideStatusbar,
     ApprovePanel,
-    CustomInfo
+    CustomInfo,
+    CompanyInfo,
+    PayExpire,
+    ExtrasInfo
+  },
+  data(){
+    return {
+      showPop: true,
+    }
   }
 };
 </script>

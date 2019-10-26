@@ -1,45 +1,27 @@
 /*
- * @Author: 赵伦 
- * @Date: 2019-10-25 18:36:46 
- * @Last Modified by: 赵伦
- * @Last Modified time: 2019-10-25 18:39:10
- */
+ * @Author: 赵伦
+ * @Date: 2019-10-26 10:12:11
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-10-26 13:17:05
+ * @Description: 自定义信息
+*/
 <template>
-  <form-card title="客户信息">
-    <el-row>
-      <el-col :span="8">
-        <div>客户名称</div>
-        <div>凡特仁科技</div>
-      </el-col>
-      <el-col :span="8">
-        <div>发票抬头</div>
-        <div>凡特仁科技</div>
-      </el-col>
-      <el-col :span="8">
-        <div>纳税人识别号</div>
-        <div>凡特仁科技</div>
-      </el-col>
-      <el-col :span="8">
-        <div>注册地址</div>
-        <div>凡特仁科技</div>
-      </el-col>
-      <el-col :span="8">
-        <div>注册电话</div>
-        <div>凡特仁科技</div>
-      </el-col>
-      <el-col :span="8">
-        <div>开户银行</div>
-        <div>凡特仁科技</div>
-      </el-col>
-      <el-col :span="8">
-        <div>开户银行账户</div>
-        <div>凡特仁科技</div>
-      </el-col>
-    </el-row>
-  </form-card>
+    <form-card title="自定义信息">
+        <el-table :data="tableData">
+            <el-table-column label="字段名称" min-width="80" prop="name" show-overflow-tooltip></el-table-column>
+            <el-table-column label="字段内容" min-width="200" prop="value" show-overflow-tooltip></el-table-column>
+        </el-table>
+    </form-card>
 </template>
 <script>
-export default {};
+export default {
+    props: {
+        tableData: {
+            type: Array,
+            default: () => [{ name: '安装系统', value: '邮箱' }]
+        }
+    }
+};
 </script>
 <style lang="scss" scoped>
 </style>

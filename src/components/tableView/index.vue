@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 19:44:41
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-10-26 10:55:54
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -122,12 +122,16 @@ export default {
     column: {
       type: Boolean,
       default: true
+    },
+    // 自定义头
+    headers: {
+      type: Array,
+      default: ()=>[]
     }
   },
   data() {
     return {
       loading: false,
-      headers: []
     };
   },
   created() {

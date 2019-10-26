@@ -1,42 +1,47 @@
 /*
- * @Author: 赵伦 
- * @Date: 2019-10-25 18:36:46 
- * @Last Modified by: 赵伦
- * @Last Modified time: 2019-10-25 18:44:43
- */
+ * @Author: 赵伦
+ * @Date: 2019-10-26 10:12:11
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-10-26 11:28:59
+ * @Description: 公司信息
+*/
 <template>
-  <form-card title="公司信息">
-    <el-row>
-      <el-col :span="8">
-        <div>客户名称</div>
-        <div>凡特仁科技</div>
-      </el-col>
-      <el-col :span="8">
-        <div>发票抬头</div>
-        <div>凡特仁科技</div>
-      </el-col>
-      <el-col :span="8">
-        <div>纳税人识别号</div>
-        <div>凡特仁科技</div>
-      </el-col>
-      <el-col :span="8">
-        <div>注册地址</div>
-        <div>凡特仁科技</div>
-      </el-col>
-      <el-col :span="8">
-        <div>注册电话</div>
-        <div>凡特仁科技</div>
-      </el-col>
-      <el-col :span="8">
-        <div>开户银行</div>
-        <div>凡特仁科技</div>
-      </el-col>
-      <el-col :span="8">
-        <div>开户银行账户</div>
-        <div>凡特仁科技</div>
-      </el-col>
-    </el-row>
-  </form-card>
+    <form-card title="公司信息">
+        <el-row>
+            <el-col :span="8">
+                <div class="mt5 d-required">公司发票账户</div>
+                <div class="d-text-gray mt10 mb10 d-elip">凡特仁北京银行</div>
+            </el-col>
+            <el-col :span="8">
+                <div class="mt5 d-required">公司结算账户</div>
+                <div class="d-text-gray mt10 mb10 d-elip">凡特仁北京银行</div>
+            </el-col>
+            <el-col :span="8">
+                <div class="mt5 d-required">发票抬头</div>
+                <div class="d-text-gray mt10 mb10 d-elip">凡特仁北京银行</div>
+            </el-col>
+            <el-col :span="8">
+                <div class="mt5 d-required">纳税人识别号</div>
+                <div class="d-text-gray mt10 mb10 d-elip">NSRSBH0001111</div>
+            </el-col>
+            <el-col :span="8">
+                <div class="mt5 d-required">注册地址</div>
+                <div class="d-text-gray mt10 mb10 d-elip">北京崇文门</div>
+            </el-col>
+            <el-col :span="8">
+                <div class="mt5 d-required">注册电话</div>
+                <div class="d-text-gray mt10 mb10 d-elip">10086</div>
+            </el-col>
+            <el-col :span="8">
+                <div class="mt5 d-required">开户银行</div>
+                <div class="d-text-gray mt10 mb10 d-elip">北京银行</div>
+            </el-col>
+            <el-col :span="8">
+                <div class="mt5 d-required">开户行账号</div>
+                <div class="d-text-gray mt10 mb10 d-elip">1000000</div>
+            </el-col>
+        </el-row>
+    </form-card>
 </template>
 <script>
 export default {};
