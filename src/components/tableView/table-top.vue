@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-26 13:20:40
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-10-26 16:33:44
  * @Description: 表格头部 
  */
 <template>
@@ -223,9 +223,9 @@ export default {
   },
   created() {
     // 获取统计数据
-    this.collegeManagerList();
-    // 获取列数据
-    this.getTableCol();
+    // this.collegeManagerList();
+    // // 获取列数据
+    // this.getTableCol();
   },
   methods: {
     // 获取统计数据
