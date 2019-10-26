@@ -26,80 +26,6 @@
                 <!-- <p> 帮助房地产中介提升企业产能 </p> -->
               </div>
             </el-menu-item>
-            <!--城市切换模块-->
-            <div class="fl hfull mt10 mr20">
-              <el-popover placement="bottom" width="500" trigger="click">
-                <div class="cityChangeDrop d-bg-white mt0">
-                  <div class="p10 wfull hfull mt0" style="box-sizing: border-box;">
-                    <div class="cityChangeTop wfull mt0 ac">
-                      <span class="f14 d-text-gray b">城市切换</span>
-                    </div>
-
-                    <div class="cityChangeInput wfull mt0">
-                      <el-form>
-                        <el-input
-                          style="width: 60%;"
-                          class="mt5"
-                          size="small"
-                          name
-                          @keyup.native="fsearchCityName"
-                          v-model="searchCityName"
-                          placeholder="请输入内容"
-                        ></el-input>
-                        <el-button
-                          @click="fsearchCityName"
-                          class="ml5"
-                          style="margin-top: 8px;"
-                          size="small"
-                        >确定</el-button>
-                      </el-form>
-                    </div>
-                    <div class="cityChangeTab">
-                      <el-tabs class="wfull" v-model="activeName">
-                        <el-tab-pane
-                          v-for="(item,index) of cityClass"
-                          :label="item"
-                          :name="item"
-                          :key="index"
-                        ></el-tab-pane>
-                      </el-tabs>
-                      <div class="ac d-text-gray" v-if="!Object.keys(cityList).length>0">无此城市</div>
-                      <div class="d-auto-y wfull mt0" style="max-height: 240px;">
-                        <div
-                          v-for="(val, key, index) of cityList"
-                          class="mt0 wfull mb10"
-                          :key="index"
-                        >
-                          <div v-if="activeName.indexOf(key) > -1">
-                            <div class="d-hidden">
-                              <div class="fl mt5 ac" style="width: 10%;">
-                                <span class="f14 d-text-black">{{key}}</span>
-                              </div>
-                              <div class="fr mt5" style="width: 90%;">
-                                <span
-                                  v-for="(item1,index1) of val"
-                                  :key="index1"
-                                  @click="getCityInfo(item1)"
-                                  class="f14 d-text-black mr20 fl mb10 d-pointer city-pointer"
-                                >{{item1.name}}</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  slot="reference"
-                  class="d-pointer mt5 d-text-black"
-                  style="background: #F2F2F2;padding:7px 17px;border-radius: 20px;"
-                >
-                  {{cityInfo.name}}
-                  <i class="el-icon-caret-bottom"></i>
-                </div>
-              </el-popover>
-            </div>
             <!-- 如果type类型是菜单就不会有二级目录(最多只有2级菜单)
                 1:目录
             2:菜单-->
@@ -112,15 +38,38 @@
             <!-- 二级菜单 -->
             <el-submenu v-else :index="index+''">
               <template slot="title">{{item.name}}</template>
-              <el-menu-item
-                v-for="(item1,index1) of item.children"
-                :key="index1"
-                :index="item1.url+''"
-              >{{item1.name}}</el-menu-item>
+              <div
+                :style="{display: item.children && item.children[0].children ? 'flex' : ''}"
+                class="pb10"
+              >
+                <div v-for="(item1,index1) of item.children" :key="index1">
+                  <!-- 二级菜单渲染 -->
+                  <el-menu-item v-if="item1.type===2" :index="item1.url+''">{{item1.name}}</el-menu-item>
+                  <!-- 三级菜单渲染 -->
+                  <div v-else class="hfull pb5" style="display:flex;flex-direction:column;">
+                    <h4 class="mt5 mb10 menu-title">{{item1.name}}</h4>
+                    <!-- 三级菜单按 5长度 分割 -->
+                    <div class="hfull" style="display:flex;">
+                      <div
+                        class="pr10 pl10"
+                        v-for="(chunkItem, key) in chunk(item1.children, 5)"
+                        :key="key"
+                        :style="{'border-right': index1 >= item.children.length - 1 ? 'none' : '1px dashed #ccc'}"
+                      >
+                        <el-menu-item
+                          v-for="(item2,index2) of chunkItem"
+                          :key="index2"
+                          :index="item2.url+''"
+                        >{{item2.name}}</el-menu-item>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </el-submenu>
 
             <!-- 更多应用 -->
-            <el-submenu v-if="sysList.length || moremenu.length" index=" ">
+            <!-- <el-submenu v-if="sysList.length || moremenu.length" index=" ">
               <template slot="title">更多应用</template>
               <el-menu-item v-for="(sys, index) in sysList" :key="index" index>
                 <a
@@ -137,7 +86,7 @@
                 :key="item.id"
                 :index="item.url+''"
               >{{item.name}}</el-menu-item>
-            </el-submenu>
+            </el-submenu>-->
 
             <!-- 用户详情 -->
             <el-submenu index="user" class="fr">
@@ -172,10 +121,12 @@
 </template>
 
 <script>
+import chunk from '@/utils/chunk'
+
 export default {
   name: 'App',
   components: {},
-  data() {
+  data () {
     return {
       isLockkScreen: false,
       loading: false,
@@ -192,20 +143,21 @@ export default {
       navData: [], // 所有权限码
       token: '',
       finger: '',
-      path: ''
+      path: '',
+      chunk
     };
   },
   computed: {
-    syscode() {
+    syscode () {
       return this.isRentSystem ? 'asystem' : 'asysbusiness';
     },
     // 去掉菜单里的更多应用
-    navMenu() {
+    navMenu () {
       const navData = this.$local.fetch('navData') || [];
       return navData.filter(item => item.code != 'moremenu');
     },
     // 获取更多应用菜单
-    moremenu() {
+    moremenu () {
       const navData = this.$local.fetch('navData') || [];
       let moreMenuList = [];
       navData.forEach(item => {
@@ -215,7 +167,7 @@ export default {
       });
       return moreMenuList;
     },
-    sysList() {
+    sysList () {
       return (
         !this.loading &&
         (this.$local.fetch('syslist') || []).filter(item => {
@@ -233,7 +185,7 @@ export default {
     }
   },
 
-  created() {
+  created () {
     // let companyInfo = this.$local.fetch('companyInfo')
     // this.$store.commit('companyInfo',companyInfo)
     // 判断当前是否从别的平台跳转到当前
@@ -282,15 +234,15 @@ export default {
       });
     }
   },
-  beforeMount() {},
+  beforeMount () { },
   watch: {
-    isLockkScreen(val) {
+    isLockkScreen (val) {
       if (!val) {
         this.token = localStorage.token;
       }
     },
     $route: {
-      handler(a) {
+      handler (a) {
         this.path =
           a.path.indexOf('/housecondition') !== -1 ? '/housecondition' : a.path;
       },
@@ -298,16 +250,16 @@ export default {
     }
   },
   methods: {
-    handleSelect() {},
+    handleSelect () { },
     // 退出登录
-    logout() {
+    logout () {
       localStorage.token = '';
       localStorage.timer = '';
       sessionStorage.setItem('loginRedirect', '');
       this.$router.push({ path: '/login' });
     },
 
-    getCityInfo(item) {
+    getCityInfo (item) {
       // 点击列表下的城市  updateCityInfo
       this.cityInfo = item;
       this.$local.save('cityInfo', this.cityInfo);
@@ -333,7 +285,7 @@ export default {
         });
     },
     // 获取菜单权限
-    getNavData() {
+    getNavData () {
       return Promise.all([
         this.$api.bizSystemService.getUserAuth(this.syscode).then(res => {
           if (res && res.code === 200) {
@@ -386,13 +338,13 @@ export default {
       ]);
     },
     // 获取当前用户可操作的系统/平台列表
-    getsyslist() {
+    getsyslist () {
       return this.$api.bizSystemService.getsyslist().then(res => {
         localStorage.setItem('syslist', JSON.stringify(res.data || [])); // 存储该用户拥有的平台权限
       });
     },
     // 递归处理权限数据
-    authorityHandle(authorityData) {
+    authorityHandle (authorityData) {
       authorityData.forEach(item => {
         if (item.code !== '') {
           this.authorityBtn[item.code] = item.buttonsCode;
@@ -403,7 +355,7 @@ export default {
         }
       });
     },
-    fsearchCityName() {
+    fsearchCityName () {
       const params = {
         cityName: this.searchCityName
       };
@@ -429,7 +381,7 @@ export default {
   }
 };
 </script>
-<style lang="scss" >
+<style lang="scss">
 .message-notice {
   display: inline-block;
   margin-right: 15px;
@@ -470,5 +422,14 @@ export default {
 .user-info {
   display: inline-block;
   line-height: 20px;
+}
+.menu-title {
+  color: #1790ff;
+  padding: 0 20px;
+  font-weight: bold;
+}
+.el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+.el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+  color: #1790ff;
 }
 </style>

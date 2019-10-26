@@ -1,3 +1,9 @@
+/*
+ * @Author: 赵伦 
+ * @Date: 2019-10-25 18:32:24 
+ * @Last Modified by:   赵伦 
+ * @Last Modified time: 2019-10-25 18:32:24 
+ */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="请购单">

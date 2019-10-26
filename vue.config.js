@@ -10,8 +10,8 @@ module.exports = {
   devServer: {
     proxy: {
       '/apis': {
-        // target: 'http://39.99.132.95:7011/',
-        target: 'http://39.105.103.188:7011/',
+        target: 'http://39.99.132.95:7011/',
+        // target: 'http://39.105.103.188:7011/',
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
         pathRewrite: {
           '^/apis': ''
