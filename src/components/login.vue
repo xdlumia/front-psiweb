@@ -11,46 +11,87 @@
     <div class="login-content">
       <div class="login-mian">
         <div class="login-header">
-          <img class="logo" :src="require('@/assets/img/logo.png')" alt="">
+          <img
+            class="logo"
+            :src="require('@/assets/img/logo.png')"
+            alt=""
+          >
           <h2>进销存战役</h2>
         </div>
-        <el-form :model="loginForm" ref="loginForm" class="login-info">
+        <el-form
+          :model="loginForm"
+          ref="loginForm"
+          class="login-info"
+        >
           <!-- 帐号 -->
           <el-form-item
-          prop="account"
-          :rules="[
+            prop="account"
+            :rules="[
             { required: true, message: '请输入用户名',},
             { min: 2, max: 15, message: '长度在 2 到 15 个字符',}
-            ]">
-            <el-input type="text" prefix-icon="iconfont icon-user" v-model="loginForm.account" placeholder="请输入用户名"></el-input>
+            ]"
+          >
+            <el-input
+              type="text"
+              prefix-icon="iconfont icon-user"
+              v-model="loginForm.account"
+              placeholder="请输入用户名"
+            ></el-input>
           </el-form-item>
           <!-- 密码 -->
           <el-form-item>
-            <el-input type="password" prefix-icon="iconfont icon-password" v-model="password" show-password placeholder="请输入密码" v-on:keyup.13.native="loginBtn"></el-input>
+            <el-input
+              type="password"
+              prefix-icon="iconfont icon-password"
+              v-model="password"
+              show-password
+              placeholder="请输入密码"
+              v-on:keyup.13.native="loginBtn"
+            ></el-input>
           </el-form-item>
           <div style="margin-bottom:10px; height:25px;">
             <el-checkbox-group v-model="remember">
-              <el-checkbox label="记住密码" name="type"></el-checkbox>
+              <el-checkbox
+                label="记住密码"
+                name="type"
+              ></el-checkbox>
             </el-checkbox-group>
           </div>
           <el-form-item>
-            <el-button style="width: 100%" type="primary" :loading="loading" @click="loginBtn">{{loadingText}}</el-button>
+            <el-button
+              style="width: 100%"
+              type="primary"
+              :loading="loading"
+              @click="loginBtn"
+            >{{loadingText}}</el-button>
           </el-form-item>
         </el-form>
       </div>
       <div class="login-footer ">
         <p>copyright © 2018
-          <a href="/" target="_blank">fanteren</a>
+          <a
+            href="/"
+            target="_blank"
+          >fanteren</a>
         </p>
         <p>
           <span>
-            <a href="/" target="_blank">帮助</a>
+            <a
+              href="/"
+              target="_blank"
+            >帮助</a>
           </span>
           <span>
-            <a href="/" target="_blank">隐私</a>
+            <a
+              href="/"
+              target="_blank"
+            >隐私</a>
           </span>
           <span>
-            <a href="/" target="_blank">条款</a>
+            <a
+              href="/"
+              target="_blank"
+            >条款</a>
           </span>
         </p>
       </div>
@@ -61,8 +102,14 @@
       append-to-body
       :close-on-click-modal="false"
       :before-close="closeUpdatepwd"
-      width="420px">
-      <el-form ref="updateForm" :model="updateForm" label-width="80px" size="medium">
+      width="420px"
+    >
+      <el-form
+        ref="updateForm"
+        :model="updateForm"
+        label-width="80px"
+        size="medium"
+      >
         <p class="mb10 d-flex-lr">
           <i class="el-icon-warning d-text-orange f18 mr10"></i>
           <span>系统检测到您使用的是初始密码或密码安全级别不够，为确保您的数据安全，请更改您的密码！</span>
@@ -82,18 +129,50 @@
           <el-input slot="reference" v-model="updateForm.pwd" @input="verifyPassword" type="password" prefix-icon="iconfont icon-password" placeholder="请输8-20位包含大小写字母数字的密码" v-on:keyup.13.native="loginBtn"></el-input>
           </el-popover>
         </el-form-item> -->
-        <el-form-item class="w320" prop="pwd" label="新密码" :rules="[{required:true,message:'请输入密码',},{min:8,max:20,message:'密码长度为8-20位', trigger: 'blur'}]">
-          <el-input v-model="updateForm.pwd" type="password" prefix-icon="iconfont icon-password" placeholder="请输8-20位字符串" v-on:keyup.13.native="loginBtn"></el-input>
+        <el-form-item
+          class="w320"
+          prop="pwd"
+          label="新密码"
+          :rules="[{required:true,message:'请输入密码',},{min:8,max:20,message:'密码长度为8-20位', trigger: 'blur'}]"
+        >
+          <el-input
+            v-model="updateForm.pwd"
+            type="password"
+            prefix-icon="iconfont icon-password"
+            placeholder="请输8-20位字符串"
+            v-on:keyup.13.native="loginBtn"
+          ></el-input>
         </el-form-item>
 
-        <el-form-item class="w320" prop="verifyPwd" label="确认密码"  :rules="{ validator: vePassword,trigger: 'blur'}">
-          <el-input type="password" prefix-icon="iconfont icon-password" v-model="updateForm.verifyPwd" placeholder="请确认密码" v-on:keyup.13.native="savePassword"></el-input>
+        <el-form-item
+          class="w320"
+          prop="verifyPwd"
+          label="确认密码"
+          :rules="{ validator: vePassword,trigger: 'blur'}"
+        >
+          <el-input
+            type="password"
+            prefix-icon="iconfont icon-password"
+            v-model="updateForm.verifyPwd"
+            placeholder="请确认密码"
+            v-on:keyup.13.native="savePassword"
+          ></el-input>
         </el-form-item>
 
       </el-form>
-      <div slot="footer" class="ac">
-        <el-button  size="medium" @click="closeUpdatepwd">取 消</el-button>
-        <el-button  size="medium" type="primary" @click="savePassword">确 定</el-button>
+      <div
+        slot="footer"
+        class="ac"
+      >
+        <el-button
+          size="medium"
+          @click="closeUpdatepwd"
+        >取 消</el-button>
+        <el-button
+          size="medium"
+          type="primary"
+          @click="savePassword"
+        >确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -151,6 +230,7 @@ export default {
   computed: {
     syscode() {
       return 'psi'
+      // return 'pmdwebset'
     }
   },
   created() {
@@ -170,7 +250,7 @@ export default {
     // 载入页面获取当前页面名称
     document.title = this.$route.meta.title
   },
-  mounted() {},
+  mounted() { },
   methods: {
     // 登录
     loginBtn() {
@@ -381,10 +461,10 @@ export default {
   text-align: center;
   margin-bottom: 40px;
 }
-.login-header .logo{
+.login-header .logo {
   display: block;
   height: 100px;
-  margin:0 auto
+  margin: 0 auto;
 }
 
 .login-header p {
@@ -400,6 +480,11 @@ export default {
 }
 </style>
 <style>
-.pw-verify i{ color:#e6e6e6; margin-right:5px;}
-.pw-verify i.active{ color:#67C23A;}
+.pw-verify i {
+  color: #e6e6e6;
+  margin-right: 5px;
+}
+.pw-verify i.active {
+  color: #67c23a;
+}
 </style>
