@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 18:29:34
+ * @LastEditTime: 2019-10-26 13:20:40
  * @Description: 表格头部 
  */
 <template>
@@ -15,7 +15,7 @@
         >{{title}}</div>
         <div class="f12 d-text-qgray">
           <span
-            class="mr30 sta-item"
+            class="mr20 sta-item"
             :class="{active:index == staActive}"
             @click="staHandle(item,index)"
             v-for="(item,index) of staList"
@@ -120,7 +120,10 @@
       :visible.sync="showCustomColumn"
       title="自定义列"
     >
-      <div class="custom-column-view">
+      <div
+        class="custom-column-view"
+        v-loading="loading"
+      >
         <div class="mb10">选择显示列（拖拽可调整排序）</div>
         <el-checkbox-group
           class="table-col-group"
@@ -136,18 +139,19 @@
             >{{item.title || '无title'}}</el-checkbox-button>
           </draggable>
         </el-checkbox-group>
+        <div class="ac">
+          <el-button
+            @click="showCustomColumn = false"
+            size="small"
+          >取 消</el-button>
+          <el-button
+            @click="colConfirm"
+            size="small"
+            type="primary"
+          >确 定</el-button>
+        </div>
       </div>
-      <div class="ac">
-        <el-button
-          @click="showCustomColumn = false"
-          size="small"
-        >取 消</el-button>
-        <el-button
-          @click="colConfirm"
-          size="small"
-          type="primary"
-        >确 定</el-button>
-      </div>
+
     </el-dialog>
   </div>
 </template>
@@ -183,6 +187,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       // 统计数据
       staList: [],
       //当前下标
@@ -248,6 +253,7 @@ export default {
     },
     // 自定义列提交
     colConfirm() {
+
       if (!this.checkTableCol.length) {
         this.$message({
           type: "error",
@@ -256,6 +262,7 @@ export default {
         });
         return;
       }
+      this.loading = true
       this.$api.seePumaidongService
         .collegeManagerList(this.checkTableCol)
         .then(res => {
@@ -263,7 +270,10 @@ export default {
           this.$emit("column", this.tableHeader);
           // 保存成功
           this.showCustomColumn = false;
-        });
+        })
+        .finally(err => {
+          this.loading = false
+        })
     }
   },
   watch: {}
