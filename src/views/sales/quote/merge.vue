@@ -1,9 +1,10 @@
-<!--
- /**
-  * @desc 加盟项目-新增编辑
-  * @author web-徐非凡
-  * @date 2019年05月27日
--->
+/*
+ * @Author: web.王晓冬
+ * @Date: 2019-10-25 19:16:04
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-25 19:16:05
+ * @Description: file content
+*/
 <template>
   <el-form
     label-width="160px"
@@ -13,7 +14,10 @@
     size="small"
     label-position="top"
   >
-    <div style="height:calc(100vh - 150px)" class="d-auto-y pr20 d-relative">
+    <div
+      style="height:calc(100vh - 150px)"
+      class="d-auto-y pr20 d-relative"
+    >
       <!-- 新增 / 编辑 -->
       <form-card title="主要信息">
         <el-row :gutter="20">
@@ -35,7 +39,11 @@
           </el-col>
           <el-col :span="6">
             <div class="grid-content bg-purple">
-              <el-form-item label="城市" prop="cityId" :rules="[{required: true, message: '请选择城市'}]">
+              <el-form-item
+                label="城市"
+                prop="cityId"
+                :rules="[{required: true, message: '请选择城市'}]"
+              >
                 <el-select
                   filterable
                   v-model="addForm.cityId"
@@ -57,22 +65,36 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <div :class='["grid-content bg-purple",{"h180":addForm.mainPic}]'>
-              <el-form-item label="主图" prop="mainPic" :rules="[{required: true, message: '请上传主图'}]">
+              <el-form-item
+                label="主图"
+                prop="mainPic"
+                :rules="[{required: true, message: '请上传主图'}]"
+              >
                 <upload-file
                   :limit="obj"
                   v-model="addForm.mainPic"
                   listType="picture"
                   v-show="!addForm.mainPic"
                 >
-                  <el-button size="small" icon="el-icon-upload2">上传图片</el-button>
+                  <el-button
+                    size="small"
+                    icon="el-icon-upload2"
+                  >上传图片</el-button>
                 </upload-file>
                 <div
                   class="invitation-picUrl"
                   style="width:220px; height: 124px;"
                   v-show="addForm.mainPic"
                 >
-                  <i class="el-icon-delete delete" @click="addForm.mainPic = ''"></i>
-                  <el-image class="wfull hfull" fit="cover" :src="addForm.mainPic"></el-image>
+                  <i
+                    class="el-icon-delete delete"
+                    @click="addForm.mainPic = ''"
+                  ></i>
+                  <el-image
+                    class="wfull hfull"
+                    fit="cover"
+                    :src="addForm.mainPic"
+                  ></el-image>
                 </div>
               </el-form-item>
             </div>
@@ -80,12 +102,24 @@
         </el-row>
       </form-card>
       <form-card title="内容描述">
-        <quillEditor ref="myTextEditor" :value="addForm.content" @input="QuillEditor" class="pb20"></quillEditor>
+        <quillEditor
+          ref="myTextEditor"
+          :value="addForm.content"
+          @input="QuillEditor"
+          class="pb20"
+        ></quillEditor>
       </form-card>
     </div>
     <div class="ac pt20">
-      <el-button type="primary" @click="saveHandle('addForm')" size="small">保 存</el-button>
-      <el-button @click="dialogMeta.visible = false" size="small">取 消</el-button>
+      <el-button
+        type="primary"
+        @click="saveHandle('addForm')"
+        size="small"
+      >保 存</el-button>
+      <el-button
+        @click="dialogMeta.visible = false"
+        size="small"
+      >取 消</el-button>
     </div>
   </el-form>
 </template>

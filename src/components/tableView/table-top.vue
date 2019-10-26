@@ -2,14 +2,17 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 17:53:40
+ * @LastEditTime: 2019-10-25 18:29:34
  * @Description: 表格头部 
  */
 <template>
   <div>
     <div class="pl15 pr15 d-flex-lr table-header-box">
       <section class="d-flex-lr">
-        <div class="b f16" style="margin-right:40px; color:#333;">{{title}}</div>
+        <div
+          class="b f16"
+          style="margin-right:40px; color:#333;"
+        >{{title}}</div>
         <div class="f12 d-text-qgray">
           <span
             class="mr30 sta-item"
@@ -25,8 +28,16 @@
           <el-button size="mini">slot=button</el-button>
         </slot>
         <!-- 更多功能 -->
-        <el-dropdown trigger="click" v-if="moreButton">
-          <el-button size="mini" class="tool-item ml15" icon="el-icon-more" title="更多"></el-button>
+        <el-dropdown
+          trigger="click"
+          v-if="moreButton"
+        >
+          <el-button
+            size="mini"
+            class="tool-item ml15"
+            icon="el-icon-more"
+            title="更多"
+          ></el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
               <span @click="$emit('moreHandle', 'export')">导出</span>
@@ -46,32 +57,41 @@
           width="250"
         >
           <div class="table-filter-box">
-            <el-container>
-              <el-header style="height:30px;">
-                <span>筛选</span>
-                <el-link
-                  :underline="false"
-                  @click="filterPopover = false"
-                  class="el-icon-close close"
-                  title="关闭"
-                ></el-link>
-              </el-header>
-              <el-main style="max-height:500px;">
-                <slot name="filter">
-                  自定义筛选 使用示例:
-                  <br />&lt;template v-slot:filter> content&lt;/template>
-                </slot>
-              </el-main>
-              <div class="pl10 pr10" style="height:30px; line-height:30px;">
-                <el-link
-                  size="mini"
-                  :underline="false"
-                  class="el-icon-circle-plus-outline"
-                  type="primary"
-                >添加筛选</el-link>
-                <el-link size="mini" :underline="false" class="fr" type="primary">清空筛选</el-link>
-              </div>
-            </el-container>
+            <div
+              class="bb mb10"
+              style="height:25px;"
+            >
+              <span
+                class="b"
+                style="margin-left:112px"
+              >筛选</span>
+              <el-link
+                :underline="false"
+                @click="filterPopover = false"
+                class="el-icon-close close fr"
+                title="关闭"
+              ></el-link>
+            </div>
+            <div style="max-height:500px;">
+              <slot name="filter">
+                自定义筛选 使用示例:
+                <br />&lt;template v-slot:filter> content&lt;/template>
+              </slot>
+            </div>
+            <div style="height:30px; line-height:30px;">
+              <el-link
+                size="mini"
+                :underline="false"
+                class="el-icon-circle-plus-outline"
+                type="primary"
+              >添加筛选</el-link>
+              <el-link
+                size="mini"
+                :underline="false"
+                class="fr"
+                type="primary"
+              >清空筛选</el-link>
+            </div>
           </div>
           <el-button
             size="mini"
@@ -102,7 +122,11 @@
     >
       <div class="custom-column-view">
         <div class="mb10">选择显示列（拖拽可调整排序）</div>
-        <el-checkbox-group class="table-col-group" v-model="checkTableCol" size="mini">
+        <el-checkbox-group
+          class="table-col-group"
+          v-model="checkTableCol"
+          size="mini"
+        >
           <draggable v-model="tableColList">
             <el-checkbox-button
               class="mb5 mr5"
@@ -114,8 +138,15 @@
         </el-checkbox-group>
       </div>
       <div class="ac">
-        <el-button @click="showCustomColumn = false" size="small">取 消</el-button>
-        <el-button @click="colConfirm" size="small" type="primary">确 定</el-button>
+        <el-button
+          @click="showCustomColumn = false"
+          size="small"
+        >取 消</el-button>
+        <el-button
+          @click="colConfirm"
+          size="small"
+          type="primary"
+        >确 定</el-button>
       </div>
     </el-dialog>
   </div>
