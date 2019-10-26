@@ -1,20 +1,38 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-26 11:19:17
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-24 09:15:30
- * @Description: file content
+ * @LastEditors: web.高大鹏
+ * @LastEditTime: 2019-10-26 11:39:38
+ * @Description: layout 页面架构
  */
 <template>
   <d-layout v-model="isLockkScreen">
-    <img slot="logo" src="@/assets/img/logo.png" alt />
-    <div style="height: 100vh" v-loading="loading">
+    <img
+      slot="logo"
+      src="@/assets/img/logo.png"
+      alt
+    />
+    <div
+      style="height: 100vh"
+      v-loading="loading"
+    >
       <el-container class="d-container">
         <!-- 头部区域 -->
-        <el-header height="60px" class="header-top d-hidden">
+        <el-header
+          height="60px"
+          class="header-top d-hidden"
+        >
           <!-- 菜单 -->
-          <el-menu :default-active="path" mode="horizontal" :router="true" :unique-opened="true">
-            <el-menu-item class="header-logo pl0" index="/">
+          <el-menu
+            :default-active="path"
+            mode="horizontal"
+            :router="true"
+            :unique-opened="true"
+          >
+            <el-menu-item
+              class="header-logo pl0"
+              index="/"
+            >
               <img
                 class="header-img"
                 :src="this.$store.state.company.companyInfo.picUrl?this.$store.state.company.companyInfo.picUrl:require('@/assets/img/logo.png')"
@@ -30,37 +48,58 @@
                 1:目录
             2:菜单-->
             <el-menu-item
-              v-for="(item,index) of navMenu"
+              v-for="(menu,index) of navMenu"
               :key="index"
-              :index="item.url"
-              v-if="item.type == 2"
-            >{{item.name}}</el-menu-item>
+              :index="menu.url"
+              v-if="menu.type == 2"
+            >{{menu.name}}</el-menu-item>
             <!-- 二级菜单 -->
-            <el-submenu v-else :index="index+''">
-              <template slot="title">{{item.name}}</template>
-              <div
-                :style="{display: item.children && item.children[0].children ? 'flex' : ''}"
-                class="pb10"
-              >
-                <div v-for="(item1,index1) of item.children" :key="index1">
-                  <!-- 二级菜单渲染 -->
-                  <el-menu-item v-if="item1.type===2" :index="item1.url+''">{{item1.name}}</el-menu-item>
-                  <!-- 三级菜单渲染 -->
-                  <div v-else class="hfull pb5" style="display:flex;flex-direction:column;">
-                    <h4 class="mt5 mb10 menu-title">{{item1.name}}</h4>
-                    <!-- 三级菜单按 5长度 分割 -->
-                    <div class="hfull" style="display:flex;">
+            <el-submenu
+              v-else
+              :index="index+''"
+            >
+              <template slot="title">{{menu.name}}</template>
+              <div style="display:flex;">
+                <!-- 二级菜单按 5长度 折行 -->
+                <div
+                  v-for="(chunkMenu, chunkMenuKey) in chunk(menu.children, WRAP_LENGTH)"
+                  :key="chunkMenuKey"
+                  :style="{display: menu.children && menu.children[0].children ? 'flex' : ''}"
+                  :class="[!(menu.children && menu.children[0].children) ? 'pr10 pl10' : '']"
+                >
+                  <div
+                    v-for="(submenu,submenuKey) in chunkMenu"
+                    :key="submenuKey"
+                  >
+                    <!-- 二级菜单渲染 -->
+                    <el-menu-item
+                      v-if="submenu.type===2"
+                      :index="submenu.url+''"
+                    >{{submenu.name}}</el-menu-item>
+                    <!-- 三级菜单渲染 -->
+                    <div
+                      v-else
+                      class="hfull pb5"
+                      style="display:flex;flex-direction:column;"
+                    >
+                      <h4 class="mt5 mb10 menu-title">{{submenu.name}}</h4>
+                      <!-- 三级菜单按 5长度 分割 -->
                       <div
-                        class="pr10 pl10"
-                        v-for="(chunkItem, key) in chunk(item1.children, 5)"
-                        :key="key"
-                        :style="{'border-right': index1 >= item.children.length - 1 ? 'none' : '1px dashed #ccc'}"
+                        class="hfull mb10"
+                        style="display:flex;"
                       >
-                        <el-menu-item
-                          v-for="(item2,index2) of chunkItem"
-                          :key="index2"
-                          :index="item2.url+''"
-                        >{{item2.name}}</el-menu-item>
+                        <div
+                          class="pr10 pl10"
+                          v-for="(chunkSubmenu, key) in chunk(submenu.children, WRAP_LENGTH)"
+                          :key="key"
+                          :style="{'border-right': submenuKey >= menu.children.length - 1 ? 'none' : '1px dashed #ccc'}"
+                        >
+                          <el-menu-item
+                            v-for="(childMenu,childMenuKey) of chunkSubmenu"
+                            :key="childMenuKey"
+                            :index="childMenu.url+''"
+                          >{{childMenu.name}}</el-menu-item>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -89,22 +128,39 @@
             </el-submenu>-->
 
             <!-- 用户详情 -->
-            <el-submenu index="user" class="fr">
+            <el-submenu
+              index="user"
+              class="fr"
+            >
               <template slot="title">
-                <img class="user-head" src="@/assets/img/adminimg.png" />
+                <img
+                  class="user-head"
+                  style="object-fit: cover;"
+                  :src="userInfo.avatarUrl || avatarUrl"
+                />
                 <div class="user-info">
                   <p>{{userInfo.roleName}}</p>
                   <p class="f12">{{userInfo.userName}}</p>
                 </div>
               </template>
-              <el-menu-item @click="logout" index="/login" class="f12">退出</el-menu-item>
+              <el-menu-item
+                @click="logout"
+                index="/login"
+                class="f12"
+              >退出</el-menu-item>
             </el-submenu>
             <!-- 版本更新 -->
-            <el-submenu index="/version" class="fr head-version">
+            <el-submenu
+              index="/version"
+              class="fr head-version"
+            >
               <template slot="title">
                 <i class="el-icon-info"></i>
               </template>
-              <el-menu-item index="/version" class="f12">版本更新</el-menu-item>
+              <el-menu-item
+                index="/version"
+                class="f12"
+              >版本更新</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-header>
@@ -121,13 +177,15 @@
 </template>
 
 <script>
+const WRAP_LENGTH = 5
 import chunk from '@/utils/chunk'
 
 export default {
   name: 'App',
   components: {},
-  data () {
+  data() {
     return {
+      avatarUrl: require('@/assets/img/adminimg.png'),
       isLockkScreen: false,
       loading: false,
       authorityBtn: {},
@@ -144,20 +202,21 @@ export default {
       token: '',
       finger: '',
       path: '',
-      chunk
+      chunk,
+      WRAP_LENGTH
     };
   },
   computed: {
-    syscode () {
+    syscode() {
       return this.isRentSystem ? 'asystem' : 'asysbusiness';
     },
     // 去掉菜单里的更多应用
-    navMenu () {
+    navMenu() {
       const navData = this.$local.fetch('navData') || [];
       return navData.filter(item => item.code != 'moremenu');
     },
     // 获取更多应用菜单
-    moremenu () {
+    moremenu() {
       const navData = this.$local.fetch('navData') || [];
       let moreMenuList = [];
       navData.forEach(item => {
@@ -167,7 +226,7 @@ export default {
       });
       return moreMenuList;
     },
-    sysList () {
+    sysList() {
       return (
         !this.loading &&
         (this.$local.fetch('syslist') || []).filter(item => {
@@ -185,7 +244,7 @@ export default {
     }
   },
 
-  created () {
+  created() {
     // let companyInfo = this.$local.fetch('companyInfo')
     // this.$store.commit('companyInfo',companyInfo)
     // 判断当前是否从别的平台跳转到当前
@@ -234,15 +293,15 @@ export default {
       });
     }
   },
-  beforeMount () { },
+  beforeMount() { },
   watch: {
-    isLockkScreen (val) {
+    isLockkScreen(val) {
       if (!val) {
         this.token = localStorage.token;
       }
     },
     $route: {
-      handler (a) {
+      handler(a) {
         this.path =
           a.path.indexOf('/housecondition') !== -1 ? '/housecondition' : a.path;
       },
@@ -250,16 +309,16 @@ export default {
     }
   },
   methods: {
-    handleSelect () { },
+    handleSelect() { },
     // 退出登录
-    logout () {
+    logout() {
       localStorage.token = '';
       localStorage.timer = '';
       sessionStorage.setItem('loginRedirect', '');
       this.$router.push({ path: '/login' });
     },
 
-    getCityInfo (item) {
+    getCityInfo(item) {
       // 点击列表下的城市  updateCityInfo
       this.cityInfo = item;
       this.$local.save('cityInfo', this.cityInfo);
@@ -285,7 +344,7 @@ export default {
         });
     },
     // 获取菜单权限
-    getNavData () {
+    getNavData() {
       return Promise.all([
         this.$api.bizSystemService.getUserAuth(this.syscode).then(res => {
           if (res && res.code === 200) {
@@ -312,6 +371,7 @@ export default {
             const rmRoleEntities = data.rmRoleEntities || []; // 人员
 
             this.userInfo = {
+              avatarUrl: data.avatarUrl,
               userName: data.name,
               userId: data.id,
               deptId: data.deptId, // 部门id
@@ -338,13 +398,13 @@ export default {
       ]);
     },
     // 获取当前用户可操作的系统/平台列表
-    getsyslist () {
+    getsyslist() {
       return this.$api.bizSystemService.getsyslist().then(res => {
         localStorage.setItem('syslist', JSON.stringify(res.data || [])); // 存储该用户拥有的平台权限
       });
     },
     // 递归处理权限数据
-    authorityHandle (authorityData) {
+    authorityHandle(authorityData) {
       authorityData.forEach(item => {
         if (item.code !== '') {
           this.authorityBtn[item.code] = item.buttonsCode;
@@ -355,7 +415,7 @@ export default {
         }
       });
     },
-    fsearchCityName () {
+    fsearchCityName() {
       const params = {
         cityName: this.searchCityName
       };
@@ -416,6 +476,7 @@ export default {
   display: inline-block;
   margin-right: 5px;
   height: 40px;
+  width: 40px;
   border-radius: 50%;
   object-fit: cover;
 }

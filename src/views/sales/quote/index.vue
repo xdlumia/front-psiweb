@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 19:56:19
+ * @LastEditTime: 2019-10-26 13:14:01
  * @Description: 销售-请购单
  */
 <template>
@@ -66,6 +66,7 @@
       :size="drawerData.width"
     >
       <components
+        :visible.sync="drawerVisible"
         :is="drawerData.component"
         :drawerData="drawerData"
         v-if="drawerVisible"
