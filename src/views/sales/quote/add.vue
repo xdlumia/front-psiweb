@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 19:55:22
+ * @LastEditTime: 2019-10-26 15:45:24
  * @Description: file content
 */
 <template>
@@ -16,20 +16,41 @@
       label-position="top"
     >
       <div
-        style="height:calc(100vh - 150px)"
+        style="height:calc(100vh - 160px)"
         class="d-auto-y pr20 d-relative"
       >
+        <form-card title='收款滞纳金'>
+          <el-row>
+            <el-col :span="8">
+              <div class="d-text-black">滞纳金方案</div>
+              <div class="d-text-qgray mt5 mb20">2019-9-21</div>
+            </el-col>
+            <el-col :span="8">
+              <div class="d-text-black">滞纳金比例</div>
+              <div class="d-text-qgray mt5 mb20">陆运</div>
+            </el-col>
+            <el-col :span="8">
+              <div class="d-text-black">滞纳金间隔</div>
+              <div class="d-text-qgray mt5 mb20">自提</div>
+            </el-col>
+            <el-col :span="8">
+              <div class="d-text-blank">滞纳金上限</div>
+              <div class="d-text-qgray mt5 mb20">不控</div>
+            </el-col>
+          </el-row>
+        </form-card>
       </div>
+
       <div class="ac pt20">
         <el-button
           type="primary"
           @click="saveHandle('addForm')"
           size="small"
-        >保 存</el-button>
+        >保存</el-button>
         <el-button
           @click="$emit('update:visible', false)"
           size="small"
-        >取 消</el-button>
+        >取消</el-button>
       </div>
     </el-form>
   </div>
