@@ -1,9 +1,10 @@
 /*
- * @Author: 赵伦 
- * @Date: 2019-10-25 18:32:24 
- * @Last Modified by:   赵伦 
- * @Last Modified time: 2019-10-25 18:32:24 
- */
+ * @Author: 赵伦
+ * @Date: 2019-10-25 13:37:41
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-10-28 10:11:30
+ * @Description: 采购-请购单
+*/
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="请购单">
