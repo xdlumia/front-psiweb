@@ -12,15 +12,19 @@
   >
     <goodsExported />
     <shipInfo />
+    <generateDeliver />
   </div>
 </template>
 <script>
 import goodsExported from '@/components/formComponents/goods-exported'
 import shipInfo from '@/components/formComponents/ship-info';
+
+import generateDeliver from './generate-deliver';
 export default {
   components: {
     goodsExported,
-    shipInfo
+    shipInfo,
+    generateDeliver
   },
 }
 </script>
