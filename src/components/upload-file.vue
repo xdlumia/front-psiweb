@@ -19,19 +19,25 @@
 
 
 <template>
-  <div v-loading.fullscreen.lock="fullscreenLoading" element-loading-text="正在上传中">
-     <el-upload
-        :drag="drag"
-        :multiple="multiple"
-        :list-type="listType"
-        action=""
-        :before-upload="doUpload"
-        :accept="imgAccept(limit.type)"
-         >
-        <slot>
-          <el-button size="small" type="primary">点击上传</el-button>
-        </slot>
-      </el-upload>
+  <div
+    v-loading.fullscreen.lock="fullscreenLoading"
+    element-loading-text="正在上传中"
+  >
+    <el-upload
+      :drag="drag"
+      :multiple="multiple"
+      :list-type="listType"
+      action=""
+      :before-upload="doUpload"
+      :accept="imgAccept(limit.type)"
+    >
+      <slot>
+        <el-button
+          size="small"
+          type="primary"
+        >点击上传</el-button>
+      </slot>
+    </el-upload>
   </div>
 </template>
 <script>
@@ -67,7 +73,7 @@ export default {
     }
 
   },
-  data () {
+  data() {
     return {
       fullscreenLoading: false,
       OSS: {},
@@ -76,7 +82,7 @@ export default {
       percentage: 0
     }
   },
-  created () {
+  created() {
     this.imglist = this.fileList
     let timeStamp = new Date().getTime()
     this.OSS = this.$local.fetch('OSS')
@@ -117,7 +123,7 @@ export default {
       return accArr.join(',')
     },
 
-    getOssTicket () {
+    getOssTicket() {
       return new Promise(resolve => {
         this.$api.seeExternService.getOssTicket()
           .then(res => {
@@ -136,7 +142,7 @@ export default {
     //       this.OSS = res.data || {}
     //     })
     // },
-    async doUpload (file) {
+    async doUpload(file) {
       let timeStamp = new Date().getTime()
       this.OSS = this.$local.fetch('OSS')
       if (!this.OSS || this.OSS && !this.OSS.expiration || this.OSS && this.OSS.expiration && this.OSS.expiration < timeStamp) {
@@ -207,7 +213,7 @@ export default {
           }
         }).then((results) => {
           let url = 'http://' + this.OSS.bucket + '.' + this.region + '.aliyuncs.com/' + results.name
-          this.$emit('uploadSuccess', {name: randomName, url: url, oldName: oldName})
+          this.$emit('uploadSuccess', { name: randomName, url: url, oldName: oldName })
           this.$emit('input', url)
           this.fullscreenLoading = false
           this.$message({
@@ -215,7 +221,7 @@ export default {
             showClose: true,
             message: '上传成功'
           })
-        // eslint-disable-next-line handle-callback-err
+          // eslint-disable-next-line handle-callback-err
         }).catch((err) => {
           this.fullscreenLoading = false
           this.$message({
@@ -229,12 +235,12 @@ export default {
     }
   },
   computed: {
-    changfileList () {
+    changfileList() {
       return this.fileList
     }
   },
   watch: {
-    changfileList (to, from) {
+    changfileList(to, from) {
       if (to[0] && !from[0]) {
         this.imglist = this.fileList
       } else if (to[0] && from[0] && (to[0].url != from[0].url)) {
@@ -249,16 +255,16 @@ export default {
 </script>
 
 <style>
-  .building-picture  {
-  width:100%;
-  height:100%;
+.building-picture {
+  width: 100%;
+  height: 100%;
 }
-.building-picture  .el-upload-dragger{
-  width:100%;
-  height:100%;
+.building-picture .el-upload-dragger {
+  width: 100%;
+  height: 100%;
 }
 .building-picture .el-upload {
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
 }
 </style>

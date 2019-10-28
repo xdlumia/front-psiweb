@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 16:54:02
+ * @LastEditTime: 2019-10-28 18:09:06
  * @Description: 报价单详情
 */
 <template>
@@ -67,7 +67,7 @@ import salesDetails from '@/components/formComponents/side-statusbar' //顶部�
 import detail from './quotoDetails/detail' //详情
 import outLibrary from './quotoDetails/outLibrary' //销售出库单
 import buy from './quotoDetails/buy' //采购单
-import record from './quotoDetails/record' //操作记录
+import record from '@/components/formComponents/record' //操作记录
 
 export default {
   components: {

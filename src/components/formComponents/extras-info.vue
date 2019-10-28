@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 16:48:32
+ * @LastEditTime: 2019-10-28 18:28:54
  * @Description: 备注信息
 */
 <template>
@@ -29,7 +29,10 @@
           label="上传附件"
           size="mini"
         >
-          <upload-file></upload-file>
+          <upload-file
+            v-model="pic"
+            :limit="{type:['jpg','png','gif','jpeg']}"
+          ></upload-file>
         </el-form-item>
       </el-col>
       <el-col :span="24">
@@ -62,6 +65,11 @@ import uploadFile from '@/components/upload-file';
 export default {
   components: {
     uploadFile
+  },
+  data() {
+    return {
+      pic: '',
+    }
   }
 };
 </script>
