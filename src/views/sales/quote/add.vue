@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-26 16:43:43
+ * @LastEditTime: 2019-10-26 18:13:22
  * @Description: file content
 */
 <template>
@@ -26,39 +26,7 @@
               <div class="d-text-qgray mt5 mb20">2019-9-21</div>
             </el-col>
           </el-row>
-          <d-table
-            :paging="false"
-            show-summary
-            :summary-method="getSummaries"
-            api="seePumaidongService.collegeManagerList"
-            ref="companyTable"
-            style="height:500px"
-          >
-            <el-table-column
-              prop="title"
-              label="账期"
-              min-width="140"
-              show-overflow-tooltip
-            >
-              <template slot-scope="scope">
-                <span class="d-text-blue">{{scope.row.title}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="createTime"
-              min-width="140"
-              label="付款时间"
-              show-overflow-tooltip
-            >
-            </el-table-column>
-            <el-table-column
-              prop="id"
-              min-width="100"
-              label="付款金额"
-              show-overflow-tooltip
-            >
-            </el-table-column>
-          </d-table>
+
         </form-card>
       </div>
 
@@ -100,23 +68,7 @@ export default {
     // this.initCompanyAdd()
   },
   methods: {
-    // 自定义账单金额数据
-    getSummaries(param) {
-      const { columns, data } = param;
-      const sums = [];
-      columns.forEach((col, index) => {
-        if (index == 0) {
-          sums[index] = '总价'
-        } else if (index == 2) {
-          const values = data.map(item => Number(item[col.property]));
-          sums[index] = values.reduce((sum, curr) => {
-            const val = Number(curr)
-            return sum + curr
-          }, 0)
-        }
-      });
-      return sums
-    },
+
     // 编辑和新增
     initCompanyAdd() {
       if (this.dialogMeta.type === 'add') {
@@ -163,33 +115,9 @@ export default {
             })
         }
       })
-    },
-    changeTime(time) {
-      this.addForm.startTime = time[0]
-      this.addForm.endTime = time[1]
-    },
-    QuillEditor(val) {
-      this.addForm.content = val
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.invitation-picUrl {
-  position: relative;
-  border: 1px solid #efefef;
-  .delete {
-    position: absolute;
-    cursor: pointer;
-    z-index: 2;
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    line-height: 20px;
-    background-color: rgba(0, 0, 0, 0.4);
-    color: #fff;
-    right: 0;
-    top: 0;
-  }
-}
 </style>

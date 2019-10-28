@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-26 10:55:54
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-28 09:57:48
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -126,7 +126,7 @@ export default {
     // 自定义头
     headers: {
       type: Array,
-      default: ()=>[]
+      default: () => []
     }
   },
   data() {
