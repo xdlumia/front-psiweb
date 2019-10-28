@@ -1,28 +1,21 @@
-
 /*
  * @Author: web.王晓冬
- * @Date: 2019-09-23 10:45:28
+ * @Date: 2019-09-23 10:45:2
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 09:58:03
+ * @LastEditTime: 2019-10-28 14:14:23
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-10-28 15:27:49
  * @Description: 登录页
- */
+*/
 <template>
   <div style="height:100vh;">
     <div class="login-content">
       <div class="login-mian">
         <div class="login-header">
-          <img
-            class="logo"
-            :src="require('@/assets/img/logo.png')"
-            alt=""
-          >
+          <img class="logo" :src="require('@/assets/img/logo.png')" alt />
           <h2>进销存战役</h2>
         </div>
-        <el-form
-          :model="loginForm"
-          ref="loginForm"
-          class="login-info"
-        >
+        <el-form :model="loginForm" ref="loginForm" class="login-info">
           <!-- 帐号 -->
           <el-form-item
             prop="account"
@@ -51,10 +44,7 @@
           </el-form-item>
           <div style="margin-bottom:10px; height:25px;">
             <el-checkbox-group v-model="remember">
-              <el-checkbox
-                label="记住密码"
-                name="type"
-              ></el-checkbox>
+              <el-checkbox label="记住密码" name="type"></el-checkbox>
             </el-checkbox-group>
           </div>
           <el-form-item>
@@ -67,31 +57,20 @@
           </el-form-item>
         </el-form>
       </div>
-      <div class="login-footer ">
-        <p>copyright © 2018
-          <a
-            href="/"
-            target="_blank"
-          >fanteren</a>
+      <div class="login-footer">
+        <p>
+          copyright © 2018
+          <a href="/" target="_blank">fanteren</a>
         </p>
         <p>
           <span>
-            <a
-              href="/"
-              target="_blank"
-            >帮助</a>
+            <a href="/" target="_blank">帮助</a>
           </span>
           <span>
-            <a
-              href="/"
-              target="_blank"
-            >隐私</a>
+            <a href="/" target="_blank">隐私</a>
           </span>
           <span>
-            <a
-              href="/"
-              target="_blank"
-            >条款</a>
+            <a href="/" target="_blank">条款</a>
           </span>
         </p>
       </div>
@@ -104,12 +83,7 @@
       :before-close="closeUpdatepwd"
       width="420px"
     >
-      <el-form
-        ref="updateForm"
-        :model="updateForm"
-        label-width="80px"
-        size="medium"
-      >
+      <el-form ref="updateForm" :model="updateForm" label-width="80px" size="medium">
         <p class="mb10 d-flex-lr">
           <i class="el-icon-warning d-text-orange f18 mr10"></i>
           <span>系统检测到您使用的是初始密码或密码安全级别不够，为确保您的数据安全，请更改您的密码！</span>
@@ -128,7 +102,7 @@
             </div>
           <el-input slot="reference" v-model="updateForm.pwd" @input="verifyPassword" type="password" prefix-icon="iconfont icon-password" placeholder="请输8-20位包含大小写字母数字的密码" v-on:keyup.13.native="loginBtn"></el-input>
           </el-popover>
-        </el-form-item> -->
+        </el-form-item>-->
         <el-form-item
           class="w320"
           prop="pwd"
@@ -158,21 +132,10 @@
             v-on:keyup.13.native="savePassword"
           ></el-input>
         </el-form-item>
-
       </el-form>
-      <div
-        slot="footer"
-        class="ac"
-      >
-        <el-button
-          size="medium"
-          @click="closeUpdatepwd"
-        >取 消</el-button>
-        <el-button
-          size="medium"
-          type="primary"
-          @click="savePassword"
-        >确 定</el-button>
+      <div slot="footer" class="ac">
+        <el-button size="medium" @click="closeUpdatepwd">取 消</el-button>
+        <el-button size="medium" type="primary" @click="savePassword">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -283,8 +246,6 @@ export default {
             }
             // 获取用户详情
             this.getUserDetail()
-            // 获取其他平台系统列表
-            // this.getsyslist()
           })
           .catch(() => {
             this.loading = false
@@ -307,8 +268,6 @@ export default {
               this.loginForm.pwd = params.pwd
               // 获取用户详情
               this.getUserDetail()
-              // 获取其他平台系统列表
-              // this.getsyslist()
             })
         }
       })
@@ -382,26 +341,17 @@ export default {
         .then(res => {
           const navData = res.data || [{ url: '/' }]
           this.authorityBtn = {} // 按钮权限
-          // this.authorityHandle(navData)
-          // this.$local.save('authorityBtn', this.authorityBtn)
-          // 取消资源列表里系统管理的路由 因为要放到辅助管理里
-          // 读取用户信息
-          // const userInfo = this.$local.fetch('userInfo')
-          // type==1是管理员帐号
-          // 管理员帐号登录的时候系统管理不去除业务字典路由
-          // if (userInfo.type !== 1) {
-          //   navData.forEach(item => {
-          //     if (item.name === '系统管理') {
-          //       const childred = item.children
-          //       childred.forEach((subItem, i) => {
-          //         if (subItem.code === 'asystem_assist_dict') {
-          //           childred.splice(i, 1)
-          //         }
-          //       })
-          //     }
-          //   })
-          // }
-
+          // 获取系统管理 index
+          // 把系统管理放到更多应用中
+          const systemSettingsIndex = navData.findIndex(item => item.name === '系统管理')
+          let isDelete = false
+          navData.forEach(item => {
+            if (item.name === '更多应用' && systemSettingsIndex !== -1) {
+              isDelete = true
+              item.children.splice(1, 0, navData[systemSettingsIndex])
+            }
+          })
+          navData.splice(systemSettingsIndex, isDelete ? 1 : 0)
           this.$local.save('navData', navData)
 
           // 登录成功后跳转到 登录前的页面 或获取路由的第一个
@@ -428,15 +378,6 @@ export default {
         }
       })
     }
-
-    // 获取其他平台系统列表
-    // getsyslist () {
-    //   this.$api.bizSystemService.getsyslist() // 获取当前用户可操作的系统/平台列表
-    //     .then(res => {
-    //       let syslist = res.data
-    //       localStorage.setItem('syslist', JSON.stringify(syslist))// 存储该用户拥有的平台权限
-    //     })
-    // },
   }
 }
 </script>
