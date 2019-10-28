@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 15:09:20
+ * @LastEditTime: 2019-10-28 15:29:50
  * @Description: 销售-请购单
  */
 <template>
@@ -118,7 +118,7 @@ export default {
         copy: { comp: 'copy', title: '复制报价单' },
         merge: { comp: 'merge', title: '合并生成销售出库单' },
         quoto: { comp: 'quotoDetails', title: '报价单' },
-        sales: { comp: 'salesDetails', title: '新增报价单' },
+        sales: { comp: 'salesDetails', title: '销售出库单' },
       }
       // 如果是新增复制合并调用dialog弹出框
       if (type == "add" || type == "copy" || type == "merge") {
@@ -135,7 +135,6 @@ export default {
       this.drawerData.type = type;
       this.drawerData.width = "820px";
       this.drawerData.title = typeObj[type].title
-
       this.drawerData.component = typeObj[type].comp
     },
     // 多选
