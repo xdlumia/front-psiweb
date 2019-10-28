@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-28 17:39:34
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-28 18:55:45
  * @Description: 路由文件
  */
 import Vue from 'vue'
@@ -18,6 +18,10 @@ import Login from '@/components/login'
 import OrderRoute from '@/views/order/route.js'
 import ContractRoute from '@/views/contract/route.js'
 
+// 销售路由
+import salesRoute from '@/views/sales/route.js'
+
+
 // 框架
 import Layout from '@/components/layout'
 
@@ -27,10 +31,9 @@ import Layout from '@/components/layout'
 // const college = () => import('@/views/contents/college') // 店长服务
 
 import recharge from '@/views/businessSetting/recharge'
-// import Quote from '@/views/sales/quote'
+
 
 // 库房
-// 销售 销售单
 import sales from '@/views/storage/sales'
 
 // 首页
@@ -117,6 +120,7 @@ export default new Router({
       }
     },
     ...Object.values(systemRoute), // 系统设置
+    ...salesRoute, // 销售路由配置
     ...OrderRoute, // 采购模块路由配置
     ...ContractRoute // 合同模块路由配置
     ]
