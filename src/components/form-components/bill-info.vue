@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-26 16:07:15
+ * @LastEditTime: 2019-10-26 17:04:01
  * @Description: 账单信息
  */
 <template>
@@ -14,20 +14,16 @@
       </el-col>
     </el-row>
     <d-table
+      :paging="false"
+      show-summary
+      :summary-method="getSummaries"
       api="seePumaidongService.collegeManagerList"
       ref="companyTable"
-      class="mt10"
       style="height:500px"
     >
       <el-table-column
-        type="selection"
-        :reserve-selection="true"
-        width="55"
-      >
-      </el-table-column>
-      <el-table-column
         prop="title"
-        label="标题"
+        label="账期"
         min-width="140"
         show-overflow-tooltip
       >
@@ -36,68 +32,18 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="cityName"
-        min-width="140"
-        label="城市"
-        show-overflow-tooltip
-      >
-      </el-table-column>
-      <el-table-column
-        prop="issuerName"
-        min-width="100"
-        label="发布人"
-        show-overflow-tooltip
-      >
-      </el-table-column>
-      <el-table-column
         prop="createTime"
-        label="发布时间"
         min-width="140"
+        label="付款时间"
         show-overflow-tooltip
       >
-        <template slot-scope="scope">
-          {{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}
-        </template>
       </el-table-column>
       <el-table-column
-        v-if="authorityButtons.includes('pmdwebset_contents_college_1006')"
-        prop="remark"
-        label="报名记录"
-        min-width="140"
+        prop="id"
+        min-width="100"
+        label="付款金额"
         show-overflow-tooltip
       >
-        <template slot-scope="scope">
-          <el-button
-            size="medium"
-            type="text"
-            @click="setCompany(scope.row)"
-          >查看记录</el-button>
-          <span
-            v-if="scope.row.newNum>0"
-            class="d-text-red f12"
-          >new</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="left"
-        label="操作"
-        width="200"
-        show-overflow-tooltip
-      >
-        <template slot-scope="scope">
-          <el-button
-            v-if="authorityButtons.includes('pmdwebset_contents_college_1002')"
-            size="medium"
-            type="text"
-            @click="updateCompany('edit',scope.row)"
-          >编辑</el-button>
-          <el-button
-            v-if="authorityButtons.includes('pmdwebset_contents_college_1003')"
-            size="medium"
-            type="text"
-            @click="delCompany([scope.row.id])"
-          >删除</el-button>
-        </template>
       </el-table-column>
     </d-table>
   </form-card>
@@ -108,6 +54,25 @@ export default {
   data() {
     return {
     }
+  },
+  methods: {
+    // 自定义账单金额数据
+    getSummaries(param) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((col, index) => {
+        if (index == 0) {
+          sums[index] = '总价'
+        } else if (index == 2) {
+          const values = data.map(item => Number(item[col.property]));
+          sums[index] = values.reduce((sum, curr) => {
+            const val = Number(curr)
+            return sum + curr
+          }, 0)
+        }
+      });
+      return sums
+    },
   },
   components: {
   },
