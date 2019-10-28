@@ -26,7 +26,7 @@
                 <!-- <p> 帮助房地产中介提升企业产能 </p> -->
               </div>
             </el-menu-item>
-            <el-menu-item style="height: 32px;line-height: 33px;margin-top: 10px;">
+            <el-menu-item style="height: 32px;line-height: 33px;margin-top: 10px;border-bottom:none">
               <el-badge :value="12" class="backlog-wrapper">
                 <el-button icon="el-icon-tickets" round size="small" class="backlog">待办事项</el-button>
               </el-badge>
