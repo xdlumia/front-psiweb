@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-26 19:05:19
+ * @LastEditTime: 2019-10-28 17:17:05
  * @Description: 采购单详情
 */
 <template>
-  <side-popup :visible.sync="showPop" class="side-page" title="请购单">
+  <side-popup :visible.sync="showPop" class="side-page" title="请购单" width="990px">
     <el-container class="wfull hfull">
       <el-header class="p0 d-bg-gray" style="height:70px;">
         <div class="pl10 pr10 ar">
@@ -25,6 +25,11 @@
               <CompanyInfo />
               <PayExpire />
               <ExtrasInfo />
+              <ChooseMan />
+              <BorrowOut />
+              <PayBillDetail />
+              <PaymentLog />
+              <BorrowGoods />
             </el-form>
           </el-tab-pane>
           <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
@@ -42,6 +47,11 @@ import CustomerInfo from '@/components/formComponents/customer-info';
 import CompanyInfo from '@/components/formComponents/company-info';
 import PayExpire from '@/components/formComponents/pay-expire';
 import ExtrasInfo from '@/components/formComponents/extras-info';
+import ChooseMan from '@/components/formComponents/choose-man';
+import BorrowOut from '@/components/formComponents/borrow-out';
+import PayBillDetail from '@/components/formComponents/paybill-detail';
+import PaymentLog from '@/components/formComponents/payment-log';
+import BorrowGoods from '@/components/formComponents/borrow-goods';
 
 export default {
   components: {
@@ -51,7 +61,12 @@ export default {
     CompanyInfo,
     PayExpire,
     ExtrasInfo,
-    CustomerInfo
+    CustomerInfo,
+    ChooseMan,
+    BorrowOut,
+    PayBillDetail,
+    PaymentLog,
+    BorrowGoods
   },
   data() {
     return {
@@ -84,12 +99,13 @@ export default {
       & > .el-tabs__header {
         background-color: #f2f2f2;
         padding: 0 10px;
+        margin-bottom: 0;
         > .el-tabs__nav-wrap::after {
           background-color: #f2f2f2;
         }
       }
       & > .el-tabs__content {
-        height: calc(100% - 55px);
+        height: calc(100% - 40px);
         overflow: hidden;
         overflow-y: auto;
         padding: 0 10px;

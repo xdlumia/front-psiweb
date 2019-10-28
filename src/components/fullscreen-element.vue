@@ -1,3 +1,10 @@
+/*
+ * @Author: 赵伦
+ * @Date: 2019-10-24 16:20:33
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-10-28 18:00:53
+ * @Description: 全屏化某个局部dom节点
+*/
 <template>
   <el-dialog :modal="false" :visible="visible" center custom-class="fullscreen-el-view" fullscreen>
     <el-container class="wfull hfull">
@@ -65,8 +72,8 @@ export default {
 </style>
 <style lang="scss">
 .fullscreen-el-view.el-dialog.is-fullscreen {
-  height: calc(100% - 60px);
-  top: 60px;
+  // height: calc(100% - 60px);
+  top: 0;
   .el-dialog__header {
     display: none;
   }
