@@ -15,12 +15,23 @@
  */ -->
 <template>
   <div style="margin-bottom:10px;">
-    <div class="d-bg-gray side-statusbar" style="margin:-10px;padding:10px 20px;">
-      <el-row>
-        <el-col :key="item.label" :span="span" class="d-text-qgray" v-for="item of status">{{item.label}}</el-col>
+    <div
+      class="d-bg-gray side-statusbar"
+      style="padding:10px 20px;"
+    >
+      <el-row type="flex">
+        <el-col
+          :key="index"
+          class="d-text-qgray d-elip"
+          v-for="(item,index) of status"
+        >{{item.label}}</el-col>
       </el-row>
-      <el-row>
-        <el-col :key="item.label" :span="span" v-for="item of status">
+      <el-row type="flex">
+        <el-col
+          :key="index"
+          class="d-elip"
+          v-for="(item,index) of status"
+        >
           <span v-if="item.isTime">{{item.value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
           <span v-else-if="item.dictName">{{item.value|dictionary(item.dictName)}}</span>
           <span v-else>{{item.value}}</span>
@@ -54,11 +65,6 @@ export default {
     return {};
   },
   computed: {
-    span() {
-      let length = this.status.length;
-      let baseSpan = Math.floor(24 / length);
-      return baseSpan;
-    }
   }
 };
 </script>

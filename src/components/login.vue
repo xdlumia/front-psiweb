@@ -1,10 +1,12 @@
-<!--
+/*
  * @Author: web.王晓冬
- * @Date: 2019-09-23 10:45:28
+ * @Date: 2019-09-23 10:45:2
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-28 14:14:23
  * @LastEditors: 高大鹏
  * @LastEditTime: 2019-10-28 15:27:49
  * @Description: 登录页
- -->
+*/
 <template>
   <div style="height:100vh;">
     <div class="login-content">

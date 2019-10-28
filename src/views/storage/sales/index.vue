@@ -1,7 +1,7 @@
 /*
  * @Author: 徐贺 
  * @Date: 2019-10-25 15:24:18 
- * @Last Modified by: mikey.zhaopeng
+ * @Last Modified by: 徐贺
  * @Last Modified time: 2019-10-28 14:00:41
  * @Description: 库房  销售单
  */
@@ -216,6 +216,7 @@ export default {
 .side-page {
   /deep/ {
     > .popup-main {
+      width: 50% !important;
       > .popup-head {
         font-weight: bold;
         > .d-inline > .popup-close {
