@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-26 13:14:01
+ * @LastEditTime: 2019-10-28 15:09:20
  * @Description: 销售-请购单
  */
 <template>
@@ -104,7 +104,6 @@ export default {
       drawerVisible: false, //抽屉弹出框
       drawerData: {
         title: '',
-        visible: false,
         type: '',
         width: '820px',
         data: '',
@@ -113,7 +112,7 @@ export default {
   },
   methods: {
     // 按钮功能操作
-    quotoHandle(type) {
+    quotoHandle(type, row) {
       let typeObj = {
         add: { comp: 'add', title: '新增报价单' },
         copy: { comp: 'copy', title: '复制报价单' },
