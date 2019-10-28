@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 17:17:05
+ * @LastEditTime: 2019-10-28 18:23:27
  * @Description: 采购单详情
 */
 <template>
   <side-popup :visible.sync="showPop" class="side-page" title="请购单" width="990px">
     <el-container class="wfull hfull">
-      <el-header class="p0 d-bg-gray" style="height:70px;">
+      <el-header class="p0 d-bg-gray" style="height:80px;">
         <div class="pl10 pr10 ar">
           <el-button size="mini" type="primary">采购</el-button>
           <el-button size="mini" type="primary">借入</el-button>
@@ -98,7 +98,7 @@ export default {
     /deep/ {
       & > .el-tabs__header {
         background-color: #f2f2f2;
-        padding: 0 10px;
+        padding: 0 20px;
         margin-bottom: 0;
         > .el-tabs__nav-wrap::after {
           background-color: #f2f2f2;
@@ -108,7 +108,7 @@ export default {
         height: calc(100% - 40px);
         overflow: hidden;
         overflow-y: auto;
-        padding: 0 10px;
+        padding: 0 20px;
       }
     }
   }

@@ -26,7 +26,10 @@ export default {
       type: Object,
       default: () => ({})
     },
-    editable: Boolean
+    editable: {
+      type: Boolean,
+      default: true
+    }
   }
 };
 </script>

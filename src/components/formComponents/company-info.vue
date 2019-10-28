@@ -93,7 +93,7 @@ export default {
     },
     editable: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data() {

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:10:46
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 15:39:44
+ * @LastEditTime: 2019-10-28 18:18:03
  * @Description: 借入信息
 */
 <template>
@@ -85,7 +85,7 @@ export default {
     },
     editable: {
       type: Boolean,
-      default: false
+      default: true
     }
   }
 };

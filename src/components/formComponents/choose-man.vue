@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 14:00:55
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 15:43:44
+ * @LastEditTime: 2019-10-28 18:16:26
  * @Description: 选择分配人员-表单
 */
 <template>
@@ -16,7 +16,7 @@
     </div>
     <div>
       <el-form-item label="备注" size="mini">
-        <el-input placeholder="备注" type="textarea" />
+        <el-input :rows="3" maxlength="300" placeholder="备注" show-word-limit type="textarea" />
       </el-form-item>
     </div>
   </form-card>

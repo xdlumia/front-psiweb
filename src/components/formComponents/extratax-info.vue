@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 11:20:24
+ * @LastEditTime: 2019-10-28 18:19:06
  * @Description: 附加发票
 */
 <template>
@@ -38,7 +38,10 @@ export default {
       type: Object,
       default: () => ({})
     },
-    editable: Boolean
+    editable: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {

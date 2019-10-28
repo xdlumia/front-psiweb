@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 11:14:15
+ * @LastEditTime: 2019-10-28 18:18:51
  * @Description: 客户信息
 */
 <template>
@@ -81,7 +81,10 @@ export default {
       type: Object,
       default: () => ({})
     },
-    editable: Boolean
+    editable: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {

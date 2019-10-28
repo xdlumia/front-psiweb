@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 09:57:48
+ * @LastEditTime: 2019-10-28 15:13:58
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -124,14 +124,15 @@ export default {
       default: true
     },
     // 自定义头
-    headers: {
-      type: Array,
-      default: () => []
-    }
+    // headers: {
+    //   type: Array,
+    //   default: () => []
+    // }
   },
   data() {
     return {
       loading: false,
+      headers: [],
     };
   },
   created() {

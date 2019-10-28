@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-06-13 17:33:33
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 09:56:14
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-10-28 15:48:31
  * @Description: 配置文件
  */
 module.exports = {
@@ -30,5 +30,9 @@ module.exports = {
   //   是否生成map文件
   productionSourceMap: true,
 
-  lintOnSave: false
+  lintOnSave: false,
+
+  chainWebpack: config => {
+    config.plugins.delete('prefetch')
+  }
 }
