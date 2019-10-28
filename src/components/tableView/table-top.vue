@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 15:02:29
+ * @LastEditTime: 2019-10-28 17:04:29
  * @Description: 表格头部 
  */
 <template>
@@ -11,9 +11,9 @@
       <section class="d-flex-lr">
         <div
           class="b f16"
-          style="margin-right:40px; color:#333;"
+          style="white-space:nowrap;margin-right:30px; color:#333;"
         >{{title}}</div>
-        <div class="f12 d-text-qgray">
+        <div class="f12 d-text-qgray d-auto-x">
           <span
             class="mr20 sta-item"
             :class="{active:index == staActive}"
@@ -23,9 +23,11 @@
           >{{item.title || '无'}}({{item.id}})</span>
         </div>
       </section>
-      <section class="table-header-tool">
+      <section
+        class="table-header-tool"
+        style="white-space:nowrap;"
+      >
         <slot name="button">
-          <el-button size="mini">slot=button</el-button>
         </slot>
         <!-- 更多功能 -->
         <el-dropdown
@@ -45,7 +47,7 @@
             <el-dropdown-item>
               <span @click="$emit('moreHandle', 'print')">打印</span>
             </el-dropdown-item>
-            <slot name="moreButton">slot=moreButton</slot>
+            <slot name="moreButton"></slot>
           </el-dropdown-menu>
         </el-dropdown>
         <!-- 筛选 -->
@@ -287,6 +289,7 @@ export default {
   border-bottom: none;
   border-radius: 5px 5px 0 0;
   .sta-item {
+    display: inline-block;
     cursor: pointer;
     transition: 0.2s;
     &:hover {
