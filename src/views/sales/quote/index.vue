@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 15:29:50
+ * @LastEditTime: 2019-10-28 16:41:34
  * @Description: 销售-请购单
  */
 <template>
@@ -105,7 +105,7 @@ export default {
       drawerData: {
         title: '',
         type: '',
-        width: '820px',
+        width: '920px',
         data: '',
       }
     };
@@ -132,8 +132,7 @@ export default {
         this.drawerData.data = row;
       }
 
-      this.drawerData.type = type;
-      this.drawerData.width = "820px";
+      this.drawerData.type = type
       this.drawerData.title = typeObj[type].title
       this.drawerData.component = typeObj[type].comp
     },
