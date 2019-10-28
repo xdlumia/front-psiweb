@@ -2,14 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-28 17:20:19
+ * @LastEditTime: 2019-10-28 17:27:36
  * @Description: 路由文件
  */
 import Vue from 'vue'
 import Router from 'vue-router'
 import {
-  systemRoute,
-  systemRouteConfig
+  systemRoute
 } from 'see-web-system'
 // 登录
 import Login from '@/components/login'
@@ -27,20 +26,12 @@ import Layout from '@/components/layout'
 // https://github.com/vuejs/eslint-plugin-vue/issues/204
 // const college = () => import('@/views/contents/college') // 店长服务
 
-import common from '@/views/businessSetting/common'
 import recharge from '@/views/businessSetting/recharge'
 // import Quote from '@/views/sales/quote'
 
 // 库房
 // 销售 销售单
 import sales from '@/views/storage/sales'
-
-const routers = [{
-  component: common,
-  componentName: 'common',
-  label: '公共'
-}]
-systemRouteConfig(systemRoute.BusinessSetting, routers)
 
 // 首页
 const Home = () => import('@/views/home')
