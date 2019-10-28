@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-26 11:19:17
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-28 10:19:32
+ * @LastEditTime: 2019-10-28 17:13:59
  * @Description: layout 页面架构
  -->
 <template>
@@ -26,7 +26,9 @@
                 <!-- <p> 帮助房地产中介提升企业产能 </p> -->
               </div>
             </el-menu-item>
-            <el-menu-item style="height: 32px;line-height: 33px;margin-top: 10px;border-bottom:none">
+            <el-menu-item
+              style="height: 32px;line-height: 33px;margin-top: 10px;border-bottom:none"
+            >
               <el-badge :value="12" class="backlog-wrapper">
                 <el-button icon="el-icon-tickets" round size="small" class="backlog">待办事项</el-button>
               </el-badge>
@@ -140,7 +142,7 @@ export default {
       navData: [], // 所有权限码
       token: '',
       finger: '',
-      path: '',
+      path: '/',
       chunk,
       WRAP_LENGTH
     };
@@ -192,8 +194,8 @@ export default {
     const finger = urlParams.finger;
     // 首次进入 高亮导航
     this.path =
-      this.$route.path.indexOf('/housecondition') !== -1
-        ? '/housecondition'
+      this.$route.path.indexOf('/home') !== -1
+        ? '/'
         : this.$route.path;
 
     if (urlParams.token) {
@@ -242,7 +244,7 @@ export default {
     $route: {
       handler(a) {
         this.path =
-          a.path.indexOf('/housecondition') !== -1 ? '/housecondition' : a.path;
+          a.path.indexOf('/home') !== -1 ? '/' : a.path;
       },
       immediate: true
     }
