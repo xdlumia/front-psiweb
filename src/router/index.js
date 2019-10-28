@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-28 17:27:36
+ * @LastEditTime: 2019-10-28 17:39:34
  * @Description: 路由文件
  */
 import Vue from 'vue'
@@ -37,7 +37,6 @@ import sales from '@/views/storage/sales'
 const Home = () => import('@/views/home')
 
 //  辅助管理
-const Tags = () => import('@/views/asistant/tags') // 标签管理
 const BusinessSetting = () => import('@/views/asistant/businessSetting') // 业务设置管理
 const TemplateManage = () => import('@/views/asistant/templateManage') // 模板管理
 const FormManagement = () => import('@/views/asistant/formManagement') // 表单管理
@@ -88,15 +87,6 @@ export default new Router({
       meta: {
         parent: '库房',
         title: '库房销售单'
-      }
-    },
-    {
-      path: '/asistant/tags', // 标签管理
-      name: '/asistant/tags',
-      component: Tags,
-      meta: {
-        parent: '辅助管理',
-        title: '标签管理'
       }
     },
     {
