@@ -2,7 +2,7 @@
  * @Author: 徐贺 
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-10-25 18:02:01
+ * @Last Modified time: 2019-10-28 14:00:41
  * @Description: 库房  销售单
  */
 <template>
@@ -122,31 +122,49 @@
       ></el-table-column>
     </d-table>
     <!-- 右侧滑出 -->
-    <el-drawer
+    <side-popup
+      class="side-page"
       :title="drawerData.title"
       :visible.sync="tableVisible"
       size="50%"
     >
-      <div class='p10'>
-        <el-tabs
-          v-model="activeName"
-          @tab-click="handleClick"
+      <el-container class="wfull hfull">
+        <el-header
+          class="p0 d-bg-gray"
+          style="height:70px;"
         >
-          <el-tab-pane label="详情"></el-tab-pane>
-          <el-tab-pane label="拣货单"></el-tab-pane>
-          <el-tab-pane label="组装任务"></el-tab-pane>
-          <el-tab-pane label="发货单"></el-tab-pane>
-          <el-tab-pane label="销售出库单"></el-tab-pane>
-          <el-tab-pane label="借入单"></el-tab-pane>
-          <el-tab-pane label="应收账单"></el-tab-pane>
-        </el-tabs>
-        <components
-          :is='drawerData.component'
-          :drawerData="drawerData"
-        >
-        </components>
-      </div>
-    </el-drawer>
+          <div class="pl10 pr10 ar">
+            <el-button
+              size="mini"
+              type="primary"
+            >发货</el-button>
+          </div>
+          <SideStatusbar />
+        </el-header>
+        <el-main class="p0">
+          <el-tabs
+            class='tabs-view'
+            v-model="activeName"
+            @tab-click="handleClick"
+          >
+            <el-tab-pane label="详情"></el-tab-pane>
+            <el-tab-pane label="拣货单"></el-tab-pane>
+            <el-tab-pane label="组装任务"></el-tab-pane>
+            <el-tab-pane label="发货单"></el-tab-pane>
+            <el-tab-pane label="销售出库单"></el-tab-pane>
+            <el-tab-pane label="借入单"></el-tab-pane>
+            <el-tab-pane label="应收账单"></el-tab-pane>
+          </el-tabs>
+          <div class="p10">
+            <components
+              :is='drawerData.component'
+              :drawerData="drawerData"
+            >
+            </components>
+          </div>
+        </el-main>
+      </el-container>
+    </side-popup>
   </div>
 </template>
 <script>
@@ -154,9 +172,11 @@
  * 采购-请购单
  */
 import Details from './details.vue'
+import SideStatusbar from '@/components/formComponents/side-statusbar';
 export default {
   components: {
-    Details
+    Details,
+    SideStatusbar
   },
   data() {
     return {
@@ -193,4 +213,40 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.side-page {
+  /deep/ {
+    > .popup-main {
+      > .popup-head {
+        font-weight: bold;
+        > .d-inline > .popup-close {
+          position: absolute;
+          right: 10px;
+          top: 16px;
+        }
+      }
+      > .popup-body {
+        padding: 0;
+        overflow: hidden;
+      }
+    }
+  }
+  .tabs-view {
+    position: relative;
+    /deep/ {
+      & > .el-tabs__header {
+        background-color: #f2f2f2;
+        padding: 0 10px;
+        > .el-tabs__nav-wrap::after {
+          background-color: #f2f2f2;
+        }
+      }
+      & > .el-tabs__content {
+        height: calc(100% - 55px);
+        overflow: hidden;
+        overflow-y: auto;
+        padding: 0 10px;
+      }
+    }
+  }
+}
 </style>
