@@ -7,7 +7,10 @@
  */
 import Vue from 'vue'
 import Router from 'vue-router'
-import { systemRoute, systemRouteConfig } from 'see-web-system'
+import {
+  systemRoute,
+  systemRouteConfig
+} from 'see-web-system'
 // 登录
 import Login from '@/components/login'
 
@@ -30,7 +33,11 @@ import Quote from '@/views/sales/quote'
 //销售 销售单
 import sales from '@/views/storage/sales'
 
-const routers = [{ component: common, componentName: 'common', label: '公共' }]
+const routers = [{
+  component: common,
+  componentName: 'common',
+  label: '公共'
+}]
 systemRouteConfig(systemRoute.BusinessSetting, routers)
 
 
@@ -39,53 +46,52 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [{
-    path: '/login',
-    name: 'login',
-    component: Login,
-    meta: {
-      title: '铺脉动后台管理系统'
+      path: '/login',
+      name: 'login',
+      component: Login,
+      meta: {
+        title: '铺脉动后台管理系统'
+      }
+    },
+    {
+      path: '/',
+      component: Layout,
+      redirect: '/house/rent',
+      children: [{
+          path: '/sales/quote',
+          component: Quote,
+          meta: {
+            parent: '内容管理',
+            title: '店长学院'
+          }
+        },
+        {
+          path: '/businessSetting/recharge',
+          name: '/businessSetting/recharge',
+          component: recharge,
+          meta: {
+            parent: '辅助设置',
+            title: '充值记录'
+          }
+        },
+        {
+          path: '/storage/sales',
+          name: '/storage/sales',
+          component: sales,
+          meta: {
+            parent: '库房',
+            title: '库房销售单'
+          }
+        },
+        ...Object.values(systemRoute), // 系统设置
+        ...OrderRoute, // 采购模块路由配置
+        ...ContractRoute, // 合同模块路由配置
+      ]
+    },
+    // 404
+    {
+      path: '*', // 如果找不到页面跳转到404
+      redirect: '/404'
     }
-  },
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/house/rent',
-    children: [
-      {
-        path: '/sales/quote',
-        component: Quote,
-        meta: {
-          parent: '内容管理',
-          title: '店长学院'
-        }
-      },
-      {
-        path: '/businessSetting/recharge',
-        name: '/businessSetting/recharge',
-        component: recharge,
-        meta: {
-          parent: '辅助设置',
-          title: '充值记录'
-        }
-      },
-      {
-        path: '/storage/sales',
-        name: '/storage/sales',
-        component: sales,
-        meta: {
-          parent: '库房',
-          title: '库房销售单'
-        }
-      },
-      ...Object.values(systemRoute), // 系统设置
-      ...OrderRoute, // 采购模块路由配置
-      ...ContractRoute, // 合同模块路由配置
-    ]
-  },
-  // 404
-  {
-    path: '*', // 如果找不到页面跳转到404
-    redirect: '/404'
-  }
   ]
 })
