@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 09:30:55
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-10-26 10:35:41
  * @Description: 路由文件
  */
 import Vue from 'vue'
@@ -13,7 +13,8 @@ import Login from '@/components/login'
 
 
 // 采购
-import OrderBuying from '@/views/order/buying'
+import OrderRoute from '@/views/order/route.js'
+import ContractRoute from '@/views/contract/route.js'
 
 // 框架
 import Layout from '@/components/layout'
@@ -68,15 +69,6 @@ export default new Router({
         }
       },
       {
-        path: '/procurement/buyingRequisition',
-        name: '/procurement/buyingRequisition',
-        component: OrderBuying,
-        meta: {
-          parent: '采购',
-          title: '采购请购单'
-        }
-      },
-      {
         path: '/storage/sales',
         name: '/storage/sales',
         component: sales,
@@ -85,7 +77,9 @@ export default new Router({
           title: '库房销售单'
         }
       },
-      ...Object.values(systemRoute) // 系统设置
+      ...Object.values(systemRoute), // 系统设置
+      ...OrderRoute, // 采购模块路由配置
+      ...ContractRoute, // 合同模块路由配置
     ]
   },
   // 404

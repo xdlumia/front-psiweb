@@ -6,40 +6,34 @@
  */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="请购单">
+    <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="采购合同">
       <template slot-scope="{column,row,value}">
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <OrderBuyingDetail />
-    <OrderStorage />
   </div>
 </template>
 <script>
 import TableView from '@/components/tableView';
-import OrderBuyingDetail from './detail';
-import OrderStorage from './orderStorage';
 /**
- * 采购-请购单
+ * 合同-采购合同
  */
 export default {
   components: {
     TableView,
-    OrderBuyingDetail,
-    OrderStorage
   },
   data() {
     return {
       status: [],
       tableHeader: [
-        { label: '请购单编号', prop: 'deptName', width: '180' },
-        { label: '报价单编号', prop: 'deptName', width: '180' },
-        { label: '单据状态', prop: 'deptName', width: '180' },
-        { label: '销售要求到货时间', prop: 'deptName', width: '180' },
-        { label: '采购预计到货时间', prop: 'deptName', width: '180' },
-        { label: '单据执行人', prop: 'deptName', width: '180' },
-        { label: '单据创建人', prop: 'deptName', width: '180' },
+        { label: '合同编号', prop: 'deptName', width: '180' },
+        { label: '采购入库单编号', prop: 'deptName', width: '180' },
+        { label: '供应商名称', prop: 'deptName', width: '180' },
+        { label: '总计数量', prop: 'deptName', width: '180' },
+        { label: '总计采购价', prop: 'deptName', width: '180' },
+        { label: '预计到货时间', prop: 'deptName', width: '180' },
+        { label: '合同创建人', prop: 'deptName', width: '180' },
         { label: '创建部门', prop: 'deptName', width: '180' },
         { label: '创建时间', prop: 'createTime', width: '180' }
       ]
@@ -53,6 +47,4 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.buying-requisition-page {
-}
 </style>

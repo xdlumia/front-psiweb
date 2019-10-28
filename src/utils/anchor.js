@@ -1,3 +1,10 @@
+/*
+ * @Author: 赵伦
+ * @Date: 2019-10-26 10:12:11
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-10-26 16:02:35
+ * @Description: 在滚动区域内滚动到指定区域
+ */
 import Vue from 'vue'
 
 /**
@@ -31,7 +38,7 @@ Vue.directive('anchor', {
           el = document.querySelector(bind.value)
         }
       }
-      if (!(el instanceof HTMLElement)) {
+      if (el && !(el instanceof HTMLElement)) {
         el = el.$el;
       }
       if (el) {

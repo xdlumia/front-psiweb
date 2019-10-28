@@ -3,7 +3,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 09:55:48
+ * @LastEditTime: 2019-10-28 09:58:03
  * @Description: 登录页
  */
 <template>
@@ -386,27 +386,27 @@ export default {
           // this.$local.save('authorityBtn', this.authorityBtn)
           // 取消资源列表里系统管理的路由 因为要放到辅助管理里
           // 读取用户信息
-          const userInfo = this.$local.fetch('userInfo')
+          // const userInfo = this.$local.fetch('userInfo')
           // type==1是管理员帐号
           // 管理员帐号登录的时候系统管理不去除业务字典路由
-          if (userInfo.type !== 1) {
-            navData.forEach(item => {
-              if (item.name === '系统管理') {
-                const childred = item.children
-                childred.forEach((subItem, i) => {
-                  if (subItem.code === 'asystem_assist_dict') {
-                    childred.splice(i, 1)
-                  }
-                })
-              }
-            })
-          }
+          // if (userInfo.type !== 1) {
+          //   navData.forEach(item => {
+          //     if (item.name === '系统管理') {
+          //       const childred = item.children
+          //       childred.forEach((subItem, i) => {
+          //         if (subItem.code === 'asystem_assist_dict') {
+          //           childred.splice(i, 1)
+          //         }
+          //       })
+          //     }
+          //   })
+          // }
 
           this.$local.save('navData', navData)
 
           // 登录成功后跳转到 登录前的页面 或获取路由的第一个
           const redirectRouter = navData[0].children ? navData[0].children[0].url : navData[0].url
-          const routerReplace = sessionStorage.getItem('loginRedirect') || redirectRouter
+          const routerReplace = sessionStorage.getItem('loginRedirect') || redirectRouter || '/'
           // eslint-disable-next-line no-undef
           router.replace({
             path: routerReplace

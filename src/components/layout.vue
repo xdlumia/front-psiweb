@@ -44,6 +44,11 @@
                 <!-- <p> 帮助房地产中介提升企业产能 </p> -->
               </div>
             </el-menu-item>
+            <el-menu-item style="height: 32px;line-height: 33px;margin-top: 10px;">
+              <el-badge :value="12" class="backlog-wrapper">
+                <el-button icon="el-icon-tickets" round size="small" class="backlog">待办事项</el-button>
+              </el-badge>
+            </el-menu-item>
             <!-- 如果type类型是菜单就不会有二级目录(最多只有2级菜单)
                 1:目录
             2:菜单-->
@@ -492,5 +497,20 @@ export default {
 .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
 .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
   color: #1790ff;
+}
+.backlog-wrapper {
+  .el-badge__content {
+    top: 5px;
+    right: 13px;
+  }
+  .backlog {
+    background: #36cfc9;
+    border-color: #36cfc9;
+    color: #fff;
+    font-size: 14px;
+    .el-icon-tickets {
+      color: #fff;
+    }
+  }
 }
 </style>

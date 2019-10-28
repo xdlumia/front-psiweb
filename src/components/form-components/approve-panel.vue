@@ -9,10 +9,10 @@
     <div class="h20">
       <el-link :underline="false" @click="showHis=!showHis" class="fr" type="primary">{{showHis?'返回':'历史记录'}}</el-link>
     </div>
-    <div class="pl20 pr20" v-if="!showHis">
+    <div class=" " v-if="!showHis">
       <ApproveCard />
     </div>
-    <div class="pl20 pr20" v-else>
+    <div class=" " v-else>
       <ApproveCard />
       <ApproveCard />
     </div>
