@@ -1,38 +1,20 @@
-/*
+<!--
  * @Author: web.王晓冬
  * @Date: 2019-09-26 11:19:17
- * @LastEditors: web.高大鹏
- * @LastEditTime: 2019-10-26 11:39:38
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-10-28 10:19:32
  * @Description: layout 页面架构
- */
+ -->
 <template>
   <d-layout v-model="isLockkScreen">
-    <img
-      slot="logo"
-      src="@/assets/img/logo.png"
-      alt
-    />
-    <div
-      style="height: 100vh"
-      v-loading="loading"
-    >
+    <img slot="logo" src="@/assets/img/logo.png" alt />
+    <div style="height: 100vh" v-loading="loading">
       <el-container class="d-container">
         <!-- 头部区域 -->
-        <el-header
-          height="60px"
-          class="header-top d-hidden"
-        >
+        <el-header height="60px" class="header-top d-hidden">
           <!-- 菜单 -->
-          <el-menu
-            :default-active="path"
-            mode="horizontal"
-            :router="true"
-            :unique-opened="true"
-          >
-            <el-menu-item
-              class="header-logo pl0"
-              index="/"
-            >
+          <el-menu :default-active="path" mode="horizontal" :router="true" :unique-opened="true">
+            <el-menu-item class="header-logo pl0" index="/">
               <img
                 class="header-img"
                 :src="this.$store.state.company.companyInfo.picUrl?this.$store.state.company.companyInfo.picUrl:require('@/assets/img/logo.png')"
@@ -59,10 +41,7 @@
               v-if="menu.type == 2"
             >{{menu.name}}</el-menu-item>
             <!-- 二级菜单 -->
-            <el-submenu
-              v-else
-              :index="index+''"
-            >
+            <el-submenu v-else :index="index+''">
               <template slot="title">{{menu.name}}</template>
               <div style="display:flex;">
                 <!-- 二级菜单按 5长度 折行 -->
@@ -72,27 +51,14 @@
                   :style="{display: menu.children && menu.children[0].children ? 'flex' : ''}"
                   :class="[!(menu.children && menu.children[0].children) ? 'pr10 pl10' : '']"
                 >
-                  <div
-                    v-for="(submenu,submenuKey) in chunkMenu"
-                    :key="submenuKey"
-                  >
+                  <div v-for="(submenu,submenuKey) in chunkMenu" :key="submenuKey">
                     <!-- 二级菜单渲染 -->
-                    <el-menu-item
-                      v-if="submenu.type===2"
-                      :index="submenu.url+''"
-                    >{{submenu.name}}</el-menu-item>
+                    <el-menu-item v-if="submenu.type===2" :index="submenu.url+''">{{submenu.name}}</el-menu-item>
                     <!-- 三级菜单渲染 -->
-                    <div
-                      v-else
-                      class="hfull pb5"
-                      style="display:flex;flex-direction:column;"
-                    >
+                    <div v-else class="hfull pb5" style="display:flex;flex-direction:column;">
                       <h4 class="mt5 mb10 menu-title">{{submenu.name}}</h4>
                       <!-- 三级菜单按 5长度 分割 -->
-                      <div
-                        class="hfull mb10"
-                        style="display:flex;"
-                      >
+                      <div class="hfull mb10" style="display:flex;">
                         <div
                           class="pr10 pl10"
                           v-for="(chunkSubmenu, key) in chunk(submenu.children, WRAP_LENGTH)"
@@ -112,31 +78,8 @@
               </div>
             </el-submenu>
 
-            <!-- 更多应用 -->
-            <!-- <el-submenu v-if="sysList.length || moremenu.length" index=" ">
-              <template slot="title">更多应用</template>
-              <el-menu-item v-for="(sys, index) in sysList" :key="index" index>
-                <a
-                  class="d-block"
-                  target="_blank"
-                  :href="sys.sysurl+'?token='+token+'&finger='+finger"
-                >
-                  <span style="color:#909399">{{sys.sysname}}</span>
-                </a>
-              </el-menu-item>
-
-              <el-menu-item
-                v-for="item of moremenu"
-                :key="item.id"
-                :index="item.url+''"
-              >{{item.name}}</el-menu-item>
-            </el-submenu>-->
-
             <!-- 用户详情 -->
-            <el-submenu
-              index="user"
-              class="fr"
-            >
+            <el-submenu index="user" class="fr">
               <template slot="title">
                 <img
                   class="user-head"
@@ -148,24 +91,14 @@
                   <p class="f12">{{userInfo.userName}}</p>
                 </div>
               </template>
-              <el-menu-item
-                @click="logout"
-                index="/login"
-                class="f12"
-              >退出</el-menu-item>
+              <el-menu-item @click="logout" index="/login" class="f12">退出</el-menu-item>
             </el-submenu>
             <!-- 版本更新 -->
-            <el-submenu
-              index="/version"
-              class="fr head-version"
-            >
+            <el-submenu index="/version" class="fr head-version">
               <template slot="title">
                 <i class="el-icon-info"></i>
               </template>
-              <el-menu-item
-                index="/version"
-                class="f12"
-              >版本更新</el-menu-item>
+              <el-menu-item index="/version" class="f12">版本更新</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-header>
@@ -182,6 +115,7 @@
 </template>
 
 <script>
+// 菜单分割长度配置
 const WRAP_LENGTH = 5
 import chunk from '@/utils/chunk'
 
@@ -322,32 +256,6 @@ export default {
       sessionStorage.setItem('loginRedirect', '');
       this.$router.push({ path: '/login' });
     },
-
-    getCityInfo(item) {
-      // 点击列表下的城市  updateCityInfo
-      this.cityInfo = item;
-      this.$local.save('cityInfo', this.cityInfo);
-      const params = {
-        cityId: this.cityInfo.id,
-        userId: JSON.parse(localStorage.userInfo).userId,
-        type: '1' // type,1个人，0公司
-      };
-      this.$api.seeHouseConfigService
-        .updateCityInfo(params) // 保存城市
-        .then(res => {
-          if (res.code === 200) {
-            this.$message({
-              type: 'success',
-              message: '切换城市成功！'
-            });
-            // 切换成功刷新当前页面
-            location.reload();
-          }
-        })
-        .finally(() => {
-          this.isCityChange = false;
-        });
-    },
     // 获取菜单权限
     getNavData() {
       return Promise.all([
@@ -419,29 +327,6 @@ export default {
           this.authorityHandle(item.children);
         }
       });
-    },
-    fsearchCityName() {
-      const params = {
-        cityName: this.searchCityName
-      };
-      this.$api.seeHouseConfigService
-        .getCityList(params) // 获取城市列表
-        .then(res => {
-          if (res.code == 200) {
-            // 搜索到的城市列表
-            this.cityList = res.data || {};
-            // 获取城市列表的首字母数组
-            const objectKeys = Object.keys(this.cityList);
-            if (objectKeys.length) {
-              // 获取到子一个城市的首字母
-              const firstKey = objectKeys[0];
-              // 根据城市首字母查询cityClass 数组项
-              const findTeen = (classify, key) =>
-                classify.find(v => v.includes(key));
-              this.activeName = findTeen(this.cityClass, firstKey);
-            }
-          }
-        });
     }
   }
 };
