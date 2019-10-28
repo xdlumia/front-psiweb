@@ -2,7 +2,7 @@
  * @Author: 徐贺 
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-10-28 11:25:03
+ * @Last Modified time: 2019-10-28 14:02:43
  * @Description: 库房  销售单 详情组件 出库商品
  */
 <template>
@@ -85,7 +85,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">XSD20190201000001</span>
+            <span class="d-text-blue">{{scope.row.id}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -133,8 +133,8 @@
   </div>
 </template>
 <script>
-import commodityPicking from '@/components/form-components/commodity-picking'
-import machineSn from '@/components/form-components/machine-sn'
+import commodityPicking from '@/components/formComponents/commodity-picking'
+import machineSn from '@/components/formComponents/machine-sn'
 export default {
   data() {
     return {

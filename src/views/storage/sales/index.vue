@@ -2,7 +2,7 @@
  * @Author: 徐贺 
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-10-28 13:50:56
+ * @Last Modified time: 2019-10-28 14:00:41
  * @Description: 库房  销售单
  */
 <template>
@@ -172,7 +172,7 @@
  * 采购-请购单
  */
 import Details from './details.vue'
-import SideStatusbar from '@/components/form-components/side-statusbar';
+import SideStatusbar from '@/components/formComponents/side-statusbar';
 export default {
   components: {
     Details,
