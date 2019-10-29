@@ -22,7 +22,7 @@
           :model="form"
           class="p10"
         >
-          <deliverEdit ref="deliverEdit" />
+          <pickAssemble ref="pickAssemble" />
           <chooseAssembly ref="chooseAssembly" />
         </el-form>
 
@@ -45,12 +45,12 @@
   </el-dialog>
 </template>
 <script>
-import deliverEdit from '@/components/formComponents/deliver-edit';
+import pickAssemble from '@/components/formComponents/pick-assemble';
 import chooseAssembly from '@/components/formComponents/choose-assembly';
 
 export default {
   components: {
-    deliverEdit,
+    pickAssemble,
     chooseAssembly
   },
   props: {

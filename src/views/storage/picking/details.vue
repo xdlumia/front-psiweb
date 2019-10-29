@@ -10,19 +10,19 @@
     class='d-auto-y'
     style='height:calc(100vh - 200px)'
   >
-    <goodsExported />
-    <shipInfo />
+    <goodsPicking />
+    <pickingInfo />
     <generateDeliver />
   </div>
 </template>
 <script>
-import goodsExported from '@/components/formComponents/goods-exported'
-import shipInfo from '@/components/formComponents/ship-info';
+import goodsPicking from '@/components/formComponents/goods-picking'
+import pickingInfo from '@/components/formComponents/picking-info';
 import generateDeliver from './generate-deliver';
 export default {
   components: {
-    goodsExported,
-    shipInfo,
+    goodsPicking,
+    pickingInfo,
     generateDeliver
   },
 }

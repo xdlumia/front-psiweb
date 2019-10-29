@@ -44,12 +44,12 @@
           fixed
           prop="title"
           label="商品图片"
-          min-width="140"
+          min-width="120"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
             <el-image
-              style="width: 100px; height: 50px"
+              style="width: 100px; height: 40px"
               src="http://pics.sc.chinaz.com/files/pic/pic9/201910/zzpic20721.jpg"
               :fit="fill"
             ></el-image>
@@ -217,8 +217,12 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 /deep/.el-table__body-wrapper {
   z-index: 3;
+}
+/deep/.el-table_2_column_13 {
+  padding: 0px;
+  padding-top: 5px;
 }
 </style>
