@@ -2,16 +2,38 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-29 19:04:26
- * @Description: 发票信息
+ * @LastEditTime: 2019-10-29 19:13:41
+ * @Description: 账单调整
  */
 <template>
-  <form-card title='发票信息'>
+  <form-card title='账单调整'>
     <el-row :gutter="10">
-      <el-col :span="8">
+      <el-col :span="12">
         <el-form-item
           :rules="[{required:true,message:'必填项'}]"
-          label="公司名称"
+          label="应收账单"
+          prop
+        >
+          <el-select
+            class="wfull"
+            :disabled="disabled"
+            filterable
+            placeholder="请选择"
+            v-model="form.customerName"
+          >
+            <el-option
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              v-for="item in options"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item
+          :rules="[{required:true,message:'必填项'}]"
+          label="账单金额"
           prop
         >
           <el-input
@@ -22,10 +44,10 @@
           </el-input>
         </el-form-item>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="12">
         <el-form-item
           :rules="[{required:true,message:'必填项'}]"
-          label="纳税人识别号称"
+          label="调整金额（正数增加金额，负数减少金额）"
           prop
         >
           <el-input
@@ -36,53 +58,10 @@
           </el-input>
         </el-form-item>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="12">
         <el-form-item
           :rules="[{required:true,message:'必填项'}]"
-          label="注册地址"
-          prop
-        >
-          <el-input
-            :disabled="disabled"
-            placeholder="请输入"
-            v-model="form.telPhone"
-          >
-          </el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item
-          :rules="[{required:true,message:'必填项'}]"
-          label="注册电话"
-          prop
-        >
-          <el-input
-            :disabled="disabled"
-            placeholder="请输入"
-            v-model="form.telPhone"
-          >
-          </el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item
-          :rules="[{required:true,message:'必填项'}]"
-          label="开户银行"
-          prop
-        >
-          <el-input
-            :disabled="disabled"
-            placeholder="请输入"
-            v-model="form.telPhone"
-          >
-          </el-input>
-        </el-form-item>
-      </el-col>
-
-      <el-col :span="8">
-        <el-form-item
-          :rules="[{required:true,message:'必填项'}]"
-          label="开户行账号"
+          label="调整后金额"
           prop
         >
           <el-input

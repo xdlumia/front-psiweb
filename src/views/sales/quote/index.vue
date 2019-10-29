@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-29 17:00:03
+ * @LastEditTime: 2019-10-29 18:51:10
  * @Description: 销售-请购单
  */
 <template>
@@ -115,7 +115,7 @@ export default {
     quotoHandle(type, row) {
       let typeObj = {
         add: { comp: 'add', title: '新增报价单' },
-        copy: { comp: 'copy', title: '复制报价单' },
+        copy: { comp: 'add', title: '复制报价单' },
         merge: { comp: 'merge', title: '合并生成销售出库单' },
         quoto: { comp: 'quotoDetails', title: '报价单' },
         sales: { comp: 'salesDetails', title: '销售出库单' },
