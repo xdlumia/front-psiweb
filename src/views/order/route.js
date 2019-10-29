@@ -2,10 +2,11 @@
  * @author: 赵伦
  * @Date: 2019-10-26 10:29:53
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 14:28:01
+ * @LastEditTime: 2019-10-29 17:50:09
  * @Description: 采购模块路由
  */
 const OrderBuying = () => import('./buying')
+const OrderPrepare = () => import('./prepare')
 
 export default [
     {
@@ -15,7 +16,7 @@ export default [
         }
     },
     {
-        path: '/order/prepare', name: '/order/prepare', component: OrderBuying, meta: {
+        path: '/order/prepare', name: '/order/prepare', component: OrderPrepare, meta: {
             parent: '采购',
             title: '备货单'
         }

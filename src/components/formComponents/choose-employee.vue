@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 14:36:37
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 15:43:23
+ * @LastEditTime: 2019-10-29 16:11:46
  * @Description: 选择员工-弹框
 */
  <template>
@@ -130,7 +130,7 @@ export default {
     }
   },
   created() {
-    this.getList();
+    // this.getList();
   },
   mounted() {},
   watch: {},

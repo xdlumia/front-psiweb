@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 18:18:24
+ * @LastEditTime: 2019-10-29 16:50:55
  * @Description: 自定义信息
 */
 <template>
@@ -12,7 +12,7 @@
       <el-table-column label="字段内容" min-width="200" prop="value" show-overflow-tooltip>
         <template>
           <el-form-item class="mt10" prop size="mini">
-            <div class="d-text-gray mt10 d-elip wfull" v-if="!editable">字段名称字段内容</div>
+            <div class="d-text-gray mt10 d-elip wfull" v-if="disabled">字段名称字段内容</div>
             <el-select class="wfull" placeholder="请选择" v-else v-model="form.value">
               <el-option :key="item.value" :label="item.label" :value="item.value" v-for="item in options"></el-option>
             </el-select>
@@ -34,9 +34,9 @@ export default {
       type: Object,
       default: () => ({})
     },
-    editable: {
+    disabled: {
       type: Boolean,
-      default: true
+      default: false
     }
   }
 };

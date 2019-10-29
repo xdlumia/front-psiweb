@@ -2,85 +2,77 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 18:23:27
+ * @LastEditTime: 2019-10-29 17:46:58
  * @Description: 采购单详情
 */
 <template>
-  <side-popup :visible.sync="showPop" class="side-page" title="请购单" width="990px">
-    <el-container class="wfull hfull">
-      <el-header class="p0 d-bg-gray" style="height:80px;">
-        <div class="pl10 pr10 ar">
-          <el-button size="mini" type="primary">采购</el-button>
-          <el-button size="mini" type="primary">借入</el-button>
-        </div>
-        <SideStatusbar />
-      </el-header>
-      <el-main class="p0">
-        <el-tabs class="wfull hfull tabs-view">
-          <el-tab-pane label="详情">
-            <el-form>
-              <CustomerInfo />
-              <ApprovePanel />
-              <CustomInfo />
-              <CompanyInfo />
-              <PayExpire />
-              <ExtrasInfo />
-              <ChooseMan />
-              <BorrowOut />
-              <PayBillDetail />
-              <PaymentLog />
-              <BorrowGoods />
-            </el-form>
-          </el-tab-pane>
-          <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
-          <el-tab-pane label="报价单">报价单</el-tab-pane>
-        </el-tabs>
-      </el-main>
-    </el-container>
-  </side-popup>
+  <SideDetail :status="status" :visible.sync="showPop" @close="$emit('update:visible',false)" title="请购单" width="990px">
+    <template slot="button">
+      <el-button @click="orderStorageVisible=true" size="mini" type="primary">采购</el-button>
+      <el-button @click="addBorrowInVisible=true" size="mini" type="primary">借入</el-button>
+    </template>
+    <el-tabs class="wfull hfull tabs-view">
+      <el-tab-pane label="详情">
+        <el-form>
+          <CustomInfo />
+          <ExtrasInfo />
+        </el-form>
+      </el-tab-pane>
+      <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
+      <el-tab-pane label="报价单">报价单</el-tab-pane>
+    </el-tabs>
+    <OrderStorage :visible.sync="orderStorageVisible" />
+    <AddBorrowIn :visible.sync="addBorrowInVisible" />
+  </SideDetail>
 </template>
 <script>
-import SideStatusbar from '@/components/formComponents/side-statusbar';
-import ApprovePanel from '@/components/formComponents/approve-panel';
 import CustomInfo from '@/components/formComponents/custom-info';
-import CustomerInfo from '@/components/formComponents/customer-info';
-import CompanyInfo from '@/components/formComponents/company-info';
-import PayExpire from '@/components/formComponents/pay-expire';
 import ExtrasInfo from '@/components/formComponents/extras-info';
-import ChooseMan from '@/components/formComponents/choose-man';
-import BorrowOut from '@/components/formComponents/borrow-out';
-import PayBillDetail from '@/components/formComponents/paybill-detail';
-import PaymentLog from '@/components/formComponents/payment-log';
-import BorrowGoods from '@/components/formComponents/borrow-goods';
+import SideDetail from '@/components/side-detail';
+import SideStatusbar from '@/components/formComponents/side-statusbar';
+import OrderStorage from './orderStorage';
+import AddBorrowIn from '@/views/order/borrow/addIn';
 
 export default {
   components: {
-    SideStatusbar,
-    ApprovePanel,
     CustomInfo,
-    CompanyInfo,
-    PayExpire,
     ExtrasInfo,
-    CustomerInfo,
-    ChooseMan,
-    BorrowOut,
-    PayBillDetail,
-    PaymentLog,
-    BorrowGoods
+    SideStatusbar,
+    SideDetail,
+    OrderStorage,
+    AddBorrowIn
+  },
+  props: {
+    visible: Boolean
   },
   data() {
     return {
-      showPop: true
+      showPop: true,
+      orderStorageVisible: false,
+      addBorrowInVisible: false,
+      status: [
+        { label: '状态', value: '新建' },
+        { label: '单据创建人', value: '张收纳' },
+        { label: '创建部门', value: '销售部' },
+        { label: '创建时间', value: +new Date(), isTime: true },
+        { label: '来源', value: '新建' }
+      ]
     };
   }
 };
 </script>
 <style lang="scss" scoped>
 .side-page {
+  .header-btns {
+    position: absolute;
+    right: 40px;
+    top: 12px;
+  }
   /deep/ {
     > .popup-main {
       > .popup-head {
         font-weight: bold;
+        font-size: 18px;
         > .d-inline > .popup-close {
           position: absolute;
           right: 10px;
