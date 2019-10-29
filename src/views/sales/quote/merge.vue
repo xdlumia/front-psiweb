@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-29 16:38:35
+ * @LastEditTime: 2019-10-29 17:16:15
  * @Description: 报价单详情
 */
 <template>
@@ -14,10 +14,10 @@
   >
     <el-tabs v-model="anchorLink">
       <el-tab-pane name="customerInfo">
-        <a
+        <span
           slot="label"
-          href="#customerInfo"
-        >客户信息</a>
+          v-anchor:customerInfo
+        >客户信息</span>
       </el-tab-pane>
       <el-tab-pane name="companyInfo">
         <span
@@ -25,28 +25,28 @@
           v-anchor:companyInfo
         >公司信息</span>
       </el-tab-pane>
-      <el-tab-pane name="second">
+      <el-tab-pane name="quoto">
         <span
           slot="label"
-          v-anchor:customer
+          v-anchor:quoto
         >报价单信息</span>
       </el-tab-pane>
-      <el-tab-pane name="1">
+      <el-tab-pane name="billInfo">
         <span
           slot="label"
-          v-anchor:customer
+          v-anchor:billInfo
         >账单信息</span>
       </el-tab-pane>
-      <el-tab-pane name="2">
+      <el-tab-pane name="customInfo">
         <span
           slot="label"
-          v-anchor:customer
+          v-anchor:customInfo
         >自定义信息</span>
       </el-tab-pane>
-      <el-tab-pane name="3">
+      <el-tab-pane name="extraInfo">
         <span
           slot="label"
-          v-anchor:customer
+          v-anchor:extraInfo
         >备注信息</span>
       </el-tab-pane>
     </el-tabs>
@@ -55,32 +55,47 @@
       style="height:calc(100vh - 200px)"
     >
       <!-- 客户信息 -->
-      <customerInfo id="customerInfo" />
+      <customerInfo ref="customerInfo" />
       <!-- 公司信息 -->
       <companyInfo ref="companyInfo" />
       <!-- 报价单信息 -->
-      <form-card title="报价单信息">
+      <form-card
+        title="报价单信息"
+        ref="quoto"
+      >
+        <div slot="title">
+          报价单信息
+          <i
+            @click="quotoCollapse = !quotoCollapse"
+            :class="{active:quotoCollapse}"
+            class="collapse-arrow el-icon-arrow-right d-pointer"
+          ></i>
+        </div>
         <el-tabs v-model="activeName">
           <el-tab-pane
             v-for="(item,index) of 11"
             :key="index"
             :label="`报价单${index}`"
-            :name="index"
+            :name="index+''"
           ></el-tab-pane>
         </el-tabs>
-        <!-- 发货信息 -->
-        <deliverInfo />
-        <!-- 商品信息 -->
-        <!-- 报价单有效期 -->
-        <payExpire />
-        <!-- 附加发票 -->
-        <extrataxInfo ref="extrataxInfo" />
-        <!-- 自定义信息 -->
-        <customInfo ref="customInfo" />
-        <!-- 备注信息 -->
-        <extraInfo ref="extraInfo" />
+        <transition name="el-zoom-in-top">
+          <div v-show="quotoCollapse">
+            <!-- 发货信息 -->
+            <deliverInfo />
+            <!-- 商品信息 -->
+            <commodityInfo />
+            <!-- 报价单有效期 -->
+            <payExpire />
+            <!-- 附加发票 -->
+            <extrataxInfo />
+            <!-- 自定义信息 -->
+            <customInfo />
+            <!-- 备注信息 -->
+            <extraInfo />
+          </div>
+        </transition>
       </form-card>
-
       <!-- 收款滞纳金 -->
       <paymentLate ref="paymentLate" />
       <!-- 账期信息 -->
@@ -91,11 +106,11 @@
       <extraInfo ref="extraInfo" />
     </div>
     <div class="ac mt10">
+      <el-button size="small">取消</el-button>
       <el-button
         type="primary"
         size="small"
-      >取消</el-button>
-      <el-button size="small">保存</el-button>
+      >保存</el-button>
     </div>
   </el-form>
 </template>
@@ -109,6 +124,7 @@ import extraInfo from '@/components/formComponents/extras-info' //备注信息
 import paymentLate from '@/components/formComponents/payment-late' //收款滞纳金
 import billInfo from '@/components/formComponents/bill-info' //账期信息
 import payExpire from '@/components/formComponents/pay-expire' //报价单有效期
+import commodityInfo from '@/components/formComponents/commodity-info' //商品信息
 
 
 export default {
@@ -121,22 +137,30 @@ export default {
     extraInfo,
     paymentLate,
     billInfo,
-    payExpire
+    payExpire,
+    commodityInfo
   },
   props: ['drawerData'],
   data() {
     return {
       // 当前锚点
-      anchorLink: 'customer',
+      anchorLink: 'customerInfo',
       // 表单
       form: {},
       // 报价单信息
-      activeName: 0
+      activeName: "0",
+      quotoCollapse: true
     }
   },
   beforeDestroy() {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
+.collapse-arrow {
+  transition: all 0.2s;
+  &.active {
+    transform: rotate(90deg);
+  }
+}
 </style>

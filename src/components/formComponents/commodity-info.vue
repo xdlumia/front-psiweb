@@ -189,6 +189,7 @@ export default {
         page: 1,
         limit: 20
       },
+      dialogVisible: false,
       srcList: ['http://pics.sc.chinaz.com/files/pic/pic9/201910/zzpic20721.jpg'],
       showInFullscreen: false
     }
