@@ -83,7 +83,7 @@
       </d-table>
       <el-dialog
         title="机器号/SN码记录"
-        :visible.sync="dialogVisible"
+        :visible.sync="commDialogVisible"
         width="600"
         v-dialogDrag
       >
@@ -106,7 +106,7 @@ export default {
         page: 1,
         limit: 20
       },
-      dialogVisible: false,
+      commDialogVisible: false,
     }
   },
   methods: {

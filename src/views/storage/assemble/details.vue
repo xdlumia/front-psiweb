@@ -12,20 +12,20 @@
   >
     <assembleNoedit />
     <assembleInfo />
-    <generateDeliver />
+    <assemblyTask />
     <commodityInfo />
   </div>
 </template>
 <script>
 import assembleNoedit from '@/components/formComponents/assemble-noedit'
 import assembleInfo from '@/components/formComponents/assemble-info';
-import generateDeliver from './generate-deliver';
+import assemblyTask from './assembly-task';
 import commodityInfo from '@/components/formComponents/commodity-info';
 export default {
   components: {
     assembleNoedit,
     assembleInfo,
-    generateDeliver,
+    assemblyTask,
     commodityInfo
   },
 }

@@ -3,37 +3,15 @@
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 徐贺
  * @LastEditTime: 2019-10-26 18:17:56
- * @Description: 生成发货单
+ * @Description: 生成拣货单和组装任务
 */
 <template>
   <el-dialog
     :visible.sync="visible"
-    title="生成发货单"
+    title="生成拣货单和组装任务"
     v-dialogDrag
   >
     <el-container>
-      <el-header
-        class="d-bg-white"
-        style="height:54px;padding:0;"
-      >
-        <el-tabs
-          @tab-click="handleClick"
-          v-model="activeName"
-        >
-          <el-tab-pane name="deliverEdit">
-            <span
-              slot="label"
-              v-anchor:deliverEdit
-            >发货信息</span>
-          </el-tab-pane>
-          <el-tab-pane name="logisticsEdit">
-            <span
-              slot="label"
-              v-anchor:logisticsEdit
-            >物流信息</span>
-          </el-tab-pane>
-        </el-tabs>
-      </el-header>
       <el-main
         :style="{
                 maxHeight:maxHeight+'px'
@@ -45,8 +23,9 @@
           class="p10"
         >
           <deliverEdit ref="deliverEdit" />
+          <chooseAssembly ref="chooseAssembly" />
         </el-form>
-        <logisticsEdit ref="logisticsEdit" />
+
       </el-main>
     </el-container>
     <span
@@ -67,12 +46,12 @@
 </template>
 <script>
 import deliverEdit from '@/components/formComponents/deliver-edit';
-import logisticsEdit from '@/components/formComponents/logistics-edit';
+import chooseAssembly from '@/components/formComponents/choose-assembly';
 
 export default {
   components: {
     deliverEdit,
-    logisticsEdit
+    chooseAssembly
   },
   props: {
     visible: {
@@ -93,9 +72,6 @@ export default {
   },
   mounted() { },
   methods: {
-    handleClick({ label, name }) {
-      this.activeName = '';
-    }
   }
 };
 </script>

@@ -37,10 +37,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span
-              @click="getTableVisible(scope.row)"
-              class="d-text-blue"
-            >{{scope.row.id}}</span>
+            <span class="d-text-blue">{{scope.row.id}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -172,7 +169,6 @@
         v-dialogDrag
       >
         <commodityPicking />
-        <machineSn />
       </el-dialog>
     </form-card>
   </div>
@@ -180,7 +176,6 @@
 <script>
 import commodityPicking from '@/components/formComponents/commodity-picking'
 import FullscreenElement from '@/components/fullscreen-element';
-import machineSn from '@/components/formComponents/machine-sn'
 export default {
   data() {
     return {
@@ -195,15 +190,10 @@ export default {
         limit: 20
       },
       srcList: ['http://pics.sc.chinaz.com/files/pic/pic9/201910/zzpic20721.jpg'],
-      dialogVisible: false,
       showInFullscreen: false
     }
   },
   methods: {
-    //点击机器号和SN码
-    getTableVisible() {
-      this.dialogVisible = true
-    },
     fullscreen() {
       this.showInFullscreen = true;
     },
@@ -222,7 +212,6 @@ export default {
   },
   components: {
     commodityPicking,
-    machineSn,
     FullscreenElement
   },
 }
