@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 14:00:55
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 18:16:26
+ * @LastEditTime: 2019-10-29 16:51:44
  * @Description: 选择分配人员-表单
 */
 <template>
@@ -29,7 +29,7 @@ export default {
     ChooseManSelect
   },
   props: {
-    form: {
+    data: {
       type: Object,
       default: () => ({})
     }
