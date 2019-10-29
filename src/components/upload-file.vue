@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 10:32:18
+ * @LastEditTime: 2019-10-29 10:35:18
  * @Description: 件上传工具
  * @param  limit          上传的条件
   * @param  limit [ type ]   limit type  允许上传的后缀名字
@@ -42,6 +42,14 @@ let addZero = (str = '', length = 2, char = '0') => {
   return str.toString().padStart(length, char)
 }
 
+/**
+ * 
+  * @example 使用示例
+  *        <upload-file v-model :limit="obj" > </upload-pic>
+  *          obj = {
+  *            type: []  [ ipg, png, txt, js, gif, ....]
+  *          }
+ */
 export default {
   name: 'upload',
   props: {
