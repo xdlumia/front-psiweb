@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-26 16:02:35
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-29 12:01:00
  * @Description: 在滚动区域内滚动到指定区域
  */
 import Vue from 'vue'

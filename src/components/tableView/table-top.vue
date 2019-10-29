@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 17:04:29
+ * @LastEditTime: 2019-10-29 14:48:57
  * @Description: 表格头部 
  */
 <template>
@@ -165,9 +165,9 @@ export default {
     draggable
   },
   props: {
-    // title
+    // s
     title: {
-      default: false
+      default: ''
     },
     // 参数类型,查询统计和自定义列
     type: "",

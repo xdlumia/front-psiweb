@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-26 17:04:01
+ * @LastEditTime: 2019-10-29 16:08:34
  * @Description: 账单信息
  */
 <template>
@@ -27,9 +27,6 @@
         min-width="140"
         show-overflow-tooltip
       >
-        <template slot-scope="scope">
-          <span class="d-text-blue">{{scope.row.title}}</span>
-        </template>
       </el-table-column>
       <el-table-column
         prop="createTime"
@@ -37,6 +34,17 @@
         label="付款时间"
         show-overflow-tooltip
       >
+        <template slot-scope="scope">
+          <el-date-picker
+            size="mini"
+            value-format="timestamp"
+            v-model="scope.row.titme"
+            align="right"
+            type="date"
+            placeholder="选择日期"
+          >
+          </el-date-picker>
+        </template>
       </el-table-column>
       <el-table-column
         prop="id"
@@ -44,8 +52,16 @@
         label="付款金额"
         show-overflow-tooltip
       >
+        <template slot-scope="scope">
+          <el-input
+            size="mini"
+            placeholder="请输入"
+            v-model="scope.row.id"
+          ></el-input>
+        </template>
       </el-table-column>
     </d-table>
+    <div class="mt10 el-icon-circle-plus-outline"> 增加账期</div>
   </form-card>
 </template>
 <script>
