@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-18 11:01:38
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-10-29 10:32:18
  * @Description: 件上传工具
  * @param  limit          上传的条件
   * @param  limit [ type ]   limit type  允许上传的后缀名字
@@ -10,10 +10,6 @@
   * @slot  默认 <i class="el-icon-upload"></i>
   * @date 2018年7月10日
   * @example 使用示例
-  *        <upload-file v-model :limit="obj" > </upload-pic>
-            obj = {
-              type: []  [ ipg, png, txt, js, gif, ....]
-            }
 */
 /* eslint-disable no-undef */
 
@@ -29,7 +25,7 @@
       :list-type="listType"
       action=""
       :before-upload="doUpload"
-      :accept="imgAccept(limit.type)"
+      :accept="imgAccept(limit?limit.type:[])"
     >
       <slot>
         <el-button
