@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 17:46:58
+ * @LastEditTime: 2019-10-29 18:29:43
  * @Description: 采购单详情
 */
 <template>
@@ -14,6 +14,7 @@
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
         <el-form>
+          <CommodityInfo />
           <CustomInfo />
           <ExtrasInfo />
         </el-form>
@@ -30,6 +31,7 @@ import CustomInfo from '@/components/formComponents/custom-info';
 import ExtrasInfo from '@/components/formComponents/extras-info';
 import SideDetail from '@/components/side-detail';
 import SideStatusbar from '@/components/formComponents/side-statusbar';
+import CommodityInfo from '@/components/formComponents/commodity-info'; // 商品信息
 import OrderStorage from './orderStorage';
 import AddBorrowIn from '@/views/order/borrow/addIn';
 
@@ -40,7 +42,8 @@ export default {
     SideStatusbar,
     SideDetail,
     OrderStorage,
-    AddBorrowIn
+    AddBorrowIn,
+    CommodityInfo
   },
   props: {
     visible: Boolean

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-29 11:57:36
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 15:29:30
+ * @LastEditTime: 2019-10-29 18:57:33
  * @Description: tabs
 */
 <template>
@@ -23,8 +23,8 @@ export default {
   data() {
     return {
       activeName: '',
-      io: null,
-      tabsVisible: {}
+      tabsVisible: {},
+      timer: null
     };
   },
   computed: {
@@ -35,8 +35,31 @@ export default {
     }
   },
   watch: {},
-  mounted() {},
+  mounted() {
+    this.$refs.elMain.$el.onscroll = this.onScroll;
+  },
   methods: {
+    onScroll() {
+      clearTimeout(this.timer);
+      let baseDom = this.$refs.elMain.$el;
+      this.timer = setTimeout(() => {
+        let rootRect = baseDom.getBoundingClientRect();
+        this.tabs
+          .map(item => ({
+            dom: document.getElementById(item.name),
+            name: item.name
+          }))
+          .filter(a => a.dom)
+          .some(({ dom, name }) => {
+            let childRect = dom.getBoundingClientRect();
+            let interHeight = childRect.bottom - rootRect.top;
+            if (interHeight > 50 && interHeight < childRect.height + 50) {
+              this.activeName = name;
+              return true;
+            }
+          });
+      }, 200);
+    },
     tabChange({ name }) {
       let el = document.getElementById(name);
       if (el) {

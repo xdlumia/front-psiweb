@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 18:08:47
+ * @LastEditTime: 2019-10-29 18:26:55
  * @Description: 新增备货单
 */
 <template>
@@ -18,13 +18,13 @@
       maxHeight:maxHeight+'px'
     }"> 
       <d-tab-pane label="到货信息" name="shipInfo" />
-      <d-tab-pane label="商品信息" name="commodityDetails" /> 
+      <d-tab-pane label="商品信息" name="commodityInfo" /> 
       <d-tab-pane label="自定义信息" name="customInfo" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
       <div slot="body">
         <el-form :model="form" class="p10"> 
           <ShipInfo id="shipInfo" />
-          <CommodityDetails id="commodityDetails" />  
+          <CommodityInfo id="commodityInfo" />  
           <CustomInfo id="customInfo" />
           <ExtrasInfo id="extrasInfo" />
         </el-form>
@@ -36,7 +36,7 @@
 import CustomInfo from '@/components/formComponents/custom-info'; // 自定义信息
 import ExtrasInfo from '@/components/formComponents/extras-info'; // 备注信息
 import ShipInfo from '@/components/formComponents/ship-info'; // 供应商信息
-import CommodityDetails from '@/components/formComponents/commodity-details'; // 商品信息
+import CommodityInfo from '@/components/formComponents/commodity-info'; // 商品信息
 import dTabs from '@/components/tabs/index';
 import dTabPane from '@/components/tabs/tab-pane';
 
@@ -45,7 +45,7 @@ export default {
     ExtrasInfo,
     CustomInfo,
     ShipInfo,
-    CommodityDetails,
+    CommodityInfo,
     dTabs,
     dTabPane
   },
