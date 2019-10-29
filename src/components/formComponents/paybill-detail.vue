@@ -2,12 +2,12 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 15:47:47
+ * @LastEditTime: 2019-10-29 16:57:30
  * @Description: 付款单详细信息
 */
 <template>
   <form-card title="详细信息">
-    <el-row>
+    <el-row :gutter="10">
       <el-col :span="8">
         <div class="mt5 d-required">费用类型</div>
         <div class="d-text-gray mt10 mb10 d-elip">采购费</div>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 10:18:51
+ * @LastEditTime: 2019-10-29 16:54:32
  * @Description: 备注信息
 */
 <template>
@@ -34,7 +34,7 @@
     <el-row>
       <el-col
         :span="24"
-        class="pl5 pr5 pb5"
+        class=""
       >
         <el-form-item
           label="备注"
@@ -51,7 +51,7 @@
             show-word-limit
             type="textarea"
             v-else
-            v-model="form.textarea"
+            v-model="data.textarea"
           />
         </el-form-item>
       </el-col>
@@ -113,13 +113,13 @@ export default {
     uploadFile
   },
   props: {
-    form: {
+    data: {
       type: Object,
       default: () => ({})
     },
-    editable: {
+    disabled: {
       type: Boolean,
-      default: true
+      default: false
     },
     canModify: Boolean
   },
@@ -133,7 +133,7 @@ export default {
       if (this.canModify) {
         return this.edit;
       } else {
-        return this.editable;
+        return !this.disabled;
       }
     }
   }
