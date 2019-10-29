@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-29 11:14:00
+ * @LastEditTime: 2019-10-29 19:31:25
  * @Description: 报价单详情
 */
 <template>
@@ -16,9 +16,9 @@
     <!-- 发货信息 -->
     <deliverInfo />
     <!-- 商品信息 -->
-    <goodsExported />
+    <commoditInfo />
     <!-- 报价有效期 -->
-
+    <payExpire />
     <!-- 附加发票 -->
     <extrataxInfo />
     <!-- 自定义信息 -->
@@ -35,7 +35,8 @@ import customInfo from '@/components/formComponents/custom-info' //自定义信�
 import deliverInfo from '@/components/formComponents/deliver-info' //发货信息
 import extrataxInfo from '@/components/formComponents/extratax-info' //附加发票
 import extraInfo from '@/components/formComponents/extras-info' //备注信息
-import goodsExported from '@/components/formComponents/goods-exported' //商品信息
+import commoditInfo from '@/components/formComponents/commodity-info' //商品信息
+import payExpire from '@/components/formComponents/pay-expire' //报价单有效期
 
 
 export default {
@@ -47,7 +48,8 @@ export default {
     deliverInfo,
     extrataxInfo,
     extraInfo,
-    goodsExported
+    commoditInfo,
+    payExpire
   },
   props: ['drawerData'],
   data() {
