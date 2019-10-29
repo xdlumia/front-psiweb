@@ -13,7 +13,7 @@
   >
     <form-card
       class="mb10 d-relative"
-      :title="index == 0 ? '发货信息' : ''"
+      :title="index == 0 ? '物流信息' : ''"
       v-for="(item, index) in logForm.logArr"
       :key="index"
     >
