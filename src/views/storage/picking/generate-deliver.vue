@@ -12,28 +12,6 @@
     v-dialogDrag
   >
     <el-container>
-      <el-header
-        class="d-bg-white"
-        style="height:54px;padding:0;"
-      >
-        <el-tabs
-          @tab-click="handleClick"
-          v-model="activeName"
-        >
-          <el-tab-pane name="deliverEdit">
-            <span
-              slot="label"
-              v-anchor:deliverEdit
-            >发货信息</span>
-          </el-tab-pane>
-          <el-tab-pane name="logisticsEdit">
-            <span
-              slot="label"
-              v-anchor:logisticsEdit
-            >物流信息</span>
-          </el-tab-pane>
-        </el-tabs>
-      </el-header>
       <el-main
         :style="{
                 maxHeight:maxHeight+'px'
@@ -44,9 +22,9 @@
           :model="form"
           class="p10"
         >
-          <deliverEdit ref="deliverEdit" />
+          <goodsPicking ref="goodsPicking" />
         </el-form>
-        <logisticsEdit ref="logisticsEdit" />
+        <pickingSn ref="pickingSn" />
       </el-main>
     </el-container>
     <span
@@ -66,13 +44,13 @@
   </el-dialog>
 </template>
 <script>
-import deliverEdit from '@/components/formComponents/deliver-edit';
-import logisticsEdit from '@/components/formComponents/logistics-edit';
+import goodsPicking from '@/components/formComponents/goods-picking'
+import pickingSn from '@/components/formComponents/picking-sn';
 
 export default {
   components: {
-    deliverEdit,
-    logisticsEdit
+    goodsPicking,
+    pickingSn
   },
   props: {
     visible: {
