@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-29 11:57:36
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 18:57:33
+ * @LastEditTime: 2019-10-29 19:03:37
  * @Description: tabs
 */
 <template>
@@ -18,6 +18,17 @@
   </el-container>
 </template>
 <script>
+/**
+ * @example
+ *   <d-tabs>
+ *     <d-tab-pane label="供应商信息" name="supplierInfo" /> 
+ *     <div slot="body">
+ *       <el-form class="p10">
+ *         <SupplierInfo id="supplierInfo" /> 
+ *       </el-form>
+ *     </div>
+ *   </d-tabs>
+ */
 export default {
   props: {},
   data() {
