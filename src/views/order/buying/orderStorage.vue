@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 18:26:37
+ * @LastEditTime: 2019-10-29 19:00:22
  * @Description: 采购入库单
 */
 <template>
@@ -17,23 +17,23 @@
     <d-tabs :style="{
       maxHeight:maxHeight+'px'
     }">
-      <d-tab-pane label="供应商信息" name="supplierInfo" />
-      <d-tab-pane label="公司信息" name="companyInfo" />
-      <d-tab-pane label="到货信息" name="shipInfo" />
-      <d-tab-pane label="商品信息" name="commodityInfo" />
-      <d-tab-pane label="收票滞纳金" name="billInfo" />
-      <d-tab-pane label="自定义信息" name="customInfo" />
-      <d-tab-pane label="备注信息" name="extrasInfo" />
+      <d-tab-pane label="供应商信息" :name="'supplierInfo'+randomStr" />
+      <d-tab-pane label="公司信息" :name="'companyInfo'+randomStr" />
+      <d-tab-pane label="到货信息" :name="'shipInfo'+randomStr" />
+      <d-tab-pane label="商品信息" :name="'commodityInfo'+randomStr" />
+      <d-tab-pane label="收票滞纳金" :name="'billInfo'+randomStr" />
+      <d-tab-pane label="自定义信息" :name="'customInfo'+randomStr" />
+      <d-tab-pane label="备注信息" :name="'extrasInfo'+randomStr" />
       <div slot="body">
         <el-form :model="form" class="p10">
-          <SupplierInfo id="supplierInfo" />
-          <CompanyInfo id="companyInfo" />
-          <ShipInfo id="shipInfo" />
-          <CommodityInfo id="commodityInfo" />
+          <SupplierInfo :id="'supplierInfo'+randomStr" />
+          <CompanyInfo :id="'companyInfo'+randomStr" />
+          <ShipInfo :id="'shipInfo'+randomStr" />
+          <CommodityInfo :id="'commodityInfo'+randomStr" />
           <CommodityInfo />
-          <BillInfo id="billInfo" />
-          <CustomInfo id="customInfo" />
-          <ExtrasInfo id="extrasInfo" />
+          <BillInfo :id="'billInfo'+randomStr" />
+          <CustomInfo :id="'customInfo'+randomStr" />
+          <ExtrasInfo :id="'extrasInfo'+randomStr" />
         </el-form>
       </div>
     </d-tabs>
@@ -76,7 +76,8 @@ export default {
   },
   data() {
     return {
-      activeName: ''
+      activeName: '',
+      randomStr: +new Date() + '-' + Math.random()
     };
   },
   mounted() {},

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 16:58:24
+ * @LastEditTime: 2019-10-29 19:00:53
  * @Description: 供应商信息
 */
 <template>
@@ -13,7 +13,7 @@
                     {required:true,message:'必填项'}
                 ]" label="供应商名称" prop size="mini">
           <div class="d-text-gray mt10 d-elip wfull" v-if="disabled">供应商名称</div>
-          <el-select class="wfull" filterable placeholder="请选择" v-else v-model="form.bankCard">
+          <el-select class="wfull" filterable placeholder="请选择" v-else v-model="data.bankCard">
             <el-option :key="item.value" :label="item.label" :value="item.value" v-for="item in options"></el-option>
           </el-select>
         </el-form-item>
@@ -46,7 +46,7 @@
         <el-form-item :rules="[{type:'telePhone'},
                     {required:true,message:'必填项'}]" label="注册电话" size="mini">
           <div class="d-text-gray mt10 d-elip wfull" v-if="disabled">注册电话</div>
-          <el-input disabled placeholder="请输入注册电话" v-else v-model="form.telPhone" />
+          <el-input disabled placeholder="请输入注册电话" v-else v-model="data.telPhone" />
         </el-form-item>
       </el-col>
       <el-col :span="8" class="">
@@ -68,7 +68,7 @@
           size="mini"
         >
           <div class="d-text-gray mt10 d-elip wfull" v-if="disabled">开户行账号</div>
-          <el-input disabled placeholder="请输入开户行账号" v-else v-model="form.bankCard" />
+          <el-input disabled placeholder="请输入开户行账号" v-else v-model="data.bankCard" />
         </el-form-item>
       </el-col>
     </el-row>
