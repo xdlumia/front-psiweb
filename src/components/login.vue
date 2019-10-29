@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:2
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 14:14:23
+ * @LastEditTime: 2019-10-28 18:44:04
  * @LastEditors: 高大鹏
  * @LastEditTime: 2019-10-28 15:27:49
  * @Description: 登录页
@@ -12,10 +12,18 @@
     <div class="login-content">
       <div class="login-mian">
         <div class="login-header">
-          <img class="logo" :src="require('@/assets/img/logo.png')" alt />
+          <img
+            class="logo"
+            :src="require('@/assets/img/logo.png')"
+            alt
+          />
           <h2>进销存战役</h2>
         </div>
-        <el-form :model="loginForm" ref="loginForm" class="login-info">
+        <el-form
+          :model="loginForm"
+          ref="loginForm"
+          class="login-info"
+        >
           <!-- 帐号 -->
           <el-form-item
             prop="account"
@@ -44,7 +52,10 @@
           </el-form-item>
           <div style="margin-bottom:10px; height:25px;">
             <el-checkbox-group v-model="remember">
-              <el-checkbox label="记住密码" name="type"></el-checkbox>
+              <el-checkbox
+                label="记住密码"
+                name="type"
+              ></el-checkbox>
             </el-checkbox-group>
           </div>
           <el-form-item>
@@ -60,17 +71,29 @@
       <div class="login-footer">
         <p>
           copyright © 2018
-          <a href="/" target="_blank">fanteren</a>
+          <a
+            href="/"
+            target="_blank"
+          >fanteren</a>
         </p>
         <p>
           <span>
-            <a href="/" target="_blank">帮助</a>
+            <a
+              href="/"
+              target="_blank"
+            >帮助</a>
           </span>
           <span>
-            <a href="/" target="_blank">隐私</a>
+            <a
+              href="/"
+              target="_blank"
+            >隐私</a>
           </span>
           <span>
-            <a href="/" target="_blank">条款</a>
+            <a
+              href="/"
+              target="_blank"
+            >条款</a>
           </span>
         </p>
       </div>
@@ -83,7 +106,12 @@
       :before-close="closeUpdatepwd"
       width="420px"
     >
-      <el-form ref="updateForm" :model="updateForm" label-width="80px" size="medium">
+      <el-form
+        ref="updateForm"
+        :model="updateForm"
+        label-width="80px"
+        size="medium"
+      >
         <p class="mb10 d-flex-lr">
           <i class="el-icon-warning d-text-orange f18 mr10"></i>
           <span>系统检测到您使用的是初始密码或密码安全级别不够，为确保您的数据安全，请更改您的密码！</span>
@@ -133,9 +161,19 @@
           ></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="ac">
-        <el-button size="medium" @click="closeUpdatepwd">取 消</el-button>
-        <el-button size="medium" type="primary" @click="savePassword">确 定</el-button>
+      <div
+        slot="footer"
+        class="ac"
+      >
+        <el-button
+          size="medium"
+          @click="closeUpdatepwd"
+        >取 消</el-button>
+        <el-button
+          size="medium"
+          type="primary"
+          @click="savePassword"
+        >确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -192,8 +230,8 @@ export default {
   },
   computed: {
     syscode() {
-      return 'psi'
-      // return 'pmdwebset'
+      // return 'psi'
+      return 'pmdwebset'
     }
   },
   created() {
