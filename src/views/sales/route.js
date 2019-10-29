@@ -2,8 +2,8 @@
  * @author: 王晓冬
  * @Date: 2019-10-28 10:29:53
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 19:20:20
- * @Description: 采购模块路由
+ * @LastEditTime: 2019-10-29 08:46:26
+ * @Description: 销售模块路由
  */
 const Quote = () => import('@/views/sales/quote') // 报价单
 const OutLibrary = () => import('@/views/sales/outLibrary') // 销售出库单
@@ -14,7 +14,7 @@ const Apportion = () => import('@/views/sales/apportion') // 销售费用分摊�
 const Adjust = () => import('@/views/sales/adjust') // 账单调整单
 const AdjustPrice = () => import('@/views/sales/adjustPrice') // 销售调价单
 
-let route = {
+let routeObj = {
   Quote: '报价单',
   OutLibrary: "销售出库单",
   Return: '销售退货单',
@@ -26,14 +26,15 @@ let route = {
 }
 
 let routes = []
-for (let key in route) {
+for (let key in routeObj) {
   key.toLowerCase()
   routes.push({
+    //path: 'sales/quoto'
     path: `/sales/${key.toLowerCase()}`,
     component: eval(key),
     meta: {
       parent: '销售',
-      title: route[key]
+      title: routeObj[key]
     }
   })
 }
