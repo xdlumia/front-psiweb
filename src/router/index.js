@@ -25,6 +25,9 @@ import salesRoute from '@/views/sales/route.js'
 // 框架
 import Layout from '@/components/layout'
 
+//库房路由
+import storageRoute from '@/views/storage/route.js'
+
 // TODO 使用这种方式报错 谁懂看一下?
 // 解决方案 .eslintrc.js 添加 parserOptions:{parser: 'babel-eslint'}
 // https://github.com/vuejs/eslint-plugin-vue/issues/204
@@ -32,9 +35,6 @@ import Layout from '@/components/layout'
 
 import recharge from '@/views/businessSetting/recharge'
 
-
-// 库房
-import sales from '@/views/storage/sales'
 
 // 首页
 const Home = () => import('@/views/home')
@@ -55,80 +55,72 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [{
-    path: '/login',
-    name: 'login',
-    component: Login,
-    meta: {
-      title: '进销存管理系统'
+      path: '/login',
+      name: 'login',
+      component: Login,
+      meta: {
+        title: '进销存管理系统'
+      }
+    },
+    {
+      path: '/',
+      component: Layout,
+      redirect: '/home',
+      children: [{
+          path: '/home',
+          component: Home,
+          meta: {
+            parent: '首页',
+            title: '首页'
+          }
+        },
+        {
+          path: '/businessSetting/recharge',
+          name: '/businessSetting/recharge',
+          component: recharge,
+          meta: {
+            parent: '辅助设置',
+            title: '充值记录'
+          }
+        },
+        {
+          path: '/asistant/businessSetting', // 业务设置
+          name: '/asistant/businessSetting',
+          component: BusinessSetting,
+          meta: {
+            parent: '辅助管理',
+            title: '业务设置'
+          }
+        },
+        {
+          path: '/asistant/formManagement', // 表单管理;
+          name: '/asistant/formManagement',
+          component: FormManagement,
+          meta: {
+            parent: '辅助管理',
+            title: '表单管理'
+          }
+        },
+        {
+          path: '/asistant/templateManage', // 模板管理;
+          name: '/asistant/templateManage',
+          component: TemplateManage,
+          meta: {
+            parent: '辅助管理',
+            title: '模板管理'
+          }
+        },
+        ...Object.values(systemRoute), // 系统设置
+        ...salesRoute, // 销售路由配置
+        ...OrderRoute, // 采购模块路由配置
+        ...ContractRoute, // 合同模块路由配置
+        ...storageRoute // 库房模块路由配置
+      ]
+    },
+    // 404
+    {
+      path: '*', // 如果找不到页面跳转到404
+      redirect: '/404'
     }
-  },
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/home',
-    children: [{
-      path: '/home',
-      component: Home,
-      meta: {
-        parent: '首页',
-        title: '首页'
-      }
-    },
-    {
-      path: '/businessSetting/recharge',
-      name: '/businessSetting/recharge',
-      component: recharge,
-      meta: {
-        parent: '辅助设置',
-        title: '充值记录'
-      }
-    },
-    {
-      path: '/storage/sales',
-      name: '/storage/sales',
-      component: sales,
-      meta: {
-        parent: '库房',
-        title: '库房销售单'
-      }
-    },
-    {
-      path: '/asistant/businessSetting', // 业务设置
-      name: '/asistant/businessSetting',
-      component: BusinessSetting,
-      meta: {
-        parent: '辅助管理',
-        title: '业务设置'
-      }
-    },
-    {
-      path: '/asistant/formManagement', // 表单管理;
-      name: '/asistant/formManagement',
-      component: FormManagement,
-      meta: {
-        parent: '辅助管理',
-        title: '表单管理'
-      }
-    },
-    {
-      path: '/asistant/templateManage', // 模板管理;
-      name: '/asistant/templateManage',
-      component: TemplateManage,
-      meta: {
-        parent: '辅助管理',
-        title: '模板管理'
-      }
-    },
-    ...Object.values(systemRoute), // 系统设置
-    ...salesRoute, // 销售路由配置
-    ...OrderRoute, // 采购模块路由配置
-    ...ContractRoute // 合同模块路由配置
-    ]
-  },
-  // 404
-  {
-    path: '*', // 如果找不到页面跳转到404
-    redirect: '/404'
-  }
   ]
 })

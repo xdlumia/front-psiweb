@@ -8,6 +8,18 @@
 <template>
   <div>
     <form-card title='出库商品'>
+      <div slot="title">
+        <span>出库商品</span>
+        <span class="fr">
+          <span>
+            <el-link
+              :underline="false"
+              @click="fullscreen"
+              type="primary"
+            >全屏显示</el-link>
+          </span>
+        </span>
+      </div>
       <d-table
         api="seePumaidongService.collegeManagerList"
         :params="queryForm"
@@ -120,6 +132,10 @@
         ></el-table-column>
 
       </d-table>
+      <FullscreenElement
+        :element="$refs.companyTable"
+        :visible.sync="showInFullscreen"
+      />
       <el-dialog
         title="机器号/SN码记录"
         :visible.sync="dialogVisible"
@@ -134,6 +150,7 @@
 </template>
 <script>
 import commodityPicking from '@/components/formComponents/commodity-picking'
+import FullscreenElement from '@/components/fullscreen-element';
 import machineSn from '@/components/formComponents/machine-sn'
 export default {
   data() {
@@ -149,17 +166,22 @@ export default {
         limit: 20
       },
       dialogVisible: false,
+      showInFullscreen: false
     }
   },
   methods: {
     //点击机器号和SN码
     getTableVisible() {
       this.dialogVisible = true
+    },
+    fullscreen() {
+      this.showInFullscreen = true;
     }
   },
   components: {
     commodityPicking,
-    machineSn
+    machineSn,
+    FullscreenElement
   },
 }
 </script>
