@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 16:45:43
+ * @LastEditTime: 2019-10-29 11:14:00
  * @Description: 报价单详情
 */
 <template>
@@ -50,6 +50,12 @@ export default {
     goodsExported
   },
   props: ['drawerData'],
+  data() {
+    return {
+      activeName: 'detail',
+      form: {},
+    }
+  },
   beforeDestroy() {
   }
 }

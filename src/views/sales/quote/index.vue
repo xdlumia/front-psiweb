@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 16:41:34
+ * @LastEditTime: 2019-10-29 17:00:03
  * @Description: 销售-请购单
  */
 <template>
@@ -122,7 +122,7 @@ export default {
       }
       // 如果是新增复制合并调用dialog弹出框
       if (type == "add" || type == "copy" || type == "merge") {
-        this.dialogVisible = true;
+        this.dialogVisible = true
       } else {
         // 否则调用抽屉弹出框
         this.drawerVisible = true;

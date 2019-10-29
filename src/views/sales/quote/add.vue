@@ -2,11 +2,17 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-26 18:13:22
+ * @LastEditTime: 2019-10-29 17:28:20
  * @Description: file content
 */
 <template>
   <div>
+    <el-steps :active="2">
+      <el-step title="选择客户"></el-step>
+      <el-step title="创建配置"></el-step>
+      <el-step title="确定配置信息"></el-step>
+      <el-step title="填写报价信息"></el-step>
+    </el-steps>
     <el-form
       label-width="160px"
       v-loading="loading"

@@ -1,0 +1,126 @@
+<!--
+ * @Author: 高大鹏
+ * @Date: 2019-10-29 11:02:47
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-10-29 15:45:28
+ * @Description: 业务设置-销售
+ -->
+<template>
+  <div class>
+    <div>
+      <el-col :span="16">
+        <h3 class="mt10 d-text-gray b">报价单</h3>
+      </el-col>
+      <el-col :span="8" class="ar">
+        <el-button
+          v-if="!isEdit"
+          type="primary"
+          size="small"
+          style="margin-top: 20px;"
+          @click="isEdit = true"
+        >编辑</el-button>
+        <el-button
+          v-if="isEdit"
+          type="primary"
+          size="small"
+          style="margin-top: 20px;"
+          @click="save"
+        >保存</el-button>
+        <el-button v-if="isEdit" size="small" style="margin-top: 20px;" @click="cancel">取消</el-button>
+        <el-button size="small" style="margin-top: 20px;" @click="restoreDefault">恢复默认</el-button>
+      </el-col>
+    </div>
+    <el-form size="small" :model="saleForm" :disabled="!isEdit">
+      <fieldset class="d-fieldset mb20">
+        <legend>
+          <i class="d-round12 d-circle d-bg-blue"></i>
+          <span class="mr5">报价单</span>
+          <span class="f12 pb10" style="color: #999">说明：报价单设置</span>
+        </legend>
+        <el-form-item>
+          <el-col :span="14">
+            <span>【报价单】的“折后销售单价”小于“销售参考价”时，不能保存生成报价单</span>
+          </el-col>
+          <el-col :span="6">
+            <el-switch v-model="saleForm.quotation1" active-text="开" inactive-text="关"></el-switch>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-col :span="14">
+            <span>【报价单】的“报价单有效期”默认时长</span>
+          </el-col>
+          <el-col :span="6">
+            <el-input-number
+              v-model="saleForm.quotation2"
+              size="mini"
+              controls-position="right"
+              :min="1"
+              setp="1"
+            ></el-input-number>天
+          </el-col>
+        </el-form-item>
+      </fieldset>
+      <el-col :span="24">
+        <h3 class="mt10 mb10 d-text-gray b">销售出库单</h3>
+      </el-col>
+      <fieldset class="d-fieldset mb20">
+        <legend>
+          <i class="d-round12 d-circle d-bg-blue"></i>
+          <span>
+            销售出库单
+            <span class="f12 pb10" style="color: #999">说明：销售出库单设置</span>
+          </span>
+        </legend>
+        <el-form-item>
+          <el-col :span="14">
+            <span>【销售出库单】的选择账期“现结”时，如果关联的【账单】“未结清”时，【出库单】不能进行“出库”</span>
+          </el-col>
+          <el-col :span="6">
+            <el-switch v-model="saleForm.outbound1" active-text="开" inactive-text="关"></el-switch>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-col :span="14">
+            <span>【销售出库单】，有“标准”合同时，不用进行“合同完善”审核，自动通过</span>
+          </el-col>
+          <el-col :span="6">
+            <el-switch v-model="saleForm.outbound2" active-text="开" inactive-text="关"></el-switch>
+          </el-col>
+        </el-form-item>
+      </fieldset>
+    </el-form>
+  </div>
+</template>
+
+<script type='text/ecmascript-6'>
+export default {
+  data() {
+    return {
+      activeName: 'first',
+      isEdit: false,
+      saleForm: {
+
+      }
+    }
+  },
+  components: {
+  },
+  methods: {
+    save() {
+
+    },
+    cancel() {
+
+    },
+    restoreDefault() {
+
+    }
+  }
+}
+</script>
+
+<style scoped lang='scss'>
+/deep/ .el-input-number--mini {
+  width: 100px;
+}
+</style>

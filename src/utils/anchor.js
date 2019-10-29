@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 14:42:50
+ * @LastEditTime: 2019-10-29 18:14:00
  * @Description: 在滚动区域内滚动到指定区域
  */
 import Vue from 'vue'
