@@ -9,11 +9,23 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
+      :moreButton="true"
       :headers="tableHeader"
       :selection='false'
       api="bizSystemService.getEmployeeList"
       title="组装单"
     >
+      <template v-slot:button>
+        <div class='fl mr10 mt5'>
+          <span class="d-text-black">自动分配：</span>
+          <el-switch v-model="value1">
+          </el-switch>
+        </div>
+        <el-button
+          type="primary"
+          size='mini'
+        >新增</el-button>
+      </template>
       <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
@@ -45,7 +57,11 @@
             <el-button
               size="mini"
               type="primary"
-            >发货</el-button>
+            >生成拣货单和组装任务</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+            >终止</el-button>
           </div>
           <SideStatusbar />
         </el-header>
@@ -58,10 +74,7 @@
             <el-tab-pane label="详情"></el-tab-pane>
             <el-tab-pane label="拣货单"></el-tab-pane>
             <el-tab-pane label="组装任务"></el-tab-pane>
-            <el-tab-pane label="发货单"></el-tab-pane>
-            <el-tab-pane label="销售出库单"></el-tab-pane>
-            <el-tab-pane label="借入单"></el-tab-pane>
-            <el-tab-pane label="应收账单"></el-tab-pane>
+            <el-tab-pane label="销售单"></el-tab-pane>
           </el-tabs>
           <div class="p10">
             <components
@@ -100,6 +113,7 @@ export default {
         page: 1,
         limit: 20
       },
+      value1: '',
       componentActive: '',//当前的组件
       tableVisible: false,//销售单右侧抽屉
       drawerData: {//弹框的相关数据
@@ -109,21 +123,18 @@ export default {
       activeName: '',
       status: [],
       tableHeader: [
-        { label: '销售出库单编号', prop: 'deptName', width: '140' },
-        { label: '客户名称', prop: 'deptName', width: '100' },
-        { label: '销售单编号', prop: 'deptName', width: '140' },
-        { label: '出库状态', prop: 'deptName', width: '100' },
-        { label: '发货状态', prop: 'deptName', width: '100' },
-        { label: '组装任务状态', prop: 'deptName', width: '140' },
+        { label: '操作', prop: 'deptName', width: '140' },
+        { label: '生成顺序', prop: 'deptName', width: '100' },
+        { label: '组装单编号', prop: 'deptName', width: '140' },
+        { label: '组装单状态', prop: 'deptName', width: '100' },
         { label: '拣货状态', prop: 'deptName', width: '100' },
-        { label: '商品类别', prop: 'deptName', width: '100' },
-        { label: '出库数量', prop: 'createTime', width: '100' },
-        { label: '未出库量', prop: 'createTime', width: '100' },
-        { label: '已出库量', prop: 'createTime', width: '100' },
-        { label: '出库人', prop: 'createTime', width: '100' },
-        { label: '生成时间', prop: 'createTime', width: '140' },
+        { label: '任务数量', prop: 'deptName', width: '80' },
+        { label: '待分配', prop: 'deptName', width: '80' },
+        { label: '未组装量', prop: 'deptName', width: '80' },
+        { label: '已组装量', prop: 'createTime', width: '80' },
         { label: '单据创建人', prop: 'createTime', width: '100' },
-        { label: '创建部门', prop: 'createTime', width: '100' }
+        { label: '创建部门', prop: 'createTime', width: '100' },
+        { label: '创建时间', prop: 'createTime', width: '100' }
       ]
     };
   },
@@ -131,7 +142,7 @@ export default {
     //点击打开右侧边栏
     getTableVisible(data) {
       this.tableVisible = true
-      this.drawerData.title = '销售单' + data.id
+      this.drawerData.title = '组装单' + data.id
     },
     //tab换组件
     handleClick() {
