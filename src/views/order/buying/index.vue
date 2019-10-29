@@ -7,7 +7,11 @@
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="请购单">
+    <TableView
+      :headers="tableHeader"
+      api="bizSystemService.getEmployeeList"
+      title="请购单"
+    >
       <template slot-scope="{column,row,value}">
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>

@@ -15,13 +15,17 @@
       title="销售单"
     >
       <template slot-scope="{column,row,value}">
-        <span
-          class="d-text-blue"
-          @click="getTableVisible(row)"
-        >点击111</span>
+        <span @click="getTableVisible(row)">点击111</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
+
+      <!-- <template slot-scope="{column,row,value}">
+        <span @click="quotoHandle('quoto',row)">报价</span>
+        <span @click="quotoHandle('sales',row)">销售</span>
+        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-else>{{value}}</span>
+      </template> -->
     </TableView>
     <side-popup
       class="side-page"
