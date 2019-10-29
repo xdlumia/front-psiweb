@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-26 16:02:35
+ * @LastEditTime: 2019-10-29 14:42:50
  * @Description: 在滚动区域内滚动到指定区域
  */
 import Vue from 'vue'
@@ -22,7 +22,7 @@ import Vue from 'vue'
 Vue.directive('anchor', {
   inserted(el, bind, vm) {
     const targetRefName = bind.arg;
-    el.addEventListener('click', vm.hookfn = () => {
+    el.addEventListener('click', () => {
       let targetRefContext = vm.context;
       while (!targetRefContext.$refs[targetRefName] && targetRefContext.$parent) {
         targetRefContext = targetRefContext.$parent;
@@ -34,7 +34,7 @@ Vue.directive('anchor', {
       } else {
         if (targetRefName) {
           el = document.getElementById(targetRefName);
-        } else if (bind.value) {
+        } else if (typeof bind.value == "string" && bind.value) {
           el = document.querySelector(bind.value)
         }
       }
@@ -42,8 +42,11 @@ Vue.directive('anchor', {
         el = el.$el;
       }
       if (el) {
-        el.scrollIntoView(true)
+        el.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        })
       }
-    }, this)
+    })
   }
 })

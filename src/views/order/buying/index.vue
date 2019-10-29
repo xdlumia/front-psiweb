@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 10:11:30
+ * @LastEditTime: 2019-10-29 15:45:21
  * @Description: 采购-请购单
 */
 <template>
@@ -14,7 +14,7 @@
       </template>
     </TableView>
     <OrderBuyingDetail />
-    <OrderStorage />
+    <OrderStorage :visible.sync="orderStorage" />
   </div>
 </template>
 <script>
@@ -33,6 +33,7 @@ export default {
   data() {
     return {
       status: [],
+      orderStorage: true,
       tableHeader: [
         { label: '请购单编号', prop: 'deptName', width: '180' },
         { label: '报价单编号', prop: 'deptName', width: '180' },

@@ -2,71 +2,67 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditTime: 2019-10-29 15:45:59
  * @Description: 采购入库单
 */
 <template>
-  <el-dialog :visible.sync="visible" title="采购入库单" v-dialogDrag>
-    <el-container>
-      <el-header class="d-bg-white" style="height:54px;padding:0;">
-        <el-tabs @tab-click="handleClick" v-model="activeName">
-          <el-tab-pane name="supplierInfo">
-            <span slot="label" v-anchor:supplierInfo>供应商信息</span>
-          </el-tab-pane>
-          <el-tab-pane name="companyInfo">
-            <span slot="label" v-anchor:companyInfo>公司信息</span>
-          </el-tab-pane>
-          <el-tab-pane name="deliverInfo">
-            <span slot="label" v-anchor:deliverInfo>到货信息</span>
-          </el-tab-pane>
-          <el-tab-pane name="goodsInfo">
-            <span slot="label">商品信息</span>
-          </el-tab-pane>
-          <el-tab-pane name="taxInfo">
-            <span slot="label" v-anchor:taxInfo>收票滞纳金</span>
-          </el-tab-pane>
-          <el-tab-pane label="自定义信息" name="customInfo">
-            <span slot="label"></span>
-          </el-tab-pane>
-          <el-tab-pane label="备注信息" name="extrasInfo">
-            <span slot="label"></span>
-          </el-tab-pane>
-        </el-tabs>
-      </el-header>
-      <el-main :style="{
-                maxHeight:maxHeight+'px'
-            }" style="padding:0;">
-        <el-form :model="form" class="p10">
-          <SupplierInfo ref="supplierInfo" />
-          <CompanyInfo ref="companyInfo" />
-          <DeliverInfo ref="deliverInfo" />
-          <TaxInfo ref="taxInfo" />
+  <el-dialog :visible="visible" @close="close" title="采购入库单" v-dialogDrag>
+    <d-tabs :style="{
+      maxHeight:maxHeight+'px'
+    }">
+      <d-tab-pane label="供应商信息" name="supplierInfo" />
+      <d-tab-pane label="公司信息" name="companyInfo" />
+      <d-tab-pane label="到货信息" name="shipInfo" />
+      <d-tab-pane label="商品信息" name="commodityDetails" />
+      <d-tab-pane label="收票滞纳金" name="billInfo" />
+      <d-tab-pane label="自定义信息" name="customInfo" />
+      <d-tab-pane label="备注信息" name="extrasInfo" />
+      <div slot="body">
+        <el-form :model="form" class="p10" style="height:1900px;">
+          <SupplierInfo id="supplierInfo" />
+          <CompanyInfo id="companyInfo" />
+          <ShipInfo id="shipInfo" />
+          <CommodityDetails id="commodityDetails" />
+          <CommodityDetails />
+          <BillInfo id="billInfo" />
+          <CustomInfo id="customInfo" />
+          <ExtrasInfo id="extrasInfo" />
         </el-form>
-      </el-main>
-    </el-container>
+      </div>
+    </d-tabs>
+    <div class="ac" slot="footer">
+      <el-button @click="close" type="primary">确定</el-button>
+      <el-button @click="close">取消</el-button>
+    </div>
   </el-dialog>
 </template>
 <script>
-import ApprovePanel from '@/components/formComponents/approve-panel';
-import CustomInfo from '@/components/formComponents/custom-info';
-import CompanyInfo from '@/components/formComponents/company-info';
-import PayExpire from '@/components/formComponents/pay-expire';
-import ExtrasInfo from '@/components/formComponents/extras-info';
-import SupplierInfo from '@/components/formComponents/supplier-info';
-import DeliverInfo from '@/components/formComponents/deliver-info';
-import TaxInfo from '@/components/formComponents/extratax-info';
+import CustomInfo from '@/components/formComponents/custom-info'; // 自定义信息
+import CompanyInfo from '@/components/formComponents/company-info'; // 公司信息
+import ExtrasInfo from '@/components/formComponents/extras-info'; // 备注信息
+import SupplierInfo from '@/components/formComponents/supplier-info'; // 供应商信息
+import ShipInfo from '@/components/formComponents/ship-info'; // 供应商信息
+import CommodityDetails from '@/components/formComponents/commodity-details'; // 商品信息
+import BillInfo from '@/components/formComponents/bill-info'; // 商品信息
+import dTabs from '@/components/tabs/index';
+import dTabPane from '@/components/tabs/tab-pane';
 
 export default {
   components: {
     SupplierInfo,
     CompanyInfo,
-    DeliverInfo,
-    TaxInfo
+    ExtrasInfo,
+    CustomInfo,
+    ShipInfo,
+    CommodityDetails,
+    BillInfo,
+    dTabs,
+    dTabPane
   },
   props: {
     visible: {
       type: Boolean,
-      default: true
+      default: false
     },
     form: {}
   },
@@ -84,6 +80,9 @@ export default {
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
+    },
+    close() {
+      this.$emit('update:visible', false);
     }
   }
 };
