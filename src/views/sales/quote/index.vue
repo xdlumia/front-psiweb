@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 15:20:20
+ * @LastEditTime: 2019-10-30 19:33:33
  * @Description: 销售-报价单
  */
 <template>
@@ -51,29 +51,26 @@
     </table-view>
     <!-- 新增 / 编辑 弹出框-->
     <el-dialog
-      :title="drawerData.title"
-      :visible.sync="dialogVisible"
-      :width="drawerData.width"
+      :title="dialogData.title"
+      :visible.sync="dialogData.visible"
+      :width="dialogData.width"
       v-dialogDrag
     >
       <components
-        :is="drawerData.component"
-        :visible.sync="dialogVisible"
-        :dialogData="drawerData"
+        :is="dialogData.component"
+        :dialogData="dialogData"
       ></components>
     </el-dialog>
 
     <!-- 抽屉弹出框 -->
     <el-drawer
       :title="drawerData.title"
-      :visible.sync="drawerVisible"
+      :visible.sync="drawerData.visible"
       :size="drawerData.width"
     >
       <components
-        :visible.sync="drawerVisible"
         :is="drawerData.component"
         :drawerData="drawerData"
-        v-if="drawerVisible"
       ></components>
     </el-drawer>
 
@@ -111,9 +108,16 @@ export default {
         page: 1,
         limit: 20
       },
-      dialogVisible: false, //dialog弹出框
-      drawerVisible: false, //抽屉弹出框
+      //dialog弹出框
+      dialogData: {
+        visible: false,
+        title: '',
+        type: '',
+        width: '920px',
+        data: '',
+      },
       drawerData: {
+        visible: false,
         title: '',
         type: '',
         width: '920px',
@@ -133,19 +137,18 @@ export default {
       }
       // 如果是新增复制合并调用dialog弹出框
       if (type == "add" || type == "copy" || type == "merge") {
-        this.dialogVisible = true
+        this.dialogData.visible = true
+        this.dialogData.type = type
+        this.dialogData.title = typeObj[type].title
+        this.dialogData.component = typeObj[type].comp
+        this.dialogData.data = row;
       } else {
-        // 否则调用抽屉弹出框
-        this.drawerVisible = true;
-      }
-      // 非新增才会有row数据
-      if (type != 'add') {
+        this.drawerData.visible = true
+        this.drawerData.type = type
+        this.drawerData.title = typeObj[type].title
+        this.drawerData.component = typeObj[type].comp
         this.drawerData.data = row;
       }
-
-      this.drawerData.type = type
-      this.drawerData.title = typeObj[type].title
-      this.drawerData.component = typeObj[type].comp
     },
     // 多选
     selectionChange(val) {

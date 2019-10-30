@@ -2,21 +2,20 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 19:01:49
+ * @LastEditTime: 2019-10-30 19:34:28
  * @Description: 选择客户
 */
 <template>
   <div v-loading="loading">
     <el-input
       size="small"
-      class="mt10"
+      class="mt20 mb20"
       v-model="clientno"
       placeholder="请输入客户编号或名称"
     >
       <button slot="append">搜索</button>
     </el-input>
     <el-tabs
-      class="mt10"
       v-model="currCompont"
       type="card"
     >

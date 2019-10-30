@@ -2,19 +2,11 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 19:07:16
+ * @LastEditTime: 2019-10-30 19:40:04
  * @Description: file content
 */
 <template>
   <div v-loading="loading">
-    <p class="ar">
-      <el-button
-        @click="steps++"
-        type="primary"
-        :disabled="steps==4"
-        size="small"
-      >下一步</el-button>
-    </p>
     <d-step
       v-model="steps"
       :data="['选择客户','选择产品','确定配置信息','填写报价信息']"
@@ -35,14 +27,21 @@
     <div class="ac pt20">
 
       <el-button
-        @click="$emit('update:visible', false)"
+        @click="dialogData.visible = false"
         size="small"
-      >取消</el-button>
+      >取 消</el-button>
       <el-button
+        @click="steps++"
+        type="primary"
+        v-if="steps < 4"
+        size="small"
+      >下一步</el-button>
+      <el-button
+        v-else
         type="primary"
         @click="saveHandle('addForm')"
         size="small"
-      >保存</el-button>
+      >保 存</el-button>
     </div>
   </div>
 </template>
@@ -52,7 +51,7 @@ import selectProduct from './add/select-product'
 import confirmInfo from './add/confirm-info'
 import quoteInfo from './add/quote-info'
 export default {
-  props: ['dialogData', 'visible'],
+  props: ['dialogData'],
   components: {
     selectCustomer,
     selectProduct,
@@ -85,25 +84,7 @@ export default {
     // this.currStep()
   },
   methods: {
-    // 点击步骤条触发
-    currStep() {
-      let stepsBox = this.$refs.stepsBox.$el
-      let that = this
-      stepsBox.addEventListener('click', function (e) {
-        let steps = this.querySelectorAll('.el-step__icon-inner ')
 
-        let currStep = e.target
-        let className = currStep.className
-        if (className === 'el-step__icon-inner') {
-          if (+currStep.innerText > that.steps) {
-            console.log(1);
-
-          }
-          that.steps = +currStep.innerText
-
-        }
-      }, false)
-    },
     // 编辑和新增
     initCompanyAdd() {
       if (this.dialogMeta.type === 'add') {

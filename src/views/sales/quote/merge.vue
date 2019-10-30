@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 11:19:46
+ * @LastEditTime: 2019-10-30 19:38:14
  * @Description: 报价单详情
 */
 <template>
@@ -96,7 +96,10 @@
       <extraInfo ref="extraInfo" />
     </div>
     <div class="ac mt10">
-      <el-button size="small">取消</el-button>
+      <el-button
+        @click="dialogData.visible = false"
+        size="small"
+      >取消</el-button>
       <el-button
         type="primary"
         size="small"
@@ -131,7 +134,7 @@ export default {
     commodityInfo,
     quotationInfo
   },
-  props: ['drawerData'],
+  props: ['dialogData'],
   data() {
     return {
       // 当前锚点
