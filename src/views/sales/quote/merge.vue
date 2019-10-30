@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 11:17:05
+ * @LastEditTime: 2019-10-30 11:19:46
  * @Description: 报价单详情
 */
 <template>
@@ -25,10 +25,10 @@
           v-anchor:companyInfo
         >公司信息</span>
       </el-tab-pane>
-      <el-tab-pane name="quoto">
+      <el-tab-pane name="quotationInfo">
         <span
           slot="label"
-          v-anchor:quoto
+          v-anchor:quotationInfo
         >报价单信息</span>
       </el-tab-pane>
       <el-tab-pane name="billInfo">
@@ -59,7 +59,7 @@
       <!-- 公司信息 -->
       <companyInfo ref="companyInfo" />
       <!-- 报价单信息 -->
-      <quotation-info>
+      <quotation-info ref="quotationInfo">
         <el-tabs
           slot="tabs"
           v-model="activeName"

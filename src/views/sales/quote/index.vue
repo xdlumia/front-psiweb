@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-29 18:51:10
- * @Description: 销售-请购单
+ * @LastEditTime: 2019-10-30 11:26:55
+ * @Description: 销售-报价单
  */
 <template>
   <div>
@@ -13,7 +13,7 @@
       :filter="true"
       :moreButton="true"
       :column="true"
-      title="请购单"
+      title="报价单"
       api="bizSystemService.getEmployeeList"
       :params="queryForm"
       @selection-change="selectionChange"
@@ -36,9 +36,10 @@
         >复制生成报价单</el-button>
       </template>
       <template v-slot:moreButton>自定义更多按钮</template>
-      <template slot-scope="{column,row,value}">
-        <span @click="quotoHandle('quoto',row)">报价</span>
-        <span @click="quotoHandle('sales',row)">销售</span>
+      <template slot-scope="{column,row,value,scope}">
+        {{scope.$index}}
+        <span @click="quotoHandle('quoto',row)">报价单编号</span>
+        <span @click="quotoHandle('sales',row)">销售单编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
@@ -81,6 +82,12 @@ import salesDetails from './sales-details' //销售详情
 import add from './add' //新增
 import merge from './merge' //合并
 export default {
+  props: {
+    button: {
+      type: Boolean,
+      default: false
+    }
+  },
   components: {
     quotoDetails,
     salesDetails,
