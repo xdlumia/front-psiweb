@@ -2,11 +2,11 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 10:36:05
+ * @LastEditTime: 2019-10-30 11:07:33
  * @Description: file content
 */
 <template>
-  <div>
+  <div v-loading="loading">
     <p class="ar">
       <el-button
         @click="steps++"
@@ -21,12 +21,11 @@
     ></d-step>
     <el-form
       label-width="160px"
-      v-loading="loading"
       :model="addForm"
       ref="addForm"
       size="mini"
       label-position="top"
-      style="height:calc(100vh - 200px)"
+      style="height:calc(100vh - 240px)"
       class="d-auto-y pr20 d-relative mt10"
     >
 
@@ -57,19 +56,20 @@
         ></el-tab-pane>
       </el-tabs>
       <components :is="currCompont"></components>
-      <!-- 确定按钮 -->
-      <div class="ac pt20">
-        <el-button
-          type="primary"
-          @click="saveHandle('addForm')"
-          size="small"
-        >保存</el-button>
-        <el-button
-          @click="$emit('update:visible', false)"
-          size="small"
-        >取消</el-button>
-      </div>
+
     </el-form>
+    <!-- 确定按钮 -->
+    <div class="ac pt20">
+      <el-button
+        type="primary"
+        @click="saveHandle('addForm')"
+        size="small"
+      >保存</el-button>
+      <el-button
+        @click="$emit('update:visible', false)"
+        size="small"
+      >取消</el-button>
+    </div>
   </div>
 </template>
 <script>
