@@ -2,32 +2,18 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-29 18:46:56
+ * @LastEditTime: 2019-10-30 11:39:07
  * @Description: file content
 */
 <template>
-  <table-view
-    type="1"
-    ref="table"
-    :filter="true"
-    :moreButton="true"
-    :column="true"
-    title="请购单"
-    api="bizSystemService.getEmployeeList"
-    :params="{}"
-    @selection-change="selectionChange"
-  >
-    <template v-slot:moreButton>自定义更多按钮</template>
-    <template slot-scope="{column,row,value}">
-      <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
-      <span v-else>{{value}}</span>
-    </template>
-  </table-view>
+  <quoto :button="false"></quoto>
 </template>
 <script>
+import quoto from '@/views/sales/quote'
 export default {
-  props: ['dialogData', 'visible'],
+  props: [],
   components: {
+    quoto
   },
   data() {
     return {

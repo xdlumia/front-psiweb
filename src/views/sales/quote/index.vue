@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 11:26:55
+ * @LastEditTime: 2019-10-30 12:01:19
  * @Description: 销售-报价单
  */
 <template>
@@ -20,7 +20,10 @@
     >
       <template v-slot:filter>自定义筛选列</template>
       <!-- 自定义按钮功能 -->
-      <template v-slot:button>
+      <template
+        v-if="button"
+        v-slot:button
+      >
         <el-button
           size="mini"
           type="primary"
@@ -37,9 +40,11 @@
       </template>
       <template v-slot:moreButton>自定义更多按钮</template>
       <template slot-scope="{column,row,value,scope}">
-        {{scope.$index}}
-        <span @click="quotoHandle('quoto',row)">报价单编号</span>
-        <span @click="quotoHandle('sales',row)">销售单编号</span>
+        <span
+          class="d-text-blue"
+          @click="quotoHandle('quoto',row)"
+        > 报价单编号</span>
+        <span @click="quotoHandle('outLib',row)">销售出库单编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
@@ -78,19 +83,19 @@
 </template>
 <script>
 import quotoDetails from './quoto-details' //报价详情
-import salesDetails from './sales-details' //销售详情
+import outLibDetails from '../outLibrary/outLib-details' //销售详情
 import add from './add' //新增
 import merge from './merge' //合并
 export default {
   props: {
     button: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   components: {
     quotoDetails,
-    salesDetails,
+    outLibDetails,
     add,
     merge
   },
@@ -125,7 +130,7 @@ export default {
         copy: { comp: 'add', title: '复制报价单' },
         merge: { comp: 'merge', title: '合并生成销售出库单' },
         quoto: { comp: 'quotoDetails', title: '报价单' },
-        sales: { comp: 'salesDetails', title: '销售出库单' },
+        outLib: { comp: 'outLibDetails', title: '销售出库单' },
       }
       // 如果是新增复制合并调用dialog弹出框
       if (type == "add" || type == "copy" || type == "merge") {
