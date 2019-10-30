@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-29 16:17:31
+ * @LastEditTime: 2019-10-30 20:13:06
  * @Description: 业务设置-库房
  -->
 <template>
@@ -27,10 +27,9 @@
           @click="save"
         >保存</el-button>
         <el-button v-if="isEdit" size="small" style="margin-top: 20px;" @click="cancel">取消</el-button>
-        <el-button size="small" style="margin-top: 20px;" @click="restoreDefault">恢复默认</el-button>
       </el-col>
     </div>
-    <el-form size="small" :model="saleForm" :disabled="!isEdit" label-width="190px">
+    <el-form size="small" :model="warehouseEntity" :disabled="!isEdit" label-width="190px">
       <fieldset class="d-fieldset mb20">
         <legend>
           <i class="d-round12 d-circle d-bg-blue"></i>
@@ -38,13 +37,19 @@
         </legend>
         <el-col :span="8">
           <el-form-item label="是否开启自动分配:">
-            <el-switch v-model="saleForm.quotation1" active-text="开" inactive-text="关"></el-switch>
+            <el-switch
+              :active-value="1"
+              :inactive-value="0"
+              v-model="warehouseEntity.disassemblyState"
+              active-text="开"
+              inactive-text="关"
+            ></el-switch>
           </el-form-item>
         </el-col>
         <el-col :span="16">
           <el-form-item label="每人自动分配:">
             <el-input-number
-              v-model="saleForm.quotation2"
+              v-model="warehouseEntity.disassemblynNum"
               size="mini"
               controls-position="right"
               :min="1"
@@ -64,13 +69,19 @@
         </legend>
         <el-col :span="8">
           <el-form-item label="是否开启自动分配:">
-            <el-switch v-model="saleForm.quotation1" active-text="开" inactive-text="关"></el-switch>
+            <el-switch
+              :active-value="1"
+              :inactive-value="0"
+              v-model="warehouseEntity.assembleState"
+              active-text="开"
+              inactive-text="关"
+            ></el-switch>
           </el-form-item>
         </el-col>
         <el-col :span="16">
           <el-form-item label="每人自动分配:">
             <el-input-number
-              v-model="saleForm.quotation2"
+              v-model="warehouseEntity.assembleNum"
               size="mini"
               controls-position="right"
               :min="1"
@@ -91,7 +102,13 @@
         </legend>
         <el-col :span="8">
           <el-form-item label="是否开启扫码功能:">
-            <el-switch v-model="saleForm.quotation1" active-text="开" inactive-text="关"></el-switch>
+            <el-switch
+              :active-value="1"
+              :inactive-value="0"
+              v-model="warehouseEntity.assembleTaskState"
+              active-text="开"
+              inactive-text="关"
+            ></el-switch>
           </el-form-item>
         </el-col>
       </fieldset>
@@ -105,7 +122,13 @@
         </legend>
         <el-col :span="8">
           <el-form-item label="是否开启审批:">
-            <el-switch v-model="saleForm.quotation1" active-text="开" inactive-text="关"></el-switch>
+            <el-switch
+              :active-value="1"
+              :inactive-value="0"
+              v-model="warehouseEntity.exchangeState"
+              active-text="开"
+              inactive-text="关"
+            ></el-switch>
           </el-form-item>
         </el-col>
       </fieldset>
@@ -124,7 +147,7 @@
           <el-form-item label label-width="0px">
             <div style="display:flex;align-items:center">
               <span style="flex:0 0 90px;color:#606266" class="f14 ml10">自定义项名称</span>
-              <el-input v-model="saleForm.quotation1"></el-input>
+              <el-input v-model="warehouseEntity.quotation1"></el-input>
               <el-button type="text" class="ml10">
                 <i class="el-icon-remove-outline f24"></i>
               </el-button>
@@ -142,12 +165,21 @@ export default {
     return {
       activeName: 'first',
       isEdit: false,
-      saleForm: {
-
+      warehouseEntity: {
+        assembleNum: 0,
+        assembleState: 1,
+        assembleTaskState: 1,
+        disassemblyState: 1,
+        disassemblynNum: 0,
+        exchangeState: 1,
+        pickingOrdersConfigArray: []
       }
     }
   },
   components: {
+  },
+  mounted() {
+    this.commonsystemconfigList()
   },
   methods: {
     save() {
@@ -158,6 +190,13 @@ export default {
     },
     restoreDefault() {
 
+    },
+    commonsystemconfigList() {
+      this.$api.seePsiCommonService.commonsystemconfigList().then(res => {
+        Object.keys(this.warehouseEntity).forEach(key => {
+          this.warehouseEntity[key] = res.data.warehouseEntity[key]
+        })
+      })
     }
   }
 }
