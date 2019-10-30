@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-26 13:14:01
- * @Description: 销售-请购单
+ * @LastEditTime: 2019-10-30 15:22:36
+ * @Description: 销售-销售出库单
  */
 <template>
   <div>
@@ -13,32 +13,17 @@
       :filter="true"
       :moreButton="true"
       :column="true"
-      title="请购单"
+      title="销售出库单"
       api="bizSystemService.getEmployeeList"
       :params="queryForm"
       @selection-change="selectionChange"
     >
       <template v-slot:filter>自定义筛选列</template>
-      <!-- 自定义按钮功能 -->
-      <template v-slot:button>
-        <el-button
-          size="mini"
-          type="primary"
-          @click="quotoHandle('add')"
-        >新建</el-button>
-        <el-button
-          size="mini"
-          @click="quotoHandle('merge')"
-        >合并生成出库单</el-button>
-        <el-button
-          size="mini"
-          @click="quotoHandle('copy')"
-        >复制生成报价单</el-button>
-      </template>
-      <template v-slot:moreButton>自定义更多按钮</template>
       <template slot-scope="{column,row,value}">
-        <span @click="quotoHandle('quoto',row)">报价</span>
-        <span @click="quotoHandle('sales',row)">销售</span>
+        <span
+          class="d-text-blue"
+          @click="quotoHandle('outLib',row)"
+        >销售出库单编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
@@ -61,6 +46,7 @@
 
     <!-- 抽屉弹出框 -->
     <el-drawer
+      :append-to-body="true"
       :title="drawerData.title"
       :visible.sync="drawerVisible"
       :size="drawerData.width"
@@ -69,23 +55,22 @@
         :visible.sync="drawerVisible"
         :is="drawerData.component"
         :drawerData="drawerData"
-        v-if="drawerVisible"
       ></components>
     </el-drawer>
 
   </div>
 </template>
 <script>
-import quotoDetails from './quoto-details' //报价详情
-import salesDetails from './sales-details' //销售详情
-import add from './add' //新增
-import merge from './merge' //合并
+import outLibDetails from './outLib-details' //销售出库单详情
 export default {
+  props: {
+    button: {
+      type: Boolean,
+      default: true
+    }
+  },
   components: {
-    quotoDetails,
-    salesDetails,
-    add,
-    merge
+    outLibDetails,
   },
   data() {
     return {
@@ -104,26 +89,25 @@ export default {
       drawerVisible: false, //抽屉弹出框
       drawerData: {
         title: '',
-        visible: false,
         type: '',
-        width: '820px',
+        width: '920px',
         data: '',
       }
     };
   },
   methods: {
     // 按钮功能操作
-    quotoHandle(type) {
+    quotoHandle(type, row) {
       let typeObj = {
         add: { comp: 'add', title: '新增报价单' },
-        copy: { comp: 'copy', title: '复制报价单' },
+        copy: { comp: 'add', title: '复制报价单' },
         merge: { comp: 'merge', title: '合并生成销售出库单' },
         quoto: { comp: 'quotoDetails', title: '报价单' },
-        sales: { comp: 'salesDetails', title: '新增报价单' },
+        outLib: { comp: 'outLibDetails', title: '销售出库单' },
       }
       // 如果是新增复制合并调用dialog弹出框
       if (type == "add" || type == "copy" || type == "merge") {
-        this.dialogVisible = true;
+        this.dialogVisible = true
       } else {
         // 否则调用抽屉弹出框
         this.drawerVisible = true;
@@ -133,17 +117,12 @@ export default {
         this.drawerData.data = row;
       }
 
-      this.drawerData.type = type;
-      this.drawerData.width = "820px";
+      this.drawerData.type = type
       this.drawerData.title = typeObj[type].title
-
       this.drawerData.component = typeObj[type].comp
     },
-    // 多选
-    selectionChange(val) {
-      console.log(val);
+    selectionChange() { },
 
-    },
     // 重置
     reset() {
       this.$refs.queryForm.resetFields();

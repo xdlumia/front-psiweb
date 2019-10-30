@@ -51,7 +51,7 @@
             <el-image
               style="width: 100px; height: 40px"
               src="http://pics.sc.chinaz.com/files/pic/pic9/201910/zzpic20721.jpg"
-              :fit="fill"
+              fit="fill"
             ></el-image>
           </template>
         </el-table-column>

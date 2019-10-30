@@ -86,6 +86,7 @@
         </el-main>
       </el-container>
     </side-popup>
+    <assemblyAdd />
   </div>
 </template>
 <script>
@@ -94,12 +95,14 @@
  */
 import TableView from '@/components/tableView';
 import Details from './details.vue'
+import assemblyAdd from './assembly-add.vue'
 import SideStatusbar from '@/components/formComponents/side-statusbar';
 export default {
   components: {
     Details,
     SideStatusbar,
-    TableView
+    TableView,
+    assemblyAdd
   },
   data() {
     return {

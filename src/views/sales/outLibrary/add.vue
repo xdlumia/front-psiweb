@@ -2,57 +2,95 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-26 18:13:22
+ * @LastEditTime: 2019-10-30 14:55:41
  * @Description: file content
 */
 <template>
-  <div>
+  <div v-loading="loading">
+    <p class="ar">
+      <el-button
+        @click="steps++"
+        type="primary"
+        :disabled="steps==4"
+        size="small"
+      >下一步</el-button>
+    </p>
+    <d-step
+      v-model="steps"
+      :data="['选择客户','选择产品','确定配置信息','填写报价信息']"
+    ></d-step>
     <el-form
       label-width="160px"
-      v-loading="loading"
       :model="addForm"
       ref="addForm"
-      size="small"
+      size="mini"
       label-position="top"
+      style="height:calc(100vh - 240px)"
+      class="d-auto-y pr20 d-relative mt10"
     >
-      <div
-        style="height:calc(100vh - 160px)"
-        class="d-auto-y pr20 d-relative"
+
+      <el-input
+        size="small"
+        v-model="clientno"
+        placeholder="请输入客户编号或名称"
       >
-        <form-card title='账单信息'>
-          <el-row>
-            <el-col :span="8">
-              <div class="d-text-black">结账方式</div>
-              <div class="d-text-qgray mt5 mb20">2019-9-21</div>
-            </el-col>
-          </el-row>
+        <button slot="append">搜索</button>
+      </el-input>
 
-        </form-card>
-      </div>
+      <el-tabs
+        class="mt10"
+        v-model="currCompont"
+        type="card"
+      >
+        <el-tab-pane
+          label="客户信息"
+          name="clientInfo"
+        ></el-tab-pane>
+        <el-tab-pane
+          label="客户数据"
+          name="clientData"
+        ></el-tab-pane>
+        <el-tab-pane
+          label="历史报价单"
+          name="historyQuoto"
+        ></el-tab-pane>
+      </el-tabs>
+      <components :is="currCompont"></components>
 
-      <div class="ac pt20">
-        <el-button
-          type="primary"
-          @click="saveHandle('addForm')"
-          size="small"
-        >保存</el-button>
-        <el-button
-          @click="$emit('update:visible', false)"
-          size="small"
-        >取消</el-button>
-      </div>
     </el-form>
+    <!-- 确定按钮 -->
+    <div class="ac pt20">
+      <el-button
+        type="primary"
+        @click="saveHandle('addForm')"
+        size="small"
+      >保存</el-button>
+      <el-button
+        @click="$emit('update:visible', false)"
+        size="small"
+      >取消</el-button>
+    </div>
   </div>
 </template>
 <script>
+import clientInfo from './add/client-info'
+import clientData from './add/client-data'
+import historyQuoto from './add/history-quoto'
 export default {
   props: ['dialogData', 'visible'],
   components: {
+    clientInfo,
+    clientData,
+    historyQuoto,
   },
   data() {
     return {
       loading: false,
-      dataSource: [], // 数据源
+      currCompont: 'clientInfo',
+      // 当前操作步骤
+      steps: 1,
+      clientno: '',
+      activeName: 'first', // 数据源
       // 新增orEdit框内容
       addForm: {
         title: '', // 标题
@@ -67,8 +105,10 @@ export default {
   created() {
     // this.initCompanyAdd()
   },
+  mounted() {
+    // this.currStep()
+  },
   methods: {
-
     // 编辑和新增
     initCompanyAdd() {
       if (this.dialogMeta.type === 'add') {

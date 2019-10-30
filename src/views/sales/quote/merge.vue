@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-29 17:16:15
+ * @LastEditTime: 2019-10-30 11:19:46
  * @Description: 报价单详情
 */
 <template>
@@ -25,10 +25,10 @@
           v-anchor:companyInfo
         >公司信息</span>
       </el-tab-pane>
-      <el-tab-pane name="quoto">
+      <el-tab-pane name="quotationInfo">
         <span
           slot="label"
-          v-anchor:quoto
+          v-anchor:quotationInfo
         >报价单信息</span>
       </el-tab-pane>
       <el-tab-pane name="billInfo">
@@ -59,19 +59,11 @@
       <!-- 公司信息 -->
       <companyInfo ref="companyInfo" />
       <!-- 报价单信息 -->
-      <form-card
-        title="报价单信息"
-        ref="quoto"
-      >
-        <div slot="title">
-          报价单信息
-          <i
-            @click="quotoCollapse = !quotoCollapse"
-            :class="{active:quotoCollapse}"
-            class="collapse-arrow el-icon-arrow-right d-pointer"
-          ></i>
-        </div>
-        <el-tabs v-model="activeName">
+      <quotation-info ref="quotationInfo">
+        <el-tabs
+          slot="tabs"
+          v-model="activeName"
+        >
           <el-tab-pane
             v-for="(item,index) of 11"
             :key="index"
@@ -79,23 +71,21 @@
             :name="index+''"
           ></el-tab-pane>
         </el-tabs>
-        <transition name="el-zoom-in-top">
-          <div v-show="quotoCollapse">
-            <!-- 发货信息 -->
-            <deliverInfo />
-            <!-- 商品信息 -->
-            <commodityInfo />
-            <!-- 报价单有效期 -->
-            <payExpire />
-            <!-- 附加发票 -->
-            <extrataxInfo />
-            <!-- 自定义信息 -->
-            <customInfo />
-            <!-- 备注信息 -->
-            <extraInfo />
-          </div>
-        </transition>
-      </form-card>
+        <div slot="body">
+          <!-- 发货信息 -->
+          <deliverInfo />
+          <!-- 商品信息 -->
+          <commodityInfo />
+          <!-- 报价单有效期 -->
+          <payExpire />
+          <!-- 附加发票 -->
+          <extrataxInfo />
+          <!-- 自定义信息 -->
+          <customInfo />
+          <!-- 备注信息 -->
+          <extraInfo />
+        </div>
+      </quotation-info>
       <!-- 收款滞纳金 -->
       <paymentLate ref="paymentLate" />
       <!-- 账期信息 -->
@@ -125,7 +115,7 @@ import paymentLate from '@/components/formComponents/payment-late' //收款滞�
 import billInfo from '@/components/formComponents/bill-info' //账期信息
 import payExpire from '@/components/formComponents/pay-expire' //报价单有效期
 import commodityInfo from '@/components/formComponents/commodity-info' //商品信息
-
+import quotationInfo from '@/components/formComponents/quotation-info' //报价单信息
 
 export default {
   components: {
@@ -138,7 +128,8 @@ export default {
     paymentLate,
     billInfo,
     payExpire,
-    commodityInfo
+    commodityInfo,
+    quotationInfo
   },
   props: ['drawerData'],
   data() {

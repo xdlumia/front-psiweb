@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 09:47:50
+ * @LastEditTime: 2019-10-30 11:56:39
  * @Description: 报价单详情
 */
 <template>
@@ -13,7 +13,7 @@
       label-position="top"
     >
       <!-- 状态详情 -->
-      <sales-details :status="[{ label: '状态', value: '新建' }]" />
+      <side-statusbar :status="[{ label: '状态', value: '新建' }]" />
       <el-tabs
         v-model="activeName"
         type="card"
@@ -63,7 +63,7 @@
   </div>
 </template>
 <script>
-import salesDetails from '@/components/formComponents/side-statusbar' //顶部状态
+import sideStatusbar from '@/components/formComponents/side-statusbar' //顶部状态
 import detail from './quotoDetails/detail' //详情
 import outLibrary from './quotoDetails/outLibrary' //销售出库单
 import buy from './quotoDetails/buy' //采购单
@@ -71,7 +71,7 @@ import record from '@/components/formComponents/record' //操作记录
 
 export default {
   components: {
-    salesDetails,
+    sideStatusbar,
     detail,
     outLibrary,
     buy,
