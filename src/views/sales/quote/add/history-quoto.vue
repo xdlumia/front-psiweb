@@ -2,18 +2,17 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 11:39:07
- * @Description: file content
+ * @LastEditTime: 2019-10-30 17:45:54
+ * @Description: 历史数据 - 报价单
 */
 <template>
-  <quoto :button="false"></quoto>
+  <sales-quote :button="false"></sales-quote>
 </template>
 <script>
-import quoto from '@/views/sales/quote'
+
 export default {
   props: [],
   components: {
-    quoto
   },
   data() {
     return {

@@ -6,9 +6,18 @@
  * @Description: 侧边详情弹框
 */
 <template>
-  <side-popup :title="title" :visible.sync="showPop" :width="width" @close="close" class="side-page">
+  <side-popup
+    :title="title"
+    :visible.sync="showPop"
+    :width="width"
+    @close="close"
+    class="side-page"
+  >
     <el-container class="wfull hfull">
-      <el-header class="p0 d-bg-gray" style="height:60px;">
+      <el-header
+        class="p0 d-bg-gray"
+        style="height:60px;"
+      >
         <div class="pl10 pr10 ar header-btns">
           <slot name="button" />
         </div>

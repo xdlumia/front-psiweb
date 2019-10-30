@@ -42,7 +42,11 @@
         <span v-else>{{value}}</span>
       </template> -->
     </TableView>
-    <side-popup
+    <Details
+      :drawerData='drawerData'
+      @update='update'
+    />
+    <!-- <side-popup
       class="side-page"
       :title="drawerData.title"
       :visible.sync="tableVisible"
@@ -63,7 +67,7 @@
               type="primary"
             >终止</el-button>
           </div>
-          <SideStatusbar />
+          <SideStatusbar :status='status' />
         </el-header>
         <el-main class="p0">
           <el-tabs
@@ -85,7 +89,7 @@
           </div>
         </el-main>
       </el-container>
-    </side-popup>
+    </side-popup> -->
     <assemblyAdd />
   </div>
 </template>
@@ -96,11 +100,9 @@
 import TableView from '@/components/tableView';
 import Details from './details.vue'
 import assemblyAdd from './assembly-add.vue'
-import SideStatusbar from '@/components/formComponents/side-statusbar';
 export default {
   components: {
     Details,
-    SideStatusbar,
     TableView,
     assemblyAdd
   },
@@ -118,13 +120,13 @@ export default {
       },
       value1: '',
       componentActive: '',//当前的组件
-      tableVisible: false,//销售单右侧抽屉
       drawerData: {//弹框的相关数据
         title: '',
-        component: 'Details'
+        component: 'Details',
+        tableVisible: false,//销售单右侧抽屉
       },
       activeName: '',
-      status: [],
+
       tableHeader: [
         { label: '操作', prop: 'deptName', width: '140' },
         { label: '生成顺序', prop: 'deptName', width: '100' },
@@ -144,12 +146,16 @@ export default {
   methods: {
     //点击打开右侧边栏
     getTableVisible(data) {
-      this.tableVisible = true
+      this.drawerData.tableVisible = true
       this.drawerData.title = '组装单' + data.id
     },
     //tab换组件
     handleClick() {
 
+    },
+    update() {
+      console.log('324124123')
+      this.drawerData.tableVisible = false
     }
   }
 };

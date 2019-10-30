@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 16:39:24
- * @Description: 报价单详情
+ * @LastEditTime: 2019-10-30 16:57:48
+ * @Description: 销售出库单详情
 */
 <template>
   <div>
@@ -50,73 +50,46 @@
       label-position="top"
     >
       <!-- 状态详情 -->
-      <side-statusbar :status="[{ label: '状态', value: '新建' }]" />
+      <sideStatusbar :status="[{ label: '状态', value: '新建' }]" />
       <el-tabs
         v-model="activeName"
         type="card"
       >
         <el-tab-pane
-          label="详情"
-          name="detail"
+          v-for="(val,key) of tabs"
+          :key="key"
+          :label="val"
+          :name="key"
         >
-          <components
-            class="d-auto-y"
-            style="height:calc(100vh - 200px)"
-            :is="activeName"
-          ></components>
-        </el-tab-pane>
-        <el-tab-pane
-          label="销售出库单"
-          name="outLibrary"
-        >
-          <components
-            class="d-auto-y"
-            style="height:calc(100vh - 200px)"
-            :is="activeName"
-          ></components>
-        </el-tab-pane>
-        <el-tab-pane
-          label="请购单"
-          name="buy"
-        >
-          <components
-            class="d-auto-y"
-            style="height:calc(100vh - 200px)"
-            :is="activeName"
-          ></components>
-        </el-tab-pane>
-        <el-tab-pane
-          label="操作记录"
-          name="record"
-        >
-          <components
-            class="d-auto-y"
-            style="height:calc(100vh - 200px)"
-            :is="activeName"
-          ></components>
         </el-tab-pane>
       </el-tabs>
+      <components
+        class="d-auto-y"
+        style="height:calc(100vh - 200px)"
+        :is="activeName"
+      ></components>
     </el-form>
   </div>
 </template>
 <script>
 import sideStatusbar from '@/components/formComponents/side-statusbar' //顶部状态
-import detail from './quotoDetails/detail' //详情
-import outLibrary from './quotoDetails/outLibrary' //销售出库单
-import buy from './quotoDetails/buy' //采购单
-import record from '@/components/formComponents/record' //操作记录
-
+import detail from './details/detail' //详情
+import outLib from './details/outLib' //报价单
 export default {
   components: {
     sideStatusbar,
     detail,
-    outLibrary,
-    buy,
-    record
+    outLib
   },
   props: ['drawerData'],
   data() {
     return {
+      // tabs  组件名称对应的label名称
+      tabs: {
+        detail: '详情',
+        outLib: '销售出库单',
+      },
+      // tabs当前选中
       activeName: 'detail',
       form: {},
     }
