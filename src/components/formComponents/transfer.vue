@@ -1,0 +1,103 @@
+/*
+ * @Author: 徐贺
+ * @Date: 2019-10-26 15:33:41
+ * @LastEditors: 徐贺
+ * @LastEditTime: 2019-10-26 18:17:56
+ * @Description: 转移
+*/
+<template>
+  <el-dialog
+    :visible.sync="visible"
+    title="转移"
+    v-dialogDrag
+    width='40%'
+  >
+    <el-form
+      size='small'
+      :model="ruleForm"
+      :rules="rules"
+      ref="ruleForm"
+      label-width="100px"
+      class="demo-ruleForm"
+    >
+      <el-form-item
+        :rules="[ 
+        {required:true,message:'必填项'}
+    ]"
+        label="选择组装人"
+        prop
+        size="mini"
+      >
+        <ChooseManSelect />
+      </el-form-item>
+      <el-form-item
+        label="转移原因："
+        prop="desc"
+      >
+        <el-input
+          type="textarea"
+          v-model="ruleForm.desc"
+          max='300'
+          placeholder="请输入最少五个字符"
+        ></el-input>
+      </el-form-item>
+    </el-form>
+    <span
+      slot="footer"
+      class="dialog-footer"
+    >
+      <el-button
+        @click="$emit('update')"
+        size="small"
+      >关 闭</el-button>
+      <el-button
+        type="primary"
+        @click="$emit('update')"
+        size="small"
+      >保 存</el-button>
+    </span>
+  </el-dialog>
+</template>
+<script>
+import ChooseManSelect from './choose-man-select';
+export default {
+  components: {
+    ChooseManSelect
+  },
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
+    },
+    form: {}
+  },
+  watch: {
+  },
+  computed: {
+  },
+  data() {
+    return {
+      ruleForm: {
+        name: '',
+        desc: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        desc: [
+          { required: true, message: '请填写转移原因', trigger: 'blur' },
+          { min: 5, max: 300, message: '长度在 5 到 300 个字符', trigger: 'blur' }
+        ],
+      }
+    }
+  },
+  mounted() { },
+  methods: {
+
+  }
+};
+</script>
+<style lang="scss" scoped>
+</style>
