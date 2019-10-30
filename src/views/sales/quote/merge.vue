@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 11:05:33
+ * @LastEditTime: 2019-10-30 11:13:18
  * @Description: 报价单详情
 */
 <template>
@@ -55,7 +55,7 @@
       style="height:calc(100vh - 200px)"
     >
       <!-- 客户信息 -->
-      <customerInfo ref="customerInfo" />
+      <!-- <customerInfo ref="customerInfo" /> -->
       <!-- 公司信息 -->
       <companyInfo ref="companyInfo" />
       <!-- 报价单信息 -->
@@ -115,8 +115,7 @@ import paymentLate from '@/components/formComponents/payment-late' //收款滞�
 import billInfo from '@/components/formComponents/bill-info' //账期信息
 import payExpire from '@/components/formComponents/pay-expire' //报价单有效期
 import commodityInfo from '@/components/formComponents/commodity-info' //商品信息
-import quotatioInfo from '@/components/formComponents/quotation-info' //报价单信息
-
+import quotationInfo from '@/components/formComponents/quotation-info' //报价单信息
 
 export default {
   components: {
@@ -130,7 +129,7 @@ export default {
     billInfo,
     payExpire,
     commodityInfo,
-    quotatioInfo
+    quotationInfo
   },
   props: ['drawerData'],
   data() {
