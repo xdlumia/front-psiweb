@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 19:02:06
+ * @LastEditTime: 2019-10-30 19:44:34
  * @Description: 报价单信息
 */
 <template>
@@ -14,7 +14,8 @@
         class="d-flex"
         style="align-items:center"
       >
-        <div @click="quotoCollapse = !quotoCollapse">{{title}}
+        <div @click="quotoCollapse = !quotoCollapse">
+          {{title}}
           <i
             :class="{active:quotoCollapse}"
             class="collapse-arrow el-icon-arrow-right d-pointer"
@@ -47,7 +48,7 @@ export default {
   props: {
     title: {
       type: String,
-      defaule: "报价单信息"
+      default: "报价单信息"
     }
   },
   components: {
