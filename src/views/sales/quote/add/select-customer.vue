@@ -2,57 +2,68 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-26 18:13:22
- * @Description: file content
+ * @LastEditTime: 2019-10-30 17:46:06
+ * @Description: 选择客户
 */
 <template>
-  <div>
+  <div v-loading="loading">
+    <el-input
+      size="small"
+      class="mt10"
+      v-model="clientno"
+      placeholder="请输入客户编号或名称"
+    >
+      <button slot="append">搜索</button>
+    </el-input>
     <el-form
       label-width="160px"
-      v-loading="loading"
       :model="addForm"
       ref="addForm"
-      size="small"
+      size="mini"
       label-position="top"
+      style="height:calc(100vh - 240px)"
+      class="d-auto-y pr20 d-relative"
     >
-      <div
-        style="height:calc(100vh - 160px)"
-        class="d-auto-y pr20 d-relative"
+      <el-tabs
+        class="mt10"
+        v-model="currCompont"
+        type="card"
       >
-        <form-card title='账单信息'>
-          <el-row>
-            <el-col :span="8">
-              <div class="d-text-black">结账方式</div>
-              <div class="d-text-qgray mt5 mb20">2019-9-21</div>
-            </el-col>
-          </el-row>
-
-        </form-card>
-      </div>
-
-      <div class="ac pt20">
-        <el-button
-          type="primary"
-          @click="saveHandle('addForm')"
-          size="small"
-        >保存</el-button>
-        <el-button
-          @click="$emit('update:visible', false)"
-          size="small"
-        >取消</el-button>
-      </div>
+        <el-tab-pane
+          label="客户信息"
+          name="clientInfo"
+        ></el-tab-pane>
+        <el-tab-pane
+          label="客户数据"
+          name="clientData"
+        ></el-tab-pane>
+        <el-tab-pane
+          label="历史报价单"
+          name="historyQuoto"
+        ></el-tab-pane>
+      </el-tabs>
+      <components :is="currCompont"></components>
     </el-form>
   </div>
 </template>
 <script>
+import clientInfo from './client-info'
+import clientData from './client-data'
+import historyQuoto from './history-quoto'
 export default {
   props: ['dialogData', 'visible'],
   components: {
+    clientInfo,
+    clientData,
+    historyQuoto,
   },
   data() {
     return {
       loading: false,
-      dataSource: [], // 数据源
+      currCompont: 'clientInfo',
+      // 当前操作步骤
+      clientno: '',
+      activeName: 'first', // 数据源
       // 新增orEdit框内容
       addForm: {
         title: '', // 标题
@@ -67,8 +78,29 @@ export default {
   created() {
     // this.initCompanyAdd()
   },
+  mounted() {
+    // this.currStep()
+  },
   methods: {
+    // 点击步骤条触发
+    currStep() {
+      let stepsBox = this.$refs.stepsBox.$el
+      let that = this
+      stepsBox.addEventListener('click', function (e) {
+        let steps = this.querySelectorAll('.el-step__icon-inner ')
 
+        let currStep = e.target
+        let className = currStep.className
+        if (className === 'el-step__icon-inner') {
+          if (+currStep.innerText > that.steps) {
+            console.log(1);
+
+          }
+          that.steps = +currStep.innerText
+
+        }
+      }, false)
+    },
     // 编辑和新增
     initCompanyAdd() {
       if (this.dialogMeta.type === 'add') {

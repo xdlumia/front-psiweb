@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 11:07:33
+ * @LastEditTime: 2019-10-30 17:49:33
  * @Description: file content
 */
 <template>
@@ -19,45 +19,10 @@
       v-model="steps"
       :data="['选择客户','选择产品','确定配置信息','填写报价信息']"
     ></d-step>
-    <el-form
-      label-width="160px"
-      :model="addForm"
-      ref="addForm"
-      size="mini"
-      label-position="top"
-      style="height:calc(100vh - 240px)"
-      class="d-auto-y pr20 d-relative mt10"
-    >
-
-      <el-input
-        size="small"
-        v-model="clientno"
-        placeholder="请输入客户编号或名称"
-      >
-        <button slot="append">搜索</button>
-      </el-input>
-
-      <el-tabs
-        class="mt10"
-        v-model="currCompont"
-        type="card"
-      >
-        <el-tab-pane
-          label="客户信息"
-          name="clientInfo"
-        ></el-tab-pane>
-        <el-tab-pane
-          label="客户数据"
-          name="clientData"
-        ></el-tab-pane>
-        <el-tab-pane
-          label="历史报价单"
-          name="historyQuoto"
-        ></el-tab-pane>
-      </el-tabs>
-      <components :is="currCompont"></components>
-
-    </el-form>
+    <!-- 选择客户 -->
+    <select-customer v-show="steps==1"></select-customer>
+    <select-product v-show="steps==2"></select-product>
+    <confirm-info v-show="steps==3"></confirm-info>
     <!-- 确定按钮 -->
     <div class="ac pt20">
       <el-button
@@ -73,15 +38,15 @@
   </div>
 </template>
 <script>
-import clientInfo from './add/client-info'
-import clientData from './add/client-data'
-import historyQuoto from './add/history-quoto'
+import selectCustomer from './add/select-customer'
+import selectProduct from './add/select-product'
+import confirmInfo from './add/confirm-info'
 export default {
   props: ['dialogData', 'visible'],
   components: {
-    clientInfo,
-    clientData,
-    historyQuoto,
+    selectCustomer,
+    selectProduct,
+    confirmInfo
   },
   data() {
     return {
