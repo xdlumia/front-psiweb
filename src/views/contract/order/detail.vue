@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 16:51:12
+ * @LastEditTime: 2019-10-30 16:26:49
  * @Description: 采购入库单
 */
 <template>
@@ -14,10 +14,10 @@
       <el-button size="mini" type="primary">驳回</el-button>
       <el-button size="mini" type="primary">编辑</el-button>
       <el-button size="mini" type="primary">删除</el-button>
-      <el-button @click="showReject=true" size="mini" type="primary">退货</el-button>
+      <el-button size="mini" type="primary">退货</el-button>
       <el-button size="mini" type="primary">终止</el-button>
       <el-button size="mini" type="primary">收票申请</el-button>
-      <el-button @click="showOrderContract=true" size="mini" type="primary">生成合同</el-button>
+      <el-button size="mini" type="primary">生成合同</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
@@ -40,8 +40,6 @@
       <el-tab-pane label="应付账单">应付账单</el-tab-pane>
       <el-tab-pane label="发票记录">发票记录</el-tab-pane>
     </el-tabs>
-    <OrderReject :visible.sync="showReject" />
-    <OrderContract :visible.sync="showOrderContract" />
   </SideDetail>
 </template>
 <script>
@@ -55,9 +53,6 @@ import PaymentLate from '@/components/formComponents/payment-late.vue'; //收款
 import SupplierInfo from '@/components/formComponents/supplier-info.vue'; //供应商信息
 import SideDetail from '@/components/side-detail.vue'; //侧边详情弹框
 
-import OrderReject from '../reject/edit'; // 采购退货单
-import OrderContract from '@/views/contract/order/edit'; // 采购合同
-
 export default {
   components: {
     SupplierInfo,
@@ -68,9 +63,7 @@ export default {
     PaymentLate,
     CommodityInfo,
     BillInfo,
-    SideDetail,
-    OrderReject,
-    OrderContract
+    SideDetail
   },
   props: {
     visible: Boolean
@@ -78,8 +71,6 @@ export default {
   data() {
     return {
       showPop: false,
-      showReject: false,
-      showOrderContract: false,
       status: [
         { label: '状态', value: '新建' },
         { label: '单据创建人', value: '张收纳' },

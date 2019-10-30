@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 14:23:19
+ * @LastEditTime: 2019-10-30 16:29:17
  * @Description: 侧边详情弹框
 */
 <template>
@@ -35,8 +35,11 @@ export default {
   },
   data() {
     return {
-      showPop: true
+      showPop: false
     };
+  },
+  mounted() {
+    this.showPop = this.visible;
   },
   watch: {
     visible() {
