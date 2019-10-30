@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 17:46:06
+ * @LastEditTime: 2019-10-30 19:01:49
  * @Description: 选择客户
 */
 <template>
@@ -15,35 +15,25 @@
     >
       <button slot="append">搜索</button>
     </el-input>
-    <el-form
-      label-width="160px"
-      :model="addForm"
-      ref="addForm"
-      size="mini"
-      label-position="top"
-      style="height:calc(100vh - 240px)"
-      class="d-auto-y pr20 d-relative"
+    <el-tabs
+      class="mt10"
+      v-model="currCompont"
+      type="card"
     >
-      <el-tabs
-        class="mt10"
-        v-model="currCompont"
-        type="card"
-      >
-        <el-tab-pane
-          label="客户信息"
-          name="clientInfo"
-        ></el-tab-pane>
-        <el-tab-pane
-          label="客户数据"
-          name="clientData"
-        ></el-tab-pane>
-        <el-tab-pane
-          label="历史报价单"
-          name="historyQuoto"
-        ></el-tab-pane>
-      </el-tabs>
-      <components :is="currCompont"></components>
-    </el-form>
+      <el-tab-pane
+        label="客户信息"
+        name="clientInfo"
+      ></el-tab-pane>
+      <el-tab-pane
+        label="客户数据"
+        name="clientData"
+      ></el-tab-pane>
+      <el-tab-pane
+        label="历史报价单"
+        name="historyQuoto"
+      ></el-tab-pane>
+    </el-tabs>
+    <components :is="currCompont"></components>
   </div>
 </template>
 <script>

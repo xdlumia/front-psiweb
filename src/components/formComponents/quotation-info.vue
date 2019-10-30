@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 17:51:26
+ * @LastEditTime: 2019-10-30 19:02:06
  * @Description: 报价单信息
 */
 <template>
@@ -11,13 +11,21 @@
     <form-card :title="true">
       <div
         slot="title"
-        @click="quotoCollapse = !quotoCollapse"
+        class="d-flex"
+        style="align-items:center"
       >
-        {{title}}
-        <i
-          :class="{active:quotoCollapse}"
-          class="collapse-arrow el-icon-arrow-right d-pointer"
-        ></i>
+        <div @click="quotoCollapse = !quotoCollapse">{{title}}
+          <i
+            :class="{active:quotoCollapse}"
+            class="collapse-arrow el-icon-arrow-right d-pointer"
+          ></i>
+        </div>
+        <div class="ar d-cell">
+          <slot name="title">
+
+          </slot>
+        </div>
+
       </div>
       <slot name="tabs">
       </slot>
