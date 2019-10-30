@@ -19,15 +19,12 @@
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
-
-      <!-- <template slot-scope="{column,row,value}">
-        <span @click="quotoHandle('quoto',row)">报价</span>
-        <span @click="quotoHandle('sales',row)">销售</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
-        <span v-else>{{value}}</span>
-      </template> -->
     </TableView>
-    <side-popup
+    <Details
+      :drawerData='drawerData'
+      @update='update'
+    />
+    <!-- <side-popup
       class="side-page"
       :title="drawerData.title"
       :visible.sync="tableVisible"
@@ -44,7 +41,7 @@
               type="primary"
             >拣货</el-button>
           </div>
-          <SideStatusbar />
+          <SideStatusbar :status='status' />
         </el-header>
         <el-main class="p0">
           <el-tabs
@@ -64,7 +61,7 @@
           </div>
         </el-main>
       </el-container>
-    </side-popup>
+    </side-popup> -->
   </div>
 </template>
 <script>
@@ -96,10 +93,10 @@ export default {
       tableVisible: false,//销售单右侧抽屉
       drawerData: {//弹框的相关数据
         title: '',
-        component: 'Details'
+        component: 'Details',
+        tableVisible: false,//销售单右侧抽屉
       },
       activeName: '',
-      status: [],
       tableHeader: [
         { label: '操作', prop: 'deptName', width: '140' },
         { label: '销售单编号', prop: 'deptName', width: '140' },
@@ -122,7 +119,7 @@ export default {
   methods: {
     //点击打开右侧边栏
     getTableVisible(data) {
-      this.tableVisible = true
+      this.drawerData.tableVisible = true
       this.drawerData.title = '拣货单-' + data.id
     },
     //tab换组件

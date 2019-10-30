@@ -24,7 +24,7 @@
           class="p10"
         >
           <commodityInfoEdit ref="commodityInfoEdit" />
-          <chooseAssembly ref="chooseAssembly" />
+          <assembleInfo ref="assembleInfo" />
         </el-form>
 
       </el-main>
@@ -47,12 +47,12 @@
 </template>
 <script>
 import commodityInfoEdit from '@/components/formComponents/commodity-info-edit';
-import chooseAssembly from '@/components/formComponents/choose-assembly';
+import assembleInfo from '@/components/formComponents/assemble-info';
 
 export default {
   components: {
     commodityInfoEdit,
-    chooseAssembly
+    assembleInfo
   },
   props: {
     visible: {
