@@ -1,0 +1,40 @@
+/* editor */
+
+.editor-wrap{ width: 100%; min-height: 500px; border:1px solid #eee; line-height: 28px; }
+.editor-wrap .edit-toolBar{background-color: #d9d9d9; font-size: 0; height: 39px; line-height: 39px;}
+.editor-wrap .edit-btn-group{ font-size: 20px; display:inline-block; height: 39px;}
+.editor-wrap .edit-btn{position: relative; float: left; width:39px; height:100%; text-align: center;cursor: pointer; transition:all .2s}
+.editor-wrap .edit-btn i{ font-size: 25px; color: #666;  transition:all .2s}
+.editor-wrap .edit-btn:hover{ background: #595959; color: #ccc}
+.editor-wrap .edit-btn:hover i{ color: #fff}
+.editor-wrap #editorBox{ resize:vertical; width:100%;border:none; overflow:auto;min-height:500px; padding:10px; box-sizing: border-box }
+.editor-wrap #editorBox:focus{ border:none; outline: none; }
+.editor-wrap #editorBox i,#editorArticle i{font-style: italic}
+
+.editorPreview{ position:fixed; width: 100%; top:0; left: 0;height:100%; overflow: auto; background:#e8e8e8; z-index: 9999;}
+.editorPreview .editor-box{ background: #fff; position: relative; width:850px; margin:20px auto; min-height: 900px; padding:100px; box-shadow:0 0 20px 5px rgba(0, 0, 0, 0.25); box-sizing: border-box}
+.editorPreview .template-title{position: absolute; top:0; left: 0; width:100%; height: 100px;}
+.editorPreview .template-title .template-box{padding:10px;background-color:#fff; box-sizing: border-box; width:850px; margin:0 auto;height:50px;}
+.editorPreview .template-title.active{position: fixed; top:0; height: 50px;}
+.editorPreview .template-title.active .box{border-bottom:1px solid #efefef;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)}
+.editorPreview .close{float: right;  font-size: 25px; cursor: pointer; color: #999;transition:all .2s}
+.editorPreview .close:hover{transform: rotate(90deg)}
+.editorPreview .editor-box .title{float: left;  font-size: 16px; cursor: pointer; color: #999}
+
+.editor-wrap ol,
+.editor-wrap ul{-webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;}
+.editor-wrap ol,
+.editor-wrap ol li{list-style: disc}
+.editor-wrap ul,
+.editor-wrap ul li{list-style: decimal}
+.editor-wrap h1,
+.editor-wrap h2,
+.editor-wrap h3,
+.editor-wrap h4,
+.editor-wrap h5,
+.editor-wrap h6{font-weight: bold}
+
