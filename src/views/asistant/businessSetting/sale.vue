@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-29 15:45:28
+ * @LastEditTime: 2019-10-30 20:08:35
  * @Description: 业务设置-销售
  -->
 <template>
@@ -27,10 +27,9 @@
           @click="save"
         >保存</el-button>
         <el-button v-if="isEdit" size="small" style="margin-top: 20px;" @click="cancel">取消</el-button>
-        <el-button size="small" style="margin-top: 20px;" @click="restoreDefault">恢复默认</el-button>
       </el-col>
     </div>
-    <el-form size="small" :model="saleForm" :disabled="!isEdit">
+    <el-form size="small" :model="sellEntity" :disabled="!isEdit">
       <fieldset class="d-fieldset mb20">
         <legend>
           <i class="d-round12 d-circle d-bg-blue"></i>
@@ -42,7 +41,13 @@
             <span>【报价单】的“折后销售单价”小于“销售参考价”时，不能保存生成报价单</span>
           </el-col>
           <el-col :span="6">
-            <el-switch v-model="saleForm.quotation1" active-text="开" inactive-text="关"></el-switch>
+            <el-switch
+              v-model="sellEntity.quotationState"
+              active-text="开"
+              inactive-text="关"
+              :active-value="1"
+              :inactive-value="0"
+            ></el-switch>
           </el-col>
         </el-form-item>
         <el-form-item>
@@ -51,7 +56,7 @@
           </el-col>
           <el-col :span="6">
             <el-input-number
-              v-model="saleForm.quotation2"
+              v-model="sellEntity.quotationTime"
               size="mini"
               controls-position="right"
               :min="1"
@@ -76,7 +81,13 @@
             <span>【销售出库单】的选择账期“现结”时，如果关联的【账单】“未结清”时，【出库单】不能进行“出库”</span>
           </el-col>
           <el-col :span="6">
-            <el-switch v-model="saleForm.outbound1" active-text="开" inactive-text="关"></el-switch>
+            <el-switch
+              :active-value="1"
+              :inactive-value="0"
+              v-model="sellEntity.stockOutState"
+              active-text="开"
+              inactive-text="关"
+            ></el-switch>
           </el-col>
         </el-form-item>
         <el-form-item>
@@ -84,7 +95,13 @@
             <span>【销售出库单】，有“标准”合同时，不用进行“合同完善”审核，自动通过</span>
           </el-col>
           <el-col :span="6">
-            <el-switch v-model="saleForm.outbound2" active-text="开" inactive-text="关"></el-switch>
+            <el-switch
+              :active-value="1"
+              :inactive-value="0"
+              v-model="sellEntity.stockStandardState"
+              active-text="开"
+              inactive-text="关"
+            ></el-switch>
           </el-col>
         </el-form-item>
       </fieldset>
@@ -98,12 +115,18 @@ export default {
     return {
       activeName: 'first',
       isEdit: false,
-      saleForm: {
-
+      sellEntity: {
+        quotationState: 1,
+        quotationTime: 15,
+        stockOutState: 1,
+        stockStandardState: 1
       }
     }
   },
   components: {
+  },
+  mounted() {
+    this.commonsystemconfigList()
   },
   methods: {
     save() {
@@ -114,6 +137,13 @@ export default {
     },
     restoreDefault() {
 
+    },
+    commonsystemconfigList() {
+      this.$api.seePsiCommonService.commonsystemconfigList().then(res => {
+        Object.keys(this.sellEntity).forEach(key => {
+          this.sellEntity[key] = res.data.sellEntity[key]
+        })
+      })
     }
   }
 }
