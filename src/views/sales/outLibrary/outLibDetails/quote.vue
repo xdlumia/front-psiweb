@@ -2,21 +2,20 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 15:42:04
+ * @LastEditTime: 2019-10-30 16:19:35
  * @Description: 销售-报价单
 */
 <template>
   <div>
     <!-- 报价单 -->
-    <outLib-quote :button="false"></outLib-quote>
+    <sales-quote :button="false"></sales-quote>
   </div>
 </template>
 <script>
 
-import outLibQuote from '@/views/sales/quote/index.vue' //报价单
 
 export default {
-  components: { outLibQuote },
+  components: {},
   props: ['drawerData'],
   beforeDestroy() {
   }
