@@ -2,32 +2,14 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-29 16:19:45
- * @Description: 业务设置-报表
+ * @LastEditTime: 2019-10-30 14:42:55
+ * @Description: 业务设置-报表 promotion
  -->
 <template>
   <div class>
     <div>
       <el-col :span="16">
-        <h3 class="mt10 d-text-gray b">提成报表</h3>
-      </el-col>
-      <el-col :span="8" class="ar">
-        <el-button
-          v-if="!isEdit"
-          type="primary"
-          size="small"
-          style="margin-top: 20px;"
-          @click="isEdit = true"
-        >编辑</el-button>
-        <el-button
-          v-if="isEdit"
-          type="primary"
-          size="small"
-          style="margin-top: 20px;"
-          @click="save"
-        >保存</el-button>
-        <el-button v-if="isEdit" size="small" style="margin-top: 20px;" @click="cancel">取消</el-button>
-        <el-button size="small" style="margin-top: 20px;" @click="restoreDefault">恢复默认</el-button>
+        <h3 class="mt10 mb10 d-text-gray b">提成报表</h3>
       </el-col>
     </div>
     <fieldset class="d-fieldset mb20">
@@ -40,7 +22,14 @@
         <el-table-column label="提成员工名称"></el-table-column>
         <el-table-column label="底薪"></el-table-column>
         <el-table-column label="提成比例"></el-table-column>
-        <el-table-column label="操作"></el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button type="text" size="small">编辑</el-button>
+            <el-button type="text" size="small">删除</el-button>
+            <el-button type="text" size="small">启用</el-button>
+            <el-button type="text" size="small">停用</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </fieldset>
   </div>

@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-29 18:41:21
+ * @LastEditTime: 2019-10-30 14:19:51
  * @Description: 业务设置-财务
  -->
 <template>
@@ -37,13 +37,8 @@
           <span class="mr5">逾期滞纳金</span>
         </legend>
         <el-row>
-          <el-col :span="6">
-            <el-form-item label="是否统一配置滞纳金">
-              <el-switch v-model="saleForm.quotation1" active-text="开" inactive-text="关"></el-switch>
-            </el-form-item>
-          </el-col>
-          <el-col :span="18">
-            <el-button size="mini" type="primary">+新增滞纳金方案</el-button>
+          <el-col :span="24">
+            <el-button size="mini" type="primary" class="mb10 mt10">+新增滞纳金方案</el-button>
           </el-col>
         </el-row>
         <div>
@@ -81,7 +76,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="5">
-              <el-form-item label="滞纳金上限" label-width="100px">
+              <el-form-item label="滞纳金上限" label-width="90px">
                 <el-input v-model="saleForm.value"></el-input>
               </el-form-item>
             </el-col>
