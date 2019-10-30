@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-28 15:35:32
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-30 15:51:15
+ * @LastEditTime: 2019-10-30 15:58:32
  * @Description: description
  -->
 <!--辅助管理:合同模板
@@ -16,8 +16,8 @@
 
 <template>
   <div>
-    <el-row :gutter="20" style="width:1250px; margin:0 auto;" v-loading="loading">
-      <el-col :span="8" style="height:100%;">
+    <el-row :gutter="20" style="width:1250px; margin:0 auto;" v-loading="loading" type="flex">
+      <el-col :span="8">
         <div style="overflow-y:auto; overflow-x:hidden" class="temp-fixed">
           <el-row :gutter="10">
             <el-col :span="24" class="d-text-gray">内置字段（不可修改,双击添加到模板正文</el-col>
@@ -55,9 +55,9 @@
           </el-row>
         </div>
         <!-- 没什么用占位用的 -->
-        <div style="color:#fff">&nbsp;</div>
+        <div style="color:#fff;">&nbsp;</div>
       </el-col>
-      <el-col :span="16" style="margin-left:400px;">
+      <el-col :span="16">
         <div style="height:32px;">合同编辑区域</div>
         <div class="editor-wrap">
           <!-- 工具栏 -->
