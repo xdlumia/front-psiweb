@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 14:38:06
+ * @LastEditTime: 2019-10-30 15:22:36
  * @Description: 销售-销售出库单
  */
 <template>
@@ -19,7 +19,7 @@
       @selection-change="selectionChange"
     >
       <template v-slot:filter>自定义筛选列</template>
-      <template slot-scope="{column,row,value,scope}">
+      <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
           @click="quotoHandle('outLib',row)"
@@ -121,6 +121,7 @@ export default {
       this.drawerData.title = typeObj[type].title
       this.drawerData.component = typeObj[type].comp
     },
+    selectionChange() { },
 
     // 重置
     reset() {

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 11:07:33
+ * @LastEditTime: 2019-10-30 14:55:41
  * @Description: file content
 */
 <template>
@@ -109,25 +109,6 @@ export default {
     // this.currStep()
   },
   methods: {
-    // 点击步骤条触发
-    currStep() {
-      let stepsBox = this.$refs.stepsBox.$el
-      let that = this
-      stepsBox.addEventListener('click', function (e) {
-        let steps = this.querySelectorAll('.el-step__icon-inner ')
-
-        let currStep = e.target
-        let className = currStep.className
-        if (className === 'el-step__icon-inner') {
-          if (+currStep.innerText > that.steps) {
-            console.log(1);
-
-          }
-          that.steps = +currStep.innerText
-
-        }
-      }, false)
-    },
     // 编辑和新增
     initCompanyAdd() {
       if (this.dialogMeta.type === 'add') {

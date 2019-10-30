@@ -2,7 +2,7 @@
  * @author: 王晓冬
  * @Date: 2019-10-28 10:29:53
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-29 08:46:26
+ * @LastEditTime: 2019-10-30 15:04:00
  * @Description: 销售模块路由
  */
 const Quote = () => import('@/views/sales/quote') // 报价单
