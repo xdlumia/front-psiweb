@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 18:26:55
+ * @LastEditTime: 2019-10-30 09:06:17
  * @Description: 新增备货单
 */
 <template>
@@ -21,7 +21,7 @@
       <d-tab-pane label="商品信息" name="commodityInfo" /> 
       <d-tab-pane label="自定义信息" name="customInfo" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
-      <div slot="body">
+      <div>
         <el-form :model="form" class="p10"> 
           <ShipInfo id="shipInfo" />
           <CommodityInfo id="commodityInfo" />  

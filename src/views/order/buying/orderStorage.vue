@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 19:00:22
+ * @LastEditTime: 2019-10-30 09:17:23
  * @Description: 采购入库单
 */
 <template>
@@ -24,7 +24,7 @@
       <d-tab-pane label="收票滞纳金" :name="'billInfo'+randomStr" />
       <d-tab-pane label="自定义信息" :name="'customInfo'+randomStr" />
       <d-tab-pane label="备注信息" :name="'extrasInfo'+randomStr" />
-      <div slot="body">
+      <div>
         <el-form :model="form" class="p10">
           <SupplierInfo :id="'supplierInfo'+randomStr" />
           <CompanyInfo :id="'companyInfo'+randomStr" />
@@ -77,7 +77,7 @@ export default {
   data() {
     return {
       activeName: '',
-      randomStr: +new Date() + '-' + Math.random()
+      randomStr: +new Date() + '-' + Math.random(),
     };
   },
   mounted() {},

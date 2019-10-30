@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-29 11:57:36
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 19:03:37
+ * @LastEditTime: 2019-10-30 09:15:53
  * @Description: tabs
 */
 <template>
@@ -13,14 +13,14 @@
       </el-tabs>
     </el-header>
     <el-main ref="elMain" style="padding:0;">
-      <slot name="body" />
+      <slot />
     </el-main>
   </el-container>
 </template>
 <script>
 /**
- * @example
- *   <d-tabs>
+ * @example 需要通过样式设置最大高度，形成滚动区域，自动监听滚动事件
+ *   <d-tabs :style="{maxHeight:'600px'}">
  *     <d-tab-pane label="供应商信息" name="supplierInfo" /> 
  *     <div slot="body">
  *       <el-form class="p10">
@@ -30,7 +30,9 @@
  *   </d-tabs>
  */
 export default {
-  props: {},
+  props: {
+    scrollView: HTMLElement
+  },
   data() {
     return {
       activeName: '',
@@ -41,18 +43,24 @@ export default {
   computed: {
     tabs() {
       return this.$slots.default
-        .filter(a => a.componentOptions.Ctor.extendOptions.name == 'dTabPanel')
+        .filter(a => a.componentOptions && a.componentOptions.Ctor.extendOptions.name == 'dTabPanel')
         .map(node => node.componentOptions.propsData);
+    },
+    scrollEl(){
+      if(this.scrollView instanceof HTMLElement){
+        return this.scrollView;
+      }else return this.$refs.elMain.$el;
     }
   },
   watch: {},
   mounted() {
-    this.$refs.elMain.$el.onscroll = this.onScroll;
+    console.log(this)
+    this.scrollEl.onscroll = this.onScroll;
   },
   methods: {
     onScroll() {
       clearTimeout(this.timer);
-      let baseDom = this.$refs.elMain.$el;
+      let baseDom = this.scrollEl;
       this.timer = setTimeout(() => {
         let rootRect = baseDom.getBoundingClientRect();
         this.tabs
