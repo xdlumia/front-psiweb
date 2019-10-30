@@ -2,17 +2,17 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 10:26:58
+ * @LastEditTime: 2019-10-30 10:34:21
  * @Description: 操作步骤条
  * @params: data: Arrar 标题名称
  * @params: v-model: Number 当前步骤 
  * @method: input 点击事件 返回下标
  * @example  
-    <d-steps
+    <d-step
       v-model="steps"
       @input="click"
-      :data="['我是标题1','我是标题2','我是标题3','我是标题4']">
-    </d-steps>
+      :data="['选择客户','选择产品','确定配置信息','填写报价信息']">
+    </d-step>
 */
 <template>
   <div>
@@ -90,7 +90,7 @@ export default {
       position: absolute;
       top: 15px;
       height: 1px;
-      right: 0;
+      right: 5px;
       left: 11px;
     }
     &:last-child {
@@ -115,7 +115,7 @@ export default {
       line-height: 32px;
       left: 32px;
       background-color: #fff;
-      padding-left: 15px;
+      padding-left: 10px;
       padding-right: 10px;
       color: #666;
       font-size: 16px;

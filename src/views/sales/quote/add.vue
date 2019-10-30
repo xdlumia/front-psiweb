@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 10:29:34
+ * @LastEditTime: 2019-10-30 10:36:05
  * @Description: file content
 */
 <template>
@@ -15,10 +15,10 @@
         size="small"
       >下一步</el-button>
     </p>
-    <d-steps
+    <d-step
       v-model="steps"
-      :data="['我是标题1','我是标题2','我是标题3','我是标题4']"
-    ></d-steps>
+      :data="['选择客户','选择产品','确定配置信息','填写报价信息']"
+    ></d-step>
     <el-form
       label-width="160px"
       v-loading="loading"
@@ -27,7 +27,7 @@
       size="mini"
       label-position="top"
       style="height:calc(100vh - 200px)"
-      class="d-auto-y pr20 d-relative"
+      class="d-auto-y pr20 d-relative mt10"
     >
 
       <el-input
