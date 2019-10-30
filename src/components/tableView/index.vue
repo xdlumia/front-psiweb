@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 15:13:58
+ * @LastEditTime: 2019-10-30 11:29:42
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -13,6 +13,46 @@
  * @slot filter 自定义筛选
  * @slot button 自定义操作按钮
  * @slot moreButton 自定义更多操作下拉按钮
+ * @example 
+  <!-- 
+  <table-view
+    type="1"
+    ref="table"
+    :filter="true"
+    :moreButton="true"
+    :column="true"
+    title="报价单"
+    api="bizSystemService.getEmployeeList"
+    :params="queryForm"
+    @selection-change="selectionChange"
+  >
+    <template v-slot:filter>自定义筛选列</template>
+    <!-- 自定义按钮功能 
+    <template v-slot:button>
+      <el-button
+        size="mini"
+        type="primary"
+        @click="quotoHandle('add')"
+      >新建</el-button>
+      <el-button
+        size="mini"
+        @click="quotoHandle('merge')"
+      >合并生成出库单</el-button>
+      <el-button
+        size="mini"
+        @click="quotoHandle('copy')"
+      >复制生成报价单</el-button>
+    </template>
+    <template v-slot:moreButton>自定义更多按钮</template>
+    <template slot-scope="{column,row,value,scope}">
+      {{scope.$index}}
+      <span @click="quotoHandle('quoto',row)">报价单编号</span>
+      <span @click="quotoHandle('sales',row)">销售单编号</span>
+      <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+      <span v-else>{{value}}</span>
+    </template>
+  </table-view>
+-->
  */
 <template>
   <div
@@ -73,6 +113,7 @@
           <slot
             :column="item"
             :row="scope.row"
+            :scope="scope"
             :value="scope.row[item.prop]"
           />
         </template>
