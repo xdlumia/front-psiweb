@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 20:22:31
+ * @LastEditTime: 2019-10-30 20:30:18
  * @Description: 报价单详情
 */
 <template>
@@ -40,7 +40,7 @@
         >
           <components
             class="d-auto-y"
-            style="height:calc(100vh - 200px)"
+            style="height:calc(100vh - 240px)"
             :is="activeName"
           ></components>
         </el-tab-pane>
@@ -50,7 +50,7 @@
         >
           <components
             class="d-auto-y"
-            style="height:calc(100vh - 200px)"
+            style="height:calc(100vh - 240px)"
             :is="activeName"
           ></components>
         </el-tab-pane>
@@ -60,7 +60,7 @@
         >
           <components
             class="d-auto-y"
-            style="height:calc(100vh - 200px)"
+            style="height:calc(100vh - 240px)"
             :is="activeName"
           ></components>
         </el-tab-pane>
@@ -70,7 +70,7 @@
         >
           <components
             class="d-auto-y"
-            style="height:calc(100vh - 200px)"
+            style="height:calc(100vh - 240px)"
             :is="activeName"
           ></components>
         </el-tab-pane>
