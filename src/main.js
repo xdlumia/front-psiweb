@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-25 17:56:34
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-10-30 09:56:10
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -26,7 +26,7 @@ import './api'
 import { globalConfig } from 'see-web-basic'
 import { systemStoreConfig } from 'see-web-system'
 // 公共组件
-import { uploadFile, quillEditor, tableView } from './components/index'
+import commonComponents from './components/index'
 // import seeWebCustomerService from 'see-web-customer-service'
 
 // 修改element ui 默认参数
@@ -38,9 +38,7 @@ Vue.use(citys)
 Vue.use(systemStoreConfig)
 Vue.use(ElementUI)
 Vue.use(globalConfig)
-Vue.use(uploadFile)
-Vue.use(quillEditor)
-Vue.use(tableView)
+Vue.use(commonComponents)
 Vue.config.productionTip = false
 // eslint-disable-next-line no-new
 new Vue({

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 09:17:23
+ * @LastEditTime: 2019-10-30 09:56:41
  * @Description: 采购入库单
 */
 <template>
@@ -47,8 +47,6 @@ import SupplierInfo from '@/components/formComponents/supplier-info'; // 供应�
 import ShipInfo from '@/components/formComponents/ship-info'; // 供应商信息
 import CommodityInfo from '@/components/formComponents/commodity-info'; // 商品信息
 import BillInfo from '@/components/formComponents/bill-info'; // 商品信息
-import dTabs from '@/components/tabs/index';
-import dTabPane from '@/components/tabs/tab-pane';
 
 export default {
   components: {
@@ -59,8 +57,6 @@ export default {
     ShipInfo,
     CommodityInfo,
     BillInfo,
-    dTabs,
-    dTabPane
   },
   props: {
     visible: {
