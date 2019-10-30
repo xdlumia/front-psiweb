@@ -3,12 +3,13 @@
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 徐贺
  * @LastEditTime: 2019-10-26 18:17:56
- * @Description: 生成拣货单和组装任务
+ * @Description: 新增组装单
 */
 <template>
   <el-dialog
+    width='80%'
     :visible.sync="visible"
-    title="生成拣货单和组装任务"
+    title="新增组装单"
     v-dialogDrag
   >
     <el-container>
@@ -22,7 +23,7 @@
           :model="form"
           class="p10"
         >
-          <pickAssemble ref="pickAssemble" />
+          <commodityInfoEdit ref="commodityInfoEdit" />
           <chooseAssembly ref="chooseAssembly" />
         </el-form>
 
@@ -45,24 +46,24 @@
   </el-dialog>
 </template>
 <script>
-import pickAssemble from '@/components/formComponents/pick-assemble';
+import commodityInfoEdit from '@/components/formComponents/commodity-info-edit';
 import chooseAssembly from '@/components/formComponents/choose-assembly';
 
 export default {
   components: {
-    pickAssemble,
+    commodityInfoEdit,
     chooseAssembly
   },
   props: {
     visible: {
       type: Boolean,
-      default: false
+      default: true
     },
     form: {}
   },
   computed: {
     maxHeight() {
-      return window.innerHeight - 130;
+      return window.innerHeight - 200;
     }
   },
   data() {
