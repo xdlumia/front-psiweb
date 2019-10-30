@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 18:10:37
- * @Description: 销售单详情
+ * @LastEditTime: 2019-10-30 10:54:06
+ * @Description: 销售出库单详情
 */
 <template>
   <div>
