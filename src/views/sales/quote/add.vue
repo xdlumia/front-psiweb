@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-29 18:58:25
+ * @LastEditTime: 2019-10-30 10:29:34
  * @Description: file content
 */
 <template>
@@ -11,20 +11,14 @@
       <el-button
         @click="steps++"
         type="primary"
-        :disabled="steps==3"
+        :disabled="steps==4"
         size="small"
       >下一步</el-button>
     </p>
-    <el-steps
-      ref="stepsBox"
-      :active="steps"
-      align-center
-    >
-      <el-step title="选择客户"></el-step>
-      <el-step title="创建配置"></el-step>
-      <el-step title="确定配置信息"></el-step>
-      <el-step title="填写报价信息"></el-step>
-    </el-steps>
+    <d-steps
+      v-model="steps"
+      :data="['我是标题1','我是标题2','我是标题3','我是标题4']"
+    ></d-steps>
     <el-form
       label-width="160px"
       v-loading="loading"
@@ -87,7 +81,7 @@ export default {
   components: {
     clientInfo,
     clientData,
-    historyQuoto
+    historyQuoto,
   },
   data() {
     return {
@@ -112,7 +106,7 @@ export default {
     // this.initCompanyAdd()
   },
   mounted() {
-    this.currStep()
+    // this.currStep()
   },
   methods: {
     // 点击步骤条触发
