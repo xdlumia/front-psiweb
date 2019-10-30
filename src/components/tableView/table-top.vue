@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-29 14:48:57
+ * @LastEditTime: 2019-10-30 20:28:36
  * @Description: 表格头部 
  */
 <template>
@@ -43,9 +43,6 @@
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
               <span @click="$emit('moreHandle', 'export')">导出</span>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <span @click="$emit('moreHandle', 'print')">打印</span>
             </el-dropdown-item>
             <slot name="moreButton"></slot>
           </el-dropdown-menu>

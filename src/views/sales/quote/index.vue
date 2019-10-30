@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 19:33:33
+ * @LastEditTime: 2019-10-30 20:27:09
  * @Description: 销售-报价单
  */
 <template>
@@ -69,6 +69,7 @@
       :size="drawerData.width"
     >
       <components
+        @buttonClick="quotoHandle"
         :is="drawerData.component"
         :drawerData="drawerData"
       ></components>
@@ -130,13 +131,15 @@ export default {
     quotoHandle(type, row) {
       let typeObj = {
         add: { comp: 'add', title: '新增报价单' },
+        edit: { comp: 'add', title: '编辑报价单' },
         copy: { comp: 'add', title: '复制报价单' },
         merge: { comp: 'merge', title: '合并生成销售出库单' },
         quoto: { comp: 'quotoDetails', title: '报价单' },
         outLib: { comp: 'outLibDetails', title: '销售出库单' },
       }
-      // 如果是新增复制合并调用dialog弹出框
-      if (type == "add" || type == "copy" || type == "merge") {
+      // 如果type是isDialog里的类型调用dialog弹出框
+      let isDialog = ['add', 'edit', 'copy', 'merge']
+      if (isDialog.includes(type)) {
         this.dialogData.visible = true
         this.dialogData.type = type
         this.dialogData.title = typeObj[type].title
