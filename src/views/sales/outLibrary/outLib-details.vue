@@ -2,46 +2,25 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 16:40:46
+ * @LastEditTime: 2019-10-30 20:32:14
  * @Description: 销售出库单详情
 */
 <template>
   <div>
     <div class="mb10">
-      <el-button
-        size="small"
-        type="primary"
-      >提交审核</el-button>
-      <el-button size="small">撤销审核</el-button>
-      <el-button
-        size="small"
-        type="primary"
-      >审核通过</el-button>
-      <el-button
-        type="primary"
-        size="small"
-      >编辑</el-button>
-      <el-button
-        size="small"
-        type="danger"
-      >删除</el-button>
-      <el-button
-        size="small"
-        type="primary"
-      >提交审核</el-button>
-      <el-button size="small">驳回</el-button>
-      <el-button
-        size="small"
-        type="primary"
-      >生成销售出库单</el-button>
-      <el-button
-        size="small"
-        type="primary"
-      >生成请购单</el-button>
-      <el-button
-        size="small"
-        type="primary"
-      >终止</el-button>
+      <!-- 操作按钮 -->
+      <span
+        v-for="(item,index) of buttons"
+        :key="index"
+      >
+        <el-button
+          class="mr10"
+          @click="buttonsClick(item.name)"
+          v-if="currStatusType[currStatus].includes(item.label)"
+          size="small"
+          :type="item.type"
+        >{{item.label}}</el-button>
+      </span>
 
     </div>
     <el-form
@@ -84,7 +63,31 @@ export default {
   props: ['drawerData'],
   data() {
     return {
-      // tabs  组件名称对应的label名称
+      // 操作按钮
+      buttons: [
+        { label: '提交审核', name: 'submit', type: 'primary', authCode: '' },
+        { label: '撤销审核', name: 'undo', type: 'danger', authCode: '' },
+        { label: '审核通过', name: 'pass', type: 'primary', authCode: '' },
+        { label: '编辑', name: 'edit', type: 'primary', authCode: '' },
+        { label: '删除', name: 'del', type: 'danger', authCode: '' },
+        { label: '驳回', name: 'reject', authCode: '' },
+        { label: '生成销售出库单', name: 'generateSales', type: 'primary', authCode: '' },
+        { label: '生成请购单', name: '', type: 'generateBuying', authCode: '' },
+        { label: '终止', name: 'termination', authCode: '' }
+      ],
+      /**
+       * 根据当前状态判断显示哪些按钮
+       * 1:新建 2:审核中 3:已通过 4:已驳回 5:已完成
+       */
+      currStatus: 1,
+      currStatusType: {
+        1: ['提交审核', '编辑', '删除'],
+        2: ['撤销审核', '审核通过', '驳回'],
+        3: ['生成销售出库单', '生成请购单', '终止'],
+        4: ['提交审核', '编辑', '删除'],
+        5: []
+      },
+      // tabs 组件名称对应的label名称
       tabs: {
         detail: '详情',
         quote: '报价单',
@@ -95,6 +98,7 @@ export default {
         contract5: '发票记录',
         contract6: '费用分摊单'
       },
+
       // tabs当前选中
       activeName: 'detail',
       form: {},
