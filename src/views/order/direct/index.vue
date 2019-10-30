@@ -2,53 +2,40 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 15:34:52
- * @Description: 采购-请购单
+ * @LastEditTime: 2019-10-30 14:39:31
+ * @Description: 采购-直发单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="请购单">
-      <template slot="button">
-        <el-button @click="orderBuyingDetailRecVisible=true" size="mini" type="primary">请购单明细表</el-button>
-      </template>
+    <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="直发单">
       <template slot-scope="{column,row,value}">
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <OrderBuyingDetail />
-    <OrderBuyingDetailRec :visible.sync="orderBuyingDetailRecVisible" />
+    <Detail :visible.sync="showDetail" />
   </div>
 </template>
 <script>
 import TableView from '@/components/tableView';
-import OrderBuyingDetail from './detail';
-import OrderStorage from '../storage/edit';
-import OrderBuyingDetailRec from './detailRec';
-import AddBorrowIn from '@/views/order/borrow/addIn';
-/**
- * 采购-请购单
- */
+import Detail from './detail';
+
 export default {
   components: {
     TableView,
-    OrderBuyingDetail,
-    OrderBuyingDetailRec,
-    OrderStorage,
-    AddBorrowIn
+    Detail
   },
   data() {
     return {
       status: [],
-      orderStorageVisible: false,
-      addBorrowInVisible: true,
-      orderBuyingDetailRecVisible: false,
+      showDetail: true,
       tableHeader: [
-        { label: '请购单编号', prop: 'deptName', width: '180' },
+        { label: '直发单编号', prop: 'deptName', width: '180' },
         { label: '报价单编号', prop: 'deptName', width: '180' },
         { label: '单据状态', prop: 'deptName', width: '180' },
-        { label: '销售要求到货时间', prop: 'deptName', width: '180' },
-        { label: '采购预计到货时间', prop: 'deptName', width: '180' },
+        { label: '客户名称', prop: 'deptName', width: '180' },
+        { label: '销售预计发货时间', prop: 'deptName', width: '180' },
+        { label: '采购预计发货时间', prop: 'deptName', width: '180' },
         { label: '单据执行人', prop: 'deptName', width: '180' },
         { label: '单据创建人', prop: 'deptName', width: '180' },
         { label: '创建部门', prop: 'deptName', width: '180' },

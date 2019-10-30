@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 16:06:27
+ * @LastEditTime: 2019-10-30 10:30:19
  * @Description: 采购入库单
 */
 <template>
@@ -19,7 +19,7 @@
     }">
       <d-tab-pane label="借入信息" name="borrowIn" />
       <d-tab-pane label="借入商品" name="borrowGoods" />
-      <div slot="body">
+      <div>
         <el-form :model="form" class="p10">
           <BorrowIn id="borrowIn" />
           <BorrowGoods id="borrowGoods" />

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 17:44:33
+ * @LastEditTime: 2019-10-30 14:23:19
  * @Description: 侧边详情弹框
 */
 <template>
@@ -14,7 +14,7 @@
         </div>
         <SideStatusbar :status="status" />
       </el-header>
-      <el-main class="p0">
+      <el-main class="p0 side-body">
         <slot />
       </el-main>
     </el-container>
@@ -75,22 +75,24 @@ export default {
       }
     }
   }
-  .tabs-view {
-    position: relative;
+  .side-body {
     /deep/ {
-      & > .el-tabs__header {
-        background-color: #f2f2f2;
-        padding: 0 20px;
-        margin-bottom: 0;
-        > .el-tabs__nav-wrap::after {
+      > .tabs-view {
+        position: relative;
+        & > .el-tabs__header {
           background-color: #f2f2f2;
+          padding: 0 20px;
+          margin-bottom: 0;
+          > .el-tabs__nav-wrap::after {
+            background-color: #f2f2f2;
+          }
         }
-      }
-      & > .el-tabs__content {
-        height: calc(100% - 40px);
-        overflow: hidden;
-        overflow-y: auto;
-        padding: 0 20px;
+        & > .el-tabs__content {
+          height: calc(100% - 40px);
+          overflow: hidden;
+          overflow-y: auto;
+          padding: 0 20px;
+        }
       }
     }
   }

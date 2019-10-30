@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-29 11:57:36
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 09:15:53
+ * @LastEditTime: 2019-10-30 14:32:03
  * @Description: tabs
 */
 <template>
@@ -54,7 +54,6 @@ export default {
   },
   watch: {},
   mounted() {
-    console.log(this)
     this.scrollEl.onscroll = this.onScroll;
   },
   methods: {
@@ -65,7 +64,7 @@ export default {
         let rootRect = baseDom.getBoundingClientRect();
         this.tabs
           .map(item => ({
-            dom: document.getElementById(item.name),
+            dom: baseDom.querySelector(`#${item.name}`),
             name: item.name
           }))
           .filter(a => a.dom)

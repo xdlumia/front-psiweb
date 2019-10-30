@@ -2,11 +2,13 @@
  * @author: 赵伦
  * @Date: 2019-10-26 10:29:53
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 17:50:09
+ * @LastEditTime: 2019-10-30 15:23:43
  * @Description: 采购模块路由
  */
 const OrderBuying = () => import('./buying')
 const OrderPrepare = () => import('./prepare')
+const OrderDirect = () => import('./direct')
+const OrderStorage = () => import('./storage')
 
 export default [
     {
@@ -22,13 +24,13 @@ export default [
         }
     },
     {
-        path: '/order/direct', name: '/order/direct', component: OrderBuying, meta: {
+        path: '/order/direct', name: '/order/direct', component: OrderDirect, meta: {
             parent: '采购',
             title: '直发单'
         }
     },
     {
-        path: '/order/storage', name: '/order/storage', component: OrderBuying, meta: {
+        path: '/order/storage', name: '/order/storage', component: OrderStorage, meta: {
             parent: '采购',
             title: '采购入库单'
         }
