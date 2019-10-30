@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-28 16:56:16
+ * @LastEditTime: 2019-10-30 15:38:07
  * @Description: 报价单详情
 */
 <template>
@@ -27,13 +27,8 @@
   </table-view>
 </template>
 <script>
-import salesDetails from '@/components/formComponents/side-statusbar' //顶部状态
-import approvePanel from '@/components/formComponents/approve-panel' //审核面板
-
 export default {
   components: {
-    salesDetails,
-    approvePanel
   },
   props: ['drawerData'],
   beforeDestroy() {

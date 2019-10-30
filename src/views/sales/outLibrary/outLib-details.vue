@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 12:01:51
+ * @LastEditTime: 2019-10-30 15:17:23
  * @Description: 销售出库单详情
 */
 <template>
@@ -19,24 +19,10 @@
         type="card"
       >
         <el-tab-pane
-          label="详情"
-          name="detail"
-        >
-        </el-tab-pane>
-        <el-tab-pane
-          label="报价单"
-          name="outLibrary"
-        >
-
-        </el-tab-pane>
-        <el-tab-pane
-          label="请购单"
-          name="buy"
-        >
-        </el-tab-pane>
-        <el-tab-pane
-          label="操作记录"
-          name="record"
+          v-for="(val,key) of tabs"
+          :key="key"
+          :label="val"
+          :name="key"
         >
         </el-tab-pane>
       </el-tabs>
@@ -50,22 +36,29 @@
 </template>
 <script>
 import sideStatusbar from '@/components/formComponents/side-statusbar' //顶部状态
-// import detail from './quotoDetails/detail' //详情
-// import outLibrary from './quotoDetails/outLibrary' //销售出库单
-// import buy from './quotoDetails/buy' //采购单
-// import record from '@/components/formComponents/record' //操作记录
-
+import detail from './outLibDetails/detail' //详情
+import quote from './outLibDetails/quote' //报价单
 export default {
   components: {
     sideStatusbar,
-    // detail,
-    // outLibrary,
-    // buy,
-    // record
+    detail,
+    quote
   },
   props: ['drawerData'],
   data() {
     return {
+      // tabs  组件名称对应的label名称
+      tabs: {
+        detail: '详情',
+        quote: '报价单',
+        contract: '合同',
+        contract2: '销售退货单',
+        contract3: '销售换货单',
+        contract4: '应收账单',
+        contract5: '发票记录',
+        contract6: '费用分摊单'
+      },
+      // tabs当前选中
       activeName: 'detail',
       form: {},
     }

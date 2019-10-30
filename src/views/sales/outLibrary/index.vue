@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 12:00:44
+ * @LastEditTime: 2019-10-30 15:22:36
  * @Description: 销售-销售出库单
  */
 <template>
@@ -19,7 +19,7 @@
       @selection-change="selectionChange"
     >
       <template v-slot:filter>自定义筛选列</template>
-      <template slot-scope="{column,row,value,scope}">
+      <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
           @click="quotoHandle('outLib',row)"
@@ -46,6 +46,7 @@
 
     <!-- 抽屉弹出框 -->
     <el-drawer
+      :append-to-body="true"
       :title="drawerData.title"
       :visible.sync="drawerVisible"
       :size="drawerData.width"
@@ -54,15 +55,13 @@
         :visible.sync="drawerVisible"
         :is="drawerData.component"
         :drawerData="drawerData"
-        v-if="drawerVisible"
       ></components>
     </el-drawer>
 
   </div>
 </template>
 <script>
-import quotoDetails from '../quote/quoto-details' //报价详情
-import outLibDetails from './outLib-details' //销售详情
+import outLibDetails from './outLib-details' //销售出库单详情
 export default {
   props: {
     button: {
@@ -71,7 +70,6 @@ export default {
     }
   },
   components: {
-    quotoDetails,
     outLibDetails,
   },
   data() {
@@ -123,11 +121,8 @@ export default {
       this.drawerData.title = typeObj[type].title
       this.drawerData.component = typeObj[type].comp
     },
-    // 多选
-    selectionChange(val) {
-      console.log(val);
+    selectionChange() { },
 
-    },
     // 重置
     reset() {
       this.$refs.queryForm.resetFields();

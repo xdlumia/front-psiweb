@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 12:01:19
+ * @LastEditTime: 2019-10-30 15:20:20
  * @Description: 销售-报价单
  */
 <template>
@@ -39,7 +39,7 @@
         >复制生成报价单</el-button>
       </template>
       <template v-slot:moreButton>自定义更多按钮</template>
-      <template slot-scope="{column,row,value,scope}">
+      <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
           @click="quotoHandle('quoto',row)"
@@ -60,8 +60,6 @@
         :is="drawerData.component"
         :visible.sync="dialogVisible"
         :dialogData="drawerData"
-        v-if="dialogVisible"
-        @submit="$refs.table.reload"
       ></components>
     </el-dialog>
 
@@ -83,21 +81,22 @@
 </template>
 <script>
 import quotoDetails from './quoto-details' //报价详情
-import outLibDetails from '../outLibrary/outLib-details' //销售详情
+import outLibDetails from '../outLibrary/outLib-details' //销售详
+
 import add from './add' //新增
 import merge from './merge' //合并
 export default {
-  props: {
-    button: {
-      type: Boolean,
-      default: true
-    }
-  },
   components: {
     quotoDetails,
     outLibDetails,
     add,
     merge
+  },
+  props: {
+    button: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {
