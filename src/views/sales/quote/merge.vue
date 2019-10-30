@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 11:13:18
+ * @LastEditTime: 2019-10-30 11:17:05
  * @Description: 报价单详情
 */
 <template>
@@ -55,7 +55,7 @@
       style="height:calc(100vh - 200px)"
     >
       <!-- 客户信息 -->
-      <!-- <customerInfo ref="customerInfo" /> -->
+      <customerInfo ref="customerInfo" />
       <!-- 公司信息 -->
       <companyInfo ref="companyInfo" />
       <!-- 报价单信息 -->
