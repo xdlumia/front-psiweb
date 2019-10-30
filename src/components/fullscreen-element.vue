@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-24 16:20:33
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 18:00:53
+ * @LastEditTime: 2019-10-30 10:25:17
  * @Description: 全屏化某个局部dom节点
 */
 <template>
@@ -19,6 +19,13 @@
   </el-dialog>
 </template>
 <script>
+class FullscreenEvent extends Event {
+  isFullscreen = false;
+  constructor(isFullscreen = false) {
+    super('fullscreen');
+    this.isFullscreen = isFullscreen;
+  }
+}
 /**
  * @author 赵伦 2019-10-24
  * @description 全屏化某个局部dom节点
@@ -58,6 +65,7 @@ export default {
         target.replaceWith(this.$refs.placeholder);
         this.commentDom.replaceWith(target);
       }
+      target.__vue__.$emit('fullscreen', new FullscreenEvent(this.visible));
     },
     // 获取节点
     getElement(node) {

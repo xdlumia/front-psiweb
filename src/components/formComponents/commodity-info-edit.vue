@@ -87,6 +87,7 @@
             </el-option>
           </el-select>
           <i
+            @click="changeVisible"
             class="el-icon-plus d-text-blue d-absolute f18 b d-pointer"
             style='right:15px;z-index:200;top:20px;'
           ></i>
@@ -117,6 +118,7 @@
             </el-option>
           </el-select>
           <i
+            @click="changeVisible"
             class="el-icon-plus d-text-blue d-absolute f18 b d-pointer"
             style='right:15px;z-index:200;top:20px;'
           ></i>
@@ -204,11 +206,17 @@
         prop="name"
       ></el-table-column>
     </el-table>
+    <commodityChoose
+      @update=update
+      :visibleData='visibleData'
+      :visible='visible'
+    />
   </form-card>
 </template>
 <script>
+import commodityChoose from './commodity-choose'
 export default {
-  components: {},
+  components: { commodityChoose },
   data() {
     return {
       tableData: [{ name: '110', children: [{ name: '1120' }], noChildren: true }, { name: '120', children: [], noChildren: true }],
@@ -233,7 +241,11 @@ export default {
         label: '广州'
       }],
       state: '',
-      value: ''
+      value: '',
+      visibleData: {
+
+      },
+      visible: true
     };
   },
   methods: {
@@ -252,6 +264,15 @@ export default {
     //点击删除当前行
     deleteInfo(row) {
       this.tableData.splice(row.$index, 1)
+    },
+    //召唤弹窗
+    changeVisible() {
+      console.log(this.visible)
+      this.visible = true
+    },
+    //关闭弹窗
+    update() {
+      this.visible = false
     }
   }
 };

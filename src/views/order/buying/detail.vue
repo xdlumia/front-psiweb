@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 18:29:43
+ * @LastEditTime: 2019-10-30 15:35:28
  * @Description: 采购单详情
 */
 <template>
@@ -22,7 +22,7 @@
       <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
       <el-tab-pane label="报价单">报价单</el-tab-pane>
     </el-tabs>
-    <OrderStorage :visible.sync="orderStorageVisible" />
+    <OrderStorage :visible.sync="orderStorageVisible" from="请购" />
     <AddBorrowIn :visible.sync="addBorrowInVisible" />
   </SideDetail>
 </template>
@@ -32,7 +32,7 @@ import ExtrasInfo from '@/components/formComponents/extras-info';
 import SideDetail from '@/components/side-detail';
 import SideStatusbar from '@/components/formComponents/side-statusbar';
 import CommodityInfo from '@/components/formComponents/commodity-info'; // 商品信息
-import OrderStorage from './orderStorage';
+import OrderStorage from '../storage/edit';
 import AddBorrowIn from '@/views/order/borrow/addIn';
 
 export default {
@@ -64,48 +64,5 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.side-page {
-  .header-btns {
-    position: absolute;
-    right: 40px;
-    top: 12px;
-  }
-  /deep/ {
-    > .popup-main {
-      > .popup-head {
-        font-weight: bold;
-        font-size: 18px;
-        > .d-inline > .popup-close {
-          position: absolute;
-          right: 10px;
-          top: 16px;
-        }
-      }
-      > .popup-body {
-        padding: 0;
-        overflow: hidden;
-      }
-    }
-  }
-  .tabs-view {
-    position: relative;
-    /deep/ {
-      & > .el-tabs__header {
-        background-color: #f2f2f2;
-        padding: 0 20px;
-        margin-bottom: 0;
-        > .el-tabs__nav-wrap::after {
-          background-color: #f2f2f2;
-        }
-      }
-      & > .el-tabs__content {
-        height: calc(100% - 40px);
-        overflow: hidden;
-        overflow-y: auto;
-        padding: 0 20px;
-      }
-    }
-  }
-}
+<style lang="scss" scoped> 
 </style>

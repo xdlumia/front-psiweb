@@ -1,0 +1,63 @@
+/*
+ * @Author: 赵伦
+ * @Date: 2019-10-26 15:33:41
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-10-30 17:41:08
+ * @Description: 采购退货扫码
+*/
+<template>
+  <el-dialog :visible="visible" @close="close" v-dialogDrag>
+    <div slot="title">
+      <span>采购退货单</span>
+      <span class="fr mr20"></span>
+    </div>
+    <el-form :model="form" class="p10">
+      <form-card title="采购退货商品">
+        <RejectScanCard id="rejectScanCard"></RejectScanCard>
+      </form-card>
+    </el-form>
+    <div class="ac" slot="footer">
+      <el-button @click="close" size="mini" type="primary">保存</el-button>
+      <el-button @click="close" size="mini">关闭</el-button>
+    </div>
+  </el-dialog>
+</template>
+<script>
+import RejectScanCard from '@/components/formComponents/reject-scan-card.vue'; //换退货商品扫码卡片
+
+export default {
+  components: {
+    RejectScanCard
+  },
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
+    },
+    form: {},
+    from: String // 来源
+  },
+  computed: {
+    maxHeight() {
+      return window.innerHeight - 130;
+    }
+  },
+  data() {
+    return {
+      activeName: '',
+      randomStr: +new Date() + '-' + Math.random()
+    };
+  },
+  mounted() {},
+  methods: {
+    handleClick({ label, name }) {
+      this.activeName = '';
+    },
+    close() {
+      this.$emit('update:visible', false);
+    }
+  }
+};
+</script>
+<style lang="scss" scoped>
+</style>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 17:42:19
+ * @LastEditTime: 2019-10-30 16:31:16
  * @Description: 采购-请购单
 */
 <template>
@@ -23,7 +23,7 @@
 <script>
 import TableView from '@/components/tableView';
 import OrderBuyingDetail from './detail';
-import OrderStorage from './orderStorage';
+import OrderStorage from '../storage/edit';
 import OrderBuyingDetailRec from './detailRec';
 import AddBorrowIn from '@/views/order/borrow/addIn';
 /**
@@ -41,7 +41,7 @@ export default {
     return {
       status: [],
       orderStorageVisible: false,
-      addBorrowInVisible: true,
+      addBorrowInVisible: false,
       orderBuyingDetailRecVisible: false,
       tableHeader: [
         { label: '请购单编号', prop: 'deptName', width: '180' },

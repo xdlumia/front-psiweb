@@ -2,57 +2,56 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-26 18:13:22
- * @Description: file content
+ * @LastEditTime: 2019-10-30 18:41:26
+ * @Description: 确定配置信息
 */
 <template>
-  <div>
-    <el-form
-      label-width="160px"
-      v-loading="loading"
-      :model="addForm"
-      ref="addForm"
-      size="small"
-      label-position="top"
+  <div v-loading="loading">
+    <quotationInfo
+      v-for="item of 4"
+      :key="item"
+      title="1.商品名称：R730塔式服务器"
     >
-      <div
-        style="height:calc(100vh - 160px)"
-        class="d-auto-y pr20 d-relative"
-      >
-        <form-card title='账单信息'>
-          <el-row>
-            <el-col :span="8">
-              <div class="d-text-black">结账方式</div>
-              <div class="d-text-qgray mt5 mb20">2019-9-21</div>
-            </el-col>
-          </el-row>
-
-        </form-card>
+      <el-button
+        slot="title"
+        type="primary"
+        size="mini"
+      >不选择此配置</el-button>
+      <div slot="body">
+        这是个表单数据
       </div>
-
-      <div class="ac pt20">
-        <el-button
-          type="primary"
-          @click="saveHandle('addForm')"
-          size="small"
-        >保存</el-button>
-        <el-button
-          @click="$emit('update:visible', false)"
-          size="small"
-        >取消</el-button>
-      </div>
-    </el-form>
+    </quotationInfo>
   </div>
 </template>
 <script>
+import quotationInfo from '@/components/formComponents/quotation-info'
 export default {
-  props: ['dialogData', 'visible'],
+  props: [],
   components: {
+    quotationInfo
   },
   data() {
     return {
       loading: false,
-      dataSource: [], // 数据源
+      // 当前操作步骤
+      clientno: '',
+      gridData: [{
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-04',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-01',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-03',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }],
       // 新增orEdit框内容
       addForm: {
         title: '', // 标题
@@ -67,8 +66,14 @@ export default {
   created() {
     // this.initCompanyAdd()
   },
+  mounted() {
+    // this.currStep()
+  },
   methods: {
+    // 点击步骤条触发
+    editClick() {
 
+    },
     // 编辑和新增
     initCompanyAdd() {
       if (this.dialogMeta.type === 'add') {

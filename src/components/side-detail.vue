@@ -2,19 +2,28 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 17:44:33
+ * @LastEditTime: 2019-10-30 16:29:17
  * @Description: 侧边详情弹框
 */
 <template>
-  <side-popup :title="title" :visible.sync="showPop" :width="width" @close="close" class="side-page">
+  <side-popup
+    :title="title"
+    :visible.sync="showPop"
+    :width="width"
+    @close="close"
+    class="side-page"
+  >
     <el-container class="wfull hfull">
-      <el-header class="p0 d-bg-gray" style="height:60px;">
+      <el-header
+        class="p0 d-bg-gray"
+        style="height:60px;"
+      >
         <div class="pl10 pr10 ar header-btns">
           <slot name="button" />
         </div>
         <SideStatusbar :status="status" />
       </el-header>
-      <el-main class="p0">
+      <el-main class="p0 side-body">
         <slot />
       </el-main>
     </el-container>
@@ -35,8 +44,11 @@ export default {
   },
   data() {
     return {
-      showPop: true
+      showPop: false
     };
+  },
+  mounted() {
+    this.showPop = this.visible;
   },
   watch: {
     visible() {
@@ -75,22 +87,24 @@ export default {
       }
     }
   }
-  .tabs-view {
-    position: relative;
+  .side-body {
     /deep/ {
-      & > .el-tabs__header {
-        background-color: #f2f2f2;
-        padding: 0 20px;
-        margin-bottom: 0;
-        > .el-tabs__nav-wrap::after {
+      > .tabs-view {
+        position: relative;
+        & > .el-tabs__header {
           background-color: #f2f2f2;
+          padding: 0 20px;
+          margin-bottom: 0;
+          > .el-tabs__nav-wrap::after {
+            background-color: #f2f2f2;
+          }
         }
-      }
-      & > .el-tabs__content {
-        height: calc(100% - 40px);
-        overflow: hidden;
-        overflow-y: auto;
-        padding: 0 20px;
+        & > .el-tabs__content {
+          height: calc(100% - 40px);
+          overflow: hidden;
+          overflow-y: auto;
+          padding: 0 20px;
+        }
       }
     }
   }

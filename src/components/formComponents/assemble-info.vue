@@ -11,7 +11,14 @@
       <el-row>
         <el-col :span="20">
           <div class="d-text-black">备注</div>
-          <div class="d-text-qgray mt5">备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注</div>
+          <el-input
+            :disabled="disabled"
+            type="textarea"
+            :rows="2"
+            placeholder="请输入内容"
+            v-model="textarea"
+          >
+          </el-input>
         </el-col>
       </el-row>
     </form-card>
@@ -19,18 +26,15 @@
 </template>
 <script>
 export default {
+  props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
+      textarea: ''
     }
   },
   components: {

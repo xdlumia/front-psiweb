@@ -3,12 +3,12 @@
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 徐贺
  * @LastEditTime: 2019-10-26 18:17:56
- * @Description: 生成发货单
+ * @Description: 拣货
 */
 <template>
   <el-dialog
     :visible.sync="visible"
-    title="生成发货单"
+    title="拣货"
     v-dialogDrag
   >
     <el-container>

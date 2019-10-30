@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-30 15:44:47
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-30 16:29:14
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -28,6 +28,7 @@ import { globalConfig } from 'see-web-basic'
 import { systemStoreConfig } from 'see-web-system'
 // 公共组件
 import commonComponents from './components/index'
+import indexComponents from './views/index'
 // import seeWebCustomerService from 'see-web-customer-service'
 
 // 修改element ui 默认参数
@@ -40,6 +41,7 @@ Vue.use(systemStoreConfig)
 Vue.use(ElementUI)
 Vue.use(globalConfig)
 Vue.use(commonComponents)
+Vue.use(indexComponents)
 Vue.config.productionTip = false
 // eslint-disable-next-line no-new
 new Vue({

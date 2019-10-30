@@ -2,86 +2,61 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 11:07:33
+ * @LastEditTime: 2019-10-30 19:40:04
  * @Description: file content
 */
 <template>
   <div v-loading="loading">
-    <p class="ar">
-      <el-button
-        @click="steps++"
-        type="primary"
-        :disabled="steps==4"
-        size="small"
-      >下一步</el-button>
-    </p>
     <d-step
       v-model="steps"
       :data="['选择客户','选择产品','确定配置信息','填写报价信息']"
     ></d-step>
     <el-form
-      label-width="160px"
+      size="small"
       :model="addForm"
-      ref="addForm"
-      size="mini"
-      label-position="top"
-      style="height:calc(100vh - 240px)"
-      class="d-auto-y pr20 d-relative mt10"
+      class="d-auto-y"
+      style="height:calc(100vh - 220px)"
     >
-
-      <el-input
-        size="small"
-        v-model="clientno"
-        placeholder="请输入客户编号或名称"
-      >
-        <button slot="append">搜索</button>
-      </el-input>
-
-      <el-tabs
-        class="mt10"
-        v-model="currCompont"
-        type="card"
-      >
-        <el-tab-pane
-          label="客户信息"
-          name="clientInfo"
-        ></el-tab-pane>
-        <el-tab-pane
-          label="客户数据"
-          name="clientData"
-        ></el-tab-pane>
-        <el-tab-pane
-          label="历史报价单"
-          name="historyQuoto"
-        ></el-tab-pane>
-      </el-tabs>
-      <components :is="currCompont"></components>
-
+      <!-- 选择客户 -->
+      <select-customer v-show="steps==1"></select-customer>
+      <select-product v-show="steps==2"></select-product>
+      <confirm-info v-show="steps==3"></confirm-info>
+      <quote-info v-show="steps==4"></quote-info>
     </el-form>
     <!-- 确定按钮 -->
     <div class="ac pt20">
+
       <el-button
+        @click="dialogData.visible = false"
+        size="small"
+      >取 消</el-button>
+      <el-button
+        @click="steps++"
+        type="primary"
+        v-if="steps < 4"
+        size="small"
+      >下一步</el-button>
+      <el-button
+        v-else
         type="primary"
         @click="saveHandle('addForm')"
         size="small"
-      >保存</el-button>
-      <el-button
-        @click="$emit('update:visible', false)"
-        size="small"
-      >取消</el-button>
+      >保 存</el-button>
     </div>
   </div>
 </template>
 <script>
-import clientInfo from './add/client-info'
-import clientData from './add/client-data'
-import historyQuoto from './add/history-quoto'
+import selectCustomer from './add/select-customer'
+import selectProduct from './add/select-product'
+import confirmInfo from './add/confirm-info'
+import quoteInfo from './add/quote-info'
 export default {
-  props: ['dialogData', 'visible'],
+  props: ['dialogData'],
   components: {
-    clientInfo,
-    clientData,
-    historyQuoto,
+    selectCustomer,
+    selectProduct,
+    confirmInfo,
+    quoteInfo,
   },
   data() {
     return {
@@ -109,25 +84,7 @@ export default {
     // this.currStep()
   },
   methods: {
-    // 点击步骤条触发
-    currStep() {
-      let stepsBox = this.$refs.stepsBox.$el
-      let that = this
-      stepsBox.addEventListener('click', function (e) {
-        let steps = this.querySelectorAll('.el-step__icon-inner ')
 
-        let currStep = e.target
-        let className = currStep.className
-        if (className === 'el-step__icon-inner') {
-          if (+currStep.innerText > that.steps) {
-            console.log(1);
-
-          }
-          that.steps = +currStep.innerText
-
-        }
-      }, false)
-    },
     // 编辑和新增
     initCompanyAdd() {
       if (this.dialogMeta.type === 'add') {
