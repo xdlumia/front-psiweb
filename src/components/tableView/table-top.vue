@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 09:38:23
+ * @LastEditTime: 2019-10-31 17:27:19
  * @Description: 表格头部 
  */
 <template>
@@ -71,7 +71,10 @@
                 title="关闭"
               ></el-link>
             </div>
-            <div style="max-height:500px;">
+            <div
+              class="d-auto-y"
+              style="max-height:400px; overflow-x:hidden"
+            >
               <slot name="filter">
                 自定义筛选 使用示例:
                 <br />&lt;template v-slot:filter> content&lt;/template>

@@ -2,12 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 16:13:05
+ * @LastEditTime: 2019-10-31 17:37:00
  * @Description: 销售-销售出库单
  */
 <template>
   <div>
     <table-view
+      @clear-filter="reset()"
       type="1"
       ref="table"
       :filter="true"
@@ -18,7 +19,13 @@
       :params="Object.assign(queryForm,params)"
       @selection-change="selectionChange"
     >
-      <template v-slot:filter>自定义筛选列</template>
+      <template v-slot:filter>
+        <filters
+          ref="filters"
+          @submit-filter="$refs.table.reload(1)"
+          :form="queryForm"
+        />
+      </template>
       <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
@@ -60,7 +67,10 @@
 </template>
 <script>
 import outLibDetails from './outLib-details' //销售出库单详情
+import filters from './filter' //销售出库单详情
 export default {
+  name: 'outLibrary',
+  components: { outLibDetails, filters },
   props: {
     // 是否显示按钮
     button: {
@@ -74,9 +84,6 @@ export default {
         return {}
       }
     },
-  },
-  components: {
-    outLibDetails,
   },
   data() {
     return {
@@ -135,8 +142,8 @@ export default {
 
     // 重置
     reset() {
-      this.$refs.queryForm.resetFields();
-      this.$refs.table.reload();
+      this.$refs.filters.$refs.form.resetFields();
+      this.$refs.table.reload(1);
     },
     // 删除公司
     delCompany(row) {

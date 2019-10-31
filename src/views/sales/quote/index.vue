@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 16:12:40
+ * @LastEditTime: 2019-10-31 17:31:04
  * @Description: 销售-报价单
  */
 <template>
@@ -14,11 +14,18 @@
       :moreButton="true"
       :column="true"
       title="报价单"
+      @clear-filter="reset()"
       api="bizSystemService.getEmployeeList"
       :params="Object.assign(queryForm,params)"
       @selection-change="selectionChange"
     >
-      <template v-slot:filter>自定义筛选列</template>
+      <template v-slot:filter>
+        <filters
+          ref="filters"
+          @submit-filter="$refs.table.reload(1)"
+          :form="queryForm"
+        />
+      </template>
       <!-- 自定义按钮功能 -->
       <template
         v-if="button"
@@ -81,15 +88,18 @@
 <script>
 import quotoDetails from './quoto-details' //报价详情
 import outLibDetails from '../outLibrary/outLib-details' //销售详
+import filters from './filter' //筛选
 
 import add from './add' //新增
 import merge from './merge' //合并
 export default {
+  name: 'quote',
   components: {
     quotoDetails,
     outLibDetails,
     add,
-    merge
+    merge,
+    filters
   },
   props: {
     // 是否显示按钮
@@ -137,7 +147,7 @@ export default {
   methods: {
     // 按钮功能操作
     quotoHandle(type, row) {
-      // 这里对象key用中文会不会有隐患?
+      // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {
         'add': { comp: 'add', title: '新增报价单' },
         '编辑': { comp: 'add', title: '编辑报价单' },
@@ -169,10 +179,13 @@ export default {
       console.log(val);
 
     },
+    submitFilter() {
+      this.$emit('submit-filter')
+    },
     // 重置
     reset() {
-      this.$refs.queryForm.resetFields();
-      this.$refs.table.reload();
+      this.$refs.filters.$refs.form.resetFields()
+      this.$refs.table.reload(1);
     },
   }
 };

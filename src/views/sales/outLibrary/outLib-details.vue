@@ -2,12 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 16:22:37
+ * @LastEditTime: 2019-10-31 16:25:40
  * @Description: 销售出库单详情
 */
 <template>
   <div>
-    <div class="mb10">
+    <div class="drawer-header">
       <!-- 操作按钮 -->
       <span
         v-for="(item,index) of buttons"
@@ -28,8 +28,6 @@
       :model="form"
       label-position="top"
     >
-      <!-- 状态详情 -->
-      <sideStatusbar :status="[{ label: '状态', value: '新建' }]" />
       <el-tabs
         v-model="activeName"
         type="card"
@@ -63,7 +61,6 @@ export default {
   props: ['drawerData'],
   data() {
     return {
-      // 操作按钮
       // 操作按钮
       buttons: [
         { label: '提交审核', type: 'primary', authCode: '' },
