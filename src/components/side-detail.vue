@@ -2,22 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 16:29:17
+ * @LastEditTime: 2019-10-31 10:04:11
  * @Description: 侧边详情弹框
 */
 <template>
-  <side-popup
-    :title="title"
-    :visible.sync="showPop"
-    :width="width"
-    @close="close"
-    class="side-page"
-  >
+  <side-popup :title="title" :visible.sync="showPop" :width="width" @close="close" class="side-page">
     <el-container class="wfull hfull">
-      <el-header
-        class="p0 d-bg-gray"
-        style="height:60px;"
-      >
+      <el-header class="p0 d-bg-gray" style="height:60px;">
         <div class="pl10 pr10 ar header-btns">
           <slot name="button" />
         </div>
@@ -49,10 +40,19 @@ export default {
   },
   mounted() {
     this.showPop = this.visible;
+    document.body.append(this.$el);
+  },
+  beforeDestroy() {
+    this.$el.remove();
   },
   watch: {
     visible() {
       this.showPop = this.visible;
+    },
+    showPop() {
+      if (!this.showPop) {
+        this.close();
+      }
     }
   },
   methods: {

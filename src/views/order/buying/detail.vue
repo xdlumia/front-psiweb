@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 15:35:28
+ * @LastEditTime: 2019-10-31 09:57:43
  * @Description: 采购单详情
 */
 <template>
@@ -61,6 +61,19 @@ export default {
         { label: '来源', value: '新建' }
       ]
     };
+  },
+  mounted() {
+    this.checkVisible();
+  },
+  watch: {
+    visible() {
+      this.checkVisible();
+    }
+  },
+  methods: {
+    checkVisible() {
+      this.showPop = this.visible;
+    }
   }
 };
 </script>

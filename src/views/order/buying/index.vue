@@ -2,21 +2,22 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 16:31:16
+ * @LastEditTime: 2019-10-31 10:14:30
  * @Description: 采购-请购单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="请购单">
       <template slot="button">
-        <el-button @click="orderBuyingDetailRecVisible=true" size="mini" type="primary">请购单明细表</el-button>
+        <el-button @click="showDetail=true" size="mini" type="primary">请购单明细表</el-button>
       </template>
       <template slot-scope="{column,row,value}">
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <OrderBuyingDetail />
+    <OrderBuyingDetail :visible.sync="showDetail" />
+    <OrderBuyingDetail :visible.sync="showDetail2" />
     <OrderBuyingDetailRec :visible.sync="orderBuyingDetailRecVisible" />
   </div>
 </template>
@@ -40,7 +41,7 @@ export default {
   data() {
     return {
       status: [],
-      orderStorageVisible: false,
+      showDetail: false,
       addBorrowInVisible: false,
       orderBuyingDetailRecVisible: false,
       tableHeader: [
@@ -56,11 +57,13 @@ export default {
       ]
     };
   },
+  mounted(){
+  },
   methods: {
     logData(e) {
       console.log(e);
     }
-  }
+  } 
 };
 </script>
 <style lang="scss" scoped>
