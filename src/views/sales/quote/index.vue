@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 20:27:09
+ * @LastEditTime: 2019-10-31 09:17:39
  * @Description: 销售-报价单
  */
 <template>
@@ -15,7 +15,7 @@
       :column="true"
       title="报价单"
       api="bizSystemService.getEmployeeList"
-      :params="queryForm"
+      :params="Object.assign(queryForm,params)"
       @selection-change="selectionChange"
     >
       <template v-slot:filter>自定义筛选列</template>
@@ -91,10 +91,18 @@ export default {
     merge
   },
   props: {
+    // 是否显示按钮
     button: {
       type: Boolean,
       default: true
-    }
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
   },
   data() {
     return {

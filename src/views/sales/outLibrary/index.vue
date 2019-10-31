@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 15:22:36
+ * @LastEditTime: 2019-10-31 09:18:43
  * @Description: 销售-销售出库单
  */
 <template>
@@ -15,7 +15,7 @@
       :column="true"
       title="销售出库单"
       api="bizSystemService.getEmployeeList"
-      :params="queryForm"
+      :params="Object.assign(queryForm,params)"
       @selection-change="selectionChange"
     >
       <template v-slot:filter>自定义筛选列</template>
@@ -64,10 +64,18 @@
 import outLibDetails from './outLib-details' //销售出库单详情
 export default {
   props: {
+    // 是否显示按钮
     button: {
       type: Boolean,
       default: true
-    }
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
   },
   components: {
     outLibDetails,
