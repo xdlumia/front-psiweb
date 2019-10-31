@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 20:28:36
+ * @LastEditTime: 2019-10-31 09:38:23
  * @Description: 表格头部 
  */
 <template>
@@ -86,6 +86,7 @@
               >添加筛选</el-link>
               <el-link
                 size="mini"
+                @click="clearFilter"
                 :underline="false"
                 class="fr"
                 type="primary"
@@ -249,6 +250,10 @@ export default {
           // 返回列数据
           this.$emit("column", this.tableHeader);
         });
+    },
+    // 清空筛选
+    clearFilter() {
+      this.$emit('clear-filter')
     },
     // 自定义列提交
     colConfirm() {

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 11:29:42
+ * @LastEditTime: 2019-10-31 09:39:50
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -64,6 +64,7 @@
       @staHandle="staHandle"
       @moreHandle="moreHandle"
       @column="columnHandle"
+      @clear-filter="clearFilter"
       :title="title"
       :filter="this.filter"
       :moreButton="this.moreButton"
@@ -204,10 +205,12 @@ export default {
         this.$refs.table.reload(1);
       });
     },
+    // 多选
     selectionChange(val) {
-      console.log(val);
-
       this.$emit("selection-change", val);
+    },
+    clearFilter() {
+      this.$emit('clear-filter')
     }
   }
 };
