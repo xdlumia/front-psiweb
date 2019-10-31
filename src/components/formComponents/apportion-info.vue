@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-29 19:18:53
+ * @LastEditTime: 2019-10-31 10:19:04
  * @Description: 分摊信息
  */
 <template>
@@ -77,6 +77,7 @@
 </template>
 <script>
 export default {
+  name: 'apportionInfo',
   props: {
     data: {
       default: () => { return {} }
