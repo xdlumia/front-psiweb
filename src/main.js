@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 10:05:38
+ * @LastEditTime: 2019-10-31 10:48:26
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -30,6 +30,7 @@ import { systemStoreConfig } from 'see-web-system'
 import commonComponents from './components/index'
 import indexComponents from './views/index'
 import formComponents from './components/formComponents/index'
+
 // import seeWebCustomerService from 'see-web-customer-service'
 
 // 修改element ui 默认参数
