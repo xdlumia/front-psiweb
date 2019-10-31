@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 10:48:26
+ * @LastEditTime: 2019-10-31 11:54:28
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -16,7 +16,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 import ElementUI from 'element-ui'
 import router from './router' // 路由
-import './assets/css/common.css'
+import './assets/css/common.scss'
 import './assets/css/editor.css'
 import './assets/css/iconfont.css'
 import './utils/verify.js'
