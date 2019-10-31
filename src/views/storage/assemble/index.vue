@@ -24,6 +24,7 @@
         <el-button
           type="primary"
           size='mini'
+          @click="addVisible = true"
         >新增</el-button>
       </template>
       <template slot-scope="{column,row,value}">
@@ -90,7 +91,10 @@
         </el-main>
       </el-container>
     </side-popup> -->
-    <assemblyAdd />
+    <assemblyAdd
+      :visible='addVisible'
+      @close='addVisible = false'
+    />
   </div>
 </template>
 <script>
@@ -125,6 +129,7 @@ export default {
         component: 'Details',
         tableVisible: false,//销售单右侧抽屉
       },
+      addVisible: false,//新增弹窗
       activeName: '',
 
       tableHeader: [

@@ -245,7 +245,7 @@ export default {
       visibleData: {
 
       },
-      visible: true
+      visible: false
     };
   },
   methods: {

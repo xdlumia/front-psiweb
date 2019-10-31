@@ -10,22 +10,32 @@
     :status="status"
     :visible.sync="drawerData.tableVisible"
     @close="$emit('update:visible',false)"
-    title="销售单"
+    title="组装单"
     width="990px"
   >
     <template slot="button">
       <el-button
-        @click="orderStorageVisible=true"
-        size="mini"
         type="primary"
-      >发货</el-button>
+        size='mini'
+        @click="taskVisible = true"
+      >
+        生成拣货单和组装任务</el-button>
+      <el-button
+        type="primary"
+        size='mini'
+        :visible='addVisible'
+        @close='addVisible = false'
+      >终止</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
         <el-form>
           <assembleNoedit />
           <assembleInfo :disabled='true' />
-          <assemblyTask />
+          <assemblyTask
+            :visible='taskVisible'
+            @close='taskVisible = false'
+          />
           <commodityInfo />
         </el-form>
       </el-tab-pane>
@@ -50,6 +60,7 @@ export default {
   data() {
     return {
       status: [{ label: '组装状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      taskVisible: false
     };
   },
   components: {

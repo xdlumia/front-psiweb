@@ -33,12 +33,12 @@
       class="dialog-footer"
     >
       <el-button
-        @click="centerDialogVisible = false"
+        @click="$emit('close')"
         size="small"
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="centerDialogVisible = false"
+        @click="$emit('close')"
         size="small"
       >保 存</el-button>
     </span>
