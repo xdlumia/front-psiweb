@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 18:56:02
+ * @LastEditTime: 2019-10-31 19:56:22
  * @Description: 销售-报价单
  */
 <template>
@@ -148,6 +148,7 @@ export default {
     // 按钮功能操作
     eventHandle(type, row) {
       // 这里对象key用中文会不会有隐患? TODO
+      row = row ? row : {}
       let typeObj = {
         'add': { comp: 'add', title: '新增报价单' },
         '编辑': { comp: 'add', title: `编辑报价单:${row.id}` },
