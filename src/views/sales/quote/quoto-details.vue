@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 11:40:14
+ * @LastEditTime: 2019-10-31 15:04:16
  * @Description: 报价单详情
 */
 <template>
@@ -101,14 +101,14 @@ export default {
         { label: '删除', name: 'del', type: 'danger', authCode: '' },
         { label: '驳回', name: 'reject', authCode: '' },
         { label: '生成销售出库单', name: 'generateSales', type: 'primary', authCode: '' },
-        { label: '生成请购单', name: '', type: 'generateBuying', authCode: '' },
+        { label: '生成请购单', name: 'generateBuying', type: 'primary', authCode: '' },
         { label: '终止', name: 'termination', authCode: '' }
       ],
       /**
        * 根据当前状态判断显示哪些按钮
        * 1:新建 2:审核中 3:已通过 4:已驳回 5:已完成
        */
-      currStatus: 1,
+      currStatus: 3,
       currStatusType: {
         1: ['提交审核', '编辑', '删除'],
         2: ['撤销审核', '审核通过', '驳回'],
@@ -122,7 +122,27 @@ export default {
   },
   methods: {
     buttonsClick(name) {
-      this.$emit('buttonClick', name, this.drawerData.data)
+      // handleConfirm里的按钮操作是需要二次确认的
+      let handleConfirm = ['submit', 'undo', 'reject', 'del', 'termination']
+      if (handleConfirm.includes(name)) {
+        // 根据当前name获取label
+        let [tips] = this.buttons.filter(item => item.name === name)
+        this.$confirm(`是否${tips.label}?`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+          center: true
+        }).then(() => {
+          this.$api.seePumaidongService.collegeManagerDelete({ id: [123] })
+            .then(res => {
+              this.$emit('reload')
+            });
+        });
+      }
+      // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
+      else if (name == 'edit' || name == 'generateSales' || name == 'generateBuying') {
+        this.$emit('buttonClick', name, this.drawerData.data)
+      }
     },
   },
   beforeDestroy() {

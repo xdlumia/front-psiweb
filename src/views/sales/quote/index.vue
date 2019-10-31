@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 11:27:20
+ * @LastEditTime: 2019-10-31 15:16:24
  * @Description: 销售-报价单
  */
 <template>
@@ -53,12 +53,13 @@
     <el-dialog
       :title="dialogData.title"
       :visible.sync="dialogData.visible"
-      :width="dialogData.width"
+      width="920px"
       v-dialogDrag
     >
       <components
         :is="dialogData.component"
         :dialogData="dialogData"
+        @reload="$refs.table.reload(1)"
       ></components>
     </el-dialog>
 
@@ -66,12 +67,13 @@
     <side-detail
       :title="drawerData.title"
       :visible.sync="drawerData.visible"
-      width="820px"
+      width="920px"
     >
       <components
         @buttonClick="quotoHandle"
         :is="drawerData.component"
         :drawerData="drawerData"
+        @reload="$refs.table.reload(1)"
       ></components>
     </side-detail>
   </div>
@@ -121,14 +123,13 @@ export default {
         visible: false,
         title: '',
         type: '',
-        width: '920px',
         data: '',
       },
+      // 侧边栏弹出框
       drawerData: {
         visible: false,
         title: '',
         type: '',
-        width: '920px',
         data: '',
       }
     };
@@ -136,6 +137,8 @@ export default {
   methods: {
     // 按钮功能操作
     quotoHandle(type, row) {
+      console.log(type);
+
       let typeObj = {
         add: { comp: 'add', title: '新增报价单' },
         edit: { comp: 'add', title: '编辑报价单' },
@@ -143,6 +146,8 @@ export default {
         merge: { comp: 'merge', title: '合并生成销售出库单' },
         quoto: { comp: 'quotoDetails', title: '报价单' },
         outLib: { comp: 'outLibDetails', title: '销售出库单' },
+        generateSales: { comp: 'outLibDetails', title: '生成销售出库单' },
+        generateBuying: { comp: 'outLibDetails', title: '生成请购单' },
       }
       // 如果type是isDialog里的类型调用dialog弹出框
       let isDialog = ['add', 'edit', 'copy', 'merge']
@@ -170,26 +175,6 @@ export default {
       this.$refs.queryForm.resetFields();
       this.$refs.table.reload();
     },
-    // 删除公司
-    delCompany(row) {
-      this.$confirm("此操作将永久删除, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-        center: true
-      }).then(() => {
-        this.$api.seePumaidongService
-          .collegeManagerDelete({
-            ids: row
-          })
-          .then(res => {
-            // 重新加载表格数据
-            this.tableList = [];
-            this.$refs.companyTable.clearSelection();
-            this.$refs.companyTable.reload();
-          });
-      });
-    }
   }
 };
 </script>
