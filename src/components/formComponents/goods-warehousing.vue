@@ -8,6 +8,18 @@
 <template>
   <div>
     <form-card title='入库商品'>
+      <div slot="title">
+        <span>入库商品</span>
+        <span class="fr">
+          <span>
+            <el-link
+              :underline="false"
+              @click="fullscreen"
+              type="primary"
+            >全屏显示</el-link>
+          </span>
+        </span>
+      </div>
       <d-table
         api="seePumaidongService.collegeManagerList"
         :params="queryForm"
@@ -27,6 +39,7 @@
             <el-button
               type="primary"
               size="mini"
+              @click="wareVisible = true,dialogData.title = '入库-IADFGHIDASHUN',dialogData.type = 'able'"
             >入库</el-button>
           </template>
         </el-table-column>
@@ -45,13 +58,18 @@
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          fixed
-          prop="cityName"
-          min-width="100"
+          prop="title"
           label="机器号/SN码"
+          min-width="140"
           show-overflow-tooltip
-        ></el-table-column>
-
+        >
+          <template slot-scope="scope">
+            <span
+              class="d-text-blue"
+              @click="wareVisible = true,dialogData.title = '机器号/SN码记录',dialogData.type = 'disable'"
+            >{{scope.row.id}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="cityName"
           min-width="100"
@@ -102,10 +120,21 @@
         ></el-table-column>
 
       </d-table>
+      <FullscreenElement
+        :element="$refs.companyTable"
+        :visible.sync="showInFullscreen"
+      />
     </form-card>
+    <purchaseWarehousing
+      :visible='wareVisible'
+      :dialogData='dialogData'
+      @close='wareVisible = false'
+    />
   </div>
 </template>
 <script>
+import FullscreenElement from '@/components/fullscreen-element';
+import purchaseWarehousing from './purchase-warehousing'
 export default {
   data() {
     return {
@@ -120,11 +149,21 @@ export default {
         limit: 20
       },
       dialogVisible: false,
+      showInFullscreen: false,
+      wareVisible: false,
+      dialogData: {
+        title: ''
+      }
     }
   },
   methods: {
+    fullscreen() {
+      this.showInFullscreen = true;
+    }
   },
   components: {
+    purchaseWarehousing,
+    FullscreenElement
   },
 }
 </script>
