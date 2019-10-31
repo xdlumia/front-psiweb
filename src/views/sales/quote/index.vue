@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 09:17:39
+ * @LastEditTime: 2019-10-31 11:27:20
  * @Description: 销售-报价单
  */
 <template>
@@ -63,18 +63,17 @@
     </el-dialog>
 
     <!-- 抽屉弹出框 -->
-    <el-drawer
+    <side-detail
       :title="drawerData.title"
       :visible.sync="drawerData.visible"
-      :size="drawerData.width"
+      width="820px"
     >
       <components
         @buttonClick="quotoHandle"
         :is="drawerData.component"
         :drawerData="drawerData"
       ></components>
-    </el-drawer>
-
+    </side-detail>
   </div>
 </template>
 <script>
