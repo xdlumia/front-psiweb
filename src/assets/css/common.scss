@@ -7,8 +7,9 @@
   padding-right: 16px;
   display: inline-block;
 }
-
+/* 优化抽屉样式 */
 .el-drawer__header {
+  padding: 15px 15px 10px;
   margin-bottom: 0;
   background-color: #f2f2f2;
 }
@@ -38,6 +39,6 @@
 /* 抽屉弹出框样式修改 */
 .drawer-header{
   position: absolute;
-  top: 21px;
+  top: 15px;
   right: 46px;
 }
