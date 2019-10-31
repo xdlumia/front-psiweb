@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 11:41:13
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-10-31 14:35:44
  * @Description: 侧边详情弹框
 */
 <template>
@@ -17,6 +17,7 @@
       style="margin:-10px -15px 10px"
       :status="status"
     />
+    <span class="drawer-header" v-if="hasButton"><slot name="button" /></span>
     <slot />
   </el-drawer>
 </template>
@@ -40,9 +41,6 @@ export default {
   mounted() {
     this.showPop = this.visible;
   },
-  beforeDestroy() {
-    this.$el.remove();
-  },
   watch: {
     visible() {
       this.showPop = this.visible;
@@ -51,6 +49,11 @@ export default {
       if (!this.showPop) {
         this.close();
       }
+    },
+  },
+  computed:{
+    hasButton(){
+      return this.$slots.button&&this.$slots.button.length;
     }
   },
   methods: {
@@ -63,46 +66,25 @@ export default {
 </script>
 <style lang="scss" scoped>
 .side-page {
-  .header-btns {
-    position: absolute;
-    right: 40px;
-    top: 12px;
-  }
   /deep/ {
-    > .popup-main {
-      > .popup-head {
-        font-weight: bold;
-        font-size: 18px;
-        > .d-inline > .popup-close {
-          position: absolute;
-          right: 10px;
-          top: 16px;
-        }
-      }
-      > .popup-body {
-        padding: 0;
-        overflow: hidden;
-      }
-    }
-  }
-  .side-body {
-    /deep/ {
-      > .tabs-view {
-        position: relative;
-        & > .el-tabs__header {
+    .tabs-view {
+      height: calc(100vh - 120px) !important;
+      margin: -10px -15px;
+      width: calc(100% + 30px) !important;
+      position: relative;
+      & > .el-tabs__header {
+        background-color: #f2f2f2;
+        padding: 0 20px;
+        margin-bottom: 0;
+        > .el-tabs__nav-wrap::after {
           background-color: #f2f2f2;
-          padding: 0 20px;
-          margin-bottom: 0;
-          > .el-tabs__nav-wrap::after {
-            background-color: #f2f2f2;
-          }
         }
-        & > .el-tabs__content {
-          height: calc(100% - 40px);
-          overflow: hidden;
-          overflow-y: auto;
-          padding: 0 20px;
-        }
+      }
+      & > .el-tabs__content {
+        height: calc(100% - 40px);
+        overflow: hidden;
+        overflow-y: auto;
+        padding: 0 20px;
       }
     }
   }
