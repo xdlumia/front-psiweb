@@ -13,7 +13,7 @@
     title="组装单"
     width="990px"
   >
-    <template slot="button">
+    <!-- <template slot="button">
       <el-button
         type="primary"
         size='mini'
@@ -26,27 +26,46 @@
         :visible='addVisible'
         @close='addVisible = false'
       >终止</el-button>
-    </template>
-    <el-tabs class="wfull hfull tabs-view">
-      <el-tab-pane label="详情">
-        <el-form>
-          <assembleNoedit />
-          <assembleInfo :disabled='true' />
-          <assemblyTask
-            :visible='taskVisible'
-            @close='taskVisible = false'
-          />
-          <commodityInfo />
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="销售单">销售单</el-tab-pane>
-      <el-tab-pane label="拣货单">拣货单</el-tab-pane>
-      <el-tab-pane label="组装任务">组装任务</el-tab-pane>
-      <el-tab-pane label="发货单">发货单</el-tab-pane>
-      <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
-      <el-tab-pane label="借入单">借入单</el-tab-pane>
-      <el-tab-pane label="应收账单">应收账单</el-tab-pane>
-    </el-tabs>
+    </template> -->
+    <div
+      class="d-auto-y"
+      style="height:calc(100vh - 160px)"
+    >
+      <div class="drawer-header">
+        <el-button
+          type="primary"
+          size='mini'
+          @click="taskVisible = true"
+        >
+          生成拣货单和组装任务</el-button>
+        <el-button
+          type="primary"
+          size='mini'
+          :visible='addVisible'
+          @close='addVisible = false'
+        >终止</el-button>
+      </div>
+      <el-tabs class="wfull hfull tabs-view">
+        <el-tab-pane label="详情">
+          <el-form>
+            <assembleNoedit />
+            <assembleInfo :disabled='true' />
+            <assemblyTask
+              :visible='taskVisible'
+              @close='taskVisible = false'
+            />
+            <commodityInfo />
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="销售单">销售单</el-tab-pane>
+        <el-tab-pane label="拣货单">拣货单</el-tab-pane>
+        <el-tab-pane label="组装任务">组装任务</el-tab-pane>
+        <el-tab-pane label="发货单">发货单</el-tab-pane>
+        <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
+        <el-tab-pane label="借入单">借入单</el-tab-pane>
+        <el-tab-pane label="应收账单">应收账单</el-tab-pane>
+      </el-tabs>
+    </div>
   </SideDetail>
 </template>
 <script>
