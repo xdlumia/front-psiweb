@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:29
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-30 19:55:55
+ * @LastEditTime: 2019-10-31 15:19:32
  * @Description: ip配置文件
  */
 // let model = 'build' // dev 为开发环境 build 为测试环境  product 为生产环境
@@ -30,7 +30,8 @@ const baseURL = {
   //   seeDataDictionaryService: apisUrl + 'see-data-dictionary-service', // 字典服务
   seeHouseConfigService: apisUrl + 'see-baseinfo-service', // 在这个项目里 seeHouseConfigService 的公共部分都转移到 see-baseinfo-service服务里
   seeBaseinfoService: apisUrl + 'see-baseinfo-service', // 基础服务
-  seePsiCommonService: apisUrl + 'see-psi-common-service'
+  seePsiCommonService: apisUrl + 'see-psi-common-service',
+  seeGoodsService: apisUrl + 'see-goods-service'
 }
 window.g = {
   ApiUrl: baseURL
