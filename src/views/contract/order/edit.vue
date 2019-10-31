@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 16:52:27
+ * @LastEditTime: 2019-10-31 11:24:39
  * @Description: 采购合同
 */
 <template>
@@ -10,8 +10,8 @@
     <div slot="title">
       <span>采购合同</span>
       <span class="fr mr20">
-        <el-select v-model="tmp" size="mini" class="mr10">
-          <el-option value="">选择合同模板</el-option>
+        <el-select class="mr10" size="mini" v-model="tmp">
+          <el-option value>选择合同模板</el-option>
         </el-select>
         <el-button size="mini" type="primary">预览</el-button>
         <el-button @click="close" size="mini" type="primary">生成</el-button>
@@ -30,40 +30,22 @@
       <d-tab-pane label="备注信息" name="extrasInfo" />
       <div>
         <el-form :model="form" class="p10">
-          <SupplierInfo id="supplierInfo" />
-          <CompanyInfo id="companyInfo" />
-          <ArrivalInfo id="arrivalInfo" />
-          <CommodityInfo id="commodityInfo" />
-          <PaymentLate id="paymentLate" />
-          <BillInfo id="billInfo" />
-          <CustomInfo id="customInfo" />
-          <ExtrasInfo id="extrasInfo" />
+          <supplierInfo id="supplierInfo" />
+          <companyInfo id="companyInfo" />
+          <arrivalInfo id="arrivalInfo" />
+          <commodityInfo id="commodityInfo" />
+          <paymentLate id="paymentLate" />
+          <billInfo id="billInfo" />
+          <customInfo id="customInfo" />
+          <extrasInfo id="extrasInfo" />
         </el-form>
       </div>
     </d-tabs>
   </el-dialog>
 </template>
 <script>
-import ArrivalInfo from '@/components/formComponents/arrival-info.vue'; //到货信息
-import BillInfo from '@/components/formComponents/bill-info.vue'; //账单信息
-import CommodityInfo from '@/components/formComponents/commodity-info.vue'; //商品信息
-import CompanyInfo from '@/components/formComponents/company-info.vue'; //公司信息
-import CustomInfo from '@/components/formComponents/custom-info.vue'; //自定义信息
-import ExtrasInfo from '@/components/formComponents/extras-info.vue'; //备注信息
-import PaymentLate from '@/components/formComponents/payment-late.vue'; //收款滞纳金
-import SupplierInfo from '@/components/formComponents/supplier-info.vue'; //供应商信息
-
 export default {
-  components: {
-    SupplierInfo,
-    CompanyInfo,
-    ExtrasInfo,
-    CustomInfo,
-    ArrivalInfo,
-    CommodityInfo,
-    PaymentLate,
-    BillInfo
-  },
+  components: {},
   props: {
     visible: {
       type: Boolean,

@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 09:57:43
+ * @LastEditTime: 2019-10-31 11:04:50
  * @Description: 采购单详情
 */
 <template>
-  <SideDetail :status="status" :visible.sync="showPop" @close="$emit('update:visible',false)" title="请购单" width="990px">
+  <sideDetail :status="status" :visible.sync="showPop" @close="$emit('update:visible',false)" title="请购单" width="990px">
     <template slot="button">
       <el-button @click="orderStorageVisible=true" size="mini" type="primary">采购</el-button>
       <el-button @click="addBorrowInVisible=true" size="mini" type="primary">借入</el-button>
@@ -14,36 +14,26 @@
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
         <el-form>
-          <CommodityInfo />
-          <CustomInfo />
-          <ExtrasInfo />
+          <commodityInfo />
+          <customInfo />
+          <extrasInfo />
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
       <el-tab-pane label="报价单">报价单</el-tab-pane>
     </el-tabs>
-    <OrderStorage :visible.sync="orderStorageVisible" from="请购" />
-    <AddBorrowIn :visible.sync="addBorrowInVisible" />
-  </SideDetail>
+    <orderStorage :visible.sync="orderStorageVisible" from="请购" />
+    <addBorrowIn :visible.sync="addBorrowInVisible" />
+  </sideDetail>
 </template>
 <script>
-import CustomInfo from '@/components/formComponents/custom-info';
-import ExtrasInfo from '@/components/formComponents/extras-info';
-import SideDetail from '@/components/side-detail';
-import SideStatusbar from '@/components/formComponents/side-statusbar';
-import CommodityInfo from '@/components/formComponents/commodity-info'; // 商品信息
 import OrderStorage from '../storage/edit';
 import AddBorrowIn from '@/views/order/borrow/addIn';
 
 export default {
   components: {
-    CustomInfo,
-    ExtrasInfo,
-    SideStatusbar,
-    SideDetail,
     OrderStorage,
-    AddBorrowIn,
-    CommodityInfo
+    AddBorrowIn
   },
   props: {
     visible: Boolean
@@ -77,5 +67,5 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped> 
+<style lang="scss" scoped>
 </style>

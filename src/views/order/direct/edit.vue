@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 14:40:10
+ * @LastEditTime: 2019-10-31 11:15:24
  * @Description: 编辑直发单
 */
 <template>
@@ -23,28 +23,18 @@
       <d-tab-pane label="备注信息" name="extrasInfo" />
       <div>
         <el-form :model="form" class="p10">
-          <DeliverInfo id="deliverInfo"></DeliverInfo>
-          <CommodityInfo id="commodityInfo"></CommodityInfo>
-          <CustomInfo id="customInfo"></CustomInfo>
-          <ExtrasInfo id="extrasInfo"></ExtrasInfo>
+          <deliverInfo id="deliverInfo"></deliverInfo>
+          <commodityInfo id="commodityInfo"></commodityInfo>
+          <customInfo id="customInfo"></customInfo>
+          <extrasInfo id="extrasInfo"></extrasInfo>
         </el-form>
       </div>
     </d-tabs>
   </el-dialog>
 </template>
 <script>
-import CommodityInfo from '@/components/formComponents/commodity-info.vue'; //商品信息
-import CustomInfo from '@/components/formComponents/custom-info.vue'; //自定义信息
-import DeliverInfo from '@/components/formComponents/deliver-info.vue'; //发货信息
-import ExtrasInfo from '@/components/formComponents/extras-info.vue'; //备注信息
-
 export default {
-  components: {
-    CommodityInfo,
-    CustomInfo,
-    DeliverInfo,
-    ExtrasInfo
-  },
+  components: {},
   props: {
     visible: {
       type: Boolean,

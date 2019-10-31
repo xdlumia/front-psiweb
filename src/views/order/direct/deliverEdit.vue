@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 15:08:13
+ * @LastEditTime: 2019-10-31 11:06:21
  * @Description: 直发单发货
 */
 <template>
@@ -11,7 +11,7 @@
       <span>直发单发货</span>
     </div>
     <el-form v-model="form">
-      <DeliverGoods id="deliverGoods"></DeliverGoods>
+      <deliverGoods id="deliverGoods"></deliverGoods>
     </el-form>
     <div class="ac" slot="footer">
       <el-button @click="close" size="mini" type="primary">确定</el-button>
@@ -20,11 +20,9 @@
   </el-dialog>
 </template>
 <script>
-import DeliverGoods from '@/components/formComponents/deliver-goods.vue'; //商品发货信息
 
 export default {
   components: {
-    DeliverGoods
   },
   props: {
     visible: {
