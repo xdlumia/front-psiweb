@@ -2,34 +2,41 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 15:43:04
+ * @LastEditTime: 2019-10-31 16:10:19
  * @Description: 采购-采购调价单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="采购调价单">
+      <template slot="button">
+        <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
+      </template>
       <template slot-scope="{column,row,value}">
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Detail :visible.sync="showDetail" />
+    <Edit :visible.sync="showEdit" />
   </div>
 </template>
 <script>
 import TableView from '@/components/tableView';
 
 import Detail from './detail'; //采购调价单详情
+import Edit from './edit'; //采购调价单详情
 
 export default {
   components: {
     TableView,
-    Detail
+    Detail,
+    Edit
   },
   data() {
     return {
       status: [],
-      showDetail: false,
+      showDetail: true,
+      showEdit: false,
       tableHeader: [
         { label: '采购入库单编号', prop: 'deptName', width: '180' },
         { label: '请购/直发/备货单编号', prop: 'deptName', width: '180' },

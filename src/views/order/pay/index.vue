@@ -2,12 +2,15 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 16:31:00
+ * @LastEditTime: 2019-10-31 16:46:08
  * @Description: 采购-付款单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="付款单">
+      <template slot="button"> 
+        <el-button size="mini" type="primary" @click="payMultiApply=true">批量付款申请</el-button>
+      </template>
       <template slot-scope="{column,row,value}">
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
@@ -29,7 +32,8 @@ export default {
   data() {
     return {
       status: [],
-      showDetail: false,
+      showDetail: true,
+      payMultiApply: false,
       tableHeader: [
         { label: '采购入库单编号', prop: 'deptName', width: '180' },
         { label: '请购/直发/备货单编号', prop: 'deptName', width: '180' },

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 17:41:08
+ * @LastEditTime: 2019-10-31 11:01:36
  * @Description: 采购退货扫码
 */
 <template>
@@ -13,7 +13,7 @@
     </div>
     <el-form :model="form" class="p10">
       <form-card title="采购退货商品">
-        <RejectScanCard id="rejectScanCard"></RejectScanCard>
+        <rejectScanCard id="rejectScanCard"></rejectScanCard>
       </form-card>
     </el-form>
     <div class="ac" slot="footer">
@@ -23,12 +23,8 @@
   </el-dialog>
 </template>
 <script>
-import RejectScanCard from '@/components/formComponents/reject-scan-card.vue'; //换退货商品扫码卡片
-
 export default {
-  components: {
-    RejectScanCard
-  },
+  components: {},
   props: {
     visible: {
       type: Boolean,

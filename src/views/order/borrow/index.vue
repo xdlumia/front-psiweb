@@ -2,34 +2,41 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 15:43:29
+ * @LastEditTime: 2019-10-31 16:14:42
  * @Description: 采购-借入借出单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="借入借出单">
+      <template slot="button"> 
+        <el-button size="mini" type="primary" @click="showEdit=true">新增</el-button>
+      </template>
       <template slot-scope="{column,row,value}">
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Detail :visible.sync="showDetail" />
+    <AddIn :visible.sync="showEdit" />
   </div>
 </template>
 <script>
 import TableView from '@/components/tableView';
 
 import Detail from './detail'; // 借入借出单详情
+import AddIn from './addIn'; // 借入借出单详情
 
 export default {
   components: {
     TableView,
-    Detail
+    Detail,
+    AddIn
   },
   data() {
     return {
       status: [],
-      showDetail: false,
+      showDetail: true,
+      showEdit: false,
       tableHeader: [
         { label: '采购入库单编号', prop: 'deptName', width: '180' },
         { label: '请购/直发/备货单编号', prop: 'deptName', width: '180' },

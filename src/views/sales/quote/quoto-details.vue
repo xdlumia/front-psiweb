@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 11:40:14
+ * @LastEditTime: 2019-10-31 17:41:05
  * @Description: 报价单详情
 */
 <template>
@@ -15,7 +15,7 @@
       >
         <el-button
           class="mr10"
-          @click="buttonsClick(item.name)"
+          @click="buttonsClick(item.label)"
           v-if="currStatusType[currStatus].includes(item.label)"
           size="mini"
           :type="item.type"
@@ -94,21 +94,22 @@ export default {
     return {
       // 操作按钮
       buttons: [
-        { label: '提交审核', name: 'submit', type: 'primary', authCode: '' },
-        { label: '撤销审核', name: 'undo', type: 'danger', authCode: '' },
-        { label: '审核通过', name: 'pass', type: 'primary', authCode: '' },
-        { label: '编辑', name: 'edit', type: 'primary', authCode: '' },
-        { label: '删除', name: 'del', type: 'danger', authCode: '' },
-        { label: '驳回', name: 'reject', authCode: '' },
-        { label: '生成销售出库单', name: 'generateSales', type: 'primary', authCode: '' },
-        { label: '生成请购单', name: '', type: 'generateBuying', authCode: '' },
-        { label: '终止', name: 'termination', authCode: '' }
+        // label:按钮名称  type:按钮样式  authCode:权限码
+        { label: '提交审核', type: 'primary', authCode: '' },
+        { label: '撤销审核', type: 'danger', authCode: '' },
+        { label: '审核通过', type: 'primary', authCode: '' },
+        { label: '编辑', type: 'primary', authCode: '' },
+        { label: '删除', type: 'danger', authCode: '' },
+        { label: '驳回', authCode: '' },
+        { label: '生成销售出库单', type: 'primary', authCode: '' },
+        { label: '生成请购单', type: 'primary', authCode: '' },
+        { label: '终止', authCode: '' }
       ],
       /**
        * 根据当前状态判断显示哪些按钮
        * 1:新建 2:审核中 3:已通过 4:已驳回 5:已完成
        */
-      currStatus: 1,
+      currStatus: 3,
       currStatusType: {
         1: ['提交审核', '编辑', '删除'],
         2: ['撤销审核', '审核通过', '驳回'],
@@ -121,8 +122,26 @@ export default {
     }
   },
   methods: {
-    buttonsClick(name) {
-      this.$emit('buttonClick', name, this.drawerData.data)
+    buttonsClick(label) {
+      // handleConfirm里的按钮操作是需要二次确认的
+      let handleConfirm = ['提交审核', '撤销审核', '驳回', '删除', '终止']
+      if (handleConfirm.includes(label)) {
+        this.$confirm(`是否${label}?`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+          center: true
+        }).then(() => {
+          this.$api.seePumaidongService.collegeManagerDelete({ id: [123] })
+            .then(res => {
+              this.$emit('reload')
+            });
+        });
+      }
+      // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
+      else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
+        this.$emit('buttonClick', name, this.drawerData.data)
+      }
     },
   },
   beforeDestroy() {

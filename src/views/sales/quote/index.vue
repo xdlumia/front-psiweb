@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 11:27:20
+ * @LastEditTime: 2019-10-31 17:31:04
  * @Description: 销售-报价单
  */
 <template>
@@ -14,11 +14,18 @@
       :moreButton="true"
       :column="true"
       title="报价单"
+      @clear-filter="reset()"
       api="bizSystemService.getEmployeeList"
       :params="Object.assign(queryForm,params)"
       @selection-change="selectionChange"
     >
-      <template v-slot:filter>自定义筛选列</template>
+      <template v-slot:filter>
+        <filters
+          ref="filters"
+          @submit-filter="$refs.table.reload(1)"
+          :form="queryForm"
+        />
+      </template>
       <!-- 自定义按钮功能 -->
       <template
         v-if="button"
@@ -53,12 +60,13 @@
     <el-dialog
       :title="dialogData.title"
       :visible.sync="dialogData.visible"
-      :width="dialogData.width"
+      width="920px"
       v-dialogDrag
     >
       <components
         :is="dialogData.component"
         :dialogData="dialogData"
+        @reload="$refs.table.reload(1)"
       ></components>
     </el-dialog>
 
@@ -66,12 +74,13 @@
     <side-detail
       :title="drawerData.title"
       :visible.sync="drawerData.visible"
-      width="820px"
+      width="920px"
     >
       <components
         @buttonClick="quotoHandle"
         :is="drawerData.component"
         :drawerData="drawerData"
+        @reload="$refs.table.reload(1)"
       ></components>
     </side-detail>
   </div>
@@ -79,15 +88,18 @@
 <script>
 import quotoDetails from './quoto-details' //报价详情
 import outLibDetails from '../outLibrary/outLib-details' //销售详
+import filters from './filter' //筛选
 
 import add from './add' //新增
 import merge from './merge' //合并
 export default {
+  name: 'quote',
   components: {
     quotoDetails,
     outLibDetails,
     add,
-    merge
+    merge,
+    filters
   },
   props: {
     // 是否显示按钮
@@ -121,14 +133,13 @@ export default {
         visible: false,
         title: '',
         type: '',
-        width: '920px',
         data: '',
       },
+      // 侧边栏弹出框
       drawerData: {
         visible: false,
         title: '',
         type: '',
-        width: '920px',
         data: '',
       }
     };
@@ -136,13 +147,16 @@ export default {
   methods: {
     // 按钮功能操作
     quotoHandle(type, row) {
+      // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {
-        add: { comp: 'add', title: '新增报价单' },
-        edit: { comp: 'add', title: '编辑报价单' },
-        copy: { comp: 'add', title: '复制报价单' },
-        merge: { comp: 'merge', title: '合并生成销售出库单' },
-        quoto: { comp: 'quotoDetails', title: '报价单' },
-        outLib: { comp: 'outLibDetails', title: '销售出库单' },
+        'add': { comp: 'add', title: '新增报价单' },
+        '编辑': { comp: 'add', title: '编辑报价单' },
+        'copy': { comp: 'add', title: '复制报价单' },
+        'merge': { comp: 'merge', title: '合并生成销售出库单' },
+        'quoto': { comp: 'quotoDetails', title: '报价单' },
+        'outLib': { comp: 'outLibDetails', title: '销售出库单' },
+        '生成销售出库单': { comp: 'outLibDetails', title: '生成销售出库单' },
+        '生成请购单': { comp: 'outLibDetails', title: '生成请购单' },
       }
       // 如果type是isDialog里的类型调用dialog弹出框
       let isDialog = ['add', 'edit', 'copy', 'merge']
@@ -165,31 +179,14 @@ export default {
       console.log(val);
 
     },
+    submitFilter() {
+      this.$emit('submit-filter')
+    },
     // 重置
     reset() {
-      this.$refs.queryForm.resetFields();
-      this.$refs.table.reload();
+      this.$refs.filters.$refs.form.resetFields()
+      this.$refs.table.reload(1);
     },
-    // 删除公司
-    delCompany(row) {
-      this.$confirm("此操作将永久删除, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-        center: true
-      }).then(() => {
-        this.$api.seePumaidongService
-          .collegeManagerDelete({
-            ids: row
-          })
-          .then(res => {
-            // 重新加载表格数据
-            this.tableList = [];
-            this.$refs.companyTable.clearSelection();
-            this.$refs.companyTable.reload();
-          });
-      });
-    }
   }
 };
 </script>
