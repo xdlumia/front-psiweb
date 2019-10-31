@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 15:50:28
+ * @LastEditTime: 2019-10-31 16:24:10
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -180,7 +180,7 @@ export default {
     return {
       loading: false,
       headers: [],
-      selection: []
+      selectionRow: []
     };
   },
   created() {
@@ -202,8 +202,8 @@ export default {
         let server = this.exportApi.split('.')[0]
         let url = this.exportApi.split('.')[1]
         let params = {}
-        if (this.selection.length) {
-          params = { ids: this.selection.map(item => item.id) }
+        if (this.selectionRow.length) {
+          params = { ids: this.selectionRow.map(item => item.id) }
         } else {
           params = this.params
         }

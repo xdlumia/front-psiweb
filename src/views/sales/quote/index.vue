@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 15:16:24
+ * @LastEditTime: 2019-10-31 16:12:40
  * @Description: 销售-报价单
  */
 <template>
@@ -137,17 +137,16 @@ export default {
   methods: {
     // 按钮功能操作
     quotoHandle(type, row) {
-      console.log(type);
-
+      // 这里对象key用中文会不会有隐患?
       let typeObj = {
-        add: { comp: 'add', title: '新增报价单' },
-        edit: { comp: 'add', title: '编辑报价单' },
-        copy: { comp: 'add', title: '复制报价单' },
-        merge: { comp: 'merge', title: '合并生成销售出库单' },
-        quoto: { comp: 'quotoDetails', title: '报价单' },
-        outLib: { comp: 'outLibDetails', title: '销售出库单' },
-        generateSales: { comp: 'outLibDetails', title: '生成销售出库单' },
-        generateBuying: { comp: 'outLibDetails', title: '生成请购单' },
+        'add': { comp: 'add', title: '新增报价单' },
+        '编辑': { comp: 'add', title: '编辑报价单' },
+        'copy': { comp: 'add', title: '复制报价单' },
+        'merge': { comp: 'merge', title: '合并生成销售出库单' },
+        'quoto': { comp: 'quotoDetails', title: '报价单' },
+        'outLib': { comp: 'outLibDetails', title: '销售出库单' },
+        '生成销售出库单': { comp: 'outLibDetails', title: '生成销售出库单' },
+        '生成请购单': { comp: 'outLibDetails', title: '生成请购单' },
       }
       // 如果type是isDialog里的类型调用dialog弹出框
       let isDialog = ['add', 'edit', 'copy', 'merge']

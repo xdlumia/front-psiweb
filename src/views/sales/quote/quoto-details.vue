@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 15:04:16
+ * @LastEditTime: 2019-10-31 16:11:50
  * @Description: 报价单详情
 */
 <template>
@@ -15,7 +15,7 @@
       >
         <el-button
           class="mr10"
-          @click="buttonsClick(item.name)"
+          @click="buttonsClick(item.label)"
           v-if="currStatusType[currStatus].includes(item.label)"
           size="mini"
           :type="item.type"
@@ -94,15 +94,15 @@ export default {
     return {
       // 操作按钮
       buttons: [
-        { label: '提交审核', name: 'submit', type: 'primary', authCode: '' },
-        { label: '撤销审核', name: 'undo', type: 'danger', authCode: '' },
-        { label: '审核通过', name: 'pass', type: 'primary', authCode: '' },
-        { label: '编辑', name: 'edit', type: 'primary', authCode: '' },
-        { label: '删除', name: 'del', type: 'danger', authCode: '' },
-        { label: '驳回', name: 'reject', authCode: '' },
-        { label: '生成销售出库单', name: 'generateSales', type: 'primary', authCode: '' },
-        { label: '生成请购单', name: 'generateBuying', type: 'primary', authCode: '' },
-        { label: '终止', name: 'termination', authCode: '' }
+        { label: '提交审核', type: 'primary', authCode: '' },
+        { label: '撤销审核', type: 'danger', authCode: '' },
+        { label: '审核通过', type: 'primary', authCode: '' },
+        { label: '编辑', type: 'primary', authCode: '' },
+        { label: '删除', type: 'danger', authCode: '' },
+        { label: '驳回', authCode: '' },
+        { label: '生成销售出库单', type: 'primary', authCode: '' },
+        { label: '生成请购单', type: 'primary', authCode: '' },
+        { label: '终止', authCode: '' }
       ],
       /**
        * 根据当前状态判断显示哪些按钮
@@ -121,13 +121,11 @@ export default {
     }
   },
   methods: {
-    buttonsClick(name) {
+    buttonsClick(label) {
       // handleConfirm里的按钮操作是需要二次确认的
-      let handleConfirm = ['submit', 'undo', 'reject', 'del', 'termination']
-      if (handleConfirm.includes(name)) {
-        // 根据当前name获取label
-        let [tips] = this.buttons.filter(item => item.name === name)
-        this.$confirm(`是否${tips.label}?`, "提示", {
+      let handleConfirm = ['提交审核', '撤销审核', '驳回', '删除', '终止']
+      if (handleConfirm.includes(label)) {
+        this.$confirm(`是否${label}?`, "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
@@ -140,7 +138,7 @@ export default {
         });
       }
       // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
-      else if (name == 'edit' || name == 'generateSales' || name == 'generateBuying') {
+      else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
         this.$emit('buttonClick', name, this.drawerData.data)
       }
     },

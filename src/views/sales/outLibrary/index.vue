@@ -1,15 +1,8 @@
 /*
  * @Author: web.王晓冬
- * @Date: 2019-10-25 09:10:36
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 16:00:28
- * @Description: file content
-*/
-/*
- * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 15:51:13
+ * @LastEditTime: 2019-10-31 16:13:05
  * @Description: 销售-销售出库单
  */
 <template>
