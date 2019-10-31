@@ -2,39 +2,39 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 11:20:45
+ * @LastEditTime: 2019-10-31 17:23:08
  * @Description: 采购入库单
 */
 <template>
   <sideDetail :status="status" :visible.sync="showPop" @close="$emit('update:visible',false)" title="采购入库单" width="990px">
     <template slot="button">
-      <el-button size="mini" type="primary">提交审核</el-button>
-      <el-button size="mini" type="primary">撤销审核</el-button>
-      <el-button size="mini" type="primary">审核通过</el-button>
-      <el-button size="mini" type="primary">驳回</el-button>
+      <el-button size="mini" type="primary">停用</el-button>
+      <el-button size="mini" type="primary">启用</el-button>
       <el-button size="mini" type="primary">编辑</el-button>
-      <el-button size="mini" type="primary">删除</el-button>
-      <el-button size="mini" type="primary">退货</el-button>
-      <el-button size="mini" type="primary">终止</el-button>
-      <el-button size="mini" type="primary">收票申请</el-button>
-      <el-button size="mini" type="primary">生成合同</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
         <el-form>
-          <supplierInfo id="supplierInfo" />
-          <companyInfo id="companyInfo" />
-          <arrivalInfo id="arrivalInfo" />
-          <commodityInfo id="commodityInfo" />
-          <commodityInfo />
-          <paymentLate id="paymentLate" />
-          <billInfo id="billInfo" />
-          <customInfo id="customInfo" />
-          <extrasInfo id="extrasInfo" />
+          <form-card title="往来账款">
+            <el-row>
+              <el-col :span="8">
+                <span class="b mr10">应付欠款</span>
+                <span>9999元</span>
+              </el-col>
+              <el-col :span="8">
+                <span class="b mr10">预付款</span>
+                <span>9999元</span>
+              </el-col>
+            </el-row>
+          </form-card>
+          <supplier-base-edit></supplier-base-edit>
+          <invoice-info></invoice-info>
+          <extras-info></extras-info>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="请购单">请购单</el-tab-pane>
-      <el-tab-pane label="直发单">直发单</el-tab-pane>
+      <el-tab-pane label="可供商品">可供商品</el-tab-pane>
+      <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
+      <el-tab-pane label="采购合同">采购合同</el-tab-pane>
       <el-tab-pane label="采购单">采购单</el-tab-pane>
       <el-tab-pane label="采购退货单">采购退货单</el-tab-pane>
       <el-tab-pane label="应付账单">应付账单</el-tab-pane>

@@ -2,30 +2,23 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 16:04:51
- * @Description: 采购入库单
+ * @LastEditTime: 2019-10-31 15:54:50
+ * @Description: 拆卸任务单
 */
 <template>
   <el-dialog :visible="visible" @close="close" v-dialogDrag>
     <div slot="title">
-      <span>采购入库单{{from?`(${from})`:''}}</span>
-      <span class="fr mr20">
-        <el-button @click="close" size="mini" type="primary">保存</el-button>
-        <el-button @click="close" size="mini">关闭</el-button>
-      </span>
+      <span>拆卸任务{{from?`(${from})`:''}}</span>
+      <span class="fr mr20"></span>
     </div>
-    <d-tabs :style="{
-      maxHeight:maxHeight+'px'
-    }">
-      <d-tab-pane label="商品信息" name="commodityInfo" />
-      <d-tab-pane label="备注信息" name="extrasInfo" />
-      <div>
-        <el-form :model="form" class="p10">
-          <commodityInfo id="commodityInfo" />
-          <extrasInfo id="extrasInfo" />
-        </el-form>
-      </div>
-    </d-tabs>
+    <el-form :model="form" class="p10">
+      <pickAssemble />
+      <chooseMan />
+    </el-form>
+    <div class="ac" slot="footer">
+      <el-button @click="close" size="mini" type="primary">保存</el-button>
+      <el-button @click="close" size="mini">关闭</el-button>
+    </div>
   </el-dialog>
 </template>
 <script>

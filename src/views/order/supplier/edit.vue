@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 11:21:04
- * @Description: 采购入库单
+ * @LastEditTime: 2019-10-31 17:14:02
+ * @Description: 新增供应商
 */
 <template>
   <el-dialog :visible="visible" @close="close" v-dialogDrag>
     <div slot="title">
-      <span>采购入库单{{from?`(${from})`:''}}</span>
+      <span>新增供应商</span>
       <span class="fr mr20">
         <el-button @click="close" size="mini" type="primary">保存</el-button>
         <el-button @click="close" size="mini">关闭</el-button>
@@ -18,23 +18,15 @@
       maxHeight:maxHeight+'px'
     }">
       <d-tab-pane label="供应商信息" name="supplierInfo" />
-      <d-tab-pane label="公司信息" name="companyInfo" />
-      <d-tab-pane label="到货信息" name="arrivalInfo" />
-      <d-tab-pane label="商品信息" name="commodityInfo" />
-      <d-tab-pane label="收票滞纳金" name="paymentLate" />
-      <d-tab-pane label="自定义信息" name="customInfo" />
-      <d-tab-pane label="备注信息" name="extrasInfo" />
+      <d-tab-pane label="发票信息" name="companyInfo" />
+      <d-tab-pane label="备注信息" name="arrivalInfo" />
+      <d-tab-pane label="可供商品" name="commodityInfo" />
       <div>
         <el-form :model="form" class="p10">
-          <supplierInfo id="supplierInfo" />
-          <companyInfo id="companyInfo" />
-          <arrivalInfo id="arrivalInfo" />
-          <commodityInfo id="commodityInfo" />
-          <commodityInfo />
-          <paymentLate id="paymentLate" />
-          <billInfo id="billInfo" />
-          <customInfo id="customInfo" />
-          <extrasInfo id="extrasInfo" />
+          <supplier-base-edit></supplier-base-edit>
+          <invoice-info></invoice-info>
+          <extras-info></extras-info>
+          <commodity-info></commodity-info>
         </el-form>
       </div>
     </d-tabs>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 11:16:04
+ * @LastEditTime: 2019-10-31 16:29:14
  * @Description: 采购入库单
 */
 <template>
@@ -17,24 +17,14 @@
     <d-tabs :style="{
       maxHeight:maxHeight+'px'
     }">
-      <d-tab-pane label="供应商信息" name="supplierInfo" />
-      <d-tab-pane label="公司信息" name="companyInfo" />
-      <d-tab-pane label="到货信息" name="arrivalInfo" />
-      <d-tab-pane label="商品信息" name="commodityInfo" />
-      <d-tab-pane label="收票滞纳金" name="paymentLate" />
-      <d-tab-pane label="自定义信息" name="customInfo" />
-      <d-tab-pane label="备注信息" name="extrasInfo" />
+      <d-tab-pane label="换货信息" name="supplierInfo" />
+      <d-tab-pane label="换入库商品" name="companyInfo" />
+      <d-tab-pane label="换出库商品" name="arrivalInfo" />
       <div>
         <el-form :model="form" class="p10">
-          <supplierInfo id="supplierInfo" />
-          <companyInfo id="companyInfo" />
-          <arrivalInfo id="arrivalInfo" />
-          <commodityInfo id="commodityInfo" />
-          <commodityInfo />
-          <paymentLate id="paymentLate" />
-          <billInfo id="billInfo" />
-          <customInfo id="customInfo" />
-          <extrasInfo id="extrasInfo" />
+          <exchange-info />
+          <goods-exchange />
+          <goods-exchange />
         </el-form>
       </div>
     </d-tabs>
