@@ -2,13 +2,14 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 09:39:50
+ * @LastEditTime: 2019-10-31 15:50:28
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
  * @params type 当前是哪个功能页
  * @params selection 表格是否支持多选 默认false
  * @params filter 是否显示筛选 默认false
+ * @params exportApi 导出api接口
  * @params moreButton 是否显示更多按钮 默认false
  * @slot filter 自定义筛选
  * @slot button 自定义操作按钮
@@ -165,6 +166,10 @@ export default {
       type: Boolean,
       default: true
     },
+    // 是否显示自定义列
+    exportApi: {
+      type: String,
+    },
     // 自定义头
     // headers: {
     //   type: Array,
@@ -175,10 +180,10 @@ export default {
     return {
       loading: false,
       headers: [],
+      selection: []
     };
   },
   created() {
-    console.log(this.selection);
   },
   methods: {
     reload() {
@@ -191,10 +196,26 @@ export default {
     },
     // 更多操作
     moreHandle(type) {
+      // 导出操作
       if (type == "export") {
-        console.log("导出操作");
-      } else if (type == "print") {
-        console.log("打印操作");
+        this.loading = true;
+        let server = this.exportApi.split('.')[0]
+        let url = this.exportApi.split('.')[1]
+        let params = {}
+        if (this.selection.length) {
+          params = { ids: this.selection.map(item => item.id) }
+        } else {
+          params = this.params
+        }
+        this.$api[server][url](params)
+          .then(res => {
+            console.log("导出成功");
+          })
+          .finally(() => {
+            //关闭loading
+            this.loading = false;
+          });
+
       }
     },
     // 返回的列数据
@@ -207,6 +228,7 @@ export default {
     },
     // 多选
     selectionChange(val) {
+      this.selection = val
       this.$emit("selection-change", val);
     },
     clearFilter() {
