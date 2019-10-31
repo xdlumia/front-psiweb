@@ -1,8 +1,15 @@
 /*
  * @Author: web.王晓冬
+ * @Date: 2019-10-25 09:10:36
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-31 16:00:28
+ * @Description: file content
+*/
+/*
+ * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 15:20:08
+ * @LastEditTime: 2019-10-31 15:51:13
  * @Description: 销售-销售出库单
  */
 <template>
@@ -114,21 +121,21 @@ export default {
         add: { comp: 'add', title: '新增报价单' },
         outLib: { comp: 'outLibDetails', title: '销售出库单' },
       }
-      // 如果是新增复制合并调用dialog弹出框
-      if (type == "add") {
-        this.dialogVisible = true
+      // 如果type是isDialog里的类型调用dialog弹出框
+      let isDialog = ['add', 'edit', 'copy', 'merge']
+      if (isDialog.includes(type)) {
+        this.dialogData.visible = true
+        this.dialogData.type = type
+        this.dialogData.title = typeObj[type].title
+        this.dialogData.component = typeObj[type].comp
+        this.dialogData.data = row;
       } else {
-        // 否则调用抽屉弹出框
-        this.drawerVisible = true;
-      }
-      // 非新增才会有row数据
-      if (type != 'add') {
+        this.drawerData.visible = true
+        this.drawerData.type = type
+        this.drawerData.title = typeObj[type].title
+        this.drawerData.component = typeObj[type].comp
         this.drawerData.data = row;
       }
-
-      this.drawerData.type = type
-      this.drawerData.title = typeObj[type].title
-      this.drawerData.component = typeObj[type].comp
     },
     // 多选
     selectionChange() { },

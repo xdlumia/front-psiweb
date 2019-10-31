@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 20:32:14
+ * @LastEditTime: 2019-10-31 15:54:15
  * @Description: 销售出库单详情
 */
 <template>
@@ -66,14 +66,18 @@ export default {
       // 操作按钮
       buttons: [
         { label: '提交审核', name: 'submit', type: 'primary', authCode: '' },
+        { label: '编辑', name: 'edit', type: 'primary', authCode: '' },
         { label: '撤销审核', name: 'undo', type: 'danger', authCode: '' },
         { label: '审核通过', name: 'pass', type: 'primary', authCode: '' },
-        { label: '编辑', name: 'edit', type: 'primary', authCode: '' },
         { label: '删除', name: 'del', type: 'danger', authCode: '' },
         { label: '驳回', name: 'reject', authCode: '' },
-        { label: '生成销售出库单', name: 'generateSales', type: 'primary', authCode: '' },
+        { label: '审核采购时间', name: 'reject', authCode: '' },
+        { label: '终止', name: 'termination', authCode: '' },
+        { label: '收回合同', name: 'termination', authCode: '' },
+        { label: '合同完善追加合同附件', name: 'generateSales', type: 'primary', authCode: '' },
+        { label: '追加合同附件', name: 'generateSales', type: 'primary', authCode: '' },
         { label: '生成请购单', name: '', type: 'generateBuying', authCode: '' },
-        { label: '终止', name: 'termination', authCode: '' }
+
       ],
       /**
        * 根据当前状态判断显示哪些按钮

@@ -1,20 +1,41 @@
-<!--
+/*
  * @Author: web.王晓冬
- * @Date: 2019-09-26 11:19:17
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-28 17:13:59
+ * @Date: 2019-10-28 18:39:21
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-10-31 16:01:35
  * @Description: layout 页面架构
- -->
+*/
 <template>
-  <d-layout v-model="isLockkScreen">
-    <img slot="logo" src="@/assets/img/logo.png" alt />
-    <div style="height: 100vh" v-loading="loading">
+  <d-layout
+    v-model="isLockkScreen"
+    :lockOutTime="800"
+  >
+    <img
+      slot="logo"
+      src="@/assets/img/logo.png"
+      alt
+    />
+    <div
+      style="height: 100vh"
+      v-loading="loading"
+    >
       <el-container class="d-container">
         <!-- 头部区域 -->
-        <el-header height="60px" class="header-top d-hidden">
+        <el-header
+          height="60px"
+          class="header-top d-hidden"
+        >
           <!-- 菜单 -->
-          <el-menu :default-active="path" mode="horizontal" :router="true" :unique-opened="true">
-            <el-menu-item class="header-logo pl0" index="/">
+          <el-menu
+            :default-active="path"
+            mode="horizontal"
+            :router="true"
+            :unique-opened="true"
+          >
+            <el-menu-item
+              class="header-logo pl0"
+              index="/"
+            >
               <img
                 class="header-img"
                 :src="this.$store.state.company.companyInfo.picUrl?this.$store.state.company.companyInfo.picUrl:require('@/assets/img/logo.png')"
@@ -26,11 +47,17 @@
                 <!-- <p> 帮助房地产中介提升企业产能 </p> -->
               </div>
             </el-menu-item>
-            <el-menu-item
-              style="height: 32px;line-height: 33px;margin-top: 10px;border-bottom:none"
-            >
-              <el-badge :value="12" class="backlog-wrapper">
-                <el-button icon="el-icon-tickets" round size="small" class="backlog">待办事项</el-button>
+            <el-menu-item style="height: 32px;line-height: 33px;margin-top: 10px;border-bottom:none">
+              <el-badge
+                :value="12"
+                class="backlog-wrapper"
+              >
+                <el-button
+                  icon="el-icon-tickets"
+                  round
+                  size="small"
+                  class="backlog"
+                >待办事项</el-button>
               </el-badge>
             </el-menu-item>
             <!-- 如果type类型是菜单就不会有二级目录(最多只有2级菜单)
@@ -43,7 +70,10 @@
               v-if="menu.type == 2"
             >{{menu.name}}</el-menu-item>
             <!-- 二级菜单 -->
-            <el-submenu v-else :index="index+''">
+            <el-submenu
+              v-else
+              :index="index+''"
+            >
               <template slot="title">{{menu.name}}</template>
               <div style="display:flex;">
                 <!-- 二级菜单按 5长度 折行 -->
@@ -53,14 +83,27 @@
                   :style="{display: menu.children && menu.children[0].children ? 'flex' : ''}"
                   :class="[!(menu.children && menu.children[0].children) ? 'pr10 pl10' : '']"
                 >
-                  <div v-for="(submenu,submenuKey) in chunkMenu" :key="submenuKey">
+                  <div
+                    v-for="(submenu,submenuKey) in chunkMenu"
+                    :key="submenuKey"
+                  >
                     <!-- 二级菜单渲染 -->
-                    <el-menu-item v-if="submenu.type===2" :index="submenu.url+''">{{submenu.name}}</el-menu-item>
+                    <el-menu-item
+                      v-if="submenu.type===2"
+                      :index="submenu.url+''"
+                    >{{submenu.name}}</el-menu-item>
                     <!-- 三级菜单渲染 -->
-                    <div v-else class="hfull pb5" style="display:flex;flex-direction:column;">
+                    <div
+                      v-else
+                      class="hfull pb5"
+                      style="display:flex;flex-direction:column;"
+                    >
                       <h4 class="mt5 mb10 menu-title">{{submenu.name}}</h4>
                       <!-- 三级菜单按 5长度 分割 -->
-                      <div class="hfull mb10" style="display:flex;">
+                      <div
+                        class="hfull mb10"
+                        style="display:flex;"
+                      >
                         <div
                           class="pr10 pl10"
                           v-for="(chunkSubmenu, key) in chunk(submenu.children, WRAP_LENGTH)"
@@ -81,7 +124,10 @@
             </el-submenu>
 
             <!-- 用户详情 -->
-            <el-submenu index="user" class="fr">
+            <el-submenu
+              index="user"
+              class="fr"
+            >
               <template slot="title">
                 <img
                   class="user-head"
@@ -93,14 +139,24 @@
                   <p class="f12">{{userInfo.userName}}</p>
                 </div>
               </template>
-              <el-menu-item @click="logout" index="/login" class="f12">退出</el-menu-item>
+              <el-menu-item
+                @click="logout"
+                index="/login"
+                class="f12"
+              >退出</el-menu-item>
             </el-submenu>
             <!-- 版本更新 -->
-            <el-submenu index="/version" class="fr head-version">
+            <el-submenu
+              index="/version"
+              class="fr head-version"
+            >
               <template slot="title">
                 <i class="el-icon-info"></i>
               </template>
-              <el-menu-item index="/version" class="f12">版本更新</el-menu-item>
+              <el-menu-item
+                index="/version"
+                class="f12"
+              >版本更新</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-header>
