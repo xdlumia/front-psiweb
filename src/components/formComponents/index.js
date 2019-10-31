@@ -2,17 +2,14 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 10:17:48
+ * @LastEditTime: 2019-10-31 10:20:28
  * @Description: 公共表单组件引用
  */
 const files = require.context('.', true, /\.vue$/)
-// console.log(files.keys());
-console.log(files('./apportion-info.vue').default);
-
-let configRouters = []
 files.keys().map(key => {
   // Vue.component('uploadFile', UploadFile)
-  console.log(files(key).default.name);
+  console.log(files(key).default);
+  console.log(key);
 
 });
 import UploadFile from '../upload-file.vue'
