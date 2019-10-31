@@ -2,13 +2,14 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 19:40:04
+ * @LastEditTime: 2019-10-31 18:19:57
  * @Description: file content
 */
 <template>
   <div v-loading="loading">
     <d-step
       v-model="steps"
+      @input="stepsClick"
       :data="['选择客户','选择产品','确定配置信息','填写报价信息']"
     ></d-step>
     <el-form
@@ -78,23 +79,17 @@ export default {
     }
   },
   created() {
-    // this.initCompanyAdd()
+
   },
   mounted() {
-    // this.currStep()
+    this.initForm()
   },
   methods: {
-
-    // 编辑和新增
-    initCompanyAdd() {
-      if (this.dialogMeta.type === 'add') {
-        // 清空form表单
-        this.$nextTick(() => {
-          this.$refs.addForm.resetFields()
-          this.addForm.id = ''
-        })
-      } else {
-        const data = this.dialogMeta.data
+    // 初始化表单
+    initForm() {
+      if (this.dialogData.type === 'edit' || this.dialogData.type === 'copy') {
+        this.steps = 4
+        const data = this.dialogData.data
         for (const key in this.addForm) {
           this.addForm[key] = data[key]
         }
@@ -102,6 +97,23 @@ export default {
           new Date(data.startTime),
           new Date(data.endTime)
         ]
+      } else if (this.dialogData.type === 'add') {
+        // 清空form表单
+        this.$nextTick(() => {
+          this.$refs.addForm.resetFields()
+          this.addForm.id = ''
+        })
+
+      }
+    },
+    // 步骤点击
+    stepsClick(index) {
+      if (this.dialogData.type != 'add') {
+        this.$message.error({
+          showClose: true,
+          message: '编辑和复制的时候只能操作当前步骤'
+        })
+        this.steps = 4
       }
     },
     // 保存表单数据
@@ -117,13 +129,13 @@ export default {
           // rules 表单验证是否通过
           let api = 'collegeManagerUpdate' // 默认编辑更新
           // 新增保存
-          if (this.dialogMeta.type === 'add') {
+          if (this.dialogData.type === 'add') {
             api = 'collegeManagerSave'
             // 编辑保存
           }
           this.$api.seePumaidongService[api](this.addForm)
             .then(res => {
-              this.dialogMeta.visible = false
+              this.dialogData.visible = false
               this.$emit('submit', 'success')
             })
             .finally(() => {

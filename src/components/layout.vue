@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 18:39:21
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 16:01:35
+ * @LastEditTime: 2019-10-31 18:29:22
  * @Description: layout 页面架构
 */
 <template>
@@ -290,7 +290,9 @@ export default {
       });
     }
   },
-  beforeMount() { },
+  beforeMount() {
+    document.title = this.$route.meta.title
+  },
   watch: {
     isLockkScreen(val) {
       if (!val) {
@@ -299,8 +301,8 @@ export default {
     },
     $route: {
       handler(a) {
-        this.path =
-          a.path.indexOf('/home') !== -1 ? '/' : a.path;
+        this.path = a.path.indexOf('/home') !== -1 ? '/' : a.path;
+        document.title = this.$route.meta.title
       },
       immediate: true
     }

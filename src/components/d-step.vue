@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 10:34:21
+ * @LastEditTime: 2019-10-31 18:18:20
  * @Description: 操作步骤条
  * @params: data: Arrar 标题名称
  * @params: v-model: Number 当前步骤 
@@ -23,8 +23,14 @@
         :key="index"
         @click="stepClick(index)"
         v-for="(item,index) of data"
-        :data-index="index+1"
-      >
+      ><span class="icon">
+          <i
+            v-if="value > index+1"
+            class="el-icon-check"
+          ></i>
+          <span v-else>{{index+1}}</span>
+
+        </span>
         <div class="step-index"></div>
         <div class="step-title">
           {{item}}
@@ -70,13 +76,14 @@ export default {
     position: relative;
     font-size: 15px;
     flex-basis: 50%;
-    &::before,
     &::after {
       content: "";
       display: block;
       background-color: #fff;
     }
-    &::before {
+    .icon {
+      display: block;
+      background-color: #fff;
       position: relative;
       z-index: 1;
       content: attr(data-index);
@@ -101,7 +108,7 @@ export default {
     }
     &.active {
       color: #fff;
-      &::before {
+      .icon {
         background-color: #409eff;
         border-color: #409eff;
       }

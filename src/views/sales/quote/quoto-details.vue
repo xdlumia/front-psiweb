@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 16:11:50
+ * @LastEditTime: 2019-10-31 17:41:05
  * @Description: 报价单详情
 */
 <template>
@@ -94,6 +94,7 @@ export default {
     return {
       // 操作按钮
       buttons: [
+        // label:按钮名称  type:按钮样式  authCode:权限码
         { label: '提交审核', type: 'primary', authCode: '' },
         { label: '撤销审核', type: 'danger', authCode: '' },
         { label: '审核通过', type: 'primary', authCode: '' },
