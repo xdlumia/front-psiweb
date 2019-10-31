@@ -2,12 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 09:18:43
+ * @LastEditTime: 2019-10-31 17:37:00
  * @Description: 销售-销售出库单
  */
 <template>
   <div>
     <table-view
+      @clear-filter="reset()"
       type="1"
       ref="table"
       :filter="true"
@@ -18,11 +19,17 @@
       :params="Object.assign(queryForm,params)"
       @selection-change="selectionChange"
     >
-      <template v-slot:filter>自定义筛选列</template>
+      <template v-slot:filter>
+        <filters
+          ref="filters"
+          @submit-filter="$refs.table.reload(1)"
+          :form="queryForm"
+        />
+      </template>
       <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
-          @click="quotoHandle('outLib',row)"
+          @click="buttonsHandle('outLib',row)"
         >销售出库单编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
@@ -30,39 +37,40 @@
     </table-view>
     <!-- 新增 / 编辑 弹出框-->
     <el-dialog
-      :title="drawerData.title"
-      :visible.sync="dialogVisible"
-      :width="drawerData.width"
+      :title="dialogData.title"
+      :visible.sync="dialogData.visible"
+      width="920px"
       v-dialogDrag
     >
       <components
-        :is="drawerData.component"
-        :visible.sync="dialogVisible"
-        :dialogData="drawerData"
-        v-if="dialogVisible"
-        @submit="$refs.table.reload"
+        :is="dialogData.component"
+        :dialogData="dialogData"
+        @reload="$refs.table.reload(1)"
       ></components>
     </el-dialog>
 
     <!-- 抽屉弹出框 -->
-    <el-drawer
-      :append-to-body="true"
+    <side-detail
       :title="drawerData.title"
-      :visible.sync="drawerVisible"
-      :size="drawerData.width"
+      :visible.sync="drawerData.visible"
+      width="920px"
     >
       <components
-        :visible.sync="drawerVisible"
+        @buttonClick="buttonsHandle"
         :is="drawerData.component"
         :drawerData="drawerData"
+        @reload="$refs.table.reload(1)"
       ></components>
-    </el-drawer>
+    </side-detail>
 
   </div>
 </template>
 <script>
 import outLibDetails from './outLib-details' //销售出库单详情
+import filters from './filter' //销售出库单详情
 export default {
+  name: 'outLibrary',
+  components: { outLibDetails, filters },
   props: {
     // 是否显示按钮
     button: {
@@ -77,9 +85,6 @@ export default {
       }
     },
   },
-  components: {
-    outLibDetails,
-  },
   data() {
     return {
       loading: false,
@@ -93,48 +98,52 @@ export default {
         page: 1,
         limit: 20
       },
-      dialogVisible: false, //dialog弹出框
-      drawerVisible: false, //抽屉弹出框
-      drawerData: {
+      //dialog弹出框
+      dialogData: {
+        visible: false,
         title: '',
         type: '',
-        width: '920px',
+        data: '',
+      },
+      // 侧边栏弹出框
+      drawerData: {
+        visible: false,
+        title: '',
+        type: '',
         data: '',
       }
     };
   },
   methods: {
     // 按钮功能操作
-    quotoHandle(type, row) {
+    buttonsHandle(type, row) {
       let typeObj = {
         add: { comp: 'add', title: '新增报价单' },
-        copy: { comp: 'add', title: '复制报价单' },
-        merge: { comp: 'merge', title: '合并生成销售出库单' },
-        quoto: { comp: 'quotoDetails', title: '报价单' },
         outLib: { comp: 'outLibDetails', title: '销售出库单' },
       }
-      // 如果是新增复制合并调用dialog弹出框
-      if (type == "add" || type == "copy" || type == "merge") {
-        this.dialogVisible = true
+      // 如果type是isDialog里的类型调用dialog弹出框
+      let isDialog = ['add', 'edit', 'copy', 'merge']
+      if (isDialog.includes(type)) {
+        this.dialogData.visible = true
+        this.dialogData.type = type
+        this.dialogData.title = typeObj[type].title
+        this.dialogData.component = typeObj[type].comp
+        this.dialogData.data = row;
       } else {
-        // 否则调用抽屉弹出框
-        this.drawerVisible = true;
-      }
-      // 非新增才会有row数据
-      if (type != 'add') {
+        this.drawerData.visible = true
+        this.drawerData.type = type
+        this.drawerData.title = typeObj[type].title
+        this.drawerData.component = typeObj[type].comp
         this.drawerData.data = row;
       }
-
-      this.drawerData.type = type
-      this.drawerData.title = typeObj[type].title
-      this.drawerData.component = typeObj[type].comp
     },
+    // 多选
     selectionChange() { },
 
     // 重置
     reset() {
-      this.$refs.queryForm.resetFields();
-      this.$refs.table.reload();
+      this.$refs.filters.$refs.form.resetFields();
+      this.$refs.table.reload(1);
     },
     // 删除公司
     delCompany(row) {

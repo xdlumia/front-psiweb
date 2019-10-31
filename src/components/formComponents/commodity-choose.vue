@@ -347,6 +347,7 @@ import pickAssemble from '@/components/formComponents/pick-assemble';
 import chooseAssembly from '@/components/formComponents/choose-assembly';
 
 export default {
+  name: 'commodityChoose',
   components: {
     pickAssemble,
     chooseAssembly

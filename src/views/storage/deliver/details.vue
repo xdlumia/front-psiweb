@@ -13,8 +13,12 @@
     title="发货单"
     width="990px"
   >
-    <template slot="button">
-      <el-button
+    <div
+      class="d-auto-y"
+      style="height:calc(100vh - 160px)"
+    >
+      <div class="drawer-header">
+        <!-- <el-button
         @click="orderStorageVisible=true"
         size="mini"
         type="primary"
@@ -23,17 +27,18 @@
         @click="addBorrowInVisible=true"
         size="mini"
         type="primary"
-      >借入</el-button>
-    </template>
-    <el-tabs class="wfull hfull tabs-view">
-      <el-tab-pane label="详情">
-        <el-form>
-          <pickingDeliverEditable />
-          <pickingLogisticsEditable />
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="销售单">销售单</el-tab-pane>
-    </el-tabs>
+      >借入</el-button> -->
+      </div>
+      <el-tabs class="wfull hfull tabs-view">
+        <el-tab-pane label="详情">
+          <el-form>
+            <pickingDeliverEditable />
+            <pickingLogisticsEditable />
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="销售单">销售单</el-tab-pane>
+      </el-tabs>
+    </div>
   </SideDetail>
 </template>
 <script>

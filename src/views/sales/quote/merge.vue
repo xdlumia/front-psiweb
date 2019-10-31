@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 19:38:14
+ * @LastEditTime: 2019-10-31 16:27:54
  * @Description: 报价单详情
 */
 <template>
@@ -43,10 +43,10 @@
           v-anchor:customInfo
         >自定义信息</span>
       </el-tab-pane>
-      <el-tab-pane name="extraInfo">
+      <el-tab-pane name="extrasInfo">
         <span
           slot="label"
-          v-anchor:extraInfo
+          v-anchor:extrasInfo
         >备注信息</span>
       </el-tab-pane>
     </el-tabs>
@@ -83,7 +83,7 @@
           <!-- 自定义信息 -->
           <customInfo />
           <!-- 备注信息 -->
-          <extraInfo />
+          <extrasInfo />
         </div>
       </quotation-info>
       <!-- 收款滞纳金 -->
@@ -93,7 +93,7 @@
       <!-- 自定义信息 -->
       <customInfo ref="customInfo" />
       <!-- 备注信息 -->
-      <extraInfo ref="extraInfo" />
+      <extrasInfo ref="extrasInfo" />
     </div>
     <div class="ac mt10">
       <el-button
@@ -108,31 +108,8 @@
   </el-form>
 </template>
 <script>
-import customerInfo from '@/components/formComponents/customer-info' //客户信息
-import companyInfo from '@/components/formComponents/company-info' //公司信息
-import customInfo from '@/components/formComponents/custom-info' //自定义信息
-import deliverInfo from '@/components/formComponents/deliver-info' //发货信息
-import extrataxInfo from '@/components/formComponents/extratax-info' //附加发票
-import extraInfo from '@/components/formComponents/extras-info' //备注信息
-import paymentLate from '@/components/formComponents/payment-late' //收款滞纳金
-import billInfo from '@/components/formComponents/bill-info' //账期信息
-import payExpire from '@/components/formComponents/pay-expire' //报价单有效期
-import commodityInfo from '@/components/formComponents/commodity-info' //商品信息
-import quotationInfo from '@/components/formComponents/quotation-info' //报价单信息
-
 export default {
   components: {
-    customerInfo,
-    companyInfo,
-    customInfo,
-    deliverInfo,
-    extrataxInfo,
-    extraInfo,
-    paymentLate,
-    billInfo,
-    payExpire,
-    commodityInfo,
-    quotationInfo
   },
   props: ['dialogData'],
   data() {

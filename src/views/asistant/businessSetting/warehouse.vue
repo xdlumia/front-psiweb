@@ -2,11 +2,11 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-30 20:13:06
+ * @LastEditTime: 2019-10-31 14:35:15
  * @Description: 业务设置-库房
  -->
 <template>
-  <div class>
+  <div class v-loading="loading">
     <div>
       <el-col :span="16">
         <h3 class="mt10 d-text-gray b">拆卸单设置</h3>
@@ -141,14 +141,27 @@
           <span class="mr5">自定义项设置</span>
         </legend>
         <el-col :span="24">
-          <el-button class="ml10 mb10 mt10" type="primary" size="mini">+新增自定义项</el-button>
+          <el-button
+            class="ml10 mb10 mt10"
+            type="primary"
+            size="mini"
+            @click="warehouseEntity.pickingOrdersConfigArray.push('')"
+          >+新增自定义项</el-button>
         </el-col>
         <el-col :span="9">
           <el-form-item label label-width="0px">
-            <div style="display:flex;align-items:center">
+            <div
+              style="display:flex;align-items:center"
+              v-for="(item, index) in warehouseEntity.pickingOrdersConfigArray"
+              :key="index"
+            >
               <span style="flex:0 0 90px;color:#606266" class="f14 ml10">自定义项名称</span>
-              <el-input v-model="warehouseEntity.quotation1"></el-input>
-              <el-button type="text" class="ml10">
+              <el-input v-model="warehouseEntity.pickingOrdersConfigArray[index]"></el-input>
+              <el-button
+                type="text"
+                class="ml10"
+                @click="warehouseEntity.pickingOrdersConfigArray.splice(index, 1)"
+              >
                 <i class="el-icon-remove-outline f24"></i>
               </el-button>
             </div>
@@ -163,8 +176,9 @@
 export default {
   data() {
     return {
-      activeName: 'first',
+      loading: false,
       isEdit: false,
+      tempObj: null,
       warehouseEntity: {
         assembleNum: 0,
         assembleState: 1,
@@ -179,23 +193,42 @@ export default {
   components: {
   },
   mounted() {
-    this.commonsystemconfigList()
+    this.commonsystemconfigInfo()
   },
   methods: {
     save() {
-
+      const params = {
+        configType: 2,
+        configJson: JSON.stringify(this.warehouseEntity)
+      }
+      this.commonsystemconfigSave(params)
+    },
+    // 保存接口
+    commonsystemconfigSave(params) {
+      this.loading = true
+      this.$api.seePsiCommonService.commonsystemconfigSave(params).finally(() => {
+        this.commonsystemconfigInfo()
+        this.loading = false
+        this.isEdit = false
+      })
     },
     cancel() {
-
+      this.isEdit = false
+      this.handleDefault()
     },
-    restoreDefault() {
-
+    // 处理返回数据
+    handleDefault() {
+      Object.keys(this.warehouseEntity).forEach(key => {
+        this.warehouseEntity[key] = this.tempObj[key] || this.warehouseEntity[key]
+      })
     },
-    commonsystemconfigList() {
-      this.$api.seePsiCommonService.commonsystemconfigList().then(res => {
-        Object.keys(this.warehouseEntity).forEach(key => {
-          this.warehouseEntity[key] = res.data.warehouseEntity[key]
-        })
+    commonsystemconfigInfo() {
+      this.loading = true
+      this.$api.seePsiCommonService.commonsystemconfigInfo(null, 2).then(res => {
+        this.tempObj = JSON.parse(res.data.configJson)
+        this.handleDefault()
+      }).finally(() => {
+        this.loading = false
       })
     }
   }

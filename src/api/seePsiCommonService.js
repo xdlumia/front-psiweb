@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 19:45:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-30 19:50:23
+ * @LastEditTime: 2019-10-31 11:27:16
  * @Description: description
  */
 const MOCK_ADDRESS = '/mock/5db9778bbc54fc3da273f010/'
@@ -766,6 +766,12 @@ export default {
   /* =============供应商信息表end=========== */
 
   /* =============业务设置配置表start=========== */
+  // 查看详细信息
+  commonsystemconfigInfo: {
+    'url': '/commonsystemconfig/info/{configType}',
+    'mock': true
+  },
+
   // 获取列表
   commonsystemconfigList: {
     'url': '/commonsystemconfig/list',

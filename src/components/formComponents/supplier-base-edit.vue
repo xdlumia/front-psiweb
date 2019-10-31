@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 17:18:05
+ * @LastEditTime: 2019-10-31 17:52:29
  * @Description: 供应商基本信息编辑
 */
 <template>
@@ -46,14 +46,14 @@
       </el-col>
       <el-col :span="8">
         <el-form-item label="供应商基本" prop size="mini">
-          <el-select class="wfull" placeholder="请选择" v-model="value">
+          <el-select class="wfull" placeholder="请选择" v-model="value1">
             <el-option :key="item" :label="item" :value="item" v-for="item in options"></el-option>
           </el-select>
         </el-form-item>
       </el-col>
       <el-col :span="8">
         <el-form-item label="行业" prop size="mini">
-          <el-select class="wfull" placeholder="请选择" v-model="value">
+          <el-select class="wfull" placeholder="请选择" v-model="value2">
             <el-option :key="item" :label="item" :value="item" v-for="item in options"></el-option>
           </el-select>
         </el-form-item>
@@ -62,7 +62,7 @@
     <el-row :gutter="10">
       <el-col :span="8">
         <el-form-item label="来源" prop size="mini">
-          <el-select class="wfull" placeholder="请选择" v-model="value">
+          <el-select class="wfull" placeholder="请选择" v-model="value3">
             <el-option :key="item" :label="item" :value="item" v-for="item in options"></el-option>
           </el-select>
         </el-form-item>
@@ -90,7 +90,9 @@ export default {
   data() {
     return {
       value: '',
-      data: '',
+      value1: '',
+      value2: '',
+      value3: '',
       options: ['CPU', '内存', '主板', '机箱', 'GPU', '键盘', '鼠标']
     };
   }

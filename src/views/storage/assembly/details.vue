@@ -14,12 +14,12 @@
     title="组装任务"
     width="990px"
   >
-    <template slot="button">
+    <!-- <template slot="button">
       <el-button
         @click="orderStorageVisible=true"
         size="mini"
         type="primary"
-      >开始</el-button>
+      >确认收到并开始</el-button>
       <el-button
         @click="transferVisible=true"
         size="mini"
@@ -30,17 +30,52 @@
         size="mini"
         type="primary"
       >挂起</el-button>
-    </template>
-    <el-tabs class="wfull hfull tabs-view">
-      <el-tab-pane label="详情">
-        <el-form>
-          <goodsAssemble />
-          <assemblyInfo />
-          <generateDeliver :status='status' />
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="组装任务">组装任务</el-tab-pane>
-    </el-tabs>
+      <el-button
+        @click="goodsVisible=true"
+        size="mini"
+        type="primary"
+      >组装</el-button>
+    </template> -->
+    <div
+      class="d-auto-y"
+      style="height:calc(100vh - 160px)"
+    >
+      <div class="drawer-header">
+        <el-button
+          @click="orderStorageVisible=true"
+          size="mini"
+          type="primary"
+        >确认收到并开始</el-button>
+        <el-button
+          @click="transferVisible=true"
+          size="mini"
+          type="primary"
+        >转移</el-button>
+        <el-button
+          @click="hangVisible=true"
+          size="mini"
+          type="primary"
+        >挂起</el-button>
+        <el-button
+          @click="goodsVisible=true"
+          size="mini"
+          type="primary"
+        >组装</el-button>
+      </div>
+      <el-tabs class="wfull hfull tabs-view">
+        <el-tab-pane label="详情">
+          <el-form>
+            <goodsAssemble />
+            <assemblyInfo />
+            <assembledGoodsChoose
+              :visible='goodsVisible'
+              @close="goodsVisible = false"
+            />
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="组装任务">组装任务</el-tab-pane>
+      </el-tabs>
+    </div>
     <transfer
       :visible=transferVisible
       @update='update'
@@ -57,9 +92,9 @@ import goodsAssemble from '@/components/formComponents/goods-assemble'
 import assemblyInfo from '@/components/formComponents/assembly-info';
 import transfer from '@/components/formComponents/transfer';
 import hangUp from '@/components/formComponents/hang-up';
-
-import generateDeliver from './generate-deliver';
+import assembledGoodsChoose from '@/components/formComponents/assembled-goods-choose';
 import SideDetail from '@/components/side-detail';
+
 export default {
   props: ['drawerData'],
   data() {
@@ -67,15 +102,16 @@ export default {
       status: [{ label: '组装状态', value: '待组装' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       transferVisible: false,//转移
       hangVisible: false,//挂起
+      goodsVisible: true,//组装
     };
   },
   components: {
     goodsAssemble,
     assemblyInfo,
-    generateDeliver,
+    assembledGoodsChoose,
     SideDetail,
     transfer,
-    hangUp
+    hangUp,
   },
   methods: {
     update() {

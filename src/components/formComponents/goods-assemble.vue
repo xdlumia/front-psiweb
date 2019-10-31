@@ -3,7 +3,7 @@
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: 徐贺
  * @Last Modified time: 2019-10-28 14:02:43
- * @Description: 组装商品
+ * @Description: 组装商品 
  */
 <template>
   <div>
@@ -27,6 +27,7 @@
             <el-button
               type="primary"
               size="mini"
+              @click='assemblyVisible = true'
             >组装</el-button>
           </template>
         </el-table-column>
@@ -105,9 +106,14 @@
 
       </d-table>
     </form-card>
+    <commodityAssemblyEdit
+      :visible='assemblyVisible'
+      @close="assemblyVisible = false"
+    />
   </div>
 </template>
 <script>
+import commodityAssemblyEdit from './commodity-assembly-edit'
 export default {
   data() {
     return {
@@ -122,11 +128,13 @@ export default {
         limit: 20
       },
       dialogVisible: false,
+      assemblyVisible: false,//组装弹窗
     }
   },
   methods: {
   },
   components: {
+    commodityAssemblyEdit
   },
 }
 </script>
