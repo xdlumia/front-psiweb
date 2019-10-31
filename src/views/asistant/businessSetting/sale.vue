@@ -2,11 +2,11 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-30 20:08:35
+ * @LastEditTime: 2019-10-31 14:35:08
  * @Description: 业务设置-销售
  -->
 <template>
-  <div class>
+  <div class v-loading="loading">
     <div>
       <el-col :span="16">
         <h3 class="mt10 d-text-gray b">报价单</h3>
@@ -113,8 +113,9 @@
 export default {
   data() {
     return {
-      activeName: 'first',
+      loading: false,
       isEdit: false,
+      tempObj: null,
       sellEntity: {
         quotationState: 1,
         quotationTime: 15,
@@ -126,23 +127,43 @@ export default {
   components: {
   },
   mounted() {
-    this.commonsystemconfigList()
+    this.commonsystemconfigInfo()
   },
   methods: {
     save() {
-
+      const params = {
+        configType: 1,
+        configJson: JSON.stringify(this.sellEntity)
+      }
+      this.commonsystemconfigSave(params)
+    },
+    // 保存接口
+    commonsystemconfigSave(params) {
+      this.loading = true
+      this.$api.seePsiCommonService.commonsystemconfigSave(params).finally(() => {
+        this.commonsystemconfigInfo()
+        this.loading = false
+        this.isEdit = false
+      })
     },
     cancel() {
-
+      this.isEdit = false
+      this.handleDefault()
     },
-    restoreDefault() {
-
+    // 处理返回数据
+    handleDefault() {
+      Object.keys(this.sellEntity).forEach(key => {
+        this.sellEntity[key] = this.tempObj[key] || this.sellEntity[key]
+      })
     },
-    commonsystemconfigList() {
-      this.$api.seePsiCommonService.commonsystemconfigList().then(res => {
-        Object.keys(this.sellEntity).forEach(key => {
-          this.sellEntity[key] = res.data.sellEntity[key]
-        })
+    // 获取详情
+    commonsystemconfigInfo() {
+      this.loading = true
+      this.$api.seePsiCommonService.commonsystemconfigInfo(null, 1).then(res => {
+        this.tempObj = JSON.parse(res.data.configJson)
+        this.handleDefault()
+      }).finally(() => {
+        this.loading = false
       })
     }
   }
