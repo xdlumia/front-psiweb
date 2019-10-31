@@ -3,7 +3,7 @@
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: mikey.zhaopeng
  * @Last Modified time: 2019-10-28 14:01:02
- * @Description: 库房  销售单 详情组件
+ * @Description: 库房  拆卸任务 详情组件
  */
 <template>
 
@@ -14,49 +14,88 @@
     title="销售单"
     width="990px"
   >
-    <template slot="button">
-      <el-button
-        @click="orderStorageVisible=true"
-        size="mini"
-        type="primary"
-      >发货</el-button>
-    </template>
-    <el-tabs class="wfull hfull tabs-view">
-      <el-tab-pane label="详情">
-        <el-form>
-          <goodsExported />
-          <shipInfo />
-          <generateDeliver :status='status' />
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="销售单">销售单</el-tab-pane>
-      <el-tab-pane label="拣货单">拣货单</el-tab-pane>
-      <el-tab-pane label="组装任务">组装任务</el-tab-pane>
-      <el-tab-pane label="发货单">发货单</el-tab-pane>
-      <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
-      <el-tab-pane label="借入单">借入单</el-tab-pane>
-      <el-tab-pane label="应收账单">应收账单</el-tab-pane>
-    </el-tabs>
+    <div
+      class="d-auto-y"
+      style="height:calc(100vh - 160px)"
+    >
+      <div class="drawer-header">
+        <el-button
+          @click="orderStorageVisible=true"
+          size="mini"
+          type="primary"
+        >确认收到并开始</el-button>
+        <el-button
+          @click="disassembleVisible =true"
+          size="mini"
+          type="primary"
+        >拆卸</el-button>
+        <el-button
+          @click="hangVisible=true"
+          size="mini"
+          type="primary"
+        >挂起</el-button>
+        <el-button
+          @click="orderStorageVisible=true"
+          size="mini"
+          type="primary"
+        >继续</el-button>
+      </div>
+      <el-tabs class="wfull hfull tabs-view">
+        <el-tab-pane label="详情">
+          <el-form>
+            <dismantlingMerchandise />
+            <form-card
+              class="choose-man"
+              title="人员分配"
+            >
+              <el-row>
+                <el-col :span="20">
+                  <div class="d-text-black">拆卸人</div>
+                  <div class="d-text-qgray mt5 mb20">太上老君</div>
+                </el-col>
+                <el-col :span="20">
+                  <div class="d-text-black">备注</div>
+                  <div class="d-text-qgray mt5">备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注</div>
+                </el-col>
+
+              </el-row>
+            </form-card>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="拆卸单">拆卸单</el-tab-pane>
+      </el-tabs>
+      <hangUp
+        :visible='hangVisible'
+        @close='hangVisible = false'
+      />
+      <disassembleGoodsChoose
+        :visible='disassembleVisible'
+        @close='disassembleVisible = false'
+      />
+    </div>
   </SideDetail>
 
 </template>
 <script>
-import goodsExported from '@/components/formComponents/goods-exported'
-import shipInfo from '@/components/formComponents/ship-info';
-import generateDeliver from './generate-deliver';
+import dismantlingMerchandise from '@/components/formComponents/dismantling-merchandise'
+import disassembleGoodsChoose from '@/components/formComponents/disassemble-goods-choose'
+import hangUp from '@/components/formComponents/hang-up';
 import SideDetail from '@/components/side-detail';
 export default {
   props: ['drawerData'],
   data() {
     return {
-      status: [{ label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '拆卸状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      hangVisible: false,
+      generateVisible: false,
+      disassembleVisible: false
     };
   },
   components: {
-    goodsExported,
-    shipInfo,
-    generateDeliver,
-    SideDetail
+    dismantlingMerchandise,
+    SideDetail,
+    hangUp,
+    disassembleGoodsChoose
   },
 }
 </script>
