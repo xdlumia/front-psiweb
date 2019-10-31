@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 17:40:45
+ * @LastEditTime: 2019-10-31 19:44:55
  * @Description: 销售出库单详情
 */
 <template>
@@ -42,6 +42,7 @@
       </el-tabs>
       <components
         class="d-auto-y"
+        :button="false"
         style="height:calc(100vh - 200px)"
         :is="activeName"
       ></components>
@@ -49,14 +50,10 @@
   </div>
 </template>
 <script>
-import sideStatusbar from '@/components/formComponents/side-statusbar' //顶部状态
 import detail from './outLibDetails/detail' //详情
-import quote from './outLibDetails/quote' //报价单
 export default {
   components: {
-    sideStatusbar,
-    detail,
-    quote
+    detail
   },
   props: ['drawerData'],
   data() {
@@ -100,13 +97,13 @@ export default {
       // tabs 组件名称对应的label名称
       tabs: {
         detail: '详情',
-        quote: '报价单',
+        salesQuote: '报价单',
         contract: '合同',
-        contract2: '销售退货单',
-        contract3: '销售换货单',
+        salesReturn: '销售退货单',
+        salesExchange: '销售换货单',
         contract4: '应收账单',
         contract5: '发票记录',
-        contract6: '费用分摊单'
+        salesApportion: '费用分摊单'
       },
 
       // tabs当前选中

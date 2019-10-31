@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 18:54:50
- * @Description: 销售-销售退货单
+ * @LastEditTime: 2019-10-31 19:41:05
+ * @Description: 销售-客户管理
  */
 <template>
   <div>
@@ -13,7 +13,7 @@
       :filter="true"
       :moreButton="true"
       :column="true"
-      title="销售退货单"
+      title="客户管理"
       @clear-filter="reset()"
       api="bizSystemService.getEmployeeList"
       exportApi="bizSystemService.getEmployeeList"
