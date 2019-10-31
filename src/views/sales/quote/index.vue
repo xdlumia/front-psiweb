@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 17:31:04
+ * @LastEditTime: 2019-10-31 18:56:02
  * @Description: 销售-报价单
  */
 <template>
@@ -34,24 +34,24 @@
         <el-button
           size="mini"
           type="primary"
-          @click="quotoHandle('add')"
+          @click="eventHandle('add')"
         >新建</el-button>
         <el-button
           size="mini"
-          @click="quotoHandle('merge')"
+          @click="eventHandle('merge')"
         >合并生成出库单</el-button>
         <el-button
           size="mini"
-          @click="quotoHandle('copy')"
+          @click="eventHandle('copy')"
         >复制生成报价单</el-button>
       </template>
       <template v-slot:moreButton>自定义更多按钮</template>
       <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
-          @click="quotoHandle('quoto',row)"
+          @click="eventHandle('quoto',row)"
         > 报价单编号</span>
-        <span @click="quotoHandle('outLib',row)">销售出库单编号</span>
+        <span @click="eventHandle('outLib',row)">销售出库单编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
@@ -77,7 +77,7 @@
       width="920px"
     >
       <components
-        @buttonClick="quotoHandle"
+        @buttonClick="eventHandle"
         :is="drawerData.component"
         :drawerData="drawerData"
         @reload="$refs.table.reload(1)"
@@ -146,20 +146,20 @@ export default {
   },
   methods: {
     // 按钮功能操作
-    quotoHandle(type, row) {
+    eventHandle(type, row) {
       // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {
         'add': { comp: 'add', title: '新增报价单' },
-        '编辑': { comp: 'add', title: '编辑报价单' },
+        '编辑': { comp: 'add', title: `编辑报价单:${row.id}` },
         'copy': { comp: 'add', title: '复制报价单' },
         'merge': { comp: 'merge', title: '合并生成销售出库单' },
-        'quoto': { comp: 'quotoDetails', title: '报价单' },
-        'outLib': { comp: 'outLibDetails', title: '销售出库单' },
+        'quoto': { comp: 'quotoDetails', title: `报价单:${row.id}` },
+        'outLib': { comp: 'outLibDetails', title: `销售出库单:${row.id}` },
         '生成销售出库单': { comp: 'outLibDetails', title: '生成销售出库单' },
         '生成请购单': { comp: 'outLibDetails', title: '生成请购单' },
       }
       // 如果type是isDialog里的类型调用dialog弹出框
-      let isDialog = ['add', 'edit', 'copy', 'merge']
+      let isDialog = ['add', '编辑', 'copy', 'merge']
       if (isDialog.includes(type)) {
         this.dialogData.visible = true
         this.dialogData.type = type
