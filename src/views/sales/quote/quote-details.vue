@@ -2,12 +2,16 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 17:42:20
+ * @LastEditTime: 2019-11-01 18:09:32
  * @Description: 报价单详情
 */
 <template>
-  <div>
-    <div class="drawer-header">
+  <side-detail
+    :title="drawerData.title"
+    :visible.sync="drawerData.visible"
+    width="920px"
+  >
+    <div slot="button">
       <!-- 操作按钮 -->
       <span
         v-for="(item,index) of buttons"
@@ -48,11 +52,11 @@
         ></components>
       </keep-alive>
     </el-form>
-  </div>
+  </side-detail>
 </template>
 <script>
-import detail from './quotoDetails/detail' //详情
-import buy from './quotoDetails/buy' //采购单
+import detail from './quoteDetails/detail' //详情
+import buy from './quoteDetails/buy' //采购单
 import record from '@/components/formComponents/record' //操作记录
 
 export default {
@@ -61,7 +65,7 @@ export default {
     buy,
     record
   },
-  props: ['drawerData'],
+  props: ['visible'],
   data() {
     return {
       // 操作按钮
@@ -88,6 +92,13 @@ export default {
         3: ['生成销售出库单', '生成请购单', '终止'],
         4: ['提交审核', '编辑', '删除'],
         5: []
+      },
+      //dialog弹出框
+      dialogData: {
+        visible: false,
+        title: '',
+        type: '',
+        data: '',
       },
       // tab操作栏
       tabs: {

@@ -2,7 +2,7 @@
  * @author: 王晓冬
  * @Date: 2019-10-28 10:29:53
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 15:04:00
+ * @LastEditTime: 2019-11-01 18:11:03
  * @Description: 销售模块路由
  */
 const Quote = () => import('@/views/sales/quote') // 报价单
@@ -29,7 +29,7 @@ let routes = []
 for (let key in routeObj) {
   key.toLowerCase()
   routes.push({
-    //path: 'sales/quoto'
+    //path: 'sales/quote'
     path: `/sales/${key.toLowerCase()}`,
     component: eval(key),
     meta: {

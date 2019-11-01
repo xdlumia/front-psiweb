@@ -120,7 +120,7 @@ export default {
       form: {},
       // 报价单信息
       activeName: "0",
-      quotoCollapse: true
+      quoteCollapse: true
     }
   },
   beforeDestroy() {

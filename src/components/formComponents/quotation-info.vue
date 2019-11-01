@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 19:44:34
+ * @LastEditTime: 2019-11-01 18:13:08
  * @Description: 报价单信息
 */
 <template>
@@ -14,10 +14,10 @@
         class="d-flex"
         style="align-items:center"
       >
-        <div @click="quotoCollapse = !quotoCollapse">
+        <div @click="quoteCollapse = !quoteCollapse">
           {{title}}
           <i
-            :class="{active:quotoCollapse}"
+            :class="{active:quoteCollapse}"
             class="collapse-arrow el-icon-arrow-right d-pointer"
           ></i>
         </div>
@@ -32,7 +32,7 @@
       </slot>
 
       <transition name="el-zoom-in-top">
-        <div v-show="quotoCollapse">
+        <div v-show="quoteCollapse">
           <slot name="body">
             slot="body"
           </slot>
@@ -55,7 +55,7 @@ export default {
   },
   data() {
     return {
-      quotoCollapse: true
+      quoteCollapse: true
     }
   },
   beforeDestroy() {
