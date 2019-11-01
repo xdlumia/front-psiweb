@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 15:09:11
+ * @LastEditTime: 2019-11-01 16:17:28
  * @Description: 采购-请购单
 */
 <template>
@@ -35,12 +35,12 @@ export default {
     OrderBuyingDetail,
     OrderBuyingDetailRec,
     OrderStorage,
-    AddBorrowIn
+    AddBorrowIn,
   },
   data() {
     return {
       status: [],
-      showDetail: false,
+      showDetail: true,
       addBorrowInVisible: false,
       orderBuyingDetailRecVisible: false,
       tableHeader: [
