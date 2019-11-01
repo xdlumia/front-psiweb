@@ -3,7 +3,7 @@
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: 徐贺
  * @Last Modified time: 2019-10-28 14:00:41
- * @Description: 库房  销售单
+ * @Description: 库房  盘点单
  */
 <template>
   <div class="buying-requisition-page wfull hfull">
@@ -12,7 +12,7 @@
       :headers="tableHeader"
       :selection='false'
       api="bizSystemService.getEmployeeList"
-      title="销售单"
+      title="盘点单"
     >
       <template slot-scope="{column,row,value}">
         <span

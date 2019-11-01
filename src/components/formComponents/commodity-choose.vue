@@ -8,6 +8,7 @@
 <template>
   <el-dialog
     :visible.sync="visible"
+    @close='close'
     title="选择商品"
     v-dialogDrag
     width='60%'
@@ -331,12 +332,12 @@
       class="dialog-footer"
     >
       <el-button
-        @click="$emit('update')"
+        @click="close"
         size="small"
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="$emit('update')"
+        @click="close"
         size="small"
       >保 存</el-button>
     </span>
@@ -442,6 +443,9 @@ export default {
     deleteChoose(row) {
       this.multipleSelection.splice(row.$index, 1)
       this.$refs.multipleTable.$refs.elTable.toggleRowSelection(row.row, false);
+    },
+    close() {
+      this.$emit('update:visible', false)
     }
   }
 };

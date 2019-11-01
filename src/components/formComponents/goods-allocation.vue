@@ -13,7 +13,7 @@
         :params="queryForm"
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
+        style="height:300px"
         :tree-props="{children: 'id', hasChildren: 'id'}"
       >
         <el-table-column
@@ -24,7 +24,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.id}}</span>
+            <span>{{scope.row.id}}</span>
           </template>
         </el-table-column>
 
@@ -34,7 +34,14 @@
           min-width="100"
           label="机器号/SN码"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span
+              @click="dialogVisible = true"
+              class="d-text-blue"
+            >{{scope.row.id}}</span>
+          </template>
+        </el-table-column>
 
         <el-table-column
           fixed
@@ -94,9 +101,12 @@
 
       </d-table>
     </form-card>
+    <outGoodsRecord :visible.sync='dialogVisible' />
   </div>
 </template>
+
 <script>
+import outGoodsRecord from './out-goods-record'
 export default {
   data() {
     return {
@@ -116,6 +126,7 @@ export default {
   methods: {
   },
   components: {
+    outGoodsRecord
   },
 }
 </script>

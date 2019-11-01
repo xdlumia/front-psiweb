@@ -46,6 +46,7 @@
             <lendInfo />
             <borrowGoods />
             <el-dialog
+              center
               :visible.sync="backVisible"
               :title="dialogData.title"
               v-dialogDrag

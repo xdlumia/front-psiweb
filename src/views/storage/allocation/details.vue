@@ -3,7 +3,7 @@
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: mikey.zhaopeng
  * @Last Modified time: 2019-10-28 14:01:02
- * @Description: 库房  销售单 详情组件
+ * @Description: 库房  调拨单 详情组件
  */
 <template>
 
@@ -11,52 +11,79 @@
     :status="status"
     :visible.sync="drawerData.tableVisible"
     @close="$emit('update:visible',false)"
-    title="销售单"
+    title="调拨单"
     width="990px"
   >
-    <template slot="button">
-      <el-button
-        @click="orderStorageVisible=true"
-        size="mini"
-        type="primary"
-      >发货</el-button>
-    </template>
-    <el-tabs class="wfull hfull tabs-view">
-      <el-tab-pane label="详情">
-        <el-form>
-          <goodsExported />
-          <shipInfo />
-          <generateDeliver :status='status' />
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="销售单">销售单</el-tab-pane>
-      <el-tab-pane label="拣货单">拣货单</el-tab-pane>
-      <el-tab-pane label="组装任务">组装任务</el-tab-pane>
-      <el-tab-pane label="发货单">发货单</el-tab-pane>
-      <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
-      <el-tab-pane label="借入单">借入单</el-tab-pane>
-      <el-tab-pane label="应收账单">应收账单</el-tab-pane>
-    </el-tabs>
+    <div
+      class="d-auto-y"
+      style="height:calc(100vh - 130px)"
+    >
+      <div class="drawer-header">
+        <el-button
+          @click="backVisible=true,isComponents = 'scanInCode',dialogData.title = '调入扫码'"
+          size="mini"
+          type="primary"
+        >调入扫码</el-button>
+        <el-button
+          @click="backVisible=true,isComponents = 'scanOutCode',dialogData.title = '调出扫码'"
+          size="mini"
+          type="primary"
+        >调出扫码</el-button>
+        <el-button
+          @click="hangVisible=true"
+          size="mini"
+          type="primary"
+        >终止</el-button>
+      </div>
+      <el-tabs class="wfull hfull tabs-view">
+        <el-tab-pane label="详情">
+          <el-form>
+            <allocationInfo :disabled='true' />
+            <goodsAllocation />
+
+            <el-dialog
+              :visible.sync="backVisible"
+              :title="dialogData.title"
+              v-dialogDrag
+            >
+              <components
+                :is='isComponents'
+                :visible.sync="backVisible"
+              >
+              </components>
+            </el-dialog>
+
+          </el-form>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
   </SideDetail>
 
 </template>
 <script>
-import goodsExported from '@/components/formComponents/goods-exported'
-import shipInfo from '@/components/formComponents/ship-info';
-import generateDeliver from './generate-deliver';
+import allocationInfo from '@/components/formComponents/allocation-info'
+import goodsAllocation from '@/components/formComponents/goods-allocation';
 import SideDetail from '@/components/side-detail';
+import scanOutCode from './scan-out-code';
+import scanInCode from './scan-in-code';
 export default {
   props: ['drawerData'],
   data() {
     return {
       status: [{ label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      backVisible: false,
+      isComponents: '',
+      dialogData: {
+        title: ''
+      }
     };
   },
   components: {
-    goodsExported,
-    shipInfo,
-    generateDeliver,
-    SideDetail
+    allocationInfo,
+    goodsAllocation,
+    SideDetail,
+    scanOutCode,
+    scanInCode
   },
 }
 </script>
@@ -85,6 +112,7 @@ export default {
     }
   }
   .tabs-view {
+    width: 100% !important;
     position: relative;
     /deep/ {
       & > .el-tabs__header {
@@ -103,5 +131,8 @@ export default {
       }
     }
   }
+}
+/deep/.el-dialog__footer {
+  text-align: center;
 }
 </style>
