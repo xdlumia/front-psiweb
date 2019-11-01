@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 10:05:54
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-01 10:43:46
  * @Description: 公共组件引用
  */
 
@@ -13,6 +13,7 @@ import DTabs from "@/components/tabs";
 import DTabPane from "@/components/tabs/tab-pane";
 import DStep from "@/components/d-step";
 import SideDetail from "@/components/side-detail";
+import DFilter from "./filter";
 export default {
   install: (Vue) => {
     Vue.component('uploadFile', UploadFile)
@@ -22,6 +23,7 @@ export default {
     Vue.component('dTabPane', DTabPane)
     Vue.component('dStep', DStep)
     Vue.component('sideDetail', SideDetail)
+    Vue.component('dFilter', DFilter)
   }
 }
 

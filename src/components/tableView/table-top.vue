@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 11:16:09
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-01 13:39:49
  * @Description: 表格头部 
  */
 <template>
@@ -54,7 +54,16 @@
           v-model="filterPopover"
           trigger="click"
           width="250"
+          @hide="closeFilter"
         >
+          <el-link
+            :underline="false"
+            @click="filterPopover = false"
+            class="el-icon-close close fr"
+            style="margin-top:2px;"
+            title="关闭"
+          ></el-link>
+          <slot name="filterTable">
           <div class="table-filter-box">
             <div
               class="bb mb10"
@@ -64,12 +73,6 @@
                 class="b"
                 style="margin-left:112px"
               >筛选</span>
-              <el-link
-                :underline="false"
-                @click="filterPopover = false"
-                class="el-icon-close close fr"
-                title="关闭"
-              ></el-link>
             </div>
             <div
               class="d-auto-y"
@@ -96,6 +99,7 @@
               >清空筛选</el-link>
             </div>
           </div>
+            </slot>
           <el-button
             size="mini"
             class="tool-item ml15"
@@ -251,6 +255,9 @@ export default {
     // 清空筛选
     clearFilter() {
       this.$emit('clear-filter')
+    },
+    closeFilter(){
+      this.$emit('closeFilter')
     },
     // 自定义列提交
     colConfirm() {

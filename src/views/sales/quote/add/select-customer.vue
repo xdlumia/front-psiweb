@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 19:47:45
+ * @LastEditTime: 2019-11-01 15:44:13
  * @Description: 选择客户
 */
 <template>
@@ -37,7 +37,7 @@
 </template>
 <script>
 import clientInfo from './client-info'
-import clientData from './client-data'
+import clientData from '../../client/details/client-data'
 import historyQuoto from './history-quoto'
 export default {
   props: ['dialogData', 'visible'],

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 08:52:21
+ * @LastEditTime: 2019-11-01 11:31:58
  * @Description: 销售-报价单
  */
 <template>
@@ -147,6 +147,7 @@ export default {
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
+      // 防止row为undefined 导致报错
       row = row ? row : {}
       // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {

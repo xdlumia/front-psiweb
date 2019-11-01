@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 15:41:31
- * @Description: 采购入库单
+ * @LastEditTime: 2019-11-01 15:56:17
+ * @Description: 拆卸单
 */
 <template>
   <el-dialog :visible="visible" @close="close" v-dialogDrag>
     <div slot="title">
-      <span>采购入库单{{from?`(${from})`:''}}</span>
+      <span>拆卸单{{from?`(${from})`:''}}</span>
       <span class="fr mr20">
         <el-button @click="close" size="mini" type="primary">保存</el-button>
         <el-button @click="close" size="mini">关闭</el-button>

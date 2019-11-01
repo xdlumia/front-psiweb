@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 18:13:56
+ * @LastEditTime: 2019-11-01 15:42:01
  * @Description: 其他合同
 */
 <template>
@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       status: [],
-      showDetail: false,
+      showDetail: true,
       showEdit: false,
       tableHeader: [
         { label: '采购入库单编号', prop: 'deptName', width: '180' },

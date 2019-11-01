@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 17:02:57
- * @Description: 采购入库单
+ * @LastEditTime: 2019-11-01 15:54:32
+ * @Description: 换货单
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showPop" @close="$emit('update:visible',false)" title="采购入库单" width="990px">
+  <sideDetail :status="status" :visible.sync="showPop" @close="$emit('update:visible',false)" title="换货单" width="990px">
     <template slot="button">
       <el-button size="mini" type="primary">提交审核</el-button>
       <el-button size="mini" type="primary">撤销审核</el-button>

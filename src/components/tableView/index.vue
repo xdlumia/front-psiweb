@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 11:16:00
+ * @LastEditTime: 2019-11-01 15:35:24
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -66,6 +66,7 @@
       @moreHandle="moreHandle"
       @column="columnHandle"
       @clear-filter="clearFilter"
+      @closeFilter="reload"
       :title="title"
       :filter="this.filter"
       :moreButton="this.moreButton"
@@ -83,6 +84,17 @@
       <!-- 自定义筛选 -->
       <template v-slot:filter>
         <slot name="filter"></slot>
+      </template>
+      <template slot="filterTable">
+        <slot
+          name="filterTable"
+          v-if="filterOptions"
+        >
+          <dFilter
+            v-model="params"
+            :options="filterOptions"
+          />
+        </slot>
       </template>
     </table-top>
 
@@ -172,6 +184,8 @@ export default {
     exportApi: {
       type: String,
     },
+    // 筛选配置
+    filterOptions: Array,
     // 自定义头
     // headers: {
     //   type: Array,
@@ -197,7 +211,7 @@ export default {
   methods: {
     // 重新加载
     reload() {
-      this.$refs.table.reload(1);
+      this.$refs.table && this.$refs.table.reload(1);
     },
     // 表格加载成功返回参数
     tabelRes(res) {
@@ -239,7 +253,7 @@ export default {
       setTimeout(() => {
         this.$refs.table.reload(1);
         this.headers = cols;
-      }, 2000)
+      }, 1000)
     },
     // 多选
     selectionChange(val) {

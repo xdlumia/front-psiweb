@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 11:23:08
+ * @LastEditTime: 2019-11-01 11:54:51
  * @Description: 报价单详情
 */
 <template>
@@ -52,14 +52,12 @@
 </template>
 <script>
 import detail from './quotoDetails/detail' //详情
-import outLib from './quotoDetails/outLibrary' //销售出库单
 import buy from './quotoDetails/buy' //采购单
 import record from '@/components/formComponents/record' //操作记录
 
 export default {
   components: {
     detail,
-    outLib,
     buy,
     record
   },
@@ -94,7 +92,7 @@ export default {
       // tab操作栏
       tabs: {
         detail: '详情',
-        outLib: '销售出库单',
+        salesOutLibrary: '销售出库单',
         buy: '请购单',
         record: '操作记录',
       },
