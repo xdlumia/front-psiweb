@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 15:44:13
+ * @LastEditTime: 2019-11-01 15:47:50
  * @Description: 选择客户
 */
 <template>
@@ -32,7 +32,11 @@
         name="historyQuoto"
       ></el-tab-pane>
     </el-tabs>
-    <components :is="currCompont"></components>
+    <!-- 此处hide是在调用clientData 组件的时候 隐藏 clientData 组件里的基本信息区域内容 -->
+    <components
+      :is="currCompont"
+      :hide="['clientBasicInfo']"
+    ></components>
   </div>
 </template>
 <script>

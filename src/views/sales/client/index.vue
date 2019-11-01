@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 15:14:54
+ * @LastEditTime: 2019-11-01 15:49:16
  * @Description: 销售-客户管理
  */
 <template>
@@ -153,7 +153,7 @@ export default {
         '新增报价单': { comp: 'outLibDetails', title: '新增报价单' },
       }
       // 如果type是isDialog里的类型调用dialog弹出框
-      let isDialog = ['edit', '新增报价单']
+      let isDialog = ['add', 'edit', '新增报价单']
       if (isDialog.includes(type)) {
         this.dialogData.visible = true
         this.dialogData.type = type

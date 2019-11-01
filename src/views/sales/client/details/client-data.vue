@@ -8,7 +8,7 @@
 <template>
   <div>
     <!-- 基本数据 -->
-    <client-basic-info v-if="!this.hide.includes('basicInfo')" />
+    <client-basic-info v-if="!this.hide.includes('clientBasicInfo')" />
     <!-- 回款周期 -->
     <payback-periods />
     <!-- 逾期信息 -->
