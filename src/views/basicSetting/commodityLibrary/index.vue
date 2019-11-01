@@ -1,16 +1,16 @@
-<!-- "/**",
-      "* 物品管理",
-      "* @author web-徐贺",
-      "* @params ////",
-      "* @date 2018年8月15日",
-      "**/",
-      "-->
+<!--
+ * @Author: 高大鹏
+ * @Date: 2019-10-30 14:43:46
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-11-01 11:03:59
+ * @Description: 商品管理
+ -->
 <template>
   <!-- 物品管理 -->
-  <div>
+  <div class>
     <div class="d-content d-main">
       <div class="goods-top">
-        <span class="f18 lh50 b">物品管理</span>
+        <span class="f18 lh50 b">商品库</span>
         <div class="goods-shaixuan fr ac d-pointer d-relative mt10 ml10">
           <i @click="buildDrapDown = !buildDrapDown" class="iconfont icon-filter mr20"></i>
           <div v-if="buildDrapDown" class="d-absolute d-flex d-drapdown">
@@ -120,136 +120,126 @@
           class="fr mr5 mt10 el-icon-download"
         >导入</el-button>
       </div>
-      <div>
-        <el-table
-          ref="multipleTable"
-          border
-          height="calc(100vh - 230px)"
-          :data="goodsTable"
-          tooltip-effect="dark"
-          class="mt10"
-          style="width: 100%;border:1px solid #ebebeb;"
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column align="center" type="selection" min-width="55"></el-table-column>
-          <el-table-column align="center" label="物品图片" min-width="120">
-            <template slot-scope="scope">
-              <div class="goodspic d-pointer">
-                <!-- <upload-pic @addPictureUrl="addPictureUrl" style="height:100%" :limit="{size:'2M',type:['jpg','png','gif','jpeg']}" > </upload-pic> -->
-                <img
-                  v-if="scope.row.goodsPic"
-                  :src="scope.row.goodsPic"
-                  class="wfull"
-                  v-img-view="'goodsManage'"
-                />
-                <span v-else>暂无图片</span>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="物品编码" min-width="140" show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span
-                @click="fcheckGoods('checkGoods',scope.row)"
-                class="d-text-blue d-pointer"
-              >{{ scope.row.goodsCode }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            prop="goodsCodeCustomer"
-            label="商品编码"
-            min-width="140"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            align="center"
-            prop="name"
-            label="物品名称"
-            min-width="120"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            align="center"
-            prop="brand"
-            label="品牌"
-            min-width="120"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            align="center"
-            prop="date"
-            label="物品分类"
-            min-width="120"
-            show-overflow-tooltip
+      <div class="goods-wrapper">
+        <div class="ba mr5 mt10 p10" style="flex:0 0 240px;box-sizing: border-box;">
+          <el-tabs v-model="activeName" @tab-click="handleClick">
+            <el-tab-pane
+              v-for="(item, index) in categoryList"
+              :key="index"
+              :label="item.content"
+              :name="item.code"
+            ></el-tab-pane>
+          </el-tabs>
+        </div>
+        <div style="flex:1">
+          <el-table
+            ref="multipleTable"
+            border
+            height="calc(100vh - 230px)"
+            :data="goodsTable"
+            tooltip-effect="dark"
+            class="mt10"
+            style="width: 100%;border:1px solid #ebebeb;"
+            @selection-change="handleSelectionChange"
           >
-            <template slot-scope="scope">
-              <span class>{{ scope.row.firstClassName }}/{{ scope.row.secondClassName }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="单位" min-width="100" show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span>{{ scope.row.unit | dictionary('SC_JLDW')}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            prop="price"
-            label="参考价"
-            min-width="100"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column align="center" label="供应商" min-width="80">
-            <template slot-scope="scope">
-              <el-button
-                @click="fsupplierList('supplierList',scope.row)"
-                type="primary"
-                size="mini"
-              >查看</el-button>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="操作" min-width="80">
-            <template slot-scope="scope">
-              <el-button
-                v-if="authorityButtons.includes('decorate_goods_mgr_1003')"
-                @click="fhandelGoods('goodsAdd','handel',scope.row)"
-                size="mini"
-              >编辑</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+            <el-table-column align="center" type="selection" min-width="55"></el-table-column>
+            <el-table-column align="center" label="物品图片" min-width="120">
+              <template slot-scope="scope">
+                <div class="goodspic d-pointer">
+                  <!-- <upload-pic @addPictureUrl="addPictureUrl" style="height:100%" :limit="{size:'2M',type:['jpg','png','gif','jpeg']}" > </upload-pic> -->
+                  <img
+                    v-if="scope.row.goodsPic"
+                    :src="scope.row.goodsPic"
+                    class="wfull"
+                    v-img-view="'goodsManage'"
+                  />
+                  <span v-else>暂无图片</span>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="物品编码" min-width="140" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span
+                  @click="fcheckGoods('checkGoods',scope.row)"
+                  class="d-text-blue d-pointer"
+                >{{ scope.row.goodsCode }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              align="center"
+              prop="goodsCodeCustomer"
+              label="商品编码"
+              min-width="140"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              align="center"
+              prop="name"
+              label="物品名称"
+              min-width="120"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              align="center"
+              prop="brand"
+              label="品牌"
+              min-width="120"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              align="center"
+              prop="date"
+              label="物品分类"
+              min-width="120"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <span class>{{ scope.row.firstClassName }}/{{ scope.row.secondClassName }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="单位" min-width="100" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span>{{ scope.row.unit | dictionary('SC_JLDW')}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              align="center"
+              prop="price"
+              label="参考价"
+              min-width="100"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column align="center" label="供应商" min-width="80">
+              <template slot-scope="scope">
+                <el-button
+                  @click="fsupplierList('supplierList',scope.row)"
+                  type="primary"
+                  size="mini"
+                >查看</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="操作" min-width="80">
+              <template slot-scope="scope">
+                <el-button
+                  v-if="authorityButtons.includes('decorate_goods_mgr_1003')"
+                  @click="fhandelGoods('goodsAdd','handel',scope.row)"
+                  size="mini"
+                >编辑</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
 
-        <el-pagination
-          class="mt10 ac"
-          @current-change="handleCurrentChange"
-          :current-page.sync="goodsForm.page"
-          :page-size="goodsForm.limit"
-          layout="total, prev, pager, next"
-          :total="total"
-        ></el-pagination>
+          <el-pagination
+            class="mt10 ac"
+            @current-change="handleCurrentChange"
+            :current-page.sync="goodsForm.page"
+            :page-size="goodsForm.limit"
+            layout="total, prev, pager, next"
+            :total="total"
+          ></el-pagination>
+        </div>
       </div>
     </div>
-    <side-popup
-      :visible.sync="popupRight.dialogVisiblePopup"
-      :title="popupRight.tlite"
-      :width="popupRight.nWidth"
-    >
-      <div slot="header">
-        <el-button
-          type="primary"
-          size="small"
-          @click="runSubsetRight"
-          v-if="popupRight.point == 'goodsAdd'"
-        >保存</el-button>
-      </div>
-      <div slot="body">
-        <div
-          :is="popupRight.point"
-          :ref="popupRight.point"
-          @fUpdate="getGoodsList"
-          :popupRight="popupRight"
-        ></div>
-      </div>
-    </side-popup>
   </div>
 </template>
 
@@ -263,6 +253,7 @@ import importExcel from './importExcel' // 物品导入
 export default {
   data() {
     return {
+      activeName: 'PSI_SP_KIND-1',
       multipleSelection: [],
       selectedOptions: [],
       picUrl: '',
@@ -292,7 +283,8 @@ export default {
         classId: ''// 物品分类id
       },
       goodsTable: [], // 物品列表
-      goodsClassifyList: []// 物品分类列表(下拉框用)
+      goodsClassifyList: [], // 物品分类列表(下拉框用)
+      categoryList: []
     }
   },
   components: {
@@ -306,10 +298,20 @@ export default {
   created() {
     this.getGoodsClassify()
     this.getGoodsList()
+    this.getCategoryList()
   },
   watch: {
   },
   methods: {
+    handleClick(name) {
+      console.log(name)      
+    },
+    getCategoryList() {
+      this.$api.seeDictionaryService.getDicCommonValueList('PSI_SP_KIND').then(res => {
+        console.log(res)
+        this.categoryList = res.data || []
+      })
+    },
     getGoodsList() { // 获取物品列表
       this.$api.seeGoodsService.getGoodsList(this.goodsForm) //
         .then(res => {
@@ -468,6 +470,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.goods-wrapper {
+  display: flex;
+}
 .d-content {
   .goods-top {
     width: 100%;
