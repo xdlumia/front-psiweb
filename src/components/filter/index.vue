@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:31:09
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 13:23:28
+ * @LastEditTime: 2019-11-01 13:54:27
  * @Description: 通用过滤组件
 */
 <template>
@@ -114,6 +114,7 @@ export default {
   },
   methods: {
     init() {
+      console.log(this)
       let used = {};
       this.options.map(item => {
         used[item.prop] = item.default ? true : false;

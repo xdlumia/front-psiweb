@@ -2,23 +2,20 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:46:22
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 12:53:05
+ * @LastEditTime: 2019-11-01 14:00:07
  * @Description: 时间段过滤框
 */
 <template>
   <el-form-item :label="item.label">
-    <el-row :gutter="10">
-      <el-col :span="12">
-        <el-form-item :prop="'min'+item.prop">
-          <el-date-picker class="wfull" placeholder="开始时间" v-model="form['min'+item.prop]"></el-date-picker>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item :prop="'max'+item.prop">
-          <el-date-picker class="wfull" placeholder="截止时间" v-model="form['max'+item.prop]"></el-date-picker>
-        </el-form-item>
-      </el-col>
-    </el-row>
+    <el-date-picker
+      @change="update"
+      class="wfull"
+      end-placeholder="结束日期"
+      range-separator="至"
+      start-placeholder="开始日期"
+      type="daterange"
+      v-model="value"
+    ></el-date-picker>
   </el-form-item>
 </template>
 <script>
@@ -28,9 +25,17 @@ export default {
     form: Object
   },
   data() {
-    return {};
+    return {
+      value: []
+    };
   },
-  methods: {}
+  methods: {
+    update() {
+      let range = this.value || [];
+      this.form[`min${this.item.prop}`] = (+range[0]) || '';
+      this.form[`max${this.item.prop}`] = (+range[1]) || '';
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
