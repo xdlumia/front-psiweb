@@ -36,7 +36,7 @@
           <commodityInfo id="commodityInfo" />
           <paymentLate id="paymentLate" />
           <billInfo id="billInfo" />
-          <customInfo id="customInfo" />
+          <contract-extras id="customInfo"></contract-extras>
           <extrasInfo id="extrasInfo" />
         </el-form>
       </div>
