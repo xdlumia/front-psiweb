@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 11:16:00
+ * @LastEditTime: 2019-11-01 18:13:20
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -33,22 +33,22 @@
       <el-button
         size="mini"
         type="primary"
-        @click="quotoHandle('add')"
+        @click="quoteHandle('add')"
       >新建</el-button>
       <el-button
         size="mini"
-        @click="quotoHandle('merge')"
+        @click="quoteHandle('merge')"
       >合并生成出库单</el-button>
       <el-button
         size="mini"
-        @click="quotoHandle('copy')"
+        @click="quoteHandle('copy')"
       >复制生成报价单</el-button>
     </template>
     <template v-slot:moreButton>自定义更多按钮</template>
     <template slot-scope="{column,row,value,scope}">
       {{scope.$index}}
-      <span @click="quotoHandle('quoto',row)">报价单编号</span>
-      <span @click="quotoHandle('sales',row)">销售单编号</span>
+      <span @click="quoteHandle('quote',row)">报价单编号</span>
+      <span @click="quoteHandle('sales',row)">销售单编号</span>
       <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
       <span v-else>{{value}}</span>
     </template>
@@ -66,6 +66,7 @@
       @moreHandle="moreHandle"
       @column="columnHandle"
       @clear-filter="clearFilter"
+      @closeFilter="reload"
       :title="title"
       :filter="this.filter"
       :moreButton="this.moreButton"
@@ -83,6 +84,17 @@
       <!-- 自定义筛选 -->
       <template v-slot:filter>
         <slot name="filter"></slot>
+      </template>
+      <template slot="filterTable">
+        <slot
+          name="filterTable"
+          v-if="filterOptions"
+        >
+          <dFilter
+            v-model="params"
+            :options="filterOptions"
+          />
+        </slot>
       </template>
     </table-top>
 
@@ -172,6 +184,8 @@ export default {
     exportApi: {
       type: String,
     },
+    // 筛选配置
+    filterOptions: Array,
     // 自定义头
     // headers: {
     //   type: Array,
@@ -197,7 +211,7 @@ export default {
   methods: {
     // 重新加载
     reload() {
-      this.$refs.table.reload(1);
+      this.$refs.table && this.$refs.table.reload(1);
     },
     // 表格加载成功返回参数
     tabelRes(res) {
@@ -239,7 +253,7 @@ export default {
       setTimeout(() => {
         this.$refs.table.reload(1);
         this.headers = cols;
-      }, 2000)
+      }, 1000)
     },
     // 多选
     selectionChange(val) {

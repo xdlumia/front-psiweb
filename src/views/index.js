@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-30 16:25:12
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 09:54:03
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-01 18:32:45
  * @Description: 每个模块首页全局引入解决无限调用自己递归的问题
  */
 
@@ -31,5 +31,28 @@ export default {
     Vue.component('salesApportion', salesApportion)
     Vue.component('salesAdjust', salesAdjust)
     Vue.component('salesAdjustPrice', salesAdjustPrice)
+
+    // 采购 合同 start
+    const indexFiles = require.context(`./`, true, /index\.vue$/)// 如果要引入其他文件，可以去掉index，或者加|
+    const cmps = indexFiles.keys()
+      // 找出 采购(order) 合同(contract) 下的index列表页，如果要引入其他模块，也可以在下面加
+      .filter(a => a.match(/^\.\/(order|contract)/))
+      .map(item => {
+        let cmpName = item.match(/([a-z]*)/gi)
+          .filter(a => a).reverse()
+          .splice(1).filter((a, b) => !(b == 0 && a == 'index')).reverse()
+          .map(a => a[0].toUpperCase() + a.substr(1)).join('')
+          .replace(/-[a-z]/g, a => a[1].toUpperCase());
+        let file = indexFiles(item).default;
+        Vue.component(cmpName, file);
+        return [cmpName, file]
+      }).reduce((data, [name, file]) => ({
+        ...data,
+        [name]: file,
+      }), {})
+    if (process.env.NODE_ENV != 'production') {
+      console.log(cmps)
+    }
+    // 采购 合同 end
   }
 }

@@ -37,8 +37,8 @@
       </template>
 
       <!-- <template slot-scope="{column,row,value}">
-        <span @click="quotoHandle('quoto',row)">报价</span>
-        <span @click="quotoHandle('sales',row)">销售</span>
+        <span @click="quoteHandle('quote',row)">报价</span>
+        <span @click="quoteHandle('sales',row)">销售</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template> -->

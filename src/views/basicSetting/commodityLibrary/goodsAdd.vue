@@ -1,3 +1,10 @@
+/*
+ * @Author: web.王晓冬
+ * @Date: 2019-10-31 19:27:09
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-01 17:02:06
+ * @Description: file content
+*/
 <!--
  * @Author: 高大鹏
  * @Date: 2019-10-31 15:40:26
@@ -13,32 +20,72 @@
       "**/",
       "-->
 <template>
+  <div>
+    <span class="d-text-blcak f18 b"><span v-if="popupRight.type === 'add'">添加物品</span><span v-else>编辑物品</span></span>
     <div>
-       <span class="d-text-blcak f18 b"><span v-if="popupRight.type === 'add'">添加物品</span><span v-else>编辑物品</span></span>
-       <div>
-        <el-form ref="addGoodsform" :model="addGoodsform" label-width="80px" size="small" class="mt10" style="border-top:1px solid #F2F2F2" :rules="rules">
-            <el-form-item label="物品名称" class="mt20" prop="name">
-                <el-input v-model="addGoodsform.name" placeholder="请输入物品名称" style="width:60%"></el-input>
-            </el-form-item>
-            <el-form-item label="物品分类" prop="classIddArr">
-                <el-cascader
-                    style="width: 60%;"
-                    size="small"
-                    change-on-select
-                    :options="goodsClassifyList"
-                    v-model="addGoodsform.classIddArr"
-                    :props="props"
-                    @change="handleChange">
-                </el-cascader>
-            </el-form-item>
-            <el-form-item label="计量单位" prop="unit">
-                <el-select v-model="addGoodsform.unit" placeholder="请选择计量单位" style="width:60%">
-                    <el-option v-for="(item,index) of dictionaryOptions('SC_JLDW')" :key="index" :label="item.content" :value="item.code"></el-option>
-                </el-select>
-            </el-form-item>
+      <el-form
+        ref="addGoodsform"
+        :model="addGoodsform"
+        label-width="80px"
+        size="small"
+        class="mt10"
+        style="border-top:1px solid #F2F2F2"
+        :rules="rules"
+      >
+        <el-form-item
+          label="物品名称"
+          class="mt20"
+          prop="name"
+        >
+          <el-input
+            v-model="addGoodsform.name"
+            placeholder="请输入物品名称"
+            style="width:60%"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="物品分类"
+          prop="classIddArr"
+        >
+          <el-cascader
+            style="width: 60%;"
+            size="small"
+            change-on-select
+            :options="goodsClassifyList"
+            v-model="addGoodsform.classIddArr"
+            :props="props"
+            @change="handleChange"
+          >
+          </el-cascader>
+        </el-form-item>
+        <el-form-item
+          label="计量单位"
+          prop="unit"
+        >
+          <el-select
+            v-model="addGoodsform.unit"
+            placeholder="请选择计量单位"
+            style="width:60%"
+          >
+            <el-option
+              v-for="(item,index) of dictionaryOptions('SC_JLDW')"
+              :key="index"
+              :label="item.content"
+              :value="item.code"
+            ></el-option>
+          </el-select>
+        </el-form-item>
 
-            <el-button v-if="popupRight.type === 'add' && authorityButtons.includes('decorate_goods_mgr_1004')" @click="faddStandard" type="primary" icon="el-icon-plus" size="small" class="ml10" style="margin-bottom:20px;">添加规格</el-button>
-            <!-- <div style="width:726px;height:48px;color:#909399;border:1px solid rgb(235, 235, 235);border-bottom:none" class="mt20 ml10">
+        <el-button
+          v-if="popupRight.type === 'add' && authorityButtons.includes('decorate_goods_mgr_1004')"
+          @click="faddStandard"
+          type="primary"
+          icon="el-icon-plus"
+          size="small"
+          class="ml10"
+          style="margin-bottom:20px;"
+        >添加规格</el-button>
+        <!-- <div style="width:726px;height:48px;color:#909399;border:1px solid rgb(235, 235, 235);border-bottom:none" class="mt20 ml10">
               <div class="hfull ac b fl" style="line-height:48px;width:130px">
                 主图
               </div>
@@ -52,172 +99,287 @@
                 物品编码
               </div>
             </div> -->
-            <div class="goods-table">
-            <el-table
-                class="ml10"
-                style="width: 95%;border:1px solid #ebebeb;"
-                :data="addGoodsform.values">
-                <el-table-column
-                    align="center"
-                    label="主图"
-                    width="130">
-                    <template slot-scope="scope">
-                        <div class="goodspic1 ac d-pointer" @click="getUrlIndex(scope.row)" style="position:relative">
-                        <!-- v-if="scope.row.goodsPic"-->    <img style="height:100%" :src="scope.row.goodsPic"/>
-                            <i class="el-icon-plus" v-if="!scope.row.goodsPic" style="position:absolute;top:17px;color:#FFF;left:37px;"></i>
-                            <upload-pic @addPictureUrl="addPictureUrl" style="height:100%;position:absolute;top:0;" :limit="{size:'2M',type:['jpg','png','gif','jpeg']}"> </upload-pic>
-                        </div>
-                    </template>
-                </el-table-column>
+        <div class="goods-table">
+          <el-table
+            class="ml10"
+            style="width: 95%;border:1px solid #ebebeb;"
+            :data="addGoodsform.values"
+          >
+            <el-table-column
+              align="center"
+              label="主图"
+              width="130"
+            >
+              <template slot-scope="scope">
+                <div
+                  class="goodspic1 ac d-pointer"
+                  @click="getUrlIndex(scope.row)"
+                  style="position:relative"
+                >
+                  <!-- v-if="scope.row.goodsPic"--> <img
+                    style="height:100%"
+                    :src="scope.row.goodsPic"
+                  />
+                  <i
+                    class="el-icon-plus"
+                    v-if="!scope.row.goodsPic"
+                    style="position:absolute;top:17px;color:#FFF;left:37px;"
+                  ></i>
+                  <upload-pic
+                    @addPictureUrl="addPictureUrl"
+                    style="height:100%;position:absolute;top:0;"
+                    :limit="{size:'2M',type:['jpg','png','gif','jpeg']}"
+                  > </upload-pic>
+                </div>
+              </template>
+            </el-table-column>
 
-                <el-table-column
-                    align="center"
-                    :label="standard[0].name"
-                    v-if="standard.length>=1"
-                    width="120">
-                    <template slot-scope="scope">
-                        <div>
-                            <el-input v-model="scope.row.specOne" placeholder="请输入" :disabled="popupRight.type !== 'add' ? true : false" size="small"></el-input>
-                        </div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    :label="standard[1].name"
-                    v-if="standard.length>=2"
-                    align="center"
-                    width="120">
-                    <template slot-scope="scope">
-                        <div>
-                            <el-input v-model="scope.row.specTwo" placeholder="请输入" :disabled="popupRight.type !== 'add' ? true : false" size="small"></el-input>
-                        </div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    :label="standard[2].name"
-                    v-if="standard.length>=3"
-                    align="center"
-                    width="120">
-                    <template slot-scope="scope">
-                        <div>
-                            <el-input v-model="scope.row.specThree" placeholder="请输入" :disabled="popupRight.type !== 'add' ? true : false" size="small"></el-input>
-                        </div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    :label="standard[3].name"
-                    v-if="standard.length>=4"
-                    align="center"
-                    width="120">
-                    <template slot-scope="scope">
-                        <div>
-                            <el-input v-model="scope.row.specFour" placeholder="请输入" :disabled="popupRight.type !== 'add' ? true : false" size="small"></el-input>
-                        </div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    :label="standard[4].name"
-                    v-if="standard.length>=5"
-                    align="center"
-                    width="120">
-                    <template slot-scope="scope">
-                        <div>
-                            <el-input v-model="scope.row.specFive" placeholder="请输入" :disabled="popupRight.type !== 'add' ? true : false" size="small"></el-input>
-                        </div>
-                    </template>
-                </el-table-column>
+            <el-table-column
+              align="center"
+              :label="standard[0].name"
+              v-if="standard.length>=1"
+              width="120"
+            >
+              <template slot-scope="scope">
+                <div>
+                  <el-input
+                    v-model="scope.row.specOne"
+                    placeholder="请输入"
+                    :disabled="popupRight.type !== 'add' ? true : false"
+                    size="small"
+                  ></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="standard[1].name"
+              v-if="standard.length>=2"
+              align="center"
+              width="120"
+            >
+              <template slot-scope="scope">
+                <div>
+                  <el-input
+                    v-model="scope.row.specTwo"
+                    placeholder="请输入"
+                    :disabled="popupRight.type !== 'add' ? true : false"
+                    size="small"
+                  ></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="standard[2].name"
+              v-if="standard.length>=3"
+              align="center"
+              width="120"
+            >
+              <template slot-scope="scope">
+                <div>
+                  <el-input
+                    v-model="scope.row.specThree"
+                    placeholder="请输入"
+                    :disabled="popupRight.type !== 'add' ? true : false"
+                    size="small"
+                  ></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="standard[3].name"
+              v-if="standard.length>=4"
+              align="center"
+              width="120"
+            >
+              <template slot-scope="scope">
+                <div>
+                  <el-input
+                    v-model="scope.row.specFour"
+                    placeholder="请输入"
+                    :disabled="popupRight.type !== 'add' ? true : false"
+                    size="small"
+                  ></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="standard[4].name"
+              v-if="standard.length>=5"
+              align="center"
+              width="120"
+            >
+              <template slot-scope="scope">
+                <div>
+                  <el-input
+                    v-model="scope.row.specFive"
+                    placeholder="请输入"
+                    :disabled="popupRight.type !== 'add' ? true : false"
+                    size="small"
+                  ></el-input>
+                </div>
+              </template>
+            </el-table-column>
 
-                <el-table-column
-                    width="150"
-                    align="center"
-                    label="商品编码"
-                    show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <div>
-                            <el-input v-model="scope.row.goodsCodeCustomer" placeholder="请输入商品编码" size="small"></el-input>
-                        </div>
-                    </template>
-                </el-table-column>
+            <el-table-column
+              width="150"
+              align="center"
+              label="商品编码"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <div>
+                  <el-input
+                    v-model="scope.row.goodsCodeCustomer"
+                    placeholder="请输入商品编码"
+                    size="small"
+                  ></el-input>
+                </div>
+              </template>
+            </el-table-column>
 
-                <el-table-column
-                    width="130"
-                    align="center"
-                    label="物品编码"
-                    show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <div>
-                            <el-input v-model="goodscode" disabled placeholder="系统自动生成" size="small"></el-input>
-                        </div>
-                    </template>
-                </el-table-column>
+            <el-table-column
+              width="130"
+              align="center"
+              label="物品编码"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <div>
+                  <el-input
+                    v-model="goodscode"
+                    disabled
+                    placeholder="系统自动生成"
+                    size="small"
+                  ></el-input>
+                </div>
+              </template>
+            </el-table-column>
 
-                 <el-table-column
-                 v-if="popupRight.type === 'add'"
-                    align="center">
-                    <template slot-scope="scope">
-                        <div>
-                            <el-button @click="fdeleteTable(scope.row)" icon="el-icon-delete" circle></el-button>
-                        </div>
-                    </template>
-                </el-table-column>
-            </el-table>
-            </div>
-            <div>
-              <span class="d-text-qgray ml10">
-                图片支持.jpg/.png/.jpeg格式，最大不超过10M。
-              </span>
-            </div>
-            <div class="goodsadd ml10 mt5 ac" v-if="popupRight.type === 'add'">
-                <el-button @click="addTableInfo" type="text" icon="el-icon-plus">添加</el-button>
-            </div>
+            <el-table-column
+              v-if="popupRight.type === 'add'"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <div>
+                  <el-button
+                    @click="fdeleteTable(scope.row)"
+                    icon="el-icon-delete"
+                    circle
+                  ></el-button>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div>
+          <span class="d-text-qgray ml10">
+            图片支持.jpg/.png/.jpeg格式，最大不超过10M。
+          </span>
+        </div>
+        <div
+          class="goodsadd ml10 mt5 ac"
+          v-if="popupRight.type === 'add'"
+        >
+          <el-button
+            @click="addTableInfo"
+            type="text"
+            icon="el-icon-plus"
+          >添加</el-button>
+        </div>
 
-            <el-form-item label="品牌" class="mt30" prop='brand'>
-                <el-input placeholder="请输入" v-model="addGoodsform.brand" style="width:60%"></el-input>
-            </el-form-item>
-            <el-form-item
-label="参考价"
-class="mt20"
-prop='price'
-:rules="[
+        <el-form-item
+          label="品牌"
+          class="mt30"
+          prop='brand'
+        >
+          <el-input
+            placeholder="请输入"
+            v-model="addGoodsform.brand"
+            style="width:60%"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="参考价"
+          class="mt20"
+          prop='price'
+          :rules="[
               { required: false, message: '请输入参考价格', trigger: 'blur' },
               {type: 'price', message: '', trigger: 'blur'}
-            ]">
-                <el-input placeholder="请输入" v-model="addGoodsform.price" style="width:60%"></el-input>
-            </el-form-item>
-            <el-form-item label="商品介绍" prop="goodsDesc">
-                <el-input placeholder="请输入" type="textarea" v-model="addGoodsform.goodsDesc"></el-input>
-            </el-form-item>
-        </el-form>
-       </div>
-
-       <!-- //添加规格的弹框 -->
-       <div class="">
-            <el-dialog
-            :append-to-body='true'
-            :modal-append-to-body='true'
-            v-dialogDrag
-            title="规格信息"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :before-close="handleClose">
-            <div>
-                <div>
-                    <span>规格：</span>
-                </div>
-                <div v-for="(item,index) of standardTable" :key="index">
-                    <el-input size="small" v-model="item.name" style="width:60%"></el-input>
-                    <i @click="deleteDragInfo(index)" class="el-icon-remove-outline f22 ml5 mt5 d-text-qgray d-pointer"></i>
-                </div>
-                <div class="goodsadd mt5 ac" style="width:60%;height:30px;line-height:30px;">
-                    <el-button @click="addDragInfo" type="text" icon="el-icon-plus">添加</el-button>
-                </div>
-            </div>
-            <span slot="footer" class="dialog-footer">
-                <el-button size="small" type="primary" @click="fdragInfo">确 定</el-button>
-            </span>
-            </el-dialog>
-       </div>
-
+            ]"
+        >
+          <el-input
+            placeholder="请输入"
+            v-model="addGoodsform.price"
+            style="width:60%"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="商品介绍"
+          prop="goodsDesc"
+        >
+          <el-input
+            placeholder="请输入"
+            type="textarea"
+            v-model="addGoodsform.goodsDesc"
+          ></el-input>
+        </el-form-item>
+      </el-form>
     </div>
+
+    <!-- //添加规格的弹框 -->
+    <div class="">
+      <el-dialog
+        :append-to-body='true'
+        :modal-append-to-body='true'
+        v-dialogDrag
+        title="规格信息"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleClose"
+      >
+        <div>
+          <div>
+            <span>规格：</span>
+          </div>
+          <div
+            v-for="(item,index) of standardTable"
+            :key="index"
+          >
+            <el-input
+              size="small"
+              v-model="item.name"
+              style="width:60%"
+            ></el-input>
+            <i
+              @click="deleteDragInfo(index)"
+              class="el-icon-remove-outline f22 ml5 mt5 d-text-qgray d-pointer"
+            ></i>
+          </div>
+          <div
+            class="goodsadd mt5 ac"
+            style="width:60%;height:30px;line-height:30px;"
+          >
+            <el-button
+              @click="addDragInfo"
+              type="text"
+              icon="el-icon-plus"
+            >添加</el-button>
+          </div>
+        </div>
+        <span
+          slot="footer"
+          class="dialog-footer"
+        >
+          <el-button
+            size="small"
+            type="primary"
+            @click="fdragInfo"
+          >确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
+
+  </div>
 </template>
 
 <script>
@@ -312,7 +474,7 @@ export default {
           this.addGoodsform = res.data
           this.addGoodsform.values = []
           this.addGoodsform.values.push(
-            { goodsPic: res.data.goodsPic,
+            {              goodsPic: res.data.goodsPic,
               specOne: res.data.specOne,
               specTwo: res.data.specTwo,
               specThree: res.data.specThree,
@@ -330,10 +492,10 @@ export default {
                   this.goodsClassifyList[i].children = ress.data
                 }
               }
-            }).catch(ero => {})
+            }).catch(ero => { })
           this.addGoodsform.classIddArr.push(res.data.firstClassId, res.data.secondClassId)
           // console.log(this.addGoodsform.classIddArr, this.goodsClassifyList)
-        }).catch(ero => {})
+        }).catch(ero => { })
     },
     getupdateform() { // 点击进来清空
       this.standard = []
@@ -373,7 +535,7 @@ export default {
                 this.popupRight.dialogVisiblePopup = false
                 this.$emit('fUpdate', '')
                 this.standard = []
-              }).catch(ero => {})
+              }).catch(ero => { })
           }
         } else {
           return false
@@ -389,7 +551,7 @@ export default {
           this.popupRight.dialogVisiblePopup = false
           this.$emit('fUpdate', '')
           this.standard = []
-        }).catch(ero => {})
+        }).catch(ero => { })
     },
     getUrlIndex(row) { // 决定把图片插在那个位置
       this.urlIndexForm = row
@@ -445,7 +607,7 @@ export default {
             res.data[i].children = []
           }
           this.goodsClassifyList = res.data
-        }).catch(ero => {})
+        }).catch(ero => { })
     },
     handleChange(value) { // 筛选条件点击
       if (value.length === 1) {
@@ -457,7 +619,7 @@ export default {
                 this.goodsClassifyList[i].children = res.data
               }
             }
-          }).catch(ero => {})
+          }).catch(ero => { })
       }
     }
   }
@@ -465,28 +627,30 @@ export default {
 </script>
 
 <style scoped>
-.goodsadd{
-    width: 95%;
-    height: 35px;
-    border:1px dashed #dcdfe6;
-    line-height: 35px;
-    border-radius: 4px;
+.goodsadd {
+  width: 95%;
+  height: 35px;
+  border: 1px dashed #dcdfe6;
+  line-height: 35px;
+  border-radius: 4px;
 }
-.goodspic1{
-    width: 90px;
-    height: 50px;
-    line-height: 50px;
-    background: skyblue;
-  }
-.goodspic1 .upload{
-      width: 100% !important;
-      height: 100% !important;
-    }
-
+.goodspic1 {
+  width: 90px;
+  height: 50px;
+  line-height: 50px;
+  background: skyblue;
+}
+.goodspic1 .upload {
+  width: 100% !important;
+  height: 100% !important;
+}
 </style>
 <style>
-.v-modal{z-index: 9 !important;}
-.zhezhaonone .el-dialog__wrapper{left:-1100px}
+.zhezhaonone .el-dialog__wrapper {
+  left: -1100px;
+}
 /* .goods-table .has-gutter{display:none} */
-.goodspic1 .ac .el-icon-upload{opacity: 0;}
+.goodspic1 .ac .el-icon-upload {
+  opacity: 0;
+}
 </style>

@@ -2,8 +2,8 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 11:04:15
- * @Description: 采购入库单
+ * @LastEditTime: 2019-11-01 15:52:27
+ * @Description: 新增借入单
 */
 <template>
   <el-dialog :visible="visible" @close="close" v-dialogDrag>

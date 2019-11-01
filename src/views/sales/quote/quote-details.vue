@@ -2,12 +2,16 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 11:23:08
+ * @LastEditTime: 2019-11-01 18:09:32
  * @Description: 报价单详情
 */
 <template>
-  <div>
-    <div class="drawer-header">
+  <side-detail
+    :title="drawerData.title"
+    :visible.sync="drawerData.visible"
+    width="920px"
+  >
+    <div slot="button">
       <!-- 操作按钮 -->
       <span
         v-for="(item,index) of buttons"
@@ -48,22 +52,20 @@
         ></components>
       </keep-alive>
     </el-form>
-  </div>
+  </side-detail>
 </template>
 <script>
-import detail from './quotoDetails/detail' //详情
-import outLib from './quotoDetails/outLibrary' //销售出库单
-import buy from './quotoDetails/buy' //采购单
+import detail from './quoteDetails/detail' //详情
+import buy from './quoteDetails/buy' //采购单
 import record from '@/components/formComponents/record' //操作记录
 
 export default {
   components: {
     detail,
-    outLib,
     buy,
     record
   },
-  props: ['drawerData'],
+  props: ['visible'],
   data() {
     return {
       // 操作按钮
@@ -83,7 +85,7 @@ export default {
        * 根据当前状态判断显示哪些按钮
        * 1:新建 2:审核中 3:已通过 4:已驳回 5:已完成
        */
-      currStatus: 3,
+      currStatus: 1,
       currStatusType: {
         1: ['提交审核', '编辑', '删除'],
         2: ['撤销审核', '审核通过', '驳回'],
@@ -91,10 +93,17 @@ export default {
         4: ['提交审核', '编辑', '删除'],
         5: []
       },
+      //dialog弹出框
+      dialogData: {
+        visible: false,
+        title: '',
+        type: '',
+        data: '',
+      },
       // tab操作栏
       tabs: {
         detail: '详情',
-        outLib: '销售出库单',
+        salesOutLibrary: '销售出库单',
         buy: '请购单',
         record: '操作记录',
       },
@@ -121,7 +130,7 @@ export default {
       }
       // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
       else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
-        this.$emit('buttonClick', name, this.drawerData.data)
+        this.$emit('buttonClick', label, this.drawerData.data)
       }
     },
   },

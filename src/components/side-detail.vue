@@ -51,9 +51,9 @@ export default {
       }
     },
   },
-  computed:{
-    hasButton(){
-      return this.$slots.button&&this.$slots.button.length;
+  computed: {
+    hasButton() {
+      return this.$slots.button && this.$slots.button.length;
     }
   },
   methods: {

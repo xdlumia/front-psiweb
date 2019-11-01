@@ -3,7 +3,7 @@
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: 徐贺
  * @Last Modified time: 2019-10-28 14:00:41
- * @Description: 库房  销售单
+ * @Description: 库房  换货任务
  */
 <template>
   <div class="buying-requisition-page wfull hfull">
@@ -12,7 +12,7 @@
       :headers="tableHeader"
       :selection='false'
       api="bizSystemService.getEmployeeList"
-      title="销售单"
+      title="换货任务"
     >
       <template slot-scope="{column,row,value}">
         <span
@@ -59,21 +59,15 @@ export default {
         component: 'Details'
       },
       activeName: '',
-      status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       tableHeader: [
-        { label: '销售出库单编号', prop: 'deptName', width: '140' },
-        { label: '客户名称', prop: 'deptName', width: '100' },
-        { label: '销售单编号', prop: 'deptName', width: '140' },
-        { label: '出库状态', prop: 'deptName', width: '100' },
-        { label: '发货状态', prop: 'deptName', width: '100' },
-        { label: '组装任务状态', prop: 'deptName', width: '140' },
-        { label: '拣货状态', prop: 'deptName', width: '100' },
-        { label: '商品类别', prop: 'deptName', width: '100' },
-        { label: '出库数量', prop: 'createTime', width: '100' },
-        { label: '未出库量', prop: 'createTime', width: '100' },
-        { label: '已出库量', prop: 'createTime', width: '100' },
-        { label: '出库人', prop: 'createTime', width: '100' },
-        { label: '生成时间', prop: 'createTime', width: '140' },
+        { label: '换货任务编号', prop: 'deptName', width: '140' },
+        { label: '换货方', prop: 'deptName', width: '100' },
+        { label: '换货状态', prop: 'deptName', width: '100' },
+        { label: '换入数量', prop: 'createTime', width: '100' },
+        { label: '换出数量', prop: 'createTime', width: '100' },
+        { label: '换入金额', prop: 'createTime', width: '100' },
+        { label: '换出金额', prop: 'createTime', width: '100' },
+        { label: '创建时间', prop: 'createTime', width: '140' },
         { label: '单据创建人', prop: 'createTime', width: '100' },
         { label: '创建部门', prop: 'createTime', width: '100' }
       ]
@@ -83,7 +77,7 @@ export default {
     //点击打开右侧边栏
     getTableVisible(data) {
       this.drawerData.tableVisible = true
-      this.drawerData.title = '销售单' + data.id
+      this.drawerData.title = '换货任务' + data.id
     },
     //tab换组件
     handleClick() {

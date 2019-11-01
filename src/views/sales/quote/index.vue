@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 08:52:21
+ * @LastEditTime: 2019-11-01 18:12:48
  * @Description: 销售-报价单
  */
 <template>
@@ -49,15 +49,16 @@
       <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
-          @click="eventHandle('quoto',row)"
+          @click="eventHandle('quote',row)"
         > 报价单编号</span>
         <span @click="eventHandle('outLib',row)">销售出库单编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
+    <quote-details></quote-details>
     <!-- 新增 / 编辑 弹出框-->
-    <el-dialog
+    <!-- <el-dialog
       :title="dialogData.title"
       :visible.sync="dialogData.visible"
       width="920px"
@@ -68,7 +69,7 @@
         :dialogData="dialogData"
         @reload="$refs.table.reload(1)"
       ></components>
-    </el-dialog>
+    </el-dialog> -->
 
     <!-- 抽屉弹出框 -->
     <side-detail
@@ -86,18 +87,18 @@
   </div>
 </template>
 <script>
-import quotoDetails from './quoto-details' //报价详情
+import quoteDetails from './quote-details' //报价详情
 import outLibDetails from '../outLibrary/outLib-details' //销售详
 import filters from './filter' //筛选
 
-import add from './add' //新增
+// import add from './add' //新增
 import merge from './merge' //合并
 export default {
   name: 'quote',
   components: {
-    quotoDetails,
+    quoteDetails,
     outLibDetails,
-    add,
+    // add,
     merge,
     filters
   },
@@ -136,17 +137,20 @@ export default {
         data: '',
       },
       // 侧边栏弹出框
-      drawerData: {
-        visible: false,
-        title: '',
-        type: '',
-        data: '',
-      }
+      // drawerData: {
+      //   visible: false,
+      //   title: '',
+      //   type: '',
+      //   data: '',
+      // }
     };
   },
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
+
+      return
+      // 防止row为undefined 导致报错
       row = row ? row : {}
       // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {
@@ -154,7 +158,7 @@ export default {
         '编辑': { comp: 'add', title: `编辑报价单:${row.id}` },
         'copy': { comp: 'add', title: '复制报价单' },
         'merge': { comp: 'merge', title: '合并生成销售出库单' },
-        'quoto': { comp: 'quotoDetails', title: `报价单:${row.id}` },
+        'quote': { comp: 'quoteDetails', title: `报价单:${row.id}` },
         'outLib': { comp: 'outLibDetails', title: `销售出库单:${row.id}` },
         '生成销售出库单': { comp: 'outLibDetails', title: '生成销售出库单' },
         '生成请购单': { comp: 'outLibDetails', title: '生成请购单' },

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-29 19:21:25
+ * @LastEditTime: 2019-11-01 16:39:09
  * @Description: 拆卸任务
  */
 <template>
@@ -83,7 +83,7 @@ export default {
     },
     disabled: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data() {
