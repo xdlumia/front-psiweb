@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 13:36:11
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-01 14:18:00
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -86,8 +86,14 @@
         <slot name="filter"></slot>
       </template>
       <template slot="filterTable">
-        <slot name="filterTable" v-if="filterOptions">
-          <dFilter v-model="params" :options="filterOptions" />
+        <slot
+          name="filterTable"
+          v-if="filterOptions"
+        >
+          <dFilter
+            v-model="params"
+            :options="filterOptions"
+          />
         </slot>
       </template>
     </table-top>
@@ -205,7 +211,7 @@ export default {
   methods: {
     // 重新加载
     reload() {
-      this.$refs.table&&this.$refs.table.reload(1);
+      this.$refs.table && this.$refs.table.reload(1);
     },
     // 表格加载成功返回参数
     tabelRes(res) {

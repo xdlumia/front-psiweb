@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 19:18:12
- * @Description: 报价单详情
+ * @LastEditTime: 2019-11-01 11:28:59
+ * @Description: 填写报价单详情
 */
 <template>
   <div>
