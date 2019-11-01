@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 14:18:00
+ * @LastEditTime: 2019-11-01 15:35:24
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -253,7 +253,7 @@ export default {
       setTimeout(() => {
         this.$refs.table.reload(1);
         this.headers = cols;
-      }, 2000)
+      }, 1000)
     },
     // 多选
     selectionChange(val) {
