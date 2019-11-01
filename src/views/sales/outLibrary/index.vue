@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 18:45:51
+ * @LastEditTime: 2019-11-01 11:31:21
  * @Description: 销售-销售出库单
  */
 <template>
@@ -67,10 +67,11 @@
 </template>
 <script>
 import outLibDetails from './outLib-details' //销售出库单详情
+import edit from './edit' //编辑
 import filters from './filter' //销售出库单详情
 export default {
   name: 'outLibrary',
-  components: { outLibDetails, filters },
+  components: { outLibDetails, filters, edit },
   props: {
     // 是否显示按钮
     button: {
@@ -117,8 +118,10 @@ export default {
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
+      // 防止row为undefined 导致报错
+      row = row ? row : {}
       let typeObj = {
-        add: { comp: 'add', title: '新增报价单' },
+        edit: { comp: 'edit', title: '编辑出库单' },
         outLib: { comp: 'outLibDetails', title: '销售出库单' },
       }
       // 如果type是isDialog里的类型调用dialog弹出框
