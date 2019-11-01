@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 11:56:15
+ * @LastEditTime: 2019-11-01 14:42:40
  * @Description: 销售-客户管理
  */
 <template>
@@ -19,6 +19,7 @@
       exportApi="bizSystemService.getEmployeeList"
       :params="Object.assign(queryForm,params)"
       @selection-change="selectionChange"
+      :filterOptions="filterOptions"
     >
       <template v-slot:button>
         <el-button
@@ -80,7 +81,15 @@
 import clientAdd from './clientAdd' // 客户新增
 import outLibDetails from '../outLibrary/outLib-details' //销售出库单详情
 import filters from './filter' //筛选
-
+let filterList = [
+  { label: '客户编号', prop: 'title', default: true, type: 'text' },
+  { label: '客户名称', prop: 'city', default: true, type: 'text' },
+  { label: '联系人', prop: 'pushTime', default: true, type: 'select', options: [] },
+  { label: '联系电话', prop: 'status', default: true, type: 'text' },
+  { label: '提交人', prop: 'messageType', default: true, type: 'employee', options: [] },
+  { label: '部门', prop: 'messageType2', default: true, type: 'employee', options: [] },
+  { label: '提交时间', prop: 'messageType3', default: true, type: 'daterange', options: [] },
+]
 export default {
   name: 'return',
   components: {
@@ -128,7 +137,9 @@ export default {
         title: '',
         type: '',
         data: '',
-      }
+      },
+      // 筛选框数据
+      filterOptions: filterList
     };
   },
   methods: {
