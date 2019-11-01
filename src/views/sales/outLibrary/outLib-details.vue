@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 19:44:55
+ * @LastEditTime: 2019-11-01 11:20:13
  * @Description: 销售出库单详情
 */
 <template>
@@ -40,12 +40,14 @@
         >
         </el-tab-pane>
       </el-tabs>
-      <components
-        class="d-auto-y"
-        :button="false"
-        style="height:calc(100vh - 200px)"
-        :is="activeName"
-      ></components>
+      <keep-alive>
+        <components
+          class="d-auto-y"
+          :button="false"
+          style="height:calc(100vh - 200px)"
+          :is="activeName"
+        ></components>
+      </keep-alive>
     </el-form>
   </div>
 </template>
