@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 15:02:30
+ * @LastEditTime: 2019-11-01 15:14:54
  * @Description: 销售-客户管理
  */
 <template>
@@ -41,9 +41,8 @@
       <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
-          @click="eventHandle('return',row)"
-        > 销售退货单编号</span>
-        <span @click="eventHandle('outLib',row)">销售出库单编号</span>
+          @click="eventHandle('details',row)"
+        > 客户编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
@@ -79,8 +78,7 @@
 </template>
 <script>
 import clientAdd from './clientAdd' // 客户新增
-import outLibDetails from '../outLibrary/outLib-details' //销售出库单详情
-import filters from './filter' //筛选
+import clientDetail from './details' //客户详情
 let filterList = [
   { label: '排序', prop: 'sort', default: true, type: 'sort', options: [], },
   { label: '客户编号', prop: 'title', default: true, type: 'text' },
@@ -95,8 +93,7 @@ export default {
   name: 'return',
   components: {
     clientAdd,
-    outLibDetails,
-    filters
+    clientDetail,
   },
   props: {
     // 是否显示按钮
@@ -151,13 +148,12 @@ export default {
       // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {
         'add': { comp: 'clientAdd', title: `新增客户` },
-        '编辑': { comp: 'add', title: `编辑报价单:${row.id}` },
-        'outLib': { comp: 'outLibDetails', title: '销售出库单' },
-        '生成销售出库单': { comp: 'outLibDetails', title: '生成销售出库单' },
-        '生成请购单': { comp: 'outLibDetails', title: '生成请购单' },
+        '编辑': { comp: 'add', title: `编辑:${row.id}` },
+        'details': { comp: 'clientDetail', title: `客户编号:${row.id}` },
+        '新增报价单': { comp: 'outLibDetails', title: '新增报价单' },
       }
       // 如果type是isDialog里的类型调用dialog弹出框
-      let isDialog = ['add', '编辑', 'copy', 'merge']
+      let isDialog = ['edit', '新增报价单']
       if (isDialog.includes(type)) {
         this.dialogData.visible = true
         this.dialogData.type = type

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 12:02:06
+ * @LastEditTime: 2019-11-01 15:06:21
  * @Description: 客户管理-新增客户
 */
 <template>
@@ -48,11 +48,11 @@
   </div>
 </template>
 <script>
-// import detail from './details/detail' //详情
+import basicInfo from './basic-info' //详情
 // import outLib from './details/outLib' //报价单
 export default {
   components: {
-    // detail,
+    basicInfo,
     // outLib
   },
   props: ['drawerData'],
@@ -83,10 +83,10 @@ export default {
       },
       // tab操作栏
       tabs: {
-        baseInfo: '基本信息',
-        outLib: '销售出库单',
+        basicInfo: '基本信息',
+        salesOutLibrary: '销售出库单',
       },
-      activeName: 'baseInfo',
+      activeName: 'basicInfo',
       form: {},
     }
   },

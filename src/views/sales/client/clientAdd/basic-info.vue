@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 12:01:03
+ * @LastEditTime: 2019-11-01 15:03:52
  * @Description: 客户管理-基本信息
 */
 <template>
@@ -13,7 +13,6 @@
     <invoice-info />
     <!-- 备注信息 -->
     <extras-info />
-    <approve-panel />
   </div>
 </template>
 <script>
