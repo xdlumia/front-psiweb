@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 14:42:40
+ * @LastEditTime: 2019-11-01 15:02:30
  * @Description: 销售-客户管理
  */
 <template>
@@ -82,13 +82,14 @@ import clientAdd from './clientAdd' // 客户新增
 import outLibDetails from '../outLibrary/outLib-details' //销售出库单详情
 import filters from './filter' //筛选
 let filterList = [
+  { label: '排序', prop: 'sort', default: true, type: 'sort', options: [], },
   { label: '客户编号', prop: 'title', default: true, type: 'text' },
   { label: '客户名称', prop: 'city', default: true, type: 'text' },
-  { label: '联系人', prop: 'pushTime', default: true, type: 'select', options: [] },
+  { label: '联系人', prop: 'pushTime', default: true, type: 'employee', },
   { label: '联系电话', prop: 'status', default: true, type: 'text' },
-  { label: '提交人', prop: 'messageType', default: true, type: 'employee', options: [] },
-  { label: '部门', prop: 'messageType2', default: true, type: 'employee', options: [] },
-  { label: '提交时间', prop: 'messageType3', default: true, type: 'daterange', options: [] },
+  { label: '提交人', prop: 'messageType', default: true, type: 'employee', },
+  { label: '部门', prop: 'messageType2', default: true, type: 'employee', },
+  { label: '提交时间', prop: 'messageType3', default: true, type: 'daterange', },
 ]
 export default {
   name: 'return',
