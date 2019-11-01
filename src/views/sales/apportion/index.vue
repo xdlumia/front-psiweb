@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:27:26
- * @Description: 销售-客户管理
+ * @LastEditTime: 2019-11-01 19:34:51
+ * @Description: 销售-费用分摊单
  */
 <template>
   <div>
@@ -13,7 +13,7 @@
       :filter="true"
       :moreButton="true"
       :column="true"
-      title="客户管理"
+      title="费用分摊单"
       @clear-filter="reset()"
       api="bizSystemService.getEmployeeList"
       exportApi="bizSystemService.getEmployeeList"
@@ -26,7 +26,7 @@
           type="primary"
           size="mini"
           @click="eventHandle('addVisible')"
-        >新增客户</el-button>
+        >新增分摊</el-button>
       </template>
       <template v-slot:filter>
         <filters

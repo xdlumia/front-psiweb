@@ -2,12 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:27:36
- * @Description: 客户管理-新增客户
+ * @LastEditTime: 2019-11-01 19:35:20
+ * @Description: 客户管理-新增分摊
 */
 <template>
   <el-dialog
-    title="新增客户"
+    title="新增分摊"
     :visible.sync="showPop"
     width="920px"
     v-dialogDrag
