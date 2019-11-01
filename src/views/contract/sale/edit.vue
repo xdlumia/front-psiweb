@@ -2,38 +2,40 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 11:26:24
- * @Description: 采购入库单
+ * @LastEditTime: 2019-11-01 15:47:09
+ * @Description: 销售合同
 */
 <template>
   <el-dialog :visible="visible" @close="close" v-dialogDrag>
     <div slot="title">
-      <span>采购入库单{{from?`(${from})`:''}}</span>
+      <span>生成销售合同</span>
       <span class="fr mr20">
-        <el-button @click="close" size="mini" type="primary">保存</el-button>
-        <el-button @click="close" size="mini">关闭</el-button>
+        <el-select class="mr10" size="mini" v-model="tmp">
+          <el-option value>选择合同模板</el-option>
+        </el-select>
+        <el-button size="mini" type="primary">预览</el-button>
+        <el-button @click="close" size="mini" type="primary">生成</el-button>
+        <el-button @click="close" size="mini">取消</el-button>
       </span>
     </div>
     <d-tabs :style="{
       maxHeight:maxHeight+'px'
     }">
-      <d-tab-pane label="供应商信息" name="supplierInfo" />
+      <d-tab-pane label="客户信息" name="customerInfo" />
       <d-tab-pane label="公司信息" name="companyInfo" />
-      <d-tab-pane label="到货信息" name="arrivalInfo" />
-      <d-tab-pane label="商品信息" name="commodityInfo" />
-      <d-tab-pane label="收票滞纳金" name="paymentLate" />
-      <d-tab-pane label="自定义信息" name="customInfo" />
+      <d-tab-pane label="报价单信息" name="priceSheet" />
+      <d-tab-pane label="账单信息" name="billInfo" />
+      <d-tab-pane label="补充信息" name="customInfo" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
       <div>
         <el-form :model="form" class="p10">
-          <supplierInfo id="supplierInfo" />
+          <customerInfo id="customerInfo" />
           <companyInfo id="companyInfo" />
-          <arrivalInfo id="arrivalInfo" />
-          <commodityInfo id="commodityInfo" />
-          <commodityInfo />
-          <paymentLate id="paymentLate" />
+          <!-- 报价单 -->
+          <priceSheet id="priceSheet" />
+          <!-- 报价单 -->
           <billInfo id="billInfo" />
-          <customInfo id="customInfo" />
+          <contract-extras id="customInfo"></contract-extras>
           <extrasInfo id="extrasInfo" />
         </el-form>
       </div>
@@ -41,8 +43,12 @@
   </el-dialog>
 </template>
 <script>
+import priceSheet from './priceSheet';
+
 export default {
-  components: {},
+  components: {
+    priceSheet,
+  },
   props: {
     visible: {
       type: Boolean,
@@ -58,6 +64,7 @@ export default {
   },
   data() {
     return {
+      tmp: '',
       activeName: '',
       randomStr: +new Date() + '-' + Math.random()
     };
