@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 19:15:28
- * @Description: 销售出库单详情
+ * @LastEditTime: 2019-11-01 16:25:43
+ * @Description: 费用详情
 */
 <template>
   <div>
@@ -41,21 +41,25 @@
         >
         </el-tab-pane>
       </el-tabs>
-      <components
-        class="d-auto-y"
-        style="height:calc(100vh - 200px)"
-        :is="activeName"
-      ></components>
+      <keep-alive>
+        <components
+          class="d-auto-y"
+          style="height:calc(100vh - 200px)"
+          :is="activeName"
+          :button="false"
+        ></components>
+      </keep-alive>
     </el-form>
   </div>
 </template>
 <script>
-import detail from './details/detail' //详情
-import outLib from './details/outLib' //报价单
+
+import basicInfo from './details/basic-info' //详情
+import clientData from './details/client-data' //详情
 export default {
   components: {
-    detail,
-    outLib
+    basicInfo,
+    clientData,
   },
   props: ['drawerData'],
   data() {
@@ -63,34 +67,59 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '提交审核', type: 'primary', authCode: '' },
-        { label: '撤销审核', type: '', authCode: '' },
-        { label: '审核通过', type: 'primary', authCode: '' },
-        { label: '编辑', type: 'primary', authCode: '' },
-        { label: '删除', type: 'danger', authCode: '' },
-        { label: '驳回', authCode: '' },
-        { label: '退货扫码', type: 'primary', authCode: '' }
+        { label: '停用', type: 'primary', authCode: '' },
+        { label: '编辑', type: '', authCode: '' },
+        { label: '新增报价单', type: 'primary', authCode: '' }
       ],
       /**
        * 根据当前状态判断显示哪些按钮
        */
-      currStatus: 3,
+      currStatus: 1,
       currStatusType: {
-        1: ['提交审核', '编辑', '删除'], // 新建
-        2: ['撤销审核', '审核通过', '驳回'], // 审核中
-        3: ['退货扫码'], // 待退货
-        4: ['退货扫码'], //部分退货
-        5: [], //已退货
-        6: ['提交审核', '编辑', '删除'], //已驳回
+        1: ['停用', '编辑', '新增报价单'], // 启用中
+        2: ['启用', '编辑', '新增报价单'], // 已停用
       },
       // tab操作栏
       tabs: {
-        detail: '详情',
-        outLib: '销售出库单',
+        basicInfo: '详情',
+        clientData: '客户数据',
+        salesQuote: '报价单',
+        salesOutLibrary: '销售出库单',
+        salesOutLibrary: '销售合同',
+        outLib: '销售单',
+        outLib1: '直发单',
+        salesReturn: '销售退货单',
+        salesExchange: '销售换货单',
+        salesExchange0: '发货单',
+        salesExchange1: '应付账单',
+        salesExchange2: '销售记录',
       },
-      activeName: 'detail',
+      activeName: 'basicInfo',
       form: {},
     }
+  },
+  methods: {
+    buttonsClick(label) {
+      // handleConfirm里的按钮操作是需要二次确认的
+      let handleConfirm = ['提交审核', '撤销审核', '驳回', '删除', '终止']
+      if (handleConfirm.includes(label)) {
+        this.$confirm(`是否${label}?`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+          center: true
+        }).then(() => {
+          this.$api.seePumaidongService.collegeManagerDelete({ id: [123] })
+            .then(res => {
+              this.$emit('reload')
+            });
+        });
+      }
+      // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
+      else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
+        this.$emit('buttonClick', name, this.drawerData.data)
+      }
+    },
   },
   beforeDestroy() {
   }

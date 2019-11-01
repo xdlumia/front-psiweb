@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 15:49:16
+ * @LastEditTime: 2019-11-01 16:06:08
  * @Description: 销售-客户管理
  */
 <template>
@@ -77,8 +77,9 @@
   </div>
 </template>
 <script>
-import clientAdd from './clientAdd' // 客户新增
+import clientAdd from './add' // 客户新增
 import clientDetail from './details' //客户详情
+import quoteAdd from '@/views/sales/quote/add.vue' //新增报价单
 let filterList = [
   { label: '排序', prop: 'sort', default: true, type: 'sort', options: [], },
   { label: '客户编号', prop: 'title', default: true, type: 'text' },
@@ -94,6 +95,7 @@ export default {
   components: {
     clientAdd,
     clientDetail,
+    quoteAdd
   },
   props: {
     // 是否显示按钮
@@ -150,7 +152,7 @@ export default {
         'add': { comp: 'clientAdd', title: `新增客户` },
         '编辑': { comp: 'add', title: `编辑:${row.id}` },
         'details': { comp: 'clientDetail', title: `客户编号:${row.id}` },
-        '新增报价单': { comp: 'outLibDetails', title: '新增报价单' },
+        '新增报价单': { comp: 'quoteAdd', title: '新增报价单' },
       }
       // 如果type是isDialog里的类型调用dialog弹出框
       let isDialog = ['add', 'edit', '新增报价单']

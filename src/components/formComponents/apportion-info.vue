@@ -2,23 +2,56 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 10:19:04
+ * @LastEditTime: 2019-11-01 16:35:36
  * @Description: 分摊信息
  */
 <template>
   <form-card title='分摊信息'>
     <el-row :gutter="10">
-      <el-col :span="12">
+      <el-col :span="8">
         <el-form-item
           :rules="[{required:true,message:'必填项'}]"
-          label="应收账单"
+          label="费用单"
+          prop
+        >
+          <el-input
+            :disabled="disabled"
+            placeholder="请输入"
+            v-model="form.telPhone"
+          >
+            <el-button
+              slot="append"
+              icon="el-icon-plus"
+            ></el-button>
+          </el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="8">
+        <el-form-item
+          :rules="[{required:true,message:'必填项'}]"
+          label="未匹配费用金额"
+          prop
+        >
+          <el-input
+            :disabled="disabled"
+            placeholder="请输入"
+            v-model="form.telPhone"
+          >
+            <template slot="append">元</template>
+          </el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="8">
+        <el-form-item
+          :rules="[{required:true,message:'必填项'}]"
+          label="关联单据"
           prop
         >
           <el-select
             class="wfull"
             :disabled="disabled"
-            filterable
-            placeholder="请选择"
+            placeholder="请选择销售出库单"
+            :rules="[{required:true,message:'必填项'}]"
             v-model="form.customerName"
           >
             <el-option
@@ -30,38 +63,10 @@
           </el-select>
         </el-form-item>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="8">
         <el-form-item
           :rules="[{required:true,message:'必填项'}]"
-          label="账单金额"
-          prop
-        >
-          <el-input
-            :disabled="disabled"
-            placeholder="请输入"
-            v-model="form.telPhone"
-          >
-          </el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item
-          :rules="[{required:true,message:'必填项'}]"
-          label="调整金额（正数增加金额，负数减少金额）"
-          prop
-        >
-          <el-input
-            :disabled="disabled"
-            placeholder="请输入"
-            v-model="form.telPhone"
-          >
-          </el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item
-          :rules="[{required:true,message:'必填项'}]"
-          label="调整后金额"
+          label="销售出库单"
           prop
         >
           <el-input
@@ -84,7 +89,7 @@ export default {
     },
     disabled: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data() {
