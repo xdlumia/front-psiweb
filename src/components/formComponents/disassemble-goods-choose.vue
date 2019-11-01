@@ -3,12 +3,12 @@
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 徐贺
  * @LastEditTime: 2019-10-29 16:16:52
- * @Description: 选择组装商品
+ * @Description: 选择拆卸商品
 */  
 <template>
   <el-dialog
     :visible.sync="visible"
-    title="选择组装商品"
+    title="选择拆卸商品"
     v-dialogDrag
   >
     <el-container>
@@ -25,10 +25,10 @@
         </el-form>
         <form-card
           class="borrow-goods-info"
-          title="选择组装商品"
+          title="选择拆卸商品"
         >
           <div slot="title">
-            <span>选择组装商品</span>
+            <span>选择拆卸商品</span>
           </div>
           <el-table
             :data="tableData"
@@ -81,10 +81,7 @@
               prop="name"
             >
               <template slot-scope="{}">
-                <el-button
-                  @click='recordVisible = true'
-                  type="text"
-                >0/5</el-button>
+                <span>0/5</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -132,15 +129,15 @@
             ></el-table-column>
           </el-table>
 
-          <assemblyRecord
+          <!-- <assemblyRecord
             @close='recordVisible = false'
             :visibleData='visibleData'
             :visible='recordVisible'
-          />
-          <commodityAssemblyEdit
-            @close='assemblyVisible = false'
+          /> -->
+          <disassDsassemble
+            @close='disVisible = false'
             :visibleData='visibleData'
-            :visible='assemblyVisible'
+            :visible='disVisible'
           />
 
         </form-card>
@@ -151,20 +148,20 @@
       class="dialog-footer"
     >
       <el-button
-        @click="$emit('close')"
+        @click="$emit('update:close',false)"
         size="small"
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="$emit('close'),assemblyVisible = true"
+        @click="$emit('close'),disVisible = true"
         size="small"
-      >确定并组装</el-button>
+      >确定并拆卸</el-button>
     </span>
   </el-dialog>
 </template>
 <script>
-import assemblyRecord from './assembly-record'
-import commodityAssemblyEdit from './commodity-assembly-edit'
+// import assemblyRecord from './assembly-record'
+import disassDsassemble from './disass-disassemble';//拆卸
 export default {
   props: {
     visible: {
@@ -172,7 +169,7 @@ export default {
       default: false
     }
   },
-  components: { assemblyRecord, commodityAssemblyEdit },
+  components: { disassDsassemble },
   data() {
     return {
       tableData: [{ name: '110', children: [{ name: '1120' }], noChildren: true }, { name: '120', children: [], noChildren: true }],
@@ -201,8 +198,8 @@ export default {
       visibleData: {
 
       },
-      recordVisible: false,
-      assemblyVisible: false
+      // recordVisible: false,
+      disVisible: false
     };
   },
   methods: {

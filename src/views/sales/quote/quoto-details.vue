@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 17:41:05
+ * @LastEditTime: 2019-11-01 11:23:08
  * @Description: 报价单详情
 */
 <template>
@@ -33,59 +33,33 @@
         type="card"
       >
         <el-tab-pane
-          label="详情"
-          name="detail"
+          v-for="(val,key) of tabs"
+          :key="key"
+          :label="val"
+          :name="key"
         >
-          <components
-            class="d-auto-y"
-            style="height:calc(100vh - 240px)"
-            :is="activeName"
-          ></components>
-        </el-tab-pane>
-        <el-tab-pane
-          label="销售出库单"
-          name="outLibrary"
-        >
-          <components
-            class="d-auto-y"
-            style="height:calc(100vh - 240px)"
-            :is="activeName"
-          ></components>
-        </el-tab-pane>
-        <el-tab-pane
-          label="请购单"
-          name="buy"
-        >
-          <components
-            class="d-auto-y"
-            style="height:calc(100vh - 240px)"
-            :is="activeName"
-          ></components>
-        </el-tab-pane>
-        <el-tab-pane
-          label="操作记录"
-          name="record"
-        >
-          <components
-            class="d-auto-y"
-            style="height:calc(100vh - 240px)"
-            :is="activeName"
-          ></components>
         </el-tab-pane>
       </el-tabs>
+      <keep-alive>
+        <components
+          class="d-auto-y"
+          style="height:calc(100vh - 240px)"
+          :is="activeName"
+        ></components>
+      </keep-alive>
     </el-form>
   </div>
 </template>
 <script>
 import detail from './quotoDetails/detail' //详情
-import outLibrary from './quotoDetails/outLibrary' //销售出库单
+import outLib from './quotoDetails/outLibrary' //销售出库单
 import buy from './quotoDetails/buy' //采购单
 import record from '@/components/formComponents/record' //操作记录
 
 export default {
   components: {
     detail,
-    outLibrary,
+    outLib,
     buy,
     record
   },
@@ -116,6 +90,13 @@ export default {
         3: ['生成销售出库单', '生成请购单', '终止'],
         4: ['提交审核', '编辑', '删除'],
         5: []
+      },
+      // tab操作栏
+      tabs: {
+        detail: '详情',
+        outLib: '销售出库单',
+        buy: '请购单',
+        record: '操作记录',
       },
       activeName: 'detail',
       form: {},

@@ -37,12 +37,12 @@
       class="dialog-footer"
     >
       <el-button
-        @click="$emit('update')"
+        @click="$emit('close')"
         size="small"
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="$emit('update')"
+        @click="$emit('close')"
         size="small"
       >保 存</el-button>
     </span>
@@ -84,4 +84,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+/deep/.el-dialog__footer {
+  text-align: center;
+}
 </style>

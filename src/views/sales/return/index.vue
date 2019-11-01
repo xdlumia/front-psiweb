@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 16:48:57
+ * @LastEditTime: 2019-10-31 18:54:50
  * @Description: 销售-销售退货单
  */
 <template>
@@ -14,71 +14,87 @@
       :moreButton="true"
       :column="true"
       title="销售退货单"
+      @clear-filter="reset()"
       api="bizSystemService.getEmployeeList"
-      :params="queryForm"
+      exportApi="bizSystemService.getEmployeeList"
+      :params="Object.assign(queryForm,params)"
       @selection-change="selectionChange"
     >
-      <template v-slot:filter>自定义筛选列</template>
+      <template v-slot:filter>
+        <filters
+          ref="filters"
+          @submit-filter="$refs.table.reload(1)"
+          :form="queryForm"
+        />
+      </template>
+      <!-- 自定义按钮功能 -->
+
+      <template v-slot:moreButton>自定义更多按钮</template>
       <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
-          @click="quotoHandle('return',row)"
-        >销售退货单编号</span>
-        <span
-          class="d-text-red"
-          @click="quotoHandle('outLib',row)"
-        >销售出库单编号</span>
+          @click="eventHandle('return',row)"
+        > 销售退货单编号</span>
+        <span @click="eventHandle('outLib',row)">销售出库单编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
     <!-- 新增 / 编辑 弹出框-->
     <el-dialog
-      :title="drawerData.title"
-      :visible.sync="dialogVisible"
-      :width="drawerData.width"
+      :title="dialogData.title"
+      :visible.sync="dialogData.visible"
+      width="920px"
       v-dialogDrag
     >
       <components
-        :is="drawerData.component"
-        :visible.sync="dialogVisible"
-        :dialogData="drawerData"
-        v-if="dialogVisible"
-        @submit="$refs.table.reload"
+        :is="dialogData.component"
+        :dialogData="dialogData"
+        @reload="$refs.table.reload(1)"
       ></components>
     </el-dialog>
 
     <!-- 抽屉弹出框 -->
-    <el-drawer
-      :append-to-body="true"
+    <side-detail
       :title="drawerData.title"
-      :visible.sync="drawerVisible"
-      :size="drawerData.width"
+      :visible.sync="drawerData.visible"
+      width="920px"
     >
       <components
-        :visible.sync="drawerVisible"
+        @buttonClick="eventHandle"
         :is="drawerData.component"
         :drawerData="drawerData"
+        @reload="$refs.table.reload(1)"
       ></components>
-    </el-drawer>
-
+    </side-detail>
   </div>
 </template>
 <script>
 import returnDetails from './details' //销售退货单详情
 import outLibDetails from '../outLibrary/outLib-details' //销售出库单详情
+import filters from './filter' //筛选
+
 export default {
+  name: 'return',
   components: {
     returnDetails,
-    outLibDetails
+    outLibDetails,
+    filters
   },
   props: {
+    // 是否显示按钮
     button: {
       type: Boolean,
       default: true
-    }
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
   },
-
   data() {
     return {
       loading: false,
@@ -92,66 +108,62 @@ export default {
         page: 1,
         limit: 20
       },
-      dialogVisible: false, //dialog弹出框
-      drawerVisible: false, //抽屉弹出框
-      drawerData: {
+      //dialog弹出框
+      dialogData: {
+        visible: false,
         title: '',
         type: '',
-        width: '920px',
+        data: '',
+      },
+      // 侧边栏弹出框
+      drawerData: {
+        visible: false,
+        title: '',
+        type: '',
         data: '',
       }
     };
   },
   methods: {
     // 按钮功能操作
-    quotoHandle(type, row) {
+    eventHandle(type, row) {
+      // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {
-        return: { comp: 'returnDetails', title: '销售退货单' },
-        outLib: { comp: 'outLibDetails', title: '销售出库单' },
+        'return': { comp: 'returnDetails', title: `销售退货单:${row.id}` },
+        '编辑': { comp: 'add', title: `编辑报价单:${row.id}` },
+        'outLib': { comp: 'outLibDetails', title: '销售出库单' },
+        '生成销售出库单': { comp: 'outLibDetails', title: '生成销售出库单' },
+        '生成请购单': { comp: 'outLibDetails', title: '生成请购单' },
       }
-      // 如果是新增复制合并调用dialog弹出框
-      if (type == "add" || type == "copy" || type == "merge") {
-        this.dialogVisible = true
+      // 如果type是isDialog里的类型调用dialog弹出框
+      let isDialog = ['编辑', 'copy', 'merge']
+      if (isDialog.includes(type)) {
+        this.dialogData.visible = true
+        this.dialogData.type = type
+        this.dialogData.title = typeObj[type].title
+        this.dialogData.component = typeObj[type].comp
+        this.dialogData.data = row;
       } else {
-        // 否则调用抽屉弹出框
-        this.drawerVisible = true;
-      }
-      // 非新增才会有row数据
-      if (type != 'add') {
+        this.drawerData.visible = true
+        this.drawerData.type = type
+        this.drawerData.title = typeObj[type].title
+        this.drawerData.component = typeObj[type].comp
         this.drawerData.data = row;
       }
-
-      this.drawerData.type = type
-      this.drawerData.title = typeObj[type].title
-      this.drawerData.component = typeObj[type].comp
     },
-    selectionChange() { },
+    // 多选
+    selectionChange(val) {
+      console.log(val);
 
+    },
+    submitFilter() {
+      this.$emit('submit-filter')
+    },
     // 重置
     reset() {
-      this.$refs.queryForm.resetFields();
-      this.$refs.table.reload();
+      this.$refs.filters.$refs.form.resetFields()
+      this.$refs.table.reload(1);
     },
-    // 删除公司
-    delCompany(row) {
-      this.$confirm("此操作将永久删除, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-        center: true
-      }).then(() => {
-        this.$api.seePumaidongService
-          .collegeManagerDelete({
-            ids: row
-          })
-          .then(res => {
-            // 重新加载表格数据
-            this.tableList = [];
-            this.$refs.companyTable.clearSelection();
-            this.$refs.companyTable.reload();
-          });
-      });
-    }
   }
 };
 </script>

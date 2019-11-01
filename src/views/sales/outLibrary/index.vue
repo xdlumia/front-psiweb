@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 17:37:00
+ * @LastEditTime: 2019-10-31 18:45:51
  * @Description: 销售-销售出库单
  */
 <template>
@@ -29,7 +29,7 @@
       <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
-          @click="buttonsHandle('outLib',row)"
+          @click="eventHandle('outLib',row)"
         >销售出库单编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
@@ -56,7 +56,7 @@
       width="920px"
     >
       <components
-        @buttonClick="buttonsHandle"
+        @buttonClick="eventHandle"
         :is="drawerData.component"
         :drawerData="drawerData"
         @reload="$refs.table.reload(1)"
@@ -116,7 +116,7 @@ export default {
   },
   methods: {
     // 按钮功能操作
-    buttonsHandle(type, row) {
+    eventHandle(type, row) {
       let typeObj = {
         add: { comp: 'add', title: '新增报价单' },
         outLib: { comp: 'outLibDetails', title: '销售出库单' },

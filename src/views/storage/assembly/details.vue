@@ -82,7 +82,7 @@
     />
     <hangUp
       :visible=hangVisible
-      @update='update'
+      @close='hangVisible = false'
     />
   </SideDetail>
 
