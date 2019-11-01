@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 15:35:24
+ * @LastEditTime: 2019-11-01 18:13:20
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -33,22 +33,22 @@
       <el-button
         size="mini"
         type="primary"
-        @click="quotoHandle('add')"
+        @click="quoteHandle('add')"
       >新建</el-button>
       <el-button
         size="mini"
-        @click="quotoHandle('merge')"
+        @click="quoteHandle('merge')"
       >合并生成出库单</el-button>
       <el-button
         size="mini"
-        @click="quotoHandle('copy')"
+        @click="quoteHandle('copy')"
       >复制生成报价单</el-button>
     </template>
     <template v-slot:moreButton>自定义更多按钮</template>
     <template slot-scope="{column,row,value,scope}">
       {{scope.$index}}
-      <span @click="quotoHandle('quoto',row)">报价单编号</span>
-      <span @click="quotoHandle('sales',row)">销售单编号</span>
+      <span @click="quoteHandle('quote',row)">报价单编号</span>
+      <span @click="quoteHandle('sales',row)">销售单编号</span>
       <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
       <span v-else>{{value}}</span>
     </template>

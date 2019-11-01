@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 15:44:13
+ * @LastEditTime: 2019-11-01 18:14:22
  * @Description: 选择客户
 */
 <template>
@@ -29,22 +29,26 @@
       ></el-tab-pane>
       <el-tab-pane
         label="历史报价单"
-        name="historyQuoto"
+        name="historyQuote"
       ></el-tab-pane>
     </el-tabs>
-    <components :is="currCompont"></components>
+    <!-- 此处hide是在调用clientData 组件的时候 隐藏 clientData 组件里的基本信息区域内容 -->
+    <components
+      :is="currCompont"
+      :hide="['clientBasicInfo']"
+    ></components>
   </div>
 </template>
 <script>
 import clientInfo from './client-info'
 import clientData from '../../client/details/client-data'
-import historyQuoto from './history-quoto'
+import historyQuote from './history-quote'
 export default {
   props: ['dialogData', 'visible'],
   components: {
     clientInfo,
     clientData,
-    historyQuoto,
+    historyQuote,
   },
   data() {
     return {

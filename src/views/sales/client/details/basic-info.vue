@@ -2,19 +2,16 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 16:13:14
- * @Description: 客户详情-客户数据
+ * @LastEditTime: 2019-11-01 16:12:49
+ * @Description: 客户详情-基本详情
 */
 <template>
   <div>
-    <!-- 基本数据 -->
-    <client-basic-info v-if="!this.hide.includes('clientBasicInfo')" />
-    <!-- 回款周期 -->
-    <payback-periods />
-    <!-- 逾期信息 -->
-    <overdue-info />
-    <!-- 销售金额 -->
-    <sales-amount />
+    <base-info id="baseInfo" />
+    <!-- 发票信息 -->
+    <invoice-info id="invoiceInfo" />
+    <!-- 备注信息 -->
+    <extras-info id="extrasInfo" />
   </div>
 </template>
 <script>

@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 19:45:14
- * @Description: 销售-费用分摊单
+ * @LastEditTime: 2019-11-01 17:41:23
+ * @Description: 销售-销售费用分摊单
  */
 <template>
   <div>
@@ -19,7 +19,15 @@
       exportApi="bizSystemService.getEmployeeList"
       :params="Object.assign(queryForm,params)"
       @selection-change="selectionChange"
+      :filterOptions="filterOptions"
     >
+      <template v-slot:button>
+        <el-button
+          type="primary"
+          size="mini"
+          @click="eventHandle('add')"
+        >新增分摊</el-button>
+      </template>
       <template v-slot:filter>
         <filters
           ref="filters"
@@ -33,9 +41,8 @@
       <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
-          @click="eventHandle('return',row)"
-        > 销售退货单编号</span>
-        <span @click="eventHandle('outLib',row)">销售出库单编号</span>
+          @click="eventHandle('details',row)"
+        > 报价单编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
@@ -56,6 +63,7 @@
 
     <!-- 抽屉弹出框 -->
     <side-detail
+      :status="[]"
       :title="drawerData.title"
       :visible.sync="drawerData.visible"
       width="920px"
@@ -70,16 +78,25 @@
   </div>
 </template>
 <script>
-import returnDetails from './details' //销售退货单详情
-import outLibDetails from '../outLibrary/outLib-details' //销售出库单详情
-import filters from './filter' //筛选
-
+import clientAdd from './add' // 客户新增
+import clientDetail from './details' //客户详情
+import quoteAdd from '@/views/sales/quote/add.vue' //新增报价单
+let filterList = [
+  { label: '排序', prop: 'sort', default: true, type: 'sort', options: [], },
+  { label: '客户编号', prop: 'title', default: true, type: 'text' },
+  { label: '客户名称', prop: 'city', default: true, type: 'text' },
+  { label: '联系人', prop: 'pushTime', default: true, type: 'employee', },
+  { label: '联系电话', prop: 'status', default: true, type: 'text' },
+  { label: '提交人', prop: 'messageType', default: true, type: 'employee', },
+  { label: '部门', prop: 'messageType2', default: true, type: 'employee', },
+  { label: '提交时间', prop: 'messageType3', default: true, type: 'daterange', },
+]
 export default {
   name: 'return',
   components: {
-    returnDetails,
-    outLibDetails,
-    filters
+    clientAdd,
+    clientDetail,
+    quoteAdd
   },
   props: {
     // 是否显示按钮
@@ -121,22 +138,27 @@ export default {
         title: '',
         type: '',
         data: '',
-      }
+      },
+      // 筛选框数据
+      filterOptions: filterList
     };
   },
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
+      console.log(type, row)
+      // 防止row为undefined 导致报错
+      row = row ? row : {}
       // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {
-        'return': { comp: 'returnDetails', title: `销售退货单:${row.id}` },
-        '编辑': { comp: 'add', title: `编辑报价单:${row.id}` },
-        'outLib': { comp: 'outLibDetails', title: '销售出库单' },
-        '生成销售出库单': { comp: 'outLibDetails', title: '生成销售出库单' },
-        '生成请购单': { comp: 'outLibDetails', title: '生成请购单' },
+        'add': { comp: 'clientAdd', title: `新增客户` },
+        '编辑': { comp: 'clientAdd', title: `编辑:${row.id}` },
+        'details': { comp: 'clientDetail', title: `客户编号:${row.id}` },
+        '报价单详情': { comp: 'quoteAdd', title: '新增报价单' },
       }
-      // 如果type是isDialog里的类型调用dialog弹出框
-      let isDialog = ['编辑', 'copy', 'merge']
+
+      // 如果type是isDialog里的类型调用dialog弹出
+      let isDialog = ['add', '编辑', '新增报价单']
       if (isDialog.includes(type)) {
         this.dialogData.visible = true
         this.dialogData.type = type

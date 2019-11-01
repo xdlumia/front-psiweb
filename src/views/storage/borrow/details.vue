@@ -3,7 +3,7 @@
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: mikey.zhaopeng
  * @Last Modified time: 2019-10-28 14:01:02
- * @Description: 库房  销售单 详情组件
+ * @Description: 库房  借入借出任务 详情组件
  */
 <template>
 
@@ -11,52 +11,92 @@
     :status="status"
     :visible.sync="drawerData.tableVisible"
     @close="$emit('update:visible',false)"
-    title="销售单"
+    title="借入借出任务"
     width="990px"
   >
-    <template slot="button">
-      <el-button
-        @click="orderStorageVisible=true"
-        size="mini"
-        type="primary"
-      >发货</el-button>
-    </template>
-    <el-tabs class="wfull hfull tabs-view">
-      <el-tab-pane label="详情">
-        <el-form>
-          <goodsExported />
-          <shipInfo />
-          <generateDeliver :status='status' />
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="销售单">销售单</el-tab-pane>
-      <el-tab-pane label="拣货单">拣货单</el-tab-pane>
-      <el-tab-pane label="组装任务">组装任务</el-tab-pane>
-      <el-tab-pane label="发货单">发货单</el-tab-pane>
-      <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
-      <el-tab-pane label="借入单">借入单</el-tab-pane>
-      <el-tab-pane label="应收账单">应收账单</el-tab-pane>
-    </el-tabs>
+    <div
+      class="d-auto-y"
+      style="height:calc(100vh - 160px)"
+    >
+      <div class="drawer-header">
+        <el-button
+          @click="backVisible=true,isComponents = 'borrowPayback',dialogData.title='借入归还-UYGVUOUY'"
+          size="mini"
+          type="primary"
+        >归还</el-button>
+        <el-button
+          @click="backVisible=true,isComponents = 'lendBack',dialogData.title='借出返还-UYGVUOUY'"
+          size="mini"
+          type="primary"
+        >返还</el-button>
+        <el-button
+          @click="backVisible=true,isComponents = 'borrowScanCode',dialogData.title='借入扫码-UYGVUOUY'"
+          size="mini"
+          type="primary"
+        >借入扫码</el-button>
+        <el-button
+          @click="backVisible=true,isComponents = 'lendScanCode',dialogData.title='借出扫码-UYGVUOUY'"
+          size="mini"
+          type="primary"
+        >借出扫码</el-button>
+      </div>
+      <el-tabs class="wfull hfull tabs-view">
+        <el-tab-pane label="详情">
+          <el-form>
+            <lendInfo />
+            <borrowGoods />
+            <el-dialog
+              :visible.sync="backVisible"
+              :title="dialogData.title"
+              v-dialogDrag
+            >
+              <components :is='isComponents'>
+              </components>
+            </el-dialog>
+            <!-- <borrowPayback :visible='backVisible' />
+            <lendBack :visible='lendVisible' />
+            <borrowScanCode :visible='borrowVisible' />
+            <lendScanCode :visible='lendCodeVisible' /> -->
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="借入借出单">借入借出单</el-tab-pane>
+      </el-tabs>
+    </div>
   </SideDetail>
 
 </template>
 <script>
-import goodsExported from '@/components/formComponents/goods-exported'
-import shipInfo from '@/components/formComponents/ship-info';
-import generateDeliver from './generate-deliver';
+import lendInfo from '@/components/formComponents/lend-info'
+import borrowGoods from '@/components/formComponents/borrow-goods';
 import SideDetail from '@/components/side-detail';
+import borrowPayback from './borrow-payback';//借入归还
+import lendBack from './lend-back';//借出返还
+import borrowScanCode from './borrow-scan-code';//借入扫码
+import lendScanCode from './lend-scan-code';//借出扫码
+
 export default {
   props: ['drawerData'],
   data() {
     return {
-      status: [{ label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '借入/借出状态', value: '待归还/待返还' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      backVisible: false,
+      lendVisible: false,
+      borrowVisible: false,
+      lendCodeVisible: false,
+      isComponents: 'borrowPayback',
+      dialogData: {
+        title: ''
+      }
     };
   },
   components: {
-    goodsExported,
-    shipInfo,
-    generateDeliver,
-    SideDetail
+    lendInfo,
+    borrowGoods,
+    borrowPayback,
+    SideDetail,
+    lendBack,
+    borrowScanCode,
+    lendScanCode
   },
 }
 </script>
@@ -85,6 +125,7 @@ export default {
     }
   }
   .tabs-view {
+    width: 100% !important;
     position: relative;
     /deep/ {
       & > .el-tabs__header {

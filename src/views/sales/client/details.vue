@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 15:38:45
- * @Description: 销售出库单详情
+ * @LastEditTime: 2019-11-01 16:16:31
+ * @Description: 客户详情
 */
 <template>
   <div>
@@ -53,7 +53,8 @@
   </div>
 </template>
 <script>
-import basicInfo from './clientAdd/basic-info' //基本详情
+
+import basicInfo from './details/basic-info' //详情
 import clientData from './details/client-data' //详情
 export default {
   components: {
@@ -96,6 +97,29 @@ export default {
       activeName: 'basicInfo',
       form: {},
     }
+  },
+  methods: {
+    buttonsClick(label) {
+      // handleConfirm里的按钮操作是需要二次确认的
+      let handleConfirm = ['提交审核', '撤销审核', '驳回', '删除', '终止']
+      if (handleConfirm.includes(label)) {
+        this.$confirm(`是否${label}?`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+          center: true
+        }).then(() => {
+          this.$api.seePumaidongService.collegeManagerDelete({ id: [123] })
+            .then(res => {
+              this.$emit('reload')
+            });
+        });
+      }
+      // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
+      else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
+        this.$emit('buttonClick', label, this.drawerData.data)
+      }
+    },
   },
   beforeDestroy() {
   }
