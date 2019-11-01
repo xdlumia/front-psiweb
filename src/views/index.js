@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-30 16:25:12
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 19:43:45
+ * @LastEditTime: 2019-11-01 09:54:03
  * @Description: 每个模块首页全局引入解决无限调用自己递归的问题
  */
 
@@ -17,6 +17,9 @@ import salesClient from "@/views/sales/client"; // 客户
 import salesApportion from "@/views/sales/apportion"; // 销售费用分摊单
 import salesAdjust from "@/views/sales/adjust"; // 账单调整单
 import salesAdjustPrice from "@/views/sales/adjustPrice"; // 销售调价单
+/**
+ * 销售end
+ */
 
 export default {
   install: (Vue) => {
