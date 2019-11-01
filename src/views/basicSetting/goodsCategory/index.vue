@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:44:55
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-31 18:54:54
+ * @LastEditTime: 2019-11-01 10:57:00
  * @Description: 商品分类
  -->
 <template>
@@ -203,7 +203,20 @@ export default {
           { required: true, message: '请选择上级分类', trigger: 'change' }
         ],
         taxRate: [
-          { required: true, message: '请输入', trigger: 'blur' }
+          { required: true, message: '请输入', trigger: 'blur' },
+          {
+            validator: (rule, value, callback) => {
+              if (value > 100 || value < 0) {
+                callback(new Error('请输入0-100，两位小数'))
+              } else if (Number(value) === 100) {
+                callback()
+              } else if (!/^\d{1,2}(\.\d{1,2})?$/.test(value)) {
+                callback(new Error('请输入0-100，两位小数'))
+              } else {
+                callback()
+              }
+            }
+          }
         ]
       },
       handel: false, // 点击的是新增还是编辑
