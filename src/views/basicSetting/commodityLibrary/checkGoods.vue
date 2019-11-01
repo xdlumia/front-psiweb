@@ -684,7 +684,7 @@ transform: translate(-50%, -50%) rotate(45deg);
 
 </style>
 <style>
-.v-modal{z-index: 9 !important;}
+
 /* .zhezhaonone .el-dialog__wrapper{left:-1100px} */
 /* .goods-table .has-gutter{display:none} */
 </style>
