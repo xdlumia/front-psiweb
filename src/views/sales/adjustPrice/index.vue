@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:38:20
+ * @LastEditTime: 2019-11-01 19:41:19
  * @Description: 销售-费用分摊单
  */
 <template>
@@ -48,8 +48,8 @@
       </template>
     </table-view>
 
-    <!-- 客户详情 -->
-    <details
+    <!-- 费用分摊详情 -->
+    <detail
       :visible.sync="detailVisible"
       :rowData="rowData"
       @reload="this.$refs.table.reload()"
@@ -80,7 +80,7 @@ export default {
   name: 'return',
   components: {
     add,
-    add
+    detail
   },
   props: {
     // 是否显示按钮
@@ -117,7 +117,6 @@ export default {
     };
   },
   methods: {
-    // 按钮功能操作
     // 按钮功能操作
     eventHandle(type, row) {
       this[type] = true

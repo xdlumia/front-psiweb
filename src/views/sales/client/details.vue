@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:31:43
+ * @LastEditTime: 2019-11-01 19:48:03
  * @Description: 客户详情
 */
 <template>
@@ -62,6 +62,12 @@
       type="edit"
       :rowData="rowData"
     />
+    <!-- 新建报价单 -->
+    <quoteAdd
+      :visible.sync="addQuotoVisible"
+      type="edit"
+      :rowData="rowData"
+    />
   </div>
 </template>
 <script>
@@ -69,12 +75,14 @@
 import basicInfo from './details/basic-info' //详情
 import clientData from './details/client-data' //详情
 import clientAdd from './add' //详情
+import quoteAdd from '../quote/add' //新建报价单
 
 export default {
   components: {
     basicInfo,
     clientData,
-    clientAdd
+    clientAdd,
+    quoteAdd
   },
   props: ['visible', 'rowData'],
   data() {
@@ -84,15 +92,15 @@ export default {
         // label:按钮名称  type:按钮样式  authCode:权限码
         { label: '停用', type: 'primary', authCode: '' },
         { label: '编辑', type: '', authCode: '' },
-        { label: '新增报价单', type: 'primary', authCode: '' }
+        { label: '新建报价单', type: 'primary', authCode: '' }
       ],
       /**
        * 根据当前状态判断显示哪些按钮
        */
       currStatus: 1,
       currStatusType: {
-        1: ['停用', '编辑', '新增报价单'], // 启用中
-        2: ['启用', '编辑', '新增报价单'], // 已停用
+        1: ['停用', '编辑', '新建报价单'], // 启用中
+        2: ['启用', '编辑', '新建报价单'], // 已停用
       },
       // tab操作栏
       tabs: {
@@ -112,6 +120,7 @@ export default {
       activeName: 'basicInfo',
       form: {},
       editVisible: false,
+      addQuotoVisible: false,
     }
   },
   computed: {
@@ -142,9 +151,13 @@ export default {
         });
       }
       // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
-      else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
+      else if (label == '编辑' || label == '新建报价单' || label == '生成请购单') {
         if (label == '编辑') {
           this.editVisible = true
+          return
+        }
+        if (label == '新建报价单') {
+          this.addQuotoVisible = true
           return
         }
       }
