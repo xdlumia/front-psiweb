@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 17:41:23
- * @Description: 销售-销售费用分摊单
+ * @LastEditTime: 2019-11-01 19:27:26
+ * @Description: 销售-客户管理
  */
 <template>
   <div>
@@ -13,7 +13,7 @@
       :filter="true"
       :moreButton="true"
       :column="true"
-      title="费用分摊单"
+      title="客户管理"
       @clear-filter="reset()"
       api="bizSystemService.getEmployeeList"
       exportApi="bizSystemService.getEmployeeList"
@@ -25,8 +25,8 @@
         <el-button
           type="primary"
           size="mini"
-          @click="eventHandle('add')"
-        >新增分摊</el-button>
+          @click="eventHandle('addVisible')"
+        >新增客户</el-button>
       </template>
       <template v-slot:filter>
         <filters
@@ -41,40 +41,26 @@
       <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
-          @click="eventHandle('details',row)"
-        > 报价单编号</span>
+          @click="eventHandle('detailVisible',row)"
+        > 客户编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <!-- 新增 / 编辑 弹出框-->
-    <el-dialog
-      :title="dialogData.title"
-      :visible.sync="dialogData.visible"
-      width="920px"
-      v-dialogDrag
-    >
-      <components
-        :is="dialogData.component"
-        :dialogData="dialogData"
-        @reload="$refs.table.reload(1)"
-      ></components>
-    </el-dialog>
 
-    <!-- 抽屉弹出框 -->
-    <side-detail
-      :status="[]"
-      :title="drawerData.title"
-      :visible.sync="drawerData.visible"
-      width="920px"
-    >
-      <components
-        @buttonClick="eventHandle"
-        :is="drawerData.component"
-        :drawerData="drawerData"
-        @reload="$refs.table.reload(1)"
-      ></components>
-    </side-detail>
+    <!-- 客户详情 -->
+    <clientDetail
+      :visible.sync="detailVisible"
+      :rowData="rowData"
+      @reload="this.$refs.table.reload()"
+    />
+    <!-- 客户新增-->
+    <clientAdd
+      type="add"
+      :visible.sync="addVisible"
+      :rowData="rowData"
+      @reload="this.$refs.table.reload()"
+    />
   </div>
 </template>
 <script>
@@ -125,53 +111,20 @@ export default {
         page: 1,
         limit: 20
       },
-      //dialog弹出框
-      dialogData: {
-        visible: false,
-        title: '',
-        type: '',
-        data: '',
-      },
-      // 侧边栏弹出框
-      drawerData: {
-        visible: false,
-        title: '',
-        type: '',
-        data: '',
-      },
+      rowData: {},
+      addVisible: false,
+      detailVisible: false,
       // 筛选框数据
       filterOptions: filterList
     };
   },
   methods: {
     // 按钮功能操作
+    // 按钮功能操作
     eventHandle(type, row) {
-      console.log(type, row)
-      // 防止row为undefined 导致报错
-      row = row ? row : {}
-      // 这里对象key用中文会不会有隐患? TODO
-      let typeObj = {
-        'add': { comp: 'clientAdd', title: `新增客户` },
-        '编辑': { comp: 'clientAdd', title: `编辑:${row.id}` },
-        'details': { comp: 'clientDetail', title: `客户编号:${row.id}` },
-        '报价单详情': { comp: 'quoteAdd', title: '新增报价单' },
-      }
-
-      // 如果type是isDialog里的类型调用dialog弹出
-      let isDialog = ['add', '编辑', '新增报价单']
-      if (isDialog.includes(type)) {
-        this.dialogData.visible = true
-        this.dialogData.type = type
-        this.dialogData.title = typeObj[type].title
-        this.dialogData.component = typeObj[type].comp
-        this.dialogData.data = row;
-      } else {
-        this.drawerData.visible = true
-        this.drawerData.type = type
-        this.drawerData.title = typeObj[type].title
-        this.drawerData.component = typeObj[type].comp
-        this.drawerData.data = row;
-      }
+      this[type] = true
+      this.rowData = row
+      return
     },
     // 多选
     selectionChange(val) {

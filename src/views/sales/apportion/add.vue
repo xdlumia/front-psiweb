@@ -2,11 +2,16 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 17:17:46
+ * @LastEditTime: 2019-11-01 19:27:36
  * @Description: 客户管理-新增客户
 */
 <template>
-  <div>
+  <el-dialog
+    title="新增客户"
+    :visible.sync="showPop"
+    width="920px"
+    v-dialogDrag
+  >
 
     <el-form
       ref="form"
@@ -22,16 +27,16 @@
           :label="val"
           :name="key"
         />
-        <!-- 分摊信息 -->
-        <apportion-info id="apportionInfo" />
-        <!-- 商品信息 -->
-        <commodity-info id="commodityInfo" />
+        <!-- 基本信息 -->
+        <base-info id="baseInfo" />
+        <!-- 发票信息 -->
+        <invoice-info id="invoiceInfo" />
         <!-- 备注信息 -->
         <extras-info id="extrasInfo" />
       </d-tabs>
       <div class="ac pt20">
         <el-button
-          @click="dialogData.visible = false"
+          @click="$emit('update:visible', false)"
           size="small"
         >取消</el-button>
         <el-button
@@ -41,24 +46,34 @@
         >保存</el-button>
       </div>
     </el-form>
-  </div>
+  </el-dialog>
 </template>
 <script>
 
 export default {
   components: {
   },
-  props: ['dialogData'],
+  props: ['visible', 'type', 'rowData'],
   data() {
     return {
       // tab操作栏
       tabs: {
-        apportionInfo: '分摊信息',
-        commodityInfo: '商品信息',
+        baseInfo: '基本信息',
+        invoiceInfo: '发票信息',
         extrasInfo: '备注信息',
       },
       activeName: 'baseInfo',
       form: {},
+    }
+  },
+  computed: {
+    showPop: {
+      get() {
+        return this.visible
+      },
+      set(val) {
+        this.$emit('update:visible', false)
+      }
     }
   },
   methods: {
