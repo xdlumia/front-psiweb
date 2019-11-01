@@ -9,7 +9,7 @@
   <div>
     <form-card title='入库商品'>
       <div slot="title">
-        <span>入库商品</span>
+        <span></span>
         <span class="fr">
           <span>
             <el-link

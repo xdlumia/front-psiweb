@@ -3,7 +3,7 @@
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: mikey.zhaopeng
  * @Last Modified time: 2019-10-28 14:01:02
- * @Description: 库房  销售单 详情组件
+ * @Description: 库房  换货任务
  */
 <template>
 
@@ -11,52 +11,62 @@
     :status="status"
     :visible.sync="drawerData.tableVisible"
     @close="$emit('update:visible',false)"
-    title="销售单"
+    title="换货任务"
     width="990px"
   >
-    <template slot="button">
-      <el-button
-        @click="orderStorageVisible=true"
-        size="mini"
-        type="primary"
-      >发货</el-button>
-    </template>
-    <el-tabs class="wfull hfull tabs-view">
-      <el-tab-pane label="详情">
-        <el-form>
-          <goodsExported />
-          <shipInfo />
-          <generateDeliver :status='status' />
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="销售单">销售单</el-tab-pane>
-      <el-tab-pane label="拣货单">拣货单</el-tab-pane>
-      <el-tab-pane label="组装任务">组装任务</el-tab-pane>
-      <el-tab-pane label="发货单">发货单</el-tab-pane>
-      <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
-      <el-tab-pane label="借入单">借入单</el-tab-pane>
-      <el-tab-pane label="应收账单">应收账单</el-tab-pane>
-    </el-tabs>
+    <div
+      class="d-auto-y"
+      style="height:calc(100vh - 160px)"
+    >
+      <div class="drawer-header">
+        <el-button
+          @click="exchangeVisible=true"
+          size="mini"
+          type="primary"
+        >换货扫码</el-button>
+      </div>
+      <el-tabs class="wfull hfull tabs-view">
+        <el-tab-pane label="详情">
+          <el-form>
+            <approvePanel />
+            <exchangeInfo :disabled="true" />
+            <exchangeCommodityNoedit />
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="账单管理">账单管理</el-tab-pane>
+        <el-tab-pane label="发票管理">发票管理</el-tab-pane>
+      </el-tabs>
+      <exchangeSweepcode
+        :visible.sync="exchangeVisible"
+        :dialogData='dialogData'
+      />
+    </div>
   </SideDetail>
 
 </template>
 <script>
-import goodsExported from '@/components/formComponents/goods-exported'
-import shipInfo from '@/components/formComponents/ship-info';
-import generateDeliver from './generate-deliver';
+import approvePanel from '@/components/formComponents/approve-panel'
+import exchangeInfo from '@/components/formComponents/exchange-info';
+import exchangeCommodityNoedit from '@/components/formComponents/exchange-commodity-noedit';
+import exchangeSweepcode from '@/components/formComponents/exchange-sweepcode';
 import SideDetail from '@/components/side-detail';
 export default {
   props: ['drawerData'],
   data() {
     return {
-      status: [{ label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '换货状态', value: '2019-9-21 10:04:38' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      exchangeVisible: false,
+      dialogData: {
+        title: '换货扫码UAVBFUSBDFU',
+      }
     };
   },
   components: {
-    goodsExported,
-    shipInfo,
-    generateDeliver,
-    SideDetail
+    approvePanel,
+    exchangeInfo,
+    exchangeSweepcode,
+    SideDetail,
+    exchangeCommodityNoedit
   },
 }
 </script>
@@ -86,6 +96,7 @@ export default {
   }
   .tabs-view {
     position: relative;
+    width: 100% !important;
     /deep/ {
       & > .el-tabs__header {
         background-color: #f2f2f2;
