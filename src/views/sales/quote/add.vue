@@ -2,49 +2,56 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 18:19:57
+ * @LastEditTime: 2019-11-01 18:37:39
  * @Description: file content
 */
 <template>
-  <div v-loading="loading">
-    <d-step
-      v-model="steps"
-      @input="stepsClick"
-      :data="['选择客户','选择产品','确定配置信息','填写报价信息']"
-    ></d-step>
-    <el-form
-      size="small"
-      :model="addForm"
-      class="d-auto-y"
-      style="height:calc(100vh - 220px)"
-    >
-      <!-- 选择客户 -->
-      <select-customer v-show="steps==1"></select-customer>
-      <select-product v-show="steps==2"></select-product>
-      <confirm-info v-show="steps==3"></confirm-info>
-      <quote-info v-show="steps==4"></quote-info>
-    </el-form>
-    <!-- 确定按钮 -->
-    <div class="ac pt20">
+  <el-dialog
+    title="新建报价单"
+    :visible.sync="showPop"
+    width="920px"
+    v-dialogDrag
+  >
+    <div v-loading="loading">
+      <d-step
+        v-model="steps"
+        @input="stepsClick"
+        :data="['选择客户','选择产品','确定配置信息','填写报价信息']"
+      ></d-step>
+      <el-form
+        size="small"
+        :model="addForm"
+        class="d-auto-y"
+        style="height:calc(100vh - 220px)"
+      >
+        <!-- 选择客户 -->
+        <select-customer v-show="steps==1"></select-customer>
+        <select-product v-show="steps==2"></select-product>
+        <confirm-info v-show="steps==3"></confirm-info>
+        <quote-info v-show="steps==4"></quote-info>
+      </el-form>
+      <!-- 确定按钮 -->
+      <div class="ac pt20">
 
-      <el-button
-        @click="dialogData.visible = false"
-        size="small"
-      >取 消</el-button>
-      <el-button
-        @click="steps++"
-        type="primary"
-        v-if="steps < 4"
-        size="small"
-      >下一步</el-button>
-      <el-button
-        v-else
-        type="primary"
-        @click="saveHandle('addForm')"
-        size="small"
-      >保 存</el-button>
+        <el-button
+          @click="$emit('update:visible', false)"
+          size="small"
+        >取 消</el-button>
+        <el-button
+          @click="steps++"
+          type="primary"
+          v-if="steps < 4"
+          size="small"
+        >下一步</el-button>
+        <el-button
+          v-else
+          type="primary"
+          @click="saveHandle('addForm')"
+          size="small"
+        >保 存</el-button>
+      </div>
     </div>
-  </div>
+  </el-dialog>
 </template>
 <script>
 import selectCustomer from './add/select-customer'
@@ -52,7 +59,7 @@ import selectProduct from './add/select-product'
 import confirmInfo from './add/confirm-info'
 import quoteInfo from './add/quote-info'
 export default {
-  props: ['dialogData'],
+  props: ['visible'],
   components: {
     selectCustomer,
     selectProduct,
@@ -82,7 +89,17 @@ export default {
 
   },
   mounted() {
-    this.initForm()
+    // this.initForm()
+  },
+  computed: {
+    showPop: {
+      get() {
+        return this.visible
+      },
+      set(val) {
+        this.$emit('update:visible', false)
+      }
+    }
   },
   methods: {
     // 初始化表单

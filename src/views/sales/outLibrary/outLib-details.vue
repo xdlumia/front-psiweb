@@ -2,62 +2,75 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 17:43:35
+ * @LastEditTime: 2019-11-01 19:05:05
  * @Description: 销售出库单详情
 */
 <template>
   <div>
-    <div class="drawer-header">
-      <!-- 操作按钮 -->
-      <span
-        v-for="(item,index) of buttons"
-        :key="index"
-      >
-        <el-button
-          class="mr10"
-          @click="buttonsClick(item.label)"
-          v-if="currStatusType[currStatus].includes(item.label)"
-          size="small"
-          :type="item.type"
-        >{{item.label}}</el-button>
-      </span>
-
-    </div>
-    <el-form
-      ref="form"
-      :model="form"
-      label-position="top"
+    <side-detail
+      title="出库单详情"
+      :visible.sync="showPop"
+      width="920px"
     >
-      <el-tabs
-        v-model="activeName"
-        type="card"
-      >
-        <el-tab-pane
-          v-for="(val,key) of tabs"
-          :key="key"
-          :label="val"
-          :name="key"
+      <div slot="button">
+        <!-- 操作按钮 -->
+        <span
+          v-for="(item,index) of buttons"
+          :key="index"
         >
-        </el-tab-pane>
-      </el-tabs>
-      <keep-alive>
-        <components
-          class="d-auto-y"
-          :button="false"
-          style="height:calc(100vh - 200px)"
-          :is="activeName"
-        ></components>
-      </keep-alive>
-    </el-form>
+          <el-button
+            class="mr10"
+            @click="buttonsClick(item.label)"
+            v-if="currStatusType[currStatus].includes(item.label)"
+            size="small"
+            :type="item.type"
+          >{{item.label}}</el-button>
+        </span>
+
+      </div>
+      <el-form
+        ref="form"
+        :model="form"
+        label-position="top"
+      >
+        <el-tabs
+          v-model="activeName"
+          type="card"
+        >
+          <el-tab-pane
+            v-for="(val,key) of tabs"
+            :key="key"
+            :label="val"
+            :name="key"
+          >
+          </el-tab-pane>
+        </el-tabs>
+        <keep-alive>
+          <components
+            class="d-auto-y"
+            :button="false"
+            style="height:calc(100vh - 200px)"
+            :is="activeName"
+          ></components>
+        </keep-alive>
+      </el-form>
+    </side-detail>
+    <!-- 编辑 -->
+    <outLib-edit
+      :visible.sync="editVisible"
+      :rowData="rowData"
+    />
   </div>
 </template>
 <script>
+import outLibEdit from './edit' //销售出库单编辑
 import detail from './outLibDetails/detail' //详情
 export default {
   components: {
-    detail
+    detail,
+    outLibEdit
   },
-  props: ['drawerData'],
+  props: ['visible', 'rowData'],
   data() {
     return {
       // 操作按钮
@@ -111,6 +124,18 @@ export default {
       // tabs当前选中
       activeName: 'detail',
       form: {},
+      editVisible: false, // 销售出库单编辑
+
+    }
+  },
+  computed: {
+    showPop: {
+      get() {
+        return this.visible
+      },
+      set(val) {
+        this.$emit('update:visible', false)
+      }
     }
   },
   methods: {
@@ -132,7 +157,7 @@ export default {
       }
       // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
       else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
-        this.$emit('buttonClick', label, this.drawerData.data)
+        if (label == '编辑') { this.editVisible = true }
       }
     },
   },

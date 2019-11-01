@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 18:09:32
+ * @LastEditTime: 2019-11-01 18:31:33
  * @Description: 报价单详情
 */
 <template>
   <side-detail
-    :title="drawerData.title"
-    :visible.sync="drawerData.visible"
+    title="报价单详情"
+    :visible.sync="showPop"
     width="920px"
   >
     <div slot="button">
@@ -94,7 +94,7 @@ export default {
         5: []
       },
       //dialog弹出框
-      dialogData: {
+      drawerData: {
         visible: false,
         title: '',
         type: '',
@@ -109,6 +109,16 @@ export default {
       },
       activeName: 'detail',
       form: {},
+    }
+  },
+  computed: {
+    showPop: {
+      get() {
+        return this.visible
+      },
+      set(val) {
+        this.$emit('update:visible', false)
+      }
     }
   },
   methods: {
@@ -130,7 +140,7 @@ export default {
       }
       // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
       else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
-        this.$emit('buttonClick', label, this.drawerData.data)
+        // this.$emit('buttonClick', label, this.drawerData.data)
       }
     },
   },

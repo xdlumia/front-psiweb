@@ -2,66 +2,81 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 16:16:31
+ * @LastEditTime: 2019-11-01 19:31:43
  * @Description: 客户详情
 */
 <template>
   <div>
-    <div class="drawer-header">
-      <!-- 操作按钮 -->
-      <span
-        v-for="(item,index) of buttons"
-        :key="index"
-      >
-        <el-button
-          class="mr10"
-          @click="buttonsClick(item.label)"
-          v-if="currStatusType[currStatus].includes(item.label)"
-          size="mini"
-          :type="item.type"
-        >{{item.label}}</el-button>
-      </span>
-
-    </div>
-    <el-form
-      ref="form"
-      :model="form"
-      size="mini"
-      label-position="top"
+    <side-detail
+      title="客户详情"
+      :visible.sync="showPop"
+      width="920px"
     >
-      <el-tabs
-        v-model="activeName"
-        type="card"
-      >
-        <el-tab-pane
-          v-for="(val,key) of tabs"
-          :key="key"
-          :label="val"
-          :name="key"
+      <div slot="button">
+        <!-- 操作按钮 -->
+        <span
+          v-for="(item,index) of buttons"
+          :key="index"
         >
-        </el-tab-pane>
-      </el-tabs>
-      <keep-alive>
-        <components
-          class="d-auto-y"
-          style="height:calc(100vh - 200px)"
-          :is="activeName"
-          :button="false"
-        ></components>
-      </keep-alive>
-    </el-form>
+          <el-button
+            class="mr10"
+            @click="buttonsClick(item.label)"
+            v-if="currStatusType[currStatus].includes(item.label)"
+            size="mini"
+            :type="item.type"
+          >{{item.label}}</el-button>
+        </span>
+
+      </div>
+      <el-form
+        ref="form"
+        :model="form"
+        size="mini"
+        label-position="top"
+      >
+        <el-tabs
+          v-model="activeName"
+          type="card"
+        >
+          <el-tab-pane
+            v-for="(val,key) of tabs"
+            :key="key"
+            :label="val"
+            :name="key"
+          >
+          </el-tab-pane>
+        </el-tabs>
+        <keep-alive>
+          <components
+            class="d-auto-y"
+            style="height:calc(100vh - 200px)"
+            :is="activeName"
+            :button="false"
+          ></components>
+        </keep-alive>
+      </el-form>
+    </side-detail>
+    <!-- 客户编辑 -->
+    <clientAdd
+      :visible.sync="editVisible"
+      type="edit"
+      :rowData="rowData"
+    />
   </div>
 </template>
 <script>
 
 import basicInfo from './details/basic-info' //详情
 import clientData from './details/client-data' //详情
+import clientAdd from './add' //详情
+
 export default {
   components: {
     basicInfo,
     clientData,
+    clientAdd
   },
-  props: ['drawerData'],
+  props: ['visible', 'rowData'],
   data() {
     return {
       // 操作按钮
@@ -96,6 +111,17 @@ export default {
       },
       activeName: 'basicInfo',
       form: {},
+      editVisible: false,
+    }
+  },
+  computed: {
+    showPop: {
+      get() {
+        return this.visible
+      },
+      set(val) {
+        this.$emit('update:visible', false)
+      }
     }
   },
   methods: {
@@ -117,7 +143,10 @@ export default {
       }
       // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
       else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
-        this.$emit('buttonClick', label, this.drawerData.data)
+        if (label == '编辑') {
+          this.editVisible = true
+          return
+        }
       }
     },
   },

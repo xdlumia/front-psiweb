@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 11:31:21
- * @Description: 销售-销售出库单
+ * @LastEditTime: 2019-11-01 19:05:59
+ * @Description: 销售-销售出库单首页
  */
 <template>
   <div>
@@ -29,49 +29,27 @@
       <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
-          @click="eventHandle('outLib',row)"
+          @click="eventHandle('detailVisible',row)"
         >销售出库单编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <!-- 新增 / 编辑 弹出框-->
-    <el-dialog
-      :title="dialogData.title"
-      :visible.sync="dialogData.visible"
-      width="920px"
-      v-dialogDrag
-    >
-      <components
-        :is="dialogData.component"
-        :dialogData="dialogData"
-        @reload="$refs.table.reload(1)"
-      ></components>
-    </el-dialog>
-
-    <!-- 抽屉弹出框 -->
-    <side-detail
-      :title="drawerData.title"
-      :visible.sync="drawerData.visible"
-      width="920px"
-    >
-      <components
-        @buttonClick="eventHandle"
-        :is="drawerData.component"
-        :drawerData="drawerData"
-        @reload="$refs.table.reload(1)"
-      ></components>
-    </side-detail>
+    <!-- 出库单详情 -->
+    <outLib-details
+      :visible.sync="detailVisible"
+      :rowData="rowData"
+    />
 
   </div>
 </template>
 <script>
 import outLibDetails from './outLib-details' //销售出库单详情
-import edit from './edit' //编辑
+
 import filters from './filter' //销售出库单详情
 export default {
   name: 'outLibrary',
-  components: { outLibDetails, filters, edit },
+  components: { outLibDetails, filters },
   props: {
     // 是否显示按钮
     button: {
@@ -99,46 +77,19 @@ export default {
         page: 1,
         limit: 20
       },
-      //dialog弹出框
-      dialogData: {
-        visible: false,
-        title: '',
-        type: '',
-        data: '',
-      },
-      // 侧边栏弹出框
-      drawerData: {
-        visible: false,
-        title: '',
-        type: '',
-        data: '',
-      }
+      // 当前行数据
+      rowData: {},
+
+      detailVisible: false, // 出库单详情
     };
   },
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
-      // 防止row为undefined 导致报错
-      row = row ? row : {}
-      let typeObj = {
-        edit: { comp: 'edit', title: '编辑出库单' },
-        outLib: { comp: 'outLibDetails', title: '销售出库单' },
-      }
-      // 如果type是isDialog里的类型调用dialog弹出框
-      let isDialog = ['add', 'edit', 'copy', 'merge']
-      if (isDialog.includes(type)) {
-        this.dialogData.visible = true
-        this.dialogData.type = type
-        this.dialogData.title = typeObj[type].title
-        this.dialogData.component = typeObj[type].comp
-        this.dialogData.data = row;
-      } else {
-        this.drawerData.visible = true
-        this.drawerData.type = type
-        this.drawerData.title = typeObj[type].title
-        this.drawerData.component = typeObj[type].comp
-        this.drawerData.data = row;
-      }
+      this[type] = true
+      this.rowData = row
+      return
+
     },
     // 多选
     selectionChange() { },
@@ -148,26 +99,7 @@ export default {
       this.$refs.filters.$refs.form.resetFields();
       this.$refs.table.reload(1);
     },
-    // 删除公司
-    delCompany(row) {
-      this.$confirm("此操作将永久删除, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-        center: true
-      }).then(() => {
-        this.$api.seePumaidongService
-          .collegeManagerDelete({
-            ids: row
-          })
-          .then(res => {
-            // 重新加载表格数据
-            this.tableList = [];
-            this.$refs.companyTable.clearSelection();
-            this.$refs.companyTable.reload();
-          });
-      });
-    }
+
   }
 };
 </script>

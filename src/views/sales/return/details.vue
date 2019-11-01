@@ -2,11 +2,15 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 16:05:09
+ * @LastEditTime: 2019-11-01 19:12:18
  * @Description: 销售出库单详情
 */
 <template>
-  <div>
+  <side-detail
+    title="销售退货单"
+    :visible.sync="showPop"
+    width="920px"
+  >
     <div class="drawer-header">
       <!-- 操作按钮 -->
       <span
@@ -49,7 +53,7 @@
         ></components>
       </keep-alive>
     </el-form>
-  </div>
+  </side-detail>
 </template>
 <script>
 import detail from './details/detail' //详情
@@ -59,7 +63,7 @@ export default {
     detail,
     outLib
   },
-  props: ['drawerData'],
+  props: ['visible', 'rowData'],
   data() {
     return {
       // 操作按钮
@@ -92,6 +96,16 @@ export default {
       },
       activeName: 'detail',
       form: {},
+    }
+  },
+  computed: {
+    showPop: {
+      get() {
+        return this.visible
+      },
+      set(val) {
+        this.$emit('update:visible', false)
+      }
     }
   },
   methods: {

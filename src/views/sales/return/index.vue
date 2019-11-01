@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 18:54:50
+ * @LastEditTime: 2019-11-01 19:24:24
  * @Description: 销售-销售退货单
  */
 <template>
@@ -33,40 +33,24 @@
       <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
-          @click="eventHandle('return',row)"
+          @click="eventHandle('returnVisible',row)"
         > 销售退货单编号</span>
-        <span @click="eventHandle('outLib',row)">销售出库单编号</span>
+        <span @click="eventHandle('outLibVisible',row)">销售出库单编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <!-- 新增 / 编辑 弹出框-->
-    <el-dialog
-      :title="dialogData.title"
-      :visible.sync="dialogData.visible"
-      width="920px"
-      v-dialogDrag
-    >
-      <components
-        :is="dialogData.component"
-        :dialogData="dialogData"
-        @reload="$refs.table.reload(1)"
-      ></components>
-    </el-dialog>
-
-    <!-- 抽屉弹出框 -->
-    <side-detail
-      :title="drawerData.title"
-      :visible.sync="drawerData.visible"
-      width="920px"
-    >
-      <components
-        @buttonClick="eventHandle"
-        :is="drawerData.component"
-        :drawerData="drawerData"
-        @reload="$refs.table.reload(1)"
-      ></components>
-    </side-detail>
+    <returnDetails
+      :visible.sync="returnVisible"
+      :rowData="rowData"
+      @reload="this.$refs.table.reload()"
+    />
+    <!-- 销售出库单 -->
+    <outLibDetails
+      :visible.sync="outLibVisible"
+      :rowData="rowData"
+      @reload="this.$refs.table.reload()"
+    />
   </div>
 </template>
 <script>
@@ -108,48 +92,17 @@ export default {
         page: 1,
         limit: 20
       },
-      //dialog弹出框
-      dialogData: {
-        visible: false,
-        title: '',
-        type: '',
-        data: '',
-      },
-      // 侧边栏弹出框
-      drawerData: {
-        visible: false,
-        title: '',
-        type: '',
-        data: '',
-      }
+      rowData: {},
+      returnVisible: false,
+      outLibVisible: false,
     };
   },
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
-      // 这里对象key用中文会不会有隐患? TODO
-      let typeObj = {
-        'return': { comp: 'returnDetails', title: `销售退货单:${row.id}` },
-        '编辑': { comp: 'add', title: `编辑报价单:${row.id}` },
-        'outLib': { comp: 'outLibDetails', title: '销售出库单' },
-        '生成销售出库单': { comp: 'outLibDetails', title: '生成销售出库单' },
-        '生成请购单': { comp: 'outLibDetails', title: '生成请购单' },
-      }
-      // 如果type是isDialog里的类型调用dialog弹出框
-      let isDialog = ['编辑', 'copy', 'merge']
-      if (isDialog.includes(type)) {
-        this.dialogData.visible = true
-        this.dialogData.type = type
-        this.dialogData.title = typeObj[type].title
-        this.dialogData.component = typeObj[type].comp
-        this.dialogData.data = row;
-      } else {
-        this.drawerData.visible = true
-        this.drawerData.type = type
-        this.drawerData.title = typeObj[type].title
-        this.drawerData.component = typeObj[type].comp
-        this.drawerData.data = row;
-      }
+      this[type] = true
+      this.rowData = row
+      return
     },
     // 多选
     selectionChange(val) {

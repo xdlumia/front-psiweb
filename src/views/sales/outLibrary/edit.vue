@@ -2,39 +2,46 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 11:29:53
- * @Description: file content
+ * @LastEditTime: 2019-11-01 19:05:46
+ * @Description: 编辑出库单
 */
 <template>
-  <div v-loading="loading">
-    <el-form
-      :mode="form"
-      rel="form"
-      label-position="top"
-    >
-      <!-- 报价信息组件 -->
-      <quote-info></quote-info>
-      <!-- 确定按钮 -->
-      <div class="ac pt20">
-        <el-button
-          type="primary"
-          @click="saveHandle('form')"
-          size="small"
-        >保存</el-button>
-        <el-button
-          @click="$emit('update:visible', false)"
-          size="small"
-        >取消</el-button>
-      </div>
-    </el-form>
+  <el-dialog
+    title="编辑出库单"
+    :visible.sync="showPop"
+    width="920px"
+    v-dialogDrag
+  >
+    <div v-loading="loading">
+      <el-form
+        :mode="form"
+        rel="form"
+        label-position="top"
+      >
+        <!-- 报价信息组件 -->
+        <quote-info></quote-info>
+        <!-- 确定按钮 -->
+        <div class="ac pt20">
+          <el-button
+            type="primary"
+            @click="saveHandle('form')"
+            size="small"
+          >保存</el-button>
+          <el-button
+            @click="$emit('update:visible', false)"
+            size="small"
+          >取消</el-button>
+        </div>
+      </el-form>
 
-  </div>
+    </div>
+  </el-dialog>
 </template>
 <script>
 // 填写报价信息
 import quoteInfo from '@/views/sales/quote/add/quote-info.vue'
 export default {
-  props: ['dialogData'],
+  props: ['visible', 'rowData', 'type'],
   components: {
     quoteInfo
   },
@@ -62,6 +69,16 @@ export default {
   },
   mounted() {
 
+  },
+  computed: {
+    showPop: {
+      get() {
+        return this.visible
+      },
+      set(val) {
+        this.$emit('update:visible', false)
+      }
+    }
   },
   methods: {
     // 编辑和新增
