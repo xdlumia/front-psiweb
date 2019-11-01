@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:41:19
- * @Description: 销售-费用分摊单
+ * @LastEditTime: 2019-11-01 19:49:59
+ * @Description: 销售-账单调整单
  */
 <template>
   <div>
@@ -13,7 +13,7 @@
       :filter="true"
       :moreButton="true"
       :column="true"
-      title="费用分摊单"
+      title="账单调整单"
       @clear-filter="reset()"
       api="bizSystemService.getEmployeeList"
       exportApi="bizSystemService.getEmployeeList"
@@ -26,7 +26,7 @@
           type="primary"
           size="mini"
           @click="eventHandle('addVisible')"
-        >新增分摊</el-button>
+        >新增账单调整</el-button>
       </template>
       <template v-slot:filter>
         <filters
@@ -42,7 +42,7 @@
         <span
           class="d-text-blue"
           @click="eventHandle('detailVisible',row)"
-        > 客户编号</span>
+        > 账单调整</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
@@ -54,7 +54,7 @@
       :rowData="rowData"
       @reload="this.$refs.table.reload()"
     />
-    <!-- 新增分摊-->
+    <!-- 新增账单调整-->
     <add
       type="add"
       :visible.sync="addVisible"
@@ -64,7 +64,7 @@
   </div>
 </template>
 <script>
-import add from './add' // 新增分摊
+import add from './add' // 新增账单调整
 import detail from './details' //客户详情
 let filterList = [
   { label: '排序', prop: 'sort', default: true, type: 'sort', options: [], },
