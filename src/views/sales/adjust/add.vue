@@ -2,12 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:27:36
- * @Description: 客户管理-新增客户
+ * @LastEditTime: 2019-11-01 19:36:39
+ * @Description: 客户管理-新增分摊
 */
 <template>
   <el-dialog
-    title="新增客户"
+    title="新增分摊"
     :visible.sync="showPop"
     width="920px"
     v-dialogDrag
@@ -27,10 +27,10 @@
           :label="val"
           :name="key"
         />
-        <!-- 基本信息 -->
-        <base-info id="baseInfo" />
-        <!-- 发票信息 -->
-        <invoice-info id="invoiceInfo" />
+        <!-- 分摊信息 -->
+        <apportion-info id="apportionInfo" />
+        <!-- 商品信息 -->
+        <commodity-info id="commodityInfo" />
         <!-- 备注信息 -->
         <extras-info id="extrasInfo" />
       </d-tabs>
@@ -58,8 +58,8 @@ export default {
     return {
       // tab操作栏
       tabs: {
-        baseInfo: '基本信息',
-        invoiceInfo: '发票信息',
+        apportionInfo: '分摊信息',
+        commodityInfo: '商品信息',
         extrasInfo: '备注信息',
       },
       activeName: 'baseInfo',

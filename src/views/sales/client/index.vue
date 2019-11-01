@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:27:26
+ * @LastEditTime: 2019-11-01 19:37:31
  * @Description: 销售-客户管理
  */
 <template>
@@ -66,7 +66,6 @@
 <script>
 import clientAdd from './add' // 客户新增
 import clientDetail from './details' //客户详情
-import quoteAdd from '@/views/sales/quote/add.vue' //新增报价单
 let filterList = [
   { label: '排序', prop: 'sort', default: true, type: 'sort', options: [], },
   { label: '客户编号', prop: 'title', default: true, type: 'text' },
@@ -81,8 +80,7 @@ export default {
   name: 'return',
   components: {
     clientAdd,
-    clientDetail,
-    quoteAdd
+    clientDetail
   },
   props: {
     // 是否显示按钮
