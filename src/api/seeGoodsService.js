@@ -1,3 +1,10 @@
+/*
+ * @Author: 高大鹏
+ * @Date: 2019-10-31 15:09:35
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-11-01 11:40:49
+ * @Description: description
+ */
 /**
  * @author 徐贺
  * @description
@@ -5,8 +12,8 @@
  * @host 8132
  */
 
-import {Api} from 'see-web-basic'
-let baseURL = window.g.ApiUrl
+import { Api } from 'see-web-basic'
+const baseURL = window.g.ApiUrl
 
 const apiURL = {
   /**
@@ -53,55 +60,61 @@ export default {
   /**
    * @description 物品 物品管理
    */
-  getGoodsList (params) {
+  getGoodsList(params) {
     return Api.post(baseURL.seeGoodsService + apiURL.getGoodsList, params)
   },
-  GoodTree (params) {
+  GoodTree(params) {
     return Api.get(baseURL.seeGoodsService + apiURL.GoodTree, params)
   },
-  saveGoodsList (params) {
+  saveGoodsList(params) {
     return Api.post(baseURL.seeGoodsService + apiURL.saveGoodsList, params)
   },
-  deleteGoodsList (params) {
+  deleteGoodsList(params) {
     return Api.del(baseURL.seeGoodsService + apiURL.deleteGoodsList, params)
   },
-  getGoodsDetail (params) {
+  getGoodsDetail(params) {
     return Api.get(baseURL.seeGoodsService + apiURL.getGoodsDetail, params)
   },
-  saveGoodsInfo (params) {
+  saveGoodsInfo(params) {
     return Api.post(baseURL.seeGoodsService + apiURL.saveGoodsInfo, params)
   },
-  editGoodsInfo (params) {
+  editGoodsInfo(params) {
     return Api.post(baseURL.seeGoodsService + apiURL.editGoodsInfo, params)
   },
-  getAllGoods (params) {
+  getAllGoods(params) {
     return Api.get(baseURL.seeGoodsService + apiURL.getAllGoods, params)
   },
-  addGoodsSpec (params) {
+  addGoodsSpec(params) {
     return Api.post(baseURL.seeGoodsService + apiURL.addGoodsSpec, params)
   },
-  getGoodsListByClassId (params) {
+  getGoodsListByClassId(params) {
     return Api.get(baseURL.seeGoodsService + apiURL.getGoodsListByClassId, params)
   },
-  getGoodsInfoByIdAndSpec (params) {
+  getGoodsInfoByIdAndSpec(params) {
     return Api.get(baseURL.seeGoodsService + apiURL.getGoodsInfoByIdAndSpec, params)
   },
   /**
    * @description  物品 类目管理
    */
-  fgoodsFirstClassList (params) {
+  fgoodsFirstClassList(params) {
     return Api.get(baseURL.seeGoodsService + apiURL.fgoodsFirstClassList, params)
   },
-  fgetChildClassList (params) {
+  fgetChildClassList(params) {
     return Api.get(baseURL.seeGoodsService + apiURL.fgetChildClassList, params)
   },
-  handelGoodsChild (params) {
+  handelGoodsChild(params) {
     return Api.post(baseURL.seeGoodsService + apiURL.handelGoodsChild, params)
   },
-  saveGoodsChild (params) {
+  saveGoodsChild(params) {
     return Api.post(baseURL.seeGoodsService + apiURL.saveGoodsChild, params)
   },
-  deleteGoodsInfo (params) {
+  deleteGoodsInfo(params) {
     return Api.del(baseURL.seeGoodsService + apiURL.deleteGoodsInfo, params)
+  },
+
+  // /goodsClass/tree
+  getGoodsClass(params) {
+    return Api.get(baseURL.seeGoodsService + '/goodsClass/tree', params)
   }
+
 }

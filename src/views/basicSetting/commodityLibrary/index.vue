@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-01 11:03:59
+ * @LastEditTime: 2019-11-01 18:47:53
  * @Description: 商品管理
  -->
 <template>
@@ -11,114 +11,14 @@
     <div class="d-content d-main">
       <div class="goods-top">
         <span class="f18 lh50 b">商品库</span>
-        <div class="goods-shaixuan fr ac d-pointer d-relative mt10 ml10">
-          <i @click="buildDrapDown = !buildDrapDown" class="iconfont icon-filter mr20"></i>
-          <div v-if="buildDrapDown" class="d-absolute d-flex d-drapdown">
-            <div class="wfull p10" style="background: #FFF;">
-              <div class="wfull ac" style="border-bottom: 1px solid rgba(228, 228, 228, 1);">
-                <span class="d-text-gray b">筛选</span>
-                <i @click="buildDrapDown = false" class="el-icon-close fr f16 d-pointer"></i>
-              </div>
-              <div
-                @click="clearAll"
-                class="f13 d-text-qgray lh30"
-                style="height: 30px;width: 100%;"
-              >
-                <span class="fl">
-                  <i class="el-icon-search mr5"></i>物品筛选
-                </span>
-                <span class="f13 fr d-pointer d-text-blue">清除筛选</span>
-              </div>
-              <div class="mt5 mb5">
-                <el-input
-                  v-model="goodsForm.goodsCode"
-                  class="bn"
-                  placeholder="请输入物品编码"
-                  size="small"
-                  style="width: 100%;"
-                >
-                  <el-button @click="getGoodsList" slot="append" icon="el-icon-search"></el-button>
-                </el-input>
-              </div>
-              <div class="mt10">
-                <div class="d-text-qgray f13 fl" style="height:30px;">物品名称</div>
-                <div>
-                  <el-input
-                    v-model="goodsForm.goodsName"
-                    class="bn"
-                    placeholder="请输入物品名称"
-                    size="small"
-                    style="width: 100%;"
-                  >
-                    <el-button @click="getGoodsList" slot="append" icon="el-icon-search"></el-button>
-                  </el-input>
-                </div>
-              </div>
-
-              <div class="mt10">
-                <div class="d-text-qgray f13 fl" style="height:30px;">物品规格</div>
-                <div>
-                  <el-input
-                    v-model="goodsForm.goodsSpec"
-                    class="bn"
-                    placeholder="请输入物品规格"
-                    size="small"
-                    style="width: 100%;"
-                  >
-                    <el-button @click="getGoodsList" slot="append" icon="el-icon-search"></el-button>
-                  </el-input>
-                </div>
-              </div>
-
-              <div class="mt10">
-                <div class="d-text-qgray f13 fl" style="height:30px;">物品分类</div>
-                <div>
-                  <el-cascader
-                    style="width: 100%;"
-                    size="small"
-                    change-on-select
-                    :options="goodsClassifyList"
-                    v-model="selectedOptions"
-                    :props="props"
-                    @change="handleChange"
-                  ></el-cascader>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <el-button
-          v-if="authorityButtons.includes('decorate_goods_mgr_1002')"
-          @click="deleteGoodsList"
-          size="medium"
-          type="danger"
-          style="margin-right:5px;margin-top:10px;"
-          class="fr mr10 mt10"
-        >删除</el-button>
         <el-button
           v-if="authorityButtons.includes('decorate_goods_mgr_1001')"
           size="medium"
           type="primary"
-          @click="fhandelGoods('goodsAdd','add')"
+          @click="handleAddGood('goodsAdd','add')"
           style="margin-right:5px;margin-top:10px;"
           class="fr mr5 mt10"
         >添加</el-button>
-        <!-- 此需求暂不做,不要删 -->
-        <el-button
-          size="medium"
-          type="primary"
-          @click="exportExcel('goodsAdd','add')"
-          style="margin-right:5px;margin-top:10px;"
-          class="fr mr5 mt10 el-icon-upload2"
-        >一键导出</el-button>
-        <el-button
-          size="medium"
-          type="primary"
-          @click="importExcel('importExcel','add')"
-          style="margin-right:5px;margin-top:10px;"
-          class="fr mr5 mt10 el-icon-download"
-        >导入</el-button>
       </div>
       <div class="goods-wrapper">
         <div class="ba mr5 mt10 p10" style="flex:0 0 240px;box-sizing: border-box;">
@@ -129,9 +29,18 @@
               :label="item.content"
               :name="item.code"
             ></el-tab-pane>
+            <el-button type="text" @click="setCategory">全部</el-button>
+            <el-tree
+              ref="categoryTree"
+              highlight-current
+              node-key="id"
+              :data="treeData"
+              :props="props"
+              @node-click="handleNodeClick"
+            ></el-tree>
           </el-tabs>
         </div>
-        <div style="flex:1">
+        <div style="flex:1;width: calc(100% - 240px)">
           <el-table
             ref="multipleTable"
             border
@@ -240,6 +149,17 @@
         </div>
       </div>
     </div>
+
+    <el-dialog :visible.sync="visible" title v-dialogDrag :show-close="false" width="1000px">
+      <div slot="title" style="display:flex;">
+        <h3 style="flex:1;text-align:center;">公司账户设置</h3>
+        <div>
+          <el-button type="primary" size="mini" @click="saveGood">保存</el-button>
+          <el-button size="mini" @click="visible=false">关闭</el-button>
+        </div>
+      </div>
+      <add-good ref="addGood"></add-good>
+    </el-dialog>
   </div>
 </template>
 
@@ -250,9 +170,11 @@ import supplierList from './supplierList' // 供应商管理
 import goodsAdd from './goodsAdd' // 新增/编辑物品
 import checkGoods from './checkGoods' // 点击编码查看物品
 import importExcel from './importExcel' // 物品导入
+import addGood from './add-good'
 export default {
   data() {
     return {
+      visible: false,
       activeName: 'PSI_SP_KIND-1',
       multipleSelection: [],
       selectedOptions: [],
@@ -277,6 +199,7 @@ export default {
       goodsForm: {
         page: 1,
         limit: 15,
+        categoryCode: 'PSI_SP_KIND-1', // 类目
         goodsCode: '', // 物品编码
         goodsName: '', // 物品名称
         goodsSpec: '', // 物品规格
@@ -284,10 +207,12 @@ export default {
       },
       goodsTable: [], // 物品列表
       goodsClassifyList: [], // 物品分类列表(下拉框用)
-      categoryList: []
+      categoryList: [],
+      treeData: []
     }
   },
   components: {
+    addGood,
     supplierList,
     goodsAdd,
     checkGoods,
@@ -299,13 +224,37 @@ export default {
     this.getGoodsClassify()
     this.getGoodsList()
     this.getCategoryList()
+    this.getGoodsClass()
   },
   watch: {
   },
   methods: {
-    handleClick(name) {
-      console.log(name)      
+    saveGood() {
+      this.$refs.addGood && this.$refs.addGood.saveGood()
     },
+    setCategory() {
+      this.$refs.categoryTree.setCurrentKey(null)
+      this.goodsForm.categoryCode = this.activeName
+      this.goodsForm.classId = null
+      this.getGoodsList()
+    },
+    handleNodeClick(data, node) {
+      console.log(data)
+      this.goodsForm.classId = data.id
+      this.goodsForm.categoryCode = null
+      this.getGoodsList()
+    },
+    // 获取分类列表
+    getGoodsClass() {
+      this.$api.seeGoodsService.getGoodsClass({ categoryCode: this.activeName }).then(res => {
+        console.log(res)
+        this.treeData = res.data
+      })
+    },
+    handleClick() {
+      this.getGoodsClass()
+    },
+    // 获取类目列表
     getCategoryList() {
       this.$api.seeDictionaryService.getDicCommonValueList('PSI_SP_KIND').then(res => {
         console.log(res)
@@ -423,6 +372,9 @@ export default {
       setTimeout(() => { // 触发子组件方法
         this.$refs[this.popupRight.point].getSuppliersByGoodsId()
       }, 50)
+    },
+    handleAddGood() {
+      this.visible = true
     },
     fhandelGoods(popname, type, row) { // 点击新增或者编辑
       this.popupRight.dialogVisiblePopup = !this.popupRight.dialogVisiblePopup

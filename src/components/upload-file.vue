@@ -1,3 +1,10 @@
+<!--
+ * @Author: 高大鹏
+ * @Date: 2019-11-01 17:59:56
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-11-01 18:16:52
+ * @Description: description
+ -->
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
@@ -15,35 +22,30 @@
 
 
 <template>
-  <div
-    v-loading.fullscreen.lock="fullscreenLoading"
-    element-loading-text="正在上传中"
-  >
+  <div v-loading.fullscreen.lock="fullscreenLoading" element-loading-text="正在上传中">
     <el-upload
       :drag="drag"
       :multiple="multiple"
       :list-type="listType"
-      action=""
+      action
       :before-upload="doUpload"
       :accept="imgAccept(limit?limit.type:[])"
     >
       <slot>
-        <el-button
-          size="small"
-          type="primary"
-        >点击上传</el-button>
+        <el-button size="small" type="primary">点击上传</el-button>
       </slot>
     </el-upload>
   </div>
 </template>
 <script>
+import OSS from 'ali-oss'
 
-let addZero = (str = '', length = 2, char = '0') => {
+const addZero = (str = '', length = 2, char = '0') => {
   return str.toString().padStart(length, char)
 }
 
 /**
- * 
+ *
   * @example 使用示例
   *        <upload-file v-model :limit="obj" > </upload-pic>
   *          obj = {
@@ -51,7 +53,7 @@ let addZero = (str = '', length = 2, char = '0') => {
   *          }
  */
 export default {
-  name: 'upload',
+  name: 'Upload',
   props: {
     // 是否支持拖拽上传
     drag: {
@@ -77,7 +79,7 @@ export default {
     }
 
   },
-  data() {
+  data () {
     return {
       fullscreenLoading: false,
       OSS: {},
@@ -86,9 +88,9 @@ export default {
       percentage: 0
     }
   },
-  created() {
+  created () {
     this.imglist = this.fileList
-    let timeStamp = new Date().getTime()
+    const timeStamp = new Date().getTime()
     this.OSS = this.$local.fetch('OSS')
     if (!this.OSS || this.OSS && !this.OSS.expiration || this.OSS && this.OSS.expiration && this.OSS.expiration < timeStamp) {
       // oss不存在 或者 且oss expiration不存在 或者 expartion 小于 timeStamp 重新请求
@@ -97,11 +99,11 @@ export default {
   },
   methods: {
     imgAccept: function (arr) {
-      let accArr = []
+      const accArr = []
       arr.forEach((item) => {
         if (item === 'jpg' || item === 'png' || item === 'jpeg' || item == 'gif') {
           // 统一处理 jpg 为 jpeg
-          let type = { 'jpg': 'jpeg' }
+          const type = { 'jpg': 'jpeg' }
           accArr.push(`image/${type[item] ? type[item] : item}`)
         } else if (item === 'mp4' || item === 'avi') {
           accArr.push(`video/${item}`)
@@ -127,7 +129,7 @@ export default {
       return accArr.join(',')
     },
 
-    getOssTicket() {
+    getOssTicket () {
       return new Promise(resolve => {
         this.$api.seeExternService.getOssTicket()
           .then(res => {
@@ -146,23 +148,23 @@ export default {
     //       this.OSS = res.data || {}
     //     })
     // },
-    async doUpload(file) {
-      let timeStamp = new Date().getTime()
+    async doUpload (file) {
+      const timeStamp = new Date().getTime()
       this.OSS = this.$local.fetch('OSS')
       if (!this.OSS || this.OSS && !this.OSS.expiration || this.OSS && this.OSS.expiration && this.OSS.expiration < timeStamp) {
         // oss不存在 或者 且oss expiration不存在 或者 expartion 小于 timeStamp 重新请求
         await this.getOssTicket()
       }
-      let oldName = file.name
+      const oldName = file.name
       if (this.limit) {
-        let size = this.size
+        const size = this.size
         if (file.size / 1024 / 1024 > size) {
           this.$message.error(`上传的文件不能超过${size}M`)
           return false
         }
 
         if (this.limit.type && Array.isArray(this.limit.type) && this.limit.type.length > 0) {
-          let appendName = file.name.split('.').pop()
+          const appendName = file.name.split('.').pop()
           if (!this.limit.type.includes(appendName)) {
             this.$message.error('上传文件的类型不合法')
             return false
@@ -173,7 +175,7 @@ export default {
         return false
       }
       this.fullscreenLoading = true
-      let companyCode = this.$local.fetch('userInfo').companyCode
+      const companyCode = this.$local.fetch('userInfo').companyCode
       const client = new OSS({
         region: this.region,
         accessKeyId: this.OSS.accessKeyId,
@@ -185,15 +187,15 @@ export default {
       this.percentage = 0
       if (file) {
         let datePath = ''
-        let myDate = new Date()
+        const myDate = new Date()
         datePath = myDate.getFullYear() + addZero(myDate.getMonth() + 1) + '/'
         let randomNum = 0
         while (randomNum.length != 4) {
           randomNum = Math.floor(Math.random() * 10000).toString()
         }
 
-        let filename = file.name.split('.').pop()
-        let randomName = new Date().getTime() + '-' + randomNum + '.' + filename
+        const filename = file.name.split('.').pop()
+        const randomName = new Date().getTime() + '-' + randomNum + '.' + filename
         let filePath = ''
 
         if (filename === 'jpg' || filename === 'png' || filename === 'jpeg' || filename == 'gif') {
@@ -216,7 +218,7 @@ export default {
             'Content-Disposition': `inline;filename=${encodeURIComponent(oldName)}`
           }
         }).then((results) => {
-          let url = 'http://' + this.OSS.bucket + '.' + this.region + '.aliyuncs.com/' + results.name
+          const url = 'http://' + this.OSS.bucket + '.' + this.region + '.aliyuncs.com/' + results.name
           this.$emit('uploadSuccess', { name: randomName, url: url, oldName: oldName })
           this.$emit('input', url)
           this.fullscreenLoading = false
@@ -239,12 +241,12 @@ export default {
     }
   },
   computed: {
-    changfileList() {
+    changfileList () {
       return this.fileList
     }
   },
   watch: {
-    changfileList(to, from) {
+    changfileList (to, from) {
       if (to[0] && !from[0]) {
         this.imglist = this.fileList
       } else if (to[0] && from[0] && (to[0].url != from[0].url)) {
