@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 13:26:54
+ * @LastEditTime: 2019-11-01 13:36:11
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -61,7 +61,7 @@
     v-loading="loading"
     element-loading-text="正在初始化"
   >
-    <tableTop
+    <table-top
       @staHandle="staHandle"
       @moreHandle="moreHandle"
       @column="columnHandle"
@@ -71,6 +71,7 @@
       :filter="this.filter"
       :moreButton="this.moreButton"
       :column="this.column"
+      :staData="staList"
     >
       <!-- 自定义按钮 -->
       <template v-slot:button>
@@ -89,15 +90,16 @@
           <dFilter v-model="params" :options="filterOptions" />
         </slot>
       </template>
-    </tableTop>
+    </table-top>
 
     <!-- 表格内容 -->
-    <div
+    <!-- <div
       class="ac mt35 d-text-gray"
       v-if="!headers.length"
-    >暂无列内容</div>
+    >暂无列内容</div> -->
     <d-table
-      v-if="headers.length"
+      :autoInit="!!headers.length"
+      @response="tabelRes"
       @selection-change="selectionChange"
       :params="params"
       :api="api"
@@ -187,15 +189,28 @@ export default {
   data() {
     return {
       loading: false,
+      // 表格头
       headers: [],
-      selectionRow: []
+      // 选中多行
+      selectionRow: [],
+      // 统计列表
+      staList: [],
     };
   },
   created() {
   },
+  mounted() {
+
+  },
   methods: {
+    // 重新加载
     reload() {
       this.$refs.table&&this.$refs.table.reload(1);
+    },
+    // 表格加载成功返回参数
+    tabelRes(res) {
+      // 获取统计列表
+      this.staList = this.$refs.table.response.data
     },
     // 统计点击筛选
     staHandle(row) {
@@ -228,11 +243,11 @@ export default {
     },
     // 返回的列数据
     columnHandle(cols) {
-      this.headers = cols;
       this.params.cols = cols.map(r => r.id);
       setTimeout(() => {
         this.$refs.table.reload(1);
-      });
+        this.headers = cols;
+      }, 2000)
     },
     // 多选
     selectionChange(val) {

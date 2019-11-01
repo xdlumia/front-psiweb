@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 13:29:12
+ * @LastEditTime: 2019-11-01 13:39:49
  * @Description: 表格头部 
  */
 <template>
@@ -18,7 +18,7 @@
             class="mr20 sta-item"
             :class="{active:index == staActive}"
             @click="staHandle(item,index)"
-            v-for="(item,index) of staList"
+            v-for="(item,index) of staData"
             :key="item.id"
           >{{item.title || '无'}}({{item.id}})</span>
         </div>
@@ -170,7 +170,14 @@ export default {
     draggable
   },
   props: {
-    // s
+    // 统计数据 列表
+    staData: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
+    // title
     title: {
       default: ''
     },
@@ -195,8 +202,6 @@ export default {
   data() {
     return {
       loading: false,
-      // 统计数据
-      staList: [],
       //当前下标
       staActive: 0,
       // 筛选框是否显示
@@ -229,20 +234,10 @@ export default {
     };
   },
   created() {
-    // 获取统计数据
-    this.collegeManagerList();
-    // // 获取列数据
+    // 获取列数据
     this.getTableCol();
   },
   methods: {
-    // 获取统计数据
-    collegeManagerList() {
-      this.$api.seePumaidongService
-        .collegeManagerList({ type: this.type, page: 1, limit: 8 })
-        .then(res => {
-          this.staList = res.data || [];
-        });
-    },
     // 统计筛选操作
     staHandle(row, index) {
       this.staActive = index;
@@ -250,8 +245,7 @@ export default {
     },
     // 获取自定义列的值
     getTableCol() {
-      this.$api.seePumaidongService
-        .collegeManagerList({ page: 1, limit: 20 })
+      this.$api.seePumaidongService.trenyuanxxList({ page: 1, limit: 20 })
         .then(res => {
           this.tableColList = res.data || [];
           // 返回列数据
@@ -290,7 +284,8 @@ export default {
         })
     }
   },
-  watch: {}
+  watch: {
+  }
 };
 </script>
 <style lang="scss" scoped>
