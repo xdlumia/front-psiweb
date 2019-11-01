@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:31:09
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 13:54:27
+ * @LastEditTime: 2019-11-01 14:44:01
  * @Description: 通用过滤组件
 */
 <template>
@@ -25,7 +25,7 @@
     </div>
     <div style="height:30px; line-height:30px;">
       <!-- 添加筛选 -->
-      <el-popover placement="bottom" trigger="click" width="200" ref="morePopover">
+      <el-popover placement="bottom" ref="morePopover" trigger="click" width="200">
         <el-link :underline="false" @click="$refs.morePopover.doClose()" class="el-icon-close close fr" title="关闭"></el-link>
         <div>
           <div :key="item.prop" v-for="item of options">
@@ -103,10 +103,19 @@ export default {
         let choose = this.usedFilter[item.prop];
         if (!choose) {
           if (item.type && item.type.match(/range$/i)) {
-            delete this.form['min' + item.prop];
-            delete this.form['max' + item.prop];
+            this.$set(this.form, 'min' + item.prop, '');
+            this.$set(this.form, 'max' + item.prop, '');
+          } else {
+            this.$set(this.form, item.prop, '');
           }
-          delete this.form[item.prop];
+        } else {
+          this.$set(
+            this.form,
+            item.prop,
+            typeof this.form[item.prop] == 'undefined'
+              ? ''
+              : this.form[item.prop]
+          );
         }
         return choose;
       });
@@ -114,7 +123,7 @@ export default {
   },
   methods: {
     init() {
-      console.log(this)
+      console.log(this);
       let used = {};
       this.options.map(item => {
         used[item.prop] = item.default ? true : false;
