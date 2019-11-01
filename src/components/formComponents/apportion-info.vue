@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 16:58:11
+ * @LastEditTime: 2019-11-01 17:15:43
  * @Description: 分摊信息
  */
 <template>
@@ -22,7 +22,7 @@
             >
               <el-button
                 slot="append"
-                @click="eventHandle('cost')"
+                @click="eventHandle('financeFee')"
                 icon="el-icon-plus"
               ></el-button>
             </el-input>
@@ -76,6 +76,11 @@
               placeholder="请输入"
               v-model="form.telPhone"
             >
+              <el-button
+                slot="append"
+                @click="eventHandle('outLib')"
+                icon="el-icon-plus"
+              ></el-button>
             </el-input>
           </el-form-item>
         </el-col>
@@ -86,39 +91,16 @@
       :title="dialogData.title"
       :visible.sync="dialogData.visible"
       width="920px"
-      append-to-body
       v-dialogDrag
     >
-      <d-table
-        @selection-change="selectionChange"
-        :params="params"
-        :api="api"
-        ref="table"
-        :style="{height:'450px'}"
-      >
-        <el-table-column
-          v-if="selection"
-          :fixed="true"
-          width="50"
-          type="selection"
-        ></el-table-column>
-        <el-table-column
-          :fixed="item.fixed"
-          :key="index"
-          :label="item.label"
-          :min-width="item.width"
-          v-for="(item,index) of headers"
-        >
-          <template slot-scope="scope">
-            <slot
-              :column="item"
-              :row="scope.row"
-              :scope="scope"
-              :value="scope.row[item.prop]"
-            />
-          </template>
-        </el-table-column>
-      </d-table>
+      <components
+        :status="false"
+        :more="false"
+        :button="false"
+        :column="false"
+        :is="dialogData.component"
+        :dialogData="dialogData"
+      ></components>
     </el-dialog>
   </div>
 </template>
@@ -156,17 +138,16 @@ export default {
       row = row ? row : {}
       // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {
-        'cost': { comp: 'cost', title: `费用单` },
-        'outLib': { comp: 'outLib', title: `销售出库单` },
+        'financeFee': { comp: 'financeFee', title: `费用单` },
+        'outLib': { comp: 'salesOutLibrary', title: `销售出库单` },
       }
       this.dialogData.visible = true
       this.dialogData.type = type
       this.dialogData.title = typeObj[type].title
       this.dialogData.component = typeObj[type].comp
       this.dialogData.data = row;
+
     },
-    // 多选
-    selectionChange(val) { },
   },
   components: {
   },

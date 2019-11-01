@@ -117,7 +117,7 @@ export default {
       }
       // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
       else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
-        this.$emit('buttonClick', name, this.drawerData.data)
+        this.$emit('buttonClick', label, this.drawerData.data)
       }
     },
   },

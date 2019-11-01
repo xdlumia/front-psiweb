@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 16:25:43
+ * @LastEditTime: 2019-11-01 17:32:25
  * @Description: 费用详情
 */
 <template>
@@ -68,7 +68,7 @@ export default {
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
         { label: '停用', type: 'primary', authCode: '' },
-        { label: '编辑', type: '', authCode: '' },
+        { label: '编辑', type: 'primary', authCode: '' },
         { label: '新增报价单', type: 'primary', authCode: '' }
       ],
       /**
@@ -117,7 +117,7 @@ export default {
       }
       // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
       else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
-        this.$emit('buttonClick', name, this.drawerData.data)
+        this.$emit('buttonClick', label, this.drawerData.data)
       }
     },
   },

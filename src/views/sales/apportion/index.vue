@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 16:58:01
+ * @LastEditTime: 2019-11-01 17:41:23
  * @Description: 销售-销售费用分摊单
  */
 <template>
@@ -42,7 +42,7 @@
         <span
           class="d-text-blue"
           @click="eventHandle('details',row)"
-        > 费用分摊单编号</span>
+        > 报价单编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
@@ -146,17 +146,19 @@ export default {
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
+      console.log(type, row)
       // 防止row为undefined 导致报错
       row = row ? row : {}
       // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {
         'add': { comp: 'clientAdd', title: `新增客户` },
-        '编辑': { comp: 'add', title: `编辑:${row.id}` },
+        '编辑': { comp: 'clientAdd', title: `编辑:${row.id}` },
         'details': { comp: 'clientDetail', title: `客户编号:${row.id}` },
-        '新增报价单': { comp: 'quoteAdd', title: '新增报价单' },
+        '报价单详情': { comp: 'quoteAdd', title: '新增报价单' },
       }
-      // 如果type是isDialog里的类型调用dialog弹出框
-      let isDialog = ['add', 'edit', '新增报价单']
+
+      // 如果type是isDialog里的类型调用dialog弹出
+      let isDialog = ['add', '编辑', '新增报价单']
       if (isDialog.includes(type)) {
         this.dialogData.visible = true
         this.dialogData.type = type

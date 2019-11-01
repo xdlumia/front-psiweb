@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 11:54:51
+ * @LastEditTime: 2019-11-01 17:42:20
  * @Description: 报价单详情
 */
 <template>
@@ -81,7 +81,7 @@ export default {
        * 根据当前状态判断显示哪些按钮
        * 1:新建 2:审核中 3:已通过 4:已驳回 5:已完成
        */
-      currStatus: 3,
+      currStatus: 1,
       currStatusType: {
         1: ['提交审核', '编辑', '删除'],
         2: ['撤销审核', '审核通过', '驳回'],
@@ -119,7 +119,7 @@ export default {
       }
       // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
       else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
-        this.$emit('buttonClick', name, this.drawerData.data)
+        this.$emit('buttonClick', label, this.drawerData.data)
       }
     },
   },

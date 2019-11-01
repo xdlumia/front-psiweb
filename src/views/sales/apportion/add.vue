@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 16:37:52
+ * @LastEditTime: 2019-11-01 17:17:46
  * @Description: 客户管理-新增客户
 */
 <template>
@@ -25,7 +25,7 @@
         <!-- 分摊信息 -->
         <apportion-info id="apportionInfo" />
         <!-- 商品信息 -->
-        <commodity-info-edit id="commodityInfEdit" />
+        <commodity-info id="commodityInfo" />
         <!-- 备注信息 -->
         <extras-info id="extrasInfo" />
       </d-tabs>
@@ -54,7 +54,7 @@ export default {
       // tab操作栏
       tabs: {
         apportionInfo: '分摊信息',
-        commodityInfEdit: '商品信息',
+        commodityInfo: '商品信息',
         extrasInfo: '备注信息',
       },
       activeName: 'baseInfo',
