@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:46:22
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 13:30:43
+ * @LastEditTime: 2019-11-01 15:17:59
  * @Description: 数字区间过滤框
 */
 <template>
@@ -10,12 +10,22 @@
     <el-row :gutter="10">
       <el-col :span="12">
         <el-form-item :prop="'min'+item.prop">
-          <el-input :placeholder="item.placeholder?(`${item.placeholder}最小值`):'最小值'" type="number" v-model="form['min'+item.prop]"></el-input>
+          <el-input
+            :placeholder="item.placeholder?(`${item.placeholder}最小值`):'最小值'"
+            @change="checkMinMax"
+            type="number"
+            v-model.number="form['min'+item.prop]"
+          ></el-input>
         </el-form-item>
       </el-col>
       <el-col :span="12">
         <el-form-item :prop="'max'+item.prop">
-          <el-input :placeholder="item.placeholder?(`${item.placeholder}最大值`):'最大值'" type="number" v-model="form['max'+item.prop]"></el-input>
+          <el-input
+            :placeholder="item.placeholder?(`${item.placeholder}最大值`):'最大值'"
+            @change="checkMinMax"
+            type="number"
+            v-model.number="form['max'+item.prop]"
+          ></el-input>
         </el-form-item>
       </el-col>
     </el-row>
@@ -30,7 +40,17 @@ export default {
   data() {
     return {};
   },
-  methods: {}
+  methods: {
+    checkMinMax() {
+      let min = this.form[`min${this.item.prop}`];
+      let max = this.form[`max${this.item.prop}`];
+      if (String(min).trim() && String(max).trim()) {
+        if (min > max) {
+          this.form[`min${this.item.prop}`] = max;
+        }
+      }
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

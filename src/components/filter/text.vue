@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:46:22
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 12:51:08
+ * @LastEditTime: 2019-11-01 14:35:12
  * @Description: 模糊查询过滤框
 */
 <template>
@@ -18,6 +18,9 @@ export default {
   },
   data() {
     return {};
+  },
+  mounted(){
+      console.log(this)
   },
   methods: {}
 };
