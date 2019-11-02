@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-01 18:47:53
+ * @LastEditTime: 2019-11-02 14:56:42
  * @Description: 商品管理
  -->
 <template>
@@ -51,7 +51,15 @@
             style="width: 100%;border:1px solid #ebebeb;"
             @selection-change="handleSelectionChange"
           >
-            <el-table-column align="center" type="selection" min-width="55"></el-table-column>
+            <el-table-column align="center" label="商品编号" min-width="160" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <span
+                  @click="fcheckGoods('checkGoods',scope.row)"
+                  class="d-text-blue d-pointer"
+                >{{ scope.row.goodsCode }}</span>
+              </template>
+            </el-table-column>
+
             <el-table-column align="center" label="物品图片" min-width="120">
               <template slot-scope="scope">
                 <div class="goodspic d-pointer">
@@ -62,43 +70,21 @@
                     class="wfull"
                     v-img-view="'goodsManage'"
                   />
-                  <span v-else>暂无图片</span>
+                  <span v-else style="white-space:nowrap;">暂无图片</span>
                 </div>
-              </template>
-            </el-table-column>
-            <el-table-column align="center" label="物品编码" min-width="140" show-overflow-tooltip>
-              <template slot-scope="scope">
-                <span
-                  @click="fcheckGoods('checkGoods',scope.row)"
-                  class="d-text-blue d-pointer"
-                >{{ scope.row.goodsCode }}</span>
               </template>
             </el-table-column>
             <el-table-column
               align="center"
               prop="goodsCodeCustomer"
-              label="商品编码"
+              label="商品类别"
               min-width="140"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
               align="center"
-              prop="name"
-              label="物品名称"
-              min-width="120"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              align="center"
-              prop="brand"
-              label="品牌"
-              min-width="120"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              align="center"
               prop="date"
-              label="物品分类"
+              label="商品分类"
               min-width="120"
               show-overflow-tooltip
             >
@@ -106,26 +92,43 @@
                 <span class>{{ scope.row.firstClassName }}/{{ scope.row.secondClassName }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="单位" min-width="100" show-overflow-tooltip>
-              <template slot-scope="scope">
-                <span>{{ scope.row.unit | dictionary('SC_JLDW')}}</span>
-              </template>
-            </el-table-column>
+
             <el-table-column
               align="center"
-              prop="price"
-              label="参考价"
+              prop="name"
+              label="商品名称"
+              min-width="120"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              align="center"
+              prop="specOne"
+              label="商品规格"
+              min-width="120"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              align="center"
+              prop="configName"
+              label="配置"
+              min-width="120"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              prop="unit"
+              align="center"
+              label="单位"
               min-width="100"
               show-overflow-tooltip
             ></el-table-column>
-            <el-table-column align="center" label="供应商" min-width="80">
-              <template slot-scope="scope">
-                <el-button
-                  @click="fsupplierList('supplierList',scope.row)"
-                  type="primary"
-                  size="mini"
-                >查看</el-button>
-              </template>
+            <el-table-column
+              prop="taxRate"
+              align="center"
+              label="税率"
+              min-width="100"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">{{scope.row.taxRate ? scope.row.taxRate + '%' : ''}}</template>
             </el-table-column>
             <el-table-column align="center" label="操作" min-width="80">
               <template slot-scope="scope">
@@ -158,7 +161,7 @@
           <el-button size="mini" @click="visible=false">关闭</el-button>
         </div>
       </div>
-      <add-good v-if="visible" ref="addGood"></add-good>
+      <add-good @refresh="refresh" v-if="visible" ref="addGood"></add-good>
     </el-dialog>
   </div>
 </template>
@@ -229,6 +232,10 @@ export default {
   watch: {
   },
   methods: {
+    refresh() {
+      this.visible = false
+      this.getGoodsList()
+    },
     saveGood() {
       this.$refs.addGood && this.$refs.addGood.saveGood()
     },

@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-02 14:16:09
+ * @LastEditTime: 2019-11-02 14:43:28
  * @Description: 新增商品
  -->
 <template>
@@ -267,7 +267,7 @@ export default {
         ],
         'values[0].isEnable': { required: true, message: '请选择', trigger: 'change' },
         'values[0].warehouseId': { required: true, message: '请选择', trigger: 'change' },
-        'values[0].originalInventoryNum': { required: true, message: '请输入', trigger: 'blur' },
+        'values[0].originalInventoryNum': [{ required: true, message: '请输入', trigger: 'blur' }, { pattern: /^\d{1,11}?$/, message: '请输入正整数', trigger: 'blur' }],
         'values[0].originalPrice': [
           { required: true, message: '请输入', trigger: 'blur' },
           { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
@@ -288,7 +288,12 @@ export default {
     secondClassList() {
       const temp = this.firstClassList.find(item => item.id === this.goodForm.firstClassId)
       return temp ? temp.children : []
+    },
+    openingInventory() {
+      const { originalPrice, originalPriceAdjustment, originalInventoryNum } = this.goodForm.values[0] || {}
+      return { originalPrice, originalPriceAdjustment, originalInventoryNum }
     }
+
   },
   mounted() {
     this.commonwmsmanagerUsableList()
@@ -317,7 +322,7 @@ export default {
       this.$refs.goodForm.validate(valid => {
         if (valid) {
           this.$api.seeGoodsService.saveGoodsInfo(this.goodForm).then(res => {
-
+            this.$emit('refresh')
           })
         }
       })
@@ -351,6 +356,13 @@ export default {
       handler: function(newValue) {
         const temp = this.secondClassList.find(item => item.id === newValue)
         this.goodForm.values[0].taxRate = temp ? temp.taxRate : null
+      }
+    },
+    'openingInventory': {
+      handler: function(newValue) {
+        const temp = this.goodForm.values[0]
+        temp.originalAmount = temp.originalPrice * temp.originalInventoryNum
+        temp.originalCostDifference = (temp.originalPrice - temp.originalPriceAdjustment) * temp.originalInventoryNum
       }
     }
   }
