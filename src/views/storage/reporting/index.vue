@@ -3,7 +3,7 @@
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: 徐贺
  * @Last Modified time: 2019-10-28 14:00:41
- * @Description: 库房  销售单
+ * @Description: 库房  报溢报损单
  */
 <template>
   <div class="buying-requisition-page wfull hfull">
@@ -12,8 +12,15 @@
       :headers="tableHeader"
       :selection='false'
       api="bizSystemService.getEmployeeList"
-      title="销售单"
+      title="报溢报损单"
     >
+      <template v-slot:button>
+        <el-button
+          type="primary"
+          size='mini'
+          @click="visible = true"
+        >新增</el-button>
+      </template>
       <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
@@ -27,6 +34,7 @@
       :drawerData='drawerData'
       @update='update'
     />
+    <reportingAdd :visible.sync='visible' />
   </div>
 </template>
 <script>
@@ -35,10 +43,12 @@
  */
 import TableView from '@/components/tableView';
 import Details from './details.vue'
+import reportingAdd from './reporting-add'
 export default {
   components: {
     Details,
-    TableView
+    TableView,
+    reportingAdd
   },
   data() {
     return {
@@ -52,6 +62,7 @@ export default {
         page: 1,
         limit: 20
       },
+      visible: false,
       componentActive: '',//当前的组件
       drawerData: {//弹框的相关数据
         tableVisible: false,//销售单右侧抽屉
@@ -59,21 +70,13 @@ export default {
         component: 'Details'
       },
       activeName: '',
-      status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       tableHeader: [
-        { label: '销售出库单编号', prop: 'deptName', width: '140' },
-        { label: '客户名称', prop: 'deptName', width: '100' },
-        { label: '销售单编号', prop: 'deptName', width: '140' },
-        { label: '出库状态', prop: 'deptName', width: '100' },
-        { label: '发货状态', prop: 'deptName', width: '100' },
-        { label: '组装任务状态', prop: 'deptName', width: '140' },
-        { label: '拣货状态', prop: 'deptName', width: '100' },
-        { label: '商品类别', prop: 'deptName', width: '100' },
-        { label: '出库数量', prop: 'createTime', width: '100' },
-        { label: '未出库量', prop: 'createTime', width: '100' },
-        { label: '已出库量', prop: 'createTime', width: '100' },
-        { label: '出库人', prop: 'createTime', width: '100' },
-        { label: '生成时间', prop: 'createTime', width: '140' },
+        { label: '报溢报损单编号', prop: 'deptName', width: '140' },
+        { label: '类别', prop: 'deptName', width: '100' },
+        { label: '报溢/报损数量', prop: 'deptName', width: '100' },
+        { label: '总成本金额', prop: 'deptName', width: '100' },
+        { label: '含税总金额', prop: 'deptName', width: '100' },
+        { label: '创建/生成时间', prop: 'createTime', width: '140' },
         { label: '单据创建人', prop: 'createTime', width: '100' },
         { label: '创建部门', prop: 'createTime', width: '100' }
       ]
@@ -83,7 +86,7 @@ export default {
     //点击打开右侧边栏
     getTableVisible(data) {
       this.drawerData.tableVisible = true
-      this.drawerData.title = '销售单' + data.id
+      this.drawerData.title = '盘点单' + data.id
     },
     //tab换组件
     handleClick() {

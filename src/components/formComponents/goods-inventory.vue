@@ -8,6 +8,18 @@
 <template>
   <div>
     <form-card title='盘点商品'>
+      <div slot="title">
+        <span>盘点商品</span>
+        <span class="fr">
+          <span>
+            <el-link
+              :underline="false"
+              @click="fullscreen"
+              type="primary"
+            >全屏显示</el-link>
+          </span>
+        </span>
+      </div>
       <d-table
         api="seePumaidongService.collegeManagerList"
         :params="queryForm"
@@ -83,10 +95,15 @@
         ></el-table-column>
 
       </d-table>
+      <FullscreenElement
+        :element="$refs.companyTable"
+        :visible.sync="showInFullscreen"
+      />
     </form-card>
   </div>
 </template>
 <script>
+import FullscreenElement from '@/components/fullscreen-element';
 export default {
   data() {
     return {
@@ -101,11 +118,16 @@ export default {
         limit: 20
       },
       dialogVisible: false,
+      showInFullscreen: false
     }
   },
   methods: {
+    fullscreen() {
+      this.showInFullscreen = true;
+    }
   },
   components: {
+    FullscreenElement
   },
 }
 </script>

@@ -125,6 +125,27 @@
         </template>
       </el-table-column>
       <el-table-column
+        label="报溢报损数量"
+        min-width="150"
+      >
+        <template
+          slot-scope="{}"
+          class="d-relative"
+        >
+          <el-input-number
+            size="mini"
+            class="wfull"
+            :controls='false'
+            :min="0"
+          ></el-input-number>
+          <i
+            @click="changeVisible"
+            class="el-icon-plus d-text-blue d-absolute f18 b d-pointer"
+            style='right:15px;z-index:200;top:20px;'
+          ></i>
+        </template>
+      </el-table-column>
+      <el-table-column
         label="组装数量"
         min-width="100"
         prop="name"
