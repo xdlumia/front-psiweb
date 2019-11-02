@@ -3,15 +3,19 @@
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 徐贺
  * @LastEditTime: 2019-10-26 18:17:56
- * @Description: 生成发货单
+ * @Description: 新增盘点单
 */
 <template>
   <el-dialog
     :visible.sync="visible"
-    title="生成发货单"
+    title="新增盘点单"
+    @close='close'
     v-dialogDrag
   >
-    <el-container>
+    <el-container
+      style="padding:0;max-height:700px;"
+      class="d-auto-y"
+    >
       <el-header
         class="d-bg-white"
         style="height:54px;padding:0;"
@@ -24,29 +28,24 @@
             <span
               slot="label"
               v-anchor:deliverEdit
-            >发货信息</span>
+            >盘点信息</span>
           </el-tab-pane>
           <el-tab-pane name="logisticsEdit">
             <span
               slot="label"
               v-anchor:logisticsEdit
-            >物流信息</span>
+            >盘点商品</span>
           </el-tab-pane>
         </el-tabs>
       </el-header>
-      <el-main
-        :style="{
-                maxHeight:maxHeight+'px'
-            }"
-        style="padding:0;"
-      >
+      <el-main style="padding:0;max-height:700px;">
         <el-form
           :model="form"
           class="p10"
         >
-          <deliverEdit ref="deliverEdit" />
+          <inventoryInfo ref="deliverEdit" />
         </el-form>
-        <logisticsEdit ref="logisticsEdit" />
+        <commodityInfoEdit ref="logisticsEdit" />
       </el-main>
     </el-container>
     <span
@@ -54,30 +53,30 @@
       class="dialog-footer"
     >
       <el-button
-        @click="centerDialogVisible = false"
+        @click="close"
         size="small"
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="centerDialogVisible = false"
+        @click="close"
         size="small"
       >保 存</el-button>
     </span>
   </el-dialog>
 </template>
 <script>
-import deliverEdit from '@/components/formComponents/deliver-edit';
-import logisticsEdit from '@/components/formComponents/logistics-edit';
+import inventoryInfo from '@/components/formComponents/inventory-info';
+import commodityInfoEdit from '@/components/formComponents/commodity-info-edit';
 
 export default {
   components: {
-    deliverEdit,
-    logisticsEdit
+    inventoryInfo,
+    commodityInfoEdit
   },
   props: {
     visible: {
       type: Boolean,
-      default: true
+      default: false
     },
     form: {}
   },
@@ -95,6 +94,9 @@ export default {
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
+    },
+    close() {
+      this.$emit('update:visible', false)
     }
   }
 };
