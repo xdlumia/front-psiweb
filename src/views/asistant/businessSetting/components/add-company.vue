@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-29 18:07:46
+ * @LastEditTime: 2019-11-02 15:14:39
  * @Description: 业务设置-新增公司
  -->
 <template>
@@ -12,27 +12,32 @@
         <el-row :gutter="40">
           <el-col :span="8">
             <el-form-item label="公司名称">
-              <el-input v-model="companyForm.value"></el-input>
+              <el-input v-model="companyForm.corporationName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="开户银行">
-              <el-input v-model="companyForm.value"></el-input>
+              <el-input v-model="companyForm.accountBank"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="银行账号">
-              <el-input v-model="companyForm.value"></el-input>
+              <el-input v-model="companyForm.account"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="纳税人识别号">
-              <el-input v-model="companyForm.value"></el-input>
+              <el-input v-model="companyForm.taxpayersNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="地址、电话">
-              <el-input v-model="companyForm.value"></el-input>
+            <el-form-item label="地址">
+              <el-input v-model="companyForm.address"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="电话">
+              <el-input v-model="companyForm.phone"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -41,17 +46,17 @@
         <el-row :gutter="40">
           <el-col :span="8">
             <el-form-item label="发票最大限额">
-              <el-input v-model="companyForm.value"></el-input>
+              <el-input v-model="companyForm.invoice＿sum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="发票税率">
-              <el-input v-model="companyForm.value"></el-input>
+              <el-input v-model="companyForm.jinvoiceTaxRate"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="下限预警数量">
-              <el-input v-model="companyForm.value"></el-input>
+              <el-input v-model="companyForm.minLimitNum"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -64,47 +69,37 @@
         <el-row :gutter="40">
           <el-col :span="8">
             <el-form-item label="账户类型">
-              <el-input v-model="companyForm.value"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="支付宝账户名称">
-              <el-input v-model="companyForm.value"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="微信账户名称">
-              <el-input v-model="companyForm.value"></el-input>
+              <el-input v-model="companyForm.commonCorporationAccountEntities.accountType"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="账户名称">
-              <el-input v-model="companyForm.value"></el-input>
+              <el-input v-model="companyForm.commonCorporationAccountEntities.accountName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="开户名称">
-              <el-input v-model="companyForm.value"></el-input>
+              <el-input v-model="companyForm.commonCorporationAccountEntities.accountName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="开户银行（到支行）">
-              <el-input v-model="companyForm.value"></el-input>
+              <el-input v-model="companyForm.commonCorporationAccountEntities.accountBank"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="银行预留手机号">
-              <el-input v-model="companyForm.value"></el-input>
+              <el-input v-model="companyForm.commonCorporationAccountEntities.phone"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="开户账号">
-              <el-input v-model="companyForm.value"></el-input>
+              <el-input v-model="companyForm.commonCorporationAccountEntities.account"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="账户状态">
-              <el-input v-model="companyForm.value"></el-input>
+              <el-input v-model="companyForm.commonCorporationAccountEntities.state"></el-input>
             </el-form-item>
           </el-col>
         </el-row>

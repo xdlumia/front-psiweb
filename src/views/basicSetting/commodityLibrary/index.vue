@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-02 14:56:42
+ * @LastEditTime: 2019-11-02 15:13:08
  * @Description: 商品管理
  -->
 <template>
@@ -76,11 +76,15 @@
             </el-table-column>
             <el-table-column
               align="center"
-              prop="goodsCodeCustomer"
+              prop="categoryCode"
               label="商品类别"
               min-width="140"
               show-overflow-tooltip
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span class>{{ scope.row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
+              </template>
+            </el-table-column>
             <el-table-column
               align="center"
               prop="date"
@@ -169,10 +173,6 @@
 <script>
 /* eslint-disable eqeqeq */
 // import uploadPic from '@/components/uploadPic'
-import supplierList from './supplierList' // 供应商管理
-import goodsAdd from './goodsAdd' // 新增/编辑物品
-import checkGoods from './checkGoods' // 点击编码查看物品
-import importExcel from './importExcel' // 物品导入
 import addGood from './add-good'
 export default {
   data() {
@@ -215,11 +215,7 @@ export default {
     }
   },
   components: {
-    addGood,
-    supplierList,
-    goodsAdd,
-    checkGoods,
-    importExcel
+    addGood
   },
   computed: {
   },
