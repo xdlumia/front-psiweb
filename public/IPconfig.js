@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:29
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-01 18:10:14
+ * @LastEditTime: 2019-11-02 14:16:43
  * @Description: ip配置文件
  */
 // let model = 'build' // dev 为开发环境 build 为测试环境  product 为生产环境
@@ -32,7 +32,8 @@ const baseURL = {
   seeBaseinfoService: apisUrl + 'see-baseinfo-service', // 基础服务
   seePsiCommonService: apisUrl + 'see-psi-common-service',
   seeExternService: apisUrl + 'see-extern-service', // 9024 see-extern-service
-  seeGoodsService: apisUrl + 'see-goods-service' // 物品服务
+  seeGoodsService: apisUrl + 'see-goods-service', // 物品服务
+  seePsiWmsService: apisUrl + 'see-psi-wms-service' // 物品服务
 }
 window.g = {
   ApiUrl: baseURL

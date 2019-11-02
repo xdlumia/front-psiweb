@@ -158,7 +158,7 @@
           <el-button size="mini" @click="visible=false">关闭</el-button>
         </div>
       </div>
-      <add-good ref="addGood"></add-good>
+      <add-good v-if="visible" ref="addGood"></add-good>
     </el-dialog>
   </div>
 </template>
