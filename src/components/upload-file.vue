@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-01 17:59:56
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-01 18:16:52
+ * @LastEditTime: 2019-11-02 18:03:39
  * @Description: description
  -->
 /*
@@ -73,13 +73,13 @@ export default {
     },
     fileList: { // 回显图片
       type: Array,
-      default: function () {
+      default: function() {
         return []
       }
     }
 
   },
-  data () {
+  data() {
     return {
       fullscreenLoading: false,
       OSS: {},
@@ -88,7 +88,7 @@ export default {
       percentage: 0
     }
   },
-  created () {
+  created() {
     this.imglist = this.fileList
     const timeStamp = new Date().getTime()
     this.OSS = this.$local.fetch('OSS')
@@ -98,7 +98,7 @@ export default {
     }
   },
   methods: {
-    imgAccept: function (arr) {
+    imgAccept: function(arr) {
       const accArr = []
       arr.forEach((item) => {
         if (item === 'jpg' || item === 'png' || item === 'jpeg' || item == 'gif') {
@@ -129,7 +129,7 @@ export default {
       return accArr.join(',')
     },
 
-    getOssTicket () {
+    getOssTicket() {
       return new Promise(resolve => {
         this.$api.seeExternService.getOssTicket()
           .then(res => {
@@ -148,7 +148,7 @@ export default {
     //       this.OSS = res.data || {}
     //     })
     // },
-    async doUpload (file) {
+    async doUpload(file) {
       const timeStamp = new Date().getTime()
       this.OSS = this.$local.fetch('OSS')
       if (!this.OSS || this.OSS && !this.OSS.expiration || this.OSS && this.OSS.expiration && this.OSS.expiration < timeStamp) {
@@ -209,7 +209,7 @@ export default {
         }
         // 上传
         client.multipartUpload(companyCode + filePath + datePath + randomName, file, {
-          progress: function* (percentage, cpt) {
+          progress: function * (percentage, cpt) {
             // 上传进度
             this.percentage = percentage
           },
@@ -241,12 +241,12 @@ export default {
     }
   },
   computed: {
-    changfileList () {
+    changfileList() {
       return this.fileList
     }
   },
   watch: {
-    changfileList (to, from) {
+    changfileList(to, from) {
       if (to[0] && !from[0]) {
         this.imglist = this.fileList
       } else if (to[0] && from[0] && (to[0].url != from[0].url)) {
