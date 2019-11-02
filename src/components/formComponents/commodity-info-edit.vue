@@ -139,10 +139,10 @@
             :min="0"
           ></el-input-number>
           <i
-            @click="changeVisible"
-            class="el-icon-plus d-text-blue d-absolute f18 b d-pointer"
-            style='right:15px;z-index:200;top:20px;'
-          ></i>
+            @click="codeVisible = true"
+            class="d-text-blue d-absolute f14 b d-pointer"
+            style='right:15px;z-index:200;top:18px;'
+          >码</i>
         </template>
       </el-table-column>
       <el-table-column
@@ -232,12 +232,18 @@
       :visibleData='visibleData'
       :visible='visible'
     />
+    <reportingLossesCode
+      :visible.sync='codeVisible'
+      :dialogData='dialogData'
+    />
   </form-card>
 </template>
 <script>
 import commodityChoose from './commodity-choose'
+import reportingLossesCode from './reporting-losses-code'
+
 export default {
-  components: { commodityChoose },
+  components: { commodityChoose, reportingLossesCode },
   data() {
     return {
       tableData: [{ name: '110', children: [{ name: '1120' }], noChildren: true }, { name: '120', children: [], noChildren: true }],
@@ -261,11 +267,15 @@ export default {
         value: 'Guangzhou',
         label: '广州'
       }],
+      dialogData: {
+        title: '机器号/SN码 报溢/报损商品'
+      },
       state: '',
       value: '',
       visibleData: {
 
       },
+      codeVisible: false,
       visible: false
     };
   },
