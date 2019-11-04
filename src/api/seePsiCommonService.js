@@ -1,12 +1,12 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-11-04 16:01:39
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 17:02:06
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-11-04 17:18:58
  * @Description: file content
  */
 const MOCK_ADDRESS = '/mock/5db9778bbc54fc3da273f010/'
-
+const IS_MOCK = false
 export default {
   __mockAddress: MOCK_ADDRESS,
   /* =============附件表start=========== */
@@ -281,40 +281,40 @@ export default {
   // 删除
   commoncorporationDelete: {
     'url': '/commoncorporation/delete',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'delete'
   },
 
   // 查看详细信息
   commoncorporationInfo: {
     'url': '/commoncorporation/info/{id}',
-    'mock': true
+    'mock': IS_MOCK
   },
 
   // 获取列表
   commoncorporationList: {
     'url': '/commoncorporation/list',
-    'mock': true
+    'mock': IS_MOCK
   },
 
   // 逻辑删除
   commoncorporationLogicDelete: {
     'url': '/commoncorporation/logicDelete',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'delete'
   },
 
   // 保存
   commoncorporationSave: {
     'url': '/commoncorporation/save',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'post'
   },
 
   // 修改
   commoncorporationUpdate: {
     'url': '/commoncorporation/update',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'post'
   },
   /* =============公司设置表end=========== */
@@ -323,40 +323,40 @@ export default {
   // 删除
   commoncorporationaccountDelete: {
     'url': '/commoncorporationaccount/delete',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'delete'
   },
 
   // 查看详细信息
   commoncorporationaccountInfo: {
     'url': '/commoncorporationaccount/info/{id}',
-    'mock': true
+    'mock': IS_MOCK
   },
 
   // 获取列表
   commoncorporationaccountList: {
     'url': '/commoncorporationaccount/list',
-    'mock': true
+    'mock': IS_MOCK
   },
 
   // 逻辑删除
   commoncorporationaccountLogicDelete: {
     'url': '/commoncorporationaccount/logicDelete',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'delete'
   },
 
   // 保存
   commoncorporationaccountSave: {
     'url': '/commoncorporationaccount/save',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'post'
   },
 
   // 修改
   commoncorporationaccountUpdate: {
     'url': '/commoncorporationaccount/update',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'post'
   },
   /* =============公司账户设置表end=========== */
@@ -797,19 +797,19 @@ export default {
   // 根据类型查看配置信息(1-销售,2-库房,3-财务)
   commonsystemconfigInfo: {
     'url': '/commonsystemconfig/info/{configType}',
-    'mock': true
+    'mock': IS_MOCK
   },
 
   // 获取列表
   commonsystemconfigList: {
     'url': '/commonsystemconfig/list',
-    'mock': true
+    'mock': IS_MOCK
   },
 
   // 保存
   commonsystemconfigSave: {
     'url': '/commonsystemconfig/save',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'post'
   },
   /* =============业务设置配置表end=========== */
@@ -818,40 +818,40 @@ export default {
   // 删除
   commonsystemreportDelete: {
     'url': '/commonsystemreport/delete',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'delete'
   },
 
   // 查看详细信息
   commonsystemreportInfo: {
     'url': '/commonsystemreport/info/{id}',
-    'mock': true
+    'mock': IS_MOCK
   },
 
   // 获取列表
   commonsystemreportList: {
     'url': '/commonsystemreport/list',
-    'mock': true
+    'mock': IS_MOCK
   },
 
   // 逻辑删除
   commonsystemreportLogicDelete: {
     'url': '/commonsystemreport/logicDelete',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'delete'
   },
 
   // 保存
   commonsystemreportSave: {
     'url': '/commonsystemreport/save',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'post'
   },
 
   // 修改
   commonsystemreportUpdate: {
     'url': '/commonsystemreport/update',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'post'
   },
   /* =============业务设置报表配置表end=========== */
