@@ -9,6 +9,7 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
+      :filterOptions='filterOptions'
       :headers="tableHeader"
       :selection='false'
       api="bizSystemService.getEmployeeList"
@@ -76,6 +77,92 @@ export default {
         { label: '生成时间', prop: 'createTime', width: '140' },
         { label: '单据创建人', prop: 'createTime', width: '100' },
         { label: '创建部门', prop: 'createTime', width: '100' }
+      ],
+      filterOptions: [
+        {
+          label: '排序',
+          type: 'sort',
+          prop: 'sort',
+          options: [
+            { label: '交易记录最高', value: '1' },
+            { label: '交易记录最低', value: '2' }
+          ],
+          default: true
+        },
+        { label: '销售出库单编号', prop: 'orderNo', default: true },
+        { label: '客户名称', prop: 'priceNo', default: true },
+        { label: '销售单编号', prop: 'orderNo', default: true },
+        {
+          label: '出库状态',
+          prop: 'orderStatus',
+          type: 'dict',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '发货状态',
+          prop: 'requireTime',
+          type: 'dict',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '组装任务状态',
+          prop: 'requireTime2',
+          type: 'dict',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '拣货状态',
+          prop: 'actUser',
+          type: 'dict',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '商品类别',
+          prop: 'actUser2',
+          type: 'dict',
+          default: true
+        },
+        {
+          label: '出库数量',
+          prop: 'actUser2',
+          type: 'employee',
+          default: true
+        },
+        {
+          label: '未出库量',
+          prop: 'actUser2',
+          type: 'employee',
+          default: true
+        },
+        {
+          label: '已出库量',
+          prop: 'actUser2',
+          type: 'employee',
+          default: true
+        },
+        {
+          label: '出库人',
+          prop: 'actUser2',
+          type: 'employee',
+          default: true
+        },
+        {
+          label: '生成时间',
+          prop: 'actUser2',
+          type: 'daterange',
+          default: true
+        },
+        {
+          label: '单据创建人',
+          prop: 'actUser2',
+          type: 'employee',
+          default: true
+        },
+        { label: '创建部门', prop: 'actUser3', type: 'employee' },
       ]
     };
   },

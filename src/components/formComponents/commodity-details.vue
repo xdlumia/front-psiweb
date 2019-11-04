@@ -22,7 +22,12 @@
           label="编号"
           show-overflow-tooltip
         ></el-table-column>
-
+        <el-table-column
+          prop="cityName"
+          min-width="140"
+          label="商品编号"
+          show-overflow-tooltip
+        ></el-table-column>
         <el-table-column
           prop="cityName"
           min-width="100"
@@ -90,7 +95,7 @@
 
         <el-table-column
           prop="createTime"
-          label="出入库时间"
+          label="入库时间"
           min-width="140"
           show-overflow-tooltip
         >

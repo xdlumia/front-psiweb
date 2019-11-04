@@ -3,7 +3,7 @@
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: mikey.zhaopeng
  * @Last Modified time: 2019-10-28 14:01:02
- * @Description: 库房  盘点单 详情组件
+ * @Description: 库房  报溢/报损单 详情组件
  */
 <template>
 
@@ -11,35 +11,18 @@
     :status="status"
     :visible.sync="drawerData.tableVisible"
     @close="$emit('update:visible',false)"
-    title="盘点单"
+    title="报溢/报损单"
     width="990px"
   >
     <div
       class="d-auto-y"
       style="height:calc(100vh - 130px)"
     >
-      <div class="drawer-header">
-        <el-button
-          @click="backVisible=true,isComponents = 'scanInCode',dialogData.title = '调入扫码'"
-          size="mini"
-          type="primary"
-        >完成盘点</el-button>
-        <el-button
-          @click="backVisible=true,isComponents = 'scanOutCode',dialogData.title = '调出扫码'"
-          size="mini"
-          type="primary"
-        >生成报损单</el-button>
-        <el-button
-          @click="hangVisible=true"
-          size="mini"
-          type="primary"
-        >生成报溢单</el-button>
-      </div>
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
           <el-form>
-            <inventoryInfo :disabled='true' />
-            <goodsInventory />
+            <reportingInfo :disabled='true' />
+            <goodsOverflow />
           </el-form>
         </el-tab-pane>
       </el-tabs>
@@ -48,14 +31,14 @@
 
 </template>
 <script>
-import inventoryInfo from '@/components/formComponents/inventory-info'
-import goodsInventory from '@/components/formComponents/goods-inventory';
+import reportingInfo from '@/components/formComponents/reporting-info'
+import goodsOverflow from '@/components/formComponents/goods-overflow';
 import SideDetail from '@/components/side-detail';
 export default {
   props: ['drawerData'],
   data() {
     return {
-      status: [{ label: '盘点状态', value: '2019-9-21 10:04:38' }, { label: '创建时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '生成/创建时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       backVisible: false,
       isComponents: '',
       dialogData: {
@@ -64,8 +47,8 @@ export default {
     };
   },
   components: {
-    inventoryInfo,
-    goodsInventory,
+    reportingInfo,
+    goodsOverflow,
     SideDetail,
   },
 }

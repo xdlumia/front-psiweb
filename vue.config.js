@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-06-13 17:33:33
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-28 15:48:31
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-04 16:17:38
  * @Description: 配置文件
  */
 module.exports = {

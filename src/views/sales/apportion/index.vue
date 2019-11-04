@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:41:19
+ * @LastEditTime: 2019-11-04 09:53:02
  * @Description: 销售-费用分摊单
  */
 <template>
@@ -42,7 +42,7 @@
         <span
           class="d-text-blue"
           @click="eventHandle('detailVisible',row)"
-        > 客户编号</span>
+        > 费用分摊单编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>

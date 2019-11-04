@@ -24,7 +24,7 @@
       <d-table
         :params="queryForm"
         ref="companyTable"
-        api="seePsiCommonService.commoncorporationList"
+        api="seeBaseinfoService.commoncorporationList"
         :data="tableData"
         :border="false"
         style="height: calc(100vh - 240px);"
@@ -116,7 +116,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiCommonService.commoncorporationLogicDelete({ id }).then(res => {
+        this.$api.seeBaseinfoService.commoncorporationLogicDelete({ id }).then(res => {
           this.$refs.companyTable.reload(1);
         })
       }).catch(() => {
@@ -132,7 +132,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiCommonService.commoncorporationUpdate(
+        this.$api.seeBaseinfoService.commoncorporationUpdate(
           { id, state }).then(res => {
           this.$refs.companyTable.reload(1);
         })
