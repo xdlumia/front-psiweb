@@ -2,11 +2,11 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 17:22:16
+ * @LastEditTime: 2019-11-04 18:35:01
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
- * @params type 当前是哪个功能页
+ * @params busType 当前是哪个功能页
  * @params selection 表格是否支持多选 默认false
  * @params filter 是否显示筛选 默认false
  * @params exportApi 导出api接口
@@ -17,7 +17,7 @@
  * @example 
   <!-- 
   <table-view
-    type="1"
+    busType="1"
     ref="table"
     :filter="true"
     :moreButton="true"
@@ -125,18 +125,18 @@
         type="selection"
       ></el-table-column>
       <el-table-column
-        :fixed="item.fixed"
-        :key="index"
-        :label="item.label"
-        :min-width="item.width"
         v-for="(item,index) of headers"
+        :key="index"
+        :label="item.columnName"
+        :min-width="item.width || 180"
+        :fixed="item.fixed"
       >
         <template slot-scope="scope">
           <slot
             :column="item"
             :row="scope.row"
             :scope="scope"
-            :value="scope.row[item.prop]"
+            :value="scope.row[item.columnFields]"
           />
         </template>
       </el-table-column>
@@ -170,7 +170,7 @@ export default {
     api: String, // 接口
     // 标题
     title: String,
-    type: "", //当前表格类型
+    busType: [String, Number], //当前表格类型
     // 是否显示筛选
     filter: {
       type: Boolean,
