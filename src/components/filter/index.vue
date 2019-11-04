@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:31:09
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 14:44:01
+ * @LastEditTime: 2019-11-04 17:10:12
  * @Description: 通用过滤组件
 */
 <template>
@@ -18,6 +18,8 @@
           :is="getCmp(item)"
           :item="item"
           :key="item.props"
+          @change="startFilter"
+          ref="filterBox"
           v-for="item of filterAvailable"
           v-model="form[item.prop]"
         />
@@ -91,7 +93,8 @@ export default {
   data() {
     return {
       addMoreFilter: false,
-      usedFilter: {}
+      usedFilter: {},
+      inited: false
     };
   },
   mounted() {
@@ -99,6 +102,7 @@ export default {
   },
   computed: {
     filterAvailable() {
+      if (!this.inited) return [];
       return this.options.filter(item => {
         let choose = this.usedFilter[item.prop];
         if (!choose) {
@@ -109,13 +113,26 @@ export default {
             this.$set(this.form, item.prop, '');
           }
         } else {
-          this.$set(
-            this.form,
-            item.prop,
-            typeof this.form[item.prop] == 'undefined'
-              ? ''
-              : this.form[item.prop]
-          );
+          if (item.type && item.type.match(/range$/i)) {
+            this.$set(
+              this.form,
+              'min' + item.prop,
+              this.form['min' + item.prop] || ''
+            );
+            this.$set(
+              this.form,
+              'max' + item.prop,
+              this.form['max' + item.prop] || ''
+            );
+          } else {
+            this.$set(
+              this.form,
+              item.prop,
+              typeof this.form[item.prop] == 'undefined'
+                ? ''
+                : this.form[item.prop]
+            );
+          }
         }
         return choose;
       });
@@ -123,15 +140,19 @@ export default {
   },
   methods: {
     init() {
-      console.log(this);
       let used = {};
       this.options.map(item => {
         used[item.prop] = item.default ? true : false;
       });
       this.usedFilter = used;
+      this.inited = true;
     },
     clearFilter() {
       this.$refs.filterForm.resetFields();
+      if (Array.isArray(this.$refs.filterBox)) {
+        this.$refs.filterBox.map(item => item.resetForm && item.resetForm());
+      }
+      this.startFilter();
     },
     getCmp(item) {
       let type = String(item.type || 'text');
@@ -143,6 +164,9 @@ export default {
     },
     resetPropsModel() {
       //
+    },
+    startFilter() {
+      this.$emit('change');
     }
   }
 };

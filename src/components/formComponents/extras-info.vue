@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 15:41:08
+ * @LastEditTime: 2019-11-04 15:23:09
  * @Description: 备注信息
 */
 <template>
@@ -19,18 +19,40 @@
     </div>
     <el-row>
       <el-col :span="24" class>
-        <el-form-item label="备注" size="mini">
-          <div class="d-text-gray mt10 d-elip wfull" v-if="!canEditable">备注</div>
-          <el-input :rows="3" maxlength="300" placeholder show-word-limit type="textarea" v-else v-model="data.textarea" />
+        <el-form-item label="备注" size="mini" prop="note">
+          <div class="d-text-gray mt10 d-elip wfull" v-if="!canEditable">{{data.note}}</div>
+          <el-input :rows="3" maxlength="300" placeholder show-word-limit type="textarea" v-else v-model="data.note" />
         </el-form-item>
       </el-col>
       <el-col :span="24" v-if="needUpload">
         <el-form-item label="上传附件" size="mini">
           <div class="d-text-gray mt10 d-elip wfull" v-if="!canEditable">上传附件</div>
-          <upload-file v-else></upload-file>
+          <upload-file
+            :limit="{
+            type:['doc','pdf','xls','ppt','zip','rar'],
+          }"
+            @uploadSuccess="uploadFile"
+            list-type="text"
+            v-else
+          >
+            <div class="al">
+              <!-- 产品刘晨辉说，附件最多上传10个 -->
+              <el-button size="small" type="primary" v-if="fileList.length<10">点击上传</el-button>
+              <div :key="item.url" v-for="(item,i) of fileList">
+                <span class="el-icon-document"></span>
+                <span class="d-inline f14 d-text-gray w200">{{item.fileName}}</span>
+                <span>
+                  <el-link @click.stop="delFile(i)" type="info">
+                    <i class="el-icon-circle-close"></i>
+                  </el-link>
+                </span>
+              </div>
+            </div>
+          </upload-file>
         </el-form-item>
       </el-col>
-      <el-col :span="24" v-if="needUpload">
+      <!-- 贺兴龙说，跟产品沟通过，清单可以不要 -->
+      <!-- <el-col :span="24" v-if="needUpload">
         <el-form-item label="附件文件名称清单" size="mini">
           <div class="wfull d-clear">
             <el-row :gutter="10">
@@ -47,7 +69,7 @@
             </el-row>
           </div>
         </el-form-item>
-      </el-col>
+      </el-col>-->
     </el-row>
   </form-card>
 </template>
@@ -75,8 +97,17 @@ export default {
   },
   data() {
     return {
-      edit: false
+      edit: false,
+      fileList: []
     };
+  },
+  watch: {
+    data() {
+      this.init();
+    }
+  },
+  mounted() {
+    this.init();
   },
   computed: {
     canEditable() {
@@ -85,6 +116,32 @@ export default {
       } else {
         return !this.disabled;
       }
+    }
+  },
+  methods: {
+    init() {
+      let fileList = [];
+      if (this.data && this.data.attachList) {
+        if (typeof this.data.attachList == 'string') {
+          this.data.attachList = JSON.parse(this.data.attachList);
+        }
+        fileList = this.data.attachList || [];
+      }
+    },
+    uploadFile({ name, url, oldName }) {
+      this.data.attachList = this.data.attachList || [];
+      this.data.attachList.push({
+        fileName: oldName,
+        fileUrl: url
+      });
+      this.fileList.push({
+        fileName: oldName,
+        fileUrl: url
+      });
+    },
+    delFile(i) {
+      this.data.attachList.splice(i, 1);
+      this.fileList.splice(i, 1);
     }
   }
 };

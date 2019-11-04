@@ -2,12 +2,12 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 14:07:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 14:08:06
+ * @LastEditTime: 2019-11-04 13:46:51
  * @Description: file content
  */
-const MOCK_ADDRESS = '/mock/5dba336abc54fc3da273f11c/39.99.132.95:9205'; // pc端用
+// const MOCK_ADDRESS = '/mock/5dba336abc54fc3da273f11c/39.99.132.95:9205'; // pc端用
 // const MOCK_ADDRESS = 'http://10.168.1.145:7300/mock/5dba336abc54fc3da273f11c/39.99.132.95:9205'; // 小程序用
-// const MOCK_ADDRESS = ''; // 禁用easymock
+const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = false;
 /**
 * @date 2019-11-01

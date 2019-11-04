@@ -5,9 +5,9 @@
  * @LastEditTime: 2019-11-01 14:08:13
  * @Description: file content
  */
-const MOCK_ADDRESS = '/mock/5db95c6dbc54fc3da273ee8c/39.99.132.95:9218'; // pc端用
+// const MOCK_ADDRESS = '/mock/5db95c6dbc54fc3da273ee8c/39.99.132.95:9218'; // pc端用
 // const MOCK_ADDRESS = 'http://10.168.1.145:7300/mock/5db95c6dbc54fc3da273ee8c/39.99.132.95:9218'; // 小程序用
-// const MOCK_ADDRESS = ''; // 禁用easymock
+const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = false;
 /**
 * @date 2019-11-01

@@ -2,12 +2,12 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 15:42:01
+ * @LastEditTime: 2019-11-04 17:13:16
  * @Description: 其他合同
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="其他合同">
+    <TableView :filterOptions="filterOptions" :headers="tableHeader" api="bizSystemService.getEmployeeList" title="其他合同">
       <template slot="button">
         <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
       </template>
@@ -50,6 +50,38 @@ export default {
         { label: '单据创建人', prop: 'deptName', width: '180' },
         { label: '创建部门', prop: 'deptName', width: '180' },
         { label: '创建时间', prop: 'createTime', width: '180' }
+      ],
+      filterOptions: [
+        { label: '合同编号', prop: 'contractCode', default: true },
+        { label: '销售出库单编号', prop: 'shipmentCode', default: true },
+        { label: '客户名称', prop: 'clientName', default: true },
+        {
+          label: '总计数量',
+          prop: 'TotalNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '总计销售',
+          prop: 'TotalAmount',
+          type: 'numberRange',
+          default: true
+        },
+        {
+          label: '预计发货时间',
+          prop: 'SalesTime',
+          type: 'dateRange',
+          default: true
+        },
+        {
+          label: '合同创建人',
+          prop: 'creator',
+          type: 'employee',
+          default: true
+        },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
+        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
       ]
     };
   },

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:46:22
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 12:52:25
+ * @LastEditTime: 2019-11-04 16:14:07
  * @Description: 员工查询过滤框
 */
 <template>
@@ -11,13 +11,14 @@
       :loading="loading"
       :placeholder="item.placeholder||('请输入选择'+item.label)"
       :remote-method="getEmployee"
+      @change="changed"
       class="wfull"
       filterable
       remote
       reserve-keyword
       v-model="form[item.prop]"
     >
-      <el-option :key="item.value" :label="item.label" :value="item.value" v-for="item in options"></el-option>
+      <el-option :key="item.id" :label="item.employeeName" :value="item.id" v-for="item in options"></el-option>
     </el-select>
     <span class="el-icon-search search-icon"></span>
   </el-form-item>
@@ -35,16 +36,23 @@ export default {
     };
   },
   methods: {
-    getEmployee(words) {
+    async getEmployee(words) {
       if (words) {
         this.loading = true;
-        setTimeout(() => {
-          this.options = [{ label: '张三', value: '1' }];
-          this.loading = false;
-        }, 1000);
+        let { data } = await this.$api.bizSystemService.getEmployeeList({
+          condition: words,
+          page: 1,
+          limit: 50,
+          sysCode: this.$local.fetch('userInfo').syscode
+        });
+        this.options = data || [];
+        this.loading = false;
       } else {
         this.options = [];
       }
+    },
+    changed(e) {
+      this.$emit('change');
     }
   }
 };

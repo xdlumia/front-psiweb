@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 17:27:43
+ * @LastEditTime: 2019-11-04 13:47:40
  * @Description: 采购-供应商
 */
 <template>
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       status: [],
-      showDetail: true,
+      showDetail: false,
       showEdit: false,
       showCat: false,
       tableHeader: [

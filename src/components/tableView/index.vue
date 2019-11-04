@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 18:52:03
+ * @LastEditTime: 2019-11-04 18:52:57
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -66,7 +66,6 @@
       @moreHandle="moreHandle"
       @column="columnHandle"
       @clear-filter="clearFilter"
-      @closeFilter="reload"
       :title="title"
       :filter="this.filter"
       :moreButton="this.moreButton"
@@ -94,6 +93,7 @@
           <dFilter
             v-model="params"
             :options="filterOptions"
+            @change="reload()"
           />
         </slot>
       </template>
@@ -153,7 +153,7 @@ export default {
     // 表格高度
     height: {
       type: String,
-      default: "calc(100% - 40px)"
+      default: "calc(100% - 46px)"
     },
     // 是否显示多选
     selection: {

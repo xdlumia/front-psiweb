@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 16:42:50
+ * @LastEditTime: 2019-11-04 09:54:18
  * @Description: 采购-采购入库单
 */
 <template>
@@ -13,7 +13,7 @@
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :visible.sync="showDetail" />
+    <Detail :visible.sync="showDetail"/>
   </div>
 </template>
 <script>
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       status: [],
-      showDetail: true,
+      showDetail: false,
       tableHeader: [
         { label: '采购入库单编号', prop: 'deptName', width: '180' },
         { label: '请购/直发/备货单编号', prop: 'deptName', width: '180' },

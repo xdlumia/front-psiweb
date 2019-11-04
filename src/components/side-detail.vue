@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 14:35:44
+ * @LastEditTime: 2019-11-04 10:55:30
  * @Description: 侧边详情弹框
 */
 <template>
@@ -89,9 +89,18 @@ export default {
       }
       & > .el-tabs__content {
         height: calc(100% - 40px);
-        overflow: hidden;
-        overflow-y: auto;
-        padding: 0 20px;
+        > .el-tab-pane{
+          overflow: hidden;
+          overflow-y: auto;
+          padding: 0 20px;
+          max-height: 100%;
+          height: 100%;
+          position: relative;
+          >div > .main-content,
+          > .main-content{
+            height: 100% !important;
+          }
+        }
       }
     }
   }
