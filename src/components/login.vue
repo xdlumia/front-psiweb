@@ -362,7 +362,8 @@ export default {
             // 获取用户权限
             this.getUserAuth()
           } else {
-            this.cfgcitysettingGetDefaultCity()
+            //psi系统不需要默认城市
+            //this.cfgcitysettingGetDefaultCity()
           }
           // 用户数据权限
           this.$local.save('dataAuthList', data.dataAuthList || [])
@@ -370,7 +371,7 @@ export default {
           this.$local.save('bizDataAuthCfgList', data.bizDataAuthCfgList || [])
         })
     },
-    cfgcitysettingGetDefaultCity() {
+    /*cfgcitysettingGetDefaultCity() {
       this.$api.seeBaseinfoService.cfgcitysettingGetDefaultCity() // 获取当前用户的默认城市
         .then(res => {
           const cityInfo = res.data || {}
@@ -378,7 +379,7 @@ export default {
           // 获取用户权限
           this.getUserAuth()
         })
-    },
+    },*/
 
     // 获取用户权限
     getUserAuth() {
