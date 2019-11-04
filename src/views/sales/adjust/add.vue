@@ -2,12 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:36:39
- * @Description: 客户管理-新增分摊
+ * @LastEditTime: 2019-11-04 09:43:55
+ * @Description: 客户管理-账单调整单
 */
 <template>
   <el-dialog
-    title="新增分摊"
+    title="账单调整单"
     :visible.sync="showPop"
     width="920px"
     v-dialogDrag
@@ -27,10 +27,8 @@
           :label="val"
           :name="key"
         />
-        <!-- 分摊信息 -->
-        <apportion-info id="apportionInfo" />
-        <!-- 商品信息 -->
-        <commodity-info id="commodityInfo" />
+        <!-- 账单调整 -->
+        <bill-adjust id="billAdjust" />
         <!-- 备注信息 -->
         <extras-info id="extrasInfo" />
       </d-tabs>
@@ -58,8 +56,7 @@ export default {
     return {
       // tab操作栏
       tabs: {
-        apportionInfo: '分摊信息',
-        commodityInfo: '商品信息',
+        billAdjust: '账单调整',
         extrasInfo: '备注信息',
       },
       activeName: 'baseInfo',
