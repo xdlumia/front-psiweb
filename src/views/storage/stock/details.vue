@@ -11,9 +11,32 @@
     :status="status"
     :visible.sync="drawerData.tableVisible"
     @close="$emit('update:visible',false)"
-    title="破标题"
+    title=""
     width="990px"
   >
+    <div
+      slot='title'
+      class="mb10"
+      style="background:#F2F2F2"
+    >
+      <div class="d-flex">
+        <div>
+          <el-image
+            style="width: 120px; height: 120px"
+            class="mt5"
+            src="http://img1.homekoocdn.com/html/zhixiao/cuxiao/images_191031/ban_01.jpg?v=aa"
+            fit="fill"
+          ></el-image>
+        </div>
+        <div class="ml15">
+          <p class="f16 b">i7处理器-SP201902010000001</p>
+          <p class='d-text-qgray mt5'>商品类别：配件</p>
+          <p class='d-text-qgray mt5'>商品分类：CPU</p>
+          <p class='d-text-qgray mt5'>商品规格：8核</p>
+          <p class='d-text-qgray mt5'>商品配置：-</p>
+        </div>
+      </div>
+    </div>
     <div
       class="d-auto-y"
       style="height:calc(100vh - 130px)"
