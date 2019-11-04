@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 09:43:55
- * @Description: 客户管理-账单调整单
+ * @LastEditTime: 2019-11-04 15:59:02
+ * @Description: 财务-新建财务信息
 */
 <template>
   <el-dialog
@@ -20,18 +20,22 @@
       label-position="top"
     >
 
-      <d-tabs :style="{maxHeight:'calc(100vh - 180px)'}">
+      <!-- <d-tabs :style="{maxHeight:'calc(100vh - 180px)'}">
         <d-tab-pane
           v-for="(val,key) of tabs"
           :key="key"
           :label="val"
           :name="key"
         />
-        <!-- 账单调整 -->
+
         <bill-adjust id="billAdjust" />
-        <!-- 备注信息 -->
+
         <extras-info id="extrasInfo" />
-      </d-tabs>
+      </d-tabs> -->
+      <!-- 单据信息 -->
+      <receipt-info />
+      <!-- 费用信息 -->
+      <cost-info />
       <div class="ac pt20">
         <el-button
           @click="$emit('update:visible', false)"

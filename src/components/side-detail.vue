@@ -13,11 +13,18 @@
     @close="close"
     class="side-page"
   >
+    <span>
+      <slot name='title'></slot>
+    </span>
     <sideStatusbar
       style="margin:-10px -15px 10px"
       :status="status"
     />
-    <span class="drawer-header" v-if="hasButton"><slot name="button" /></span>
+    <span
+      class="drawer-header"
+      v-if="hasButton"
+    >
+      <slot name="button" /></span>
     <slot />
   </el-drawer>
 </template>
