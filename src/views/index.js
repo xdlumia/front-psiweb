@@ -1,42 +1,42 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-30 16:25:12
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 18:32:45
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-04 10:20:58
  * @Description: 每个模块首页全局引入解决无限调用自己递归的问题
  */
 
 /**
  * 销售begin
  */
-import salesQuote from "@/views/sales/quote"; //报价单
-import salesOutLibrary from "@/views/sales/outLibrary"; // 销售出库单
-import salesReturn from "@/views/sales/return"; // 销售退货单
-import salesExchange from "@/views/sales/exchange"; // 销售换货单
-import salesClient from "@/views/sales/client"; // 客户
-import salesApportion from "@/views/sales/apportion"; // 销售费用分摊单
-import salesAdjust from "@/views/sales/adjust"; // 账单调整单
-import salesAdjustPrice from "@/views/sales/adjustPrice"; // 销售调价单
+// import salesQuote from "@/views/sales/quote"; //报价单
+// import salesOutLibrary from "@/views/sales/outLibrary"; // 销售出库单
+// import salesReturn from "@/views/sales/return"; // 销售退货单
+// import salesExchange from "@/views/sales/exchange"; // 销售换货单
+// import salesClient from "@/views/sales/client"; // 客户
+// import salesApportion from "@/views/sales/apportion"; // 销售费用分摊单
+// import salesAdjust from "@/views/sales/adjust"; // 账单调整单
+// import salesAdjustPrice from "@/views/sales/adjustPrice"; // 销售调价单
 /**
  * 销售end
  */
 
 export default {
   install: (Vue) => {
-    Vue.component('salesQuote', salesQuote)
-    Vue.component('salesOutLibrary', salesOutLibrary)
-    Vue.component('SalesReturn', salesReturn)
-    Vue.component('salesExchange', salesExchange)
-    Vue.component('salesClient', salesClient)
-    Vue.component('salesApportion', salesApportion)
-    Vue.component('salesAdjust', salesAdjust)
-    Vue.component('salesAdjustPrice', salesAdjustPrice)
+    // Vue.component('salesQuote', salesQuote)
+    // Vue.component('salesOutLibrary', salesOutLibrary)
+    // Vue.component('SalesReturn', salesReturn)
+    // Vue.component('salesExchange', salesExchange)
+    // Vue.component('salesClient', salesClient)
+    // Vue.component('salesApportion', salesApportion)
+    // Vue.component('salesAdjust', salesAdjust)
+    // Vue.component('salesAdjustPrice', salesAdjustPrice)
 
     // 采购 合同 start
     const indexFiles = require.context(`./`, true, /index\.vue$/)// 如果要引入其他文件，可以去掉index，或者加|
     const cmps = indexFiles.keys()
       // 找出 采购(order) 合同(contract) 下的index列表页，如果要引入其他模块，也可以在下面加
-      .filter(a => a.match(/^\.\/(order|contract)/))
+      .filter(a => a.match(/^\.\/(sales|finance|order|contract)/))
       .map(item => {
         let cmpName = item.match(/([a-z]*)/gi)
           .filter(a => a).reverse()
