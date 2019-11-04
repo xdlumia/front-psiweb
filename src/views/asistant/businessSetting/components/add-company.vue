@@ -247,7 +247,7 @@ export default {
     // 获取详情
     commoncorporationInfo(id) {
       this.loading = true
-      this.$api.seePsiCommonService.commoncorporationInfo(null, id).then(res => {
+      this.$api.seeBaseinfoService.commoncorporationInfo(null, id).then(res => {
         Object.keys(this.companyForm).forEach(key => {
           this.companyForm[key] = res.data[key] || this.companyForm[key]
         })
@@ -261,7 +261,7 @@ export default {
         if (valid) {
           this.loading = true
           const port = this.isEdit ? 'commoncorporationUpdate' : 'commoncorporationSave'
-          this.$api.seePsiCommonService[port](this.companyForm).then(res => {
+          this.$api.seeBaseinfoService[port](this.companyForm).then(res => {
             this.$emit('refresh')
           }).finally(() => {
             this.loading = false

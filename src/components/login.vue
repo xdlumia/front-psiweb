@@ -237,8 +237,8 @@ export default {
   },
   computed: {
     syscode() {
-      // return 'psi'
-      return 'pmdwebset'
+      return 'psi'
+      // return 'pmdwebset'
     }
   },
   created() {
