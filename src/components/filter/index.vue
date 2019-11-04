@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:31:09
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 14:44:01
+ * @LastEditTime: 2019-11-04 11:11:50
  * @Description: 通用过滤组件
 */
 <template>
@@ -20,6 +20,7 @@
           :key="item.props"
           v-for="item of filterAvailable"
           v-model="form[item.prop]"
+          @change="startFilter"
         />
       </el-form>
     </div>
@@ -143,6 +144,8 @@ export default {
     },
     resetPropsModel() {
       //
+    },
+    startFilter(){
     }
   }
 };

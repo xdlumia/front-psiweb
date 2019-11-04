@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:46:22
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 15:17:59
+ * @LastEditTime: 2019-11-04 11:11:19
  * @Description: 数字区间过滤框
 */
 <template>
@@ -49,7 +49,11 @@ export default {
           this.form[`min${this.item.prop}`] = max;
         }
       }
-    }
+      this.changed()
+    }, 
+    changed(e) {
+      this.$emit('change');
+    } 
   }
 };
 </script>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 11:04:50
+ * @LastEditTime: 2019-11-04 11:53:09
  * @Description: 采购单详情
 */
 <template>
@@ -14,25 +14,34 @@
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
         <el-form>
+          <arrivalInfo />
           <commodityInfo />
           <customInfo />
           <extrasInfo />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
-      <el-tab-pane label="报价单">报价单</el-tab-pane>
+      <el-tab-pane label="采购入库单">
+        <FullscreenWrap>
+          <OrderStorage />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="报价单">
+        <FullscreenWrap>
+          <salesQuote />
+        </FullscreenWrap>
+      </el-tab-pane>
     </el-tabs>
-    <orderStorage :visible.sync="orderStorageVisible" from="请购" />
+    <OrderStorageAdd :visible.sync="orderStorageVisible" from="请购" />
     <addBorrowIn :visible.sync="addBorrowInVisible" />
   </sideDetail>
 </template>
 <script>
-import OrderStorage from '../storage/edit';
+import OrderStorageAdd from '../storage/edit';
 import AddBorrowIn from '@/views/order/borrow/addIn';
 
 export default {
   components: {
-    OrderStorage,
+    OrderStorageAdd,
     AddBorrowIn
   },
   props: {

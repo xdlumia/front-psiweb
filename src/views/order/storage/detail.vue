@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 11:19:43
+ * @LastEditTime: 2019-11-04 09:49:55
  * @Description: 采购入库单
 */
 <template>
@@ -33,7 +33,9 @@
           <extrasInfo id="extrasInfo" />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="请购单">请购单</el-tab-pane>
+      <el-tab-pane label="请购单">请购单
+        <OrderBuying />
+      </el-tab-pane>
       <el-tab-pane label="直发单">直发单</el-tab-pane>
       <el-tab-pane label="采购单">采购单</el-tab-pane>
       <el-tab-pane label="采购退货单">采购退货单</el-tab-pane>

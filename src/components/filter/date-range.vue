@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:46:22
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 15:06:51
+ * @LastEditTime: 2019-11-04 11:10:12
  * @Description: 时间段过滤框
 */
 <template>
@@ -42,6 +42,7 @@ export default {
       let range = this.value || [];
       this.$set(this.form, `min${this.item.prop}`, +range[0] || '');
       this.$set(this.form, `max${this.item.prop}`, +range[1] || '');
+      this.changed()
     },
     reset() {
       let min = this.form[`min${this.item.prop}`];
@@ -55,7 +56,10 @@ export default {
         this.form[`max${this.item.prop}`] = '';
         this.value = null;
       }
-    }
+    }, 
+    changed(e) {
+      this.$emit('change');
+    } 
   }
 };
 </script>

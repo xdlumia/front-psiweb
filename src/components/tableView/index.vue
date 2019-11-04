@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 18:13:20
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-04 11:32:35
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -147,7 +147,7 @@ export default {
     // 表格高度
     height: {
       type: String,
-      default: "calc(100% - 40px)"
+      default: "calc(100% - 46px)"
     },
     // 是否显示多选
     selection: {

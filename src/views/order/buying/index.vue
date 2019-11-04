@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 16:17:28
+ * @LastEditTime: 2019-11-04 10:30:47
  * @Description: 采购-请购单
 */
 <template>
@@ -16,7 +16,7 @@
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <OrderBuyingDetail :visible.sync="showDetail" />
+    <OrderBuyingDetail :visible.sync="showDetail"/>
     <OrderBuyingDetailRec :visible.sync="orderBuyingDetailRecVisible" />
   </div>
 </template>
@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       status: [],
-      showDetail: true,
+      showDetail: false,
       addBorrowInVisible: false,
       orderBuyingDetailRecVisible: false,
       tableHeader: [
