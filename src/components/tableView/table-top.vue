@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 18:26:47
+ * @LastEditTime: 2019-11-04 18:49:44
  * @Description: 表格头部 
  */
 <template>
@@ -237,7 +237,6 @@ export default {
       showCustomColumn: false,
       // 自定义列数据
       tableColList: [], //表格列 表头数据
-      // checkTableCol: [], //选中的列ids
       // 临时测试数据
       // tableHeader: [
       //   {
@@ -317,7 +316,7 @@ export default {
       }
       this.$api.seePsiCommonService.customcolumnUpdate(params)
         .then(res => {
-          // 返回列数据  this.checkTableCol
+          // 返回列数据 
           this.$emit("column", showHeader);
           // 保存成功
           this.showCustomColumn = false;

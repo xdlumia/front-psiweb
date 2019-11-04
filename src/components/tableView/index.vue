@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 18:11:01
+ * @LastEditTime: 2019-11-04 18:52:03
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -266,11 +266,9 @@ export default {
     },
     // 返回的列数据
     columnHandle(cols) {
-      this.params.cols = cols.map(r => r.id);
-      setTimeout(() => {
-        this.$refs.table.reload(1);
-        this.headers = cols;
-      }, 1000)
+      // 列表默认请求的就是全部列数据 所以这里就不用重新请求了
+      // this.$refs.table.reload(1);
+      this.headers = cols;
     },
     // 多选
     selectionChange(val) {

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 18:00:45
+ * @LastEditTime: 2019-11-04 18:48:39
  * @Description: 销售-报价单
  */
 <template>
@@ -15,18 +15,19 @@
       :moreButton="true"
       :column="true"
       title="报价单"
-      @clear-filter="reset()"
-      api="bizSystemService.getEmployeeList"
+      api="seePsiSaleService.salessheetList"
+      exportApi="seePsiSaleService.salessheetExprot"
       :params="Object.assign(queryForm,params)"
       @selection-change="selectionChange"
+      :filterOptions="filterOptions"
     >
-      <template v-slot:filter>
+      <!-- <template v-slot:filter>
         <filters
           ref="filters"
           @submit-filter="$refs.table.reload(1)"
           :form="queryForm"
         />
-      </template>
+      </template> -->
       <!-- 自定义按钮功能 -->
       <template
         v-if="button"
@@ -86,17 +87,22 @@
 <script>
 import quoteDetails from './quote-details' //报价详情
 import outLibDetails from '../outLibrary/outLib-details' //销售详
-import filters from './filter' //筛选
 import quoteAdd from './add' //新增
 import quoteMerge from './merge' //合并
+let filterOptions = [
+  { label: '报价单编号', prop: 'squotationCode', default: true, type: 'text' },
+  { label: '销售出库单编号', prop: 'shipmentCode', default: true, type: 'text' },
+  { label: '单据状态', prop: 'pushTime', default: true, type: 'select', options: [] },
+  { label: '客户名称', prop: 'clientId', default: true, type: 'text' },
+  { label: '创建人', prop: 'creator', default: true, type: 'select' }
+]
 export default {
   name: 'quote',
   components: {
     quoteDetails,
     outLibDetails,
     quoteAdd,
-    quoteMerge,
-    filters
+    quoteMerge
   },
   props: {
     // 是否显示按钮
@@ -119,11 +125,15 @@ export default {
       rowData: {},
       // 查询表单
       queryForm: {
-        title: "", // 标题
-        city: "", // 城市
-        pushTime: "",
-        messageType: "",
-        status: "",
+        alreadyShipmentNumber: '', // 已出库量,
+        clientId: '', // 客户名称,
+        creator: '', // 创建人
+        salesSheetCode: '', // 销售单编号
+        shipmentCode: '', // "示例：销售出库单编号"
+        shipmentHuman: '', // "示例：出库人"
+        shipmentState: '', // 出库状态
+        source: '', // "示例：来源"
+        squotationCode: '', // "示例：报价单编号"
         page: 1,
         limit: 20
       },
@@ -135,13 +145,8 @@ export default {
       mergeVisible: false,
       // 出库单详情
       outLibVisible: false,
-      // 侧边栏弹出框
-      drawerData: {
-        visible: false,
-        title: '',
-        type: '',
-        data: '',
-      }
+      // 筛选
+      filterOptions: filterOptions,
     };
   },
   methods: {
@@ -160,10 +165,10 @@ export default {
       this.$emit('submit-filter')
     },
     // 重置
-    reset() {
-      this.$refs.filters.$refs.form.resetFields()
-      this.$refs.table.reload(1);
-    },
+    // reset() {
+    //   this.$refs.filters.$refs.form.resetFields()
+    //   this.$refs.table.reload(1);
+    // },
   }
 };
 </script>
