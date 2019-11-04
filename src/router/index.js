@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-30 15:09:18
+ * @LastEditTime: 2019-11-04 16:45:23
  * @Description: 路由文件
  */
 import Vue from 'vue'
@@ -12,6 +12,7 @@ import {
 } from 'see-web-system'
 // 登录
 import Login from '@/components/login'
+import store from '@/store'
 
 
 // 采购
@@ -49,7 +50,7 @@ Router.prototype.push = function push(location) {
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [{
     path: '/login',
@@ -87,3 +88,27 @@ export default new Router({
   }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  let navList = store.getters.navData
+  if (!navList.length) {
+    store.dispatch('setNav').then(res => {
+      navList = store.getters.navData
+      filter()
+    })
+  } else {
+    filter()
+  }
+  function filter() {
+    if (!navList.includes(to.path)) {
+      next({
+        name: '/403'
+      })
+      return
+    } else {
+      next()
+    }
+  }
+})
+
+export default router

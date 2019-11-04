@@ -360,7 +360,6 @@ export default {
           })
           navData.splice(systemSettingsIndex, isDelete ? 1 : 0)
           this.$local.save('navData', navData)
-
           // 登录成功后跳转到 登录前的页面 或获取路由的第一个
           const redirectRouter = navData[0].children ? navData[0].children[0].url : navData[0].url
           const routerReplace = sessionStorage.getItem('loginRedirect') || redirectRouter || '/'
