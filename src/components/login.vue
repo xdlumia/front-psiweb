@@ -8,8 +8,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:2
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 10:50:50
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-04 13:38:41
  * @LastEditors: 高大鹏
  * @LastEditTime: 2019-10-28 15:27:49
  * @Description: 登录页
@@ -237,8 +237,8 @@ export default {
   },
   computed: {
     syscode() {
-      // return 'psi'
-      return 'pmdwebset'
+      return 'psi'
+      // return 'pmdwebset'
     }
   },
   created() {

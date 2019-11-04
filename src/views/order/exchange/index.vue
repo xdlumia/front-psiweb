@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       status: [],
-      showDetail: true,
+      showDetail: false,
       showEdit: false,
       tableHeader: [
         { label: '采购入库单编号', prop: 'deptName', width: '180' },

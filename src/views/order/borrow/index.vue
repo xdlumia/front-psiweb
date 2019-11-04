@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 16:14:42
+ * @LastEditTime: 2019-11-04 13:48:23
  * @Description: 采购-借入借出单
 */
 <template>
@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       status: [],
-      showDetail: true,
+      showDetail: false,
       showEdit: false,
       tableHeader: [
         { label: '采购入库单编号', prop: 'deptName', width: '180' },
