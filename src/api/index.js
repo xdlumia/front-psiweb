@@ -11,6 +11,7 @@ import { apiConfig } from 'see-web-basic'
 import seePumaidongService from './seePumaidongService'
 import seeContractService from './seeContractService.js' //
 import seePsiCommonService from './seePsiCommonService.js' //
+import seeBaseinfoService from './seeBaseInfoService.js' //
 import seeGoodsService from './seeGoodsService.js' //
 import seePsiContractService from './seePsiContractService' //
 import seePsiPurchaseService from './seePsiPurchaseService' //
@@ -27,6 +28,7 @@ apiConfig.registry({
 
 // 新的api使用方法
 apiConfig.registryConfig({
+  seeBaseinfoService,
   seePumaidongService,
   seePsiCommonService,
   seePsiContractService,
