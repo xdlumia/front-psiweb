@@ -3,7 +3,7 @@
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: 徐贺
  * @Last Modified time: 2019-10-28 14:00:41
- * @Description: 库房  销售单
+ * @Description: 库房  库存查询
  */
 <template>
   <div class="buying-requisition-page wfull hfull">
@@ -12,64 +12,53 @@
       :headers="tableHeader"
       :selection='false'
       api="bizSystemService.getEmployeeList"
-      title="销售单"
+      title="库存查询"
     >
+      <template v-slot:button>
+        <el-input
+          style="width:300px;"
+          size="small"
+          placeholder="请输入机器码或SN码"
+          v-model="input2"
+        >
+          <el-button
+            slot="append"
+            type="primary"
+          >商品查询</el-button>
+        </el-input>
+      </template>
       <template slot-scope="{column,row,value}">
         <span @click="getTableVisible(row)">点击111</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
-
-      <!-- <template slot-scope="{column,row,value}">
-        <span @click="quoteHandle('quote',row)">报价</span>
-        <span @click="quoteHandle('sales',row)">销售</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
-        <span v-else>{{value}}</span>
-      </template> -->
-    </TableView>
-    <side-popup
-      class="side-page"
-      :title="drawerData.title"
-      :visible.sync="tableVisible"
-      size="50%"
-    >
-      <el-container class="wfull hfull">
-        <el-header
-          class="p0 d-bg-gray"
-          style="height:70px;"
+      <!-- <template v-slot:tree> -->
+      <!-- <el-container class="choose-container"> -->
+      <el-aside
+        slot='tree'
+        width="250px"
+        class="choose-aside fl"
+        style="height: calc(100% - 40px);"
+      >
+        <el-button
+          type="text"
+          class="ml10"
+        >全部</el-button>
+        <el-tree
+          class="filter-tree"
+          :data="data"
+          :props="defaultProps"
+          default-expand-all
+          :filter-node-method="filterNode"
+          ref="tree"
         >
-          <div class="pl10 pr10 ar">
-            <el-button
-              size="mini"
-              type="primary"
-            >发货</el-button>
-          </div>
-          <SideStatusbar />
-        </el-header>
-        <el-main class="p0">
-          <el-tabs
-            class='tabs-view'
-            v-model="activeName"
-            @tab-click="handleClick"
-          >
-            <el-tab-pane label="详情"></el-tab-pane>
-            <el-tab-pane label="拣货单"></el-tab-pane>
-            <el-tab-pane label="组装任务"></el-tab-pane>
-            <el-tab-pane label="发货单"></el-tab-pane>
-            <el-tab-pane label="销售出库单"></el-tab-pane>
-            <el-tab-pane label="借入单"></el-tab-pane>
-            <el-tab-pane label="应收账单"></el-tab-pane>
-          </el-tabs>
-          <div class="p10">
-            <components
-              :is='drawerData.component'
-              :drawerData="drawerData"
-            >
-            </components>
-          </div>
-        </el-main>
-      </el-container>
-    </side-popup>
+        </el-tree>
+
+      </el-aside>
+      <!-- </el-container> -->
+      <!-- </template> -->
+    </TableView>
+    <Details :drawerData='drawerData' />
   </div>
 </template>
 <script>
@@ -87,6 +76,10 @@ export default {
   },
   data() {
     return {
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      },
       // 查询表单
       queryForm: {
         title: '', // 标题
@@ -97,6 +90,7 @@ export default {
         page: 1,
         limit: 20
       },
+      input2: '',
       componentActive: '',//当前的组件
       tableVisible: false,//销售单右侧抽屉
       drawerData: {//弹框的相关数据
@@ -105,33 +99,76 @@ export default {
       },
       activeName: '',
       status: [],
+      data: [{
+        id: 1,
+        label: '一级 1',
+        children: [{
+          id: 4,
+          label: '二级 1-1',
+          children: [{
+            id: 9,
+            label: '三级 1-1-1'
+          }, {
+            id: 10,
+            label: '三级 1-1-2'
+          }]
+        }]
+      }, {
+        id: 2,
+        label: '一级 2',
+        children: [{
+          id: 5,
+          label: '二级 2-1'
+        }, {
+          id: 6,
+          label: '二级 2-2'
+        }]
+      }, {
+        id: 3,
+        label: '一级 3',
+        children: [{
+          id: 7,
+          label: '二级 3-1'
+        }, {
+          id: 8,
+          label: '二级 3-2'
+        }]
+      }],
       tableHeader: [
-        { label: '销售出库单编号', prop: 'deptName', width: '140' },
-        { label: '客户名称', prop: 'deptName', width: '100' },
-        { label: '销售单编号', prop: 'deptName', width: '140' },
-        { label: '出库状态', prop: 'deptName', width: '100' },
-        { label: '发货状态', prop: 'deptName', width: '100' },
-        { label: '组装任务状态', prop: 'deptName', width: '140' },
-        { label: '拣货状态', prop: 'deptName', width: '100' },
-        { label: '商品类别', prop: 'deptName', width: '100' },
+        { label: '商品编号', prop: 'deptName', width: '140' },
+        { label: '商品图片', prop: 'deptName', width: '100' },
+        { label: '商品类别', prop: 'deptName', width: '140' },
+        { label: '商品分类', prop: 'deptName', width: '100' },
+        { label: '商品名称', prop: 'deptName', width: '100' },
+        { label: '商品规格', prop: 'deptName', width: '140' },
+        { label: '商品配置', prop: 'deptName', width: '100' },
+        { label: '单位', prop: 'deptName', width: '100' },
+        { label: '库存预警', prop: 'createTime', width: '100' },
+        { label: '虚拟库存', prop: 'createTime', width: '100' },
+        { label: '实物库存', prop: 'createTime', width: '100' },
+        { label: '期初库存', prop: 'createTime', width: '100' },
+        { label: '入库数量', prop: 'createTime', width: '100' },
         { label: '出库数量', prop: 'createTime', width: '100' },
-        { label: '未出库量', prop: 'createTime', width: '100' },
-        { label: '已出库量', prop: 'createTime', width: '100' },
-        { label: '出库人', prop: 'createTime', width: '100' },
-        { label: '生成时间', prop: 'createTime', width: '140' },
-        { label: '单据创建人', prop: 'createTime', width: '100' },
-        { label: '创建部门', prop: 'createTime', width: '100' }
+        { label: '待入库数量', prop: 'createTime', width: '100' },
+        { label: '待出库数量', prop: 'createTime', width: '100' },
+        { label: '锁库量', prop: 'createTime', width: '100' },
+        { label: '最低采购价', prop: 'createTime', width: '100' },
+        { label: '库存成本', prop: 'createTime', width: '100' },
+        { label: '销售参考价', prop: 'createTime', width: '100' }
       ]
     };
   },
   methods: {
     //点击打开右侧边栏
     getTableVisible(data) {
-      this.tableVisible = true
-      this.drawerData.title = '销售单' + data.id
+      this.drawerData.tableVisible = true
+      this.drawerData.title = '商品名' + data.id
     },
     //tab换组件
     handleClick() {
+
+    },
+    filterNode() {
 
     }
   }
@@ -174,5 +211,15 @@ export default {
       }
     }
   }
+}
+
+.choose-aside {
+  border: 1px solid #f2f2f2;
+  border-bottom: none;
+  float: left;
+}
+/deep/.d-table {
+  width: calc(100% - 250px) !important;
+  float: left;
 }
 </style>

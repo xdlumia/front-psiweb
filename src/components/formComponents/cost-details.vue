@@ -4,10 +4,22 @@
  * @Last Modified by: 徐贺
  * @Last Modified time: 2019-10-28 14:02:43
  * @Description: 成本明细
- */
+ */  
 <template>
   <div>
     <form-card title='成本明细'>
+      <div slot="title">
+        <span>成本明细</span>
+        <span class="fr">
+          <span>
+            <el-link
+              :underline="false"
+              @click="fullscreen"
+              type="primary"
+            >全屏显示</el-link>
+          </span>
+        </span>
+      </div>
       <d-table
         api="seePumaidongService.collegeManagerList"
         :params="queryForm"
@@ -109,9 +121,14 @@
         ></el-table-column>
       </d-table>
     </form-card>
+    <FullscreenElement
+      :element="$refs.companyTable"
+      :visible.sync="showInFullscreen"
+    />
   </div>
 </template>
 <script>
+import FullscreenElement from '@/components/fullscreen-element';
 export default {
   data() {
     return {
@@ -126,11 +143,16 @@ export default {
         limit: 20
       },
       dialogVisible: false,
+      showInFullscreen: false
     }
   },
   methods: {
+    fullscreen() {
+      this.showInFullscreen = true;
+    },
   },
   components: {
+    FullscreenElement
   },
 }
 </script>
