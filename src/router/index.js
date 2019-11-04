@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 10:41:01
+ * @LastEditTime: 2019-11-04 14:34:47
  * @Description: 路由文件
  */
 import Vue from 'vue'
@@ -26,9 +26,6 @@ import salesRoute from '@/views/sales/route.js'
 
 // 销售路由
 import financeRoute from '@/views/finance/route.js'
-
-console.log(financeRoute);
-
 
 // 库房路由
 import storageRoute from '@/views/storage/route.js'

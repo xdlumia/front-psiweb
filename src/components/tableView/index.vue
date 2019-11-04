@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 18:13:20
+ * @LastEditTime: 2019-11-04 15:18:16
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -71,6 +71,7 @@
       :filter="this.filter"
       :moreButton="this.moreButton"
       :column="this.column"
+      :statusData="statusList"
       :staData="staList"
     >
       <!-- 自定义按钮 -->
@@ -110,7 +111,7 @@
       :params="params"
       :api="api"
       ref="table"
-      :style="{height:height}"
+      :style="{height:tableHeader}"
     >
       <el-table-column
         v-if="selection"
@@ -199,13 +200,22 @@ export default {
       headers: [],
       // 选中多行
       selectionRow: [],
-      // 统计列表
+      // 状态数据列表
+      statusList: [],
+      // 财务统计数据列表
       staList: [],
     };
   },
   created() {
   },
   mounted() {
+
+  },
+  computed: {
+    // 判断当前表格的高度
+    tableHeader() {
+      return this.$parent.button && this.staList.length ? 'calc(100% - 110px)' : this.height
+    }
 
   },
   methods: {
@@ -215,8 +225,10 @@ export default {
     },
     // 表格加载成功返回参数
     tabelRes(res) {
-      // 获取统计列表
-      this.staList = this.$refs.table.response.data
+      // 获取状态列表数据
+      this.statusList = this.$refs.table.response.data || []
+      // 获取统计列表数据(财务独有)
+      this.staList = this.$refs.table.response.data || []
     },
     // 统计点击筛选
     staHandle(row) {

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 11:41:36
+ * @LastEditTime: 2019-11-04 11:42:28
  * @Description: 付款 新增流水 单据信息
 */
 <template>
@@ -70,6 +70,7 @@ export default {
   },
   data() {
     return {
+      // 遍历表单
       formItems: [
         { label: '流水号', prop: 'a', type: 'input', rules: [{ required: true }], },
         { label: '收支状态', prop: 'a', type: 'select', rules: [{ required: true }], dicName: '', },
