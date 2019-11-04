@@ -2,16 +2,23 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 16:12:49
- * @Description: 客户详情-基本详情
+ * @LastEditTime: 2019-11-04 15:35:36
+ * @Description: 账单编号-基本详情
 */
 <template>
   <div>
-    <base-info id="baseInfo" />
-    <!-- 发票信息 -->
-    <invoice-info id="invoiceInfo" />
+    <!-- 详细信息 -->
+    <paybill-detail />
+    <!-- 付款方信息 -->
+    <payer-info />
+    <!-- 收支流水 -->
+    <payment-log />
+    <!-- 开票记录 -->
+    <invoice-log />
+    <!-- 账单调整记录 -->
+    <paybill-log />
     <!-- 备注信息 -->
-    <extras-info id="extrasInfo" />
+    <extras-info />
   </div>
 </template>
 <script>
