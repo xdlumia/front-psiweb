@@ -371,15 +371,17 @@ export default {
           this.$local.save('bizDataAuthCfgList', data.bizDataAuthCfgList || [])
         })
     },
-    /*cfgcitysettingGetDefaultCity() {
-      this.$api.seeBaseinfoService.cfgcitysettingGetDefaultCity() // 获取当前用户的默认城市
+    cfgcitysettingGetDefaultCity() {
+     /* this.$api.seeBaseinfoService.cfgcitysettingGetDefaultCity() // 获取当前用户的默认城市
         .then(res => {
           const cityInfo = res.data || {}
           this.$local.save('cityInfo', cityInfo)
           // 获取用户权限
           this.getUserAuth()
-        })
-    },*/
+        })*/
+        // 获取用户权限
+        this.getUserAuth()
+    },
 
     // 获取用户权限
     getUserAuth() {
