@@ -2,12 +2,12 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 15:47:43
+ * @LastEditTime: 2019-11-04 17:19:08
  * @Description: 销售合同
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="销售合同">
+    <TableView :filterOptions="filterOptions" :headers="tableHeader" api="bizSystemService.getEmployeeList" title="销售合同">
       <template slot-scope="{column,row,value}">
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
@@ -43,6 +43,32 @@ export default {
         { label: '单据创建人', prop: 'deptName', width: '180' },
         { label: '创建部门', prop: 'deptName', width: '180' },
         { label: '创建时间', prop: 'createTime', width: '180' }
+      ],
+      filterOptions: [
+        { label: '合同编号', prop: 'contractCode', default: true },
+        { label: '甲方', prop: 'partyA', default: true },
+        { label: '乙方', prop: 'partyB', default: true },
+        {
+          label: '合同开始时间',
+          prop: 'BeginDate',
+          type: 'dateRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '合同结束时间',
+          prop: 'EndDate',
+          type: 'dateRange',
+          default: true
+        },
+        {
+          label: '合同创建人',
+          prop: 'creator',
+          type: 'employee',
+          default: true
+        },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
+        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
       ]
     };
   },

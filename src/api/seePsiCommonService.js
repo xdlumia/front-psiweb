@@ -1,8 +1,8 @@
 /*
  * @Author: 高大鹏
  * @Date: 2019-10-30 19:45:33
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-02 15:03:17
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-04 14:20:08
  * @Description: description
  */
 const MOCK_ADDRESS = '/mock/5db9778bbc54fc3da273f010/'
@@ -850,6 +850,14 @@ export default {
   runlogCompressAndDownload: {
     'url': '/ws/runlog/compressAndDownload',
     'mock': IS_MOCK
-  }
+  },
+  /**
+   * @tag 自定义列表
+   * @description 获取列表--分页
+   */
+  customcolumnList: {
+      url: '/customcolumn/list',
+      methods: 'get',
+  },
   /* =============文件压缩下载（日志和配置文件）end=========== */
 }

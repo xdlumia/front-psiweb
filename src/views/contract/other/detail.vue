@@ -2,14 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 15:41:51
+ * @LastEditTime: 2019-11-04 15:54:58
  * @Description: 其他合同
 */
 <template>
   <sideDetail :status="status" :visible.sync="showPop" @close="$emit('update:visible',false)" title="其他合同" width="990px">
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form>
+        <el-form :disabled="true">
           <contract-title id="titleInfo"></contract-title>
           <contract-signer id="firstClass" name="甲方"></contract-signer>
           <contract-signer id="secondClass" name="乙方"></contract-signer>

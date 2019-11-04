@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 11:32:35
+ * @LastEditTime: 2019-11-04 14:10:51
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -66,7 +66,6 @@
       @moreHandle="moreHandle"
       @column="columnHandle"
       @clear-filter="clearFilter"
-      @closeFilter="reload"
       :title="title"
       :filter="this.filter"
       :moreButton="this.moreButton"
@@ -93,6 +92,7 @@
           <dFilter
             v-model="params"
             :options="filterOptions"
+            @change="reload()"
           />
         </slot>
       </template>

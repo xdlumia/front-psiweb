@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 13:39:49
+ * @LastEditTime: 2019-11-04 14:19:39
  * @Description: 表格头部 
  */
 <template>
@@ -245,7 +245,7 @@ export default {
     },
     // 获取自定义列的值
     getTableCol() {
-      this.$api.seePumaidongService.trenyuanxxList({ page: 1, limit: 20 })
+      this.$api.seePsiCommonService.customcolumnList({ page: 1, limit: 20 })
         .then(res => {
           this.tableColList = res.data || [];
           // 返回列数据
