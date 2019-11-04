@@ -1,9 +1,9 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-28 15:54:43
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 16:41:42
- * @Description: 收款方信息
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-04 11:15:51
+ * @Description: 收款方信息 对方名称
 */
 <template>
   <form-card title="收款方信息">

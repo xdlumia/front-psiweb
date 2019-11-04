@@ -17,19 +17,16 @@
       v-for="(item, index) in logForm.logArr"
       :key="index"
     >
-      <el-button
+      <i
         @click="deleteLogArr(index)"
-        v-if="index != 0"
-        class="d-absolute"
+        v-if='index != 0'
+        class="d-absolute el-icon-remove f22 d-pointer"
         style="right:5px;top:5px;z-index:100;"
-        type="danger"
-        icon="el-icon-delete"
-        size="small"
-        circle
-      ></el-button>
+      ></i>
       <el-row>
         <el-col
-          :span="8"
+          :span="
+        8"
           class="pl5 pr5 pb5"
         >
           <el-form-item

@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-02 18:09:44
+ * @LastEditTime: 2019-11-04 10:35:04
  * @Description: 业务设置-新增公司
  -->
 <template>
@@ -60,6 +60,12 @@
             </el-form-item>
           </el-col>
         </el-row>
+      </form-card>
+      <form-card :title="true" v-if="!companyForm.commonCorporationAccountEntities.length">
+        <div slot="title" style="display:flex;justify-content:space-between">
+          <span>公司账户</span>
+          <el-button type="text" style="padding:0" @click="addAccount">+新建</el-button>
+        </div>
       </form-card>
       <form-card
         :title="index < 1"
@@ -203,10 +209,12 @@ export default {
       companyFormRules: {
         corporationName: { required: true, message: '请输入', trigger: 'blur' },
         accountBank: { required: true, message: '请输入', trigger: 'blur' },
-        account: { required: true, message: '请输入', trigger: 'blur' },
+        account: [{ required: true, message: '请输入', trigger: 'blur' },
+          { type: 'bankCard', message: '请输入正确的银行账号', trigger: 'blur' }],
         taxpayersNum: { required: true, message: '请输入', trigger: 'blur' },
         address: { required: true, message: '请输入', trigger: 'blur' },
-        phone: { required: true, message: '请输入', trigger: 'blur' },
+        phone: [{ required: true, message: '请输入', trigger: 'blur' },
+          { type: 'phone', message: '请输入正确的手机号', trigger: 'blur' }],
         invoiceSum: { required: true, message: '请选择', trigger: 'change' },
         jinvoiceTaxRate: { required: true, message: '请输入', trigger: 'blur' },
         minLimitNum: { required: true, message: '请输入', trigger: 'blur' }
@@ -215,8 +223,10 @@ export default {
         accountType: { required: true, message: '请选择', trigger: 'change' },
         accountName: { required: true, message: '请输入', trigger: 'blur' },
         accountBank: { required: true, message: '请输入', trigger: 'blur' },
-        phone: { required: true, message: '请输入', trigger: 'blur' },
-        account: { required: true, message: '请输入', trigger: 'blur' },
+        phone: [{ required: true, message: '请输入', trigger: 'blur' },
+          { type: 'phone', message: '请输入正确的手机号', trigger: 'blur' }],
+        account: [{ required: true, message: '请输入', trigger: 'blur' },
+          { type: 'bankCard', message: '请输入正确的银行账号', trigger: 'blur' }],
         state: { required: true, message: '请选择', trigger: 'change' },
         qrCode: { required: true, message: '请上传', trigger: 'change' }
       }
@@ -247,7 +257,7 @@ export default {
     // 获取详情
     commoncorporationInfo(id) {
       this.loading = true
-      this.$api.seePsiCommonService.commoncorporationInfo(null, id).then(res => {
+      this.$api.seeBaseinfoService.commoncorporationInfo(null, id).then(res => {
         Object.keys(this.companyForm).forEach(key => {
           this.companyForm[key] = res.data[key] || this.companyForm[key]
         })
@@ -261,7 +271,7 @@ export default {
         if (valid) {
           this.loading = true
           const port = this.isEdit ? 'commoncorporationUpdate' : 'commoncorporationSave'
-          this.$api.seePsiCommonService[port](this.companyForm).then(res => {
+          this.$api.seeBaseinfoService[port](this.companyForm).then(res => {
             this.$emit('refresh')
           }).finally(() => {
             this.loading = false

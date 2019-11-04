@@ -8,8 +8,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:2
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 13:38:41
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-04 16:24:26
  * @LastEditors: 高大鹏
  * @LastEditTime: 2019-10-28 15:27:49
  * @Description: 登录页
@@ -358,27 +358,32 @@ export default {
             roleName: rmRoleEntities[0] && rmRoleEntities[0].roleName, // 角色名字
             type: data.type
           })
-          if (data.type === 1) {
-            // 获取用户权限
-            this.getUserAuth()
-          } else {
-            this.cfgcitysettingGetDefaultCity()
-          }
+
+          this.getUserAuth()
+          // if (data.type === 1) {
+          //   // 获取用户权限
+          //   this.getUserAuth()
+          // } else {
+          //   //psi系统不需要默认城市
+          //   this.cfgcitysettingGetDefaultCity()
+          // }
           // 用户数据权限
           this.$local.save('dataAuthList', data.dataAuthList || [])
           // 用户按钮数据权限
           this.$local.save('bizDataAuthCfgList', data.bizDataAuthCfgList || [])
         })
     },
-    cfgcitysettingGetDefaultCity() {
-      this.$api.seeBaseinfoService.cfgcitysettingGetDefaultCity() // 获取当前用户的默认城市
-        .then(res => {
-          const cityInfo = res.data || {}
-          this.$local.save('cityInfo', cityInfo)
-          // 获取用户权限
-          this.getUserAuth()
-        })
-    },
+    // cfgcitysettingGetDefaultCity() {
+    //   /* this.$api.seeBaseinfoService.cfgcitysettingGetDefaultCity() // 获取当前用户的默认城市
+    //      .then(res => {
+    //        const cityInfo = res.data || {}
+    //        this.$local.save('cityInfo', cityInfo)
+    //        // 获取用户权限
+    //        this.getUserAuth()
+    //      })*/
+    //   // 获取用户权限
+    //   this.getUserAuth()
+    // },
 
     // 获取用户权限
     getUserAuth() {
@@ -398,7 +403,6 @@ export default {
           })
           navData.splice(systemSettingsIndex, isDelete ? 1 : 0)
           this.$local.save('navData', navData)
-
           // 登录成功后跳转到 登录前的页面 或获取路由的第一个
           const redirectRouter = navData[0].children ? navData[0].children[0].url : navData[0].url
           const routerReplace = sessionStorage.getItem('loginRedirect') || redirectRouter || '/'

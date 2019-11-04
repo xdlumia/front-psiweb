@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-30 14:42:55
+ * @LastEditTime: 2019-11-04 16:54:54
  * @Description: 业务设置-报表 promotion
  -->
 <template>
@@ -11,6 +11,9 @@
       <el-col :span="16">
         <h3 class="mt10 mb10 d-text-gray b">提成报表</h3>
       </el-col>
+      <el-col :span="8" class="ar">
+        <el-button type="primary" size="small" style="margin-top: 20px;" @click="visible=true">+新增</el-button>
+      </el-col>
     </div>
     <fieldset class="d-fieldset mb20">
       <legend>
@@ -18,35 +21,73 @@
         <span class="mr5">提成报表</span>
         <span class="f12 pb10" style="color: #999">说明：提成设置</span>
       </legend>
-      <el-table :data="tableData">
-        <el-table-column label="提成员工名称"></el-table-column>
-        <el-table-column label="底薪"></el-table-column>
-        <el-table-column label="提成比例"></el-table-column>
+      <d-table
+        :params="queryForm"
+        ref="commissionTable"
+        api="seePsiCommonService.commonsystemreportList"
+        :border="false"
+        style="height: calc(100vh - 240px);"
+      >
+        <el-table-column label="提成员工名称" prop="employeeName"></el-table-column>
+        <el-table-column label="底薪" prop="basePay"></el-table-column>
+        <el-table-column label="提成比例" prop="commission"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small">编辑</el-button>
-            <el-button type="text" size="small">删除</el-button>
-            <el-button type="text" size="small">启用</el-button>
-            <el-button type="text" size="small">停用</el-button>
+            <el-button type="text" size="small" @click="edit(scope.row.id)">编辑</el-button>
+            <el-button type="text" size="small" @click="deleteOne(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
-      </el-table>
+      </d-table>
     </fieldset>
+    <el-dialog :visible.sync="visible" top="20vh" v-dialogDrag width="500px" title="提成员工设置">
+      <add-commission :editId="editId" v-if="visible" @refresh="refresh" @cancel="visible = false"></add-commission>
+    </el-dialog>
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
+import addCommission from './components/add-commission'
 export default {
   data() {
     return {
-      activeName: 'first',
+      visible: false,
       isEdit: false,
-      tableData: []
+      tableData: [],
+      queryForm: {
+        page: 1,
+        limit: 15
+      },
+      editId: null
     }
   },
   components: {
+    addCommission
   },
   methods: {
+    edit(id) {
+      this.editId = id
+      this.visible = true
+    },
+    deleteOne(id) {
+      this.$confirm(`是否删除`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api.seePsiCommonService.commonsystemreportLogicDelete({ id }).then(res => {
+          this.$refs.commissionTable.reload(1);
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+    refresh() {
+      this.visible = false
+      this.$refs.commissionTable.reload(1)
+    },
     save() {
 
     },

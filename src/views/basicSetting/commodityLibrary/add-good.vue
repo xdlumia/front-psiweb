@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-02 14:43:28
+ * @LastEditTime: 2019-11-04 14:17:30
  * @Description: 新增商品
  -->
 <template>
@@ -284,6 +284,12 @@ export default {
   },
   components: {
   },
+  props: {
+    editId: {
+      type: String,
+      default: ''
+    }
+  },
   computed: {
     secondClassList() {
       const temp = this.firstClassList.find(item => item.id === this.goodForm.firstClassId)
@@ -297,8 +303,16 @@ export default {
   },
   mounted() {
     this.commonwmsmanagerUsableList()
+    if (this.editId) {
+      this.getGoodsDetail(this.editId)
+    }
   },
   methods: {
+    getGoodsDetail(code) {
+      this.$api.seeGoodsService.getGoodsDetail({ code: code }).then(res => {
+        console.log(res)
+      })
+    },
     inventoryPriceChange() {
       const temp = this.goodForm.values[0]
       if (temp.saleReferencePrice) {

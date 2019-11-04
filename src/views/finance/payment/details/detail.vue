@@ -2,16 +2,21 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 16:12:49
- * @Description: 客户详情-基本详情
+ * @LastEditTime: 2019-11-04 11:15:10
+ * @Description: 付款单详情
 */
 <template>
   <div>
-    <base-info id="baseInfo" />
-    <!-- 发票信息 -->
-    <invoice-info id="invoiceInfo" />
+    <!-- 审核面板 -->
+    <approve-panel />
+    <!-- 详细信息 -->
+    <paybill-detail />
+    <!-- 对方名称 -->
+    <receiver-info />
+    <!-- 收支流水 -->
+    <payment-log />
     <!-- 备注信息 -->
-    <extras-info id="extrasInfo" />
+    <extras-info />
   </div>
 </template>
 <script>

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 10:05:38
+ * @LastEditTime: 2019-11-04 15:39:25
  * @Description: 销售-账单调价单
  */
 <template>
@@ -67,7 +67,7 @@
 import add from './add' // 新增账单调整
 import detail from './details' //客户详情
 let filterList = [
-  { label: '排序', prop: 'sort', default: true, type: 'sort', options: [{ label: '最新跟进', value: '' }, { label: '最新录入', value: '' }], },
+  { label: '排序', prop: 'sort', default: true, type: 'sort', options: [{ label: '最新跟进', value: '1' }, { label: '最新录入', value: '' }], },
   { label: '商户编号、商户名称/简称', prop: 'title', default: true, type: 'text' },
   { label: '联系人、联系人电话', prop: 'city', default: true, type: 'text' },
   { label: '商机阶段', prop: 'pushTime', default: true, type: 'select', },

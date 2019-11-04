@@ -37,10 +37,9 @@
           <el-form>
             <goodsExported />
             <shipInfo />
-            <generateDeliver :status='status' />
+            <generateDeliver :visible.sync='orderStorageVisible' />
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="销售单">销售单</el-tab-pane>
         <el-tab-pane label="拣货单">拣货单</el-tab-pane>
         <el-tab-pane label="组装任务">组装任务</el-tab-pane>
         <el-tab-pane label="发货单">发货单</el-tab-pane>
@@ -61,7 +60,8 @@ export default {
   props: ['drawerData'],
   data() {
     return {
-      status: [{ label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      orderStorageVisible: false,
     };
   },
   components: {
@@ -97,6 +97,7 @@ export default {
     }
   }
   .tabs-view {
+    width: 100% !important;
     position: relative;
     /deep/ {
       & > .el-tabs__header {

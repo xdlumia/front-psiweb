@@ -2,36 +2,27 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 09:43:55
- * @Description: 客户管理-账单调整单
+ * @LastEditTime: 2019-11-04 11:32:43
+ * @Description: 财务-付款申请 新增流水
 */
 <template>
   <el-dialog
-    title="账单调整单"
+    title="新增流水"
     :visible.sync="showPop"
     width="920px"
     v-dialogDrag
   >
-
     <el-form
       ref="form"
       :model="form"
       size="mini"
       label-position="top"
     >
+      <!-- 单据信息 -->
+      <receipt-info />
+      <!-- 其他信息 -->
+      <extras-info />
 
-      <d-tabs :style="{maxHeight:'calc(100vh - 180px)'}">
-        <d-tab-pane
-          v-for="(val,key) of tabs"
-          :key="key"
-          :label="val"
-          :name="key"
-        />
-        <!-- 账单调整 -->
-        <bill-adjust id="billAdjust" />
-        <!-- 备注信息 -->
-        <extras-info id="extrasInfo" />
-      </d-tabs>
       <div class="ac pt20">
         <el-button
           @click="$emit('update:visible', false)"

@@ -10,6 +10,7 @@
     :visible.sync="visible"
     title="生成发货单"
     v-dialogDrag
+    @close='close'
   >
     <el-container>
       <el-header
@@ -54,12 +55,12 @@
       class="dialog-footer"
     >
       <el-button
-        @click="centerDialogVisible = false"
+        @click="close"
         size="small"
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="centerDialogVisible = false"
+        @click="close"
         size="small"
       >保 存</el-button>
     </span>
@@ -77,7 +78,7 @@ export default {
   props: {
     visible: {
       type: Boolean,
-      default: true
+      default: false
     },
     form: {}
   },
@@ -95,6 +96,9 @@ export default {
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
+    },
+    close() {
+      this.$emit('update:visible', false)
     }
   }
 };
