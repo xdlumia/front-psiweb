@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 15:43:16
+ * @LastEditTime: 2019-11-04 16:05:07
  * @Description: 表格头部 
  */
 <template>
@@ -140,6 +140,7 @@
     <!-- 自定义列弹出框 -->
     <el-dialog
       width="800px"
+      top="100px"
       append-to-body
       v-dialogDrag
       :visible.sync="showCustomColumn"
@@ -164,7 +165,7 @@
             >{{item.title || '无title'}}</el-checkbox-button>
           </draggable>
         </el-checkbox-group>
-        <div class="ac">
+        <div class="ac mt10">
           <el-button
             @click="showCustomColumn = false"
             size="small"
