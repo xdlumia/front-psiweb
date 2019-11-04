@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:50:24
- * @Description: 账单调整详情
+ * @LastEditTime: 2019-11-04 15:38:54
+ * @Description: 账单编号详情
 */
 <template>
   <div>
     <side-detail
-      title="账单调整详情"
+      title="账单编号"
       :visible.sync="showPop"
       width="920px"
     >
@@ -56,27 +56,17 @@
         </keep-alive>
       </el-form>
     </side-detail>
-    <!-- 客户编辑 -->
-    <clientAdd
-      :visible.sync="editVisible"
-      type="edit"
-      :rowData="rowData"
-    />
   </div>
 </template>
 <script>
 
-import basicInfo from './details/basic-info' //详情
-import clientData from './details/client-data' //详情
-import clientAdd from './add' //详情
+import detail from './details/detail' //详情
 
 export default {
   components: {
-    basicInfo,
-    clientData,
-    clientAdd
+    detail
   },
-  props: ['visible', 'rowData'],
+  props: ['visible', 'code', 'rowData'],
   data() {
     return {
       // 操作按钮
@@ -96,20 +86,12 @@ export default {
       },
       // tab操作栏
       tabs: {
-        basicInfo: '详情',
-        clientData: '客户数据',
-        salesQuote: '报价单',
-        salesOutLibrary: '销售出库单',
-        salesOutLibrary: '销售合同',
-        outLib: '销售单',
-        outLib1: '直发单',
-        salesReturn: '销售退货单',
-        salesExchange: '销售换货单',
-        salesExchange0: '发货单',
-        salesExchange1: '应付账单',
-        salesExchange2: '销售记录',
+        detail: '详情',
+        clientData: '付款申请',
+        salesQuote: '采购入库单',
+        salesAdjustPrice: '调价单',
       },
-      activeName: 'basicInfo',
+      activeName: 'detail',
       form: {},
       editVisible: false,
     }

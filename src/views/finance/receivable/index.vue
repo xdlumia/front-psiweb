@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 09:50:03
- * @Description: 销售-账单调整单
+ * @LastEditTime: 2019-11-04 15:38:41
+ * @Description: 财务-今日应付账单
  */
 <template>
   <div>
@@ -13,7 +13,7 @@
       :filter="true"
       :moreButton="true"
       :column="true"
-      title="账单调整单"
+      title="今日应付账单"
       @clear-filter="reset()"
       api="bizSystemService.getEmployeeList"
       exportApi="bizSystemService.getEmployeeList"
@@ -21,13 +21,13 @@
       @selection-change="selectionChange"
       :filterOptions="filterOptions"
     >
-      <template v-slot:button>
+      <!-- <template v-slot:button>
         <el-button
           type="primary"
           size="mini"
           @click="eventHandle('addVisible')"
         >新增账单调整</el-button>
-      </template>
+      </template> -->
       <template v-slot:filter>
         <filters
           ref="filters"
@@ -42,7 +42,7 @@
         <span
           class="d-text-blue"
           @click="eventHandle('detailVisible',row)"
-        > 账单调整</span>
+        > 账单编号</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
@@ -67,7 +67,7 @@
 import add from './add' // 新增账单调整
 import detail from './details' //客户详情
 let filterList = [
-  { label: '排序', prop: 'sort', default: true, type: 'sort', options: [{ label: '最新跟进', value: '' }, { label: '最新录入', value: '' }], },
+  { label: '排序', prop: 'sort', default: true, type: 'sort', options: [{ label: '最新跟进', value: '1' }, { label: '最新录入', value: '' }], },
   { label: '商户编号、商户名称/简称', prop: 'title', default: true, type: 'text' },
   { label: '联系人、联系人电话', prop: 'city', default: true, type: 'text' },
   { label: '商机阶段', prop: 'pushTime', default: true, type: 'select', },
