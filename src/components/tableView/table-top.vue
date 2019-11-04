@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 15:21:58
+ * @LastEditTime: 2019-11-04 15:43:16
  * @Description: 表格头部 
  */
 <template>
@@ -266,7 +266,7 @@ export default {
     // 是否显示统计 
     isShowSta() {
       // 如果staData有数据则显示统计
-      return this.staData.length
+      return this.staData.length && this.$parent.$parent.button
     }
   },
   methods: {
