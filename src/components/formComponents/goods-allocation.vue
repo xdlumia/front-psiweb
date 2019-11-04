@@ -1,6 +1,6 @@
 /*
  * @Author: 徐贺 
- * @Date: 2019-10-25 15:24:18 
+ * @Date: 2019-10-25 15:24:18  
  * @Last Modified by: 徐贺
  * @Last Modified time: 2019-10-28 14:02:43
  * @Description: 调拨商品
@@ -8,6 +8,18 @@
 <template>
   <div>
     <form-card title='调拨商品'>
+      <div slot="title">
+        <span>调拨商品</span>
+        <span class="fr">
+          <span>
+            <el-link
+              :underline="false"
+              @click="fullscreen"
+              type="primary"
+            >全屏显示</el-link>
+          </span>
+        </span>
+      </div>
       <d-table
         api="seePumaidongService.collegeManagerList"
         :params="queryForm"
@@ -100,6 +112,10 @@
         ></el-table-column>
 
       </d-table>
+      <FullscreenElement
+        :element="$refs.companyTable"
+        :visible.sync="showInFullscreen"
+      />
     </form-card>
     <outGoodsRecord :visible.sync='dialogVisible' />
   </div>
@@ -107,6 +123,7 @@
 
 <script>
 import outGoodsRecord from './out-goods-record'
+import FullscreenElement from '@/components/fullscreen-element';
 export default {
   data() {
     return {
@@ -121,12 +138,17 @@ export default {
         limit: 20
       },
       dialogVisible: false,
+      showInFullscreen: false
     }
   },
   methods: {
+    fullscreen() {
+      this.showInFullscreen = true;
+    }
   },
   components: {
-    outGoodsRecord
+    outGoodsRecord,
+    FullscreenElement
   },
 }
 </script>

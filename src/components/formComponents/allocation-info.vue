@@ -74,10 +74,19 @@
           maxlength="32"
           size="mini"
         >
-          <el-input
+          <el-select
             :disabled='disabled'
-            placeholder="请输入"
-          />
+            placeholder="请选择"
+            class="wfull"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-col>
       <el-col
@@ -92,10 +101,19 @@
           maxlength="32"
           size="mini"
         >
-          <el-input
+          <el-select
             :disabled='disabled'
-            placeholder="请输入"
-          />
+            placeholder="请选择"
+            class="wfull"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-col>
       <el-col
