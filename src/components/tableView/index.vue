@@ -104,7 +104,12 @@
       class="ac mt35 d-text-gray"
       v-if="!headers.length"
     >暂无列内容</div> -->
+    <!-- 插入树列表 兼容类似库房查询的页面样式 -->
+    <!-- <template v-slot:tree> -->
+    <slot name="tree"></slot>
+    <!-- </template> -->
     <d-table
+      class="d-table"
       :autoInit="!!headers.length"
       @response="tabelRes"
       @selection-change="selectionChange"
