@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:38:46
+ * @LastEditTime: 2019-11-04 10:02:45
  * @Description: 费用分摊单详情
 */
 <template>
@@ -66,14 +66,12 @@
 </template>
 <script>
 
-import basicInfo from './details/basic-info' //详情
-import clientData from './details/client-data' //详情
+import detailDetail from './details/detail' //详情
 import clientAdd from './add' //详情
 
 export default {
   components: {
-    basicInfo,
-    clientData,
+    detailDetail,
     clientAdd
   },
   props: ['visible', 'rowData'],
@@ -96,20 +94,11 @@ export default {
       },
       // tab操作栏
       tabs: {
-        basicInfo: '详情',
-        clientData: '客户数据',
-        salesQuote: '报价单',
+        detailDetail: '详情',
+        financeFee: '费用单',
         salesOutLibrary: '销售出库单',
-        salesOutLibrary: '销售合同',
-        outLib: '销售单',
-        outLib1: '直发单',
-        salesReturn: '销售退货单',
-        salesExchange: '销售换货单',
-        salesExchange0: '发货单',
-        salesExchange1: '应付账单',
-        salesExchange2: '销售记录',
       },
-      activeName: 'basicInfo',
+      activeName: 'detailDetail',
       form: {},
       editVisible: false,
     }

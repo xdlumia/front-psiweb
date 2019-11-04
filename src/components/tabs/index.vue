@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-29 11:57:36
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 14:32:03
+ * @LastEditTime: 2019-11-02 10:05:00
  * @Description: tabs
 */
 <template>
@@ -79,7 +79,7 @@ export default {
       }, 200);
     },
     tabChange({ name }) {
-      let el = document.getElementById(name);
+      let el = this.scrollEl.querySelector(`#${name}`);
       if (el) {
         el.scrollIntoView({
           behavior: 'smooth',
