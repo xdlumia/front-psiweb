@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 14:34:47
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-11-04 17:12:10
  * @Description: 路由文件
  */
 import Vue from 'vue'
@@ -12,6 +12,7 @@ import {
 } from 'see-web-system'
 // 登录
 import Login from '@/components/login'
+import store from '@/store'
 
 // 框架
 import Layout from '@/components/layout'
@@ -51,7 +52,7 @@ Router.prototype.push = function push(location) {
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [{
     path: '/login',
@@ -79,7 +80,7 @@ export default new Router({
     ...OrderRoute, // 采购模块路由配置
     ...ContractRoute, // 合同模块路由配置
     ...storageRoute, // 库房模块路由配置
-    ...financeRoute, //财务模块路由配置
+    ...financeRoute, // 财务模块路由配置
     ...basicSetting // 基础配置
     ]
   },
@@ -90,3 +91,27 @@ export default new Router({
   }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  let navList = store.getters.navData
+  if (!navList.length) {
+    store.dispatch('setNav').then(res => {
+      navList = store.getters.navData
+      filter()
+    })
+  } else {
+    filter()
+  }
+  function filter() {
+    if (!navList.includes(to.path)) {
+      next({
+        name: '/403'
+      })
+      return
+    } else {
+      next()
+    }
+  }
+})
+
+export default router
