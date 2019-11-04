@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 16:59:17
+ * @LastEditTime: 2019-11-04 17:24:51
  * @Description: file content
  */
 import axios from 'axios'
@@ -18,8 +18,24 @@ import seePsiPurchaseService from './seePsiPurchaseService' //
 import seePsiWmsService from './seePsiWmsService' //
 import seePsiSaleService from './seePsiSaleService' //
 
-// const indexFiles = require.context(`./`, false, /.js$/)
 axios.defaults.timeout = 200000
+
+const apiFiles = require.context(`./`, false, /.js$/)
+// let oldRegistry = {}
+// let newRegistry = {}
+// apiFiles.keys().forEach(item => {
+//   if (item !== './index.js') {
+//     let key = item.split(/[.\/.]/).slice(-2)[0]
+//     if (item.match(/^\.\/(seeContractService|seeGoodsService)/)) {
+//       oldRegistry[key] = apiFiles(item).default
+
+//     } else {
+//       newRegistry[key] = apiFiles(item).default
+//     }
+//   }
+
+// })
+
 
 apiConfig.registry({
   // systemService,
@@ -28,13 +44,13 @@ apiConfig.registry({
   seeGoodsService
 })
 
-// 新的api使用方法
+// // 新的api使用方法
 apiConfig.registryConfig({
   seeBaseinfoService,
   seePumaidongService,
-  seePsiCommonService,
   seePsiContractService,
   seePsiWmsService,
   seePsiPurchaseService,
+  seePsiCommonService,
   seePsiSaleService,
 })
