@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:50:24
- * @Description: 账单调整详情
+ * @LastEditTime: 2019-11-04 11:19:48
+ * @Description: 付款单详情
 */
 <template>
   <div>
     <side-detail
-      title="账单调整详情"
+      title="付款单详情"
       :visible.sync="showPop"
       width="920px"
     >
@@ -57,7 +57,7 @@
       </el-form>
     </side-detail>
     <!-- 客户编辑 -->
-    <clientAdd
+    <add
       :visible.sync="editVisible"
       type="edit"
       :rowData="rowData"
@@ -66,15 +66,13 @@
 </template>
 <script>
 
-import basicInfo from './details/basic-info' //详情
-import clientData from './details/client-data' //详情
-import clientAdd from './add' //详情
+import detail from './details/detail' //详情
+import add from './add' //详情
 
 export default {
   components: {
-    basicInfo,
-    clientData,
-    clientAdd
+    detail,
+    add
   },
   props: ['visible', 'rowData'],
   data() {
@@ -82,34 +80,30 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '停用', type: 'primary', authCode: '' },
-        { label: '编辑', type: '', authCode: '' },
-        { label: '新增报价单', type: 'primary', authCode: '' }
+        { label: '付款申请', type: 'primary', authCode: '' },
+        { label: '通过', type: 'primary', authCode: '' },
+        { label: '驳回', type: '', authCode: '' },
+        { label: '复核通过', type: '', authCode: '' },
+        { label: '付款', type: '', authCode: '' }
       ],
       /**
        * 根据当前状态判断显示哪些按钮
        */
       currStatus: 1,
       currStatusType: {
-        1: ['停用', '编辑', '新增报价单'], // 启用中
-        2: ['启用', '编辑', '新增报价单'], // 已停用
+        1: ['付款申请'], // 新建
+        2: ['通过', '驳回'] // 审核中
       },
       // tab操作栏
       tabs: {
-        basicInfo: '详情',
-        clientData: '客户数据',
-        salesQuote: '报价单',
-        salesOutLibrary: '销售出库单',
-        salesOutLibrary: '销售合同',
-        outLib: '销售单',
-        outLib1: '直发单',
-        salesReturn: '销售退货单',
+        detail: '详情',
+        salesQuote: '采购单',
         salesExchange: '销售换货单',
-        salesExchange0: '发货单',
-        salesExchange1: '应付账单',
-        salesExchange2: '销售记录',
+        financeFee: '费用单',
+        salesReturn: '销售退货单',
+        salesReturn1: '采购入库单'
       },
-      activeName: 'basicInfo',
+      activeName: 'detail',
       form: {},
       editVisible: false,
     }
@@ -142,8 +136,12 @@ export default {
         });
       }
       // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
-      else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
-        if (label == '编辑') {
+      else if (label == '付款申请' || label == '付款' || label == '生成请购单') {
+        if (label == '付款申请') {
+          this.editVisible = true
+          return
+        }
+        if (label == '付款') {
           this.editVisible = true
           return
         }
