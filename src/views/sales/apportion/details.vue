@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:38:46
+ * @LastEditTime: 2019-11-04 09:54:05
  * @Description: 费用分摊单详情
 */
 <template>
@@ -97,17 +97,8 @@ export default {
       // tab操作栏
       tabs: {
         basicInfo: '详情',
-        clientData: '客户数据',
-        salesQuote: '报价单',
+        financeFee: '费用单',
         salesOutLibrary: '销售出库单',
-        salesOutLibrary: '销售合同',
-        outLib: '销售单',
-        outLib1: '直发单',
-        salesReturn: '销售退货单',
-        salesExchange: '销售换货单',
-        salesExchange0: '发货单',
-        salesExchange1: '应付账单',
-        salesExchange2: '销售记录',
       },
       activeName: 'basicInfo',
       form: {},

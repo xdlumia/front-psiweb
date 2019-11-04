@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:49:59
+ * @LastEditTime: 2019-11-04 09:50:03
  * @Description: 销售-账单调整单
  */
 <template>
@@ -67,14 +67,12 @@
 import add from './add' // 新增账单调整
 import detail from './details' //客户详情
 let filterList = [
-  { label: '排序', prop: 'sort', default: true, type: 'sort', options: [], },
-  { label: '客户编号', prop: 'title', default: true, type: 'text' },
-  { label: '客户名称', prop: 'city', default: true, type: 'text' },
-  { label: '联系人', prop: 'pushTime', default: true, type: 'employee', },
-  { label: '联系电话', prop: 'status', default: true, type: 'text' },
-  { label: '提交人', prop: 'messageType', default: true, type: 'employee', },
-  { label: '部门', prop: 'messageType2', default: true, type: 'employee', },
-  { label: '提交时间', prop: 'messageType3', default: true, type: 'daterange', },
+  { label: '排序', prop: 'sort', default: true, type: 'sort', options: [{ label: '最新跟进', value: '' }, { label: '最新录入', value: '' }], },
+  { label: '商户编号、商户名称/简称', prop: 'title', default: true, type: 'text' },
+  { label: '联系人、联系人电话', prop: 'city', default: true, type: 'text' },
+  { label: '商机阶段', prop: 'pushTime', default: true, type: 'select', },
+  { label: '跟进时间起止', prop: 'status', default: true, type: 'daterange' },
+  { label: '维护人', prop: 'messageType', default: true, type: 'employee', },
 ]
 export default {
   name: 'return',
