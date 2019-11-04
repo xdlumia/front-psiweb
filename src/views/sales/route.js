@@ -2,7 +2,7 @@
  * @author: 王晓冬
  * @Date: 2019-10-28 10:29:53
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 18:11:03
+ * @LastEditTime: 2019-11-04 10:54:52
  * @Description: 销售模块路由
  */
 const Quote = () => import('@/views/sales/quote') // 报价单
@@ -27,7 +27,6 @@ let routeObj = {
 
 let routes = []
 for (let key in routeObj) {
-  key.toLowerCase()
   routes.push({
     //path: 'sales/quote'
     path: `/sales/${key.toLowerCase()}`,
@@ -39,63 +38,3 @@ for (let key in routeObj) {
   })
 }
 export default routes
-// export default [
-//   {
-//     path: 'sales/quote',
-//     component: Quote,
-//     meta: {
-//       parent: '销售',
-//       title: '报价单'
-//     }
-//   }, {
-//     path: 'sales/outLibrary',
-//     component: OutLibrary,
-//     meta: {
-//       parent: '销售',
-//       title: '销售出库单'
-//     }
-//   }, {
-//     path: 'sales/return',
-//     component: Return,
-//     meta: {
-//       parent: '销售',
-//       title: '销售退货单'
-//     }
-//   }, {
-//     path: 'sales/exchange',
-//     component: Exchange,
-//     meta: {
-//       parent: '销售',
-//       title: '销售换货单'
-//     }
-//   }, {
-//     path: 'sales/client',
-//     component: Client,
-//     meta: {
-//       parent: '销售',
-//       title: '客户'
-//     }
-//   }, {
-//     path: 'sales/apportion',
-//     component: Apportion,
-//     meta: {
-//       parent: '销售',
-//       title: '销售费用分摊单'
-//     }
-//   }, {
-//     path: 'sales/adjust',
-//     component: Adjust,
-//     meta: {
-//       parent: '销售',
-//       title: '账单调整单'
-//     }
-//   }, {
-//     path: 'sales/adjustPrice',
-//     component: AdjustPrice,
-//     meta: {
-//       parent: '销售',
-//       title: '销售调价单'
-//     }
-//   }
-
-// ]

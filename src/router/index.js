@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-30 15:09:18
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-04 10:41:01
  * @Description: 路由文件
  */
 import Vue from 'vue'
@@ -13,17 +13,22 @@ import {
 // 登录
 import Login from '@/components/login'
 
-
+// 框架
+import Layout from '@/components/layout'
 // 采购
 import OrderRoute from '@/views/order/route.js'
+// 采购
 import ContractRoute from '@/views/contract/route.js'
 
 // 销售路由
 import salesRoute from '@/views/sales/route.js'
 
 
-// 框架
-import Layout from '@/components/layout'
+// 销售路由
+import financeRoute from '@/views/finance/route.js'
+
+console.log(financeRoute);
+
 
 // 库房路由
 import storageRoute from '@/views/storage/route.js'
@@ -77,6 +82,7 @@ export default new Router({
     ...OrderRoute, // 采购模块路由配置
     ...ContractRoute, // 合同模块路由配置
     ...storageRoute, // 库房模块路由配置
+    ...financeRoute, //财务模块路由配置
     ...basicSetting // 基础配置
     ]
   },
