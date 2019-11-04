@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 17:34:18
+ * @LastEditTime: 2019-11-04 17:34:30
  * @Description: file content
  */
 import axios from 'axios'
@@ -28,7 +28,6 @@ apiFiles.keys().forEach(item => {
     let key = item.split(/[.\/.]/).slice(-2)[0]
     if (item.match(/^\.\/(seeContractService|seeGoodsService|seeExternService)/)) {
       oldRegistry[key] = apiFiles(item).default
-
     } else {
       newRegistry[key] = apiFiles(item).default
     }

@@ -2,13 +2,14 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 18:55:17
+ * @LastEditTime: 2019-11-04 18:00:45
  * @Description: 销售-报价单
  */
 <template>
   <div>
+    <!-- busType="15" -->
     <table-view
-      type="1"
+      busType="23"
       ref="table"
       :filter="true"
       :moreButton="true"
@@ -125,13 +126,6 @@ export default {
         status: "",
         page: 1,
         limit: 20
-      },
-      //dialog弹出框
-      dialogData: {
-        visible: false,
-        title: '',
-        type: '',
-        data: '',
       },
       // 报价单详情
       quoteVisible: false,
