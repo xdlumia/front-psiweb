@@ -2,14 +2,15 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 16:12:49
- * @Description: 客户详情-基本详情
+ * @LastEditTime: 2019-11-04 10:03:22
+ * @Description: 销售费用分摊单-基本详情
 */
 <template>
   <div>
-    <base-info id="baseInfo" />
-    <!-- 发票信息 -->
-    <invoice-info id="invoiceInfo" />
+    <!-- 分摊信息 -->
+    <apportion-info id="apportionInfo" />
+    <!-- 商品信息 -->
+    <commodity-info id="commodityInfo" />
     <!-- 备注信息 -->
     <extras-info id="extrasInfo" />
   </div>
