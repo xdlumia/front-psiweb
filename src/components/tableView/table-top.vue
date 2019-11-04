@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 16:59:34
+ * @LastEditTime: 2019-11-04 18:26:47
  * @Description: 表格头部 
  */
 <template>
@@ -151,20 +151,23 @@
         v-loading="loading"
       >
         <div class="mb10">选择显示列（拖拽可调整排序）</div>
-        <el-checkbox-group
-          class="table-col-group"
-          v-model="checkTableCol"
-          size="mini"
-        >
-          <draggable v-model="tableColList">
-            <el-checkbox-button
-              class="mb5 mr5"
-              :label="item.id"
-              v-for="item in tableColList"
-              :key="item.id"
-            >{{item.title || '无title'}}</el-checkbox-button>
-          </draggable>
-        </el-checkbox-group>
+        <!-- <el-checkbox-group 
+        class="table-col-group"
+        v-model="checkTableCol"
+        size="mini"
+        >-->
+        <draggable v-model="tableColList">
+          <el-button
+            class="mb5"
+            size="mini"
+            @click="item.isDisplay = !item.isDisplay"
+            :type="item.isDisplay?'':'primary'"
+            :label="item.id"
+            v-for="item in tableColList"
+            :key="item.id"
+          >{{item.columnName || '无title'}}</el-button>
+        </draggable>
+        <!-- </el-checkbox-group> -->
         <div class="ac mt10">
           <el-button
             @click="showCustomColumn = false"
@@ -207,8 +210,6 @@ export default {
     title: {
       default: ''
     },
-    // 参数类型,查询统计和自定义列
-    type: "",
     // 是否显示筛选
     filter: {
       type: Boolean,
@@ -235,28 +236,28 @@ export default {
       // 自定义列是否显示
       showCustomColumn: false,
       // 自定义列数据
-      tableColList: [],
-      checkTableCol: [],
+      tableColList: [], //表格列 表头数据
+      // checkTableCol: [], //选中的列ids
       // 临时测试数据
-      tableHeader: [
-        {
-          label: "合同编号",
-          prop: "deptName",
-          width: "180"
-        },
-        {
-          label: "采购入库单编号",
-          prop: "deptName",
-          width: "180"
-        },
-        { label: "供应商名称", prop: "deptName", width: "180" },
-        { label: "总计数量", prop: "deptName", width: "180" },
-        { label: "总计采购价", prop: "deptName", width: "180" },
-        { label: "预计到货时间", prop: "deptName", width: "180" },
-        { label: "合同创建人", prop: "deptName", width: "180" },
-        { label: "创建部门", prop: "deptName", width: "180" },
-        { label: "创建时间", prop: "createTime", width: "180" }
-      ]
+      // tableHeader: [
+      //   {
+      //     label: "合同编号",
+      //     prop: "deptName",
+      //     width: "180"
+      //   },
+      //   {
+      //     label: "采购入库单编号",
+      //     prop: "deptName",
+      //     width: "180"
+      //   },
+      //   { label: "供应商名称", prop: "deptName", width: "180" },
+      //   { label: "总计数量", prop: "deptName", width: "180" },
+      //   { label: "总计采购价", prop: "deptName", width: "180" },
+      //   { label: "预计到货时间", prop: "deptName", width: "180" },
+      //   { label: "合同创建人", prop: "deptName", width: "180" },
+      //   { label: "创建部门", prop: "deptName", width: "180" },
+      //   { label: "创建时间", prop: "createTime", width: "180" }
+      // ]
     };
   },
   created() {
@@ -278,11 +279,14 @@ export default {
     },
     // 获取自定义列的值
     getTableCol() {
-      this.$api.seePsiCommonService.customcolumnGetListAll({ busType: 1 })
+      // 获取busType参数
+      let busType = this.$parent.busType
+      this.$api.seePsiCommonService.customcolumnGetListAll({ busType: busType })
         .then(res => {
           this.tableColList = res.data || [];
+          let showHeader = this.tableColList.filter(item => !item.isDisplay)
           // 返回列数据
-          this.$emit("column", this.tableHeader);
+          this.$emit("column", showHeader);
         });
     },
     // 清空筛选
@@ -294,8 +298,10 @@ export default {
     },
     // 自定义列提交
     colConfirm() {
-
-      if (!this.checkTableCol.length) {
+      // item.isDisplay == 0 或者false的时候证明是选中了 这值定义的很奇怪对不对?
+      // 获取选中的列
+      let showHeader = this.tableColList.filter(item => !item.isDisplay)
+      if (!showHeader.length) {
         this.$message({
           type: "error",
           message: "必须选择一列",
@@ -304,11 +310,15 @@ export default {
         return;
       }
       this.loading = true
-      this.$api.seePumaidongService
-        .collegeManagerList(this.checkTableCol)
+      let params = {
+        // busType是父级里的参数接收的 所以从父级里面取
+        busType: this.$parent.busType,
+        ids: showHeader.map(item => item.id)
+      }
+      this.$api.seePsiCommonService.customcolumnUpdate(params)
         .then(res => {
-          // 返回列数据
-          this.$emit("column", this.tableHeader);
+          // 返回列数据  this.checkTableCol
+          this.$emit("column", showHeader);
           // 保存成功
           this.showCustomColumn = false;
         })
