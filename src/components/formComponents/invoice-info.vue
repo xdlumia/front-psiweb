@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 14:27:56
- * @Description: 发票信息
+ * @LastEditTime: 2019-11-05 14:42:34
+ * @Description: 发票信息 1
  */
 <template>
   <form-card title='发票信息'>
