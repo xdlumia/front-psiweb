@@ -2,51 +2,51 @@
  * @Author: 高大鹏
  * @Date: 2019-11-02 11:41:15
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-02 11:41:23
+ * @LastEditTime: 2019-11-05 16:44:01
  * @Description: description
  */
 const MOCK_ADDRESS = '/mock/5dbcfaabbc54fc3da273f1dc/psi'
-
+const IS_MOCK = false
 export default {
   __mockAddress: MOCK_ADDRESS,
   /* =============库房管理start=========== */
   // 查看库房详细信息
   commonwmsmanagerInfo: {
     'url': '/commonwmsmanager/info/{id}',
-    'mock': true
+    'mock': IS_MOCK
   },
 
   // 获取库房列表
   commonwmsmanagerList: {
     'url': '/commonwmsmanager/list',
-    'mock': true
+    'mock': IS_MOCK
   },
 
   // 删除库房信息
   commonwmsmanagerLogicDelete: {
     'url': '/commonwmsmanager/logicDelete',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'delete'
   },
 
   // 保存库房信息
   commonwmsmanagerSave: {
     'url': '/commonwmsmanager/save',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'post'
   },
 
   // 修改库房信息
   commonwmsmanagerUpdate: {
     'url': '/commonwmsmanager/update',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'post'
   },
 
   // 修改库房状态
   commonwmsmanagerUpdateState: {
     'url': '/commonwmsmanager/updateState',
-    'mock': true,
+    'mock': IS_MOCK,
     'methods': 'post'
   },
 
