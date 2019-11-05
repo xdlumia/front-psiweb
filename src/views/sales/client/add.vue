@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:27:36
+ * @LastEditTime: 2019-11-05 14:23:42
  * @Description: 客户管理-新增客户
 */
 <template>
@@ -28,11 +28,20 @@
           :name="key"
         />
         <!-- 基本信息 -->
-        <base-info id="baseInfo" />
+        <base-info
+          :data="form"
+          id="baseInfo"
+        />
         <!-- 发票信息 -->
-        <invoice-info id="invoiceInfo" />
+        <invoice-info
+          :data="form"
+          id="invoiceInfo"
+        />
         <!-- 备注信息 -->
-        <extras-info id="extrasInfo" />
+        <extras-info
+          :data="form"
+          id="extrasInfo"
+        />
       </d-tabs>
       <div class="ac pt20">
         <el-button
@@ -63,7 +72,30 @@ export default {
         extrasInfo: '备注信息',
       },
       activeName: 'baseInfo',
-      form: {},
+      form: {
+        accountBank: '', // 示例：开户银行,
+        address: '', // 示例：地址,
+        attachs: [
+          // string
+        ],
+        bankAccount: '', // 示例：银行账号,
+        clientName: '', // 示例：客户姓名,
+        code: '', // 示例：编号,
+        companyName: '', // 示例：公司名称,
+        deptTotalCode: '', // 示例：部门code,
+        grade: '', // 示例：客户级别,
+        invoiceAddres: '', // 示例：开票地址,
+        invoiceTitle: '', // 示例：发票抬头,
+        linkManName: '', // 示例：联系人,
+        phone: '', // 示例：客户手机号,
+        registerAddres: '', // 示例：注册地址,
+        registerPhone: '', // 示例：注册电话,
+        registrationNo: '', // 示例：注册号,
+        remark: '', // 示例：备注,
+        source: '', // 示例：客户来源,
+        taxpayersNum: '', // 示例：纳税人识别号,
+        trade: '', // 示例：行业
+      },
     }
   },
   computed: {
