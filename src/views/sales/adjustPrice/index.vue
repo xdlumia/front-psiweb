@@ -8,7 +8,7 @@
 <template>
   <div>
     <table-view
-      type="1"
+      busType="1"
       ref="table"
       :filter="true"
       :moreButton="true"

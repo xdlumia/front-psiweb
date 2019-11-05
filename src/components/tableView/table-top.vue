@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 18:49:44
+ * @LastEditTime: 2019-11-05 10:38:08
  * @Description: 表格头部 
  */
 <template>
@@ -156,6 +156,10 @@
         v-model="checkTableCol"
         size="mini"
         >-->
+        <p
+          class="ac d-text-gray"
+          v-if="!tableColList.length"
+        >暂无数据</p>
         <draggable v-model="tableColList">
           <el-button
             class="mb5"

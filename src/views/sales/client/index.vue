@@ -2,23 +2,21 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:37:31
+ * @LastEditTime: 2019-11-05 10:36:05
  * @Description: 销售-客户管理
  */
 <template>
   <div>
     <table-view
-      type="1"
+      busType="41"
       ref="table"
       :filter="true"
       :moreButton="true"
       :column="true"
       title="客户管理"
-      @clear-filter="reset()"
-      api="bizSystemService.getEmployeeList"
-      exportApi="bizSystemService.getEmployeeList"
+      api="seePsiCommonService.commonclientinfoPagelist"
+      exportApi="seePsiCommonService.commonclientinfoPagelist"
       :params="Object.assign(queryForm,params)"
-      @selection-change="selectionChange"
       :filterOptions="filterOptions"
     >
       <template v-slot:button>
@@ -123,20 +121,7 @@ export default {
       this[type] = true
       this.rowData = row
       return
-    },
-    // 多选
-    selectionChange(val) {
-      console.log(val);
-
-    },
-    submitFilter() {
-      this.$emit('submit-filter')
-    },
-    // 重置
-    reset() {
-      this.$refs.filters.$refs.form.resetFields()
-      this.$refs.table.reload(1);
-    },
+    }
   }
 };
 </script>

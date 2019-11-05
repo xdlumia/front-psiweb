@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 09:50:03
+ * @LastEditTime: 2019-11-05 10:33:37
  * @Description: 销售-账单调整单
  */
 <template>
   <div>
     <table-view
-      type="1"
+      busType="1"
       ref="table"
       :filter="true"
       :moreButton="true"
