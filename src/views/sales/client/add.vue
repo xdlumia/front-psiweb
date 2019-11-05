@@ -2,12 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 18:06:35
+ * @LastEditTime: 2019-11-05 18:46:25
  * @Description: 客户管理-新增客户
 */
 <template>
   <el-dialog
-    title="新增客户"
+    :title="title"
     :visible.sync="showPop"
     width="920px"
     v-dialogDrag
@@ -110,7 +110,11 @@ export default {
       set(val) {
         this.$emit('update:visible', false)
       }
-    }
+    },
+    // title
+    title() {
+      return this.type == 'add' ? '新增客户' : `编辑:${this.rowData.code}`
+    },
   },
   mounted() {
 

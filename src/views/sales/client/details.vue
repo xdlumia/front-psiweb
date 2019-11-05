@@ -2,14 +2,14 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 18:33:36
+ * @LastEditTime: 2019-11-05 18:49:45
  * @Description: 客户详情
 */
 <template>
   <div>
     <side-detail
       destroy-on-close
-      title="客户详情"
+      :title="`客户详情:${rowData.code}`"
       :visible.sync="showPop"
       width="920px"
     >
@@ -116,12 +116,12 @@ export default {
         salesQuote: '报价单',
         salesOutLibrary: '销售出库单',
         salesOutLibrary: '销售合同',
-        outLib: '销售单',
-        outLib1: '直发单',
+        storageSales: '销售单',
+        orderDirect: '直发单',
         salesReturn: '销售退货单',
         salesExchange: '销售换货单',
-        salesExchange0: '发货单',
-        salesExchange1: '应付账单',
+        storageDeliver: '发货单',
+        financePayable: '应付账单',
         salesExchange2: '销售记录',
       },
       activeName: 'basicInfo',
