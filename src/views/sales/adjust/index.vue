@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 10:33:37
+ * @LastEditTime: 2019-11-05 15:48:18
  * @Description: 销售-账单调整单
  */
 <template>
@@ -43,7 +43,7 @@
           class="d-text-blue"
           @click="eventHandle('detailVisible',row)"
         > 账单调整</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>

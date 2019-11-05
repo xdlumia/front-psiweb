@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 10:33:45
+ * @LastEditTime: 2019-11-05 15:48:33
  * @Description: 销售-销售换货单
  */
 <template>
@@ -30,7 +30,7 @@
           @click="eventHandle('returnVisible',row)"
         > 销售退货单编号</span>
         <span @click="eventHandle('outLibVisible',row)">销售出库单编号</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>

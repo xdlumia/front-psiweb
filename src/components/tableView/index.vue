@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 15:09:42
+ * @LastEditTime: 2019-11-05 15:41:51
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -233,7 +233,7 @@ export default {
       // 获取状态列表数据
       this.statusList = this.$refs.table.response.statisticData || []
       // 获取统计列表数据(财务独有)
-      this.staList = this.$refs.table.response.data || []
+      this.staList = this.$refs.table.response.staList || []
     },
     // 统计点击筛选
     staHandle(row) {

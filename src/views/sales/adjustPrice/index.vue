@@ -43,7 +43,7 @@
           class="d-text-blue"
           @click="eventHandle('detailVisible',row)"
         > 账单调整</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
