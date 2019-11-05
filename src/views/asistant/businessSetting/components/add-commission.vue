@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-04 11:32:03
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-04 17:09:53
+ * @LastEditTime: 2019-11-05 17:38:26
  * @Description: 新增提成报表
  -->
 <template>
@@ -27,12 +27,12 @@
         </employees-chosen>
       </el-form-item>
       <el-form-item label="底薪" prop="basePay">
-        <el-input v-model="userForm.basePay">
+        <el-input v-model.trim="userForm.basePay">
           <template slot="append">元</template>
         </el-input>
       </el-form-item>
       <el-form-item label="提成比例" prop="commission">
-        <el-input v-model="userForm.commission">
+        <el-input v-model.trim="userForm.commission">
           <template slot="append">%</template>
         </el-input>
       </el-form-item>
