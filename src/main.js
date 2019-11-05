@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 15:37:50
+ * @LastEditTime: 2019-11-05 15:40:55
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -32,7 +32,7 @@ import indexComponents from './views/index'
 import formComponents from './components/formComponents/index'
 
 import Schema from 'async-validator';
-Schema.messages.required = '%s 此处是必填项'
+Schema.messages.required = () => '此处是必填项'
 // import seeWebCustomerService from 'see-web-customer-service'
 
 // 修改element ui 默认参数

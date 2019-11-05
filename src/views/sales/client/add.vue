@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 15:00:30
+ * @LastEditTime: 2019-11-05 15:40:32
  * @Description: 客户管理-新增客户
 */
 <template>
@@ -68,13 +68,13 @@ export default {
   data() {
     return {
       loading: false,
+      activeName: 'baseInfo',
       // tab操作栏
       tabs: {
         baseInfo: '基本信息',
         invoiceInfo: '发票信息',
         extrasInfo: '备注信息',
       },
-      activeName: 'baseInfo',
       form: {
         accountBank: '', // 示例：开户银行,
         address: '', // 示例：地址,
