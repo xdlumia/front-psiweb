@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 15:40:55
+ * @LastEditTime: 2019-11-05 16:31:57
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -37,6 +37,7 @@ Schema.messages.required = () => '此处是必填项'
 
 // 修改element ui 默认参数
 ElementUI.Image.props.fit = { default: 'cover', type: String }
+ElementUI.Input.showWordLimit = true
 Vue.prototype.$store = store;
 // Vue.use(seeWebCustomerService)
 Vue.use(citys)

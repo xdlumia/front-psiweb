@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 16:00:19
+ * @LastEditTime: 2019-11-05 16:09:56
  * @Description: 基本信息 1
  */
 <template>
@@ -19,6 +19,8 @@
           :prop="item.prop"
         >
           <el-input
+            maxlength="32"
+            show-word-limit
             v-if="item.type =='input'"
             :disabled='disabled'
             v-model="data[item.prop]"
