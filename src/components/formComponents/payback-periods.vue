@@ -2,12 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 11:02:34
+ * @LastEditTime: 2019-11-05 11:39:35
  * @Description: 回款周期
 */  
 <template>
   <form-card title="回款周期">
-    <echarts :options="orderEchartOption"></echarts>
+    <echarts :options="echartOption"></echarts>
   </form-card>
 </template>
 <script>
@@ -26,43 +26,39 @@ export default {
     };
   },
   computed: {
-    orderEchartOption() {
+    echartOption() {
       return {
+        color: ['#000', '#ccc'],
         title: {
-          text: '回款周期分布'
+          text: '同名数量统计',
+          subtext: '纯属虚构',
+          x: 'center'
         },
-        // 类型颜色
-        color: ['#53c975', '#409EFF'],
-
         tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross'
-          }
-        },
-        grid: {
-          left: '5%',
-          right: '5%',
-          bottom: '70px',
-          top: '10%',
-        },
-        legend: {
-          data: ['登录天数', '登录时长',]
+          trigger: 'item',
+          formatter: "{b} : {c} ({d}%)"
         },
         series: {
           name: '姓名',
           type: 'pie',
           radius: '55%',
           center: ['40%', '50%'],
-          data: data.seriesData,
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+          label: {
+            normal: {
+              formatter: "{b} : {c} ({d}%)",
             }
-          }
+          },
+          data: [
+            { value: 0.1, name: '360天以上' },
+            { value: 0.1, name: '邮件营销' },
+            { value: 0.1, name: '联盟广告' },
+            { value: 0.1, name: '视频广告' },
+            { value: 0.1, name: '百度' },
+            { value: 0.1, name: '谷歌' },
+            { value: 0.1, name: '必应' },
+            { value: 0.1, name: '其他' }],
         }
+
       }
     }
   },

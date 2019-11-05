@@ -2,167 +2,67 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-29 19:01:19
+ * @LastEditTime: 2019-11-05 12:01:52
  * @Description: 基本信息
  */
 <template>
   <form-card title='基本信息'>
     <el-row :gutter="10">
-      <el-col :span="8">
+      <el-col
+        :span="item.span || 8"
+        v-for="(item,index) of formItems"
+        :key="index"
+      >
         <el-form-item
-          :rules="[{required:true,message:'必填项'}]"
-          label="客户编号"
-          prop
+          :rules="item.rules"
+          :label="item.label"
+          :prop="item.prop"
         >
           <el-input
-            :disabled="disabled"
-            placeholder="请输入"
-            v-model="form.telPhone"
-          >
-          </el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item
-          :rules="[{required:true,message:'必填项'}]"
-          label="客户名称"
-          prop
-        >
-          <el-input
-            :disabled="disabled"
-            placeholder="请输入"
-            v-model="form.telPhone"
-          >
-          </el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item
-          :rules="[{required:true,message:'必填项'}]"
-          label="联系人"
-          prop
-        >
-          <el-input
-            :disabled="disabled"
-            placeholder="请输入"
-            v-model="form.telPhone"
-          >
-          </el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item
-          :rules="[{required:true,message:'必填项'}]"
-          label="联系电话"
-          prop
-        >
-          <el-input
-            :disabled="disabled"
-            placeholder="请输入"
-            v-model="form.telPhone"
-          >
-          </el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item
-          :rules="[{required:true,message:'必填项'}]"
-          label="客户级别"
-          prop
-        >
+            v-if="item.type =='input'"
+            :disabled='disabled'
+            v-model="data[item.prop]"
+            :placeholder="`请输入${item.label}`"
+          />
           <el-select
             class="wfull"
-            :disabled="disabled"
-            filterable
-            placeholder="请选择"
-            v-model="form.customerName"
+            v-else-if="item.type =='select'"
+            :disabled='disabled'
+            v-model="data[item.prop]"
+            :placeholder="`请输入${item.label}`"
           >
             <el-option
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-              v-for="item in options"
-            ></el-option>
+              v-for="item in dictionaryOptions(item.dicName)"
+              :key="item.code"
+              :label="item.content"
+              :value="item.code"
+            />
           </el-select>
-        </el-form-item>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item
-          :rules="[{required:true,message:'必填项'}]"
-          label="行业"
-          prop
-        >
-          <el-select
+          <el-date-picker
             class="wfull"
-            :disabled="disabled"
-            filterable
-            placeholder="请选择"
-            v-model="form.customerName"
-          >
-            <el-option
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-              v-for="item in options"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item
-          :rules="[{required:true,message:'必填项'}]"
-          label="来源"
-          prop
-        >
-          <el-select
-            class="wfull"
-            :disabled="disabled"
-            filterable
-            placeholder="请选择"
-            v-model="form.customerName"
-          >
-            <el-option
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-              v-for="item in options"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-      </el-col>
-
-      <el-col :span="16">
-        <el-form-item
-          :rules="[{required:true,message:'必填项'}]"
-          label="详细地址"
-          prop
-        >
-          <el-input
-            :disabled="disabled"
-            placeholder="请输入"
-            v-model="form.telPhone"
-          >
-          </el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item
-          :rules="[{required:true,message:'必填项'}]"
-          label="备注"
-          prop
-        >
-          <el-input
-            :disabled="disabled"
-            placeholder="请输入"
-            v-model="form.telPhone"
-          >
-          </el-input>
+            v-else-if="item.type =='date'"
+            value-format="timestamp"
+            :disabled='disabled'
+            v-model="data[item.prop]"
+            :placeholder="`请选择${item.label}`"
+          />
         </el-form-item>
       </el-col>
     </el-row>
+
   </form-card>
 </template>
 <script>
+let formItems = [
+  { label: '客户编号', prop: 'code', type: 'input', rules: [{ required: true }] },
+  { label: '客户名称', prop: 'a', type: 'input', rules: [{ required: true, type: 'name' }], },
+  { label: '联系人', prop: 'a', type: 'input', rules: [{ required: true, type: 'name' }], },
+  { label: '联系电话', prop: 'a', type: 'input', rules: [{ required: false, type: 'phone' }], },
+  { label: '客户级别', prop: 'a', type: 'select', rules: [{ required: false }], dicName: '', },
+  { label: '行业', prop: 'a', type: 'select', rules: [{ required: false }], dicName: '', },
+  { label: '来源', prop: 'a', type: 'select', rules: [{ required: false }], dicName: '', },
+  { label: '详细地址', prop: 'a', type: 'input', span: 16, rules: [{ required: false }], },
+]
 export default {
   props: {
     data: {
@@ -171,10 +71,18 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    hide: {
+      type: Array,
+      default: () => {
+        return []
+      }
     }
   },
   data() {
     return {
+      // 遍历表单
+      formItems: formItems.filter(item => !this.hide.includes(item.prop)),
       options: [],
       form: {
         telPhone: '我是电话号码'
