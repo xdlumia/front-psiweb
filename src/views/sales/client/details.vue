@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 18:14:13
+ * @LastEditTime: 2019-11-05 18:33:36
  * @Description: 客户详情
 */
 <template>
@@ -153,15 +153,22 @@ export default {
   methods: {
     buttonsClick(label) {
       // handleConfirm里的按钮操作是需要二次确认的
-      let handleConfirm = ['提交审核', '撤销审核', '驳回', '删除', '终止']
+      let handleConfirm = ['停用', '启用', '删除']
       if (handleConfirm.includes(label)) {
+        // api对象
+        let apiObj = {
+          '停用': 'customcolumnInfo',
+          '启用': 'customcolumnInfo',
+          '删除': 'customcolumnInfo',
+        }
         this.$confirm(`是否${label}?`, "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
           center: true
         }).then(() => {
-          this.$api.seePumaidongService.collegeManagerDelete({ id: [123] })
+          // 通过lable 查找接口方法
+          this.$api.seePsiCommonService[apiObj[label]](null, this.rowData.id)
             .then(res => {
               this.$emit('reload')
             });

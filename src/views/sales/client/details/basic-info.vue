@@ -2,24 +2,24 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 18:14:46
+ * @LastEditTime: 2019-11-05 18:15:52
  * @Description: 客户详情-基本详情
 */
 <template>
   <div v-loading="loading">
     <base-info
       disabled
-      :data="rowData"
+      :data="detailData"
     />
     <!-- 发票信息 -->
     <invoice-info
       disabled
-      :data="rowData"
+      :data="detailData"
     />
     <!-- 备注信息 -->
     <extras-info
       disabled
-      :data="rowData"
+      :data="detailData"
     />
   </div>
 </template>
@@ -47,24 +47,24 @@ export default {
   data() {
     return {
       loading: false,
-      detailData: { code: 111 }, //详情数据
+      detailData: {}, //详情数据
     }
   },
   mounted() {
-    // this.commonclientinfoInfo()
+    this.commonclientinfoInfo()
   },
   methods: {
     // 获取详情信息
-    // commonclientinfoInfo() {
-    //   this.loading = true
-    //   this.$api.seePsiCommonService.commonclientinfoInfo(null, this.code)
-    //     .then(res => {
-    //       this.detailData = res.data || {}
-    //     })
-    //     .finally(() => {
-    //       this.loading = false
-    //     })
-    // },
+    commonclientinfoInfo() {
+      this.loading = true
+      this.$api.seePsiCommonService.commonclientinfoInfo(null, this.code)
+        .then(res => {
+          this.detailData = res.data || {}
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
   },
   beforeDestroy() {
   }

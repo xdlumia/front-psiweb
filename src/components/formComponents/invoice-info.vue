@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 16:31:16
+ * @LastEditTime: 2019-11-05 18:24:36
  * @Description: 发票信息 1
  */
 <template>
@@ -21,7 +21,7 @@
           <el-input
             v-if="item.type =='input'"
             :disabled='disabled'
-            v-model="data[item.prop]"
+            v-model.trim="data[item.prop]"
             :placeholder="`请输入${item.label}`"
           />
           <el-select
@@ -54,12 +54,12 @@
 </template>
 <script>
 let formItems = [
-  { label: '发票抬头', prop: 'invoiceTitle', type: 'input', rules: [{ required: true }] },
-  { label: '纳税人识别号', prop: 'taxpayersNum', type: 'input', rules: [{ required: true, }], },
-  { label: '注册地址', prop: 'registerAddres', type: 'input', rules: [{ required: true, }], },
+  { label: '发票抬头', prop: 'invoiceTitle', type: 'input', rules: [{ required: true, trigger: 'blur' }] },
+  { label: '纳税人识别号', prop: 'taxpayersNum', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
+  { label: '注册地址', prop: 'registerAddres', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
   { label: '注册电话', prop: 'registerPhone', type: 'input', rules: [{ required: false, }, { type: 'phone' }], },
-  { label: '开户银行', prop: 'accountBank', type: 'input', rules: { required: true, }, },
-  { label: '开户行账号', prop: 'bankAccount', type: 'input', rules: [{ required: true, }, { type: 'bankCard' }], },
+  { label: '开户银行', prop: 'accountBank', type: 'input', rules: { required: true, trigger: 'blur' }, },
+  { label: '开户行账号', prop: 'bankAccount', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'bankCard' }], },
 ]
 export default {
   props: {
