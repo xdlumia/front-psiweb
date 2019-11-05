@@ -2,12 +2,12 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 17:13:16
+ * @LastEditTime: 2019-11-05 09:32:52
  * @Description: 其他合同
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :filterOptions="filterOptions" :headers="tableHeader" api="bizSystemService.getEmployeeList" title="其他合同">
+    <TableView :filterOptions="filterOptions" :headers="tableHeader" api="seePsiContractService.contractList" busType="23" title="其他合同">
       <template slot="button">
         <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
       </template>

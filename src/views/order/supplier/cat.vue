@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 17:48:54
+ * @LastEditTime: 2019-11-05 13:50:10
  * @Description: 商品供应分类表
 */
 <template>
@@ -18,7 +18,7 @@
         <el-button class="ml5" type="text">全部</el-button>
         <el-tree :data="data" :filter-node-method="filterNode" :props="defaultProps" class="filter-tree" default-expand-all ref="tree"></el-tree>
       </div>
-      <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="供应商">
+      <TableView api="seePsiCommonService.commonsupplierinfoQueryList" busType="47" title="供应商">
         <template slot-scope="{column,row,value}">
           <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
           <span v-else>{{value}}</span>
@@ -45,20 +45,6 @@ export default {
       status: [],
       showDetail: true,
       showEdit: false,
-      tableHeader: [
-        { label: '采购入库单编号', prop: 'deptName', width: '180' },
-        { label: '请购/直发/备货单编号', prop: 'deptName', width: '180' },
-        { label: '订单来源', prop: 'deptName', width: '180' },
-        { label: '单据状态', prop: 'deptName', width: '180' },
-        { label: '供应商名称', prop: 'deptName', width: '180' },
-        { label: '销售预计到/发货时间', prop: 'deptName', width: '180' },
-        { label: '采购预计到/发货时间', prop: 'deptName', width: '180' },
-        { label: '总计数量', prop: 'deptName', width: '180' },
-        { label: '总计采购价', prop: 'deptName', width: '180' },
-        { label: '单据创建人', prop: 'deptName', width: '180' },
-        { label: '创建部门', prop: 'deptName', width: '180' },
-        { label: '创建时间', prop: 'createTime', width: '180' }
-      ],
       activeName: 'first',
       filterText: '',
       multipleVisible: false,
@@ -157,9 +143,9 @@ export default {
   position: relative;
   .cat-tree {
     position: absolute;
-    top: 46px;
+    top: 47px;
     width: 320px;
-    height: calc(100% - 74px);
+    height: calc(100% - 80px);
     border: 1px solid #f1f1f1;
     border-right: 0px;
   }

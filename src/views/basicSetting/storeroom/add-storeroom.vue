@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 10:28:43
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-05 17:38:01
+ * @LastEditTime: 2019-11-05 18:25:49
  * @Description: 新增商品
  -->
 <template>
@@ -51,7 +51,7 @@
 
 <script type='text/ecmascript-6'>
 export default {
-  data () {
+  data() {
     return {
       loading: false,
       employee: null,
@@ -78,7 +78,7 @@ export default {
         value: 'id',
         label: 'name',
         leaf: 'type',
-        lazyLoad: async function (node, resolve) {
+        lazyLoad: async function(node, resolve) {
           if (this.editId && !this.storeRoomForm.areaArr.length) {
             await this.commonwmsmanagerInfo(this.editId)
           }
@@ -103,7 +103,7 @@ export default {
   },
   components: {
   },
-  mounted () {
+  mounted() {
     // this.commonGetProvinces()
     // this.$nextTick(() => {
     //   if (this.editId) {
@@ -112,7 +112,7 @@ export default {
     // })
   },
   methods: {
-    commonwmsmanagerInfo (id) {
+    commonwmsmanagerInfo(id) {
       return this.$api.seePsiWmsService.commonwmsmanagerInfo(null, id).then(res => {
         Object.keys(this.storeRoomForm).forEach(key => {
           this.storeRoomForm[key] = res.data[key] || this.storeRoomForm[key]
@@ -121,7 +121,7 @@ export default {
         console.log(this.storeRoomForm)
       })
     },
-    commonwmsmanagerSave () {
+    commonwmsmanagerSave() {
       this.$refs.storeRoomForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -134,21 +134,21 @@ export default {
         }
       })
     },
-    changeArea (value) {
+    changeArea(value) {
       this.storeRoomForm.provinceId = value[0]
       this.storeRoomForm.cityId = value[1]
     },
-    choseUser () {
+    choseUser() {
       const { userId, employeeName } = this.employee
       this.storeRoomForm.personInChargeId = userId
       this.storeRoomForm.personInChargeName = employeeName
     },
     // 获取省
-    commonGetProvinces () {
+    commonGetProvinces() {
       return this.$api.seeBaseinfoService.commonGetProvinces()
     },
     // 获取市
-    commonGetArea (id) {
+    commonGetArea(id) {
       return this.$api.seeBaseinfoService.commonGetArea({ id, type: 0 })
     }
   }

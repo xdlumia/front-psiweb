@@ -2,8 +2,8 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 15:23:09
- * @Description: 备注信息
+ * @LastEditTime: 2019-11-05 14:45:13
+ * @Description: 备注信息 字段已绑定 1 
 */
 <template>
   <form-card title="备注信息">

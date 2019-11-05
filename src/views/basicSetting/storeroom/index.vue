@@ -67,7 +67,7 @@
 <script type='text/ecmascript-6'>
 import addStoreRoom from './add-storeroom'
 export default {
-  data () {
+  data() {
     return {
       visible: false,
       queryForm: {
@@ -89,13 +89,13 @@ export default {
       ]
     }
   },
-  mounted () {
+  mounted() {
   },
   components: {
     addStoreRoom
   },
   methods: {
-    commonwmsmanagerUpdateState (id, state) {
+    commonwmsmanagerUpdateState(id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -111,7 +111,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete (id) {
+    commonwmsmanagerLogicDelete(id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -127,10 +127,10 @@ export default {
         })
       })
     },
-    saveStoreRoom () {
+    saveStoreRoom() {
       this.$refs.addStoreRoom && this.$refs.addStoreRoom.commonwmsmanagerSave()
     },
-    refresh () {
+    refresh() {
       this.visible = false
       this.$refs.table.reload()
     }

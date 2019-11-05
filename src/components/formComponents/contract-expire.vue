@@ -2,8 +2,8 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 15:52:18
- * @Description: 其他合同-合同期限
+ * @LastEditTime: 2019-11-05 14:46:46
+ * @Description: 其他合同-合同期限 字段已绑定 1 
 */
 <template>
   <form-card title="单据信息">
