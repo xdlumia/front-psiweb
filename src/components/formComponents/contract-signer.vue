@@ -3,7 +3,7 @@
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
  * @LastEditTime: 2019-11-04 15:51:46
- * @Description: 其他合同-甲方/乙方信息
+ * @Description: 其他合同-甲方/乙方信息 字段已绑定 1 
 */
 <template>
   <form-card :title="name+'信息'">

@@ -1,8 +1,8 @@
 /*
  * @Author: 高大鹏
  * @Date: 2019-10-31 15:09:35
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-01 11:40:49
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-05 16:33:27
  * @Description: description
  */
 /**
@@ -115,6 +115,13 @@ export default {
   // /goodsClass/tree
   getGoodsClass(params) {
     return Api.get(baseURL.seeGoodsService + '/goodsClass/tree', params)
-  }
+  },
+  /**
+   * @tag 物品
+   * @description 选择物品列表
+   */
+  goodsSelectGoodsList(params) {
+      return Api.post(`${baseURL.seeGoodsService}/goods/selectGoodsList`, params,{isShowMessage:false})
+  },
 
 }

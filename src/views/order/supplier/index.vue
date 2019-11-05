@@ -2,12 +2,12 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 13:47:40
+ * @LastEditTime: 2019-11-05 11:33:33
  * @Description: 采购-供应商
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="供应商">
+    <TableView :filterOptions="filterOptions" api="seePsiCommonService.commonsupplierinfoPagelist" busType="42" title="供应商">
       <template slot="button">
         <el-button @click="showCat=true" size="mini" type="primary">商品供应分类表</el-button>
         <el-button @click="showEdit=true" size="mini" type="primary">新增供应商</el-button>
@@ -42,19 +42,16 @@ export default {
       showDetail: false,
       showEdit: false,
       showCat: false,
-      tableHeader: [
-        { label: '采购入库单编号', prop: 'deptName', width: '180' },
-        { label: '请购/直发/备货单编号', prop: 'deptName', width: '180' },
-        { label: '订单来源', prop: 'deptName', width: '180' },
-        { label: '单据状态', prop: 'deptName', width: '180' },
-        { label: '供应商名称', prop: 'deptName', width: '180' },
-        { label: '销售预计到/发货时间', prop: 'deptName', width: '180' },
-        { label: '采购预计到/发货时间', prop: 'deptName', width: '180' },
-        { label: '总计数量', prop: 'deptName', width: '180' },
-        { label: '总计采购价', prop: 'deptName', width: '180' },
-        { label: '单据创建人', prop: 'deptName', width: '180' },
-        { label: '创建部门', prop: 'deptName', width: '180' },
-        { label: '创建时间', prop: 'createTime', width: '180' }
+      filterOptions: [
+        { label: '供应商编号', prop: 'supplierName', default: true },
+        { label: '供应商名称', prop: 'code', default: true },
+        { label: '状态', prop: 'status', default: true },
+        { label: '联系人', prop: 'linkManName', default: true },
+        { label: '联系电话', prop: 'phone', default: true },
+        { label: '产品范围', prop: 'productRange', default: true },
+        { label: '供应商创建人', prop: 'creator', type: 'employee' },
+        { label: '创建人部门', prop: 'deptTotalCode', type: 'dept' },
+        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
       ]
     };
   },
