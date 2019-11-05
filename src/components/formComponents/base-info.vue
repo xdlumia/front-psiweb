@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 16:09:56
+ * @LastEditTime: 2019-11-05 18:24:49
  * @Description: 基本信息 1
  */
 <template>
@@ -19,11 +19,9 @@
           :prop="item.prop"
         >
           <el-input
-            maxlength="32"
-            show-word-limit
             v-if="item.type =='input'"
             :disabled='disabled'
-            v-model="data[item.prop]"
+            v-model.trim="data[item.prop]"
             :placeholder="`请输入${item.label}`"
           />
           <el-select
@@ -56,10 +54,10 @@
 </template>
 <script>
 let formItems = [
-  { label: '客户编号', prop: 'code', type: 'input', rules: [{ required: true }] },
-  { label: '客户名称', prop: 'clientName', type: 'input', rules: [{ required: true, }, { type: 'name' }], },
-  { label: '联系人', prop: 'linkManName', type: 'input', rules: [{ required: true, }, { type: 'name' }], },
-  { label: '联系电话', prop: 'phone', type: 'input', rules: [{ required: true, }, { type: 'phone' }], },
+  { label: '客户编号', prop: 'code', type: 'input', rules: [{ required: true, trigger: 'blur' }] },
+  { label: '客户名称', prop: 'clientName', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },
+  { label: '联系人', prop: 'linkManName', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },
+  { label: '联系电话', prop: 'phone', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'phone' }], },
   { label: '客户级别', prop: 'grade', type: 'select', rules: [{ required: false }], dicName: 'PSI_KH_KHJB', },
   { label: '行业', prop: 'trade', type: 'select', rules: [{ required: false }], dicName: 'PSI_KH_HY', },
   { label: '来源', prop: 'source', type: 'select', rules: [{ required: false }], dicName: 'PSI_KHGL_LY', },

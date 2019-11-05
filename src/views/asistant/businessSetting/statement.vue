@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-04 16:54:54
+ * @LastEditTime: 2019-11-05 17:37:15
  * @Description: 业务设置-报表 promotion
  -->
 <template>
@@ -12,7 +12,12 @@
         <h3 class="mt10 mb10 d-text-gray b">提成报表</h3>
       </el-col>
       <el-col :span="8" class="ar">
-        <el-button type="primary" size="small" style="margin-top: 20px;" @click="visible=true">+新增</el-button>
+        <el-button
+          type="primary"
+          size="small"
+          style="margin-top: 20px;"
+          @click="editId = null,visible = true"
+        >+新增</el-button>
       </el-col>
     </div>
     <fieldset class="d-fieldset mb20">
@@ -33,7 +38,7 @@
         <el-table-column label="提成比例" prop="commission"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="edit(scope.row.id)">编辑</el-button>
+            <el-button type="text" size="small" @click="editId = scope.row.id,visible = true">编辑</el-button>
             <el-button type="text" size="small" @click="deleteOne(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -64,10 +69,6 @@ export default {
     addCommission
   },
   methods: {
-    edit(id) {
-      this.editId = id
-      this.visible = true
-    },
     deleteOne(id) {
       this.$confirm(`是否删除`, '提示', {
         confirmButtonText: '确定',
