@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 19:14:22
+ * @LastEditTime: 2019-11-05 19:49:20
  * @Description: 销售-客户管理
  */
 <template>
@@ -75,13 +75,13 @@
 import clientAdd from './add' // 客户新增
 import clientDetail from './details' //客户详情
 let filterList = [
-  // { label: '客户编号', prop: 'code', default: true, type: 'text' },
+  { label: '客户编号', prop: 'code', default: true, type: 'text' },
   { label: '客户名称', prop: 'fuzzyClientName', default: true, type: 'text' },
-  // { label: '联系人', prop: 'linkManName', default: true, type: 'employee', },
-  // { label: '联系电话', prop: 'phone', default: true, type: 'text' },
-  // { label: '提交人', prop: 'created', default: true, type: 'employee', },
-  // { label: '部门', prop: 'deptTotalCode', default: true, type: 'employee', },
-  // { label: '提交时间', prop: 'messageType3', default: true, type: 'daterange', },
+  { label: '联系人', prop: 'linkManName', default: true, type: 'employee', },
+  { label: '联系电话', prop: 'phone', default: true, type: 'text' },
+  { label: '提交人', prop: 'created', default: true, type: 'employee', },
+  { label: '部门', prop: 'deptTotalCode', default: true, type: 'employee', },
+  { label: '提交时间', prop: 'CreateTime', default: true, type: 'daterange', },
 ]
 export default {
   name: 'return',
