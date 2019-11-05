@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 18:49:45
+ * @LastEditTime: 2019-11-05 19:15:14
  * @Description: 客户详情
 */
 <template>
@@ -167,9 +167,14 @@ export default {
           type: "warning",
           center: true
         }).then(() => {
+          let params = {
+            id: this.rowData.id,
+            state: label == '启用' ? 0 : 1
+          }
           // 通过lable 查找接口方法
-          this.$api.seePsiCommonService[apiObj[label]](null, this.rowData.id)
+          this.$api.seePsiCommonService.commonclientinfoUpdate(params)
             .then(res => {
+              this.showPop = false
               this.$emit('reload')
             });
         });

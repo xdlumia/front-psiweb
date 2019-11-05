@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 18:12:56
+ * @LastEditTime: 2019-11-05 19:14:22
  * @Description: 销售-客户管理
  */
 <template>
@@ -38,8 +38,8 @@
         > {{value}}</span>
         <!-- 状态 -->
         <span v-else-if="column.columnFields=='state'">
-          <i v-if="value==1">启用中</i>
-          <i v-else>停用中</i>
+          <i v-if="value==1">停用中</i>
+          <i v-else>启用中</i>
         </span>
 
         <!-- 行业 -->
@@ -75,9 +75,8 @@
 import clientAdd from './add' // 客户新增
 import clientDetail from './details' //客户详情
 let filterList = [
-  // { label: '排序', prop: 'sort', default: true, type: 'sort', options: [], },
   // { label: '客户编号', prop: 'code', default: true, type: 'text' },
-  // { label: '客户名称', prop: 'fuzzyClientName', default: true, type: 'text' },
+  { label: '客户名称', prop: 'fuzzyClientName', default: true, type: 'text' },
   // { label: '联系人', prop: 'linkManName', default: true, type: 'employee', },
   // { label: '联系电话', prop: 'phone', default: true, type: 'text' },
   // { label: '提交人', prop: 'created', default: true, type: 'employee', },
