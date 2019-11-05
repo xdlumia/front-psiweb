@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 14:49:02
+ * @LastEditTime: 2019-11-05 16:00:19
  * @Description: 基本信息 1
  */
 <template>
@@ -58,9 +58,9 @@ let formItems = [
   { label: '客户名称', prop: 'clientName', type: 'input', rules: [{ required: true, }, { type: 'name' }], },
   { label: '联系人', prop: 'linkManName', type: 'input', rules: [{ required: true, }, { type: 'name' }], },
   { label: '联系电话', prop: 'phone', type: 'input', rules: [{ required: true, }, { type: 'phone' }], },
-  { label: '客户级别', prop: 'grade', type: 'select', rules: [{ required: false }], dicName: '', },
-  { label: '行业', prop: 'trade', type: 'select', rules: [{ required: false }], dicName: '', },
-  { label: '来源', prop: 'source', type: 'select', rules: [{ required: false }], dicName: '', },
+  { label: '客户级别', prop: 'grade', type: 'select', rules: [{ required: false }], dicName: 'PSI_KH_KHJB', },
+  { label: '行业', prop: 'trade', type: 'select', rules: [{ required: false }], dicName: 'PSI_KH_HY', },
+  { label: '来源', prop: 'source', type: 'select', rules: [{ required: false }], dicName: 'PSI_KHGL_LY', },
   { label: '详细地址', prop: 'address', type: 'input', span: 16, rules: [{ required: false }], },
 ]
 export default {
@@ -83,10 +83,6 @@ export default {
     return {
       // 遍历表单
       formItems: formItems.filter(item => !this.hide.includes(item.prop)),
-      options: [],
-      form: {
-        telPhone: '我是电话号码'
-      },
     }
   },
   components: {

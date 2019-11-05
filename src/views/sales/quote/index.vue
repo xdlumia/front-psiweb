@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 18:48:39
+ * @LastEditTime: 2019-11-05 15:48:26
  * @Description: 销售-报价单
  */
 <template>
@@ -54,7 +54,7 @@
           @click="eventHandle('quoteVisible',row)"
         > 报价单编号</span>
         <span @click="eventHandle('outLibVisible',row)">销售出库单编号</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>

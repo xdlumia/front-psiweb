@@ -36,7 +36,7 @@
           @click="eventHandle('returnVisible',row)"
         > 销售退货单编号</span>
         <span @click="eventHandle('outLibVisible',row)">销售出库单编号</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
