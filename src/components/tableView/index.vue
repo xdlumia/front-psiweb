@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 18:52:57
+ * @LastEditTime: 2019-11-05 15:09:42
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -231,13 +231,13 @@ export default {
     // 表格加载成功返回参数
     tabelRes(res) {
       // 获取状态列表数据
-      this.statusList = this.$refs.table.response.data || []
+      this.statusList = this.$refs.table.response.statisticData || []
       // 获取统计列表数据(财务独有)
       this.staList = this.$refs.table.response.data || []
     },
     // 统计点击筛选
     staHandle(row) {
-      this.params.id = row.id;
+      this.params.state = row.state;
       this.$refs.table.reload(1);
     },
     // 更多操作
@@ -267,8 +267,8 @@ export default {
     // 返回的列数据
     columnHandle(cols) {
       // 列表默认请求的就是全部列数据 所以这里就不用重新请求了
-      // this.$refs.table.reload(1);
       this.headers = cols;
+      this.$refs.table.reload(1)
     },
     // 多选
     selectionChange(val) {

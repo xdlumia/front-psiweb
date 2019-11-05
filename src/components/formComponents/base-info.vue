@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 14:26:35
+ * @LastEditTime: 2019-11-05 14:49:02
  * @Description: 基本信息 1
  */
 <template>
@@ -55,9 +55,9 @@
 <script>
 let formItems = [
   { label: '客户编号', prop: 'code', type: 'input', rules: [{ required: true }] },
-  { label: '客户名称', prop: 'clientName', type: 'input', rules: [{ required: true, type: 'name' }], },
-  { label: '联系人', prop: 'linkManName', type: 'input', rules: [{ required: true, type: 'name' }], },
-  { label: '联系电话', prop: 'phone', type: 'input', rules: [{ required: false, type: 'phone' }], },
+  { label: '客户名称', prop: 'clientName', type: 'input', rules: [{ required: true, }, { type: 'name' }], },
+  { label: '联系人', prop: 'linkManName', type: 'input', rules: [{ required: true, }, { type: 'name' }], },
+  { label: '联系电话', prop: 'phone', type: 'input', rules: [{ required: true, }, { type: 'phone' }], },
   { label: '客户级别', prop: 'grade', type: 'select', rules: [{ required: false }], dicName: '', },
   { label: '行业', prop: 'trade', type: 'select', rules: [{ required: false }], dicName: '', },
   { label: '来源', prop: 'source', type: 'select', rules: [{ required: false }], dicName: '', },

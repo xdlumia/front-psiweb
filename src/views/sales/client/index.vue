@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 10:36:05
+ * @LastEditTime: 2019-11-05 14:45:24
  * @Description: 销售-客户管理
  */
 <template>
@@ -65,7 +65,7 @@
 import clientAdd from './add' // 客户新增
 import clientDetail from './details' //客户详情
 let filterList = [
-  { label: '排序', prop: 'sort', default: true, type: 'sort', options: [], },
+  // { label: '排序', prop: 'sort', default: true, type: 'sort', options: [], },
   { label: '客户编号', prop: 'title', default: true, type: 'text' },
   { label: '客户名称', prop: 'city', default: true, type: 'text' },
   { label: '联系人', prop: 'pushTime', default: true, type: 'employee', },

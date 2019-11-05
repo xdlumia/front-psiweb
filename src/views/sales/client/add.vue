@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 14:42:44
+ * @LastEditTime: 2019-11-05 15:00:30
  * @Description: 客户管理-新增客户
 */
 <template>
@@ -14,6 +14,7 @@
   >
 
     <el-form
+      v-loading="loading"
       ref="form"
       :model="form"
       size="mini"
@@ -29,6 +30,7 @@
         />
         <!-- 基本信息 -->
         <base-info
+          :hide="['code']"
           :data="form"
           id="baseInfo"
         />
@@ -65,6 +67,7 @@ export default {
   props: ['visible', 'type', 'rowData'],
   data() {
     return {
+      loading: false,
       // tab操作栏
       tabs: {
         baseInfo: '基本信息',
@@ -75,9 +78,7 @@ export default {
       form: {
         accountBank: '', // 示例：开户银行,
         address: '', // 示例：地址,
-        attachs: [
-          // string
-        ],
+
         bankAccount: '', // 示例：银行账号,
         clientName: '', // 示例：客户姓名,
         code: '', // 示例：编号,
@@ -91,7 +92,10 @@ export default {
         registerAddres: '', // 示例：注册地址,
         registerPhone: '', // 示例：注册电话,
         registrationNo: '', // 示例：注册号,
-        remark: '', // 示例：备注,
+        note: '', // 示例：备注,
+        attachList: [
+          // string
+        ],
         source: '', // 示例：客户来源,
         taxpayersNum: '', // 示例：纳税人识别号,
         trade: '', // 示例：行业
@@ -110,26 +114,21 @@ export default {
   },
   methods: {
     // 保存表单数据
-    saveHandle(formName) {
-      this.$refs[formName].validate(valid => {
+    saveHandle() {
+      this.$refs.form.validate(valid => {
         if (valid) {
-          const [currCity] = this.citys().filter(
-            item => item.id === this.addForm.cityId
-          )
-          this.addForm.cityName = currCity.name
           this.loading = true
-          delete this.addForm.start_date
           // rules 表单验证是否通过
-          let api = 'collegeManagerUpdate' // 默认编辑更新
+          let api = 'commonclientinfoUpdate' // 默认编辑更新
           // 新增保存
-          if (this.dialogMeta.type === 'add') {
-            api = 'collegeManagerSave'
+          if (this.type === 'add') {
+            api = 'commonclientinfoSave'
             // 编辑保存
           }
-          this.$api.seePumaidongService[api](this.addForm)
+          this.$api.seePumaidongService[api](this.form)
             .then(res => {
-              this.dialogMeta.visible = false
-              this.$emit('submit', 'success')
+              this.showPop = false
+              this.$emit('reload')
             })
             .finally(() => {
               this.loading = false
