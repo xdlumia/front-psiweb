@@ -21,7 +21,7 @@
       <el-col :span="24" class>
         <el-form-item label="备注" size="mini" prop="note">
           <div class="d-text-gray mt10 d-elip wfull" v-if="!canEditable">{{data.note}}</div>
-          <el-input :rows="3" maxlength="300" placeholder show-word-limit type="textarea" v-else v-model="data.note" />
+          <el-input :rows="3" maxlength="300" placeholder="请输入备注信息" show-word-limit type="textarea" v-else v-model="data.note" />
         </el-form-item>
       </el-col>
       <el-col :span="24" v-if="needUpload">

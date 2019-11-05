@@ -1,13 +1,14 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 10:55:30
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-05 16:48:42
  * @Description: 侧边详情弹框
 */
 <template>
   <el-drawer
     :title="title"
+    destroy-on-close
     :visible.sync="showPop"
     :size="width"
     @close="close"
@@ -89,15 +90,15 @@ export default {
       }
       & > .el-tabs__content {
         height: calc(100% - 40px);
-        > .el-tab-pane{
+        > .el-tab-pane {
           overflow: hidden;
           overflow-y: auto;
           padding: 0 20px;
           max-height: 100%;
           height: 100%;
           position: relative;
-          >div > .main-content,
-          > .main-content{
+          > div > .main-content,
+          > .main-content {
             height: 100% !important;
           }
         }
