@@ -728,6 +728,12 @@ export default {
     'methods': 'delete'
   },
 
+  // 查看库房分布信息
+  wmsinventoryQueryInventoryDistribution: {
+    'url': '/wmsinventory/queryInventoryDistribution',
+    'mock': false
+  },
+
   // 保存库房商品信息
   wmsinventorySave: {
     'url': '/wmsinventory/save',

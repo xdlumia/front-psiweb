@@ -9,34 +9,47 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
-      busType="47"
+      busType="48"
       :filterOptions='filterOptions'
       :headers="tableHeader"
       :selection='false'
+      ref='allTable'
       api="seePsiWmsService.wmsinventoryList"
       :params="queryForm"
       title="库存查询"
     >
       <template v-slot:button>
         <el-input
+          class="mr15"
           style="width:300px;"
           size="small"
           placeholder="请输入机器码或SN码"
-          v-model="input2"
+          v-model="snCode"
         >
           <el-button
             slot="append"
             type="primary"
+            @click="stockLook"
           >商品查询</el-button>
+          <div style='width:10px'></div>
         </el-input>
       </template>
       <template slot-scope="{column,row,value}">
-        <span @click="getTableVisible(row)">点击111</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span
+          v-if="column.columnFields=='goodsCode'"
+          class="d-text-blue"
+          @click="changeTableVisible(row)"
+        >{{value}}</span>
+        <span v-else-if="column.columnFields=='goodsPic'">
+          <el-image
+            style="width: 100px; height: 30px"
+            :src="value"
+            fit="fill"
+          ></el-image>
+        </span>
+        <span v-else-if="column.columnFields=='allocationType'">{{value == 1 ? '内调' : '外调'}}</span>
         <span v-else>{{value}}</span>
       </template>
-      <!-- <template v-slot:tree> -->
-      <!-- <el-container class="choose-container"> -->
       <el-aside
         slot='tree'
         width="250px"
@@ -46,12 +59,13 @@
         <el-button
           type="text"
           class="ml10"
+          @click="clickAll"
         >全部</el-button>
         <el-tree
-          class="filter-tree"
-          :data="data"
+          class="filter-tree ml10"
+          :data="treeData"
+          @node-click="handleNodeClick"
           :props="defaultProps"
-          default-expand-all
           :filter-node-method="filterNode"
           ref="tree"
         >
@@ -61,7 +75,15 @@
       <!-- </el-container> -->
       <!-- </template> -->
     </TableView>
-    <Details :drawerData='drawerData' />
+    <Details
+      :drawerData='drawerData'
+      :visible.sync='tableVisible'
+      v-if="tableVisible"
+    />
+    <commodityInquiry
+      :visible.sync='commVisible'
+      :snCode='snCode'
+    />
   </div>
 </template>
 <script>
@@ -70,19 +92,22 @@
  */
 import TableView from '@/components/tableView';
 import Details from './details.vue'
+import commodityInquiry from './commodity-inquiry.vue'
 import SideStatusbar from '@/components/formComponents/side-statusbar';
 export default {
   components: {
     Details,
     SideStatusbar,
-    TableView
+    TableView,
+    commodityInquiry
   },
   data() {
     return {
       defaultProps: {
         children: 'children',
-        label: 'label'
+        label: 'className'
       },
+      snCode: '',
       queryForm: {
         commodityCode: '',//商品编号
         goodsPic: '',//商品图片
@@ -92,6 +117,7 @@ export default {
         specOne: '',//规格
         configName: '',//配置
         unit: '',//单位
+        classId: '',//树的id
         inventoryWarning: '',//库存预警
         unit: '',//虚拟库存
         unit: '',//实物库存
@@ -107,14 +133,14 @@ export default {
         limit: 20
       },
       input2: '',
+      treeData: [],
       componentActive: '',//当前的组件
       tableVisible: false,//销售单右侧抽屉
+      commVisible: false,
       drawerData: {//弹框的相关数据
         title: '',
         component: 'Details'
       },
-      activeName: '',
-      status: [],
       data: [],
       tableHeader: [
         { label: '商品编号', prop: 'deptName', width: '140' },
@@ -185,20 +211,6 @@ export default {
         },
         {
           label: '单位',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '库存预警',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '虚拟库存',
           prop: 'num',
           type: 'employee',
           dictName: 'FM_FANGYUAN_MJ',
@@ -284,18 +296,55 @@ export default {
       ],
     };
   },
+  created() {
+    this.getTreeData()
+  },
   methods: {
-    //点击打开右侧边栏
-    getTableVisible(data) {
-      this.drawerData.tableVisible = true
-      this.drawerData.title = '商品名' + data.id
-    },
     //tab换组件
     handleClick() {
 
     },
     filterNode() {
 
+    },
+    //点击编码
+    changeTableVisible(row) {
+      console.log(row)
+      this.drawerData = row
+      this.tableVisible = true
+    },
+    //点击商品查询
+    stockLook() {
+      if (this.snCode) {
+        this.commVisible = true
+      } else {
+        this.$message({
+          type: 'error',
+          message: '请输入机器码或SN码'
+        });
+      }
+    },
+    //请求树列表的数据
+    getTreeData() {
+      this.$api.seeGoodsService.getGoodsClass()
+        .then(res => {
+          this.treeData = res.data || []
+        })
+        .finally(() => {
+
+        })
+    },
+    reload() {
+      this.$refs.allTable.reload()
+    },
+    //点击树节点
+    handleNodeClick(data) {
+      this.queryForm.classId = data.id
+      this.reload()
+    },
+    clickAll() {
+      this.queryForm.classId = null
+      this.reload()
     }
   }
 };
