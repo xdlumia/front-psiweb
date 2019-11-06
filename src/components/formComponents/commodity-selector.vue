@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 10:18:15
+ * @LastEditTime: 2019-11-06 16:48:38
  * @Description: 商品输入选框 字段已绑定 1 
 */
 <template>
@@ -62,7 +62,7 @@ export default {
         return (this.options = this.searchTable[words]);
       }
       this.loading = true;
-      let { data } = await this.$api.seeGoodsService.goodsSelectGoodsList({
+      let { data } = await this.$api.seePsiWmsService.wmsinventoryList({
         page: 1,
         limit: 5,
         goodsName: words

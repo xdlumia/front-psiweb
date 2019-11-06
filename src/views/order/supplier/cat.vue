@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 15:19:43
+ * @LastEditTime: 2019-11-06 15:48:58
  * @Description: 商品供应分类表
 */
 <template>
@@ -30,8 +30,11 @@
           </span>
           <span v-else-if="prop=='productRange'">
             <el-tag
+              :disable-transitions="false"
               :key="item"
+              @close="delProductRange(row,item)"
               class="mr5"
+              closable
               size="mini"
               type="info"
               v-for="item of getProductRangeList(value)"
@@ -113,6 +116,17 @@ export default {
         .split(',')
         .map(a => a.trim())
         .filter(a => a);
+    },
+    async delProductRange(row, item) {
+      let leftList = this.getProductRangeList(row.productRange)
+        .filter(a => a != item)
+        .join(',');
+      await this.$api.seePsiCommonService.commonsupplierinfoUpdate({
+        id: row.id,
+        code: row.code,
+        productRange: leftList
+      });
+      row.productRange = leftList;
     }
   }
 };

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 11:53:09
+ * @LastEditTime: 2019-11-06 16:36:11
  * @Description: 采购单详情
 */
 <template>
@@ -13,11 +13,11 @@
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form>
-          <arrivalInfo />
-          <commodityInfo />
-          <customInfo />
-          <extrasInfo />
+        <el-form size="mini">
+          <arrivalInfo disabled />
+          <commodityInfo disabled />
+          <customInfo disabled />
+          <extrasInfo disabled />
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="采购入库单">

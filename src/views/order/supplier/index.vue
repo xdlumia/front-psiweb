@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 15:20:45
+ * @LastEditTime: 2019-11-06 15:47:55
  * @Description: 采购-供应商
 */
 <template>
@@ -23,8 +23,11 @@
         </span>
         <span v-else-if="prop=='productRange'">
           <el-tag
+            :disable-transitions="false"
             :key="item"
+            @close="delProductRange(row,item)"
             class="mr5"
+            closable
             size="mini"
             type="info"
             v-for="item of getProductRangeList(value)"
@@ -71,7 +74,13 @@ export default {
         },
         { label: '联系人', prop: 'linkManName', default: true },
         { label: '联系电话', prop: 'phone', default: true },
-        { label: '产品范围', prop: 'productRange', default: true },
+        {
+          label: '产品范围',
+          prop: 'productRange',
+          type: 'dict',
+          dictName: 'PSI_GYS_CPFW',
+          default: true
+        },
         { label: '供应商创建人', prop: 'creator', type: 'employee' },
         { label: '创建人部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
@@ -90,6 +99,17 @@ export default {
         .split(',')
         .map(a => a.trim())
         .filter(a => a);
+    },
+    async delProductRange(row, item) {
+      let leftList = this.getProductRangeList(row.productRange)
+        .filter(a => a != item)
+        .join(',');
+      await this.$api.seePsiCommonService.commonsupplierinfoUpdate({
+        id: row.id,
+        code: row.code,
+        productRange: leftList
+      });
+      row.productRange = leftList;
     }
   }
 };

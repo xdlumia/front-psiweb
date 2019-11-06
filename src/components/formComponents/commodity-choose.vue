@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 08:45:58
+ * @LastEditTime: 2019-11-06 16:52:04
  * @Description: 选择商品 字段已绑定 1 
 */
 <template>
@@ -24,7 +24,7 @@
           :tree-props="{children: 'children', hasChildren: 'children'}"
           @response="onTableData"
           @selection-change="handleSelectionChange"
-          api="seeGoodsService.goodsSelectGoodsList"
+          api="seePsiWmsService.wmsinventoryList"
           class="college-main"
           ref="multipleTable"
           rowKey="goodsCode"
@@ -56,17 +56,17 @@
           <el-table-column label="商品配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
           <el-table-column label="商品规格" min-width="140" prop="specOne" show-overflow-tooltip></el-table-column>
           <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip></el-table-column>
-          <el-table-column label="税率" min-width="80" prop="cityName" show-overflow-tooltip>
+          <el-table-column label="税率" min-width="80" prop="taxRate" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span>{{row.taxRate ? row.taxRate + '%' : ''}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="可用库存" min-width="100" prop="cityName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="可用库存" min-width="100" prop="usableInventoryNum" show-overflow-tooltip></el-table-column>
           <el-table-column label="期初库存" min-width="100" prop="originalInventoryNum" show-overflow-tooltip></el-table-column>
-          <el-table-column label="入库数量" min-width="80" prop="cityName" show-overflow-tooltip></el-table-column>
-          <el-table-column label="出库数量" min-width="80" prop="cityName" show-overflow-tooltip></el-table-column>
-          <el-table-column label="待入库数量" min-width="120" prop="cityName" show-overflow-tooltip></el-table-column>
-          <el-table-column label="待出库数量" min-width="120" prop="cityName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="入库数量" min-width="80" prop="sumShipmentNum" show-overflow-tooltip></el-table-column>
+          <el-table-column label="出库数量" min-width="80" prop="sumPutawayNum" show-overflow-tooltip></el-table-column>
+          <el-table-column label="待入库数量" min-width="120" prop="waitShipmentNum" show-overflow-tooltip></el-table-column>
+          <el-table-column label="待出库数量" min-width="120" prop="waitPutawayNum" show-overflow-tooltip></el-table-column>
         </d-table>
         <!-- 点击数量覆盖下来的表格 -->
         <el-table :data="selected" border v-show="multipleVisible">
@@ -99,17 +99,17 @@
           <el-table-column label="商品配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
           <el-table-column label="商品规格" min-width="140" prop="specOne" show-overflow-tooltip></el-table-column>
           <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip></el-table-column>
-          <el-table-column label="税率" min-width="80" prop="cityName" show-overflow-tooltip>
+          <el-table-column label="税率" min-width="80" prop="taxRate" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span>{{row.taxRate ? row.taxRate + '%' : ''}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="可用库存" min-width="100" prop="cityName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="可用库存" min-width="100" prop="usableInventoryNum" show-overflow-tooltip></el-table-column>
           <el-table-column label="期初库存" min-width="100" prop="originalInventoryNum" show-overflow-tooltip></el-table-column>
-          <el-table-column label="入库数量" min-width="80" prop="cityName" show-overflow-tooltip></el-table-column>
-          <el-table-column label="出库数量" min-width="80" prop="cityName" show-overflow-tooltip></el-table-column>
-          <el-table-column label="待入库数量" min-width="120" prop="cityName" show-overflow-tooltip></el-table-column>
-          <el-table-column label="待出库数量" min-width="120" prop="cityName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="入库数量" min-width="80" prop="sumShipmentNum" show-overflow-tooltip></el-table-column>
+          <el-table-column label="出库数量" min-width="80" prop="sumPutawayNum" show-overflow-tooltip></el-table-column>
+          <el-table-column label="待入库数量" min-width="120" prop="waitShipmentNum" show-overflow-tooltip></el-table-column>
+          <el-table-column label="待出库数量" min-width="120" prop="waitPutawayNum" show-overflow-tooltip></el-table-column>
         </el-table>
       </el-main>
     </el-container>

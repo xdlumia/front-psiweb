@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 10:10:52
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-06 16:40:13
  * @Description: 表格头部 
  */
 <template>
@@ -22,7 +22,7 @@
               @click="staHandle(item,index)"
               v-for="(item,index) of statusData"
               :key="item.id"
-            >{{item.name || '无'}}({{item.count}})</span>
+            >{{item.name || '无'}}({{item.count||0}})</span>
           </div>
         </section>
         <!-- 表格顶部统计 财务用到 -->

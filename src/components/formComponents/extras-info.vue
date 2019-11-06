@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 15:28:16
+ * @LastEditTime: 2019-11-06 16:12:50
  * @Description: 备注信息 字段已绑定 1 
 */
 <template>
@@ -191,6 +191,9 @@ export default {
     delFile(i) {
       this.data.attachList.splice(i, 1);
       // this.fileList.splice(i, 1);
+    },
+    openFile(item){
+      window.open(item.fileUrl,'_blank')
     }
   }
 };

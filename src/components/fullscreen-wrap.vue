@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-04 11:22:09
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 11:54:27
+ * @LastEditTime: 2019-11-06 16:19:32
  * @Description: 全屏显示包裹一下按钮
 */
 <template>
@@ -45,7 +45,7 @@ export default {
     > div {
       height: 100%;
       > .main-content {
-        height: 100% !important;
+        height: 98% !important;
       }
     }
   }
