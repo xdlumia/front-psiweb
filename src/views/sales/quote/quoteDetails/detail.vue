@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 14:24:48
+ * @LastEditTime: 2019-11-06 14:51:39
  * @Description: 报价单详情
 */
 <template>
@@ -66,13 +66,13 @@ export default {
     }
   },
   mounted() {
-    this.salesquotationInfo()
+    this.salesquotationGetinfoByCode()
     this.commonclientinfoInfo()
   },
   methods: {
-    // 查看详情
-    salesquotationInfo() {
-      this.$api.seePsiSaleService.salesquotationInfo(null, this.code)
+    //根据code 查看详情
+    salesquotationGetinfoByCode() {
+      this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
         .then(res => {
           this.quoteInfo = res.data || {}
         })

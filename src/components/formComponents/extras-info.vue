@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 14:15:22
+ * @LastEditTime: 2019-11-06 14:53:03
  * @Description: 备注信息 字段已绑定 1 
 */
 <template>
@@ -66,6 +66,7 @@
             v-if="!canEditable"
           >上传附件</div> -->
           <upload-file
+            :disabled="disabled"
             :limit="{
             type:['doc','pdf','xls','ppt','zip','rar'],
           }"

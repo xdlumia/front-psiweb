@@ -8,8 +8,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-29 10:35:18
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-06 14:53:50
  * @Description: 件上传工具
  * @param  limit          上传的条件
   * @param  limit [ type ]   limit type  允许上传的后缀名字
@@ -22,8 +22,12 @@
 
 
 <template>
-  <div v-loading.fullscreen.lock="fullscreenLoading" element-loading-text="正在上传中">
+  <div
+    v-loading.fullscreen.lock="fullscreenLoading"
+    element-loading-text="正在上传中"
+  >
     <el-upload
+      :disabled="disabled"
       :drag="drag"
       :multiple="multiple"
       :list-type="listType"
@@ -32,7 +36,10 @@
       :accept="imgAccept(limit?limit.type:[])"
     >
       <slot>
-        <el-button size="small" type="primary">点击上传</el-button>
+        <el-button
+          size="small"
+          type="primary"
+        >点击上传</el-button>
       </slot>
     </el-upload>
   </div>
@@ -71,9 +78,13 @@ export default {
     multiple: {
       default: false
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     fileList: { // 回显图片
       type: Array,
-      default: function() {
+      default: function () {
         return []
       }
     }
@@ -98,7 +109,7 @@ export default {
     }
   },
   methods: {
-    imgAccept: function(arr) {
+    imgAccept: function (arr) {
       const accArr = []
       arr.forEach((item) => {
         if (item === 'jpg' || item === 'png' || item === 'jpeg' || item == 'gif') {
@@ -209,7 +220,7 @@ export default {
         }
         // 上传
         client.multipartUpload(companyCode + filePath + datePath + randomName, file, {
-          progress: function * (percentage, cpt) {
+          progress: function* (percentage, cpt) {
             // 上传进度
             this.percentage = percentage
           },
