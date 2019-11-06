@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 11:09:18
+ * @LastEditTime: 2019-11-06 11:20:07
  * @Description: 报价单详情
 */
 <template>
@@ -10,7 +10,10 @@
     <!-- 审核面板 -->
     <approve-panel />
     <!-- 客户信息 -->
-    <customerInfo :data="clientInfo" />
+    <customerInfo
+      disabled
+      :data="clientInfo"
+    />
     <!-- 公司信息 -->
     <companyInfo disabled />
     <!-- 发货信息 -->
@@ -58,6 +61,7 @@ export default {
   },
   mounted() {
     this.salessheetInfo()
+    this.commonclientinfoInfo()
   },
   methods: {
     // 查看详情
@@ -68,8 +72,8 @@ export default {
         })
     },
     // 根据客户id查询客户详情
-    salessheetInfo() {
-      this.$api.seePsiCommonService.commonclientInfo(null, this.rowData.clientId)
+    commonclientinfoInfo() {
+      this.$api.seePsiCommonService.commonclientinfoInfo(null, this.rowData.clientId)
         .then(res => {
           this.clientInfo = res.data || {}
         })
