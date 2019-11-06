@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 14:53:03
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-06 15:28:16
  * @Description: 备注信息 字段已绑定 1 
 */
 <template>
@@ -60,7 +60,7 @@
         :span="24"
         v-if="needUpload"
       >
-        <el-form-item label="上传附件:">
+        <el-form-item label="上传附件:" prop="attachList">
           <!-- <div
             class="d-text-gray mt10 d-elip wfull"
             v-if="!canEditable"
@@ -85,7 +85,11 @@
                 v-for="(item,i) of data.attachList || []"
               >
                 <span class="el-icon-document"></span>
-                <span class="d-inline f14 d-text-gray w200">{{item.fileName}}</span>
+                <span
+                  @click="openFile(item)"
+                  class="d-inline f14 d-text-gray w200 d-elip ml10 mr10"
+                  style="vertical-align:top;"
+                >{{item.fileName}}</span>
                 <span>
                   <el-link
                     v-if="!disabled"

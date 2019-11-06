@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 12:05:39
+ * @LastEditTime: 2019-11-06 15:59:52
  * @Description: 客户详情
 */
 <template>
@@ -65,7 +65,7 @@
     <clientAdd
       @reload="$parent.$refs.table.reload(1)"
       :visible.sync="editVisible"
-      :code="rowData.id"
+      :code="rowData.code"
       type="edit"
       :rowData="rowData"
     />

@@ -2,18 +2,25 @@
  * @Author: 赵伦
  * @Date: 2019-11-05 16:57:15
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-05 17:39:22
+ * @LastEditTime: 2019-11-06 13:59:24
  * @Description: 可供商品
 */
 <template>
   <form-card title="可供商品">
-    <el-container>
-      <!-- <el-aside></el-aside> -->
+    <el-container class="supplier-goods-form-card">
+      <el-aside v-if="showCat">
+          <commodity-cat />
+      </el-aside>
       <el-main>
         <div>
           <commodity-selector @choose="onChoose" />
         </div>
         <el-table :data="goods">
+          <el-table-column :reserve-selection="true" label="操作" min-width="100" prop="title" show-overflow-tooltip>
+            <template slot-scope="{$index}">
+              <el-link :underline="false" @click="remove($index)" class="el-icon-remove d-text-red f20"></el-link>
+            </template>
+          </el-table-column>
           <el-table-column :reserve-selection="true" label="商品编号" min-width="100" prop="title" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span class="d-text-blue">{{row.goodsCode}}</span>
@@ -44,7 +51,8 @@ export default {
     data: {
       type: Object,
       default: () => ({})
-    }
+    },
+    showCat:Boolean
   },
   data() {
     return {
@@ -59,6 +67,10 @@ export default {
         commodityCode: item.goodsCode,
         commodityId: item.goodsId
       }));
+    },
+    remove(e) {
+      this.data.commonSupplierCommodityEntities.splice(e, 1);
+      this.goods.splice(e, 1);
     }
   }
 };

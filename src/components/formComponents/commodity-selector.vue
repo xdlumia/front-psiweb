@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-05 18:55:47
+ * @LastEditTime: 2019-11-06 10:18:15
  * @Description: 商品输入选框 字段已绑定 1 
 */
 <template>
@@ -73,6 +73,7 @@ export default {
     },
     onSelect(e) {
       this.$emit('choose', this.options.filter(item => item.goodsCode == e));
+      this.value = '';
     }
   }
 };

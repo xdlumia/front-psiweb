@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 14:59:08
+ * @LastEditTime: 2019-11-06 16:15:28
  * @Description: file content
 */
 <template>
@@ -19,13 +19,17 @@
         :data="['选择客户','选择产品','确定配置信息','填写报价信息']"
       ></d-step>
       <el-form
+        v-if="visible"
         size="small"
         :model="addForm"
         class="d-auto-y"
         style="height:calc(100vh - 220px)"
       >
         <!-- 选择客户 -->
-        <select-customer v-show="steps==1"></select-customer>
+        <select-customer
+          :data="addForm"
+          v-show="steps==1"
+        ></select-customer>
         <select-product v-show="steps==2"></select-product>
         <confirm-info v-show="steps==3"></confirm-info>
         <quote-info v-show="steps==4"></quote-info>
@@ -76,13 +80,57 @@ export default {
       activeName: 'first', // 数据源
       // 新增orEdit框内容
       addForm: {
-        title: '', // 标题
-        cityName: '', // 城市
-        cityId: this.$local.fetch('cityInfo').id, // 城市
-        id: '', // 主键id
-        mainPic: '', // 主图
-        content: '' // 内容
-      },
+        apprpvalState: '', //审核状态
+        attachList: '', //附件,
+        businessCommoditySaveVoList: [ //商品信息合集
+          {
+            alterationNumber: '', //9,
+            alterationPrice: '', //98765432109876.12,
+            apportionmentAmount: '', //98765432109876.12,
+            busCode: '', //业务编号,
+            busType: '', //9,
+            commodityCode: '', //商品编号,
+            commodityNumber: '', //9,
+            costAmount: '', //98765432109876.12,
+            discount: '', //98765432109876.12,
+            discountSprice: '', //98765432109876.12,
+            isAssembly: '', //9,
+            isDirect: '', //9,
+            isTeardown: '', //9,
+            note: '', //备注,
+            parentCommodityCode: '', //100000,
+            pickingNumber: '', //9,
+            preTaxAmount: '', //98765432109876.12,
+            putawayType: '', //9,
+            reference: '', //98765432109876.12,
+            salesPrice: '', //98765432109876.12,
+            shipmentsNumber: '', //9,
+            snCode: '', //SN码,
+            taxPrice: '', //98765432109876.12,
+            taxTotalAmount: '', //98765432109876.12
+          }
+        ],
+        clientId: '', //客户id
+        clientLinkman: '', //客户联系人,
+        clientPhone: '', //客户联系电话,
+        clientReceivingAddress: '', //客户收货地址,=
+        deptTotalCode: '', //部门code,
+        failureTime: '', // 报价单有效期,
+        fieldList: '', //自定义字段,
+        note: '', //备注,
+        preTaxAmount: '', //含税总价.12,
+        procurementExpectedArrivalTime: '', //采购预计到货时间
+        quotationCode: '', //报价单编号,
+        salesExpectedShipmentsTime: '', //销售预计发货时间,
+        salesRequireArrivalTime: '', //销售要求到货时间,
+        shipmentCode: '', //出库单编号,
+        source: '', //来源,
+        state: '', //9,
+        taxAmount: '', //税后金额,
+        taxRate: '', //税率
+        totalNumber: '', //总计数量,
+        totalSalesAmount: '', //总计销售价
+      }
     }
   },
   created() {
@@ -117,11 +165,19 @@ export default {
           this.$refs.addForm.resetFields()
           this.addForm.id = ''
         })
-
       }
     },
     // 步骤点击
     stepsClick(index) {
+      // 点击第二步的时候判断有没有选择客户
+      if (index == 2 && !this.addForm.clientId) {
+        this.$message.error({
+          showClose: true,
+          message: '请先选择客户'
+        })
+        this.steps = 1
+        return
+      }
       if (this.type != 'add') {
         this.$message.error({
           showClose: true,

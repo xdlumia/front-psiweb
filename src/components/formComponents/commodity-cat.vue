@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-11-05 17:31:44
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-05 18:55:14
+ * @LastEditTime: 2019-11-06 10:09:57
  * @Description: 商品分类树组件  字段已绑定 1 
 */
 <template>
-  <div class="wfull hfull d-auto-y">
+  <div class="wfull hfull d-auto-y commodity-cat-tree">
     <el-tabs @tab-click="handleMainCatClick" v-model="activeMainCat">
       <el-tab-pane label="整机" name="PSI_SP_KIND-1"></el-tab-pane>
       <el-tab-pane label="配件" name="PSI_SP_KIND-2"></el-tab-pane>
@@ -82,3 +82,12 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.commodity-cat-tree {
+  /deep/.el-tabs__nav-scroll {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+</style>

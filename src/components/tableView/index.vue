@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 10:12:17
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-06 11:52:10
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -135,6 +135,7 @@
         <template slot-scope="scope">
           <slot
             :column="item"
+            :prop="item.columnFields"
             :row="scope.row"
             :scope="scope"
             :value="scope.row[item.columnFields]"
