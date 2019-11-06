@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 14:11:22
+ * @LastEditTime: 2019-11-06 14:15:22
  * @Description: 备注信息 字段已绑定 1 
 */
 <template>
@@ -103,7 +103,7 @@
       <!-- <el-col :span="24" v-if="needUpload">
         <el-form-item label="附件文件名称清单" size="mini">
           <div class="wfull d-clear">
-            <el-row :gutter="10">
+            <el-row :gutter="10"> 
               <el-col :span="2" class="ar">
                 <span>1.</span>
               </el-col>

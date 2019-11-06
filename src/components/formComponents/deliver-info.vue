@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 11:28:08
+ * @LastEditTime: 2019-11-06 14:23:02
  * @Description: 发货信息
 */
 <template>
@@ -56,12 +56,12 @@
 </template>
 <script>
 let formItems = [
-  { label: '销售预计发货时间', prop: 'clientName', type: 'date', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },
-  { label: '客户联系人', prop: 'invoiceTitle', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },
-  { label: '客户联系电话', prop: 'invoiceTitle', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'phone' }], },
-  { label: '客户收货地址', prop: 'taxpayersNum', type: 'input', rules: [{ required: true, trigger: 'blur' },], },
+  { label: '销售预计发货时间', prop: 'salesExpectedShipmentsTime', type: 'date', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },
+  { label: '客户联系人', prop: 'clientLinkman', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },
+  { label: '客户联系电话', prop: 'clientPhone', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'phone' }], },
+  { label: '客户收货地址', prop: 'clientReceivingAddress', type: 'input', rules: [{ required: true, trigger: 'blur' },], },
   { label: '销售要求发货时间', prop: 'registerAddres', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
-  { label: '采购预计到货时间', prop: 'accountBank', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
+  { label: '采购预计到货时间', prop: 'procurementExpectedArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
 ]
 export default {
   props: {
