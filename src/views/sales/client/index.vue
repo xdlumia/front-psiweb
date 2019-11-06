@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 09:35:23
+ * @LastEditTime: 2019-11-06 09:36:29
  * @Description: 销售-客户管理
  */
 <template>
@@ -109,11 +109,11 @@ export default {
       loading: false,
       // 查询表单
       queryForm: {
-        // code: '', // 示例：编号,
+        code: '', // 示例：编号,
         fuzzyClientName: '', // 客户姓名模糊查询用
-        // deptTotalCode: '', // 示例：部门code,
-        // grade: '', // 示例：客户级别,
-        // linkManName: '', // 示例：联系人,
+        deptTotalCode: '', // 示例：部门code,
+        grade: '', // 示例：客户级别,
+        linkManName: '', // 示例：联系人,
         phone: '', // 示例：客户手机号,
         page: 1,
         limit: 20,

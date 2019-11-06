@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 09:30:25
+ * @LastEditTime: 2019-11-06 09:37:40
  * @Description: 客户详情
 */
 <template>
@@ -127,13 +127,14 @@ export default {
       },
       // tabs 默认显示项
       activeName: 'basicInfo',
+      //头部状态数据
       statusData: [
         { label: '状态', value: this.rowData.state == 1 ? '停用' : '启用', },
         { label: '客户创建人', value: this.rowData.creatorName, },
         { label: '创建部门', value: this.rowData.deptName, },
         { label: '创建时间', value: this.rowData.createTime, isTime: true },
         { label: '来源', value: this.rowData.source, dictName: 'PSI_KHGL_LY' },
-      ], //头部数据
+      ],
       // form表单 详情里可以不注入数据
       form: {},
       editVisible: false,

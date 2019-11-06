@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 19:05:01
+ * @LastEditTime: 2019-11-06 09:41:01
  * @Description: 销售-报价单
  */
 <template>
@@ -53,27 +53,31 @@
     </table-view>
     <!-- 销售报价单详情侧边弹出框 -->
     <quote-details
+      v-if="outLibVisible"
       :visible.sync="quoteVisible"
       :rowData="rowData"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     ></quote-details>
     <!-- 销售出库单详情 -->
     <outLib-details
+      v-if="outLibVisible"
       :visible.sync="outLibVisible"
       :rowData="rowData"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     ></outLib-details>
     <!-- 新建 -->
     <quote-add
+      v-if="quoteAddVisible"
       :visible.sync="quoteAddVisible"
       type="add"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     ></quote-add>
     <!-- 合并报价单 -->
     <quote-merge
+      v-if="mergeVisible"
       :visible.sync="mergeVisible"
       type="copy"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     ></quote-merge>
   </div>
 </template>
