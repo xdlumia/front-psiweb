@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 16:12:50
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-06 20:04:49
  * @Description: 备注信息 字段已绑定 1 
 */
 <template>
@@ -60,7 +60,10 @@
         :span="24"
         v-if="needUpload"
       >
-        <el-form-item label="上传附件:" prop="attachList">
+        <el-form-item
+          label="上传附件:"
+          prop="attachList"
+        >
           <!-- <div
             class="d-text-gray mt10 d-elip wfull"
             v-if="!canEditable"
@@ -76,7 +79,7 @@
             <div class="al">
               <!-- 产品刘晨辉说，附件最多上传10个 -->
               <el-button
-                size="small"
+                size="mini"
                 type="primary"
                 v-if="!disabled && (data.attachList || []).length<10"
               >点击上传</el-button>
@@ -192,8 +195,8 @@ export default {
       this.data.attachList.splice(i, 1);
       // this.fileList.splice(i, 1);
     },
-    openFile(item){
-      window.open(item.fileUrl,'_blank')
+    openFile(item) {
+      window.open(item.fileUrl, '_blank')
     }
   }
 };

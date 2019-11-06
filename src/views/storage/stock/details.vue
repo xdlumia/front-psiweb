@@ -9,9 +9,8 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="drawerData.tableVisible"
+    :visible.sync="visible"
     @close="$emit('update:visible',false)"
-    title=""
     width="990px"
   >
     <div
@@ -24,16 +23,16 @@
           <el-image
             style="width: 120px; height: 120px"
             class="mt5"
-            src="http://img1.homekoocdn.com/html/zhixiao/cuxiao/images_191031/ban_01.jpg?v=aa"
+            :src="drawerData.goodsPic"
             fit="fill"
           ></el-image>
         </div>
         <div class="ml15">
-          <p class="f16 b">i7处理器-SP201902010000001</p>
-          <p class='d-text-qgray mt5'>商品类别：配件</p>
-          <p class='d-text-qgray mt5'>商品分类：CPU</p>
-          <p class='d-text-qgray mt5'>商品规格：8核</p>
-          <p class='d-text-qgray mt5'>商品配置：-</p>
+          <p class="f16 b">{{drawerData.goodsName}}-{{drawerData.goodsCode}}</p>
+          <p class='d-text-qgray mt5'>商品类别：{{drawerData.categoryCode}}</p>
+          <p class='d-text-qgray mt5'>商品分类：{{drawerData.firstClassName}}</p>
+          <p class='d-text-qgray mt5'>商品规格：{{drawerData.specOne}}</p>
+          <p class='d-text-qgray mt5'>商品配置：{{drawerData.configName}}</p>
         </div>
       </div>
     </div>
@@ -43,26 +42,44 @@
     >
       <div class="drawer-header">
         <el-button
-          @click="backVisible=true"
+          @click="changeBackVisible"
           size="mini"
           type="primary"
         >库房分布</el-button>
       </div>
-      <el-tabs class="wfull hfull tabs-view">
-        <el-tab-pane label="成本明细">
+      <el-tabs
+        class="wfull hfull tabs-view"
+        v-model="activeName"
+      >
+        <el-tab-pane
+          label="成本明细"
+          name='1'
+        >
           <el-form>
-            <costDetails />
+            <!-- <costDetails /> -->
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="商品明细表">
-          <commodityDetails />
+        <el-tab-pane
+          label="商品明细表"
+          name='2'
+        >
+          <commodityDetails
+            :drawerData='drawerData'
+            v-if="activeName == '2'"
+          />
         </el-tab-pane>
-        <el-tab-pane label="供应商">
+        <el-tab-pane
+          label="供应商"
+          name='3'
+        >
           供应商
         </el-tab-pane>
       </el-tabs>
     </div>
-    <storehouseDistribution :visible.sync='backVisible' />
+    <storehouseDistribution
+      :visible.sync='backVisible'
+      :drawerData='drawerData'
+    />
   </SideDetail>
 
 </template>
@@ -72,12 +89,13 @@ import commodityDetails from '@/components/formComponents/commodity-details'
 import storehouseDistribution from './storehouse-distribution'
 import SideDetail from '@/components/side-detail';
 export default {
-  props: ['drawerData'],
+  props: ['drawerData', 'visible'],
   data() {
     return {
       status: [{ label: '创建时间', value: '2019-9-21 10:04:38' }, { label: '创建人', value: '张三' }, { label: '来源', value: '销售单' }],
       backVisible: false,
       isComponents: '',
+      activeName: '1',
       dialogData: {
         title: ''
       }
@@ -89,6 +107,19 @@ export default {
     SideDetail,
     storehouseDistribution
   },
+  mounted() {
+    this.init()
+  },
+  methods: {
+    changeBackVisible() {
+      this.backVisible = true
+    },
+    init() {
+      this.status[0].value = this.drawerData.createTime
+      this.status[1].value = this.drawerData.creatorName
+      this.status[2].value = this.drawerData.creatorName
+    }
+  }
 }
 </script>
 <style lang='scss' scoped>

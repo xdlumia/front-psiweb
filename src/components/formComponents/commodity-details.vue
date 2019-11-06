@@ -1,93 +1,93 @@
 /*
  * @Author: 徐贺 
  * @Date: 2019-10-25 15:24:18 
- * @Last Modified by: 徐贺
+ * @Last Modified by: 徐贺 
  * @Last Modified time: 2019-10-28 14:02:43
  * @Description: 商品明细
  */
+//  drawerData.goodsCode
 <template>
   <div>
     <form-card title='商品明细'>
       <d-table
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+        api="seePsiWmsService.wmsflowrecordList"
+        :params="{page:1,limit:20,commodityCode:drawerData.goodsCode}"
         ref="companyTable"
         class="college-main"
         style="height:calc(100vh - 340px)"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
       >
         <el-table-column
-          prop="cityName"
+          type='index'
           min-width="50"
           label="编号"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="commodityCode"
           min-width="140"
           label="商品编号"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="categoryCode"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="className"
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="title"
+          prop="specOne"
           label="商品规格"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.specOne}}</span>
           </template>
         </el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="configName"
           min-width="100"
           label="配置"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="snCode"
           min-width="140"
           label="SN码"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="robotCode"
           min-width="140"
           label="机器号"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="wmsName"
           min-width="100"
           label="入库库房"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="operator"
           min-width="100"
           label="入库人"
           show-overflow-tooltip
@@ -102,7 +102,7 @@
           <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="businessCode"
           min-width="140"
           label="关联业务编号"
           show-overflow-tooltip
@@ -113,15 +113,11 @@
 </template>
 <script>
 export default {
+  props: ['drawerData'],
   data() {
     return {
       // 查询表单
       queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
         page: 1,
         limit: 20
       },

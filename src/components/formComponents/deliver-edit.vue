@@ -1,13 +1,14 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 17:20:29
- * @Description: 发货信息 可编辑
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-06 20:01:19
+ * @Description: 发货信息 可编辑  弃用  使用 deliver-info
 */
 <template>
   <form-card title="发货信息">
-    <el-row>
+    弃用 使用 deliver-info 组件
+    <!-- <el-row>
       <el-col
         :span="8"
         class="pl5 pr5 pb5"
@@ -129,7 +130,7 @@
           />
         </el-form-item>
       </el-col>
-    </el-row>
+    </el-row> -->
   </form-card>
 </template>
 <script>

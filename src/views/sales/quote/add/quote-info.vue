@@ -2,11 +2,11 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 18:09:03
+ * @LastEditTime: 2019-11-06 20:15:26
  * @Description: 填写报价单详情
 */
 <template>
-  <div>
+  <div v-loading="loading">
     <d-tabs :style="{maxHeight:'calc(100vh - 220px)'}">
       <d-tab-pane
         v-for="(val,key) of tabs"
@@ -14,42 +14,64 @@
         :label="val"
         :name="key"
       />
-      <customerInfo id="customerInfo" />
-      <companyInfo id="companyInfo" />
-      <deliverInfo id="deliverInfo" />
-      <commodityInfo id="commodityInfo" />
-      <payExpire id="payExpire" />
-      <extrataxInfo id="extrataxInfo" />
-      <customInfo id="customInfo" />
-      <extraInfo id="extraInfo" />
+      <customerInfo
+        :data="data"
+        id="customerInfo"
+      />
+      <!-- 公司信息 -->
+      <companyInfo
+        select
+        id="companyInfo"
+      />
+      <!-- 发货信息 -->
+      <deliverInfo
+        :data="data"
+        :hide="['salesRequireArrivalTime','procurementExpectedArrivalTime','note']"
+        id="deliverInfo"
+      />
+      <!-- 商品信息 -->
+      <commodityInfo
+        :data="data"
+        id="commodityInfo"
+      />
+      <!-- 报价单有效期 -->
+      <payExpire
+        :data="data"
+        id="payExpire"
+      />
+      <!-- 附加发票 -->
+      <extrataxInfo
+        :data="data"
+        id="extrataxInfo"
+      />
+      <!-- 自定义信息 -->
+      <customInfo
+        :data="data"
+        id="customInfo"
+      />
+      <!-- 备注信息 -->
+      <extrasInfo
+        :data="data"
+        id="extraInfo"
+      />
     </d-tabs>
 
   </div>
 </template>
 <script>
-import customerInfo from '@/components/formComponents/customer-info' //客户信息
-import companyInfo from '@/components/formComponents/company-info' //公司信息
-import customInfo from '@/components/formComponents/custom-info' //自定义信息
-import deliverInfo from '@/components/formComponents/deliver-info' //发货信息
-import extrataxInfo from '@/components/formComponents/extratax-info' //附加发票
-import extraInfo from '@/components/formComponents/extras-info' //备注信息
-import payExpire from '@/components/formComponents/pay-expire' //报价单有效期
-import commodityInfo from '@/components/formComponents/commodity-info' //商品信息
 
 export default {
   components: {
-    customerInfo,
-    companyInfo,
-    customInfo,
-    deliverInfo,
-    extrataxInfo,
-    extraInfo,
-    payExpire,
-    commodityInfo,
   },
-  props: ['drawerData'],
+  props: {
+    data: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data() {
     return {
+      loading: false,
       tabs: {
         customerInfo: '客户信息',
         companyInfo: '公司信息',
@@ -60,12 +82,16 @@ export default {
         customInfo: '自定义信息',
         extraInfo: '备注信息',
       },
-      // 表单
-      form: {},
-      // 报价单信息
-      activeName: "0",
-      quoteCollapse: true
     }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
+  watch: {
+
   },
   beforeDestroy() {
   }

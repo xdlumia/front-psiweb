@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 14:26:36
+ * @LastEditTime: 2019-11-06 20:15:00
  * @Description: 发货信息 1
 */
 <template>
@@ -22,6 +22,7 @@
             <el-input
               v-if="item.type =='input'"
               :disabled='disabled'
+              :maxlength="item.maxlength"
               v-model.trim="data[item.prop]"
               :placeholder="`请输入${item.label}`"
             />
@@ -62,6 +63,7 @@ let formItems = [
   { label: '客户收货地址', prop: 'clientReceivingAddress', type: 'input', rules: [{ required: true, trigger: 'blur' },], },
   { label: '销售要求到货时间', prop: 'salesRequireArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
   { label: '采购预计到货时间', prop: 'procurementExpectedArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
+  { label: '备注', prop: 'note', type: 'date', maxlength: 300, rules: [{ required: false, trigger: 'blur' }], },
 ]
 export default {
   props: {
