@@ -26,7 +26,7 @@ const apiURL = {
   // 物品批量删除
   deleteGoodsList: '/goods/delete',
   // 查询物品详情
-  getGoodsDetail: '/goods/getGoodsDetail',
+  getGoodsDetailV2: '/goods/getGoodsDetail/v2',
   // 新增物品
   saveGoodsInfo: '/goods/save',
   // 编辑物品
@@ -72,8 +72,8 @@ export default {
   deleteGoodsList(params) {
     return Api.del(baseURL.seeGoodsService + apiURL.deleteGoodsList, params)
   },
-  getGoodsDetail(params) {
-    return Api.get(baseURL.seeGoodsService + apiURL.getGoodsDetail, params)
+  getGoodsDetailV2(params) {
+    return Api.get(baseURL.seeGoodsService + apiURL.getGoodsDetailV2, params)
   },
   saveGoodsInfo(params) {
     return Api.post(baseURL.seeGoodsService + apiURL.saveGoodsInfo, params)

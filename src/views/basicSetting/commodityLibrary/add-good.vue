@@ -309,8 +309,9 @@ export default {
   },
   methods: {
     getGoodsDetail(code) {
-      this.$api.seeGoodsService.getGoodsDetail({ code: code }).then(res => {
-        console.log(res)
+      this.$api.seeGoodsService.getGoodsDetailV2({ code: code }).then(res => {
+        console.log(res);
+        this.goodForm = res.data;
       })
     },
     inventoryPriceChange() {
