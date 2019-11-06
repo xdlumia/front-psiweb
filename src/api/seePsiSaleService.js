@@ -1,9 +1,9 @@
 /*
  * @Author: web.王晓冬
- * @Date: 2019-11-04 16:01:39
+ * @Date: 2019-11-04 18:29:08
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 16:41:31
- * @Description: see-psi-sale-service 9208 销售模块
+ * @LastEditTime: 2019-11-06 10:15:09
+ * @Description: file content
  */
 const MOCK_ADDRESS = '/mock/5dbfdd1bbc54fc3da273f35d/see-psi-sale-service'
 const isMock = false
@@ -214,13 +214,33 @@ export default {
   // 导出
   salesquotationExport: {
     'url': '/salesquotation/export',
+    'mock': isMock,
+    'methods': 'post'
+  },
+
+  // 导出
+  salesquotationExport: {
+    'url': '/salesquotation/export',
     'mock': isMock
   },
 
-  // 查看详细信息
+  // 根据code查看详细信息
+  salesquotationGetinfoByCode: {
+    'url': '/salesquotation/getinfoByCode',
+    'mock': isMock
+  },
+
+  // 根据id查看详细信息
   salesquotationInfo: {
     'url': '/salesquotation/info/{id}',
     'mock': isMock
+  },
+
+  // 生成请购单
+  salesquotationInsertPurchaseApplyOrder: {
+    'url': '/salesquotation/insertPurchaseApplyOrder',
+    'mock': isMock,
+    'methods': 'post'
   },
 
   // 获取列表
@@ -236,6 +256,12 @@ export default {
     'methods': 'delete'
   },
 
+  // 终止
+  salesquotationPause: {
+    'url': '/salesquotation/pause',
+    'mock': isMock
+  },
+
   // 保存
   salesquotationSave: {
     'url': '/salesquotation/save',
@@ -246,6 +272,13 @@ export default {
   // 修改
   salesquotationUpdate: {
     'url': '/salesquotation/update',
+    'mock': isMock,
+    'methods': 'post'
+  },
+
+  // 更新采购预计到货时间
+  salesquotationUpdatePurchaseArrivalTime: {
+    'url': '/salesquotation/updatePurchaseArrivalTime',
     'mock': isMock,
     'methods': 'post'
   },
@@ -307,6 +340,12 @@ export default {
     'methods': 'post'
   },
 
+  // 合并生成销售出库单规则校验
+  salesshipmentCheckInsertSalesShipment: {
+    'url': '/salesshipment/checkInsertSalesShipment',
+    'mock': isMock
+  },
+
   // 删除
   salesshipmentDelete: {
     'url': '/salesshipment/delete',
@@ -320,10 +359,23 @@ export default {
     'mock': isMock
   },
 
-  // 查看详细信息
+  // 根据code查看详细信息
+  salesshipmentGetInfoByCode: {
+    'url': '/salesshipment/getInfoByCode',
+    'mock': isMock
+  },
+
+  // 根据id查看详细信息
   salesshipmentInfo: {
     'url': '/salesshipment/info/{id}',
     'mock': isMock
+  },
+
+  // 生成合同
+  salesshipmentInsertContract: {
+    'url': '/salesshipment/insertContract',
+    'mock': isMock,
+    'methods': 'post'
   },
 
   // 获取列表
@@ -339,6 +391,13 @@ export default {
     'methods': 'delete'
   },
 
+  // 终止
+  salesshipmentPause: {
+    'url': '/salesshipment/pause',
+    'mock': isMock,
+    'methods': 'post'
+  },
+
   // 保存
   salesshipmentSave: {
     'url': '/salesshipment/save',
@@ -349,6 +408,13 @@ export default {
   // 修改
   salesshipmentUpdate: {
     'url': '/salesshipment/update',
+    'mock': isMock,
+    'methods': 'post'
+  },
+
+  // 编辑合同
+  salesshipmentUpdateContract: {
+    'url': '/salesshipment/updateContract',
     'mock': isMock,
     'methods': 'post'
   },
