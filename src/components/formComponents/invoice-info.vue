@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 18:24:36
+ * @LastEditTime: 2019-11-06 11:14:52
  * @Description: 发票信息 1
  */
 <template>
@@ -81,10 +81,6 @@ export default {
     return {
       // 遍历表单
       formItems: formItems.filter(item => !this.hide.includes(item.prop)),
-      options: [],
-      form: {
-        telPhone: '我是电话号码'
-      },
     }
   },
   components: {

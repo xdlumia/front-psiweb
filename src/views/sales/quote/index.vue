@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 10:11:16
+ * @LastEditTime: 2019-11-06 10:42:18
  * @Description: 销售-报价单
  */
 <template>
@@ -15,8 +15,8 @@
       :moreButton="true"
       :column="true"
       title="报价单"
-      api="seePsiSaleService.salessheetList"
-      exportApi="seePsiSaleService.salessheetExprot"
+      api="seePsiSaleService.salesquotationList"
+      exportApi="seePsiSaleService.salesquotationExport"
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
     >
@@ -40,12 +40,22 @@
         >复制生成报价单</el-button>
       </template>
       <template slot-scope="{column,row,value}">
+        <!-- 报价单编号 -->
         <span
-          class="d-text-blue"
+          v-if="column.columnFields == 'quotationCode'"
+          class="d-text-blue d-pointer"
           @click="eventHandle('quoteVisible',row)"
-        > 报价单编号</span>
-        <span @click="eventHandle('outLibVisible',row)">销售出库单编号</span>
-        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        > {{value}}</span>
+        <!-- 销售出库单编号 -->
+        <span
+          v-else-if="column.columnFields == 'shipmentCode'"
+          class="d-text-blue d-pointer"
+          @click="eventHandle('outLibVisible',row)"
+        > {{value}}</span>
+        <!-- 状态 -->
+        <span v-else-if="column.columnFields == 'state'"> {{stateObj[value]}}</span>
+        <!-- 时间 -->
+        <span v-else-if="column.columnFields=='createTime' || column.columnFields=='salesExpectedShipmentsTime' || column.columnFields=='salesRequireArrivalTime'||column.columnFields=='procurementExpectedArrivalTime'||column.columnFields=='failureTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
@@ -81,10 +91,18 @@ import quoteDetails from './quote-details' //报价详情
 import outLibDetails from '../outLibrary/outLib-details' //销售详
 import quoteAdd from './add' //新增
 import quoteMerge from './merge' //合并
+let stateObj = {
+  '-1': '新建',
+  '0': '审核中',
+  '1': '已通过',
+  '2': '已驳回',
+  '3': '完成',
+  '4': '终止',
+}
 let filterOptions = [
-  { label: '报价单编号', prop: 'squotationCode', default: true, type: 'text' },
+  { label: '报价单编号', prop: 'quotationCode', default: true, type: 'text' },
   { label: '销售出库单编号', prop: 'shipmentCode', default: true, type: 'text' },
-  { label: '单据状态', prop: 'pushTime', default: true, type: 'select', options: [] },
+  { label: '单据状态', prop: 'state', default: true, type: 'select', options: [] },
   { label: '客户名称', prop: 'clientId', default: true, type: 'text' },
   { label: '创建人', prop: 'creator', default: true, type: 'select' }
 ]
@@ -115,19 +133,17 @@ export default {
       loading: false,
       // 当前行数据
       rowData: {},
+      stateObj: stateObj,
       // 查询表单
       queryForm: {
-        alreadyShipmentNumber: '', // 已出库量,
-        clientId: '', // 客户名称,
-        creator: '', // 创建人
-        salesSheetCode: '', // 销售单编号
-        shipmentCode: '', // "示例：销售出库单编号"
-        shipmentHuman: '', // "示例：出库人"
-        shipmentState: '', // 出库状态
-        source: '', // "示例：来源"
-        squotationCode: '', // "示例：报价单编号"
         page: 1,
-        limit: 20
+        limit: 20,
+        quotationCode: '',//报价单编号
+        shipmentCode: '',//出库单编号
+        state: '',//状态
+        apprpvalState: '',//审核状态
+        clientId: '',//客户id
+        creator: '',//
       },
       // 报价单详情
       quoteVisible: false,
@@ -144,9 +160,8 @@ export default {
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
+      this.rowData = row ? row : {}
       this[type] = true
-      this.rowData = row
-      return
     },
     submitFilter() {
       this.$emit('submit-filter')

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 09:36:29
+ * @LastEditTime: 2019-11-06 10:42:49
  * @Description: 销售-客户管理
  */
 <template>
@@ -28,7 +28,6 @@
       </template>
       <!-- 自定义按钮功能 -->
 
-      <template v-slot:moreButton>自定义更多按钮</template>
       <template slot-scope="{column,row,value}">
         <!-- 客户编号 -->
         <span
@@ -129,8 +128,8 @@ export default {
     // 按钮功能操作
     // 按钮功能操作
     eventHandle(type, row) {
-      this[type] = true
       this.rowData = row ? row : {}
+      this[type] = true
     }
   }
 };

@@ -1,201 +1,92 @@
 /*
  * @Author: 赵伦
- * @Date: 2019-10-26 10:12:11
+ * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 11:17:45
- * @Description: 客户信息
-*/
+ * @LastEditTime: 2019-11-06 11:16:33
+ * @Description: 客户信息 1
+ */
 <template>
-  <form-card title="客户信息">
+  <form-card title='客户信息'>
     <el-row :gutter="10">
       <el-col
-        :span="8"
-        class=""
+        :span="item.span || 8"
+        v-for="(item,index) of formItems"
+        :key="index"
       >
         <el-form-item
-          :rules="[ 
-                    {required:true,message:'必填项'}
-                ]"
-          label="客户名称"
-          prop
-          size="mini"
+          :rules="item.rules"
+          :label="item.label"
+          :prop="item.prop"
         >
-          <div
-            class="d-text-gray mt10 d-elip wfull"
-            v-if="disabled"
-          >客户名称</div>
+          <el-input
+            v-if="item.type =='input'"
+            :disabled='disabled'
+            v-model.trim="data[item.prop]"
+            :placeholder="`请输入${item.label}`"
+          />
           <el-select
             class="wfull"
-            filterable
-            placeholder="请选择"
-            v-else
-            v-model="data.customerName"
+            v-else-if="item.type =='select'"
+            :disabled='disabled'
+            v-model="data[item.prop]"
+            :placeholder="`请输入${item.label}`"
           >
             <el-option
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-              v-for="item in options"
-            ></el-option>
+              v-for="item in dictionaryOptions(item.dicName)"
+              :key="item.code"
+              :label="item.content"
+              :value="item.code"
+            />
           </el-select>
-        </el-form-item>
-      </el-col>
-      <el-col
-        :span="8"
-        class=""
-      >
-        <el-form-item
-          :rules="[ 
-                    {required:true,message:'必填项'}
-                ]"
-          label="发票抬头"
-          size="mini"
-        >
-          <div
-            class="d-text-gray mt10 d-elip wfull"
-            v-if="disabled"
-          >发票抬头</div>
-          <el-input
-            disabled
-            placeholder="请输入发票抬头"
-            v-else
-          />
-        </el-form-item>
-      </el-col>
-      <el-col
-        :span="8"
-        class=""
-      >
-        <el-form-item
-          :rules="[ 
-                    {required:true,message:'必填项'}
-                ]"
-          label="纳税人识别号"
-          size="mini"
-        >
-          <div
-            class="d-text-gray mt10 d-elip wfull"
-            v-if="disabled"
-          >纳税人识别号</div>
-          <el-input
-            disabled
-            placeholder="请输入纳税人识别号"
-            v-else
-          />
-        </el-form-item>
-      </el-col>
-      <el-col
-        :span="8"
-        class=""
-      >
-        <el-form-item
-          :rules="[ 
-                    {required:true,message:'必填项'}
-                ]"
-          label="注册地址"
-          size="mini"
-        >
-          <div
-            class="d-text-gray mt10 d-elip wfull"
-            v-if="disabled"
-          >注册地址</div>
-          <el-input
-            disabled
-            placeholder="请输入注册地址"
-            v-else
-          />
-        </el-form-item>
-      </el-col>
-      <el-col
-        :span="8"
-        class=""
-      >
-        <el-form-item
-          :rules="[{type:'telePhone'},
-                    {required:true,message:'必填项'}]"
-          label="注册电话"
-          size="mini"
-        >
-          <div
-            class="d-text-gray mt10 d-elip wfull"
-            v-if="disabled"
-          >注册电话</div>
-          <el-input
-            disabled
-            placeholder="请输入注册电话"
-            v-else
-            v-model="data.telPhone"
-          />
-        </el-form-item>
-      </el-col>
-      <el-col
-        :span="8"
-        class=""
-      >
-        <el-form-item
-          :rules="[ 
-                    {required:true,message:'必填项'}
-                ]"
-          label="开户银行"
-          size="mini"
-        >
-          <div
-            class="d-text-gray mt10 d-elip wfull"
-            v-if="disabled"
-          >开户银行</div>
-          <el-input
-            disabled
-            placeholder="请输入开户银行"
-            v-else
-          />
-        </el-form-item>
-      </el-col>
-      <el-col
-        :span="8"
-        class=""
-      >
-        <el-form-item
-          :rules="[
-                    {type:'bankCard',message:'请填写银行账户'},
-                    {required:true,message:'必填项'}
-                ]"
-          label="开户行账号"
-          prop="bankCard"
-          size="mini"
-        >
-          <div
-            class="d-text-gray mt10 d-elip wfull"
-            v-if="disabled"
-          >开户行账号</div>
-          <el-input
-            disabled
-            placeholder="请输入开户行账号"
-            v-else
-            v-model="data.bankCard"
+          <el-date-picker
+            class="wfull"
+            v-else-if="item.type =='date'"
+            value-format="timestamp"
+            :disabled='disabled'
+            v-model="data[item.prop]"
+            :placeholder="`请选择${item.label}`"
           />
         </el-form-item>
       </el-col>
     </el-row>
+
   </form-card>
 </template>
 <script>
+let formItems = [
+  { label: '客户名称', prop: 'clientName', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },
+  { label: '发票抬头', prop: 'invoiceTitle', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
+  { label: '纳税人识别号', prop: 'taxpayersNum', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
+  { label: '注册地址', prop: 'registerAddres', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'phone' }], },
+  { label: '注册电话', prop: 'registerPhone', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
+  { label: '开户银行', prop: 'accountBank', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
+  { label: '开户行帐号', prop: 'bankAccount', type: 'input', span: 16, rules: [{ required: true, trigger: 'blur' }, { type: 'bankCard' }], },
+]
 export default {
   props: {
     data: {
-      type: Object,
-      default: () => ({})
+      default: () => { return {} }
     },
     disabled: {
       type: Boolean,
       default: false
+    },
+    hide: {
+      type: Array,
+      default: () => {
+        return []
+      }
     }
   },
   data() {
     return {
-      options: []
-    };
-  }
-};
+      // 遍历表单
+      formItems: formItems.filter(item => !this.hide.includes(item.prop)),
+    }
+  },
+  components: {
+  },
+}
 </script>
-<style lang="scss" scoped>
+<style scoped>
 </style>
