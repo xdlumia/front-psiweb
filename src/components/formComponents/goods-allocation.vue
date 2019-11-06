@@ -47,7 +47,7 @@
         >
           <template slot-scope="scope">
             <span
-              @click="dialogVisible = true"
+              @click="getOutGoodsRecord(scope)"
               class="d-text-blue"
             >{{scope.row.total}}</span>
           </template>
@@ -115,7 +115,10 @@
         :visible.sync="showInFullscreen"
       />
     </form-card>
-    <outGoodsRecord :visible.sync='dialogVisible' />
+    <outGoodsRecord
+      :visible.sync='dialogVisible'
+      :form='tpForm'
+    />
   </div>
 </template>
 
@@ -136,12 +139,24 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      showInFullscreen: false
+      showInFullscreen: false,
+      tpForm: {
+        commodityCode: '',
+        businessCode: ''
+      }
     }
   },
   methods: {
     fullscreen() {
       this.showInFullscreen = true;
+    },
+    //查看商品记录
+    getOutGoodsRecord(scope) {
+      this.dialogVisible = true
+      this.tpForm.commodityCode = scope.row.commodityCode
+      this.tpForm.businessCode = this.form.allocationOrderCode
+      this.tpForm.page = 1
+      this.tpForm.limit = 20
     }
   },
   components: {

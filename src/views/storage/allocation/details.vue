@@ -50,6 +50,8 @@
               v-dialogDrag
             >
               <components
+                v-if="backVisible"
+                :dialogData='detailForm'
                 :is='isComponents'
                 :visible.sync="backVisible"
               >
@@ -104,6 +106,7 @@ export default {
           this.status[1].value = res.data.creatorName
           this.status[2].value = res.data.deptName
           this.status[3].value = res.data.source
+          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 

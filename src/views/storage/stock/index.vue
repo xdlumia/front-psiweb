@@ -9,9 +9,12 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
+      busType="47"
+      :filterOptions='filterOptions'
       :headers="tableHeader"
       :selection='false'
-      api="bizSystemService.getEmployeeList"
+      api="seePsiWmsService.wmsinventoryList"
+      :params="queryForm"
       title="库存查询"
     >
       <template v-slot:button>
@@ -80,13 +83,26 @@ export default {
         children: 'children',
         label: 'label'
       },
-      // 查询表单
       queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
+        commodityCode: '',//商品编号
+        goodsPic: '',//商品图片
+        categoryCode: '',//商品类别
+        firstClassName: '',//商品分类 
+        name: '',//商品名称
+        specOne: '',//规格
+        configName: '',//配置
+        unit: '',//单位
+        inventoryWarning: '',//库存预警
+        unit: '',//虚拟库存
+        unit: '',//实物库存
+        unit: '',//期初库存
+        unit: '',//入库数量
+        unit: '',//出库数量
+        unit: '',//待入库数量
+        unit: '',//锁库量
+        unit: '',//最低采购价
+        unit: '',//库存成本
+        unit: '',//销售参考价
         page: 1,
         limit: 20
       },
@@ -99,41 +115,7 @@ export default {
       },
       activeName: '',
       status: [],
-      data: [{
-        id: 1,
-        label: '一级 1',
-        children: [{
-          id: 4,
-          label: '二级 1-1',
-          children: [{
-            id: 9,
-            label: '三级 1-1-1'
-          }, {
-            id: 10,
-            label: '三级 1-1-2'
-          }]
-        }]
-      }, {
-        id: 2,
-        label: '一级 2',
-        children: [{
-          id: 5,
-          label: '二级 2-1'
-        }, {
-          id: 6,
-          label: '二级 2-2'
-        }]
-      }, {
-        id: 3,
-        label: '一级 3',
-        children: [{
-          id: 7,
-          label: '二级 3-1'
-        }, {
-          id: 8,
-          label: '二级 3-2'
-        }]
-      }],
+      data: [],
       tableHeader: [
         { label: '商品编号', prop: 'deptName', width: '140' },
         { label: '商品图片', prop: 'deptName', width: '100' },
@@ -155,7 +137,151 @@ export default {
         { label: '最低采购价', prop: 'createTime', width: '100' },
         { label: '库存成本', prop: 'createTime', width: '100' },
         { label: '销售参考价', prop: 'createTime', width: '100' }
-      ]
+      ],
+      filterOptions: [
+        { label: '商品编号', prop: 'allocationOrderCode', default: true },
+        {
+          label: '商品类别',
+          prop: 'allocationOrderState',
+          type: 'select',
+          options: [
+            { label: '待调拨', value: '1' },
+            { label: '部分调拨', value: '2' },
+            { label: '完成调拨', value: '3' },
+            { label: '终止', value: '-1' },
+          ],
+          default: true
+        },
+        {
+          label: '商品分类',
+          prop: 'allocationType',
+          type: 'select',
+          options: [
+            { label: '内调', value: '1' },
+            { label: '外调', value: '2' }
+          ],
+          default: true
+        },
+        {
+          label: '商品名称',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '商品规格',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '商品配置',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '单位',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '库存预警',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '虚拟库存',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '实物库存',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '期初库存',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '入库数量',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '出库数量',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '待入库数量',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '待出库数量',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '锁库量',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '最低采购价',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+
+        {
+          label: '库存成本',
+          prop: 'putawayWmsName',
+          type: 'select',
+          options: [
+            { label: '内调', value: '1' },
+            { label: '外调', value: '2' }
+          ],
+          default: true
+        },
+        {
+          label: '销售参考价',
+          prop: 'shipmentWmsNames',
+          type: 'select',
+          options: [
+            { label: '内调', value: '1' },
+            { label: '外调', value: '2' }
+          ],
+          default: true
+        }
+      ],
     };
   },
   methods: {
