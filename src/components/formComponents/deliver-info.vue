@@ -1,107 +1,91 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 15:37:46
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-06 11:28:08
  * @Description: 发货信息
 */
 <template>
   <form-card title="发货信息">
     <el-row :gutter="10">
-      <el-col
-        :span="8"
-        class=""
-      >
-        <el-form-item
-          :rules="[ 
-                    {required:true,message:'必填项'}
-                ]"
-          label="销售预计发货时间"
-          size="mini"
+      <el-row :gutter="10">
+        <el-col
+          :span="item.span || 8"
+          v-for="(item,index) of formItems"
+          :key="index"
         >
-          <div
-            class="d-text-gray mt10 d-elip wfull"
-            v-if="disabled"
-          >销售预计发货时间</div>
-          <el-date-picker
-            placeholder="请选择"
-            style="max-width:100%;"
-            v-else
-          ></el-date-picker>
-        </el-form-item>
-      </el-col>
-      <el-col
-        :span="8"
-        class=""
-      >
-        <el-form-item
-          :rules="[ 
-                    {required:true,message:'必填项'}
-                ]"
-          label="客户联系人"
-          size="mini"
-        >
-          <div
-            class="d-text-gray mt10 d-elip wfull"
-            v-if="disabled"
-          >客户联系人</div>
-          <el-input
-            disabled
-            placeholder="请输入客户联系人"
-            v-else
-          />
-        </el-form-item>
-      </el-col>
-      <el-col :span="8" class="">
-        <el-form-item :rules="[{type:'telePhone'},
-                    {required:true,message:'必填项'}]" label="客户联系人电话" size="mini">
-          <div class="d-text-gray mt10 d-elip wfull" v-if="disabled">客户联系人电话</div>
-          <el-input disabled placeholder="请输入客户联系人电话" v-else v-model="data.telPhone" />
-        </el-form-item>
-      </el-col>
-      <el-col
-        :span="8"
-        class=""
-      >
-        <el-form-item
-          :rules="[ 
-                    {required:true,message:'必填项'}
-                ]"
-          label="客户收货地址"
-          size="mini"
-        >
-          <div
-            class="d-text-gray mt10 d-elip wfull"
-            v-if="disabled"
-          >客户收货地址</div>
-          <el-input
-            disabled
-            placeholder="请输入客户收货地址"
-            v-else
-          />
-        </el-form-item>
-      </el-col>
+          <el-form-item
+            :rules="item.rules"
+            :label="item.label"
+            :prop="item.prop"
+          >
+            <el-input
+              v-if="item.type =='input'"
+              :disabled='disabled'
+              v-model.trim="data[item.prop]"
+              :placeholder="`请输入${item.label}`"
+            />
+            <el-select
+              class="wfull"
+              v-else-if="item.type =='select'"
+              :disabled='disabled'
+              v-model="data[item.prop]"
+              :placeholder="`请输入${item.label}`"
+            >
+              <el-option
+                v-for="item in dictionaryOptions(item.dicName)"
+                :key="item.code"
+                :label="item.content"
+                :value="item.code"
+              />
+            </el-select>
+            <el-date-picker
+              class="wfull"
+              v-else-if="item.type =='date'"
+              value-format="timestamp"
+              :disabled='disabled'
+              v-model="data[item.prop]"
+              :placeholder="`请选择${item.label}`"
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-row>
+
   </form-card>
 </template>
 <script>
+let formItems = [
+  { label: '销售预计发货时间', prop: 'clientName', type: 'date', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },
+  { label: '客户联系人', prop: 'invoiceTitle', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },
+  { label: '客户联系电话', prop: 'invoiceTitle', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'phone' }], },
+  { label: '客户收货地址', prop: 'taxpayersNum', type: 'input', rules: [{ required: true, trigger: 'blur' },], },
+  { label: '销售要求发货时间', prop: 'registerAddres', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
+  { label: '采购预计到货时间', prop: 'accountBank', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
+]
 export default {
   props: {
     data: {
-      type: Object,
       default: () => ({})
     },
     disabled: {
       type: Boolean,
       default: false
+    },
+    hide: {
+      type: Array,
+      default: () => {
+        return []
+      }
     }
   },
   data() {
     return {
-      options: []
-    };
-  }
-};
+      // 遍历表单
+      formItems: formItems.filter(item => !this.hide.includes(item.prop)),
+    }
+  },
+}
 </script>
 <style lang="scss" scoped>
 </style>

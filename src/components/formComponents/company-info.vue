@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 11:23:41
+ * @LastEditTime: 2019-11-06 11:25:30
  * @Description: 公司信息
 */
 <template>
@@ -67,7 +67,7 @@ let formItems = [
 export default {
   props: {
     data: {
-      default: () => { }
+      default: () => ({})
     },
     disabled: {
       type: Boolean,
