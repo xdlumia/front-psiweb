@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-05 18:54:51
+ * @LastEditTime: 2019-11-06 08:45:58
  * @Description: 选择商品 字段已绑定 1 
 */
 <template>
@@ -71,7 +71,7 @@
         <!-- 点击数量覆盖下来的表格 -->
         <el-table :data="selected" border v-show="multipleVisible">
           <el-table-column fixed label="操作" min-width="50" show-overflow-tooltip>
-            <template slot-scope="row">
+            <template slot-scope="{row}">
               <i @click="deleteChoose(row)" class="el-icon-error d-pointer" style="font-size:20px;color:#F5222D"></i>
             </template>
           </el-table-column>
@@ -196,8 +196,19 @@ export default {
     },
     //删除某项
     deleteChoose(row) {
-      this.multipleSelection.splice(row.$index, 1);
-      this.$refs.multipleTable.$refs.elTable.toggleRowSelection(row.row, false);
+      this.preSelection.some((item, i) => {
+        if (item.goodsCode == row.goodsCode) {
+          this.preSelection.splice(i, 1);
+          return true;
+        }
+      });
+      this.multipleSelection.some((item, i) => {
+        if (item.goodsCode == row.goodsCode) {
+          this.preSelection.splice(i, 1);
+          return true;
+        }
+      });
+      this.$refs.multipleTable.$refs.elTable.toggleRowSelection(row, false);
     },
     close() {
       this.$emit('update:visible', false);
@@ -210,6 +221,7 @@ export default {
       this.preSelection = this.preSelection.concat(
         this.multipleSelection || []
       );
+      this.multipleVisible = false;
       if (e.data && e.data.length) {
         this.$nextTick(() => {
           let selectObj = this.getPreSelectObj();
