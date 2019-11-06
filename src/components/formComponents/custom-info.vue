@@ -30,7 +30,7 @@ export default {
       default: () => [{ name: '安装系统', value: '邮箱' }]
     },
     options: [],
-    form: {
+    data: {
       type: Object,
       default: () => ({})
     },
