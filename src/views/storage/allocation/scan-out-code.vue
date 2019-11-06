@@ -15,49 +15,53 @@
       <form-card title="调出商品">
         <el-table
           border
-          :data="tableData"
+          :data="dialogData.allocationCommodityList"
           style="max-height:300px"
           size="mini"
         >
           <el-table-column
             label="数量"
             min-width="100"
-            prop="name"
-          ></el-table-column>
+            prop="total"
+          >
+            <template slot-scope="scope">
+              {{Number(scope.row.accomplishNum)}}/{{scope.row.total}}
+            </template>
+          </el-table-column>
           <el-table-column
-            prop="name"
+            prop="commodityCode"
             label="商品编号"
             min-width="140"
             show-overflow-tooltip
           >
             <template slot-scope="scope">
-              <span class="d-text-blue">{{scope.row.name}}</span>
+              <span class="d-text-blue">{{scope.row.commodityCode}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="商品类别"
             min-width="110"
-            prop="name"
+            prop="categoryCode"
           ></el-table-column>
           <el-table-column
             label="商品分类"
             min-width="110"
-            prop="name"
+            prop="className"
           ></el-table-column>
           <el-table-column
             label="商品名称"
             min-width="110"
-            prop="name"
+            prop="goodsName"
           ></el-table-column>
           <el-table-column
             label="商品规格"
             min-width="110"
-            prop="name"
+            prop="specOne"
           ></el-table-column>
           <el-table-column
             label="单位"
             min-width="80"
-            prop="name"
+            prop="unit"
           ></el-table-column>
         </el-table>
 
@@ -67,17 +71,13 @@
       <form-card title='机器号/SN码'>
 
         <div class="mt10 mb10">
-          <span class="b mt5">扫SN码</span>
+          <span class="b mt5">扫SN码/机器码</span>
           <el-input
             size="mini"
+            v-model="snCode"
             style="width:200px;"
             class="ml10 mt5"
-          ></el-input>
-          <span class="b mt5 ml20">扫机器码</span>
-          <el-input
-            size="mini"
-            style="width:200px;"
-            class="ml10 mt5"
+            v-on:keyup.13.native="shipmentCommodityCheck"
           ></el-input>
           <el-button
             type="primary"
@@ -86,92 +86,90 @@
             @click="chooseVisible = true"
           >选择</el-button>
         </div>
-        <d-table
-          :paging='false'
-          api="seePumaidongService.collegeManagerList"
-          :params="queryForm"
+        <el-table
+          :data="downTableData"
           ref="companyTable"
           class="college-main"
-          style="height:300px"
-          :tree-props="{children: 'id', hasChildren: 'id'}"
+          style="height:200px"
         >
           <el-table-column
             min-width="50"
             label="操作"
             show-overflow-tooltip
           >
-            <template slot-scope="">
+            <template slot-scope="scope">
               <i
+                @click="deleteSth(scope)"
                 class="el-icon-error d-pointer"
                 style="font-size:20px;color:#F5222D"
               ></i>
             </template>
           </el-table-column>
           <el-table-column
-            prop="cityName"
+            type="index"
             min-width="80"
             label="编号"
             show-overflow-tooltip
           ></el-table-column>
           <el-table-column
-            prop="title"
+            prop="snCode"
             label="SN码"
             min-width="160"
             show-overflow-tooltip
           >
             <template slot-scope="scope">
-              <span>{{scope.row.id}}</span>
+              <span>{{scope.row.snCode}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            prop="title"
+            prop="robotCode"
             label="机器号"
             min-width="160"
             show-overflow-tooltip
           >
             <template slot-scope="scope">
-              <span>{{scope.row.id}}</span>
+              <span>{{scope.row.robotCode}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            prop="cityName"
+            prop="wmsName"
             min-width="100"
-            label="借出库房"
+            label="调出库房"
             show-overflow-tooltip
           ></el-table-column>
           <el-table-column
-            prop="cityName"
+            prop="operator"
             min-width="100"
-            label="借出人"
+            label="调拨人"
             show-overflow-tooltip
           ></el-table-column>
           <el-table-column
             prop="createTime"
-            label="借出时间"
+            label="调拨时间"
             min-width="140"
             show-overflow-tooltip
           >
             <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
           </el-table-column>
           <el-table-column
-            prop="cityName"
+            prop="commodityCode"
             min-width="100"
             label="商品编号"
             show-overflow-tooltip
           ></el-table-column>
           <el-table-column
-            prop="cityName"
+            prop="goodsName"
             min-width="100"
             label="商品名称"
             show-overflow-tooltip
           ></el-table-column>
           <el-table-column
-            prop="cityName"
+            prop="configName"
             min-width="100"
             label="配置"
             show-overflow-tooltip
           ></el-table-column>
-        </d-table>
+        </el-table>
       </form-card>
     </div>
     <div class="wfull d-center mt10">
@@ -182,7 +180,7 @@
         >关 闭</el-button>
         <el-button
           type="primary"
-          @click="close"
+          @click="wmsallocationorderBatchUpdate"
           size="small"
         >保 存</el-button>
       </span>
@@ -214,20 +212,13 @@ export default {
   data() {
     return {
       activeName: '',
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
       chooseVisible: false,
-      tableData: [{ name: '写的假的' }],
+      tableData: [],
+      snCode: '',
       formInline: {
         user: ''
       },
+      downTableData: []
     };
   },
   mounted() { },
@@ -237,6 +228,72 @@ export default {
     },
     close() {
       this.$emit('update:visible', false)
+    },
+    //每次扫码,对应上边的
+    doSth(data) {
+      this.dialogData.allocationCommodityList.forEach((item) => {
+        // item.accomplishNum = 0
+        if (item.commodityCode == data.commodityCode) {
+          if (Number(item.accomplishNum) < Number(item.total)) {//数量还不够的时候可以继续扫
+            item.accomplishNum++
+            this.downTableData.push(data)
+          } else {
+            this.$message({
+              type: 'info',
+              message: '扫过喽'
+            })
+          }
+        }
+      })
+    },
+    //删除一条
+    deleteSth(scope) {
+      this.downTableData.splice(scope.$index, 1)
+      this.dialogData.allocationCommodityList.forEach((item) => {
+        if (item.commodityCode == scope.row.commodityCode) {
+          item.accomplishNum--
+        }
+      })
+    },
+    //扫SN码
+    shipmentCommodityCheck() {
+      this.$api.seePsiWmsService.wmsallocationorderShipmentCommodityCheck({ allocationOrderId: this.dialogData.id, snCode: this.snCode })
+        .then(res => {
+          if (res.data) {
+            let arr = this.downTableData.filter((item) => {
+              return item.id == res.data.id
+            })
+            if (arr.length == 0) {
+              this.doSth(res.data)
+            } else {
+              this.$message({
+                type: 'info',
+                message: '扫过喽'
+              })
+            }
+          }
+          this.snCode = ''
+        })
+        .finally(() => {
+
+        })
+    },
+    //调出走的接口
+    wmsallocationorderBatchUpdate() {
+      if (this.downTableData.length > 0) {
+        this.$api.seePsiWmsService.wmsallocationorderBatchUpdate({ list: this.downTableData, businessCode: this.dialogData.allocationOrderCode })
+          .then(res => {
+            this.close()
+          })
+          .finally(() => {
+          })
+      } else {
+        this.$message({
+          type: 'info',
+          message: '请至少扫一个商品'
+        })
+      }
+
     }
   },
   components: {

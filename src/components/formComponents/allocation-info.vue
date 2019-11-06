@@ -81,7 +81,8 @@
           size="mini"
         >
           <el-select
-            v-model="form.facilitatorName"
+            @change='facilitatorNameChange'
+            v-model="form.facilitatorId"
             :disabled='disabled'
             placeholder="请选择"
             class="wfull"
@@ -116,10 +117,10 @@
             class="wfull"
           >
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="item in serviceTypeList"
+              :key="item.code"
+              :label="item.content"
+              :value="item.code"
             >
             </el-option>
           </el-select>
@@ -203,11 +204,14 @@ export default {
       options: [],
       usableList: [],//库房列表
       providerList: [],//服务商列表
+      serviceTypeList: [],//服务商类型列表
     };
   },
   created() {
     this.commonwmsmanagerUsableList()
     this.commonserviceproviderList()
+  },
+  mounted() {
   },
   methods: {
     //请求可用库房
@@ -225,7 +229,20 @@ export default {
       this.$api.seePsiCommonService.commonserviceproviderList({ page: 1, limit: 1000 })
         .then(res => {
           this.providerList = res.data
-          console.log(res, '服务商服务商服务商服务商')
+        })
+        .finally(() => {
+
+        })
+    },
+    //选择服务商切换的方法,请求服务商详情,拿出服务类型的code码
+    facilitatorNameChange(val) {
+      this.$api.seePsiCommonService.commonserviceproviderInfo(null, val)
+        .then(res => {
+          let serviceTypeArr = res.data.serviceType.split(',')
+          this.serviceTypeList = this.dictionaryOptions('PSI_FWS_FWLX').filter((item) => {
+            return serviceTypeArr.includes(item.code)
+          })
+          console.log(this.serviceTypeList)
         })
         .finally(() => {
 

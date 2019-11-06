@@ -11,7 +11,6 @@
     <TableView
       busType="6"
       :filterOptions='filterOptions'
-      :headers="tableHeader"
       :selection='false'
       ref='allTable'
       api="seePsiWmsService.wmsallocationorderList"
@@ -32,6 +31,8 @@
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>
+        <span v-else-if="column.columnFields=='allocationOrderState'">{{value == 1 ? '待调拨' : value == 2 ? '部分调拨' : value == 3 ? '完成调拨' : '终止'}}</span>
+        <span v-else-if="column.columnFields=='allocationType'">{{value == 1 ? '内调' : '外调'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
@@ -86,55 +87,48 @@ export default {
         component: 'Details'
       },
       activeName: '',
-      tableHeader: [
-        { label: '调拨单编号', prop: 'deptName', width: '140' },
-        { label: '调拨状态', prop: 'deptName', width: '100' },
-        { label: '调拨类型', prop: 'deptName', width: '100' },
-        { label: '调入库房', prop: 'deptName', width: '100' },
-        { label: '调出库房', prop: 'deptName', width: '140' },
-        { label: '调拨数量', prop: 'deptName', width: '100' },
-        { label: '创建时间', prop: 'createTime', width: '140' },
-        { label: '单据创建人', prop: 'createTime', width: '100' },
-        { label: '创建部门', prop: 'createTime', width: '100' }
-      ],
       filterOptions: [
-        {
-          label: '排序',
-          type: 'sort',
-          prop: 'sort',
-          options: [
-            { label: '交易记录最高', value: '1' },
-            { label: '交易记录最低', value: '2' }
-          ],
-          default: true
-        },
         { label: '调拨单编号', prop: 'allocationOrderCode', default: true },
         {
           label: '调拨状态',
           prop: 'allocationOrderState',
-          type: 'dict',
-          dictName: 'FM_FANGYUAN_MJ',
+          type: 'select',
+          options: [
+            { label: '待调拨', value: '1' },
+            { label: '部分调拨', value: '2' },
+            { label: '完成调拨', value: '3' },
+            { label: '终止', value: '-1' },
+          ],
           default: true
         },
         {
           label: '调拨类型',
           prop: 'allocationType',
-          type: 'dict',
-          dictName: 'FM_FANGYUAN_MJ',
+          type: 'select',
+          options: [
+            { label: '内调', value: '1' },
+            { label: '外调', value: '2' }
+          ],
           default: true
         },
         {
           label: '调入库房',
           prop: 'putawayWmsName',
-          type: 'dict',
-          dictName: 'FM_FANGYUAN_MJ',
+          type: 'select',
+          options: [
+            { label: '内调', value: '1' },
+            { label: '外调', value: '2' }
+          ],
           default: true
         },
         {
           label: '调出库房',
           prop: 'shipmentWmsNames',
-          type: 'dict',
-          dictName: 'FM_FANGYUAN_MJ',
+          type: 'select',
+          options: [
+            { label: '内调', value: '1' },
+            { label: '外调', value: '2' }
+          ],
           default: true
         },
         {
@@ -162,12 +156,13 @@ export default {
           type: 'employee',
           default: true
         },
-        { label: '创建部门', prop: 'deptName', type: 'employee', default: true },
-      ]
+        { label: '创建部门', prop: 'deptName', type: 'dept', default: true },
+      ],
+      usableList: []
     };
   },
   created() {
-
+    this.commonwmsmanagerUsableList()
   },
   mounted() {
     // this.reload()
@@ -189,7 +184,23 @@ export default {
     },
     update() {
       this.drawerData.tableVisible = false
-    }
+    },
+    //请求可用库房
+    commonwmsmanagerUsableList() {
+      this.$api.seePsiWmsService.commonwmsmanagerUsableList()
+        .then(res => {
+          this.usableList = res.data || []
+          this.usableList.forEach((item) => {
+            item.label = item.name
+            item.value = item.id
+          })
+          this.filterOptions[3].options = this.usableList
+          this.filterOptions[4].options = this.usableList
+        })
+        .finally(() => {
+
+        })
+    },
   }
 };
 </script>
