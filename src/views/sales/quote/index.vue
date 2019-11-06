@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 09:41:01
+ * @LastEditTime: 2019-11-06 10:11:16
  * @Description: 销售-报价单
  */
 <template>
@@ -18,7 +18,6 @@
       api="seePsiSaleService.salessheetList"
       exportApi="seePsiSaleService.salessheetExprot"
       :params="Object.assign(queryForm,params)"
-      @selection-change="selectionChange"
       :filterOptions="filterOptions"
     >
       <!-- 自定义按钮功能 -->
@@ -40,7 +39,6 @@
           @click="eventHandle('quoteAddVisible')"
         >复制生成报价单</el-button>
       </template>
-      <template v-slot:moreButton>自定义更多按钮</template>
       <template slot-scope="{column,row,value}">
         <span
           class="d-text-blue"
@@ -53,28 +51,25 @@
     </table-view>
     <!-- 销售报价单详情侧边弹出框 -->
     <quote-details
-      v-if="outLibVisible"
+      v-if="quoteVisible"
       :visible.sync="quoteVisible"
       :rowData="rowData"
       @reload="$refs.table.reload()"
     ></quote-details>
     <!-- 销售出库单详情 -->
     <outLib-details
-      v-if="outLibVisible"
       :visible.sync="outLibVisible"
       :rowData="rowData"
       @reload="$refs.table.reload()"
     ></outLib-details>
     <!-- 新建 -->
     <quote-add
-      v-if="quoteAddVisible"
       :visible.sync="quoteAddVisible"
       type="add"
       @reload="$refs.table.reload()"
     ></quote-add>
     <!-- 合并报价单 -->
     <quote-merge
-      v-if="mergeVisible"
       :visible.sync="mergeVisible"
       type="copy"
       @reload="$refs.table.reload()"
@@ -152,11 +147,6 @@ export default {
       this[type] = true
       this.rowData = row
       return
-    },
-    // 多选
-    selectionChange(val) {
-      console.log(val);
-
     },
     submitFilter() {
       this.$emit('submit-filter')

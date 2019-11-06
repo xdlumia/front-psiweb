@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 15:09:27
+ * @LastEditTime: 2019-11-06 10:10:52
  * @Description: 表格头部 
  */
 <template>
@@ -29,8 +29,15 @@
         <section class="table-header-tool d-nowrap">
           <slot name="button">
           </slot>
-          <!-- 更多功能 -->
-          <el-dropdown
+
+          <!-- 更多功能 跟产品刘晨辉沟通直接放在外面 -->
+          <el-button
+            size="mini"
+            @click="$emit('moreHandle', 'export')"
+          >导出
+          </el-button>
+          <slot name="moreButton"></slot>
+          <!-- <el-dropdown
             trigger="click"
             v-if="moreButton"
           >
@@ -40,13 +47,14 @@
               icon="el-icon-more"
               title="更多"
             ></el-button>
+            
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
                 <span @click="$emit('moreHandle', 'export')">导出</span>
               </el-dropdown-item>
               <slot name="moreButton"></slot>
             </el-dropdown-menu>
-          </el-dropdown>
+          </el-dropdown> -->
           <!-- 筛选 -->
           <el-popover
             v-if="filter"
@@ -79,8 +87,6 @@
                   style="max-height:400px; overflow-x:hidden"
                 >
                   <slot name="filter">
-                    自定义筛选 使用示例:
-                    <br />&lt;template v-slot:filter> content&lt;/template>
                   </slot>
                 </div>
                 <div style="height:30px; line-height:30px;">
