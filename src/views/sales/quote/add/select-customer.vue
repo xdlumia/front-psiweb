@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 16:22:40
+ * @LastEditTime: 2019-11-06 16:26:48
  * @Description: 选择客户
 */
 <template>
@@ -14,6 +14,7 @@
         :remote-method="getClinent"
         class="wfull mr5"
         filterable
+        @change="commonclientinfoInfo"
         remote
         reserve-keyword
         v-model="data.clientId"
@@ -104,7 +105,13 @@ export default {
     },
     // 获取客户详情信息
     commonclientinfoInfo() {
-      // this.clientInfo
+      if (!this.data.clientId) {
+        this.$message.error({
+          showClose: true,
+          message: '客户内容不能为空'
+        })
+        return
+      }
       this.loading = true
       this.$api.seePsiCommonService.commonclientinfoInfo(null, this.data.clientId)
         .then(res => {
