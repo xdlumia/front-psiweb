@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 17:53:13
+ * @LastEditTime: 2019-11-06 18:18:56
  * @Description: 商品输入选框 字段已绑定 1 
 */
 <template>
@@ -35,6 +35,12 @@
 </template>
 <script>
 export default {
+  props: {
+    codes: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
       showCommodityGoods: false,
@@ -54,7 +60,10 @@ export default {
       this.showed = true;
     },
     choose(e) {
-      this.$emit('choose', e);
+      let choose = e.filter(a => !this.codes.includes(a.goodsCode));
+      if (choose.length) {
+        this.$emit('choose', e);
+      }
     },
     async search(words = '') {
       words = String(words).trim();
@@ -72,8 +81,13 @@ export default {
       this.searchTable[words] = data;
     },
     onSelect(e) {
-      this.$emit('choose', this.options.filter(item => item.goodsCode == e));
-      this.value = '';
+      let goods = this.options.filter(
+        item => item.goodsCode == e && !this.codes.includes(item.goodsCode)
+      );
+      if (goods.length) {
+        this.$emit('choose', goods);
+        this.value = '';
+      }
     }
   }
 };
