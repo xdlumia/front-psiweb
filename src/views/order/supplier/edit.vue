@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-05 17:47:06
+ * @LastEditTime: 2019-11-06 14:44:58
  * @Description: 新增供应商
 */
 <template>
@@ -16,7 +16,7 @@
     </div>
     <d-tabs :style="{
       maxHeight:maxHeight+'px'
-    }">
+    }" v-loading="loading">
       <d-tab-pane label="供应商信息" name="supplierInfo" />
       <d-tab-pane label="发票信息" name="invoiceInfo" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
@@ -39,7 +39,9 @@ export default {
     visible: {
       type: Boolean,
       default: false
-    }
+    },
+    code: String,
+    rowData: Object
   },
   computed: {
     maxHeight() {
@@ -48,6 +50,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       showChoose: true,
       activeName: '',
       form: {
@@ -55,10 +58,11 @@ export default {
         account: '',
         // 开户银行 示例：开户银行
         accountBank: '',
+        bankAccount: '',
         // 地址 杭州
         address: '',
-        // 附件 undefined
-        attachs: '',
+        // 附件JSON undefined
+        attachList: [],
         // 编号 1
         code: '',
         // 供应供应商品明细表 9
@@ -69,14 +73,14 @@ export default {
         deptTotalCode: '',
         //  级别 KHJB_1001
         grade: '',
-        // 开票地址 杭州
-        invoiceAddres: '',
         // 发票抬头 示例：发票抬头
         invoiceTitle: '',
         // 是否删除 9
         isDelete: '',
         // 联系人 码云
         linkManName: '',
+        // 备注 外星人
+        note: '',
         // 联系电话 17788554411
         phone: '',
         // 产品范围 示例：产品范围
@@ -87,10 +91,8 @@ export default {
         registerPhone: '',
         // 注册号 12313FSDF
         registrationNo: '',
-        // 备注 外星人
-        remark: '',
         // 启用状态 1
-        state: '',
+        state: '0',
         // 供应商名称 阿里巴巴
         supplierName: '',
         // 纳税人识别号 SDFSDF2342354R12312
@@ -102,15 +104,55 @@ export default {
       }
     };
   },
+  watch: {
+    visible() {
+      if (this.visible) {
+        if (this.code || this.rowData) {
+          this.getDetail();
+        } else {
+          this.$refs.form && this.$refs.form.resetFields();
+        }
+      }
+    }
+  },
   mounted() {},
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
     },
+    async getDetail() {
+      this.loading = true;
+      try {
+        let {
+          data
+        } = await this.$api.seePsiCommonService.commonsupplierinfoInfoBycode(
+          null,
+          this.code
+        );
+        data.productRange = data.productRange
+          ? data.productRange.split(',')
+          : [];
+        console.log(this);
+        this.form = data;
+      } catch (error) {}
+      this.loading = false;
+    },
     async save() {
       await this.$refs.form.validate();
-      console.log(JSON.parse(JSON.stringify(this.form)));
-      await this.$api.seePsiCommonService.commonsupplierinfoSave(this.form);
+      this.loading = true;
+      let data = Object.assign({}, this.form);
+      data.productRange = data.productRange.join(',');
+      console.log(JSON.parse(JSON.stringify(data)));
+      try {
+        if (this.code || this.rowData) {
+          await this.$api.seePsiCommonService.commonsupplierinfoUpdate(data);
+        } else {
+          await this.$api.seePsiCommonService.commonsupplierinfoSave(data);
+        }
+      } catch (error) {}
+      this.loading = false;
+      this.$emit('reload');
+      this.close();
     },
     close() {
       this.$emit('update:visible', false);

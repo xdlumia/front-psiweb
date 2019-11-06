@@ -2,37 +2,56 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-05 13:50:10
+ * @LastEditTime: 2019-11-06 15:19:43
  * @Description: 商品供应分类表
 */
 <template>
   <el-dialog :fullscreen="true" :visible="visible" @close="close" title="商品供应分类表" v-dialogDrag>
     <div class="supplier-cat-page wfull" style="height:calc(100vh - 120px);position:relative;">
       <div class="cat-tree">
-        <el-tabs @tab-click="handleClick" v-model="activeName">
-          <el-tab-pane label="整机" name="first"></el-tab-pane>
-          <el-tab-pane label="配件" name="second"></el-tab-pane>
-          <el-tab-pane label="服务" name="third"></el-tab-pane>
-        </el-tabs>
-        <el-input class="ml5" placeholder="搜索分类名称" prefix-icon="el-icon-search" size="small" style="width:93%" v-model="filterText"></el-input>
-        <el-button class="ml5" type="text">全部</el-button>
-        <el-tree :data="data" :filter-node-method="filterNode" :props="defaultProps" class="filter-tree" default-expand-all ref="tree"></el-tree>
+        <commodity-cat :mainCat.sync="queryForm.categoryCode" :subCat.sync="queryForm.goodClassId" @change="reload" />
       </div>
-      <TableView api="seePsiCommonService.commonsupplierinfoQueryList" busType="47" title="供应商">
-        <template slot-scope="{column,row,value}">
-          <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+      <TableView
+        :filter="false"
+        :params="queryForm"
+        api="seePsiCommonService.commonsupplierinfoQueryListClassification"
+        busType="47"
+        ref="tableView"
+        title="供应商"
+      >
+        <template slot-scope="{column,row,value,prop}">
+          <span v-if="prop=='code'">
+            <el-link :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
+          </span>
+          <span v-else-if="prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+          <span v-else-if="prop=='state'">
+            <span v-if="value==0">启用</span>
+            <span v-else>禁用</span>
+          </span>
+          <span v-else-if="prop=='productRange'">
+            <el-tag
+              :key="item"
+              class="mr5"
+              size="mini"
+              type="info"
+              v-for="item of getProductRangeList(value)"
+            >{{item|dictionary('PSI_GYS_CPFW')}}</el-tag>
+          </span>
           <span v-else>{{value}}</span>
         </template>
       </TableView>
     </div>
+    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" />
   </el-dialog>
 </template>
 <script>
 import TableView from '@/components/tableView';
+import Detail from './detail';
 
 export default {
   components: {
-    TableView
+    TableView,
+    Detail
   },
   props: {
     visible: {
@@ -43,7 +62,8 @@ export default {
   data() {
     return {
       status: [],
-      showDetail: true,
+      showDetail: false,
+      currentCode: '',
       showEdit: false,
       activeName: 'first',
       filterText: '',
@@ -51,68 +71,17 @@ export default {
       multipleSelection: [],
       // 查询表单
       queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
+        goodClassId: '',
+        categoryCode: '',
         page: 1,
         limit: 20
       },
-      data: [
-        {
-          id: 1,
-          label: '一级 1',
-          children: [
-            {
-              id: 4,
-              label: '二级 1-1',
-              children: [
-                {
-                  id: 9,
-                  label: '三级 1-1-1'
-                },
-                {
-                  id: 10,
-                  label: '三级 1-1-2'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 2,
-          label: '一级 2',
-          children: [
-            {
-              id: 5,
-              label: '二级 2-1'
-            },
-            {
-              id: 6,
-              label: '二级 2-2'
-            }
-          ]
-        },
-        {
-          id: 3,
-          label: '一级 3',
-          children: [
-            {
-              id: 7,
-              label: '二级 3-1'
-            },
-            {
-              id: 8,
-              label: '二级 3-2'
-            }
-          ]
-        }
-      ],
+      data: [],
       defaultProps: {
         children: 'children',
         label: 'label'
-      }
+      },
+      isModified: false
     };
   },
   methods: {
@@ -120,6 +89,7 @@ export default {
       console.log(e);
     },
     close() {
+      if (this.isModified) this.$emit('reload');
       this.$emit('update:visible', false);
     },
     handleClick() {},
@@ -134,6 +104,15 @@ export default {
     deleteChoose(row) {
       this.multipleSelection.splice(row.$index, 1);
       this.$refs.multipleTable.$refs.elTable.toggleRowSelection(row.row, false);
+    },
+    reload() {
+      this.$refs.tableView.reload();
+    },
+    getProductRangeList(item) {
+      return String(item || '')
+        .split(',')
+        .map(a => a.trim())
+        .filter(a => a);
     }
   }
 };

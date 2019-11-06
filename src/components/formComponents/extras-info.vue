@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-05 14:45:13
+ * @LastEditTime: 2019-11-06 14:52:23
  * @Description: 备注信息 字段已绑定 1 
 */
 <template>
@@ -19,7 +19,7 @@
     </div>
     <el-row>
       <el-col :span="24" class>
-        <el-form-item label="备注" size="mini" prop="note">
+        <el-form-item label="备注" prop="note" size="mini">
           <div class="d-text-gray mt10 d-elip wfull" v-if="!canEditable">{{data.note}}</div>
           <el-input :rows="3" maxlength="300" placeholder="请输入备注信息" show-word-limit type="textarea" v-else v-model="data.note" />
         </el-form-item>
@@ -40,7 +40,11 @@
               <el-button size="small" type="primary" v-if="fileList.length<10">点击上传</el-button>
               <div :key="item.url" v-for="(item,i) of fileList">
                 <span class="el-icon-document"></span>
-                <span class="d-inline f14 d-text-gray w200">{{item.fileName}}</span>
+                <span
+                  @click="openFile(item)"
+                  class="d-inline f14 d-text-gray w200 d-elip ml10 mr10"
+                  style="vertical-align:top;"
+                >{{item.fileName}}</span>
                 <span>
                   <el-link @click.stop="delFile(i)" type="info">
                     <i class="el-icon-circle-close"></i>
@@ -127,6 +131,7 @@ export default {
         }
         fileList = this.data.attachList || [];
       }
+      this.fileList = [].concat(fileList);
     },
     uploadFile({ name, url, oldName }) {
       this.data.attachList = this.data.attachList || [];
@@ -142,6 +147,9 @@ export default {
     delFile(i) {
       this.data.attachList.splice(i, 1);
       this.fileList.splice(i, 1);
+    },
+    openFile(item) {
+      window.open(item.fileUrl, '_blank');
     }
   }
 };

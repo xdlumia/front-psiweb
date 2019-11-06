@@ -2,12 +2,12 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-05 14:44:42
+ * @LastEditTime: 2019-11-06 14:35:35
  * @Description: 供应商基本信息编辑 字段已绑定 1 
 */
 <template>
   <form-card title="基本信息">
-    <el-row :gutter="10">
+    <el-row :gutter="10" type="flex">
       <el-col :span="8" class>
         <el-form-item :rules="[ 
             {required:true,message:'必填项'}
@@ -36,35 +36,29 @@
         </el-form-item>
       </el-col>
     </el-row>
-    <el-row :gutter="10">
+    <el-row :gutter="10" type="flex">
       <el-col :span="8">
         <el-form-item label="产品范围" prop="productRange" size="mini">
-          <el-select class="wfull" default-first-option filterable multiple placeholder="请选择产品范围" v-model="data.productRange">
-            <el-option :key="item" :label="item" :value="item" v-for="item in options"></el-option>
+          <el-select class="wfull" default-first-option filterable multiple placeholder="请选择产品范围" v-model="data.productRange" size="mini">
+            <el-option :key="item.code" :label="item.content" :value="item.code" v-for="item in dictionaryOptions('PSI_GYS_CPFW')"></el-option>
           </el-select>
         </el-form-item>
       </el-col>
       <el-col :span="8">
         <el-form-item label="供应商级别" prop="grade" size="mini">
-          <el-select class="wfull" placeholder="请选择" v-model="data.grade">
-            <el-option :key="item" :label="item" :value="item" v-for="item in options"></el-option>
-          </el-select>
+          <d-select class="wfull" dicCode="PSI_FWS_FWJB" placeholder="请选择" v-model="data.grade" size="mini"></d-select>
         </el-form-item>
       </el-col>
       <el-col :span="8">
         <el-form-item label="行业" prop="trade" size="mini">
-          <el-select class="wfull" placeholder="请选择" v-model="data.trade">
-            <el-option :key="item" :label="item" :value="item" v-for="item in options"></el-option>
-          </el-select>
+          <d-select class="wfull" dicCode="PSI_KH_HY" placeholder="请选择" v-model="data.trade" size="mini"></d-select>
         </el-form-item>
       </el-col>
     </el-row>
-    <el-row :gutter="10">
+    <el-row :gutter="10" type="flex">
       <el-col :span="8">
         <el-form-item label="来源" prop="tenementSource" size="mini">
-          <el-select class="wfull" placeholder="请选择" v-model="data.tenementSource">
-            <el-option :key="item" :label="item" :value="item" v-for="item in options"></el-option>
-          </el-select>
+          <d-select class="wfull" dicCode="PSI_KHGL_LY" placeholder="请选择" v-model="data.tenementSource" size="mini"></d-select>
         </el-form-item>
       </el-col>
       <el-col :span="16">

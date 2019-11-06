@@ -2,8 +2,8 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 11:24:21
- * @Description: 侧边弹框状态条
+ * @LastEditTime: 2019-11-06 14:22:51
+ * @Description: 侧边弹框状态条 已调试 1
 */
 <!-- /**
  * @author 赵伦 2019-10-25
@@ -16,25 +16,15 @@
  */ -->
 <template>
   <div style="margin-bottom:10px;">
-    <div
-      class="d-bg-gray side-statusbar"
-      style="padding:10px 20px;"
-    >
+    <div class="d-bg-gray side-statusbar" style="padding:10px 20px;">
       <el-row type="flex">
-        <el-col
-          :key="index"
-          class="d-text-qgray d-elip"
-          v-for="(item,index) of status"
-        >{{item.label}}</el-col>
+        <el-col :key="index" class="d-text-qgray d-elip" v-for="(item,index) of status">{{item.label}}</el-col>
       </el-row>
       <el-row type="flex">
-        <el-col
-          :key="index"
-          class="d-elip"
-          v-for="(item,index) of status"
-        >
+        <el-col :key="index" class="d-elip" v-for="(item,index) of status">
           <span v-if="item.isTime">{{item.value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
           <span v-else-if="item.dictName">{{item.value|dictionary(item.dictName)}}</span>
+          <span v-else-if="item.options">{{getOptions(item)}}</span>
           <span v-else>{{item.value}}</span>
         </el-col>
       </el-row>
@@ -65,7 +55,13 @@ export default {
   data() {
     return {};
   },
-  computed: {
+  computed: {},
+  methods: {
+    getOptions(item) {
+      let [data] = item.options.filter(a => a.value == item.value);
+      if (data) return data.label;
+      else return '';
+    }
   }
 };
 </script>
