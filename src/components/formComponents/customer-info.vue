@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 19:39:23
+ * @LastEditTime: 2019-11-06 19:53:56
  * @Description: 客户信息 1
  */
 <template>
@@ -142,6 +142,7 @@ export default {
         }
       },
       immediate: true,
+      deep: true
     }
   },
   methods: {

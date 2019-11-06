@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 19:08:24
+ * @LastEditTime: 2019-11-06 20:03:53
  * @Description: 填写报价单详情
 */
 <template>
@@ -18,17 +18,42 @@
         :data="data"
         id="customerInfo"
       />
+      <!-- 公司信息 -->
       <companyInfo
-        disabled
         select
         id="companyInfo"
       />
-      <deliverInfo id="deliverInfo" />
-      <commodityInfo id="commodityInfo" />
-      <payExpire id="payExpire" />
-      <extrataxInfo id="extrataxInfo" />
-      <customInfo id="customInfo" />
-      <extrasInfo id="extraInfo" />
+      <!-- 发货信息 -->
+      <deliverInfo
+        :data="data"
+        :hide="['salesRequireArrivalTime','procurementExpectedArrivalTime']"
+        id="deliverInfo"
+      />
+      <!-- 商品信息 -->
+      <commodityInfo
+        :data="data"
+        id="commodityInfo"
+      />
+      <!-- 报价单有效期 -->
+      <payExpire
+        :data="data"
+        id="payExpire"
+      />
+      <!-- 附加发票 -->
+      <extrataxInfo
+        :data="data"
+        id="extrataxInfo"
+      />
+      <!-- 自定义信息 -->
+      <customInfo
+        :data="data"
+        id="customInfo"
+      />
+      <!-- 备注信息 -->
+      <extrasInfo
+        :data="data"
+        id="extraInfo"
+      />
     </d-tabs>
 
   </div>
@@ -47,7 +72,6 @@ export default {
   data() {
     return {
       loading: false,
-      clientInfo: {},
       tabs: {
         customerInfo: '客户信息',
         companyInfo: '公司信息',
@@ -61,28 +85,13 @@ export default {
     }
   },
   mounted() {
-    // this.commonclientinfoInfo()
+
   },
   methods: {
-    // 获取客户详情信息
-    commonclientinfoInfo() {
-      if (!this.data.clientId) return
-      this.loading = true
-      this.$api.seePsiCommonService.commonclientinfoInfo(null, this.data.clientId)
-        .then(res => {
-          let data = res.data || {}
-          data.clientId = data.id
-          this.clientInfo = data
-        })
-        .finally(() => {
-          this.loading = false
-        })
-    },
+
   },
   watch: {
-    clientInfo(val) {
-      console.log(this.data);
-    }
+
   },
   beforeDestroy() {
   }
