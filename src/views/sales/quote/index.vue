@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 14:54:46
+ * @LastEditTime: 2019-11-06 15:13:28
  * @Description: 销售-报价单
  */
 <template>
@@ -105,7 +105,7 @@ let filterOptions = [
   { label: '报价单编号', prop: 'quotationCode', default: true, type: 'text' },
   { label: '销售出库单编号', prop: 'shipmentCode', default: true, type: 'text' },
   { label: '单据状态', prop: 'state', default: true, type: 'select', options: [] },
-  { label: '客户名称', prop: 'clientId', default: true, type: 'text' },
+  { label: '客户名称', prop: 'clientId', default: true, type: 'employee' },
   { label: '创建人', prop: 'creator', default: true, type: 'select' }
 ]
 export default {

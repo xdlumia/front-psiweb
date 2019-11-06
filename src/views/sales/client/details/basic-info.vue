@@ -2,14 +2,14 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 09:34:53
+ * @LastEditTime: 2019-11-06 15:58:11
  * @Description: 客户详情-基本详情
 */
 <template>
   <div v-loading="loading">
     <base-info
       disabled
-      :hide="['code','trade']"
+      :hide="['code','trade','note']"
       :data="detailData"
     />
     <!-- 发票信息 -->
@@ -52,13 +52,13 @@ export default {
     }
   },
   mounted() {
-    this.commonclientinfoInfo()
+    this.commonclientinfoInfoBycode()
   },
   methods: {
     // 获取详情信息
-    commonclientinfoInfo() {
+    commonclientinfoInfoBycode() {
       this.loading = true
-      this.$api.seePsiCommonService.commonclientinfoInfo(null, this.code)
+      this.$api.seePsiCommonService.commonclientinfoInfoBycode(null, this.code)
         .then(res => {
           this.detailData = res.data || {}
         })
