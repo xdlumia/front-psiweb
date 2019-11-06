@@ -2,8 +2,8 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 14:23:02
- * @Description: 发货信息
+ * @LastEditTime: 2019-11-06 14:26:36
+ * @Description: 发货信息 1
 */
 <template>
   <form-card title="发货信息">
@@ -60,7 +60,7 @@ let formItems = [
   { label: '客户联系人', prop: 'clientLinkman', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },
   { label: '客户联系电话', prop: 'clientPhone', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'phone' }], },
   { label: '客户收货地址', prop: 'clientReceivingAddress', type: 'input', rules: [{ required: true, trigger: 'blur' },], },
-  { label: '销售要求发货时间', prop: 'registerAddres', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
+  { label: '销售要求到货时间', prop: 'salesRequireArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
   { label: '采购预计到货时间', prop: 'procurementExpectedArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
 ]
 export default {
