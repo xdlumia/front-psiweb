@@ -2,19 +2,36 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 18:14:22
+ * @LastEditTime: 2019-11-06 15:31:05
  * @Description: 选择客户
 */
 <template>
-  <div v-loading="loading">
-    <el-input
-      size="small"
-      class="mt20 mb20"
-      v-model="clientno"
-      placeholder="请输入客户编号或名称"
-    >
-      <button slot="append">搜索</button>
-    </el-input>
+  <div>
+    <div class="d-flex mt15 mb15">
+      <el-select
+        size="small"
+        placeholder="请输入客户编号或名称"
+        :remote-method="getEmployee"
+        class="wfull mr5"
+        filterable
+        remote
+        reserve-keyword
+        v-model="clientId"
+      >
+        <el-option
+          :key="item.id"
+          :label="item.clientName"
+          :value="item.id"
+          v-for="item in clientOptions"
+        ></el-option>
+      </el-select>
+      <el-button
+        type="primary"
+        plain
+        size="small"
+        icon="el-icon-search"
+      >搜索</el-button>
+    </div>
     <el-tabs
       v-model="currCompont"
       type="card"
@@ -44,7 +61,7 @@ import clientInfo from './client-info'
 import clientData from '../../client/details/client-data'
 import historyQuote from './history-quote'
 export default {
-  props: ['dialogData', 'visible'],
+  props: ['rowData', 'code', 'visible'],
   components: {
     clientInfo,
     clientData,
@@ -52,20 +69,12 @@ export default {
   },
   data() {
     return {
-      loading: false,
       currCompont: 'clientInfo',
       // 当前操作步骤
-      clientno: '',
-      activeName: 'first', // 数据源
+      clientId: '',
+      clientOptions: [],
       // 新增orEdit框内容
-      addForm: {
-        title: '', // 标题
-        cityName: '', // 城市
-        cityId: this.$local.fetch('cityInfo').id, // 城市
-        id: '', // 主键id
-        mainPic: '', // 主图
-        content: '' // 内容
-      },
+
     }
   },
   created() {
@@ -75,7 +84,18 @@ export default {
 
   },
   methods: {
-
+    async getEmployee(words) {
+      if (words) {
+        let { data } = await this.$api.seePsiCommonService.commonclientinfoPagelist({
+          fuzzyClientName: words,
+          page: 1,
+          limit: 50,
+        });
+        this.clientOptions = data || []
+      } else {
+        this.clientOptions = [];
+      }
+    },
   }
 }
 </script>

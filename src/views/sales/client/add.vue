@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 12:06:28
+ * @LastEditTime: 2019-11-06 15:37:30
  * @Description: 客户管理-新增客户
 */
 <template>
@@ -30,7 +30,7 @@
         />
         <!-- 基本信息 -->
         <base-info
-          :hide="['code']"
+          :hide="['code','note']"
           :data="form"
           id="baseInfo"
         />
