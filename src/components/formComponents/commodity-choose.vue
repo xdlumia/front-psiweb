@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 17:59:14
+ * @LastEditTime: 2019-11-06 18:41:34
  * @Description: 选择商品 字段已绑定 1 
 */
 <template>
@@ -267,7 +267,7 @@ export default {
       this.$emit('update:visible', false);
     },
     save() {
-      this.$emit('choose', this.multipleSelection);
+      this.$emit('choose', this.selected);
       this.close();
     },
     onTableData(e) {
