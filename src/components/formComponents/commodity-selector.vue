@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 16:48:38
+ * @LastEditTime: 2019-11-06 17:53:13
  * @Description: 商品输入选框 字段已绑定 1 
 */
 <template>
@@ -12,7 +12,7 @@
       :remote-method="search"
       @change="onSelect"
       filterable
-      placeholder="请选择"
+      placeholder="搜索商品名称"
       popper-class="custom-goods-selector"
       remote
       size="mini"
@@ -22,7 +22,7 @@
         <el-row>
           <el-col :span="6" class="b d-text-black" v-if="i==0">商品名称</el-col>
           <el-col :span="18" class="b d-text-black" v-if="i==0">商品编号</el-col>
-          <el-col :span="6" class="d-hidden d-elip">{{item.name}}</el-col>
+          <el-col :span="6" class="d-hidden d-elip">{{item.goodsName}}</el-col>
           <el-col :span="18" class="d-hidden d-elip">
             <span :title="item.goodsCode">{{item.goodsCode}}</span>
           </el-col>
