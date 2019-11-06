@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 16:17:22
+ * @LastEditTime: 2019-11-06 19:01:22
  * @Description: 采购-请购单
 */
 <template>
@@ -17,6 +17,10 @@
         </span>
         <span v-else-if="prop=='quotationCode'">
           <el-link :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
+        </span>
+        <span v-else-if="prop=='state'">
+          <!-- 单据状态0待完成 1部分完成 2完成3终止 -->
+          <span>{{stateText[value]}}</span>
         </span>
         <span v-else-if="['createTime','saleArrivalTime','purchaseArrivalTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
@@ -49,6 +53,13 @@ export default {
       showDetail: false,
       addBorrowInVisible: false,
       orderBuyingDetailRecVisible: false,
+      stateText: {
+        // 单据状态0待完成 1部分完成 2完成3终止
+        0: '待完成',
+        1: '部分完成',
+        2: '完成',
+        3: '终止'
+      },
       filterOptions: [
         // { label: '请购单编号', prop: 'purchaseApplyCode', default: true },
         // { label: '报价单编号', prop: 'quotationCode', default: true },
