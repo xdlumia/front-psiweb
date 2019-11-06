@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 11:25:52
+ * @LastEditTime: 2019-11-06 14:57:27
  * @Description: 报价单详情
 */
 <template>
@@ -22,7 +22,7 @@
     <!-- 发货信息 -->
     <deliverInfo
       disabled
-      :data="clientInfo"
+      :data="quoteInfo"
     />
     <!-- 商品信息 -->
     <commodityInfo
@@ -66,13 +66,13 @@ export default {
     }
   },
   mounted() {
-    this.salessheetInfo()
+    this.salesquotationGetinfoByCode()
     this.commonclientinfoInfo()
   },
   methods: {
-    // 查看详情
-    salessheetInfo() {
-      this.$api.seePsiSaleService.salessheetInfo(null, this.code)
+    //根据code 查看详情
+    salesquotationGetinfoByCode() {
+      this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
         .then(res => {
           this.quoteInfo = res.data || {}
         })

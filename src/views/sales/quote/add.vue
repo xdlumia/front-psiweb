@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 18:37:39
+ * @LastEditTime: 2019-11-06 14:59:08
  * @Description: file content
 */
 <template>
@@ -59,7 +59,7 @@ import selectProduct from './add/select-product'
 import confirmInfo from './add/confirm-info'
 import quoteInfo from './add/quote-info'
 export default {
-  props: ['visible'],
+  props: ['visible', 'type'],
   components: {
     selectCustomer,
     selectProduct,
@@ -104,17 +104,14 @@ export default {
   methods: {
     // 初始化表单
     initForm() {
-      if (this.dialogData.type === 'edit' || this.dialogData.type === 'copy') {
+      if (this.type === 'edit' || this.type === 'copy') {
         this.steps = 4
-        const data = this.dialogData.data
+        const data = this.data
         for (const key in this.addForm) {
           this.addForm[key] = data[key]
         }
-        this.addForm.start_date = [
-          new Date(data.startTime),
-          new Date(data.endTime)
-        ]
-      } else if (this.dialogData.type === 'add') {
+
+      } else if (this.type === 'add') {
         // 清空form表单
         this.$nextTick(() => {
           this.$refs.addForm.resetFields()
@@ -125,7 +122,7 @@ export default {
     },
     // 步骤点击
     stepsClick(index) {
-      if (this.dialogData.type != 'add') {
+      if (this.type != 'add') {
         this.$message.error({
           showClose: true,
           message: '编辑和复制的时候只能操作当前步骤'
@@ -146,13 +143,13 @@ export default {
           // rules 表单验证是否通过
           let api = 'collegeManagerUpdate' // 默认编辑更新
           // 新增保存
-          if (this.dialogData.type === 'add') {
+          if (this.type === 'add') {
             api = 'collegeManagerSave'
             // 编辑保存
           }
           this.$api.seePumaidongService[api](this.addForm)
             .then(res => {
-              this.dialogData.visible = false
+              this.visible = false
               this.$emit('submit', 'success')
             })
             .finally(() => {
