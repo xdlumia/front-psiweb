@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 16:05:18
+ * @LastEditTime: 2019-11-05 19:49:20
  * @Description: 销售-客户管理
  */
 <template>
@@ -26,22 +26,29 @@
           @click="eventHandle('addVisible')"
         >新增客户</el-button>
       </template>
-      <template v-slot:filter>
-        <filters
-          ref="filters"
-          @submit-filter="$refs.table.reload(1)"
-          :form="queryForm"
-        />
-      </template>
       <!-- 自定义按钮功能 -->
 
       <template v-slot:moreButton>自定义更多按钮</template>
       <template slot-scope="{column,row,value}">
+        <!-- 客户编号 -->
         <span
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           v-if="column.columnFields=='code'"
           @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
+        <!-- 状态 -->
+        <span v-else-if="column.columnFields=='state'">
+          <i v-if="value==1">停用中</i>
+          <i v-else>启用中</i>
+        </span>
+
+        <!-- 行业 -->
+        <span v-else-if="column.columnFields=='trade'">{{value | dictionary('PSI_KH_HY')}}</span>
+        <!-- 来源 -->
+        <span v-else-if="column.columnFields=='source'">{{value | dictionary('PSI_KHGL_LY')}}</span>
+        <!-- 客户级别 -->
+        <span v-else-if="column.columnFields=='grade'">{{value | dictionary('PSI_KH_KHJB')}}</span>
+        <!-- 创建时间 -->
         <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
@@ -49,17 +56,18 @@
 
     <!-- 客户详情 -->
     <clientDetail
+      :code="rowData.id"
       :visible.sync="detailVisible"
       :rowData="rowData"
       type="add"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
     <!-- 客户新增-->
     <clientAdd
       type="add"
       :visible.sync="addVisible"
       :rowData="rowData"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
   </div>
 </template>
@@ -67,14 +75,13 @@
 import clientAdd from './add' // 客户新增
 import clientDetail from './details' //客户详情
 let filterList = [
-  // { label: '排序', prop: 'sort', default: true, type: 'sort', options: [], },
-  // { label: '客户编号', prop: 'code', default: true, type: 'text' },
-  // { label: '客户名称', prop: 'fuzzyClientName', default: true, type: 'text' },
-  // { label: '联系人', prop: 'linkManName', default: true, type: 'employee', },
-  // { label: '联系电话', prop: 'phone', default: true, type: 'text' },
-  // { label: '提交人', prop: 'created', default: true, type: 'employee', },
-  // { label: '部门', prop: 'deptTotalCode', default: true, type: 'employee', },
-  // { label: '提交时间', prop: 'messageType3', default: true, type: 'daterange', },
+  { label: '客户编号', prop: 'code', default: true, type: 'text' },
+  { label: '客户名称', prop: 'fuzzyClientName', default: true, type: 'text' },
+  { label: '联系人', prop: 'linkManName', default: true, type: 'employee', },
+  { label: '联系电话', prop: 'phone', default: true, type: 'text' },
+  { label: '提交人', prop: 'created', default: true, type: 'employee', },
+  { label: '部门', prop: 'deptTotalCode', default: true, type: 'employee', },
+  { label: '提交时间', prop: 'CreateTime', default: true, type: 'daterange', },
 ]
 export default {
   name: 'return',
@@ -122,8 +129,7 @@ export default {
     // 按钮功能操作
     eventHandle(type, row) {
       this[type] = true
-      this.rowData = row
-      return
+      this.rowData = row ? row : {}
     }
   }
 };

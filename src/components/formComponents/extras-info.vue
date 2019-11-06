@@ -2,8 +2,8 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 15:23:09
- * @Description: 备注信息
+ * @LastEditTime: 2019-11-05 14:45:13
+ * @Description: 备注信息 字段已绑定 1 
 */
 <template>
   <form-card title="备注信息">
@@ -21,7 +21,7 @@
       <el-col :span="24" class>
         <el-form-item label="备注" size="mini" prop="note">
           <div class="d-text-gray mt10 d-elip wfull" v-if="!canEditable">{{data.note}}</div>
-          <el-input :rows="3" maxlength="300" placeholder show-word-limit type="textarea" v-else v-model="data.note" />
+          <el-input :rows="3" maxlength="300" placeholder="请输入备注信息" show-word-limit type="textarea" v-else v-model="data.note" />
         </el-form-item>
       </el-col>
       <el-col :span="24" v-if="needUpload">

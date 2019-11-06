@@ -1,345 +1,121 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
- * @Description: 选择商品
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-06 08:45:58
+ * @Description: 选择商品 字段已绑定 1 
 */
 <template>
-  <el-dialog
-    :visible.sync="visible"
-    @close='close'
-    title="选择商品"
-    v-dialogDrag
-    width='60%'
-  >
+  <el-dialog :visible.sync="visible" @close="close" title="选择商品" v-dialogDrag width="60%">
     <div class="mb15">
-      <el-input
-        size='small'
-        v-model="input"
-        placeholder="搜索商品编号/名称"
-        style="width:250px"
-      ></el-input>
-      <el-button
-        class='fr'
-        @click="multipleVisible = !multipleVisible"
-        size='small'
-      >已选择（{{multipleSelection.length}}）</el-button>
+      <el-input @change="reload" placeholder="搜索商品编号/名称" size="small" style="width:250px" v-model="queryForm.goodsName"></el-input>
+      <el-button @click="multipleVisible = !multipleVisible" class="fr" size="small">已选择（{{selected.length}}）</el-button>
     </div>
     <el-container class="choose-container">
       <!-- 左侧 -->
-      <el-aside
-        width="250px"
-        class="choose-aside"
-      >
-        <el-tabs
-          v-model="activeName"
-          @tab-click="handleClick"
-        >
-          <el-tab-pane
-            label="整机"
-            name="first"
-          ></el-tab-pane>
-          <el-tab-pane
-            label="配件"
-            name="second"
-          ></el-tab-pane>
-          <el-tab-pane
-            label="服务"
-            name="third"
-          ></el-tab-pane>
-        </el-tabs>
-        <el-input
-          style="width:93%"
-          class="ml5"
-          prefix-icon="el-icon-search"
-          size='small'
-          placeholder="搜索分类名称"
-          v-model="filterText"
-        >
-        </el-input>
-        <el-button
-          type="text"
-          class="ml5"
-        >全部</el-button>
-        <el-tree
-          class="filter-tree"
-          :data="data"
-          :props="defaultProps"
-          default-expand-all
-          :filter-node-method="filterNode"
-          ref="tree"
-        >
-        </el-tree>
-
+      <el-aside class="choose-aside" width="250px">
+        <commodity-cat :mainCat.sync="queryForm.categoryCode" :subCat.sync="queryForm.classId" @change="reload" />
       </el-aside>
       <!-- 表格 -->
       <el-main>
         <d-table
-          :reserve-selection='true'
-          rowKey="cityName"
-          v-show='!multipleVisible'
-          api="seePumaidongService.collegeManagerList"
           :params="queryForm"
-          ref="multipleTable"
-          class="college-main"
-          style="height:100%"
-          :tree-props="{children: 'id', hasChildren: 'id'}"
+          :reserve-selection="true"
+          :tree-props="{children: 'children', hasChildren: 'children'}"
+          @response="onTableData"
           @selection-change="handleSelectionChange"
+          api="seeGoodsService.goodsSelectGoodsList"
+          class="college-main"
+          ref="multipleTable"
+          rowKey="goodsCode"
+          style="height:100%"
+          v-show="!multipleVisible"
         >
-          <el-table-column
-            type="selection"
-            width="55"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="title"
-            label="商品编号"
-            :reserve-selection='true'
-            min-width="100"
-            show-overflow-tooltip
-          >
-            <template slot-scope="scope">
-              <span class="d-text-blue">{{scope.row.id}}</span>
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column :reserve-selection="true" label="商品编号" min-width="100" prop="title" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span class="d-text-blue">{{row.goodsCode}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="title"
-            label="商品图片"
-            min-width="130"
-            show-overflow-tooltip
-          >
-            <template slot-scope="scope">
-              <el-image
-                style="width: 100px; height: 40px"
-                src="http://pics.sc.chinaz.com/files/pic/pic9/201910/zzpic20721.jpg"
-                fit="fill"
-              ></el-image>
+          <el-table-column label="商品图片" min-width="130" prop="title" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <el-image :src="row.goodsPic" fit="fill" style="width: 100px; height: 40px"></el-image>
             </template>
           </el-table-column>
-
-          <el-table-column
-            prop="cityName"
-            min-width="100"
-            label="商品名称"
-            show-overflow-tooltip
-          ></el-table-column>
-
-          <el-table-column
-            prop="cityName"
-            min-width="100"
-            label="商品类别"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="100"
-            label="商品配置"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="100"
-            label="商品分类"
-            show-overflow-tooltip
-          ></el-table-column>
-
-          <el-table-column
-            prop="cityName"
-            min-width="140"
-            label="商品规格"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="80"
-            label="单位"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="80"
-            label="税率"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="100"
-            label="可用库存"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="100"
-            label="期初库存"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="80"
-            label="入库数量"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="80"
-            label="出库数量"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="80"
-            label="待入库数量"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="80"
-            label="待出库数量"
-            show-overflow-tooltip
-          ></el-table-column>
+          <el-table-column label="商品名称" min-width="100" prop="name" show-overflow-tooltip></el-table-column>
+          <el-table-column label="商品类别" min-width="100" prop="categoryCode" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="商品分类" min-width="100" prop="cityName" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{ row.firstClassName }}/{{ row.secondClassName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="商品配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="商品规格" min-width="140" prop="specOne" show-overflow-tooltip></el-table-column>
+          <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip></el-table-column>
+          <el-table-column label="税率" min-width="80" prop="cityName" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.taxRate ? row.taxRate + '%' : ''}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="可用库存" min-width="100" prop="cityName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="期初库存" min-width="100" prop="originalInventoryNum" show-overflow-tooltip></el-table-column>
+          <el-table-column label="入库数量" min-width="80" prop="cityName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="出库数量" min-width="80" prop="cityName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="待入库数量" min-width="120" prop="cityName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="待出库数量" min-width="120" prop="cityName" show-overflow-tooltip></el-table-column>
         </d-table>
         <!-- 点击数量覆盖下来的表格 -->
-        <el-table
-          :data="multipleSelection"
-          v-show='multipleVisible'
-          border
-        >
-          <el-table-column
-            fixed
-            min-width="50"
-            label="操作"
-            show-overflow-tooltip
-          >
-            <template slot-scope="row">
-              <i
-                class="el-icon-error d-pointer"
-                style="font-size:20px;color:#F5222D"
-                @click="deleteChoose(row)"
-              ></i>
+        <el-table :data="selected" border v-show="multipleVisible">
+          <el-table-column fixed label="操作" min-width="50" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <i @click="deleteChoose(row)" class="el-icon-error d-pointer" style="font-size:20px;color:#F5222D"></i>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="title"
-            label="商品编号"
-            min-width="100"
-            show-overflow-tooltip
-          >
-            <template slot-scope="scope">
-              <span class="d-text-blue">{{scope.row.cityName}}</span>
+          <el-table-column :reserve-selection="true" label="商品编号" min-width="100" prop="title" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span class="d-text-blue">{{row.goodsCode}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="title"
-            label="商品图片"
-            min-width="120"
-            show-overflow-tooltip
-          >
-            <template slot-scope="scope">
-              <el-image
-                style="width: 100px; height: 40px"
-                src="http://pics.sc.chinaz.com/files/pic/pic9/201910/zzpic20721.jpg"
-                fit="fill"
-              ></el-image>
+          <el-table-column label="商品图片" min-width="130" prop="title" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <el-image :src="row.goodsPic" fit="fill" style="width: 100px; height: 40px"></el-image>
             </template>
           </el-table-column>
-
-          <el-table-column
-            prop="cityName"
-            min-width="100"
-            label="商品名称"
-            show-overflow-tooltip
-          ></el-table-column>
-
-          <el-table-column
-            prop="cityName"
-            min-width="100"
-            label="商品类别"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="100"
-            label="商品配置"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="100"
-            label="商品分类"
-            show-overflow-tooltip
-          ></el-table-column>
-
-          <el-table-column
-            prop="cityName"
-            min-width="140"
-            label="商品规格"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="80"
-            label="单位"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="80"
-            label="税率"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="100"
-            label="可用库存"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="100"
-            label="期初库存"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="80"
-            label="入库数量"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="80"
-            label="出库数量"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="100"
-            label="待入库数量"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="cityName"
-            min-width="100"
-            label="待出库数量"
-            show-overflow-tooltip
-          ></el-table-column>
+          <el-table-column label="商品名称" min-width="100" prop="name" show-overflow-tooltip></el-table-column>
+          <el-table-column label="商品类别" min-width="100" prop="categoryCode" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="商品分类" min-width="100" prop="cityName" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{ row.firstClassName }}/{{ row.secondClassName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="商品配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="商品规格" min-width="140" prop="specOne" show-overflow-tooltip></el-table-column>
+          <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip></el-table-column>
+          <el-table-column label="税率" min-width="80" prop="cityName" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.taxRate ? row.taxRate + '%' : ''}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="可用库存" min-width="100" prop="cityName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="期初库存" min-width="100" prop="originalInventoryNum" show-overflow-tooltip></el-table-column>
+          <el-table-column label="入库数量" min-width="80" prop="cityName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="出库数量" min-width="80" prop="cityName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="待入库数量" min-width="120" prop="cityName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="待出库数量" min-width="120" prop="cityName" show-overflow-tooltip></el-table-column>
         </el-table>
       </el-main>
     </el-container>
-    <span
-      slot="footer"
-      class="dialog-footer"
-    >
-      <el-button
-        @click="close"
-        size="small"
-      >关 闭</el-button>
-      <el-button
-        type="primary"
-        @click="close"
-        size="small"
-      >保 存</el-button>
+    <span class="dialog-footer" slot="footer">
+      <el-button @click="close" size="small">关 闭</el-button>
+      <el-button @click="save" size="small" type="primary">保 存</el-button>
     </span>
   </el-dialog>
 </template>
@@ -360,92 +136,111 @@ export default {
     },
     form: {}
   },
-  watch: {
-    filterText(val) {
-      this.$refs.tree.filter(val);
-    }
-  },
-  computed: {
-    maxHeight() {
-      return window.innerHeight - 130;
-    }
-  },
   data() {
     return {
-      activeName: 'first',
-      filterText: '',
+      data: '',
       multipleVisible: false,
-      multipleSelection: [],
+      preSelection: [],
+      multipleSelection: [], // 当前展示选择
       // 查询表单
       queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
-      data: [{
-        id: 1,
-        label: '一级 1',
-        children: [{
-          id: 4,
-          label: '二级 1-1',
-          children: [{
-            id: 9,
-            label: '三级 1-1-1'
-          }, {
-            id: 10,
-            label: '三级 1-1-2'
-          }]
-        }]
-      }, {
-        id: 2,
-        label: '一级 2',
-        children: [{
-          id: 5,
-          label: '二级 2-1'
-        }, {
-          id: 6,
-          label: '二级 2-2'
-        }]
-      }, {
-        id: 3,
-        label: '一级 3',
-        children: [{
-          id: 7,
-          label: '二级 3-1'
-        }, {
-          id: 8,
-          label: '二级 3-2'
-        }]
-      }],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
+        // 物品类别，例如整机，配件，服务 PSI_SP_KIND-2
+        categoryCode: 'PSI_SP_KIND-1',
+        // 物品分类id 物品分类id
+        classId: '',
+        // 物品编码 物品编码
+        goodsCode: '',
+        // 物品名称 分类名称
+        goodsName: '',
+        // 物品规格 物品规格
+        goodsSpec: '',
+        // 每页显示记录数 每页显示记录数
+        limit: 15,
+        // 当前页数 当前页数
+        page: 1
       }
     };
   },
-  mounted() { },
+  watch: {
+    visible() {
+      if (this.visible) {
+        this.multipleSelection = [];
+        this.preSelection = [];
+        if (
+          this.$refs.multipleTable &&
+          this.$refs.multipleTable.$refs.elTable
+        ) {
+          this.$refs.multipleTable.$refs.elTable.clearSelection();
+        }
+      }
+    }
+  },
+  computed: {
+    selected() {
+      return [].concat(this.preSelection, this.multipleSelection);
+    }
+  },
+  mounted() {},
   methods: {
-    handleClick() {
-
+    getPreSelectObj() {
+      return this.preSelection.reduce((data, item) => {
+        data[item.goodsCode] = item;
+        return data;
+      }, {});
     },
-    filterNode(value, data) {
-      if (!value) return true;
-      return data.label.indexOf(value) !== -1;
+    reload() {
+      this.$refs.multipleTable.reload(1);
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
     //删除某项
     deleteChoose(row) {
-      this.multipleSelection.splice(row.$index, 1)
-      this.$refs.multipleTable.$refs.elTable.toggleRowSelection(row.row, false);
+      this.preSelection.some((item, i) => {
+        if (item.goodsCode == row.goodsCode) {
+          this.preSelection.splice(i, 1);
+          return true;
+        }
+      });
+      this.multipleSelection.some((item, i) => {
+        if (item.goodsCode == row.goodsCode) {
+          this.preSelection.splice(i, 1);
+          return true;
+        }
+      });
+      this.$refs.multipleTable.$refs.elTable.toggleRowSelection(row, false);
     },
     close() {
-      this.$emit('update:visible', false)
+      this.$emit('update:visible', false);
+    },
+    save() {
+      this.$emit('choose', this.multipleSelection);
+      this.close();
+    },
+    onTableData(e) {
+      this.preSelection = this.preSelection.concat(
+        this.multipleSelection || []
+      );
+      this.multipleVisible = false;
+      if (e.data && e.data.length) {
+        this.$nextTick(() => {
+          let selectObj = this.getPreSelectObj();
+          let selection = [];
+          e.data.map(item => {
+            if (selectObj[item.goodsCode]) {
+              this.$refs.multipleTable.$refs.elTable.toggleRowSelection(
+                item,
+                true
+              );
+              selection.push(item);
+              delete selectObj[item.goodsCode];
+            }
+          });
+          this.tableData = e.data;
+          this.multipleSelection = selection;
+          this.preSelection = Object.values(selectObj);
+        });
+      }
     }
   }
 };

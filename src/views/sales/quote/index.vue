@@ -2,14 +2,14 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 15:48:26
+ * @LastEditTime: 2019-11-05 19:05:01
  * @Description: 销售-报价单
  */
 <template>
   <div>
     <!-- busType="15" -->
     <table-view
-      busType="23"
+      busType="15"
       ref="table"
       :filter="true"
       :moreButton="true"
@@ -21,13 +21,6 @@
       @selection-change="selectionChange"
       :filterOptions="filterOptions"
     >
-      <!-- <template v-slot:filter>
-        <filters
-          ref="filters"
-          @submit-filter="$refs.table.reload(1)"
-          :form="queryForm"
-        />
-      </template> -->
       <!-- 自定义按钮功能 -->
       <template
         v-if="button"

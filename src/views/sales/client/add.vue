@@ -2,12 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 16:03:01
+ * @LastEditTime: 2019-11-05 18:46:25
  * @Description: 客户管理-新增客户
 */
 <template>
   <el-dialog
-    title="新增客户"
+    :title="title"
     :visible.sync="showPop"
     width="920px"
     v-dialogDrag
@@ -78,7 +78,7 @@ export default {
       form: {
         accountBank: '', // 示例：开户银行,
         address: '', // 示例：地址,
-
+        id: '',
         bankAccount: '', // 示例：银行账号,
         clientName: '', // 示例：客户姓名,
         code: '', // 示例：编号,
@@ -110,9 +110,39 @@ export default {
       set(val) {
         this.$emit('update:visible', false)
       }
+    },
+    // title
+    title() {
+      return this.type == 'add' ? '新增客户' : `编辑:${this.rowData.code}`
+    },
+  },
+  mounted() {
+
+  },
+  watch: {
+    visible(val) {
+      if (val) {
+        this.initForm()
+      }
     }
   },
   methods: {
+    // 初始化表单
+    initForm() {
+      if (this.type === 'edit') {
+        const data = this.rowData
+        for (const key in this.form) {
+          this.form[key] = data[key]
+        }
+      } else {
+        // 清空form表单
+        this.$nextTick(() => {
+          this.$refs.form.resetFields()
+          this.form.id = ''
+        })
+
+      }
+    },
     // 保存表单数据
     saveHandle() {
       this.$refs.form.validate(valid => {
@@ -128,6 +158,7 @@ export default {
           this.$api.seePsiCommonService[api](this.form)
             .then(res => {
               this.showPop = false
+              // console.log('保存成功');
               this.$emit('reload')
             })
             .finally(() => {

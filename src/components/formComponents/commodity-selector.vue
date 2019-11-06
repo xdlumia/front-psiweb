@@ -2,19 +2,35 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 15:39:07
- * @Description: 商品输入选框
+ * @LastEditTime: 2019-11-05 18:55:47
+ * @Description: 商品输入选框 字段已绑定 1 
 */
 <template>
   <span class="d-inline d-relative">
-    <el-select filterable placeholder="请选择" size="mini" v-model="value">
-      <el-option :key="item.value" :label="item.label" :value="item.value" v-for="item in options">
-        <span style="float: left">{{ item.label }}</span>
-        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+    <el-select
+      :loading="loading"
+      :remote-method="search"
+      @change="onSelect"
+      filterable
+      placeholder="请选择"
+      popper-class="custom-goods-selector"
+      remote
+      size="mini"
+      v-model="value"
+    >
+      <el-option :key="item.goodsCode" :label="item.name" :value="item.goodsCode" v-for="(item,i) in options">
+        <el-row>
+          <el-col :span="6" class="b d-text-black" v-if="i==0">商品名称</el-col>
+          <el-col :span="18" class="b d-text-black" v-if="i==0">商品编号</el-col>
+          <el-col :span="6" class="d-hidden d-elip">{{item.name}}</el-col>
+          <el-col :span="18" class="d-hidden d-elip">
+            <span :title="item.goodsCode">{{item.goodsCode}}</span>
+          </el-col>
+        </el-row>
       </el-option>
     </el-select>
-    <i @click="showCommodityGoods=true" class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"></i>
-    <commodity-choose :visible.sync="showCommodityGoods" />
+    <i @click="openDialog" class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"></i>
+    <commodity-choose :visible.sync="showCommodityGoods" @choose="choose" v-if="showCommodityGoods||showed" />
   </span>
 </template>
 <script>
@@ -23,10 +39,42 @@ export default {
     return {
       showCommodityGoods: false,
       value: '',
-      options: []
+      options: [],
+      showed: false,
+      loading: false,
+      searchTable: {}
     };
   },
-  methods: {}
+  mounted() {
+    this.search();
+  },
+  methods: {
+    openDialog() {
+      this.showCommodityGoods = true;
+      this.showed = true;
+    },
+    choose(e) {
+      this.$emit('choose', e);
+    },
+    async search(words = '') {
+      words = String(words).trim();
+      if (this.searchTable[words]) {
+        return (this.options = this.searchTable[words]);
+      }
+      this.loading = true;
+      let { data } = await this.$api.seeGoodsService.goodsSelectGoodsList({
+        page: 1,
+        limit: 5,
+        goodsName: words
+      });
+      this.options = data || [];
+      this.loading = false;
+      this.searchTable[words] = data;
+    },
+    onSelect(e) {
+      this.$emit('choose', this.options.filter(item => item.goodsCode == e));
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -35,5 +83,14 @@ export default {
   z-index: 200;
   top: 5px;
   background-color: #fff;
+}
+</style>
+<style lang="scss">
+.custom-goods-selector {
+  .el-select-dropdown__item {
+    &:first-child {
+      height: 68px;
+    }
+  }
 }
 </style>
