@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 14:51:11
+ * @LastEditTime: 2019-11-06 14:54:46
  * @Description: 销售-报价单
  */
 <template>
@@ -71,6 +71,7 @@
     <outLib-details
       :visible.sync="outLibVisible"
       :rowData="rowData"
+      :code="rowData.shipmentCode"
       @reload="$refs.table.reload()"
     ></outLib-details>
     <!-- 新建 -->
