@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 20:03:53
+ * @LastEditTime: 2019-11-06 20:15:26
  * @Description: 填写报价单详情
 */
 <template>
@@ -26,7 +26,7 @@
       <!-- 发货信息 -->
       <deliverInfo
         :data="data"
-        :hide="['salesRequireArrivalTime','procurementExpectedArrivalTime']"
+        :hide="['salesRequireArrivalTime','procurementExpectedArrivalTime','note']"
         id="deliverInfo"
       />
       <!-- 商品信息 -->

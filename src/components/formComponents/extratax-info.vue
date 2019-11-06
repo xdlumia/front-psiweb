@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 14:35:04
+ * @LastEditTime: 2019-11-06 20:11:49
  * @Description: 附加发票 字段对应 但是公式还没计算
 */
 <template>
@@ -15,10 +15,9 @@
           prop="preTaxAmount"
         >
           <el-input
-            v-model="data.preTaxAmount"
+            v-model="preTaxAmount"
             :disabled="disabled"
             placeholder="请输入税前金额"
-            type="number"
           />
         </el-form-item>
       </el-col>
@@ -31,7 +30,7 @@
           <el-input
             placeholder="请输入"
             :disabled="disabled"
-            v-model="data.taxRate"
+            v-model="taxRate"
           >
             <template slot="append">%</template>
           </el-input>
@@ -44,7 +43,7 @@
           prop="taxAmount"
         >
           <el-input
-            v-model="data.taxAmount"
+            v-model="taxAmount"
             :disabled="disabled"
             placeholder="请输入税后金额"
           />
@@ -70,7 +69,29 @@ export default {
     return {
       // 遍历表单
     };
-  }
+  },
+  computed: {
+    // 税前金额
+    preTaxAmount: {
+      get() {
+        return this.data.preTaxAmount
+      },
+      set() { },
+    },
+    // 税率
+    taxRate: {
+      get() {
+        return this.data.taxRate * 100
+      },
+      set() { },
+    },
+    taxAmount: {
+      get() {
+        return this.data.taxAmount
+      },
+      set() { },
+    }
+  },
 };
 </script>
 <style lang="scss" scoped>
