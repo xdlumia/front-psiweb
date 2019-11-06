@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 15:36:53
+ * @LastEditTime: 2019-11-06 15:39:58
  * @Description: 基本信息 1
  */
 <template>
@@ -62,8 +62,8 @@ let formItems = [
   { label: '客户级别', prop: 'grade', type: 'select', rules: [{ required: false }], dicName: 'PSI_KH_KHJB', },
   { label: '行业', prop: 'trade', type: 'select', rules: [{ required: false }], dicName: 'PSI_KH_HY', },
   { label: '来源', prop: 'source', type: 'select', rules: [{ required: false }], dicName: 'PSI_KHGL_LY', },
-  { label: '详细地址', prop: 'address', type: 'input', rules: [{ required: false }], },
-  { label: '备注', prop: 'note', maxlength: 300, type: 'input', rules: [{ required: false }], },
+  { label: '详细地址', prop: 'address', type: 'input', span: 16, rules: [{ required: false }], },
+  { label: '备注', prop: 'note', maxlength: 300, span: 16, type: 'input', rules: [{ required: false }], },
 ]
 export default {
   props: {

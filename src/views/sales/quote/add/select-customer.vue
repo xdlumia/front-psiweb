@@ -2,21 +2,21 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 15:31:05
+ * @LastEditTime: 2019-11-06 16:22:40
  * @Description: 选择客户
 */
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="d-flex mt15 mb15">
       <el-select
         size="small"
         placeholder="请输入客户编号或名称"
-        :remote-method="getEmployee"
+        :remote-method="getClinent"
         class="wfull mr5"
         filterable
         remote
         reserve-keyword
-        v-model="clientId"
+        v-model="data.clientId"
       >
         <el-option
           :key="item.id"
@@ -29,6 +29,7 @@
         type="primary"
         plain
         size="small"
+        @click="commonclientinfoInfo"
         icon="el-icon-search"
       >搜索</el-button>
     </div>
@@ -46,12 +47,16 @@
       ></el-tab-pane>
       <el-tab-pane
         label="历史报价单"
-        name="historyQuote"
+        name="salesQuote"
       ></el-tab-pane>
     </el-tabs>
-    <!-- 此处hide是在调用clientData 组件的时候 隐藏 clientData 组件里的基本信息区域内容 -->
+    <!-- 此处hide是在调用clientData 组件的时候 隐藏 clientData 组件里的基本信息区域内容 
+    button和params 是salesQuote组件用到的参数-->
     <components
       :is="currCompont"
+      :data="clientInfo"
+      :params="{clientId:data.clientId}"
+      :button="false"
       :hide="['clientBasicInfo']"
     ></components>
   </div>
@@ -59,22 +64,25 @@
 <script>
 import clientInfo from './client-info'
 import clientData from '../../client/details/client-data'
-import historyQuote from './history-quote'
 export default {
-  props: ['rowData', 'code', 'visible'],
+  props: {
+    data: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   components: {
     clientInfo,
     clientData,
-    historyQuote,
   },
   data() {
     return {
+      loading: false,
+      // 当前显示组件
       currCompont: 'clientInfo',
-      // 当前操作步骤
-      clientId: '',
+      // 客户详情
+      clientInfo: {},
       clientOptions: [],
-      // 新增orEdit框内容
-
     }
   },
   created() {
@@ -84,17 +92,27 @@ export default {
 
   },
   methods: {
-    async getEmployee(words) {
+    async getClinent(words) {
       if (words) {
-        let { data } = await this.$api.seePsiCommonService.commonclientinfoPagelist({
-          fuzzyClientName: words,
-          page: 1,
-          limit: 50,
+        let { data } = await this.$api.seePsiCommonService.commonclientinfoQueryList({
+          fuzzyNameOrCode: words,
         });
         this.clientOptions = data || []
       } else {
         this.clientOptions = [];
       }
+    },
+    // 获取客户详情信息
+    commonclientinfoInfo() {
+      // this.clientInfo
+      this.loading = true
+      this.$api.seePsiCommonService.commonclientinfoInfo(null, this.data.clientId)
+        .then(res => {
+          this.clientInfo = res.data || {}
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
   }
 }

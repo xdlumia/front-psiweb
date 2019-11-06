@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 15:37:30
+ * @LastEditTime: 2019-11-06 16:00:00
  * @Description: 客户管理-新增客户
 */
 <template>
@@ -131,7 +131,7 @@ export default {
     initForm() {
       if (this.type === 'edit') {
         // 获取详情信息
-        this.commonclientinfoInfo()
+        this.commonclientinfoInfoBycode()
       } else {
         // 清空form表单
         this.$nextTick(() => {
@@ -141,9 +141,9 @@ export default {
 
       }
     },
-    commonclientinfoInfo() {
+    commonclientinfoInfoBycode() {
       this.loading = true
-      this.$api.seePsiCommonService.commonclientinfoInfo(null, this.code)
+      this.$api.seePsiCommonService.commonclientinfoInfoBycode(null, this.code)
         .then(res => {
           const data = res.data || {}
           for (const key in this.form) {

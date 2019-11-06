@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 15:16:27
+ * @LastEditTime: 2019-11-06 16:15:28
  * @Description: file content
 */
 <template>
@@ -19,13 +19,17 @@
         :data="['选择客户','选择产品','确定配置信息','填写报价信息']"
       ></d-step>
       <el-form
+        v-if="visible"
         size="small"
         :model="addForm"
         class="d-auto-y"
         style="height:calc(100vh - 220px)"
       >
         <!-- 选择客户 -->
-        <select-customer v-show="steps==1"></select-customer>
+        <select-customer
+          :data="addForm"
+          v-show="steps==1"
+        ></select-customer>
         <select-product v-show="steps==2"></select-product>
         <confirm-info v-show="steps==3"></confirm-info>
         <quote-info v-show="steps==4"></quote-info>
@@ -161,11 +165,19 @@ export default {
           this.$refs.addForm.resetFields()
           this.addForm.id = ''
         })
-
       }
     },
     // 步骤点击
     stepsClick(index) {
+      // 点击第二步的时候判断有没有选择客户
+      if (index == 2 && !this.addForm.clientId) {
+        this.$message.error({
+          showClose: true,
+          message: '请先选择客户'
+        })
+        this.steps = 1
+        return
+      }
       if (this.type != 'add') {
         this.$message.error({
           showClose: true,

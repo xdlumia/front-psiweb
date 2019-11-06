@@ -2,36 +2,36 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 14:59:56
+ * @LastEditTime: 2019-11-06 15:49:26
  * @Description: file content
 */
 <template>
   <div>
-    <baseInfo />
-    <invoiceInfo />
+    <baseInfo
+      disabled
+      :data="data"
+    />
+    <invoiceInfo
+      disabled
+      :data="data"
+    />
   </div>
 </template>
 <script>
 export default {
-  props: ['dialogData', 'visible', 'code'],
+  props: {
+    visible: Boolean,
+    code: '',
+    data: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   components: {
   },
   data() {
     return {
-      loading: false,
-      // 当前操作步骤
-      steps: 1,
-      clientno: '',
-      activeName: 'first', // 数据源
-      // 新增orEdit框内容
-      addForm: {
-        title: '', // 标题
-        cityName: '', // 城市
-        cityId: this.$local.fetch('cityInfo').id, // 城市
-        id: '', // 主键id
-        mainPic: '', // 主图
-        content: '' // 内容
-      },
+      loading: false
     }
   },
   created() {
