@@ -32,8 +32,8 @@ const baseURL = {
   // seeHouseConfigService: apisUrl + 'see-house-config-service',
   seeHouseConfigService: apisUrl + 'see-baseinfo-service', // 在这个项目里 seeHouseConfigService 的公共部分都转移到 see-baseinfo-service服务里
   seeBaseinfoService: apisUrl + 'see-baseinfo-service', // 基础服务
-  // seePsiCommonService: apisUrl + 'see-psi-common-service',
-  seePsiCommonService: 'http://10.168.1.130:9201',
+  seePsiCommonService: apisUrl + 'see-psi-common-service',
+  // seePsiCommonService: 'http://10.168.1.130:9201',
   seeExternService: apisUrl + 'see-extern-service', // 9024 see-extern-service
   seeGoodsService: apisUrl + 'see-goods-service', // 物品服务
   seePsiWmsService: apisUrl + 'see-psi-wms-service' // 物品服务
