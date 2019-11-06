@@ -40,10 +40,14 @@
       </el-header>
       <el-main style="padding:0;max-height:700px;">
         <el-form
-          :model="form"
+          :model="allForm"
           class="p10"
+          ref='allForm'
         >
-          <allocationInfo ref="deliverEdit" />
+          <allocationInfo
+            ref="deliverEdit"
+            :form='allForm'
+          />
         </el-form>
         <merchandiseTransferred ref="logisticsEdit" />
       </el-main>
@@ -58,7 +62,7 @@
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="close"
+        @click="wmsallocationorderSave"
         size="small"
       >保 存</el-button>
     </span>
@@ -77,8 +81,7 @@ export default {
     visible: {
       type: Boolean,
       default: false
-    },
-    form: {}
+    }
   },
   computed: {
     maxHeight() {
@@ -87,8 +90,24 @@ export default {
   },
   data() {
     return {
-      activeName: ''
+      activeName: '',
+      allForm: {
+        allocationType: '2',//调拨方式
+        putawayWmsId: '',//调入库房
+        facilitatorId: '',//服务商id
+        facilitatorName: '',//服务商名称
+        serveType: '',//服务类型
+        waybillCode: '',//运单编号
+        logisticsFees: '',//物流费用
+        note: '',//备注
+        serviceGrade: '',
+        wmsCommodityIdList: [],//调出库房ids
+        wmsNames: [],//庫房名稱
+      }
     };
+  },
+  created() {
+
   },
   mounted() { },
   methods: {
@@ -97,7 +116,39 @@ export default {
     },
     close() {
       this.$emit('update:visible', false)
-    }
+    },
+    //新增调拨单的保存
+    wmsallocationorderSave() {
+      // this.$refs['allForm'].validate((valid) => {
+      //   if (valid) {
+      //     alert('submit!');
+      //   } else {
+      //     console.log('error submit!!');
+      //     return false;
+      //   }
+      // });
+      let arr = this.$refs.logisticsEdit.upTableData || []
+      arr.forEach((item) => {
+        this.allForm.wmsCommodityIdList.push(item.id)
+        this.allForm.wmsNames.push(item.wmsName)
+      })
+      if (arr.length > 0) {
+        this.$api.seePsiWmsService.wmsallocationorderSave(this.allForm)
+          .then(res => {
+            this.close()
+            this.$emit('reload')
+          })
+          .finally(() => {
+
+          })
+      } else {
+        this.$message({
+          type: 'info',
+          message: '请选择至少一件商品!'
+        })
+      }
+
+    },
   }
 };
 </script>

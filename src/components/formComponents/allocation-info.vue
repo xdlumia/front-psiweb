@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 17:20:29
+ * @LastEditTime: 2019-10-26 17:20:29 
  * @Description: 调拨信息 公共
 */
 <template>
@@ -21,15 +21,19 @@
           size="mini"
         >
           <el-select
+            v-model="form.allocationType"
             :disabled='disabled'
             placeholder="请选择"
             class="wfull"
           >
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              label="内调"
+              value="1"
+            >
+            </el-option>
+            <el-option
+              label="外调"
+              value="2"
             >
             </el-option>
           </el-select>
@@ -48,60 +52,65 @@
           size="mini"
         >
           <el-select
+            v-model="form.putawayWmsId"
             :disabled='disabled'
             placeholder="请选择"
             class="wfull"
           >
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="item in usableList"
+              :key="item.id "
+              :label="item.name"
+              :value="item.id"
             >
             </el-option>
           </el-select>
         </el-form-item>
       </el-col>
       <el-col
+        v-if='form.allocationType == 2'
         :span="8"
         class="pl5 pr5 pb5"
       >
         <el-form-item
           :rules="[ 
-                    {required:false,message:''}
+                    {required:true,message:'请选择服务商名称'}
                 ]"
           label="服务商名称"
           maxlength="32"
           size="mini"
         >
           <el-select
+            v-model="form.facilitatorName"
             :disabled='disabled'
             placeholder="请选择"
             class="wfull"
           >
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="item in providerList"
+              :key="item.id"
+              :label="item.serviceName"
+              :value="item.id"
             >
             </el-option>
           </el-select>
         </el-form-item>
       </el-col>
       <el-col
+        v-if='form.allocationType == 2'
         :span="8"
         class="pl5 pr5 pb5"
       >
         <el-form-item
           :rules="[ 
-                    {required:false,message:''}
+                    {required:true,message:'请选择服务类型'}
                 ]"
           label="服务类型"
           maxlength="32"
           size="mini"
         >
           <el-select
+            v-model="form.serveType"
             :disabled='disabled'
             placeholder="请选择"
             class="wfull"
@@ -117,36 +126,40 @@
         </el-form-item>
       </el-col>
       <el-col
+        v-if='form.allocationType == 2'
         :span="8"
         class="pl5 pr5 pb5"
       >
         <el-form-item
           :rules="[ 
-                    {required:false,message:''}
+                    {required:true,message:'请输入运单编号'}
                 ]"
           label="运单编号"
           maxlength="32"
           size="mini"
         >
           <el-input
+            v-model="form.waybillCode"
             :disabled='disabled'
             placeholder="请输入"
           />
         </el-form-item>
       </el-col>
       <el-col
+        v-if='form.allocationType == 2'
         :span="8"
         class="pl5 pr5 pb5"
       >
         <el-form-item
           :rules="[ 
-                    {required:false,message:''}
+                    {required:true,message:'请输入物流费用'}
                 ]"
           label="物流费用"
           maxlength="32"
           size="mini"
         >
           <el-input
+            v-model="form.logisticsFees"
             :disabled='disabled'
             placeholder="请输入"
           />
@@ -166,7 +179,7 @@
             type="textarea"
             maxlength="140"
             placeholder="请输入备注"
-            v-model="form.bankCard"
+            v-model="form.note"
           />
         </el-form-item>
       </el-col>
@@ -187,8 +200,37 @@ export default {
   },
   data() {
     return {
-      options: []
+      options: [],
+      usableList: [],//库房列表
+      providerList: [],//服务商列表
     };
+  },
+  created() {
+    this.commonwmsmanagerUsableList()
+    this.commonserviceproviderList()
+  },
+  methods: {
+    //请求可用库房
+    commonwmsmanagerUsableList() {
+      this.$api.seePsiWmsService.commonwmsmanagerUsableList()
+        .then(res => {
+          this.usableList = res.data
+        })
+        .finally(() => {
+
+        })
+    },
+    //请求服务商列表
+    commonserviceproviderList() {
+      this.$api.seePsiCommonService.commonserviceproviderList({ page: 1, limit: 1000 })
+        .then(res => {
+          this.providerList = res.data
+          console.log(res, '服务商服务商服务商服务商')
+        })
+        .finally(() => {
+
+        })
+    }
   }
 };
 </script>

@@ -20,13 +20,11 @@
           </span>
         </span>
       </div>
-      <d-table
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
-        ref="companyTable"
+      <el-table
+        border
+        size='mini'
+        :data="form.allocationCommodityList"
         class="college-main"
-        style="height:300px"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
       >
         <el-table-column
           fixed
@@ -36,13 +34,13 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.accomplishNum || '0'}}/{{scope.row.total}}</span>
           </template>
         </el-table-column>
 
         <el-table-column
           fixed
-          prop="cityName"
+          prop="total"
           min-width="100"
           label="机器号/SN码"
           show-overflow-tooltip
@@ -51,67 +49,67 @@
             <span
               @click="dialogVisible = true"
               class="d-text-blue"
-            >{{scope.row.id}}</span>
+            >{{scope.row.total}}</span>
           </template>
         </el-table-column>
 
         <el-table-column
           fixed
-          prop="cityName"
+          prop="shipmentWmsNames"
           min-width="100"
           label="调出库房"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="title"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.id}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
         </el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="categoryCode"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="className"
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="configName"
           min-width="100"
           label="商品配置"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="specOne"
           min-width="140"
           label="商品规格"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="unit"
           min-width="80"
           label="单位"
           show-overflow-tooltip
         ></el-table-column>
 
-      </d-table>
+      </el-table>
       <FullscreenElement
         :element="$refs.companyTable"
         :visible.sync="showInFullscreen"
@@ -125,18 +123,18 @@
 import outGoodsRecord from './out-goods-record'
 import FullscreenElement from '@/components/fullscreen-element';
 export default {
+  props: {
+    form: {
+      type: Object,
+      default: () => ({})
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
       dialogVisible: false,
       showInFullscreen: false
     }

@@ -11,7 +11,7 @@
     :status="status"
     :visible.sync="drawerData.tableVisible"
     @close="$emit('update:visible',false)"
-    title="调拨单"
+    :title="drawerData.title"
     width="990px"
   >
     <div
@@ -30,7 +30,7 @@
           type="primary"
         >调出扫码</el-button>
         <el-button
-          @click="hangVisible=true"
+          @click="wmsallocationorderUpdateOrderState('-1')"
           size="mini"
           type="primary"
         >终止</el-button>
@@ -38,8 +38,11 @@
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
           <el-form>
-            <allocationInfo :disabled='true' />
-            <goodsAllocation />
+            <allocationInfo
+              :disabled='true'
+              :form='detailForm'
+            />
+            <goodsAllocation :form='detailForm' />
 
             <el-dialog
               :visible.sync="backVisible"
@@ -75,6 +78,9 @@ export default {
       isComponents: '',
       dialogData: {
         title: ''
+      },
+      detailForm: {
+
       }
     };
   },
@@ -85,6 +91,47 @@ export default {
     scanOutCode,
     scanInCode
   },
+  mounted() {
+    this.wmsallocationorderInfo()
+  },
+  methods: {
+    //查看调拨单详情
+    wmsallocationorderInfo() {
+      this.$api.seePsiWmsService.wmsallocationorderInfo(null, this.drawerData.code)
+        .then(res => {
+          this.detailForm = res.data || {}
+          // this.status[0].value = res.data.createTime
+          this.status[1].value = res.data.creatorName
+          this.status[2].value = res.data.deptName
+          this.status[3].value = res.data.source
+        })
+        .finally(() => {
+
+        })
+    },
+    //点击终止
+    wmsallocationorderUpdateOrderState() {
+      this.$confirm('是否终止当前调拨单?', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api.seePsiWmsService.wmsallocationorderUpdateOrderState({ allocationOrderState: '-1', id: this.detailForm.id })
+          .then(res => {
+          })
+          .finally(() => {
+
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      });
+
+    }
+  },
+
 }
 </script>
 <style lang='scss' scoped>

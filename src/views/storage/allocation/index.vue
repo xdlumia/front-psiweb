@@ -9,10 +9,13 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
+      busType="6"
       :filterOptions='filterOptions'
       :headers="tableHeader"
       :selection='false'
-      api="bizSystemService.getEmployeeList"
+      ref='allTable'
+      api="seePsiWmsService.wmsallocationorderList"
+      :params="queryForm"
       title="调拨单"
     >
       <template v-slot:button>
@@ -23,19 +26,26 @@
         >新增</el-button>
       </template>
       <template slot-scope="{column,row,value}">
+        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span
+          v-else-if="column.columnFields=='allocationOrderCode'"
           class="d-text-blue"
           @click="getTableVisible(row)"
-        >点击111</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        >{{value}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
+      ref='details'
       :drawerData='drawerData'
       @update='update'
+      v-if="drawerData.tableVisible"
     />
-    <allocationAdd :visible.sync='visible' />
+    <allocationAdd
+      @reload='reload'
+      v-if='visible'
+      :visible.sync='visible'
+    />
   </div>
 </template>
 <script>
@@ -55,11 +65,16 @@ export default {
     return {
       // 查询表单
       queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
+        allocationOrderCode: '',//调拨单编号
+        allocationOrderState: '',//调拨状态 （1-待调拨 2-部分调拨 3-完成调拨 4-终止）
+        allocationType: '',//调拨类型 （1-内调 2-外调）
+        putawayWmsName: '',//调入库房id 
+        shipmentWmsNames: '',//调出库房名称(可能多个)
+        num: '',//'调拨数量'
+        deptId: '',//部门id
+        companyCode: '',//公司code
+        minTime: '',//开始时间
+        maxTime: '',//结束时间
         page: 1,
         limit: 20
       },
@@ -93,77 +108,86 @@ export default {
           ],
           default: true
         },
-        { label: '调拨单编号', prop: 'orderNo', default: true },
+        { label: '调拨单编号', prop: 'allocationOrderCode', default: true },
         {
           label: '调拨状态',
-          prop: 'orderStatus',
+          prop: 'allocationOrderState',
           type: 'dict',
           dictName: 'FM_FANGYUAN_MJ',
           default: true
         },
         {
           label: '调拨类型',
-          prop: 'orderStatus',
-          type: 'dict',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '出库状态',
-          prop: 'orderStatus',
+          prop: 'allocationType',
           type: 'dict',
           dictName: 'FM_FANGYUAN_MJ',
           default: true
         },
         {
           label: '调入库房',
-          prop: 'requireTime',
+          prop: 'putawayWmsName',
           type: 'dict',
           dictName: 'FM_FANGYUAN_MJ',
           default: true
         },
         {
           label: '调出库房',
-          prop: 'requireTime2',
+          prop: 'shipmentWmsNames',
           type: 'dict',
           dictName: 'FM_FANGYUAN_MJ',
           default: true
         },
         {
           label: '调拨数量',
-          prop: 'actUser',
+          prop: 'num',
           type: 'employee',
           dictName: 'FM_FANGYUAN_MJ',
           default: true
         },
         {
-          label: '创建时间',
-          prop: 'actUser2',
+          label: '开始时间',
+          prop: 'minTime',
+          type: 'daterange',
+          default: true
+        },
+        {
+          label: '结束时间',
+          prop: 'maxTime',
           type: 'daterange',
           default: true
         },
         {
           label: '单据创建人',
-          prop: 'actUser2',
+          prop: 'creatorName',
           type: 'employee',
           default: true
         },
-        { label: '创建部门', prop: 'actUser3', type: 'employee', default: true },
+        { label: '创建部门', prop: 'deptName', type: 'employee', default: true },
       ]
     };
+  },
+  created() {
+
+  },
+  mounted() {
+    // this.reload()
   },
   methods: {
     //点击打开右侧边栏
     getTableVisible(data) {
       this.drawerData.tableVisible = true
-      this.drawerData.title = '调拨单' + data.id
+      this.drawerData.title = '调拨单-' + data.allocationOrderCode
+      this.drawerData.code = data.allocationOrderCode
+      // this.$refs.details.wmsallocationorderInfo()
+    },
+    reload() {
+      this.$refs.allTable.reload()
     },
     //tab换组件
     handleClick() {
 
     },
     update() {
-      console.log('324124123')
       this.drawerData.tableVisible = false
     }
   }

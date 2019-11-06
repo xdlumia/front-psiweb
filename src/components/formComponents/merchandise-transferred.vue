@@ -18,6 +18,8 @@
           size="mini"
           style="width:200px;"
           class="ml10 mt5"
+          v-model='snCode'
+          v-on:keyup.13.native="getCommodityBySnCode"
         ></el-input>
         <span class="fr d-text-black mr10 mt5">
           <el-button
@@ -27,65 +29,66 @@
           >选择商品</el-button>
         </span>
       </div>
-      <d-table
-        :paging='false'
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+      <el-table
+        size='mini'
+        border
+        :data='upTableData'
         ref="companyTable"
         class="college-main"
-        style="height:300px"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
       >
         <el-table-column
           min-width="50"
           label="操作"
           show-overflow-tooltip
         >
-          <template slot-scope="">
+          <template slot-scope="row">
             <i
+              @click='deleteUpTable(row)'
               class="el-icon-error d-pointer"
               style="font-size:20px;color:#F5222D"
             ></i>
           </template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          type='index'
           min-width="80"
           label="编号"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+        </el-table-column>
         <el-table-column
-          prop="title"
+          prop="snCode"
           label="SN码"
           min-width="160"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.snCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="title"
+          prop="robotCode"
           label="机器号"
           min-width="160"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.robotCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="wmsName"
           min-width="100"
           label="借出库房"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
           min-width="100"
           label="调拨人"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope=''>{{userName}}</template>
+        </el-table-column>
         <el-table-column
           prop="createTime"
           label="调拨时间"
@@ -95,90 +98,93 @@
           <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="commodityCode"
           min-width="100"
           label="商品编号"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="configName"
           min-width="100"
           label="配置"
           show-overflow-tooltip
         ></el-table-column>
-      </d-table>
+      </el-table>
 
-      <d-table
-        :paging='false'
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+      <el-table
+        size='mini'
+        border
+        :data="downTableData"
         ref="companyTable"
         class="college-main mt20"
-        style="height:300px"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
       >
 
         <el-table-column
-          prop="cityName"
+          prop="num"
           min-width="80"
           label="数量"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="title"
+          prop="commodityCode"
           label="商品编号"
           min-width="160"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.commodityCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="categoryCode"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">{{scope.row.categoryCode | dictionary('PSI_SP_KIND')}}</template>
+        </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="className"
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+        </el-table-column>
         <el-table-column
-          prop="createTime"
+          prop="goodsName"
           label="商品名称"
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
+          <template slot-scope="scope">{{scope.row.goodsName}}</template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="configName"
           min-width="100"
           label="商品配置"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="specOne"
           min-width="100"
           label="商品规格"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="unit"
           min-width="100"
           label="单位"
           show-overflow-tooltip
-        ></el-table-column>
-      </d-table>
+        >
+          <template slot-scope="scope">{{scope.row.unit | dictionary('PMD_RM_SHI_YONG_HY')}}</template>
+        </el-table-column>
+      </el-table>
     </form-card>
     <commodityChoose :visible='chooseVisible' />
   </div>
@@ -216,11 +222,14 @@ export default {
         page: 1,
         limit: 20
       },
+      snCode: '',
       chooseVisible: false,
-      tableData: [{ name: '写的假的' }],
+      upTableData: [],
+      downTableData: [],
       formInline: {
         user: ''
       },
+      userName: this.$local.fetch("userInfo").userName
     };
   },
   mounted() { },
@@ -230,6 +239,64 @@ export default {
     },
     close() {
       this.$emit('update:visible', false)
+    },
+    //刪除某一項
+    deleteUpTable(row) {
+      this.upTableData.splice(row.$index, 1)
+      this.doSth()
+    },
+    //查詢商品統計
+    doSth() {
+      let arr = []
+      if (this.upTableData.length > 0) {
+        this.upTableData.forEach((item) => {
+          arr.push(item.commodityCode)
+        })
+        this.wmsallocationorderTempCommodityCount(arr)
+      } else {
+        this.downTableData = []
+      }
+    },
+    //根据SN码或机器号查询商品
+    getCommodityBySnCode() {
+      if (this.snCode) {
+        this.$api.seePsiWmsService.wmsinventorydetailGetCommodityBySnCode({ snCode: this.snCode })
+          .then(res => {
+            if (res.data) {
+              let arr = this.upTableData.filter((item) => {
+                return item.id == res.data.id
+              })
+              if (arr.length == 0) {
+                this.upTableData.push(res.data)
+                this.doSth()
+              } else {
+                this.$message({
+                  type: 'info',
+                  message: '扫过喽'
+                })
+              }
+
+            } else {
+              this.$message({
+                type: 'info',
+                message: '当前商品不存在或已经出库'
+              })
+            }
+          })
+          .finally(() => {
+
+          })
+      }
+    },
+    //临时商品统计
+    wmsallocationorderTempCommodityCount(arr) {
+      this.$api.seePsiWmsService.wmsallocationorderTempCommodityCount(arr)
+        .then(res => {
+          this.downTableData = res.data || []
+        })
+        .finally(() => {
+
+        })
     }
   }
 };
