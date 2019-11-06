@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 19:49:20
+ * @LastEditTime: 2019-11-06 09:35:23
  * @Description: 销售-客户管理
  */
 <template>
@@ -54,8 +54,9 @@
       </template>
     </table-view>
 
-    <!-- 客户详情 -->
+    <!-- 客户详情  有些信息是点击后才加载 所以使用v-if-->
     <clientDetail
+      v-if="detailVisible"
       :code="rowData.id"
       :visible.sync="detailVisible"
       :rowData="rowData"

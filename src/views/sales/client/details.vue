@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 19:15:14
+ * @LastEditTime: 2019-11-06 09:30:25
  * @Description: 客户详情
 */
 <template>
@@ -12,6 +12,7 @@
       :title="`客户详情:${rowData.code}`"
       :visible.sync="showPop"
       width="920px"
+      :status="statusData"
     >
       <div slot="button">
         <!-- 操作按钮 -->
@@ -124,7 +125,16 @@ export default {
         financePayable: '应付账单',
         salesExchange2: '销售记录',
       },
+      // tabs 默认显示项
       activeName: 'basicInfo',
+      statusData: [
+        { label: '状态', value: this.rowData.state == 1 ? '停用' : '启用', },
+        { label: '客户创建人', value: this.rowData.creatorName, },
+        { label: '创建部门', value: this.rowData.deptName, },
+        { label: '创建时间', value: this.rowData.createTime, isTime: true },
+        { label: '来源', value: this.rowData.source, dictName: 'PSI_KHGL_LY' },
+      ], //头部数据
+      // form表单 详情里可以不注入数据
       form: {},
       editVisible: false,
       addQuotoVisible: false,
