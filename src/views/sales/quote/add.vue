@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 16:15:28
+ * @LastEditTime: 2019-11-06 16:45:29
  * @Description: file content
 */
 <template>
@@ -170,14 +170,14 @@ export default {
     // 步骤点击
     stepsClick(index) {
       // 点击第二步的时候判断有没有选择客户
-      if (index == 2 && !this.addForm.clientId) {
-        this.$message.error({
-          showClose: true,
-          message: '请先选择客户'
-        })
-        this.steps = 1
-        return
-      }
+      // if (index == 2 && !this.addForm.clientId) {
+      //   this.$message.error({
+      //     showClose: true,
+      //     message: '请先选择客户'
+      //   })
+      //   this.steps = 1
+      //   return
+      // }
       if (this.type != 'add') {
         this.$message.error({
           showClose: true,

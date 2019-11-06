@@ -45,11 +45,15 @@
           ref='allForm'
         >
           <allocationInfo
+            v-if="visible = true"
             ref="deliverEdit"
             :form='allForm'
           />
         </el-form>
-        <merchandiseTransferred ref="logisticsEdit" />
+        <merchandiseTransferred
+          v-if="visible = true"
+          ref="logisticsEdit"
+        />
       </el-main>
     </el-container>
     <span
@@ -119,35 +123,32 @@ export default {
     },
     //新增调拨单的保存
     wmsallocationorderSave() {
-      // this.$refs['allForm'].validate((valid) => {
-      //   if (valid) {
-      //     alert('submit!');
-      //   } else {
-      //     console.log('error submit!!');
-      //     return false;
-      //   }
-      // });
-      let arr = this.$refs.logisticsEdit.upTableData || []
-      arr.forEach((item) => {
-        this.allForm.wmsCommodityIdList.push(item.id)
-        this.allForm.wmsNames.push(item.wmsName)
-      })
-      if (arr.length > 0) {
-        this.$api.seePsiWmsService.wmsallocationorderSave(this.allForm)
-          .then(res => {
-            this.close()
-            this.$emit('reload')
+      this.$refs['allForm'].validate((valid) => {
+        if (valid) {
+          let arr = this.$refs.logisticsEdit.upTableData || []
+          arr.forEach((item) => {
+            this.allForm.wmsCommodityIdList.push(item.id)
+            this.allForm.wmsNames.push(item.wmsName)
           })
-          .finally(() => {
+          if (arr.length > 0) {
+            this.$api.seePsiWmsService.wmsallocationorderSave(this.allForm)
+              .then(res => {
+                this.close()
+                this.$emit('reload')
+              })
+              .finally(() => {
 
-          })
-      } else {
-        this.$message({
-          type: 'info',
-          message: '请选择至少一件商品!'
-        })
-      }
-
+              })
+          } else {
+            this.$message({
+              type: 'error',
+              message: '请选择至少一件商品!'
+            })
+          }
+        } else {
+          return false;
+        }
+      });
     },
   }
 };

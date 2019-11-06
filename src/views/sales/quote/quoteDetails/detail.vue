@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 14:57:27
+ * @LastEditTime: 2019-11-06 17:52:45
  * @Description: 报价单详情
 */
 <template>

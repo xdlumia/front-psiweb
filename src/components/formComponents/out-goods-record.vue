@@ -10,6 +10,7 @@
   <div>
     <el-dialog
       :visible.sync="visible"
+      v-if="visible"
       @close='close'
       title="调出商品记录"
       v-dialogDrag
@@ -18,62 +19,63 @@
         <el-main style="padding:0;max-height:500px;">
           <form-card title='机器号/SN记录'>
             <d-table
-              api="seePumaidongService.collegeManagerList"
-              :params="queryForm"
+              api="seePsiWmsService.wmsflowrecordList"
+              :params="form"
               ref="companyTable"
               class="college-main"
               style="height:calc(100vh - 340px)"
-              :tree-props="{children: 'id', hasChildren: 'id'}"
             >
               <el-table-column
-                prop="cityName"
+                type="index"
                 min-width="80"
                 label="编号"
                 show-overflow-tooltip
               ></el-table-column>
 
               <el-table-column
-                prop="title"
+                prop="snCode"
                 label="SN码"
                 min-width="100"
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">
-                  <span class="">{{scope.row.id}}</span>
+                  <span class="">{{scope.row.snCode}}</span>
                 </template>
               </el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="wmsName"
                 min-width="100"
                 label="调出库房"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="operator"
                 min-width="100"
                 label="调拨人"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="createTime"
                 min-width="100"
                 label="调拨时间"
                 show-overflow-tooltip
-              ></el-table-column>
+              >
+                <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
+              </el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="commodityCode"
                 min-width="100"
                 label="商品编号"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="className"
                 min-width="100"
                 label="商品名称"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="configName"
                 min-width="100"
                 label="配置"
                 show-overflow-tooltip
@@ -102,6 +104,9 @@ export default {
     visible: {
       type: Boolean,
       defaults: false
+    },
+    form: {
+
     }
   },
   data() {
@@ -110,16 +115,6 @@ export default {
       tableData: Array(12)
         .fill('')
         .map(() => ({ name: '' })),
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20,
-      },
     };
   },
   methods: {

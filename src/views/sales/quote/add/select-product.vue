@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 17:43:03
+ * @LastEditTime: 2019-11-06 17:00:06
  * @Description: 选择产品
 */
 <template>
@@ -18,21 +18,31 @@
         placeholder="请选择"
       >
         <el-option
-          v-for="item in 2"
-          :key="item"
-          :label="item"
-          :value="item"
+          v-for="item in dictionaryOptions('PSI_SP_KIND')"
+          :key="item.code"
+          :label="item.content"
+          :value="item.code"
         >
         </el-option>
       </el-select>
-      <el-input
-        class="mr5 ml5"
+      <el-select
         size="small"
-        v-model="clientno"
         placeholder="请输入客户编号或名称"
+        :remote-method="getClinent"
+        class="wfull mr5"
+        filterable
+        @change="commonclientinfoInfo"
+        remote
+        reserve-keyword
+        v-model="data.clientId"
       >
-        <button slot="append">搜索</button>
-      </el-input>
+        <el-option
+          :key="item.id"
+          :label="item.clientName"
+          :value="item.id"
+          v-for="item in goodsOptions"
+        ></el-option>
+      </el-select>
       <div
         class="f16 b d-flex"
         style="white-space:nowrap;align-items:center;"
@@ -81,7 +91,12 @@
 <script>
 import goodsSelect from '@/components/formComponents/goods-select'
 export default {
-  props: [],
+  props: {
+    data: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   components: {
     goodsSelect
   },
@@ -107,74 +122,45 @@ export default {
         name: '王小虎',
         address: '上海市普陀区金沙江路 1518 弄'
       }],
-      // 新增orEdit框内容
-      addForm: {
-        title: '', // 标题
-        cityName: '', // 城市
-        cityId: this.$local.fetch('cityInfo').id, // 城市
-        id: '', // 主键id
-        mainPic: '', // 主图
-        content: '' // 内容
-      },
     }
   },
   created() {
-    // this.initCompanyAdd()
   },
   mounted() {
-    // this.currStep()
   },
   methods: {
+    // 获取列表
+    async getClinent(words) {
+      if (words) {
+        let { data } = await this.$api.seePsiCommonService.commonclientinfoQueryList({
+          fuzzyNameOrCode: words,
+        });
+        this.goodsOptions = data || []
+      } else {
+        this.goodsOptions = [];
+      }
+    },
+    // 获取客户详情信息
+    commonclientinfoInfo() {
+      if (!this.data.clientId) {
+        this.$message.error({
+          showClose: true,
+          message: '客户内容不能为空'
+        })
+        return
+      }
+      this.loading = true
+      this.$api.seePsiCommonService.commonclientinfoInfo(null, this.data.clientId)
+        .then(res => {
+          this.clientInfo = res.data || {}
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
     // 点击步骤条触发
     editClick() {
 
-    },
-    // 编辑和新增
-    initCompanyAdd() {
-      if (this.dialogMeta.type === 'add') {
-        // 清空form表单
-        this.$nextTick(() => {
-          this.$refs.addForm.resetFields()
-          this.addForm.id = ''
-        })
-      } else {
-        const data = this.dialogMeta.data
-        for (const key in this.addForm) {
-          this.addForm[key] = data[key]
-        }
-        this.addForm.start_date = [
-          new Date(data.startTime),
-          new Date(data.endTime)
-        ]
-      }
-    },
-    // 保存表单数据
-    saveHandle(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          const [currCity] = this.citys().filter(
-            item => item.id === this.addForm.cityId
-          )
-          this.addForm.cityName = currCity.name
-          this.loading = true
-          delete this.addForm.start_date
-          // rules 表单验证是否通过
-          let api = 'collegeManagerUpdate' // 默认编辑更新
-          // 新增保存
-          if (this.dialogMeta.type === 'add') {
-            api = 'collegeManagerSave'
-            // 编辑保存
-          }
-          this.$api.seePumaidongService[api](this.addForm)
-            .then(res => {
-              this.dialogMeta.visible = false
-              this.$emit('submit', 'success')
-            })
-            .finally(() => {
-              this.loading = false
-            })
-        }
-      })
     }
   }
 }

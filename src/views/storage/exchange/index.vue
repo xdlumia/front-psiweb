@@ -84,7 +84,6 @@ export default {
 
     },
     update() {
-      console.log('324124123')
       this.drawerData.tableVisible = false
     }
   }
