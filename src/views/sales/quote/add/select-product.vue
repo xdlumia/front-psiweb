@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 17:57:29
+ * @LastEditTime: 2019-11-06 21:05:47
  * @Description: 选择产品
 */
 <template>
@@ -13,12 +13,13 @@
     >
       <!-- 选择类型 -->
       <el-select
-        v-model="clientno"
+        v-model="productType"
         size="small"
         placeholder="请选择"
       >
+        <!-- //过滤掉服务字典 此处不需要 -->
         <el-option
-          v-for="item in dictionaryOptions('PSI_SP_KIND')"
+          v-for="item in dictionaryOptions('PSI_SP_KIND').filter(item=>item.content!=='服务')"
           :key="item.code"
           :label="item.content"
           :value="item.code"
@@ -27,7 +28,7 @@
       </el-select>
       <el-select
         size="small"
-        placeholder="请输入客户编号或名称"
+        placeholder="请输入名称"
         :remote-method="getClinent"
         class="wfull mr5"
         filterable
@@ -85,7 +86,7 @@
       </div>
     </div>
     <el-divider></el-divider>
-    <goodsSelect title="整机列表"></goodsSelect>
+    <product-list title="整机列表"></product-list>
   </div>
 </template>
 <script>
@@ -104,7 +105,7 @@ export default {
     return {
       loading: false,
       // 当前操作步骤
-      clientno: '',
+      productType: 'PSI_SP_KIND-1', //默认选中整机
       goodsOptions: [],
       gridData: [{
         date: '2016-05-02',
@@ -128,6 +129,7 @@ export default {
   created() {
   },
   mounted() {
+
   },
   methods: {
     // 获取列表

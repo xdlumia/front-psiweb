@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 20:11:49
+ * @LastEditTime: 2019-11-06 20:29:26
  * @Description: 附加发票 字段对应 但是公式还没计算
 */
 <template>
@@ -15,7 +15,8 @@
           prop="preTaxAmount"
         >
           <el-input
-            v-model="preTaxAmount"
+            v-model="data.preTaxAmount"
+            @input="preTaxAmountChange"
             :disabled="disabled"
             placeholder="请输入税前金额"
           />
@@ -30,6 +31,7 @@
           <el-input
             placeholder="请输入"
             :disabled="disabled"
+            @input="taxRateChange"
             v-model="taxRate"
           >
             <template slot="append">%</template>
@@ -43,7 +45,8 @@
           prop="taxAmount"
         >
           <el-input
-            v-model="taxAmount"
+            @input="taxAmountChange"
+            v-model="data.taxAmount"
             :disabled="disabled"
             placeholder="请输入税后金额"
           />
@@ -70,27 +73,30 @@ export default {
       // 遍历表单
     };
   },
-  computed: {
-    // 税前金额
-    preTaxAmount: {
-      get() {
-        return this.data.preTaxAmount
-      },
-      set() { },
+  methods: {
+    // 税前金额变化
+    preTaxAmountChange(val) {
+      console.log(val);
     },
+    // 税率变化
+    taxRateChange(val) { },
+    // 税后金额变化
+    taxAmountChange(val) {
+      console.log(val);
+    }
+  },
+  computed: {
     // 税率
     taxRate: {
-      get() {
+      get(val) {
+        console.log(val)
         return this.data.taxRate * 100
       },
-      set() { },
-    },
-    taxAmount: {
-      get() {
-        return this.data.taxAmount
+      set() {
+        this.data.taxRate / 100
       },
-      set() { },
-    }
+    },
+
   },
 };
 </script>
