@@ -2,11 +2,11 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 18:09:03
+ * @LastEditTime: 2019-11-06 19:08:24
  * @Description: 填写报价单详情
 */
 <template>
-  <div>
+  <div v-loading="loading">
     <d-tabs :style="{maxHeight:'calc(100vh - 220px)'}">
       <d-tab-pane
         v-for="(val,key) of tabs"
@@ -14,42 +14,40 @@
         :label="val"
         :name="key"
       />
-      <customerInfo id="customerInfo" />
-      <companyInfo id="companyInfo" />
+      <customerInfo
+        :data="data"
+        id="customerInfo"
+      />
+      <companyInfo
+        disabled
+        select
+        id="companyInfo"
+      />
       <deliverInfo id="deliverInfo" />
       <commodityInfo id="commodityInfo" />
       <payExpire id="payExpire" />
       <extrataxInfo id="extrataxInfo" />
       <customInfo id="customInfo" />
-      <extraInfo id="extraInfo" />
+      <extrasInfo id="extraInfo" />
     </d-tabs>
 
   </div>
 </template>
 <script>
-import customerInfo from '@/components/formComponents/customer-info' //客户信息
-import companyInfo from '@/components/formComponents/company-info' //公司信息
-import customInfo from '@/components/formComponents/custom-info' //自定义信息
-import deliverInfo from '@/components/formComponents/deliver-info' //发货信息
-import extrataxInfo from '@/components/formComponents/extratax-info' //附加发票
-import extraInfo from '@/components/formComponents/extras-info' //备注信息
-import payExpire from '@/components/formComponents/pay-expire' //报价单有效期
-import commodityInfo from '@/components/formComponents/commodity-info' //商品信息
 
 export default {
   components: {
-    customerInfo,
-    companyInfo,
-    customInfo,
-    deliverInfo,
-    extrataxInfo,
-    extraInfo,
-    payExpire,
-    commodityInfo,
   },
-  props: ['drawerData'],
+  props: {
+    data: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data() {
     return {
+      loading: false,
+      clientInfo: {},
       tabs: {
         customerInfo: '客户信息',
         companyInfo: '公司信息',
@@ -60,11 +58,30 @@ export default {
         customInfo: '自定义信息',
         extraInfo: '备注信息',
       },
-      // 表单
-      form: {},
-      // 报价单信息
-      activeName: "0",
-      quoteCollapse: true
+    }
+  },
+  mounted() {
+    // this.commonclientinfoInfo()
+  },
+  methods: {
+    // 获取客户详情信息
+    commonclientinfoInfo() {
+      if (!this.data.clientId) return
+      this.loading = true
+      this.$api.seePsiCommonService.commonclientinfoInfo(null, this.data.clientId)
+        .then(res => {
+          let data = res.data || {}
+          data.clientId = data.id
+          this.clientInfo = data
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+  },
+  watch: {
+    clientInfo(val) {
+      console.log(this.data);
     }
   },
   beforeDestroy() {

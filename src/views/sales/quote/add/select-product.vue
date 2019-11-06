@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 17:00:06
+ * @LastEditTime: 2019-11-06 17:57:29
  * @Description: 选择产品
 */
 <template>
@@ -105,6 +105,7 @@ export default {
       loading: false,
       // 当前操作步骤
       clientno: '',
+      goodsOptions: [],
       gridData: [{
         date: '2016-05-02',
         name: '王小虎',
