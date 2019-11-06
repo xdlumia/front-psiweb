@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:46:22
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 16:14:07
+ * @LastEditTime: 2019-11-06 15:36:12
  * @Description: 员工查询过滤框
 */
 <template>
@@ -18,7 +18,7 @@
       reserve-keyword
       v-model="form[item.prop]"
     >
-      <el-option :key="item.id" :label="item.employeeName" :value="item.id" v-for="item in options"></el-option>
+      <el-option :key="item.userId" :label="item.employeeName" :value="item.userId" v-for="item in options"></el-option>
     </el-select>
     <span class="el-icon-search search-icon"></span>
   </el-form-item>

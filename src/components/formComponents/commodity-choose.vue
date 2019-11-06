@@ -2,13 +2,13 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 08:45:58
+ * @LastEditTime: 2019-11-06 18:41:34
  * @Description: 选择商品 字段已绑定 1 
 */
 <template>
   <el-dialog :visible.sync="visible" @close="close" title="选择商品" v-dialogDrag width="60%">
     <div class="mb15">
-      <el-input @change="reload" placeholder="搜索商品编号/名称" size="small" style="width:250px" v-model="queryForm.goodsName"></el-input>
+      <el-input @change="reload" placeholder="搜索商品名称" size="small" style="width:250px" v-model="queryForm.goodsName"></el-input>
       <el-button @click="multipleVisible = !multipleVisible" class="fr" size="small">已选择（{{selected.length}}）</el-button>
     </div>
     <el-container class="choose-container">
@@ -24,7 +24,7 @@
           :tree-props="{children: 'children', hasChildren: 'children'}"
           @response="onTableData"
           @selection-change="handleSelectionChange"
-          api="seeGoodsService.goodsSelectGoodsList"
+          api="seePsiWmsService.wmsinventoryList"
           class="college-main"
           ref="multipleTable"
           rowKey="goodsCode"
@@ -39,10 +39,12 @@
           </el-table-column>
           <el-table-column label="商品图片" min-width="130" prop="title" show-overflow-tooltip>
             <template slot-scope="{row}">
-              <el-image :src="row.goodsPic" fit="fill" style="width: 100px; height: 40px"></el-image>
+              <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
+                <span slot="error">暂无图片</span>
+              </el-image>
             </template>
           </el-table-column>
-          <el-table-column label="商品名称" min-width="100" prop="name" show-overflow-tooltip></el-table-column>
+          <el-table-column label="商品名称" min-width="100" prop="goodsName" show-overflow-tooltip></el-table-column>
           <el-table-column label="商品类别" min-width="100" prop="categoryCode" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
@@ -50,23 +52,47 @@
           </el-table-column>
           <el-table-column label="商品分类" min-width="100" prop="cityName" show-overflow-tooltip>
             <template slot-scope="{row}">
-              <span>{{ row.firstClassName }}/{{ row.secondClassName }}</span>
+              <span>{{ row.className }}</span>
             </template>
           </el-table-column>
           <el-table-column label="商品配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
           <el-table-column label="商品规格" min-width="140" prop="specOne" show-overflow-tooltip></el-table-column>
           <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip></el-table-column>
-          <el-table-column label="税率" min-width="80" prop="cityName" show-overflow-tooltip>
+          <el-table-column label="税率" min-width="80" prop="taxRate" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span>{{row.taxRate ? row.taxRate + '%' : ''}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="可用库存" min-width="100" prop="cityName" show-overflow-tooltip></el-table-column>
-          <el-table-column label="期初库存" min-width="100" prop="originalInventoryNum" show-overflow-tooltip></el-table-column>
-          <el-table-column label="入库数量" min-width="80" prop="cityName" show-overflow-tooltip></el-table-column>
-          <el-table-column label="出库数量" min-width="80" prop="cityName" show-overflow-tooltip></el-table-column>
-          <el-table-column label="待入库数量" min-width="120" prop="cityName" show-overflow-tooltip></el-table-column>
-          <el-table-column label="待出库数量" min-width="120" prop="cityName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="可用库存" min-width="100" prop="usableInventoryNum" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.usableInventoryNum||0}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="期初库存" min-width="100" prop="originalInventoryNum" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.originalInventoryNum||0}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="入库数量" min-width="80" prop="sumShipmentNum" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.sumShipmentNum||0}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="出库数量" min-width="80" prop="sumPutawayNum" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.sumPutawayNum||0}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="待入库数量" min-width="120" prop="waitShipmentNum" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.waitShipmentNum||0}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="待出库数量" min-width="120" prop="waitPutawayNum" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.waitPutawayNum||0}}</span>
+            </template>
+          </el-table-column>
         </d-table>
         <!-- 点击数量覆盖下来的表格 -->
         <el-table :data="selected" border v-show="multipleVisible">
@@ -82,10 +108,12 @@
           </el-table-column>
           <el-table-column label="商品图片" min-width="130" prop="title" show-overflow-tooltip>
             <template slot-scope="{row}">
-              <el-image :src="row.goodsPic" fit="fill" style="width: 100px; height: 40px"></el-image>
+              <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
+                <span slot="error">暂无图片</span>
+              </el-image>
             </template>
           </el-table-column>
-          <el-table-column label="商品名称" min-width="100" prop="name" show-overflow-tooltip></el-table-column>
+          <el-table-column label="商品名称" min-width="100" prop="goodsName" show-overflow-tooltip></el-table-column>
           <el-table-column label="商品类别" min-width="100" prop="categoryCode" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
@@ -93,23 +121,47 @@
           </el-table-column>
           <el-table-column label="商品分类" min-width="100" prop="cityName" show-overflow-tooltip>
             <template slot-scope="{row}">
-              <span>{{ row.firstClassName }}/{{ row.secondClassName }}</span>
+              <span>{{ row.className }}</span>
             </template>
           </el-table-column>
           <el-table-column label="商品配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
           <el-table-column label="商品规格" min-width="140" prop="specOne" show-overflow-tooltip></el-table-column>
           <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip></el-table-column>
-          <el-table-column label="税率" min-width="80" prop="cityName" show-overflow-tooltip>
+          <el-table-column label="税率" min-width="80" prop="taxRate" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span>{{row.taxRate ? row.taxRate + '%' : ''}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="可用库存" min-width="100" prop="cityName" show-overflow-tooltip></el-table-column>
-          <el-table-column label="期初库存" min-width="100" prop="originalInventoryNum" show-overflow-tooltip></el-table-column>
-          <el-table-column label="入库数量" min-width="80" prop="cityName" show-overflow-tooltip></el-table-column>
-          <el-table-column label="出库数量" min-width="80" prop="cityName" show-overflow-tooltip></el-table-column>
-          <el-table-column label="待入库数量" min-width="120" prop="cityName" show-overflow-tooltip></el-table-column>
-          <el-table-column label="待出库数量" min-width="120" prop="cityName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="可用库存" min-width="100" prop="usableInventoryNum" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.usableInventoryNum||0}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="期初库存" min-width="100" prop="originalInventoryNum" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.originalInventoryNum||0}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="入库数量" min-width="80" prop="sumShipmentNum" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.sumShipmentNum||0}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="出库数量" min-width="80" prop="sumPutawayNum" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.sumPutawayNum||0}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="待入库数量" min-width="120" prop="waitShipmentNum" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.waitShipmentNum||0}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="待出库数量" min-width="120" prop="waitPutawayNum" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.waitPutawayNum||0}}</span>
+            </template>
+          </el-table-column>
         </el-table>
       </el-main>
     </el-container>
@@ -166,6 +218,7 @@ export default {
       if (this.visible) {
         this.multipleSelection = [];
         this.preSelection = [];
+        this.multipleVisible = false;
         if (
           this.$refs.multipleTable &&
           this.$refs.multipleTable.$refs.elTable
@@ -214,7 +267,7 @@ export default {
       this.$emit('update:visible', false);
     },
     save() {
-      this.$emit('choose', this.multipleSelection);
+      this.$emit('choose', this.selected);
       this.close();
     },
     onTableData(e) {

@@ -3,12 +3,12 @@
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 徐贺
  * @LastEditTime: 2019-10-26 18:17:56
- * @Description: 库房分布
+ * @Description: 商品查询
 */
 <template>
   <el-dialog
     :visible.sync="visible"
-    title="库房分布"
+    title="商品查询"
     @close='close'
     v-dialogDrag
   >
@@ -18,16 +18,24 @@
     >
       <el-main style="padding:0;max-height:700px;">
 
-        <form-card title='商品信息'>
-          <el-table
+        <form-card title='明细表'>
+          <d-table
+            :params="{snCode:snCode,page:1,limit:20}"
+            style="height:300px"
             border
-            :data="[drawerData]"
+            api="seePsiWmsService.wmsflowrecordList"
             size="mini"
           >
             <el-table-column
+              type='index'
+              label="编号"
+              min-width="50"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
               label="商品编号"
               min-width="140"
-              prop="goodsCode"
+              prop="commodityCode"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
@@ -49,71 +57,60 @@
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
-              label="商品配置"
-              min-width="100"
-              prop="configName"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
               label="商品规格"
               min-width="140"
               prop="specOne"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
-              label="单位"
-              min-width="80"
-              prop="unit"
-              show-overflow-tooltip
-            >
-              <template slot-scope="scope">{{scope.row.createTime | dictionary('PSI_SP_KIND')}}</template>
-            </el-table-column>
-          </el-table>
-        </form-card>
-
-        <form-card title='库房分布'>
-          <d-table
-            :paging="false"
-            style="height:300px"
-            border
-            api="seePsiWmsService.wmsinventoryQueryInventoryDistribution"
-            :params="{commodityCode:drawerData.goodsCode}"
-            size="mini"
-          >
-            <el-table-column
-              type='index'
-              label="编号"
+              label="商品配置"
               min-width="100"
+              prop="configName"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
-              label="库房"
-              min-width="120"
+              label="SN码"
+              min-width="100"
+              prop="snCode"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              label="机器号"
+              min-width="100"
+              prop="robotCode"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              label="操作人"
+              min-width="100"
+              prop="operator"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              label="操作类型"
+              min-width="100"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">{{scope.row.operation == 0 ? '入库' : '出库'}}</template>
+            </el-table-column>
+            <el-table-column
+              label="出入库库房"
+              min-width="100"
               prop="wmsName"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
-              label="可用库存"
-              min-width="120"
-              prop="usableInventoryNum"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              label="待出库数量"
-              min-width="120"
-              prop="waitPutawayNum"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              label="待入库数量"
+              label="操作时间"
               min-width="100"
-              prop="waitShipmentNum"
+              prop="createTime"
               show-overflow-tooltip
-            ></el-table-column>
+            >
+              <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
+            </el-table-column>
             <el-table-column
-              label="锁库量"
-              min-width="140"
-              prop="lockInventoryNum"
+              label="关联业务编号"
+              min-width="120"
+              prop="businessCode"
               show-overflow-tooltip
             ></el-table-column>
           </d-table>
@@ -146,7 +143,8 @@ export default {
       type: Boolean,
       default: false
     },
-    drawerData: {}
+    drawerData: {},
+    snCode: ''
   },
   computed: {
     maxHeight() {

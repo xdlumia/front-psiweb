@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 10:18:15
+ * @LastEditTime: 2019-11-06 18:18:56
  * @Description: 商品输入选框 字段已绑定 1 
 */
 <template>
@@ -12,7 +12,7 @@
       :remote-method="search"
       @change="onSelect"
       filterable
-      placeholder="请选择"
+      placeholder="搜索商品名称"
       popper-class="custom-goods-selector"
       remote
       size="mini"
@@ -22,7 +22,7 @@
         <el-row>
           <el-col :span="6" class="b d-text-black" v-if="i==0">商品名称</el-col>
           <el-col :span="18" class="b d-text-black" v-if="i==0">商品编号</el-col>
-          <el-col :span="6" class="d-hidden d-elip">{{item.name}}</el-col>
+          <el-col :span="6" class="d-hidden d-elip">{{item.goodsName}}</el-col>
           <el-col :span="18" class="d-hidden d-elip">
             <span :title="item.goodsCode">{{item.goodsCode}}</span>
           </el-col>
@@ -35,6 +35,12 @@
 </template>
 <script>
 export default {
+  props: {
+    codes: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
       showCommodityGoods: false,
@@ -54,7 +60,10 @@ export default {
       this.showed = true;
     },
     choose(e) {
-      this.$emit('choose', e);
+      let choose = e.filter(a => !this.codes.includes(a.goodsCode));
+      if (choose.length) {
+        this.$emit('choose', e);
+      }
     },
     async search(words = '') {
       words = String(words).trim();
@@ -62,7 +71,7 @@ export default {
         return (this.options = this.searchTable[words]);
       }
       this.loading = true;
-      let { data } = await this.$api.seeGoodsService.goodsSelectGoodsList({
+      let { data } = await this.$api.seePsiWmsService.wmsinventoryList({
         page: 1,
         limit: 5,
         goodsName: words
@@ -72,8 +81,13 @@ export default {
       this.searchTable[words] = data;
     },
     onSelect(e) {
-      this.$emit('choose', this.options.filter(item => item.goodsCode == e));
-      this.value = '';
+      let goods = this.options.filter(
+        item => item.goodsCode == e && !this.codes.includes(item.goodsCode)
+      );
+      if (goods.length) {
+        this.$emit('choose', goods);
+        this.value = '';
+      }
     }
   }
 };
