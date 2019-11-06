@@ -1,8 +1,8 @@
 /*
  * @Author: 高大鹏
  * @Date: 2019-10-31 15:09:35
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-05 16:33:27
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-11-06 21:40:21
  * @Description: description
  */
 /**
@@ -31,6 +31,7 @@ const apiURL = {
   saveGoodsInfo: '/goods/save',
   // 编辑物品
   editGoodsInfo: '/goods/edit',
+  editGoodsInfoV2: '/goods/edit/v2',
   // 查询物品详情包含所有规格
   getAllGoods: '/goods/getGoods',
   // 添加物品规格
@@ -74,6 +75,9 @@ export default {
   },
   getGoodsDetailV2(params) {
     return Api.get(baseURL.seeGoodsService + apiURL.getGoodsDetailV2, params)
+  },
+  editGoodsInfoV2(params) {
+    return Api.post(baseURL.seeGoodsService + apiURL.editGoodsInfoV2, params)
   },
   saveGoodsInfo(params) {
     return Api.post(baseURL.seeGoodsService + apiURL.saveGoodsInfo, params)
@@ -121,7 +125,7 @@ export default {
    * @description 选择物品列表
    */
   goodsSelectGoodsList(params) {
-      return Api.post(`${baseURL.seeGoodsService}/goods/selectGoodsList`, params,{isShowMessage:false})
-  },
+    return Api.post(`${baseURL.seeGoodsService}/goods/selectGoodsList`, params, { isShowMessage: false })
+  }
 
 }

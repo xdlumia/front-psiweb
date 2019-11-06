@@ -15,17 +15,12 @@
     class="side-page"
   >
     <span>
-      <slot name='title'></slot>
+      <slot name="title"></slot>
     </span>
-    <sideStatusbar
-      style="margin:-10px -15px 10px"
-      :status="status"
-    />
-    <span
-      class="drawer-header"
-      v-if="hasButton"
-    >
-      <slot name="button" /></span>
+    <sideStatusbar style="margin:-10px -15px 10px" :status="status" />
+    <span class="drawer-header" v-if="hasButton">
+      <slot name="button" />
+    </span>
     <slot />
   </el-drawer>
 </template>
@@ -35,7 +30,7 @@ export default {
   components: {
   },
   props: {
-    status: Array,
+    status: { type: Array, default: () => { return [] } },
     title: String,
     visible: Boolean,
     width: String
@@ -57,7 +52,7 @@ export default {
       if (!this.showPop) {
         this.close();
       }
-    },
+    }
   },
   computed: {
     hasButton() {

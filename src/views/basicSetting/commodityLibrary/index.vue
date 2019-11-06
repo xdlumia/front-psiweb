@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-04 14:16:42
+ * @LastEditTime: 2019-11-06 22:07:08
  * @Description: 商品管理
  -->
 <template>
@@ -51,10 +51,18 @@
             style="width: 100%;border:1px solid #ebebeb;"
             @selection-change="handleSelectionChange"
           >
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <el-button
+                  type="text"
+                  @click="copycode = scope.row.goodsCode,copy=true,visible = true"
+                >复制新增</el-button>
+              </template>
+            </el-table-column>
             <el-table-column align="center" label="商品编号" min-width="160" show-overflow-tooltip>
               <template slot-scope="scope">
                 <span
-                  @click="fcheckGoods('checkGoods',scope.row)"
+                  @click="showDetailDialog(scope.row)"
                   class="d-text-blue d-pointer"
                 >{{ scope.row.goodsCode }}</span>
               </template>
@@ -64,12 +72,7 @@
               <template slot-scope="scope">
                 <div class="goodspic d-pointer">
                   <!-- <upload-pic @addPictureUrl="addPictureUrl" style="height:100%" :limit="{size:'2M',type:['jpg','png','gif','jpeg']}" > </upload-pic> -->
-                  <img
-                    v-if="scope.row.goodsPic"
-                    :src="scope.row.goodsPic"
-                    class="wfull"
-                    v-img-view="'goodsManage'"
-                  />
+                  <img v-if="scope.row.goodsPic" :src="scope.row.goodsPic" class="wfull" />
                   <span v-else style="white-space:nowrap;">暂无图片</span>
                 </div>
               </template>
@@ -134,15 +137,6 @@
             >
               <template slot-scope="scope">{{scope.row.taxRate ? scope.row.taxRate + '%' : ''}}</template>
             </el-table-column>
-            <el-table-column align="center" label="操作" min-width="80">
-              <template slot-scope="scope">
-                <el-button
-                  v-if="authorityButtons.includes('decorate_goods_mgr_1003')"
-                  @click="editGood(scope.row.goodsCode)"
-                  size="mini"
-                >编辑</el-button>
-              </template>
-            </el-table-column>
           </el-table>
 
           <el-pagination
@@ -159,24 +153,35 @@
 
     <el-dialog :visible.sync="visible" title v-dialogDrag :show-close="false" width="1000px">
       <div slot="title" style="display:flex;">
-        <h3 style="flex:1;text-align:center;">公司账户设置</h3>
+        <h3 style="flex:1;text-align:center;">新增商品</h3>
         <div>
           <el-button type="primary" size="mini" @click="saveGood">保存</el-button>
           <el-button size="mini" @click="visible=false">关闭</el-button>
         </div>
       </div>
-      <add-good @refresh="refresh" v-if="visible" ref="addGood" :editId="editId"></add-good>
+      <add-good @refresh="refresh" v-if="visible" ref="addGood" :code="copycode" :copy="copy"></add-good>
     </el-dialog>
+    <detail
+      @refresh="$refs.table.reload(queryForm.page)"
+      v-if="showDetail"
+      :rowData="rowData"
+      :code="code"
+      :visible.sync="showDetail"
+    ></detail>
   </div>
 </template>
 
 <script>
 /* eslint-disable eqeqeq */
 // import uploadPic from '@/components/uploadPic'
+import detail from './detail'
 import addGood from './add-good'
 export default {
-  data () {
+  data() {
     return {
+      copy: false,
+      copycode: null,
+      showDetail: false,
       visible: false,
       activeName: 'PSI_SP_KIND-1',
       multipleSelection: [],
@@ -212,15 +217,18 @@ export default {
       goodsClassifyList: [], // 物品分类列表(下拉框用)
       categoryList: [],
       treeData: [],
-      editId: ''
+      editId: '',
+      rowData: null,
+      code: ''
     }
   },
   components: {
-    addGood
+    addGood,
+    detail
   },
   computed: {
   },
-  created () {
+  created() {
     this.getGoodsClassify()
     this.getGoodsList()
     this.getCategoryList()
@@ -229,55 +237,57 @@ export default {
   watch: {
   },
   methods: {
-    editGood (goodsCode) {
-      console.log(goodsCode)
+    showDetailDialog(row) {
+      this.showDetail = true
+      this.rowData = row
+      this.code = row.goodsCode
+    },
+    editGood(goodsCode) {
       this.editId = goodsCode
       this.visible = true
     },
-    refresh () {
+    refresh() {
       this.visible = false
       this.getGoodsList()
     },
-    saveGood () {
+    saveGood() {
       this.$refs.addGood && this.$refs.addGood.saveGood()
     },
-    setCategory () {
+    setCategory() {
       this.$refs.categoryTree.setCurrentKey(null)
       this.goodsForm.categoryCode = this.activeName
       this.goodsForm.classId = null
       this.getGoodsList()
     },
-    handleNodeClick (data, node) {
-      console.log(data)
+    handleNodeClick(data, node) {
       this.goodsForm.classId = data.id
       this.goodsForm.categoryCode = null
       this.getGoodsList()
     },
     // 获取分类列表
-    getGoodsClass () {
+    getGoodsClass() {
       this.$api.seeGoodsService.getGoodsClass({ categoryCode: this.activeName }).then(res => {
-        console.log(res)
         this.treeData = res.data
       })
     },
-    handleClick () {
+    handleClick() {
       this.getGoodsClass()
     },
     // 获取类目列表
-    getCategoryList () {
+    getCategoryList() {
       this.$api.seeDictionaryService.getDicCommonValueList('PSI_SP_KIND').then(res => {
         console.log(res)
         this.categoryList = res.data || []
       })
     },
-    getGoodsList () { // 获取物品列表
+    getGoodsList() { // 获取物品列表
       this.$api.seeGoodsService.getGoodsList(this.goodsForm) //
         .then(res => {
           this.goodsTable = res.data
           this.total = res.count
         }).catch(ero => { })
     },
-    getGoodsClassify () { // 获取物品一级分类
+    getGoodsClassify() { // 获取物品一级分类
       this.$api.seeGoodsService.fgoodsFirstClassList({ page: 1, limit: 15 }) // 获取物品一级类目
         .then(res => {
           for (let i = 0; i < res.data.length; i++) {
@@ -286,10 +296,10 @@ export default {
           this.goodsClassifyList = res.data
         }).catch(ero => { })
     },
-    handleSelectionChange (val) { // 表格复选框勾选
+    handleSelectionChange(val) { // 表格复选框勾选
       this.multipleSelection = val
     },
-    handleChange (value) { // 筛选条件点击
+    handleChange(value) { // 筛选条件点击
       if (value.length === 1) {
         const goodsid = value[0]
         this.$api.seeGoodsService.fgetChildClassList({ id: goodsid }) // 获取物品子类类目
@@ -304,11 +314,11 @@ export default {
       this.goodsForm.classId = this.selectedOptions[this.selectedOptions.length - 1]
       this.getGoodsList()
     },
-    addPictureUrl (url) { // 上传图片
+    addPictureUrl(url) { // 上传图片
       this.picUrl = url.url
     },
     // 导出模板
-    exportExcel () {
+    exportExcel() {
       this.$confirm('是否一键导出物品数据?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -325,15 +335,15 @@ export default {
       })
     },
     // 导入模板
-    importExcel (popname) {
+    importExcel(popname) {
       this.popupRight.dialogVisiblePopup = !this.popupRight.dialogVisiblePopup
       this.popupRight.point = popname
       this.popupRight.tlite = '导入物品'
     },
-    handleCurrentChange (val) { // 分页点击
+    handleCurrentChange(val) { // 分页点击
       this.getGoodsList()
     },
-    deleteGoodsList () { // 批量删除
+    deleteGoodsList() { // 批量删除
       const ids = []
       this.multipleSelection.forEach(element => {
         ids.push(element.id)
@@ -361,7 +371,7 @@ export default {
         })
       }
     },
-    clearAll () { // 清除筛选
+    clearAll() { // 清除筛选
       this.goodsForm = {
         page: 1,
         limit: 15,
@@ -373,7 +383,7 @@ export default {
       this.selectedOptions = []
       this.getGoodsList()
     },
-    fsupplierList (popname, row) { // 点击查看
+    fsupplierList(popname, row) { // 点击查看
       this.popupRight.dialogVisiblePopup = !this.popupRight.dialogVisiblePopup
       this.popupRight.point = popname
       this.popupRight.goodsCode = row.goodsCode
@@ -382,10 +392,12 @@ export default {
         this.$refs[this.popupRight.point].getSuppliersByGoodsId()
       }, 50)
     },
-    handleAddGood () {
+    handleAddGood() {
+      this.copy = false
+      this.copycode = null
       this.visible = true
     },
-    fhandelGoods (popname, type, row) { // 点击新增或者编辑
+    fhandelGoods(popname, type, row) { // 点击新增或者编辑
       this.popupRight.dialogVisiblePopup = !this.popupRight.dialogVisiblePopup
       this.popupRight.point = popname
       if (type === 'add') {
@@ -406,7 +418,7 @@ export default {
         }, 50)
       }
     },
-    fcheckGoods (popname, row) { // 点击编码查看
+    fcheckGoods(popname, row) { // 点击编码查看
       this.popupRight.dialogVisiblePopup = !this.popupRight.dialogVisiblePopup
       this.popupRight.point = popname
       this.popupRight.goodsCode = row.goodsCode
@@ -415,7 +427,7 @@ export default {
         this.$refs[this.popupRight.point].getGoodsDetail()
       }, 50)
     },
-    runSubsetRight () { // 新增/编辑确定按钮
+    runSubsetRight() { // 新增/编辑确定按钮
       if (this.popupRight.type === 'add') {
         setTimeout(() => { // 触发子组件方法
           this.$refs[this.popupRight.point].saveGoodsInfo()

@@ -1,10 +1,10 @@
 <template>
-  <div class=''></div>
+  <div class></div>
 </template>
 
 <script type='text/ecmascript-6'>
 export default {
-  data () {
+  data() {
     return {
     }
   },
@@ -14,5 +14,4 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-
 </style>

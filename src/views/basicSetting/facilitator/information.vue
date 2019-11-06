@@ -2,11 +2,11 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:31:10
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-06 14:32:59
+ * @LastEditTime: 2019-11-06 17:47:05
  * @Description: description
  -->
 <template>
-  <form-card title="基本信息" id="information">
+  <form-card title="基本信息">
     <el-row :gutter="10" type="flex" justify="space-between">
       <el-col :span="8">
         <el-form-item label="服务商名称" prop="serviceName">

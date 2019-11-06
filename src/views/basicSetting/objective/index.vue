@@ -2,8 +2,8 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-06 17:21:05
- * @Description: 服务商
+ * @LastEditTime: 2019-11-06 17:31:36
+ * @Description: 目标管理
  -->
 <template>
   <div class>
@@ -11,9 +11,9 @@
       ref="table"
       :filter="true"
       :filterOptions="filterOptions"
-      :busType="36"
+      :busType="37"
       title="目标管理"
-      api="seePsiCommonService.commonserviceproviderList"
+      api="seePsiCommonService.commonpromotiongoalpersonnelList"
       :params="queryForm"
     >
       <template v-slot:filter>自定义筛选列</template>

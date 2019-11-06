@@ -2,17 +2,18 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-04 14:17:30
+ * @LastEditTime: 2019-11-06 22:04:00
  * @Description: 新增商品
  -->
 <template>
-  <div class>
+  <div class v-loading="loading">
     <el-form
       ref="goodForm"
       :model="goodForm"
       size="small"
       label-position="top"
       :rules="goodFormRules"
+      :disabled="disabled"
     >
       <form-card title="商品信息">
         <el-row :gutter="40">
@@ -203,10 +204,27 @@
 
 <script type='text/ecmascript-6'>
 export default {
+  props: {
+    code: {
+      type: String,
+      default: ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    isEdit: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
+      loading: false,
       firstClassList: [],
       goodForm: {
+        id: '',
+        goodsCode: '',
         categoryCode: '',
         firstClassId: '',
         classId: '',
@@ -246,19 +264,6 @@ export default {
         'values[0].profitRate': [
           { required: true, message: '请输入', trigger: 'blur' },
           { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
-          // {
-          //   validator: (rule, value, callback) => {
-          //     if (value > 100 || value < 0) {
-          //       callback(new Error('请输入0-100，两位小数'))
-          //     } else if (Number(value) === 100) {
-          //       callback()
-          //     } else if (!/^\d{1,11}(\.\d{1,2})?$/.test(value)) {
-          //       callback(new Error('请输入0-100，两位小数'))
-          //     } else {
-          //       callback()
-          //     }
-          //   }
-          // }
         ],
         'values[0].taxRate': { required: true, message: '请输入', trigger: 'blur' },
         'values[0].saleReferencePrice': [
@@ -284,12 +289,6 @@ export default {
   },
   components: {
   },
-  props: {
-    editId: {
-      type: String,
-      default: ''
-    }
-  },
   computed: {
     secondClassList() {
       const temp = this.firstClassList.find(item => item.id === this.goodForm.firstClassId)
@@ -303,15 +302,15 @@ export default {
   },
   mounted() {
     this.commonwmsmanagerUsableList()
-    if (this.editId) {
-      this.getGoodsDetail(this.editId)
+    if (this.code) {
+      this.getGoodsDetailV2(this.code)
     }
   },
   methods: {
-    getGoodsDetail(code) {
-      this.$api.seeGoodsService.getGoodsDetailV2({ code: code }).then(res => {
+    getGoodsDetailV2(code) {
+      this.$api.seeGoodsService.getGoodsDetailV2({ code }).then(res => {
         console.log(res);
-        this.goodForm = res.data;
+        this.goodForm = Object.assign(this.goodForm, res.data);
       })
     },
     inventoryPriceChange() {
@@ -336,9 +335,11 @@ export default {
     saveGood() {
       this.$refs.goodForm.validate(valid => {
         if (valid) {
-          this.$api.seeGoodsService.saveGoodsInfo(this.goodForm).then(res => {
+          this.loading = true
+          const method = this.isEdit ? 'editGoodsInfoV2' : 'saveGoodsInfo'
+          this.$api.seeGoodsService[method](this.goodForm).then(res => {
             this.$emit('refresh')
-          })
+          }).finally(() => { this.loading = false })
         }
       })
     },
