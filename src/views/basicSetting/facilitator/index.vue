@@ -2,18 +2,15 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-05 18:31:46
+ * @LastEditTime: 2019-11-06 16:46:22
  * @Description: 服务商
  -->
 <template>
   <div class>
     <table-view
-      type="1"
       ref="table"
       :filter="true"
-      :moreButton="true"
       :filterOptions="filterOptions"
-      :column="true"
       :busType="36"
       title="服务商管理"
       api="seePsiCommonService.commonserviceproviderList"
@@ -25,43 +22,44 @@
         <el-button size="mini" type="primary" @click="editId = null,visible = true">新增服务商</el-button>
       </template>
       <template slot-scope="{column,row,value,scope}">
-        <span v-if="column.columnFields=='operation'">
-          <el-button type="text" @click="editId = scope.row.id,visible = true">编辑</el-button>
-          <el-button
-            type="text"
-            v-if="!scope.row.state"
-            @click="commonwmsmanagerLogicDelete(scope.row.id)"
-          >删除</el-button>
-          <el-button
-            type="text"
-            v-if="scope.row.state"
-            @click="commonwmsmanagerUpdateState(scope.row.id, 0)"
-          >停用</el-button>
-          <el-button @click="commonwmsmanagerUpdateState(scope.row.id, 1)" type="text" v-else>启用</el-button>
-        </span>
-        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <el-button
+          type="text"
+          v-if="column.columnFields=='code'"
+          @click="detail(scope.row)"
+        >{{scope.row.code}}</el-button>
+        <span v-else-if="column.columnFields=='state'">{{scope.row.state ? '停用' : '启用'}}</span>
+        <span
+          v-else-if="column.columnFields=='createTime'"
+        >{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
       <el-table-column label="www"></el-table-column>
     </table-view>
-    <el-dialog :visible.sync="visible" v-dialogDrag :show-close="false" width="1000px" title="新增库房">
-      <div slot="title" style="display:flex;">
-        <h3 style="flex:1;text-align:center;">新增服务商</h3>
-        <div>
-          <el-button type="primary" size="mini" @click="saveStoreRoom">保存</el-button>
-          <el-button size="mini" @click="visible=false">关闭</el-button>
-        </div>
-      </div>
-      <add-facilitator ref="addFacilitator" :editId="editId" v-if="visible" @refresh="refresh"></add-facilitator>
-    </el-dialog>
+    <add-facilitator
+      :visible.sync="visible"
+      ref="addFacilitator"
+      v-if="visible"
+      @refresh="$refs.table.reload"
+    ></add-facilitator>
+    <detail
+      @refresh="$refs.table.reload(queryForm.page)"
+      v-if="showDetail"
+      :rowData="rowData"
+      :code="code"
+      :visible.sync="showDetail"
+    ></detail>
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
 import addFacilitator from './add-facilitator'
+import detail from './detail'
 export default {
   data() {
     return {
+      rowData: null,
+      code: null,
+      showDetail: false,
       visible: false,
       queryForm: {
         limit: 15,
@@ -70,9 +68,9 @@ export default {
       editId: null,
       filterOptions: [
         { label: '服务商编号', prop: 'code', default: true },
-        { label: '服务商名称', prop: 'serviceName', default: true },
+        { label: '服务商名称', prop: 'fuzzyServiceName', default: true },
         { label: '状态',
-          prop: 'start',
+          prop: 'state',
           type: 'select',
           default: true,
           options: [
@@ -97,9 +95,15 @@ export default {
   mounted() {
   },
   components: {
-    addFacilitator
+    addFacilitator,
+    detail
   },
   methods: {
+    detail(row) {
+      this.rowData = row
+      this.code = row.code
+      this.showDetail = true
+    },
     commonwmsmanagerUpdateState(id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
@@ -132,8 +136,8 @@ export default {
         })
       })
     },
-    saveStoreRoom() {
-      this.$refs.addFacilitator && this.$refs.addFacilitator.commonwmsmanagerSave()
+    saveFacilitator() {
+      this.$refs.addFacilitator && this.$refs.addFacilitator.commonserviceproviderSave()
     },
     refresh() {
       this.visible = false

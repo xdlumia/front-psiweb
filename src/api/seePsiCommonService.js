@@ -1,12 +1,6 @@
-/*
- * @Author: web.王晓冬
- * @Date: 2019-11-04 16:01:39
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 17:59:18
- * @Description: file content
- */
-const MOCK_ADDRESS = '/mock/5db9778bbc54fc3da273f010/'
+const MOCK_ADDRESS = '/mock/5db9778bbc54fc3da273f010/common'
 const IS_MOCK = false
+
 export default {
   __mockAddress: MOCK_ADDRESS,
   /* =============附件表start=========== */
@@ -146,6 +140,12 @@ export default {
   // 查看客户详细信息
   commonclientinfoInfo: {
     'url': '/commonclientinfo/info/{id}',
+    'mock': IS_MOCK
+  },
+
+  // 根据编码查看客户详细信息
+  commonclientinfoInfoBycode: {
+    'url': '/commonclientinfo/infoBycode/{code}',
     'mock': IS_MOCK
   },
   /* =============客户end=========== */
@@ -669,6 +669,12 @@ export default {
     'mock': IS_MOCK
   },
 
+  // 根据CODE查看详细信息
+  commonserviceproviderInfoBycode: {
+    'url': '/commonserviceprovider/infoBycode/{code}',
+    'mock': IS_MOCK
+  },
+
   // 获取列表
   commonserviceproviderList: {
     'url': '/commonserviceprovider/list',
@@ -750,6 +756,12 @@ export default {
   // 查看详细信息
   commonsupplierinfoInfo: {
     'url': '/commonsupplierinfo/info/{id}',
+    'mock': IS_MOCK
+  },
+
+  // 根据编码查看详细信息
+  commonsupplierinfoInfoBycode: {
+    'url': '/commonsupplierinfo/infoBycode/{code}',
     'mock': IS_MOCK
   },
 
@@ -896,6 +908,15 @@ export default {
     'methods': 'post'
   },
   /* =============自定义列表end=========== */
+
+  /* =============EXCEL 导入导出操作start=========== */
+  // 导出
+  excelExport: {
+    'url': '/excel/export',
+    'mock': IS_MOCK,
+    'methods': 'post'
+  },
+  /* =============EXCEL 导入导出操作end=========== */
 
   /* =============RocketMQ失败重试start=========== */
   // 重试失败消息
