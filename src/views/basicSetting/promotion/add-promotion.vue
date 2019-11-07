@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-06 18:07:15
+ * @LastEditTime: 2019-11-07 11:17:30
  * @Description: 新增促销
  -->
 <template>
@@ -70,7 +70,7 @@ export default {
       facilitatorForm: {
         id: '',
         serviceName: '',
-        serviceTypeList: [],
+        datetimerange: [],
         serviceType: '',
         linkMan: '',
         phone: '',
