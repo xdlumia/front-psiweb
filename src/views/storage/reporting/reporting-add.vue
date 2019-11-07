@@ -40,12 +40,18 @@
       </el-header>
       <el-main style="padding:0;max-height:700px;">
         <el-form
-          :model="form"
+          :model="addForm"
           class="p10"
         >
-          <reportingInfo ref="deliverEdit" />
+          <reportingInfo
+            ref="deliverEdit"
+            :addForm='addForm'
+          />
         </el-form>
-        <commodityInfoEdit ref="logisticsEdit" />
+        <commodityInfoEdit
+          ref="logisticsEdit"
+          :addForm='addForm'
+        />
       </el-main>
     </el-container>
     <span
@@ -58,12 +64,12 @@
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="close"
+        @click="submit"
         size="small"
       >保 存</el-button>
     </span>
   </el-dialog>
-</template>
+</template> 
 <script>
 import reportingInfo from '@/components/formComponents/reporting-info';
 import commodityInfoEdit from '@/components/formComponents/commodity-info-edit';
@@ -77,8 +83,7 @@ export default {
     visible: {
       type: Boolean,
       default: false
-    },
-    form: {}
+    }
   },
   computed: {
     maxHeight() {
@@ -87,7 +92,16 @@ export default {
   },
   data() {
     return {
-      activeName: ''
+      activeName: '',
+      addForm: {
+        commodityList: [],//商品列表
+        type: 2,//类别（1-报溢 2-报损）
+        wmsId: '',//库房id
+        personInChargeId: '',//责任人id
+        note: '',//备注
+        totalCostPrice: '',//成本金额总计
+        taxInclusiveTotalCostPrice: '',//含税成本金额总计
+      },
     };
   },
   mounted() { },
@@ -97,6 +111,17 @@ export default {
     },
     close() {
       this.$emit('update:visible', false)
+    },
+    //点一下保存
+    submit() {
+      this.$api.seePsiWmsService.wmsreportinglossesSave(this.addForm)
+        .then(res => {
+
+        })
+        .finally(() => {
+
+        })
+
     }
   }
 };

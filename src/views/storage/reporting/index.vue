@@ -9,9 +9,11 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
-      :headers="tableHeader"
+      busType="3"
+      :filterOptions='filterOptions'
+      :params="queryForm"
       :selection='false'
-      api="bizSystemService.getEmployeeList"
+      api="seePsiWmsService.wmsreportinglossesList"
       title="报溢报损单"
     >
       <template v-slot:button>
@@ -23,16 +25,19 @@
       </template>
       <template slot-scope="{column,row,value}">
         <span
+          v-if="column.columnFields=='reportingLossesCode'"
           class="d-text-blue"
           @click="getTableVisible(row)"
-        >点击111</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        >{{value}}</span>
+        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-else-if="column.columnFields=='type'">{{value == 1 ? '报溢' : '报损'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
       :drawerData='drawerData'
-      @update='update'
+      :visible.sync="drawerData.tableVisible"
+      v-if="drawerData.tableVisible"
     />
     <reportingAdd :visible.sync='visible' />
   </div>
@@ -54,11 +59,16 @@ export default {
     return {
       // 查询表单
       queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
+        wmsId: '',//库房id
+        personInChargeId: '',//责任人id
+        reportingLossesCode: '',//报溢报损单编号	
+        num: '',//报溢报损数量	
+        totalCostPrice: '',//总成本金额	
+        taxInclusiveTotalCostPrice: '',//税款总成本金额	
+        source: '',//来源
+        type: '',//类别（1-报溢 2-报损）
+        deptId: '',//部门ID	
+        isDelete: '',//是否删除(1-是 0-否)	
         page: 1,
         limit: 20
       },
@@ -79,21 +89,150 @@ export default {
         { label: '创建/生成时间', prop: 'createTime', width: '140' },
         { label: '单据创建人', prop: 'createTime', width: '100' },
         { label: '创建部门', prop: 'createTime', width: '100' }
-      ]
+      ],
+      filterOptions: [
+        { label: '商品编号', prop: 'allocationOrderCode', default: true },
+        {
+          label: '商品类别',
+          prop: 'allocationOrderState',
+          type: 'select',
+          options: [
+            { label: '待调拨', value: '1' },
+            { label: '部分调拨', value: '2' },
+            { label: '完成调拨', value: '3' },
+            { label: '终止', value: '-1' },
+          ],
+          default: true
+        },
+        {
+          label: '商品分类',
+          prop: 'allocationType',
+          type: 'select',
+          options: [
+            { label: '内调', value: '1' },
+            { label: '外调', value: '2' }
+          ],
+          default: true
+        },
+        {
+          label: '商品名称',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '商品规格',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '商品配置',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '单位',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '实物库存',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '期初库存',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '入库数量',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '出库数量',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '待入库数量',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '待出库数量',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '锁库量',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+        {
+          label: '最低采购价',
+          prop: 'num',
+          type: 'employee',
+          dictName: 'FM_FANGYUAN_MJ',
+          default: true
+        },
+
+        {
+          label: '库存成本',
+          prop: 'putawayWmsName',
+          type: 'select',
+          options: [
+            { label: '内调', value: '1' },
+            { label: '外调', value: '2' }
+          ],
+          default: true
+        },
+        {
+          label: '销售参考价',
+          prop: 'shipmentWmsNames',
+          type: 'select',
+          options: [
+            { label: '内调', value: '1' },
+            { label: '外调', value: '2' }
+          ],
+          default: true
+        }
+      ],
     };
   },
   methods: {
     //点击打开右侧边栏
-    getTableVisible(data) {
+    getTableVisible(row) {
+      this.drawerData = row
       this.drawerData.tableVisible = true
-      this.drawerData.title = '盘点单' + data.id
     },
     //tab换组件
     handleClick() {
 
     },
     update() {
-      console.log('324124123')
       this.drawerData.tableVisible = false
     }
   }

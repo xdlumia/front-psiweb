@@ -789,9 +789,23 @@ export default {
     'methods': 'delete'
   },
 
+  // 商品扫码入库校验
+  wmsinventorydetailPutawayCommodityCheck: {
+    'url': '/wmsinventorydetail/putawayCommodityCheck',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 商品入库
   wmsinventorydetailSave: {
     'url': '/wmsinventorydetail/save',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 商品扫码出库校验
+  wmsinventorydetailShipmentCommodityCheck: {
+    'url': '/wmsinventorydetail/shipmentCommodityCheck',
     'mock': false,
     'methods': 'post'
   },
@@ -896,13 +910,13 @@ export default {
     'methods': 'delete'
   },
 
-  // 查看详细信息
+  // 查看报溢报损单详细信息
   wmsreportinglossesInfo: {
     'url': '/wmsreportinglosses/info/{id}',
     'mock': false
   },
 
-  // 获取列表
+  // 获取报溢报损单列表
   wmsreportinglossesList: {
     'url': '/wmsreportinglosses/list',
     'mock': false
@@ -915,7 +929,7 @@ export default {
     'methods': 'delete'
   },
 
-  // 保存
+  // 保存报溢报损单信息
   wmsreportinglossesSave: {
     'url': '/wmsreportinglosses/save',
     'mock': false,

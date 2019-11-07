@@ -21,15 +21,19 @@
           size="mini"
         >
           <el-select
+            v-model='addForm.type'
             :disabled='disabled'
             placeholder="请选择"
             class="wfull"
           >
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              label="报溢"
+              :value="1"
+            >
+            </el-option>
+            <el-option
+              label="报损"
+              :value="2"
             >
             </el-option>
           </el-select>
@@ -49,15 +53,16 @@
           size="mini"
         >
           <el-select
+            v-model='addForm.wmsId'
             :disabled='disabled'
             placeholder="请选择"
             class="wfull"
           >
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="item in usableList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
             >
             </el-option>
           </el-select>
@@ -76,10 +81,25 @@
           prop
           size="mini"
         >
-          <commoditySelector
-            style="wfull"
+
+          <!-- v-model="employee"
+          :isEdit="true"
+          :multiple="true"
+          :closeOnSelect="false"
+          @input="choose" -->
+          <employees-chosen
             :disabled='disabled'
-          />
+            :multiple="false"
+            :closeOnSelect="false"
+            @input="choose"
+            style="width:100%"
+            class="d-inline"
+          >
+            <el-input
+              :value="employeeName"
+              size="mini"
+            ></el-input>
+          </employees-chosen>
         </el-form-item>
       </el-col>
       <el-col
@@ -88,15 +108,14 @@
       >
         <el-form-item
           label="备注"
-          prop="bankCard"
           size="mini"
         >
           <el-input
+            v-model='addForm.note'
             :disabled='disabled'
             type="textarea"
             maxlength="140"
             placeholder="请输入备注"
-            v-model="form.bankCard"
           />
         </el-form-item>
       </el-col>
@@ -108,7 +127,7 @@ import commoditySelector from '@/components/formComponents/commodity-selector';
 
 export default {
   props: {
-    form: {
+    addForm: {
       type: Object,
       default: () => ({})
     },
@@ -119,11 +138,28 @@ export default {
   },
   data() {
     return {
-      options: []
+      options: [],
+      usableList: [],
+      employeeName: '',
     };
   },
   components: {
     commoditySelector
+  },
+  mounted() {
+    this.commonwmsmanagerUsableList()
+  },
+  methods: {
+    //请求可用库房
+    async commonwmsmanagerUsableList() {
+      let { data } = await this.$api.seePsiWmsService.commonwmsmanagerUsableList()
+      this.usableList = data || []
+    },
+    //选择人员
+    choose(value) {
+      this.employeeName = value.employeeName
+      this.addForm.personInChargeId = value.userId
+    },
   }
 };
 </script>

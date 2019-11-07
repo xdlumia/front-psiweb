@@ -16,21 +16,47 @@
       popper-class="custom-goods-selector"
       remote
       size="mini"
-      v-model="value"
+      v-model="val"
     >
-      <el-option :key="item.goodsCode" :label="item.name" :value="item.goodsCode" v-for="(item,i) in options">
+      <el-option
+        :key="item.goodsCode"
+        :label="item.name"
+        :value="item.goodsCode"
+        v-for="(item,i) in options"
+      >
         <el-row>
-          <el-col :span="6" class="b d-text-black" v-if="i==0">商品名称</el-col>
-          <el-col :span="18" class="b d-text-black" v-if="i==0">商品编号</el-col>
-          <el-col :span="6" class="d-hidden d-elip">{{item.goodsName}}</el-col>
-          <el-col :span="18" class="d-hidden d-elip">
+          <el-col
+            :span="6"
+            class="b d-text-black"
+            v-if="i==0"
+          >商品名称</el-col>
+          <el-col
+            :span="18"
+            class="b d-text-black"
+            v-if="i==0"
+          >商品编号</el-col>
+          <el-col
+            :span="6"
+            class="d-hidden d-elip"
+          >{{item.goodsName}}</el-col>
+          <el-col
+            :span="18"
+            class="d-hidden d-elip"
+          >
             <span :title="item.goodsCode">{{item.goodsCode}}</span>
           </el-col>
         </el-row>
       </el-option>
     </el-select>
-    <i @click="openDialog" class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"></i>
-    <commodity-choose :visible.sync="showCommodityGoods" @choose="choose" v-if="showCommodityGoods||showed" />
+    <i
+      @click="openDialog"
+      class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"
+    ></i>
+    <commodity-choose
+      :visible.sync="showCommodityGoods"
+      @choose="choose"
+      v-if="showCommodityGoods||showed"
+    />
   </span>
 </template>
 <script>
@@ -39,7 +65,9 @@ export default {
     codes: {
       type: Array,
       default: () => []
-    }
+    },
+    val: '',
+    wmsId: ''//库房id,新增报溢报损要筛选当前库房下的id
   },
   data() {
     return {
@@ -62,7 +90,7 @@ export default {
     choose(e) {
       let choose = e.filter(a => !this.codes.includes(a.goodsCode));
       if (choose.length) {
-        this.$emit('choose', e);
+        this.$emit('choose', e, 'choose');
       }
     },
     async search(words = '') {
@@ -74,7 +102,8 @@ export default {
       let { data } = await this.$api.seePsiWmsService.wmsinventoryList({
         page: 1,
         limit: 5,
-        goodsName: words
+        goodsName: words,
+        wmsId: this.wmsId
       });
       this.options = data || [];
       this.loading = false;
@@ -85,8 +114,8 @@ export default {
         item => item.goodsCode == e && !this.codes.includes(item.goodsCode)
       );
       if (goods.length) {
-        this.$emit('choose', goods);
-        this.value = '';
+        this.$emit('choose', goods, 'select');
+        this.val = '';
       }
     }
   }
