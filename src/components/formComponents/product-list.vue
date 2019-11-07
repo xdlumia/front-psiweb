@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 18:32:24
+ * @LastEditTime: 2019-11-07 20:17:39
  * @Description: 整机列表 和 配件列表  私有组件 你们用不了 
 */
 <template>
@@ -113,16 +113,21 @@ export default {
   },
   computed: {
     kind1List() {
-      // 整机列表
-      return this.kind1Data.filter(item =>
-        item.name.indexOf(this.kind1Name) != -1 || item.children && item.children.length && item.children.some(item => item.name.indexOf(this.kind1Name))
-      )
+      // 变平化数据
+      let flattenKindData = this.$$util.jsonFlatten(this.kind1Data)
+      // 根据nama筛选数据
+      let filterData = flattenKindData.filter(item => item.name.indexOf(this.kind1Name) != -1)
+      let newData = this.$$util.formatChildren(filterData, 'className')
+      return newData
     },
     // 配件列表
     kind2List() {
-      return this.kind2Data.filter(item =>
-        item.name.indexOf(this.kind2Name) != -1 || item.children && item.children.length && item.children.some(item => item.name.indexOf(this.kind2Name))
-      )
+      // 变平化数据
+      let flattenKindData = this.$$util.jsonFlatten(this.kind2Data)
+      // 根据nama筛选数据
+      let filterData = flattenKindData.filter(item => item.name.indexOf(this.kind2Name) != -1)
+      let newData = this.$$util.formatChildren(filterData, 'secondClassName')
+      return newData
     }
   },
   methods: {

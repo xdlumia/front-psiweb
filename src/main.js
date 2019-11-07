@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 17:37:27
+ * @LastEditTime: 2019-11-07 19:07:17
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -16,16 +16,21 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 import ElementUI from 'element-ui'
 import router from './router' // 路由
+// basic配置
+import { globalConfig } from 'see-web-basic'
+import { systemStoreConfig } from 'see-web-system'
+
+
 import './assets/css/common.scss'
 import './assets/css/editor.css'
 // import './assets/css/iconfont.css'
 import './utils/verify.js'
 import './utils/anchor.js'
+import './utils/utils'
 import citys from './utils/citys'
+
 import './api'
-// basic配置
-import { globalConfig } from 'see-web-basic'
-import { systemStoreConfig } from 'see-web-system'
+
 // 公共组件
 import commonComponents from './components/index'
 import indexComponents from './views/index'
@@ -60,5 +65,7 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+console.dir(Vue.prototype);
+
 window.router = router
 

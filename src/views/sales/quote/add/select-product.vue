@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 18:33:06
+ * @LastEditTime: 2019-11-07 20:16:41
  * @Description: 选择产品
 */
 <template>
@@ -156,6 +156,7 @@ export default {
     // 类型切换的时候清除搜索内容
     categoryChange(code) {
       this.queryForm.name = ''
+      this.filterHandle()
     },
     // 筛选
     filterHandle() {
