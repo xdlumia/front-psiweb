@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 20:16:41
+ * @LastEditTime: 2019-11-07 20:36:21
  * @Description: 选择产品
 */
 <template>
@@ -30,6 +30,7 @@
 
       <el-input
         size="small"
+        @keyup.native.13="filterHandle"
         placeholder="请输入名称"
         v-model="queryForm.name"
       >

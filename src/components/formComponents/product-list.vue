@@ -2,12 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 20:17:39
+ * @LastEditTime: 2019-11-07 20:35:28
  * @Description: 整机列表 和 配件列表  私有组件 你们用不了 
 */
 <template>
   <form-card :title="title">
     <el-table
+      size="mini"
       height="550px"
       ref="kind1"
       v-if="title=='整机列表'"
@@ -38,6 +39,7 @@
 
     </el-table>
     <el-table
+      size="mini"
       height="550px"
       row-key="id"
       :data="kind2List"
@@ -78,6 +80,12 @@
         prop="specOne"
         min-width="120"
         label="规格"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="price"
+        width="120"
+        label="销售参考价"
       >
       </el-table-column>
     </el-table>
