@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 10:37:30
+ * @LastEditTime: 2019-11-07 14:50:16
  * @Description: 新增商品
  -->
 <template>
@@ -78,10 +78,16 @@
                   </slot>
                 </upload-file>
                 <div style class="ba upload-wrapper mr10" v-else>
-                  <img
+                  <!-- <img
                     style="width:100%;height:100%;object-fit: cover;"
                     :src="goodForm.values[0].goodsPic"
-                  />
+                  />-->
+                  <el-image
+                    :src="goodForm.values[0].goodsPic"
+                    style="width: 100%;height:100%;"
+                    fit="scale-down"
+                    :preview-src-list="[goodForm.values[0].goodsPic]"
+                  ></el-image>
                 </div>
                 <p class="d-text-qgray f12" style="display: flex; flex-direction: column">
                   <span>仅支持jpg、jpeg、png格式</span>
@@ -308,12 +314,13 @@ export default {
   },
   methods: {
     getGoodsDetailV2(code) {
+      this.goodForm = Object.assign(this.goodForm, {})
       this.$api.seeGoodsService.getGoodsDetailV2({ code }).then(res => {
         this.isDetail = true
         this.goodForm = Object.assign(this.goodForm, res.data);
-        console.log(this.goodForm)
         this.goodForm.firstClassId = res.data.firstClassId
         this.goodForm.classId = res.data.secondClassId
+        this.$emit('update', this.goodForm)
       })
     },
     inventoryPriceChange() {
@@ -381,7 +388,7 @@ export default {
     'goodForm.classId': {
       handler: function(newValue) {
         const temp = this.secondClassList.find(item => item.id === newValue)
-        this.goodForm.values[0].taxRate = temp ? temp.taxRate : null
+        this.goodForm.values[0].taxRate = temp ? temp.taxRate : this.goodForm.values[0].taxRate
       }
     },
     'openingInventory': {

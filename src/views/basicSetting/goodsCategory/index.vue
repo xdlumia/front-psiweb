@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:44:55
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-01 10:57:00
+ * @LastEditTime: 2019-11-07 14:36:17
  * @Description: 商品分类
  -->
 <template>
@@ -54,8 +54,14 @@
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>{{ node.label }}</span>
               <div class="tree-node">
-                <span class="d-elip" style="display:inline-block;width:100px;">{{ data.categoryCode | dictionary('PSI_SP_KIND') }}</span>
-                <span class="d-elip" style="display:inline-block;width:100px;">{{data.taxRate ? data.taxRate + '%' : '-'}}</span>
+                <span
+                  class="d-elip"
+                  style="display:inline-block;width:100px;"
+                >{{ data.categoryCode | dictionary('PSI_SP_KIND') }}</span>
+                <span
+                  class="d-elip"
+                  style="display:inline-block;width:100px;"
+                >{{data.taxRate ? data.taxRate + '%' : '-'}}</span>
                 <span class="d-elip" style="display:inline-block;width:100px;">{{data.creatorName}}</span>
                 <span class="d-elip" style="width:200px;display:inline-block;">
                   <span>{{node.data.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
@@ -138,16 +144,29 @@
           <!-- <div class="b ml30" style="height:30px;line-height:30px;">
             <span class="el-icon-warning f30 fl" style="color:#e6a23c;"></span>
             <span class="ml10 fl">分类新增成功后，不可更改及删除，请仔细核实分类信息！</span>
-          </div> -->
+          </div>-->
           <el-form ref="form" :model="form" label-width="100px" :rules="rules" class="mt20">
             <el-form-item size="small" label="选择类别" prop="categoryCode">
               <!-- <el-input placeholder="请输入分类名称" v-model="form.categoryCode"></el-input> -->
-              <d-select :disabled="istype === 'child' || istype === 'itself'" v-model="form.categoryCode" dicCode="PSI_SP_KIND"></d-select>
+              <d-select
+                :disabled="istype === 'child' || istype === 'itself'"
+                v-model="form.categoryCode"
+                dicCode="PSI_SP_KIND"
+              ></d-select>
             </el-form-item>
             <el-form-item size="small" label="主分类名称" prop="className">
-              <el-input :disabled="istype === 'child' || isEditChild" placeholder="请输入" v-model="form.className"></el-input>
+              <el-input
+                :disabled="istype === 'child' || isEditChild"
+                placeholder="请输入"
+                v-model="form.className"
+              ></el-input>
             </el-form-item>
-            <el-form-item v-if="istype === 'child' || isEditChild" size="small" label="子分类名称" prop="childClassName">
+            <el-form-item
+              v-if="istype === 'child' || isEditChild"
+              size="small"
+              label="子分类名称"
+              prop="childClassName"
+            >
               <el-input placeholder="请输入" v-model="form.childClassName"></el-input>
             </el-form-item>
             <el-form-item size="small" label="分类税率" prop="taxRate">
@@ -223,7 +242,7 @@ export default {
       istype: '', // 区分点击的是添加子类还是编辑
       firstForm: { // 一级类目的参数
         page: 1,
-        limit: 5
+        limit: 10
       },
       addchild: true,
       titleHandel: '新增子类',
