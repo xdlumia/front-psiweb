@@ -1,8 +1,8 @@
 /*
  * @Author: 高大鹏
  * @Date: 2019-10-31 15:09:35
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 10:24:23
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-07 11:55:56
  * @Description: description
  */
 /**
@@ -129,6 +129,23 @@ export default {
    */
   goodsSelectGoodsList(params) {
     return Api.post(`${baseURL.seeGoodsService}/goods/selectGoodsList`, params, { isShowMessage: false })
+  },
+
+  /**
+   * @tag 进销存商品库接口
+   * @description 进销存商品库接口
+
+   */
+  // 商品类别和商品树形列表 配件选选择
+  selectGoodsInfoTreeList(params) {
+    return Api.post(`${baseURL.seeGoodsService}/goods/jxc/selectGoodsInfoTreeList`, params)
+  },
+  // 选择商品名称列表 整机选择
+  selectGoodsNameList(params) {
+    return Api.post(`${baseURL.seeGoodsService}/goods/jxc/selectGoodsNameList
+    `, params)
   }
+
+
 
 }

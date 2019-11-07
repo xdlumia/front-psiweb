@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 21:05:47
+ * @LastEditTime: 2019-11-07 12:02:29
  * @Description: 选择产品
 */
 <template>
@@ -26,7 +26,7 @@
         >
         </el-option>
       </el-select>
-      <el-select
+      <!-- <el-select
         size="small"
         placeholder="请输入名称"
         :remote-method="getClinent"
@@ -43,7 +43,7 @@
           :value="item.id"
           v-for="item in goodsOptions"
         ></el-option>
-      </el-select>
+      </el-select> -->
       <div
         class="f16 b d-flex"
         style="white-space:nowrap;align-items:center;"
@@ -86,7 +86,20 @@
       </div>
     </div>
     <el-divider></el-divider>
-    <product-list title="整机列表"></product-list>
+    <product-list
+      ref="kind1"
+      v-show="productType == 'PSI_SP_KIND-1'"
+      :params="{}"
+      title="整机列表"
+      :data="KIND1Data"
+    ></product-list>
+    <product-list
+      ref="kind2"
+      :params="{}"
+      v-show="productType == 'PSI_SP_KIND-2'"
+      title="配件列表"
+      :data="KIND2Data"
+    ></product-list>
   </div>
 </template>
 <script>
@@ -105,8 +118,11 @@ export default {
     return {
       loading: false,
       // 当前操作步骤
-      productType: 'PSI_SP_KIND-1', //默认选中整机
-      goodsOptions: [],
+      productType: 'PSI_SP_KIND-1', //默认选中整机列表
+      KIND1Data: [], //整机列表
+      KIND2Data: [], //配件列表
+      // goodsOptions: [],
+
       gridData: [{
         date: '2016-05-02',
         name: '王小虎',
@@ -133,34 +149,34 @@ export default {
   },
   methods: {
     // 获取列表
-    async getClinent(words) {
-      if (words) {
-        let { data } = await this.$api.seePsiCommonService.commonclientinfoQueryList({
-          fuzzyNameOrCode: words,
-        });
-        this.goodsOptions = data || []
-      } else {
-        this.goodsOptions = [];
-      }
-    },
+    // async getClinent(words) {
+    //   if (words) {
+    //     let { data } = await this.$api.seePsiCommonService.commonclientinfoQueryList({
+    //       fuzzyNameOrCode: words,
+    //     });
+    //     this.goodsOptions = data || []
+    //   } else {
+    //     this.goodsOptions = [];
+    //   }
+    // },
     // 获取客户详情信息
-    commonclientinfoInfo() {
-      if (!this.data.clientId) {
-        this.$message.error({
-          showClose: true,
-          message: '客户内容不能为空'
-        })
-        return
-      }
-      this.loading = true
-      this.$api.seePsiCommonService.commonclientinfoInfo(null, this.data.clientId)
-        .then(res => {
-          this.clientInfo = res.data || {}
-        })
-        .finally(() => {
-          this.loading = false
-        })
-    },
+    // commonclientinfoInfo() {
+    //   if (!this.data.clientId) {
+    //     this.$message.error({
+    //       showClose: true,
+    //       message: '客户内容不能为空'
+    //     })
+    //     return
+    //   }
+    //   this.loading = true
+    //   this.$api.seePsiCommonService.commonclientinfoInfo(null, this.data.clientId)
+    //     .then(res => {
+    //       this.clientInfo = res.data || {}
+    //     })
+    //     .finally(() => {
+    //       this.loading = false
+    //     })
+    // },
     // 点击步骤条触发
     editClick() {
 
