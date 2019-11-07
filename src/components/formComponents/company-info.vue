@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 19:57:19
+ * @LastEditTime: 2019-11-07 14:30:25
  * @Description: 公司信息
 */
 <template>
@@ -35,7 +35,7 @@
           <el-input
             v-else
             disabled
-            v-model.trim="data[item.prop]"
+            v-model.trim="companyInfo[item.prop]"
             :placeholder="`请输入${item.label}`"
           />
 

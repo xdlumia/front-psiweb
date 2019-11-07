@@ -2,19 +2,18 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 12:58:08
+ * @LastEditTime: 2019-11-07 14:27:07
  * @Description: 整机列表 和 配件列表   默认显示整机列表
 */
 <template>
   <form-card :title="title">
-    <d-table
+    <!-- <d-table
       v-if="title=='整机列表'"
       refs="kind1"
       api="seeGoodsService.selectGoodsNameList"
       :params="params"
       border
       :paging="false"
-      default-expand-all
       @selection-change="selectionChange"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
@@ -35,8 +34,8 @@
         width="180"
       >
       </el-table-column>
-    </d-table>
-    <d-table
+    </d-table> -->
+    <!-- <d-table
       v-else
       ref="kind2"
       api="seeGoodsService.selectGoodsInfoTreeList"
@@ -64,7 +63,7 @@
         width="180"
       >
       </el-table-column>
-    </d-table>
+    </d-table> -->
   </form-card>
 </template>
 <script>

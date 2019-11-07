@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 12:02:29
+ * @LastEditTime: 2019-11-07 14:21:56
  * @Description: 选择产品
 */
 <template>
@@ -93,13 +93,14 @@
       title="整机列表"
       :data="KIND1Data"
     ></product-list>
+    <!-- 
     <product-list
       ref="kind2"
       :params="{}"
       v-show="productType == 'PSI_SP_KIND-2'"
       title="配件列表"
       :data="KIND2Data"
-    ></product-list>
+    ></product-list> -->
   </div>
 </template>
 <script>
