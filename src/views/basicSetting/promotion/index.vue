@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-06 18:08:17
+ * @LastEditTime: 2019-11-07 18:20:58
  * @Description: 促销管理
  -->
 <template>
@@ -13,7 +13,7 @@
       :filterOptions="filterOptions"
       :busType="37"
       title="促销管理"
-      api="seePsiCommonService.commonpromotiongoalpersonnelList"
+      api="seePsiCommonService.commonpromotionList"
       :params="queryForm"
     >
       <template v-slot:filter>自定义筛选列</template>
@@ -26,8 +26,12 @@
           type="text"
           v-if="column.columnFields=='code'"
           @click="detail(scope.row)"
+          style="padding:0"
         >{{scope.row.code}}</el-button>
         <span v-else-if="column.columnFields=='state'">{{scope.row.state ? '停用' : '启用'}}</span>
+        <span
+          v-else-if="column.columnFields=='begTime'"
+        >{{scope.row.begTime|timeToStr('YYYY-MM-DD hh:mm:ss')}}-{{scope.row.endTime|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span
           v-else-if="column.columnFields=='createTime'"
         >{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
@@ -55,7 +59,7 @@
 import addPromotion from './add-promotion'
 import detail from './detail'
 export default {
-  data() {
+  data () {
     return {
       rowData: null,
       code: null,
@@ -67,9 +71,9 @@ export default {
       },
       editId: null,
       filterOptions: [
-        { label: '服务商编号', prop: 'code', default: true },
-        { label: '服务商名称', prop: 'fuzzyServiceName', default: true },
-        { label: '状态',
+        { label: '促销编号', prop: 'code', default: true },
+        { label: '促销名称', prop: 'promotionName', default: true },
+        {          label: '状态',
           prop: 'state',
           type: 'select',
           default: true,
@@ -79,8 +83,10 @@ export default {
             { label: '停用', value: 1 }
           ]
         },
-        { label: '联系人', prop: 'linkMan', default: true },
-        { label: '联系电话', prop: 'personInChargeName', default: true },
+        { label: '促销时间', prop: 'BegTime', type: 'dateRange', default: true },
+        { label: '促销目标', prop: 'promotionTarget', default: true },
+        { label: '参与商品', prop: 'commodityNum', default: true },
+        { label: '参与人', prop: 'userNum', default: true },
         {
           label: '创建人',
           prop: 'creator',
@@ -92,19 +98,19 @@ export default {
       ]
     }
   },
-  mounted() {
+  mounted () {
   },
   components: {
     addPromotion,
     detail
   },
   methods: {
-    detail(row) {
+    detail (row) {
       this.rowData = row
       this.code = row.code
       this.showDetail = true
     },
-    commonwmsmanagerUpdateState(id, state) {
+    commonwmsmanagerUpdateState (id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -120,7 +126,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete(id) {
+    commonwmsmanagerLogicDelete (id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -136,10 +142,10 @@ export default {
         })
       })
     },
-    saveFacilitator() {
+    saveFacilitator () {
       this.$refs.addPromotion && this.$refs.addPromotion.commonserviceproviderSave()
     },
-    refresh() {
+    refresh () {
       this.visible = false
       this.$refs.table.reload()
     }
