@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-06 17:31:36
+ * @LastEditTime: 2019-11-07 18:15:23
  * @Description: 目标管理
  -->
 <template>
@@ -11,7 +11,7 @@
       ref="table"
       :filter="true"
       :filterOptions="filterOptions"
-      :busType="37"
+      :busType="38"
       title="目标管理"
       api="seePsiCommonService.commonpromotiongoalpersonnelList"
       :params="queryForm"
@@ -26,6 +26,7 @@
           type="text"
           v-if="column.columnFields=='code'"
           @click="detail(scope.row)"
+          style="padding:0"
         >{{scope.row.code}}</el-button>
         <span v-else-if="column.columnFields=='state'">{{scope.row.state ? '停用' : '启用'}}</span>
         <span

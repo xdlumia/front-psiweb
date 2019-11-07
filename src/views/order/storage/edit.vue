@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 11:20:19
+ * @LastEditTime: 2019-11-07 17:38:57
  * @Description: 采购入库单
 */
 <template>
@@ -10,7 +10,7 @@
     <div slot="title">
       <span>采购入库单{{from?`(${from})`:''}}</span>
       <span class="fr mr20">
-        <el-button @click="close" size="mini" type="primary">保存</el-button>
+        <el-button @click="save" size="mini" type="primary">保存</el-button>
         <el-button @click="close" size="mini">关闭</el-button>
       </span>
     </div>
@@ -25,30 +25,31 @@
       <d-tab-pane label="自定义信息" name="customInfo" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
       <div>
-        <el-form :model="form" class="p10">
-          <supplierInfo id="supplierInfo" />
-          <companyInfo id="companyInfo" />
-          <arrivalInfo id="arrivalInfo" />
-          <commodityInfo id="commodityInfo" />
-          <commodityInfo />
-          <paymentLate id="paymentLate" />
-          <billInfo id="billInfo" />
-          <customInfo id="customInfo" />
-          <extrasInfo id="extrasInfo" />
+        <el-form :model="form" class="p10" ref="form" size="mini" v-if="visible">
+          <supplierInfo :data="form" @change="supplierChange" id="supplierInfo" />
+          <companyInfo :data="form" id="companyInfo" />
+          <arrivalInfo :data="form" id="arrivalInfo" ref="arrivalInfo" />
+          <commodityInfo :data="form" id="commodityInfo" />
+          <commodityInfo :data="form" />
+          <paymentLate :data="form" id="paymentLate" />
+          <order-storage-bill :data="form" id="billInfo" />
+          <customInfo :data="form" id="customInfo" />
+          <extrasInfo :data="form" id="extrasInfo" />
         </el-form>
       </div>
     </d-tabs>
   </el-dialog>
 </template>
 <script>
+import VisibleMixin from '@/utils/visibleMixin';
 export default {
+  mixins: [VisibleMixin],
   components: {},
   props: {
     visible: {
       type: Boolean,
       default: false
     },
-    form: {},
     from: String // 来源
   },
   computed: {
@@ -59,7 +60,58 @@ export default {
   data() {
     return {
       activeName: '',
-      randomStr: +new Date() + '-' + Math.random()
+      form: {
+        // 流程审批状态（0 未审核 1审核中 2 完成 3 驳回） 0
+        approvalState: '',
+        // 到货信息 示例：到货信息
+        arrivalInfo: '',
+        // 附件 undefined
+        attachList: [],
+        // 商品信息 undefined
+        commodityList: [],
+        // 公司发票账户id 100000
+        companyAccountId: '',
+        // 公司编码 示例：公司编码
+        companyCode: '',
+        // 公司结算账户id 100000
+        companySettlementId: '',
+        // 部门编码 示例：部门编码
+        deptTotalCode: '',
+        // 自定义字段 undefined
+        fieldList: [],
+        // 账期信息 undefined
+        financeList: [],
+        // 是否删除 9
+        isDelete: '',
+        // 请购/直发/备货单编号 示例：请购/直发/备货单编号
+        joinCode: '',
+        // 滞纳金方案 示例：滞纳金方案
+        lateFee: '',
+        // 滞纳金方案ID 100000
+        lateFeeId: '',
+        // 备注信息 示例：备注信息
+        note: '',
+        // 单据执行人 100000
+        personInChargeId: '',
+        // 采购预计到/发货时间 1572346044873
+        purchaseTime: '',
+        // 总计采购价 98765432109876.12
+        putinAmount: '',
+        // 入库单编号 示例：入库单编号
+        putinCode: '',
+        // 总计数量 9
+        putinNum: '',
+        // 销售预计到/发货时间 1572346044873
+        saleTime: '',
+        // 来源 示例：来源
+        source: '',
+        // 单据状态 9
+        state: '',
+        // 供应商ID 100000
+        supplierId: '',
+        logistics: {},
+        financeConfig: {}
+      }
     };
   },
   mounted() {},
@@ -69,6 +121,15 @@ export default {
     },
     close() {
       this.$emit('update:visible', false);
+    },
+    supplierChange(e) {
+      console.log(e);
+      this.$set(this.form.logistics, 'supplierLinkman', e.linkManName || '');
+      this.$set(this.form.logistics, 'supplierPhone', e.phone || '');
+    },
+    save() {
+      this.$refs.form.validate();
+      console.log(JSON.parse(JSON.stringify(this.form)));
     }
   }
 };

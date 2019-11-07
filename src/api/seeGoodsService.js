@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-31 15:09:35
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 11:55:56
+ * @LastEditTime: 2019-11-07 15:54:52
  * @Description: description
  */
 /**
@@ -138,12 +138,11 @@ export default {
    */
   // 商品类别和商品树形列表 配件选选择
   selectGoodsInfoTreeList(params) {
-    return Api.post(`${baseURL.seeGoodsService}/goods/jxc/selectGoodsInfoTreeList`, params)
+    return Api.get(`${baseURL.seeGoodsService}/goods/jxc/selectGoodsInfoTreeList`, params)
   },
   // 选择商品名称列表 整机选择
   selectGoodsNameList(params) {
-    return Api.post(`${baseURL.seeGoodsService}/goods/jxc/selectGoodsNameList
-    `, params)
+    return Api.get(`${baseURL.seeGoodsService}/goods/jxc/selectGoodsNameList`, params)
   }
 
 

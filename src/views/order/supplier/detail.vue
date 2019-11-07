@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 15:24:24
+ * @LastEditTime: 2019-11-07 10:41:42
  * @Description: 供应商编号
 */
 <template>
@@ -14,7 +14,7 @@
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form disabled v-if="detail">
+        <el-form v-if="detail">
           <form-card title="往来账款">
             <el-row>
               <el-col :span="8">
@@ -27,14 +27,14 @@
               </el-col>
             </el-row>
           </form-card>
-          <supplier-base-edit :data="detail"></supplier-base-edit>
-          <invoice-info :data="detail"></invoice-info>
-          <extras-info :data="detail"></extras-info>
+          <supplier-base-edit :data="detail" disabled></supplier-base-edit>
+          <invoice-info :data="detail" disabled></invoice-info>
+          <extras-info :data="detail" disabled></extras-info>
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="可供商品">
-        <el-form class="supplier-goods">
-          <supplier-goods show-cat />
+        <el-form class="supplier-goods" v-if="detail">
+          <supplier-goods :supplierId="detail.id" show-cat />
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>

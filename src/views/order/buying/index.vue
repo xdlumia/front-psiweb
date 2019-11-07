@@ -2,12 +2,18 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 19:01:22
+ * @LastEditTime: 2019-11-07 18:26:15
  * @Description: 采购-请购单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :filterOptions="filterOptions" api="seePsiPurchaseService.purchaseapplyorderList" busType="27" title="请购单">
+    <TableView
+      :filterOptions="filterOptions"
+      api="seePsiPurchaseService.purchaseapplyorderList"
+      busType="27"
+      exportApi="seePsiPurchaseService.purchaseputinExport"
+      title="请购单"
+    >
       <template slot="button">
         <el-button @click="orderBuyingDetailRecVisible=true" size="mini" type="primary">请购单明细表</el-button>
       </template>
@@ -26,7 +32,7 @@
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <OrderBuyingDetail :visible.sync="showDetail" />
+    <OrderBuyingDetail :code="currentCode" :visible.sync="showDetail" />
     <OrderBuyingDetailRec :visible.sync="orderBuyingDetailRecVisible" />
   </div>
 </template>
@@ -53,6 +59,7 @@ export default {
       showDetail: false,
       addBorrowInVisible: false,
       orderBuyingDetailRecVisible: false,
+      currentCode: '',
       stateText: {
         // 单据状态0待完成 1部分完成 2完成3终止
         0: '待完成',
@@ -61,25 +68,36 @@ export default {
         3: '终止'
       },
       filterOptions: [
-        // { label: '请购单编号', prop: 'purchaseApplyCode', default: true },
-        // { label: '报价单编号', prop: 'quotationCode', default: true },
-        // { label: '单据状态', prop: 'state', default: true },
-        // {
-        //   label: '销售要求到货时间',
-        //   prop: 'SaleArrivalTime',
-        //   type: 'dateRange',
-        //   default: true
-        // },
-        // {
-        //   label: '采购预计到货时间',
-        //   prop: 'PurchaseArrivalTime',
-        //   type: 'dateRange',
-        //   default: true
-        // },
+        { label: '请购单编号', prop: 'purchaseApplyCode', default: true },
+        { label: '报价单编号', prop: 'quotationCode', default: true },
+        {
+          label: '单据状态',
+          prop: 'state',
+          default: true,
+          type: 'select',
+          options: [
+            { label: '待完成', value: 0 },
+            { label: '部分完成', value: 1 },
+            { label: '完成', value: 2 },
+            { label: '终止', value: 3 }
+          ]
+        },
+        {
+          label: '销售要求到货时间',
+          prop: 'SaleArrivalTime',
+          type: 'dateRange',
+          default: true
+        },
+        {
+          label: '采购预计到货时间',
+          prop: 'PurchaseArrivalTime',
+          type: 'dateRange',
+          default: true
+        },
         // { label: '单据执行人', prop: 'personInChargeId', type: 'employee' },
-        // { label: '创建人', prop: 'creator', type: 'employee' },
-        // { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
-        // { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
+        { label: '创建人', prop: 'creator', type: 'employee' },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
+        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
       ]
     };
   },

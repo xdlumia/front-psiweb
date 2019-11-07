@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 15:47:55
+ * @LastEditTime: 2019-11-07 15:09:31
  * @Description: 采购-供应商
 */
 <template>
@@ -63,8 +63,8 @@ export default {
       showCat: false,
       currentCode: '',
       filterOptions: [
-        { label: '供应商编号', prop: 'supplierName', default: true },
-        { label: '供应商名称', prop: 'code', default: true },
+        { label: '供应商编号', prop: 'code', default: true },
+        { label: '供应商名称', prop: 'fuzzySupplierName', default: true },
         {
           label: '状态',
           prop: 'state',
