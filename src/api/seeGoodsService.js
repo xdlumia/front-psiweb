@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-31 15:09:35
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-06 21:40:21
+ * @LastEditTime: 2019-11-07 10:24:23
  * @Description: description
  */
 /**
@@ -72,6 +72,9 @@ export default {
   },
   deleteGoodsList(params) {
     return Api.del(baseURL.seeGoodsService + apiURL.deleteGoodsList, params)
+  },
+  deleteGood(params) {
+    return Api.del(baseURL.seeGoodsService + '/goods/jxc/delete', params)
   },
   getGoodsDetailV2(params) {
     return Api.get(baseURL.seeGoodsService + apiURL.getGoodsDetailV2, params)

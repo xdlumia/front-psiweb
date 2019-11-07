@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-06 22:04:00
+ * @LastEditTime: 2019-11-07 10:37:30
  * @Description: 新增商品
  -->
 <template>
@@ -309,8 +309,11 @@ export default {
   methods: {
     getGoodsDetailV2(code) {
       this.$api.seeGoodsService.getGoodsDetailV2({ code }).then(res => {
-        console.log(res);
+        this.isDetail = true
         this.goodForm = Object.assign(this.goodForm, res.data);
+        console.log(this.goodForm)
+        this.goodForm.firstClassId = res.data.firstClassId
+        this.goodForm.classId = res.data.secondClassId
       })
     },
     inventoryPriceChange() {
@@ -348,7 +351,10 @@ export default {
       this.$api.seeGoodsService.getGoodsClass({ categoryCode: this.goodForm.categoryCode }).then(res => {
         console.log(res)
         this.firstClassList = res.data
-        this.goodForm.classId = null
+        if (!this.isDetail) {
+          this.goodForm.classId = null
+        }
+        this.isDetail = false
       })
     },
     handleGoodPrice() {
@@ -359,13 +365,17 @@ export default {
   watch: {
     'goodForm.categoryCode': {
       handler: function(newValue) {
-        this.goodForm.firstClassId = null
+        if (!this.isDetail) {
+          this.goodForm.firstClassId = null
+        }
         this.getGoodsClass()
       }
     },
     'goodForm.firstClassId': {
       handler: function(newValue) {
-        this.goodForm.classId = null
+        if (!this.isDetail) {
+          this.goodForm.classId = null
+        }
       }
     },
     'goodForm.classId': {

@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-06 22:07:18
+ * @LastEditTime: 2019-11-07 10:46:11
  * @Description: description
  -->
 <template>
@@ -17,13 +17,23 @@
     <template slot="button">
       <el-button size="mini" type="primary" @click="commonserviceproviderUpdate(rowData.id, 1)">期初库存</el-button>
       <el-button size="mini" type="primary" @click="showEdit = true">编辑</el-button>
-      <el-button size="mini" type="danger" @click="deleteGoodsList(rowData.id)">删除</el-button>
+      <el-button size="mini" type="danger" @click="deleteGood(rowData.id)">删除</el-button>
     </template>
     <div class="d-bg-gray" style="display: flex;margin:-40px -15px 10px">
-      <img
+      <el-image
+        :src="rowData.goodsPic"
+        style="width: 120px;height:120px;margin:20px;"
+        fit="scale-down"
+        :preview-src-list="[rowData.goodsPic]"
+      >
+        <div slot="error" class="image-slot">
+          <el-image :src="noPic" style="width: 120px;height:120px;" fit="fit"></el-image>
+        </div>
+      </el-image>
+      <!-- <img
         :src="rowData.goodsPic || noPic"
         style="width:120px;height:120px;object-fit: cover;margin:20px;"
-      />
+      />-->
       <div style="display: flex;flex-direction: column;justify-content: space-around;margin:20px 0">
         <span>商品类别：{{rowData.categoryCode | dictionary('PSI_SP_KIND')}}</span>
         <span>商品分类：{{rowData.secondClassName}}</span>
@@ -42,7 +52,7 @@
     </el-tabs>
     <el-dialog :visible.sync="showEdit" title v-dialogDrag :show-close="false" width="1000px">
       <div slot="title" style="display:flex;">
-        <h3 style="flex:1;text-align:center;">新增商品</h3>
+        <h3 style="flex:1;text-align:center;">编辑商品</h3>
         <div>
           <el-button type="primary" size="mini" @click="saveGood">保存</el-button>
           <el-button size="mini" @click="showEdit=false">关闭</el-button>
@@ -72,7 +82,7 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     return {
       noPic: require('@/assets/img/no-pic.png'),
       showEdit: false,
@@ -86,27 +96,27 @@ export default {
       ]
     }
   },
-  mounted() {
+  mounted () {
     console.log(this.rowData)
     this.checkVisible();
   },
   watch: {
-    visible() {
+    visible () {
       this.checkVisible();
     }
   },
   methods: {
-    saveGood() {
+    saveGood () {
       this.$refs.addGood && this.$refs.addGood.saveGood()
     },
-    deleteGoodsList(id) {
+    deleteGood (id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seeGoodsService.deleteGoodsList([id]).then(res => {
-
+        this.$api.seeGoodsService.deleteGood({ id }).then(res => {
+          this.$emit('refresh')
         })
       }).catch(() => {
         this.$message({
@@ -116,10 +126,10 @@ export default {
       })
 
     },
-    refresh() {
+    refresh () {
       this.emit('refresh')
     },
-    checkVisible() {
+    checkVisible () {
       this.showPop = this.visible;
     }
   }
