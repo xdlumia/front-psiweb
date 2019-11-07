@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 14:21:56
+ * @LastEditTime: 2019-11-07 18:33:06
  * @Description: 选择产品
 */
 <template>
@@ -13,8 +13,9 @@
     >
       <!-- 选择类型 -->
       <el-select
-        v-model="productType"
+        v-model="queryForm.categoryCode"
         size="small"
+        @change="categoryChange"
         placeholder="请选择"
       >
         <!-- //过滤掉服务字典 此处不需要 -->
@@ -26,6 +27,18 @@
         >
         </el-option>
       </el-select>
+
+      <el-input
+        size="small"
+        placeholder="请输入名称"
+        v-model="queryForm.name"
+      >
+        <el-button
+          slot="append"
+          @click="filterHandle"
+          icon="el-icon-search"
+        >搜索</el-button>
+      </el-input>
       <!-- <el-select
         size="small"
         placeholder="请输入名称"
@@ -53,7 +66,10 @@
           width="400"
           trigger="click"
         >
-          <el-table :data="gridData">
+          <el-table
+            height="450px"
+            :data="[...data.KIND1Data,...data.KIND2Data]"
+          >
             <el-table-column
               width="50"
               property="date"
@@ -61,19 +77,19 @@
             >
               <template slot-scope="scope">
                 <span
-                  class="d-text-blue"
-                  @click="editClick(scope.row)"
+                  class="d-text-blue d-pointer"
+                  @click="delgoods(scope.row)"
                 >删除</span>
               </template>
             </el-table-column>
             <el-table-column
-              property="name"
+              property="goodsCode"
               label="商品编号"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
               show-overflow-tooltip
-              property="address"
+              property="name"
               label="商品名称"
             ></el-table-column>
           </el-table>
@@ -88,19 +104,18 @@
     <el-divider></el-divider>
     <product-list
       ref="kind1"
-      v-show="productType == 'PSI_SP_KIND-1'"
-      :params="{}"
+      @selection-change="kind1Select"
+      v-show="queryForm.categoryCode == 'PSI_SP_KIND-1'"
       title="整机列表"
       :data="KIND1Data"
-    ></product-list>
-    <!-- 
+    />
     <product-list
       ref="kind2"
-      :params="{}"
-      v-show="productType == 'PSI_SP_KIND-2'"
+      @selection-change="kind2Select"
+      v-show="queryForm.categoryCode == 'PSI_SP_KIND-2'"
       title="配件列表"
       :data="KIND2Data"
-    ></product-list> -->
+    />
   </div>
 </template>
 <script>
@@ -118,69 +133,63 @@ export default {
   data() {
     return {
       loading: false,
-      // 当前操作步骤
-      productType: 'PSI_SP_KIND-1', //默认选中整机列表
+      // 查询字段
+      queryForm: {
+        categoryCode: 'PSI_SP_KIND-1',//默认选中整机列表
+        name: ''
+      },
       KIND1Data: [], //整机列表
       KIND2Data: [], //配件列表
       // goodsOptions: [],
 
-      gridData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
     }
   },
   created() {
+
+
   },
   mounted() {
-
+    // 初始化整机列表
+    this.$refs.kind1.reload()
   },
   methods: {
-    // 获取列表
-    // async getClinent(words) {
-    //   if (words) {
-    //     let { data } = await this.$api.seePsiCommonService.commonclientinfoQueryList({
-    //       fuzzyNameOrCode: words,
-    //     });
-    //     this.goodsOptions = data || []
-    //   } else {
-    //     this.goodsOptions = [];
-    //   }
-    // },
-    // 获取客户详情信息
-    // commonclientinfoInfo() {
-    //   if (!this.data.clientId) {
-    //     this.$message.error({
-    //       showClose: true,
-    //       message: '客户内容不能为空'
-    //     })
-    //     return
-    //   }
-    //   this.loading = true
-    //   this.$api.seePsiCommonService.commonclientinfoInfo(null, this.data.clientId)
-    //     .then(res => {
-    //       this.clientInfo = res.data || {}
-    //     })
-    //     .finally(() => {
-    //       this.loading = false
-    //     })
-    // },
-    // 点击步骤条触发
-    editClick() {
+    // 类型切换的时候清除搜索内容
+    categoryChange(code) {
+      this.queryForm.name = ''
+    },
+    // 筛选
+    filterHandle() {
+      // 整机
+      if (this.queryForm.categoryCode === 'PSI_SP_KIND-1') {
+        this.$refs.kind1.filter(this.queryForm.name)
+      }
+      // 列表
+      else if (this.queryForm.categoryCode === 'PSI_SP_KIND-2') {
+        this.$refs.kind2.filter(this.queryForm.name)
+      }
+    },
+    // 整机数据多选
+    kind1Select(val) {
+      this.data.KIND1Data = val
+    },
+    // 配件数据多选
+    kind2Select(val) {
+      this.data.KIND2Data = val
+    },
 
+    // 删除当前行
+    delgoods(row) {
+      // 如果当前行有id 那么当前数据是配件列表 否则是整机列表数据
+      if (row.id) {
+        // 取消表格列表里当前行选中状态
+        this.$refs.kind2.toggleRowSelection(row, false);
+      } else {
+        this.$refs.kind1.toggleRowSelection(row, false);
+      }
+
+      // this.KIND1Data.forEach(row => {
+      //   this.$refs.kind1.toggleRowSelection(row);
+      // });
     }
   }
 }

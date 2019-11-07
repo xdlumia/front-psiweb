@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 13:00:29
+ * @LastEditTime: 2019-11-07 18:07:04
  * @Description: file content
 */
 <template>
@@ -96,6 +96,8 @@ export default {
       activeName: 'first', // 数据源
       // 新增orEdit框内容
       addForm: {
+        KIND1Data: [], //临时存放第二步整机列表选中的数据
+        KIND2Data: [], //临时存放第二步配件列表选中的数据
         apprpvalState: '', //审核状态
         attachList: '', //附件,
         businessCommoditySaveVoList: [ //商品信息合集

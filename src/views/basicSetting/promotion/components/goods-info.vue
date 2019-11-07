@@ -2,15 +2,21 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 17:45:14
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 11:31:22
+ * @LastEditTime: 2019-11-07 18:11:19
  * @Description: 商品信息
  -->
 <template>
-  <div class>
+  <div class v-loading="loading">
     <form-card :title="true">
-      <div slot="title">
+      <div slot="title" style="display:flex;align-items:center">
         <span class="mr20">商品信息</span>
-        <commodity-selector @choose="choose"></commodity-selector>
+        <el-form-item
+          v-if="!detail"
+          prop="commonPromotionCommodityDetailsEntities"
+          style="margin-bottom:5px"
+        >
+          <commodity-selector @choose="choose"></commodity-selector>
+        </el-form-item>
       </div>
       <el-table
         :data="goods"
@@ -57,16 +63,55 @@
 
 <script type='text/ecmascript-6'>
 export default {
+  props: {
+    data: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    detail: Boolean
+  },
   data() {
     return {
+      loading: false,
       goods: []
     }
   },
   components: {
   },
+  mounted() {
+    if (this.data.id) {
+      this.commonpromotioncommoditydetailsList(this.data.id)
+    }
+  },
+  watch: {
+    'data.id': {
+      handler: function(newValue) {
+        if (newValue) {
+          this.commonpromotioncommoditydetailsList(newValue)
+
+        }
+      }
+    }
+  },
   methods: {
-    choose(goods) {
+    choose(goods, type) {
       this.goods = goods
+      console.log(goods)
+      this.data.commonPromotionCommodityDetailsEntities = goods.map(item => {
+        return {
+          commodityId: type ? item.goodId : item.id,
+          commodityCode: item.goodsCode
+        }
+      })
+      this.data.commodityNum = goods.length
+    },
+    commonpromotioncommoditydetailsList(promotionId) {
+      this.loading = true
+      this.$api.seePsiCommonService.commonpromotioncommoditydetailsList({ promotionId }).then(res => {
+        this.choose(res.data, true)
+      }).finally(() => { this.loading = false })
     }
   }
 }

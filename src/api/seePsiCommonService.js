@@ -7,1086 +7,1086 @@ const isUseMock = false;
 * @host 39.99.132.95:9201
 */
 export default {
-    __mockAddress: MOCK_ADDRESS,
+  __mockAddress: MOCK_ADDRESS,
 
-    /**
+  /**
      * @tag 附件表
      * @description 删除
      */
-    commonaccessoryrecordDelete: {
-        url: '/commonaccessoryrecord/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonaccessoryrecordDelete: {
+    url: '/commonaccessoryrecord/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 附件表
      * @description 查看详细信息
      */
-    commonaccessoryrecordInfo: {
-        url: '/commonaccessoryrecord/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonaccessoryrecordInfo: {
+    url: '/commonaccessoryrecord/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 附件表
      * @description 获取列表
      */
-    commonaccessoryrecordList: {
-        url: '/commonaccessoryrecord/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonaccessoryrecordList: {
+    url: '/commonaccessoryrecord/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 附件表
      * @description 逻辑删除
      */
-    commonaccessoryrecordLogicDelete: {
-        url: '/commonaccessoryrecord/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonaccessoryrecordLogicDelete: {
+    url: '/commonaccessoryrecord/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 附件表
      * @description 保存
      */
-    commonaccessoryrecordSave: {
-        url: '/commonaccessoryrecord/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonaccessoryrecordSave: {
+    url: '/commonaccessoryrecord/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 附件表
      * @description 修改
      */
-    commonaccessoryrecordUpdate: {
-        url: '/commonaccessoryrecord/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonaccessoryrecordUpdate: {
+    url: '/commonaccessoryrecord/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 销售和采购调价单
      * @description 删除
      */
-    commonadjustpriceDelete: {
-        url: '/commonadjustprice/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonadjustpriceDelete: {
+    url: '/commonadjustprice/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 销售和采购调价单
      * @description 查看详细信息
      */
-    commonadjustpriceInfo: {
-        url: '/commonadjustprice/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonadjustpriceInfo: {
+    url: '/commonadjustprice/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 销售和采购调价单
      * @description 获取列表
      */
-    commonadjustpriceList: {
-        url: '/commonadjustprice/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonadjustpriceList: {
+    url: '/commonadjustprice/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 销售和采购调价单
      * @description 逻辑删除
      */
-    commonadjustpriceLogicDelete: {
-        url: '/commonadjustprice/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonadjustpriceLogicDelete: {
+    url: '/commonadjustprice/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 销售和采购调价单
      * @description 保存
      */
-    commonadjustpriceSave: {
-        url: '/commonadjustprice/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonadjustpriceSave: {
+    url: '/commonadjustprice/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 销售和采购调价单
      * @description 修改
      */
-    commonadjustpriceUpdate: {
-        url: '/commonadjustprice/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonadjustpriceUpdate: {
+    url: '/commonadjustprice/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品调价明细表
      * @description 删除
      */
-    commonadjustpricedetailedDelete: {
-        url: '/commonadjustpricedetailed/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonadjustpricedetailedDelete: {
+    url: '/commonadjustpricedetailed/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品调价明细表
      * @description 查看详细信息
      */
-    commonadjustpricedetailedInfo: {
-        url: '/commonadjustpricedetailed/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonadjustpricedetailedInfo: {
+    url: '/commonadjustpricedetailed/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品调价明细表
      * @description 获取列表
      */
-    commonadjustpricedetailedList: {
-        url: '/commonadjustpricedetailed/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonadjustpricedetailedList: {
+    url: '/commonadjustpricedetailed/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品调价明细表
      * @description 逻辑删除
      */
-    commonadjustpricedetailedLogicDelete: {
-        url: '/commonadjustpricedetailed/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonadjustpricedetailedLogicDelete: {
+    url: '/commonadjustpricedetailed/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品调价明细表
      * @description 保存
      */
-    commonadjustpricedetailedSave: {
-        url: '/commonadjustpricedetailed/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonadjustpricedetailedSave: {
+    url: '/commonadjustpricedetailed/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品调价明细表
      * @description 修改
      */
-    commonadjustpricedetailedUpdate: {
-        url: '/commonadjustpricedetailed/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonadjustpricedetailedUpdate: {
+    url: '/commonadjustpricedetailed/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 客户
      * @description 删除
      */
-    commonclientinfoDelete: {
-        url: '/commonclientinfo/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonclientinfoDelete: {
+    url: '/commonclientinfo/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 客户
      * @description 查看客户详细信息
      */
-    commonclientinfoInfo: {
-        url: '/commonclientinfo/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonclientinfoInfo: {
+    url: '/commonclientinfo/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 客户
      * @description 根据编码查看客户详细信息
      */
-    commonclientinfoInfoBycode: {
-        url: '/commonclientinfo/infoBycode/{code}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonclientinfoInfoBycode: {
+    url: '/commonclientinfo/infoBycode/{code}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 客户
      * @description 逻辑删除
      */
-    commonclientinfoLogicDelete: {
-        url: '/commonclientinfo/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonclientinfoLogicDelete: {
+    url: '/commonclientinfo/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 客户
      * @description 获取客户列表
      */
-    commonclientinfoPagelist: {
-        url: '/commonclientinfo/pagelist',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonclientinfoPagelist: {
+    url: '/commonclientinfo/pagelist',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 客户
      * @description 普通查询
      */
-    commonclientinfoQueryList: {
-        url: '/commonclientinfo/queryList',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonclientinfoQueryList: {
+    url: '/commonclientinfo/queryList',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 客户
      * @description 保存客户
      */
-    commonclientinfoSave: {
-        url: '/commonclientinfo/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonclientinfoSave: {
+    url: '/commonclientinfo/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 客户
      * @description 修改客户
      */
-    commonclientinfoUpdate: {
-        url: '/commonclientinfo/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonclientinfoUpdate: {
+    url: '/commonclientinfo/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品信息表
      * @description 查看详细信息
      */
-    commoncommodityinfoInfo: {
-        url: '/commoncommodityinfo/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commoncommodityinfoInfo: {
+    url: '/commoncommodityinfo/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品信息表
      * @description 获取列表
      */
-    commoncommodityinfoList: {
-        url: '/commoncommodityinfo/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commoncommodityinfoList: {
+    url: '/commoncommodityinfo/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品信息表
      * @description 逻辑删除
      */
-    commoncommodityinfoLogicDelete: {
-        url: '/commoncommodityinfo/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commoncommodityinfoLogicDelete: {
+    url: '/commoncommodityinfo/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品信息表
      * @description 保存
      */
-    commoncommodityinfoSave: {
-        url: '/commoncommodityinfo/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commoncommodityinfoSave: {
+    url: '/commoncommodityinfo/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品信息表
      * @description 修改
      */
-    commoncommodityinfoUpdate: {
-        url: '/commoncommodityinfo/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commoncommodityinfoUpdate: {
+    url: '/commoncommodityinfo/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品分类表
      * @description 删除
      */
-    commoncommoditysortDelete: {
-        url: '/commoncommoditysort/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commoncommoditysortDelete: {
+    url: '/commoncommoditysort/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品分类表
      * @description 查看详细信息
      */
-    commoncommoditysortInfo: {
-        url: '/commoncommoditysort/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commoncommoditysortInfo: {
+    url: '/commoncommoditysort/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品分类表
      * @description 获取列表
      */
-    commoncommoditysortList: {
-        url: '/commoncommoditysort/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commoncommoditysortList: {
+    url: '/commoncommoditysort/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品分类表
      * @description 逻辑删除
      */
-    commoncommoditysortLogicDelete: {
-        url: '/commoncommoditysort/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commoncommoditysortLogicDelete: {
+    url: '/commoncommoditysort/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品分类表
      * @description 保存
      */
-    commoncommoditysortSave: {
-        url: '/commoncommoditysort/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commoncommoditysortSave: {
+    url: '/commoncommoditysort/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品分类表
      * @description 置顶
      */
-    commoncommoditysortStick: {
-        url: '/commoncommoditysort/stick',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commoncommoditysortStick: {
+    url: '/commoncommoditysort/stick',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 商品分类表
      * @description 修改
      */
-    commoncommoditysortUpdate: {
-        url: '/commoncommoditysort/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commoncommoditysortUpdate: {
+    url: '/commoncommoditysort/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理表
      * @description 删除
      */
-    commonpromotionDelete: {
-        url: '/commonpromotion/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonpromotionDelete: {
+    url: '/commonpromotion/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理表
      * @description 查看详细信息
      */
-    commonpromotionInfo: {
-        url: '/commonpromotion/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonpromotionInfo: {
+    url: '/commonpromotion/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理表
      * @description 根据code详细信息
      */
-    commonpromotionInfoBycode: {
-        url: '/commonpromotion/infoBycode/{code}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonpromotionInfoBycode: {
+    url: '/commonpromotion/infoBycode/{code}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理表
      * @description 获取列表
      */
-    commonpromotionList: {
-        url: '/commonpromotion/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonpromotionList: {
+    url: '/commonpromotion/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理表
      * @description 逻辑删除
      */
-    commonpromotionLogicDelete: {
-        url: '/commonpromotion/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonpromotionLogicDelete: {
+    url: '/commonpromotion/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理表
      * @description 保存
      */
-    commonpromotionSave: {
-        url: '/commonpromotion/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonpromotionSave: {
+    url: '/commonpromotion/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理表
      * @description 修改
      */
-    commonpromotionUpdate: {
-        url: '/commonpromotion/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonpromotionUpdate: {
+    url: '/commonpromotion/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理参与商品详细表
      * @description 删除
      */
-    commonpromotioncommoditydetailsDelete: {
-        url: '/commonpromotioncommoditydetails/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonpromotioncommoditydetailsDelete: {
+    url: '/commonpromotioncommoditydetails/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理参与商品详细表
      * @description 查看详细信息
      */
-    commonpromotioncommoditydetailsInfo: {
-        url: '/commonpromotioncommoditydetails/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonpromotioncommoditydetailsInfo: {
+    url: '/commonpromotioncommoditydetails/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理参与商品详细表
      * @description 获取列表
      */
-    commonpromotioncommoditydetailsList: {
-        url: '/commonpromotioncommoditydetails/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonpromotioncommoditydetailsList: {
+    url: '/commonpromotioncommoditydetails/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理参与商品详细表
      * @description 逻辑删除
      */
-    commonpromotioncommoditydetailsLogicDelete: {
-        url: '/commonpromotioncommoditydetails/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonpromotioncommoditydetailsLogicDelete: {
+    url: '/commonpromotioncommoditydetails/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理参与商品详细表
      * @description 保存
      */
-    commonpromotioncommoditydetailsSave: {
-        url: '/commonpromotioncommoditydetails/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonpromotioncommoditydetailsSave: {
+    url: '/commonpromotioncommoditydetails/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理参与商品详细表
      * @description 修改
      */
-    commonpromotioncommoditydetailsUpdate: {
-        url: '/commonpromotioncommoditydetails/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonpromotioncommoditydetailsUpdate: {
+    url: '/commonpromotioncommoditydetails/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 目标管理
      * @description 删除
      */
-    commonpromotiongoalDelete: {
-        url: '/commonpromotiongoal/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonpromotiongoalDelete: {
+    url: '/commonpromotiongoal/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 目标管理
      * @description 查看详细信息
      */
-    commonpromotiongoalInfo: {
-        url: '/commonpromotiongoal/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonpromotiongoalInfo: {
+    url: '/commonpromotiongoal/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 目标管理
      * @description 获取列表
      */
-    commonpromotiongoalList: {
-        url: '/commonpromotiongoal/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonpromotiongoalList: {
+    url: '/commonpromotiongoal/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 目标管理
      * @description 逻辑删除
      */
-    commonpromotiongoalLogicDelete: {
-        url: '/commonpromotiongoal/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonpromotiongoalLogicDelete: {
+    url: '/commonpromotiongoal/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 目标管理
      * @description 保存
      */
-    commonpromotiongoalSave: {
-        url: '/commonpromotiongoal/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonpromotiongoalSave: {
+    url: '/commonpromotiongoal/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 目标管理
      * @description 修改
      */
-    commonpromotiongoalUpdate: {
-        url: '/commonpromotiongoal/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonpromotiongoalUpdate: {
+    url: '/commonpromotiongoal/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 目标管理参与人详细表
      * @description 删除
      */
-    commonpromotiongoalpersonnelDelete: {
-        url: '/commonpromotiongoalpersonnel/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonpromotiongoalpersonnelDelete: {
+    url: '/commonpromotiongoalpersonnel/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 目标管理参与人详细表
      * @description 查看详细信息
      */
-    commonpromotiongoalpersonnelInfo: {
-        url: '/commonpromotiongoalpersonnel/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonpromotiongoalpersonnelInfo: {
+    url: '/commonpromotiongoalpersonnel/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 目标管理参与人详细表
      * @description 获取列表
      */
-    commonpromotiongoalpersonnelList: {
-        url: '/commonpromotiongoalpersonnel/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonpromotiongoalpersonnelList: {
+    url: '/commonpromotiongoalpersonnel/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 目标管理参与人详细表
      * @description 逻辑删除
      */
-    commonpromotiongoalpersonnelLogicDelete: {
-        url: '/commonpromotiongoalpersonnel/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonpromotiongoalpersonnelLogicDelete: {
+    url: '/commonpromotiongoalpersonnel/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 目标管理参与人详细表
      * @description 保存
      */
-    commonpromotiongoalpersonnelSave: {
-        url: '/commonpromotiongoalpersonnel/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonpromotiongoalpersonnelSave: {
+    url: '/commonpromotiongoalpersonnel/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 目标管理参与人详细表
      * @description 修改
      */
-    commonpromotiongoalpersonnelUpdate: {
-        url: '/commonpromotiongoalpersonnel/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonpromotiongoalpersonnelUpdate: {
+    url: '/commonpromotiongoalpersonnel/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理参与人详细表
      * @description 删除
      */
-    commonpromotionpersonnelDelete: {
-        url: '/commonpromotionpersonnel/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonpromotionpersonnelDelete: {
+    url: '/commonpromotionpersonnel/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理参与人详细表
      * @description 查看详细信息
      */
-    commonpromotionpersonnelInfo: {
-        url: '/commonpromotionpersonnel/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonpromotionpersonnelInfo: {
+    url: '/commonpromotionpersonnel/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理参与人详细表
      * @description 获取列表
      */
-    commonpromotionpersonnelList: {
-        url: '/commonpromotionpersonnel/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonpromotionpersonnelList: {
+    url: '/commonpromotionpersonnel/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理参与人详细表
      * @description 逻辑删除
      */
-    commonpromotionpersonnelLogicDelete: {
-        url: '/commonpromotionpersonnel/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonpromotionpersonnelLogicDelete: {
+    url: '/commonpromotionpersonnel/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理参与人详细表
      * @description 保存
      */
-    commonpromotionpersonnelSave: {
-        url: '/commonpromotionpersonnel/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonpromotionpersonnelSave: {
+    url: '/commonpromotionpersonnel/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 促销管理参与人详细表
      * @description 修改
      */
-    commonpromotionpersonnelUpdate: {
-        url: '/commonpromotionpersonnel/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonpromotionpersonnelUpdate: {
+    url: '/commonpromotionpersonnel/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 报价配置单
      * @description 删除
      */
-    commonquotationconfigDelete: {
-        url: '/commonquotationconfig/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonquotationconfigDelete: {
+    url: '/commonquotationconfig/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 报价配置单
      * @description 查看详细信息
      */
-    commonquotationconfigInfo: {
-        url: '/commonquotationconfig/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonquotationconfigInfo: {
+    url: '/commonquotationconfig/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 报价配置单
      * @description 获取列表
      */
-    commonquotationconfigList: {
-        url: '/commonquotationconfig/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonquotationconfigList: {
+    url: '/commonquotationconfig/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 报价配置单
      * @description 逻辑删除
      */
-    commonquotationconfigLogicDelete: {
-        url: '/commonquotationconfig/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonquotationconfigLogicDelete: {
+    url: '/commonquotationconfig/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 报价配置单
      * @description 保存
      */
-    commonquotationconfigSave: {
-        url: '/commonquotationconfig/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonquotationconfigSave: {
+    url: '/commonquotationconfig/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 报价配置单
      * @description 修改
      */
-    commonquotationconfigUpdate: {
-        url: '/commonquotationconfig/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonquotationconfigUpdate: {
+    url: '/commonquotationconfig/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 报价配置单详情表
      * @description 删除
      */
-    commonquotationconfigdetailsDelete: {
-        url: '/commonquotationconfigdetails/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonquotationconfigdetailsDelete: {
+    url: '/commonquotationconfigdetails/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 报价配置单详情表
      * @description 查看详细信息
      */
-    commonquotationconfigdetailsInfo: {
-        url: '/commonquotationconfigdetails/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonquotationconfigdetailsInfo: {
+    url: '/commonquotationconfigdetails/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 报价配置单详情表
      * @description 获取列表
      */
-    commonquotationconfigdetailsList: {
-        url: '/commonquotationconfigdetails/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonquotationconfigdetailsList: {
+    url: '/commonquotationconfigdetails/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 报价配置单详情表
      * @description 逻辑删除
      */
-    commonquotationconfigdetailsLogicDelete: {
-        url: '/commonquotationconfigdetails/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonquotationconfigdetailsLogicDelete: {
+    url: '/commonquotationconfigdetails/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 报价配置单详情表
      * @description 保存
      */
-    commonquotationconfigdetailsSave: {
-        url: '/commonquotationconfigdetails/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonquotationconfigdetailsSave: {
+    url: '/commonquotationconfigdetails/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 报价配置单详情表
      * @description 修改
      */
-    commonquotationconfigdetailsUpdate: {
-        url: '/commonquotationconfigdetails/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonquotationconfigdetailsUpdate: {
+    url: '/commonquotationconfigdetails/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 服务商
      * @description 删除
      */
-    commonserviceproviderDelete: {
-        url: '/commonserviceprovider/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonserviceproviderDelete: {
+    url: '/commonserviceprovider/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 服务商
      * @description 查看详细信息
      */
-    commonserviceproviderInfo: {
-        url: '/commonserviceprovider/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonserviceproviderInfo: {
+    url: '/commonserviceprovider/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 服务商
      * @description 根据CODE查看详细信息
      */
-    commonserviceproviderInfoBycode: {
-        url: '/commonserviceprovider/infoBycode/{code}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonserviceproviderInfoBycode: {
+    url: '/commonserviceprovider/infoBycode/{code}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 服务商
      * @description 获取列表
      */
-    commonserviceproviderList: {
-        url: '/commonserviceprovider/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonserviceproviderList: {
+    url: '/commonserviceprovider/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 服务商
      * @description 逻辑删除
      */
-    commonserviceproviderLogicDelete: {
-        url: '/commonserviceprovider/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonserviceproviderLogicDelete: {
+    url: '/commonserviceprovider/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 服务商
      * @description 保存
      */
-    commonserviceproviderSave: {
-        url: '/commonserviceprovider/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonserviceproviderSave: {
+    url: '/commonserviceprovider/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 服务商
      * @description 修改
      */
-    commonserviceproviderUpdate: {
-        url: '/commonserviceprovider/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonserviceproviderUpdate: {
+    url: '/commonserviceprovider/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 供应商供应商品表
      * @description 删除
      */
-    commonsuppliercommodityDelete: {
-        url: '/commonsuppliercommodity/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonsuppliercommodityDelete: {
+    url: '/commonsuppliercommodity/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 供应商供应商品表
      * @description 查看详细信息
      */
-    commonsuppliercommodityInfo: {
-        url: '/commonsuppliercommodity/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonsuppliercommodityInfo: {
+    url: '/commonsuppliercommodity/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 供应商供应商品表
      * @description 获取列表
      */
-    commonsuppliercommodityList: {
-        url: '/commonsuppliercommodity/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonsuppliercommodityList: {
+    url: '/commonsuppliercommodity/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 供应商供应商品表
      * @description 逻辑删除
      */
-    commonsuppliercommodityLogicDelete: {
-        url: '/commonsuppliercommodity/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonsuppliercommodityLogicDelete: {
+    url: '/commonsuppliercommodity/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 供应商供应商品表
      * @description 保存
      */
-    commonsuppliercommoditySave: {
-        url: '/commonsuppliercommodity/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonsuppliercommoditySave: {
+    url: '/commonsuppliercommodity/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 供应商供应商品表
      * @description 修改
      */
-    commonsuppliercommodityUpdate: {
-        url: '/commonsuppliercommodity/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonsuppliercommodityUpdate: {
+    url: '/commonsuppliercommodity/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 供应商信息表
      * @description 删除
      */
-    commonsupplierinfoDelete: {
-        url: '/commonsupplierinfo/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonsupplierinfoDelete: {
+    url: '/commonsupplierinfo/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 供应商信息表
      * @description 查看详细信息
      */
-    commonsupplierinfoInfo: {
-        url: '/commonsupplierinfo/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonsupplierinfoInfo: {
+    url: '/commonsupplierinfo/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 供应商信息表
      * @description 根据编码查看详细信息
      */
-    commonsupplierinfoInfoBycode: {
-        url: '/commonsupplierinfo/infoBycode/{code}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonsupplierinfoInfoBycode: {
+    url: '/commonsupplierinfo/infoBycode/{code}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 供应商信息表
      * @description 逻辑删除
      */
-    commonsupplierinfoLogicDelete: {
-        url: '/commonsupplierinfo/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonsupplierinfoLogicDelete: {
+    url: '/commonsupplierinfo/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 供应商信息表
      * @description 分页获取列表
      */
-    commonsupplierinfoPagelist: {
-        url: '/commonsupplierinfo/pagelist',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonsupplierinfoPagelist: {
+    url: '/commonsupplierinfo/pagelist',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 供应商信息表
      * @description 商品供应分类查询
      */
-    commonsupplierinfoQueryListClassification: {
-        url: '/commonsupplierinfo/queryListClassification',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonsupplierinfoQueryListClassification: {
+    url: '/commonsupplierinfo/queryListClassification',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 供应商信息表
      * @description 保存
      */
-    commonsupplierinfoSave: {
-        url: '/commonsupplierinfo/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonsupplierinfoSave: {
+    url: '/commonsupplierinfo/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 供应商信息表
      * @description 修改
      */
-    commonsupplierinfoUpdate: {
-        url: '/commonsupplierinfo/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonsupplierinfoUpdate: {
+    url: '/commonsupplierinfo/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 业务设置配置表
      * @description 根据类型查看配置信息(1-销售,2-库房,3-财务)
      */
-    commonsystemconfigInfo: {
-        url: '/commonsystemconfig/info/{configType}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonsystemconfigInfo: {
+    url: '/commonsystemconfig/info/{configType}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 业务设置配置表
      * @description 保存
      */
-    commonsystemconfigSave: {
-        url: '/commonsystemconfig/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonsystemconfigSave: {
+    url: '/commonsystemconfig/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 业务设置报表配置表
      * @description 删除
      */
-    commonsystemreportDelete: {
-        url: '/commonsystemreport/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonsystemreportDelete: {
+    url: '/commonsystemreport/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 业务设置报表配置表
      * @description 查看详细信息
      */
-    commonsystemreportInfo: {
-        url: '/commonsystemreport/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonsystemreportInfo: {
+    url: '/commonsystemreport/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 业务设置报表配置表
      * @description 获取列表
      */
-    commonsystemreportList: {
-        url: '/commonsystemreport/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  commonsystemreportList: {
+    url: '/commonsystemreport/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 业务设置报表配置表
      * @description 逻辑删除
      */
-    commonsystemreportLogicDelete: {
-        url: '/commonsystemreport/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  commonsystemreportLogicDelete: {
+    url: '/commonsystemreport/logicDelete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 业务设置报表配置表
      * @description 保存
      */
-    commonsystemreportSave: {
-        url: '/commonsystemreport/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonsystemreportSave: {
+    url: '/commonsystemreport/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 业务设置报表配置表
      * @description 修改
      */
-    commonsystemreportUpdate: {
-        url: '/commonsystemreport/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  commonsystemreportUpdate: {
+    url: '/commonsystemreport/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 自定义列表
      * @description 删除
      */
-    customcolumnDelete: {
-        url: '/customcolumn/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
+  customcolumnDelete: {
+    url: '/customcolumn/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
      * @tag 自定义列表
      * @description 获取列表--不分页
      */
-    customcolumnGetListAll: {
-        url: '/customcolumn/getListAll',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  customcolumnGetListAll: {
+    url: '/customcolumn/getListAll',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 自定义列表
      * @description 查看详细信息
      */
-    customcolumnInfo: {
-        url: '/customcolumn/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  customcolumnInfo: {
+    url: '/customcolumn/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 自定义列表
      * @description 获取列表--分页
      */
-    customcolumnList: {
-        url: '/customcolumn/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  customcolumnList: {
+    url: '/customcolumn/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 自定义列表
      * @description 保存
      */
-    customcolumnSave: {
-        url: '/customcolumn/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  customcolumnSave: {
+    url: '/customcolumn/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 自定义列表
      * @description 修改
      */
-    customcolumnUpdate: {
-        url: '/customcolumn/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  customcolumnUpdate: {
+    url: '/customcolumn/update',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag EXCEL 导入导出操作
      * @description 导出
      */
-    excelExport: {
-        url: '/excel/export',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  excelExport: {
+    url: '/excel/export',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag RocketMQ失败重试
      * @description 重试失败消息
      */
-    rocketMQRetryFailedMessage: {
-        url: '/rocketMQ/retryFailedMessage/{className}',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
+  rocketMQRetryFailedMessage: {
+    url: '/rocketMQ/retryFailedMessage/{className}',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
      * @tag 服务健康检查
      * @description 检查服务健康状况
      */
-    healthCheck: {
-        url: '/ws/health/check',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
+  healthCheck: {
+    url: '/ws/health/check',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
      * @tag 文件压缩下载（日志和配置文件）
      * @description 根据端口号压缩并下载指定类型文件
      */
-    runlogCompressAndDownload: {
-        url: '/ws/runlog/compressAndDownload',
-        methods: 'get',
-        mock: isUseMock
-    },
+  runlogCompressAndDownload: {
+    url: '/ws/runlog/compressAndDownload',
+    methods: 'get',
+    mock: isUseMock
+  }
 }
