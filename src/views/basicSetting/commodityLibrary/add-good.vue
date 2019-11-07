@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 14:50:16
+ * @LastEditTime: 2019-11-07 15:52:14
  * @Description: 新增商品
  -->
 <template>
@@ -320,6 +320,7 @@ export default {
         this.goodForm = Object.assign(this.goodForm, res.data);
         this.goodForm.firstClassId = res.data.firstClassId
         this.goodForm.classId = res.data.secondClassId
+        // this.goodForm.columns = '规格'
         this.$emit('update', this.goodForm)
       })
     },

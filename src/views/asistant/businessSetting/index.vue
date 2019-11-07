@@ -30,7 +30,7 @@ import sale from './sale' // 销售
 import warehouse from './warehouse' // 库房
 import finance from './finance' // 财务
 import statement from './statement' // 财务
-//import common from './common' // 财务
+// import common from './common' // 财务
 import common from 'see-web-system/dist/components/businessSetting/companyAccount/index' 
 const defaultComponent = [
   { component: sale, componentName: 'sale', sort: 1, label: '销售', authorityCode: '' },

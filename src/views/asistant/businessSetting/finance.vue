@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-31 14:33:30
+ * @LastEditTime: 2019-11-07 17:18:41
  * @Description: 业务设置-财务
  -->
 <template>
@@ -53,9 +53,9 @@
                 label="滞纳金方案名称"
                 label-width="125px"
                 :prop="'financeConfigList.' + index + '.overdueFineName'"
-                :rules="{required:true,message:'请输入',trigger:'blur'}"
+                :rules="[{required:true,message:'请输入',trigger:'blur'},{ validator: validateName, trigger: 'blur' }]"
               >
-                <el-input v-model="item.overdueFineName"></el-input>
+                <el-input v-model.trim="item.overdueFineName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="5">
@@ -69,7 +69,7 @@
                   <div>
                     <el-input-number
                       class="mr5"
-                      v-model="item.overdueFineInterval"
+                      v-model.trim="item.overdueFineInterval"
                       size="mini"
                       controls-position="right"
                       :min="1"
@@ -90,7 +90,7 @@
                     <el-option label="比例" :value="0"></el-option>
                     <el-option label="固定金额" :value="1"></el-option>
                   </el-select>
-                  <el-input v-model="item.overdueFineLimit"></el-input>
+                  <el-input v-model.trim="item.overdueFineLimit"></el-input>
                 </div>
               </el-form-item>
             </el-col>
@@ -101,7 +101,7 @@
                 :prop="'financeConfigList.' + index + '.overdueFineUpperLimit'"
                 :rules="{required:true,message:'请输入',trigger:'blur'}"
               >
-                <el-input v-model="item.overdueFineUpperLimit"></el-input>
+                <el-input v-model.trim="item.overdueFineUpperLimit"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="2" style="padding-top:2px;">
@@ -123,13 +123,22 @@
 <script type='text/ecmascript-6'>
 export default {
   data() {
+    const validateName = (rule, value, callback) => {
+      const result = this.financeConfigEntity.financeConfigList.filter(item => item.overdueFineName === value)
+      if (result.length > 1) {
+        callback(new Error('方案名称不能重复'))
+        return
+      }
+      callback()
+    }
     return {
       loading: false,
       isEdit: false,
       tempObj: null,
       financeConfigEntity: {
         financeConfigList: []
-      }
+      },
+      validateName
     }
   },
   components: {
