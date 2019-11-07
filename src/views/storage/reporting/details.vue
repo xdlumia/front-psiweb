@@ -21,8 +21,14 @@
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
           <el-form>
-            <reportingInfo :disabled='true' />
-            <goodsOverflow />
+            <reportingInfo
+              :disabled='true'
+              :addForm='detailForm'
+            />
+            <goodsOverflow
+              :detailForm='detailForm'
+              :drawerData='drawerData'
+            />
           </el-form>
         </el-tab-pane>
       </el-tabs>
@@ -40,6 +46,7 @@ export default {
     return {
       status: [{ label: '生成/创建时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       backVisible: false,
+      detailForm: {},
       isComponents: '',
       dialogData: {
         title: ''
@@ -51,6 +58,26 @@ export default {
     goodsOverflow,
     SideDetail,
   },
+  created() {
+    this.wmsreportinglossesInfo()
+  },
+  methods: {
+    //查看报溢报损详情
+    wmsreportinglossesInfo() {
+      this.$api.seePsiWmsService.wmsreportinglossesInfo(null, this.drawerData.id)
+        .then(res => {
+          this.detailForm = res.data || {}
+          this.status[0].value = this.drawerData.createTime
+          this.status[1].value = this.drawerData.creatorName
+          this.status[2].value = this.drawerData.deptName
+          this.status[3].value = this.drawerData.source
+          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
+        })
+        .finally(() => {
+
+        })
+    }
+  }
 }
 </script>
 <style lang='scss' scoped>

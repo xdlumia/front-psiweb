@@ -8,112 +8,122 @@
 <template>
   <div>
     <form-card title='报溢商品'>
-      <d-table
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
-        ref="companyTable"
+      <el-table
+        size='mini'
+        border
+        :data='detailForm.commondityList'
         class="college-main"
         style="height:calc(100vh - 340px)"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
       >
         <el-table-column
           fixed
-          prop="cityName"
+          prop="num"
           min-width="100"
           label="报溢数量"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
+          prop="wmsName"
           min-width="100"
           label="入库库房"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
-          prop="title"
+          prop="num"
           label="机器号/SN码"
           min-width="100"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
             <span
-              @click="getTableVisible(scope.row)"
+              @click="dialogVisible = true"
               class="d-text-blue"
-            >{{scope.row.id}}</span>
+            >{{scope.row.num}}</span>
           </template>
         </el-table-column>
         <el-table-column
           fixed
           align="left"
-          prop="cityName"
+          prop="inventoryPrice"
           label="成本金额"
           width="100"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
           min-width="100"
           label="含税成本金额"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="">
+            <!-- scope.row.inventoryPrice * 0.01 * scope.row.inventoryPricetaxRate -->
+            <span>不知道咋算</span>
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="title"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.id}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
         </el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="categoryCode"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="className"
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="configName"
           min-width="100"
           label="商品配置"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="specOne"
           min-width="140"
           label="商品规格"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="unit"
           min-width="80"
           label="单位"
           show-overflow-tooltip
         ></el-table-column>
 
-      </d-table>
+      </el-table>
     </form-card>
+    <overflowSn
+      :visible.sync='dialogVisible'
+      :form={commodityCode:detailForm.commodityCode,businessCode:drawerData.reportingLossesCode,page:1,limit:20}
+    />
   </div>
+
 </template>
 <script>
+import overflowSn from './overflow-sn'
 export default {
+  props: ['detailForm', 'drawerData'],
   data() {
     return {
       // 查询表单
@@ -132,6 +142,7 @@ export default {
   methods: {
   },
   components: {
+    overflowSn
   },
 }
 </script>
