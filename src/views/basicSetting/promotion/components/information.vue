@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:31:10
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-06 17:49:48
+ * @LastEditTime: 2019-11-07 11:32:09
  * @Description: 促销信息
  -->
 <template>
@@ -13,26 +13,23 @@
           <el-input v-model="data.serviceName"></el-input>
         </el-form-item>
       </el-col>
-      <el-col :span="8">
-        <el-form-item label="开始时间" prop="linkMan">
-          <el-input v-model="data.linkMan"></el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item label="结束时间" prop="phone">
-          <el-input v-model="data.phone"></el-input>
+      <el-col :span="12">
+        <el-form-item label="促销时间" prop="datetimerange">
+          <el-date-picker
+            v-model="data.datetimerange"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="timestamp"
+          ></el-date-picker>
         </el-form-item>
       </el-col>
       <el-col :span="8">
         <el-form-item label="促销目标" prop="serviceTypeList">
-          <el-select multiple class="wfull" v-model="data.serviceTypeList" size="mini">
-            <el-option
-              v-for="(item, index) in dictionaryOptions('PSI_FWS_FWLX')"
-              :key="index"
-              :label="item.content"
-              :value="item.code"
-            ></el-option>
-          </el-select>
+          <el-input v-model="data.serviceName" :show-word-limit="false">
+            <template slot="append">元</template>
+          </el-input>
         </el-form-item>
       </el-col>
     </el-row>
@@ -41,7 +38,7 @@
 
 <script type='text/ecmascript-6'>
 export default {
-  data() {
+  data () {
     return {
     }
   },

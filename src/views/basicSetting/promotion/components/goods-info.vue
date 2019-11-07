@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 17:45:14
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-06 19:20:27
+ * @LastEditTime: 2019-11-07 11:31:22
  * @Description: 商品信息
  -->
 <template>
@@ -16,7 +16,6 @@
         :data="goods"
         style="width: 100%;margin-bottom: 20px;"
         row-key="id"
-        border
         default-expand-all
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
@@ -25,14 +24,22 @@
             <span class="d-text-blue">{{row.goodsCode}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="商品图片">
+        <el-table-column label="商品图片" widht="60px" align="center">
           <template slot-scope="scope">
-            <img
-              v-if="scope.row.goodsPic"
+            <el-image
               :src="scope.row.goodsPic"
-              style="object-fit: fill;width: 100%"
-            />
-            <span v-else class="d-text-qgray">暂无图片</span>
+              style="width: 50px;height:50px;"
+              fit="scale-down"
+              :preview-src-list="[scope.row.goodsPic]"
+            >
+              <div slot="error" class="image-slot">
+                <el-image
+                  :src="require('@/assets/img/no-pic.png')"
+                  style="width: 50px;height:50px;"
+                  fit="scale-down"
+                ></el-image>
+              </div>
+            </el-image>
           </template>
         </el-table-column>
         <el-table-column label="商品名称" prop="goodsName"></el-table-column>

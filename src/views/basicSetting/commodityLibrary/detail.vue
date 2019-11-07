@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 10:46:11
+ * @LastEditTime: 2019-11-07 14:30:30
  * @Description: description
  -->
 <template>
@@ -47,7 +47,7 @@
       style="height: calc(100vh - 270px)!important"
     >
       <el-tab-pane label="详情">
-        <good :code="code" :disabled="true"></good>
+        <good :code="code" :disabled="true" ref="detail" @update="update"></good>
       </el-tab-pane>
     </el-tabs>
     <el-dialog :visible.sync="showEdit" title v-dialogDrag :show-close="false" width="1000px">
@@ -90,9 +90,9 @@ export default {
       showPop: false,
       etailForm: {},
       status: [
-        { label: '创建时间', value: this.rowData.state ? '停用' : '启用' },
+        { label: '创建时间', value: this.rowData.createTime, isTime: true },
         { label: '创建人', value: this.rowData.creatorName },
-        { label: '来源', value: this.rowData.deptName }
+        { label: '来源', value: this.rowData.sourceFromCode, dictName: 'SP_SOURCE_FROM' }
       ]
     }
   },
@@ -127,7 +127,16 @@ export default {
 
     },
     refresh () {
-      this.emit('refresh')
+      this.$refs.detail.getGoodsDetailV2(this.code)
+      this.showEdit = false
+      this.$emit('reload')
+    },
+    update (temp) {
+      this.rowData.categoryCode = temp.categoryCode
+      this.rowData.secondClassName = temp.secondClassName
+      this.rowData.specOne = temp.values[0].specOne
+      this.rowData.goodsPic = temp.values[0].goodsPic
+      this.rowData.name = temp.name
     },
     checkVisible () {
       this.showPop = this.visible;
