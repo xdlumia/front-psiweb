@@ -2,14 +2,23 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 18:41:26
+ * @LastEditTime: 2019-11-07 20:28:38
  * @Description: 确定配置信息
 */
 <template>
   <div v-loading="loading">
     <quotationInfo
-      v-for="item of 4"
-      :key="item"
+      v-for="(item,index) of data.KIND1Data"
+      :key="index"
+      title="1.商品名称：R730塔式服务器"
+    >
+      <div slot="body">
+        这是个表单数据
+      </div>
+    </quotationInfo>
+    <quotationInfo
+      v-for="(item,index) of data.KIND2Data"
+      :key="index"
       title="1.商品名称：R730塔式服务器"
     >
       <el-button
@@ -26,7 +35,12 @@
 <script>
 import quotationInfo from '@/components/formComponents/quotation-info'
 export default {
-  props: [],
+  props: {
+    data: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   components: {
     quotationInfo
   },
@@ -35,23 +49,6 @@ export default {
       loading: false,
       // 当前操作步骤
       clientno: '',
-      gridData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
       // 新增orEdit框内容
       addForm: {
         title: '', // 标题
