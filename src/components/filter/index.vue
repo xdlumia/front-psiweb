@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:31:09
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 17:10:12
+ * @LastEditTime: 2019-11-07 17:58:14
  * @Description: 通用过滤组件
 */
 <template>
@@ -177,6 +177,9 @@ export default {
     /deep/ {
       .el-form-item {
         margin-bottom: 5px;
+      }
+      .el-input__suffix {
+        display: none;
       }
     }
   }

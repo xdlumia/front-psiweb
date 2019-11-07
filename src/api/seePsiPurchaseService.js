@@ -1,16 +1,9 @@
-/*
- * @Author: 赵伦
- * @Date: 2019-11-01 14:07:41
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 13:46:51
- * @Description: file content
- */
 // const MOCK_ADDRESS = '/mock/5dba336abc54fc3da273f11c/39.99.132.95:9205'; // pc端用
 // const MOCK_ADDRESS = 'http://10.168.1.145:7300/mock/5dba336abc54fc3da273f11c/39.99.132.95:9205'; // 小程序用
 const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = false;
 /**
-* @date 2019-11-01
+* @date 2019-11-07
 * @host 39.99.132.95:9205
 */
 export default {
@@ -31,6 +24,15 @@ export default {
      */
     purchaseExport: {
         url: '/purchase/export',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购单
+     * @description 查看详细信息
+     */
+    purchaseGetByCode: {
+        url: '/purchase/getByCode/{code}',
         methods: 'get',
         mock: isUseMock
     },
@@ -103,6 +105,15 @@ export default {
      */
     purchasealterationExport: {
         url: '/purchasealteration/export',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购退货单
+     * @description 查看详细信息
+     */
+    purchasealterationGetByCode: {
+        url: '/purchasealteration/getByCode/{code}',
         methods: 'get',
         mock: isUseMock
     },
@@ -209,6 +220,15 @@ export default {
      * @tag 请购单
      * @description 查看详细信息
      */
+    purchaseapplyorderGetByCode: {
+        url: '/purchaseapplyorder/getByCode/{code}',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 请购单
+     * @description 查看详细信息
+     */
     purchaseapplyorderInfo: {
         url: '/purchaseapplyorder/info/{id}',
         methods: 'get',
@@ -292,6 +312,15 @@ export default {
      */
     purchasedirectExport: {
         url: '/purchasedirect/export',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 直发单
+     * @description 查看详细信息
+     */
+    purchasedirectGetByCode: {
+        url: '/purchasedirect/getByCode/{code}',
         methods: 'get',
         mock: isUseMock
     },
@@ -407,6 +436,15 @@ export default {
      * @tag 采购入库单
      * @description 查看详细信息
      */
+    purchaseputinGetByCode: {
+        url: '/purchaseputin/getByCode/{code}',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购入库单
+     * @description 查看详细信息
+     */
     purchaseputinInfo: {
         url: '/purchaseputin/info/{id}',
         methods: 'get',
@@ -508,6 +546,15 @@ export default {
      */
     purchasestockorderExport: {
         url: '/purchasestockorder/export',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 备货单
+     * @description 查看详细信息
+     */
+    purchasestockorderGetByCode: {
+        url: '/purchasestockorder/getByCode/{code}',
         methods: 'get',
         mock: isUseMock
     },

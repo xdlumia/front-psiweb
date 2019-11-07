@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 14:44:58
+ * @LastEditTime: 2019-11-07 11:35:33
  * @Description: 新增供应商
 */
 <template>
@@ -26,7 +26,8 @@
           <supplier-base-edit :data="form" id="supplierInfo"></supplier-base-edit>
           <invoice-info :data="form" id="invoiceInfo"></invoice-info>
           <extras-info :data="form" id="extrasInfo"></extras-info>
-          <supplier-goods :data="form" id="commodityInfo" />
+          <!-- 新增供应商之后再加商品 -->
+          <!-- <supplier-goods :data="form" id="commodityInfo" v-if="visible" /> -->
         </el-form>
       </div>
     </d-tabs>
