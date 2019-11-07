@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 11:17:02
+ * @LastEditTime: 2019-11-07 18:08:43
  * @Description: 备货单详情
 */
 <template>
@@ -32,8 +32,10 @@
 </template>
 <script>
 import AddOrderStorage from '../storage/edit'; // 采购入库单
+import VisibleMixin from '@/utils/visibleMixin';
 
 export default {
+  mixins: [VisibleMixin],
   components: {
     AddOrderStorage
   },

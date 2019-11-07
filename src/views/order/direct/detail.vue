@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 11:09:38
+ * @LastEditTime: 2019-11-07 18:20:31
  * @Description: 直发单详情
 */
 <template>
@@ -49,7 +49,7 @@ export default {
   },
   data() {
     return {
-      showPop: true,
+      showPop: false,
       showEdit: false,
       showAddOrderStorage: false,
       showDeliverGoods: false,
