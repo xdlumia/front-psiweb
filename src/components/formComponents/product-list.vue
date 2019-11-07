@@ -2,41 +2,49 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 21:07:20
+ * @LastEditTime: 2019-11-06 21:28:32
  * @Description: 整机列表 和 配件列表
 */
 <template>
   <form-card title="整机列表">
-    <el-tree
-      :data="dataTable"
-      show-checkbox
-      node-key="id"
+    <el-table
+      :data="tableData"
+      style="width: 100%;margin-bottom: 20px;"
+      row-key="id"
+      border
       default-expand-all
-      :expand-on-click-node="false"
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <span
-        class="custom-tree-node"
-        slot-scope="{ node, data }"
+
+      <el-table-column
+        prop="id"
+        label="日期"
+        sortable
+        width="180"
       >
-        <span>{{ node.label }}</span>
-        <span>
-          <el-button
-            type="text"
-            size="mini"
-            @click="() => append(data)"
-          >
-            Append
-          </el-button>
-          <el-button
-            type="text"
-            size="mini"
-            @click="() => remove(node, data)"
-          >
-            Delete
-          </el-button>
-        </span>
-      </span>
-    </el-tree>
+
+      </el-table-column>
+      <el-table-column
+        type="selection"
+        width="180"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="value"
+        label="姓名"
+        sortable
+        width="180"
+      >
+        <template>
+          <el-checkbox v-model="checked">备选项</el-checkbox>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="label"
+        label="地址"
+      >
+      </el-table-column>
+    </el-table>
   </form-card>
 </template>
 <script>
@@ -54,8 +62,9 @@ export default {
   },
   data() {
     return {
+      checked: [],
       // 遍历表单
-      dataTable: [{
+      tableData: [{
         id: 1,
         label: '一级 1',
         children: [{
