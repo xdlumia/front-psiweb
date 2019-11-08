@@ -95,7 +95,7 @@
         :data='tableData'
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
+        style="height:300px"
       >
         <el-table-column
           min-width="50"

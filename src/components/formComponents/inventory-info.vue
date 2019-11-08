@@ -21,15 +21,16 @@
           size="mini"
         >
           <el-select
+            v-model="addform.wmsId"
             :disabled='disabled'
             placeholder="请选择"
             class="wfull"
           >
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="item in usableList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
             >
             </el-option>
           </el-select>
@@ -48,10 +49,20 @@
           prop
           size="mini"
         >
-          <commoditySelector
-            style="wfull"
-            :disabled='disabled'
-          />
+          <employees-chosen
+            :multiple="false"
+            :closeOnSelect="false"
+            @input="choose"
+            style="width:100%"
+            class="d-inline"
+          >
+            <el-input
+              :disabled='disabled'
+              :value="employeeName"
+              size="mini"
+            ></el-input>
+          </employees-chosen>
+
         </el-form-item>
       </el-col>
       <el-col
@@ -67,15 +78,19 @@
           size="mini"
         >
           <el-select
+            v-model="addform.type"
             :disabled='disabled'
             placeholder="请选择"
             class="wfull"
           >
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              label="全盘"
+              :value="1"
+            >
+            </el-option>
+            <el-option
+              label="抽盘"
+              :value="2"
             >
             </el-option>
           </el-select>
@@ -95,7 +110,7 @@
             type="textarea"
             maxlength="140"
             placeholder="请输入备注"
-            v-model="form.bankCard"
+            v-model="addform.note"
           />
         </el-form-item>
       </el-col>
@@ -107,7 +122,7 @@ import commoditySelector from '@/components/formComponents/commodity-selector';
 
 export default {
   props: {
-    form: {
+    addform: {
       type: Object,
       default: () => ({})
     },
@@ -118,11 +133,33 @@ export default {
   },
   data() {
     return {
-      options: []
+      options: [],
+      usableList: [],//库房详情
+      employeeName: '',
     };
   },
   components: {
     commoditySelector
+  },
+  created() {
+    this.commonwmsmanagerUsableList()
+  },
+  methods: {
+    commonwmsmanagerUsableList() {
+      this.$api.seePsiWmsService.commonwmsmanagerUsableList()
+        .then(res => {
+          this.usableList = res.data || []
+          console.log(this.usableList, 'this.usableListthis.usableList')
+        })
+        .finally(() => {
+
+        })
+    },
+    //选择人员
+    choose(value) {
+      this.employeeName = value.employeeName
+      this.addform.blitemPerson = value.userId
+    },
   }
 };
 </script>

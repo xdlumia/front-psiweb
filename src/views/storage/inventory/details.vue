@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="drawerData.tableVisible"
+    :visible.sync="visible"
     @close="$emit('update:visible',false)"
     title="盘点单"
     width="990px"
@@ -52,7 +52,7 @@ import inventoryInfo from '@/components/formComponents/inventory-info'
 import goodsInventory from '@/components/formComponents/goods-inventory';
 import SideDetail from '@/components/side-detail';
 export default {
-  props: ['drawerData'],
+  props: ['drawerData', 'visible'],
   data() {
     return {
       status: [{ label: '盘点状态', value: '2019-9-21 10:04:38' }, { label: '创建时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],

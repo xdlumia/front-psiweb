@@ -40,12 +40,19 @@
       </el-header>
       <el-main style="padding:0;max-height:700px;">
         <el-form
-          :model="form"
+          :model="addform"
           class="p10"
         >
-          <inventoryInfo ref="deliverEdit" />
+          <inventoryInfo
+            ref="deliverEdit"
+            :addform='addform'
+          />
         </el-form>
-        <commodityInfoEdit ref="logisticsEdit" />
+        <inventoryCommodities
+          v-if="addform.type == 2"
+          ref="logisticsEdit"
+          :addform='addform'
+        />
       </el-main>
     </el-container>
     <span
@@ -66,12 +73,12 @@
 </template>
 <script>
 import inventoryInfo from '@/components/formComponents/inventory-info';
-import commodityInfoEdit from '@/components/formComponents/commodity-info-edit';
+import inventoryCommodities from '@/components/formComponents/inventory-commodities';
 
 export default {
   components: {
     inventoryInfo,
-    commodityInfoEdit
+    inventoryCommodities
   },
   props: {
     visible: {
@@ -87,7 +94,13 @@ export default {
   },
   data() {
     return {
-      activeName: ''
+      activeName: '',
+      addform: {
+        wmsId: '',//库房id
+        blitemPerson: '',//盘点人
+        type: 1,//盘点类型  1 全盘  2抽盘
+        note: '',//备注
+      }
     };
   },
   mounted() { },
