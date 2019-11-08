@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 09:13:00
+ * @LastEditTime: 2019-11-08 09:19:26
  * @Description: 选择产品
 */
 <template>
@@ -40,32 +40,14 @@
           icon="el-icon-search"
         >搜索</el-button>
       </el-input>
-      <!-- <el-select
-        size="small"
-        placeholder="请输入名称"
-        :remote-method="getClinent"
-        class="wfull mr5"
-        filterable
-        @change="commonclientinfoInfo"
-        remote
-        reserve-keyword
-        v-model="data.clientId"
-      >
-        <el-option
-          :key="item.id"
-          :label="item.clientName"
-          :value="item.id"
-          v-for="item in goodsOptions"
-        ></el-option>
-      </el-select> -->
       <div
         class="f16 b d-flex"
         style="white-space:nowrap;align-items:center;"
       >已选商品
         <el-popover
           placement="bottom-end"
+          trigger="hover"
           width="400"
-          trigger="click"
         >
           <el-table
             height="450px"
@@ -94,10 +76,12 @@
               label="商品名称"
             ></el-table-column>
           </el-table>
+          <!-- 显示商品数据 -->
           <el-badge
             :value="goodsLength"
             slot="reference"
           >
+            <!-- 选中商品的图标 -->
             <span class="f24 el-icon-s-goods"></span>
           </el-badge>
         </el-popover>
@@ -156,8 +140,9 @@ export default {
     this.$refs.kind1.reload()
   },
   computed: {
+    // 获取选中商品的数据
     goodsLength() {
-      return
+      return (this.data.KIND1Data || []).length + (this.data.KIND2Data || []).length
     }
   },
   methods: {
