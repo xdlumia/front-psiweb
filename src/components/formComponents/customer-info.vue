@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 19:53:56
+ * @LastEditTime: 2019-11-08 09:41:40
  * @Description: 客户信息 1
  */
 <template>
@@ -58,7 +58,7 @@
         >
           <el-select
             v-if="item.type==='select'"
-            placeholder="请选择客户"
+            placeholder="请输入客户名称选择"
             :remote-method="getClinent"
             class="wfull mr5"
             filterable
