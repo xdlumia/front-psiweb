@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 18:32:19
+ * @LastEditTime: 2019-11-08 18:34:27
  * @Description: 选择商品 字段已绑定 1 
 */
 <template>
@@ -190,9 +190,7 @@ export default {
     form: {},
     params: {
       type: Object,
-      default: () => ({
-        wmsId: 1
-      })
+      default: () => ({})
     }
   },
   data() {
