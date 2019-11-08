@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 20:28:38
+ * @LastEditTime: 2019-11-08 09:03:19
  * @Description: 确定配置信息
 */
 <template>
@@ -10,7 +10,7 @@
     <quotationInfo
       v-for="(item,index) of data.KIND1Data"
       :key="index"
-      title="1.商品名称：R730塔式服务器"
+      :title="item.name"
     >
       <div slot="body">
         这是个表单数据
@@ -19,7 +19,7 @@
     <quotationInfo
       v-for="(item,index) of data.KIND2Data"
       :key="index"
-      title="1.商品名称：R730塔式服务器"
+      :title="item.name"
     >
       <el-button
         slot="title"

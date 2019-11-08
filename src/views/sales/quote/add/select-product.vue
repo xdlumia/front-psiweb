@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 20:36:21
+ * @LastEditTime: 2019-11-08 09:13:00
  * @Description: 选择产品
 */
 <template>
@@ -94,10 +94,12 @@
               label="商品名称"
             ></el-table-column>
           </el-table>
-          <span
+          <el-badge
+            :value="goodsLength"
             slot="reference"
-            class="f24 el-icon-s-goods"
-          ></span>
+          >
+            <span class="f24 el-icon-s-goods"></span>
+          </el-badge>
         </el-popover>
 
       </div>
@@ -152,6 +154,11 @@ export default {
   mounted() {
     // 初始化整机列表
     this.$refs.kind1.reload()
+  },
+  computed: {
+    goodsLength() {
+      return
+    }
   },
   methods: {
     // 类型切换的时候清除搜索内容
