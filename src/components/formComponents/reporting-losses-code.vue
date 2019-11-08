@@ -246,10 +246,8 @@ export default {
         commodityCode: this.commodityForm.goodsCode,
         categoryCode: this.commodityForm.categoryCode,
       }
-      console.log(params)
       this.$api.seePsiWmsService[api](params)
         .then(res => {
-          console.log(res)
           res.data ? this.tableData.push(res.data) : ''
         })
         .finally(() => {
