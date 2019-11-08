@@ -70,7 +70,7 @@ export default {
     },
     detail: Boolean
   },
-  data () {
+  data() {
     return {
       loading: false,
       employee: []
@@ -79,21 +79,21 @@ export default {
   components: {
   },
   computed: {
-    sumMoney () {
+    sumMoney() {
       const sum = (this.data.commonPromotionGoalPersonnelEntities || []).reduce((val, item) => {
         return val + parseFloat(item.money)
       }, 0)
       return sum
     }
   },
-  mounted () {
+  mounted() {
     if (this.data.id) {
       this.commonpromotiongoalpersonnelList(this.data.id)
     }
   },
   watch: {
     'data.id': {
-      handler: function (newValue) {
+      handler: function(newValue) {
         if (newValue) {
           this.commonpromotiongoalpersonnelList(newValue)
         }
@@ -101,7 +101,7 @@ export default {
     }
   },
   methods: {
-    choose (users) {
+    choose(users) {
       this.employee = users
       this.data.commonPromotionGoalPersonnelEntities = users.map(item => {
         return {
@@ -111,7 +111,7 @@ export default {
       })
       this.data.sumUserNum = users.length
     },
-    commonpromotiongoalpersonnelList (promotionId) {
+    commonpromotiongoalpersonnelList(promotionId) {
       this.loading = true
       this.$api.seePsiCommonService.commonpromotiongoalpersonnelList({ promotionId }).then(res => {
         this.choose(res.data)

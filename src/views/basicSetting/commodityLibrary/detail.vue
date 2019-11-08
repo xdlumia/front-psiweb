@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 14:30:30
+ * @LastEditTime: 2019-11-08 16:54:31
  * @Description: description
  -->
 <template>
@@ -15,7 +15,12 @@
     class="good-detail"
   >
     <template slot="button">
-      <el-button size="mini" type="primary" @click="commonserviceproviderUpdate(rowData.id, 1)">期初库存</el-button>
+      <el-button
+        v-if="!(beginnForm && Object.keys(beginnForm).length)"
+        size="mini"
+        type="primary"
+        @click="showBeginn = true"
+      >期初库存</el-button>
       <el-button size="mini" type="primary" @click="showEdit = true">编辑</el-button>
       <el-button size="mini" type="danger" @click="deleteGood(rowData.id)">删除</el-button>
     </template>
@@ -48,6 +53,32 @@
     >
       <el-tab-pane label="详情">
         <good :code="code" :disabled="true" ref="detail" @update="update"></good>
+        <el-form
+          size="mini"
+          :model="beginnForm"
+          disabled
+          v-if="beginnForm && Object.keys(beginnForm).length"
+        >
+          <form-card title="期初库存（重要）">
+            <el-row :gutter="40">
+              <el-col :span="8">
+                <el-form-item label="库房">
+                  <el-input v-model="beginnForm.wmsName"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="期初库存数量">
+                  <el-input v-model="beginnForm.num"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="期初调价值（元）">
+                  <el-input v-model="beginnForm.originalPriceAdjustment"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </form-card>
+        </el-form>
       </el-tab-pane>
     </el-tabs>
     <el-dialog :visible.sync="showEdit" title v-dialogDrag :show-close="false" width="1000px">
@@ -60,14 +91,23 @@
       </div>
       <good :code="code" :isEdit="true" @refresh="refresh" v-if="showEdit" ref="addGood"></good>
     </el-dialog>
+    <opening-stock
+      :visible.sync="showBeginn"
+      ref="addPromotion"
+      v-if="showBeginn"
+      @inStorageSuccess="wmsinventorycommodityinitialinfoInfo"
+      :rowData="rowData"
+    ></opening-stock>
   </sideDetail>
 </template>
 
 <script>
 import good from './add-good'
+import openingStock from './opening-stock'
 export default {
   components: {
-    good
+    good,
+    openingStock
   },
   props: {
     visible: Boolean,
@@ -82,10 +122,11 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       noPic: require('@/assets/img/no-pic.png'),
       showEdit: false,
+      showBeginn: false,
       loading: false,
       showPop: false,
       etailForm: {},
@@ -93,23 +134,31 @@ export default {
         { label: '创建时间', value: this.rowData.createTime, isTime: true },
         { label: '创建人', value: this.rowData.creatorName },
         { label: '来源', value: this.rowData.sourceFromCode, dictName: 'SP_SOURCE_FROM' }
-      ]
+      ],
+      beginnForm: {}
     }
   },
-  mounted () {
+  mounted() {
     console.log(this.rowData)
     this.checkVisible();
+    this.wmsinventorycommodityinitialinfoInfo()
   },
   watch: {
-    visible () {
+    visible() {
       this.checkVisible();
+      this.wmsinventorycommodityinitialinfoInfo()
     }
   },
   methods: {
-    saveGood () {
+    saveGood() {
       this.$refs.addGood && this.$refs.addGood.saveGood()
     },
-    deleteGood (id) {
+    wmsinventorycommodityinitialinfoInfo() {
+      this.$api.seePsiWmsService.wmsinventorycommodityinitialinfoInfo(null, this.code).then(res => {
+        this.beginnForm = res.data
+      })
+    },
+    deleteGood(id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -126,19 +175,19 @@ export default {
       })
 
     },
-    refresh () {
+    refresh() {
       this.$refs.detail.getGoodsDetailV2(this.code)
       this.showEdit = false
       this.$emit('reload')
     },
-    update (temp) {
+    update(temp) {
       this.rowData.categoryCode = temp.categoryCode
       this.rowData.secondClassName = temp.secondClassName
       this.rowData.specOne = temp.values[0].specOne
       this.rowData.goodsPic = temp.values[0].goodsPic
       this.rowData.name = temp.name
     },
-    checkVisible () {
+    checkVisible() {
       this.showPop = this.visible;
     }
   }

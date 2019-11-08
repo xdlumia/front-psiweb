@@ -496,6 +496,12 @@ export default {
     'mock': IS_MOCK,
     'methods': 'post'
   },
+  // 设置默认目标
+  commonpromotiongoalUpdateDefault: {
+    'url': '/commonpromotiongoal/updateDefault',
+    'mock': IS_MOCK,
+    'methods': 'post'
+  },
   /* =============目标管理end=========== */
 
   /* =============目标管理参与人详细表start=========== */

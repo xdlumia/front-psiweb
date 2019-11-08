@@ -59,7 +59,7 @@
 import addObjective from './add-objective'
 import detail from './detail'
 export default {
-  data () {
+  data() {
     return {
       rowData: null,
       code: null,
@@ -73,7 +73,7 @@ export default {
       filterOptions: [
         { label: '目标编号', prop: 'code', default: true },
         { label: '目标名称', prop: 'promotionName', default: true },
-        {          label: '状态',
+        { label: '状态',
           prop: 'state',
           type: 'select',
           default: true,
@@ -97,19 +97,19 @@ export default {
       ]
     }
   },
-  mounted () {
+  mounted() {
   },
   components: {
     addObjective,
     detail
   },
   methods: {
-    detail (row) {
+    detail(row) {
       this.rowData = row
       this.code = row.code
       this.showDetail = true
     },
-    commonwmsmanagerUpdateState (id, state) {
+    commonwmsmanagerUpdateState(id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -125,7 +125,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete (id) {
+    commonwmsmanagerLogicDelete(id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -141,10 +141,10 @@ export default {
         })
       })
     },
-    saveFacilitator () {
+    saveFacilitator() {
       this.$refs.addObjective && this.$refs.addObjective.commonserviceproviderSave()
     },
-    refresh () {
+    refresh() {
       this.visible = false
       this.$refs.table.reload()
     }

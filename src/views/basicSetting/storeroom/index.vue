@@ -2,18 +2,15 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-05 17:37:06
+ * @LastEditTime: 2019-11-08 16:59:01
  * @Description: 库房管理
  -->
 <template>
   <div class>
     <table-view
-      type="1"
       ref="table"
       :filter="true"
-      :moreButton="true"
       :filterOptions="filterOptions"
-      :column="true"
       :busType="46"
       title="库房管理"
       api="seePsiWmsService.commonwmsmanagerList"
@@ -26,7 +23,11 @@
       </template>
       <template slot-scope="{column,row,value,scope}">
         <span v-if="column.columnFields=='operation'">
-          <el-button type="text" @click="editId = scope.row.id,visible = true">编辑</el-button>
+          <el-button
+            v-if="!scope.row.state"
+            type="text"
+            @click="editId = scope.row.id,visible = true"
+          >编辑</el-button>
           <el-button
             type="text"
             v-if="!scope.row.state"
@@ -39,10 +40,11 @@
           >停用</el-button>
           <el-button @click="commonwmsmanagerUpdateState(scope.row.id, 1)" type="text" v-else>启用</el-button>
         </span>
-        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span
+          v-else-if="column.columnFields=='createTime'"
+        >{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
-      <el-table-column label="www"></el-table-column>
     </table-view>
     <el-dialog
       :visible.sync="visible"

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 14:54:03
+ * @LastEditTime: 2019-11-08 15:31:45
  * @Description: 销售出库单详情
 */
 <template>
@@ -12,6 +12,11 @@
       :visible.sync="showPop"
       width="920px"
     >
+      <el-input
+        v-model="currStatus"
+        placeholder=""
+      ></el-input>
+
       <div slot="button">
         <!-- 操作按钮 -->
         <span
@@ -45,16 +50,16 @@
           >
           </el-tab-pane>
         </el-tabs>
-        <keep-alive>
-          <components
-            :code="this.code"
-            :rowData="rowData"
-            class="d-auto-y"
-            :button="false"
-            style="height:calc(100vh - 200px)"
-            :is="activeName"
-          ></components>
-        </keep-alive>
+        <components
+          ref="detail"
+          :code="this.code"
+          :rowData="rowData"
+          class="d-auto-y"
+          :button="false"
+          style="height:calc(100vh - 200px)"
+          :is="activeName"
+        ></components>
+
       </el-form>
     </side-detail>
     <!-- 编辑 -->
@@ -115,11 +120,11 @@ export default {
       tabs: {
         detail: '详情',
         salesQuote: '报价单',
-        contract: '合同',
+        contractSale: '合同',
         salesReturn: '销售退货单',
         salesExchange: '销售换货单',
-        contract4: '应收账单',
-        contract5: '发票记录',
+        financeReceivable: '应收账单',
+        financeQuote: '发票记录',
         salesApportion: '费用分摊单'
       },
 
@@ -140,6 +145,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this.salesshipmentGetInfoByCode()
+  },
   methods: {
     buttonsClick(label) {
       // handleConfirm里的按钮操作是需要二次确认的
@@ -151,9 +159,23 @@ export default {
           type: "warning",
           center: true
         }).then(() => {
-          this.$api.seePumaidongService.collegeManagerDelete({ id: [123] })
+          let apiObj = {
+            '提交审核': 'salesshipmentApproval',
+            '撤销审核': '',
+            '驳回': '',
+            '删除': 'salesshipmentLogicDelete',
+            '终止': 'salesshipmentPause',
+          }
+          this.$api.seePsiSaleService.collegeManagerDelete({ id: [123] })
             .then(res => {
+              // 刷新列表
               this.$emit('reload')
+              // 关闭弹出框
+              this.showPop = false
+              // if (this.activeName == 'detail') {
+              //   this.showPop = false
+              //   // this.$refs.detail.
+              // }
             });
         });
       }
@@ -162,6 +184,13 @@ export default {
         if (label == '编辑') { this.editVisible = true }
       }
     },
+    //根据code 查看详情
+    salesshipmentGetInfoByCode() {
+      this.$api.seePsiSaleService.salesshipmentGetInfoByCode({ shipmentCode: this.code })
+        .then(res => {
+          this.detailInfo = res.data || {}
+        })
+    }
   },
   beforeDestroy() {
   }

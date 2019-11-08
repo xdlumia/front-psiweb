@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 15:04:02
+ * @LastEditTime: 2019-11-08 16:20:57
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -17,7 +17,7 @@
       api="seePsiSaleService.salesshipmentList"
       exprotApi="seePsiSaleService.salesshipmentExport"
       :params="Object.assign(queryForm,params)"
-      filterOptions="filterOptions"
+      :filterOptions="filterOptions"
     >
       <template slot-scope="{column,row,value}">
         <!-- 销售出库单编号 -->
@@ -61,11 +61,11 @@
 import outLibDetails from './outLib-details' //销售出库单详情
 
 let filterOptions = [
-  { label: '商户编号、商户名称/简称', prop: 'text', type: 'text', default: true, },
-  { label: '联系人、联系人电话', prop: 'text1', type: 'text', default: true, },
-  { label: '商机阶段', prop: 'pushTime', type: 'select', default: true, dicName: 'PSI_SP_KIND' },
-  { label: '跟进时间起止', prop: 'status', type: 'daterange', default: true, },
-  { label: '维护人', prop: 'creator', type: 'employee', default: true, },
+  // { label: '商户编号、商户名称/简称', prop: 'text', type: 'text', default: true, },
+  // { label: '联系人、联系人电话', prop: 'text1', type: 'text', default: true, },
+  // { label: '商机阶段', prop: 'pushTime', type: 'select', default: true, dicName: 'PSI_SP_KIND' },
+  // { label: '跟进时间起止', prop: 'status', type: 'daterange', default: true, },
+  // { label: '维护人', prop: 'creator', type: 'employee', default: true, },
 ]
 export default {
   name: 'outLibrary',
@@ -90,25 +90,15 @@ export default {
       // 查询表单
       queryForm: {
         page: 1,//当前页数
-
         limit: 20,//每页显示记录数
-        shipmentCode: '',///销售出库单编号
+        // shipmentCode: '',///销售出库单编号
         state: '',//状态
-        clientId: '',//客户id
-        minSalesExpectedShipmentsTime: '',//起始销售预计发货时间
-        maxSalesExpectedShipmentsTime: '',//结束销售预计发货时间
-        minSalesRequireArrivalTime: '',//起始销售要求到货时间
-        maxSalesRequireArrivalTime: '',//结束销售要求到货时间
-        minProcurementExpectedArrivalTime: '',//起始采购预计到货时间
-        maxProcurementExpectedArrivalTime: '',//结束采购预计到货时间
-        deptTotalCode: '',///部门code
         creator: '',//创建人
       },
       // 筛选列表
       filterOptions: filterOptions,
       // 当前行数据
       rowData: {},
-
       detailVisible: false, // 出库单详情
     };
   },

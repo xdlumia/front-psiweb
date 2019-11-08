@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 15:52:14
+ * @LastEditTime: 2019-11-08 15:52:36
  * @Description: 新增商品
  -->
 <template>
@@ -163,7 +163,7 @@
           </el-col>
         </el-row>
       </form-card>
-      <form-card title="期初库存（重要）">
+      <form-card title="期初库存（重要）" v-if="false">
         <el-row :gutter="40">
           <el-col :span="8">
             <el-form-item label="库房" prop="values[0].warehouseId">
