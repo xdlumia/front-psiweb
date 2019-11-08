@@ -59,7 +59,7 @@
 import addPromotion from './add-promotion'
 import detail from './detail'
 export default {
-  data () {
+  data() {
     return {
       rowData: null,
       code: null,
@@ -73,7 +73,7 @@ export default {
       filterOptions: [
         { label: '促销编号', prop: 'code', default: true },
         { label: '促销名称', prop: 'promotionName', default: true },
-        {          label: '状态',
+        { label: '状态',
           prop: 'state',
           type: 'select',
           default: true,
@@ -98,19 +98,19 @@ export default {
       ]
     }
   },
-  mounted () {
+  mounted() {
   },
   components: {
     addPromotion,
     detail
   },
   methods: {
-    detail (row) {
+    detail(row) {
       this.rowData = row
       this.code = row.code
       this.showDetail = true
     },
-    commonwmsmanagerUpdateState (id, state) {
+    commonwmsmanagerUpdateState(id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -126,7 +126,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete (id) {
+    commonwmsmanagerLogicDelete(id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -142,10 +142,10 @@ export default {
         })
       })
     },
-    saveFacilitator () {
+    saveFacilitator() {
       this.$refs.addPromotion && this.$refs.addPromotion.commonserviceproviderSave()
     },
-    refresh () {
+    refresh() {
       this.visible = false
       this.$refs.table.reload()
     }

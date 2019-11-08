@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-08 15:26:54
+ * @LastEditTime: 2019-11-08 17:26:56
  * @Description: 促销详情
  -->
 <template>
@@ -15,6 +15,11 @@
     v-loading="loading"
   >
     <template slot="button">
+      <el-button
+        size="mini"
+        type="primary"
+        @click="commonpromotiongoalUpdateDefault(rowData.id, 1)"
+      >设为默认</el-button>
       <el-button
         v-if="!detailForm.state"
         size="mini"
@@ -77,7 +82,7 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       showEdit: false,
       loading: false,
@@ -92,41 +97,58 @@ export default {
       ]
     }
   },
-  mounted () {
+  mounted() {
     this.checkVisible();
     this.commonpromotiongoalInfoBycode()
   },
   watch: {
-    visible () {
+    visible() {
       this.checkVisible();
     }
   },
   methods: {
-    refresh () {
+    refresh() {
       this.commonpromotiongoalInfoBycode()
-      this.$refs.usersInfo.commonpromotiongoalpersonnelList(this.rowData.id)
       this.$emit('refresh')
     },
-    checkVisible () {
+    checkVisible() {
       this.showPop = this.visible;
     },
-    commonpromotiongoalInfoBycode () {
+    commonpromotiongoalInfoBycode() {
       this.loading = true
       this.$api.seePsiCommonService.commonpromotiongoalInfoBycode(null, this.code).then(res => {
         this.detailForm = res.data || {}
         this.detailForm.datetimerange = [res.data.begTime, res.data.endTime]
         this.status[0].value = res.data.promotionName
+        this.$refs.usersInfo.commonpromotiongoalpersonnelList(this.rowData.id)
       }).finally(() => {
         this.loading = false
       })
     },
-    commonpromotiongoalUpdate (id, state) {
+    commonpromotiongoalUpdate(id, state) {
       this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         this.$api.seePsiCommonService.commonpromotiongoalUpdate({ id, state }).then(res => {
+          this.commonpromotiongoalInfoBycode()
+          this.$emit('refresh')
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        })
+      })
+    },
+    commonpromotiongoalUpdateDefault(id, type) {
+      this.$confirm(`是否设为默认?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api.seePsiCommonService.commonpromotiongoalUpdateDefault({ id, type }).then(res => {
           this.commonpromotiongoalInfoBycode()
           this.$emit('refresh')
         })

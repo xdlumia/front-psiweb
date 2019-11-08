@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-08 15:27:01
+ * @LastEditTime: 2019-11-08 17:27:26
  * @Description: 促销详情
  -->
 <template>
@@ -103,8 +103,6 @@ export default {
   methods: {
     refresh() {
       this.commonpromotionInfoBycode()
-      this.$refs.goodsInfo.commonpromotioncommoditydetailsList(this.rowData.id)
-      this.$refs.usersInfo.commonpromotionpersonnelList(this.rowData.id)
       this.$emit('refresh')
     },
     checkVisible() {
@@ -116,6 +114,8 @@ export default {
         this.detailForm = res.data || {}
         this.detailForm.datetimerange = [res.data.begTime, res.data.endTime]
         this.status[0].value = res.data.promotionName
+        this.$refs.goodsInfo.commonpromotioncommoditydetailsList(this.rowData.id)
+        this.$refs.usersInfo.commonpromotionpersonnelList(this.rowData.id)
       }).finally(() => {
         this.loading = false
       })

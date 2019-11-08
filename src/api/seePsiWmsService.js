@@ -365,13 +365,13 @@ export default {
     'methods': 'delete'
   },
 
-  // 查看详细信息
+  // 查看盘点单详细信息
   wmsblitemInfo: {
     'url': '/wmsblitem/info/{id}',
     'mock': false
   },
 
-  // 获取列表
+  // 获取盘点单列表
   wmsblitemList: {
     'url': '/wmsblitem/list',
     'mock': false
@@ -384,7 +384,7 @@ export default {
     'methods': 'delete'
   },
 
-  // 保存
+  // 保存盘点单信息
   wmsblitemSave: {
     'url': '/wmsblitem/save',
     'mock': false,
@@ -394,6 +394,13 @@ export default {
   // 修改
   wmsblitemUpdate: {
     'url': '/wmsblitem/update',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 修改盘点单状态信息
+  wmsblitemUpdateState: {
+    'url': '/wmsblitem/updateState',
     'mock': false,
     'methods': 'post'
   },
@@ -742,6 +749,14 @@ export default {
   },
   /* =============库房商品清单end=========== */
 
+  /* =============库房商品期初信息start=========== */
+  // 查看商品期初详细信息
+  wmsinventorycommodityinitialinfoInfo: {
+    'url': '/wmsinventorycommodityinitialinfo/info/{commodityCode}',
+    'mock': false
+  },
+  /* =============库房商品期初信息end=========== */
+
   /* =============库房商品明细start=========== */
   // 批量商品入库
   wmsinventorydetailBatchSsave: {
@@ -774,6 +789,13 @@ export default {
   wmsinventorydetailInfo: {
     'url': '/wmsinventorydetail/info/{id}',
     'mock': false
+  },
+
+  // 期初商品入库
+  wmsinventorydetailInitializePutaway: {
+    'url': '/wmsinventorydetail/initializePutaway',
+    'mock': false,
+    'methods': 'post'
   },
 
   // 获取列表
