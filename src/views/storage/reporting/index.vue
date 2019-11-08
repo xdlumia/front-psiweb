@@ -36,8 +36,9 @@
     </TableView>
     <Details
       :drawerData='drawerData'
-      :visible.sync="drawerData.tableVisible"
-      v-if="drawerData.tableVisible"
+      @update='update'
+      :visible.sync='tableVisible'
+      v-if="tableVisible"
     />
     <reportingAdd :visible.sync='visible' />
   </div>
@@ -73,9 +74,9 @@ export default {
         limit: 20
       },
       visible: false,
+      tableVisible: false,//销售单右侧抽屉
       componentActive: '',//当前的组件
       drawerData: {//弹框的相关数据
-        tableVisible: false,//销售单右侧抽屉
         title: '',
         component: 'Details'
       },
@@ -226,14 +227,15 @@ export default {
     //点击打开右侧边栏
     getTableVisible(row) {
       this.drawerData = row
-      this.drawerData.tableVisible = true
+      this.tableVisible = true
+      console.log(row, 'rowrow')
     },
     //tab换组件
     handleClick() {
 
     },
     update() {
-      this.drawerData.tableVisible = false
+      this.tableVisible = false
     }
   }
 };

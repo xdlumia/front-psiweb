@@ -9,9 +9,9 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="drawerData.tableVisible"
+    :visible.sync="visible"
     @close="$emit('update:visible',false)"
-    title="报溢/报损单"
+    :title="drawerData.type == 1 ? '报溢单-'+ drawerData.reportingLossesCode : '报损单-' + drawerData.reportingLossesCode"
     width="990px"
   >
     <div
@@ -41,7 +41,7 @@ import reportingInfo from '@/components/formComponents/reporting-info'
 import goodsOverflow from '@/components/formComponents/goods-overflow';
 import SideDetail from '@/components/side-detail';
 export default {
-  props: ['drawerData'],
+  props: ['drawerData', 'visible'],
   data() {
     return {
       status: [{ label: '生成/创建时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],

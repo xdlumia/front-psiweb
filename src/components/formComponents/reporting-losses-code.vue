@@ -95,7 +95,7 @@
         :data='tableData'
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
+        style="height:300px"
       >
         <el-table-column
           min-width="50"
@@ -246,10 +246,8 @@ export default {
         commodityCode: this.commodityForm.goodsCode,
         categoryCode: this.commodityForm.categoryCode,
       }
-      console.log(params)
       this.$api.seePsiWmsService[api](params)
         .then(res => {
-          console.log(res)
           res.data ? this.tableData.push(res.data) : ''
         })
         .finally(() => {

@@ -14,10 +14,7 @@
       <span>商品信息</span>
     </div>
     <el-table
-      show-summary
-      sum-text='总计'
       border
-      :summary-method="getSummaries"
       :data="tableData"
       max-height="400"
       ref="elTable"
@@ -79,7 +76,6 @@
           class="d-relative"
         >
           <commoditySelector
-            :wmsId='addForm.wmsId'
             @choose='commodityChoose(arguments,scope)'
             type="code"
             v-model="scope.row.goodsCode"
@@ -96,50 +92,12 @@
           class="d-relative"
         >
           <commoditySelector
-            :wmsId='addForm.wmsId'
             @choose='commodityChoose(arguments,scope)'
             v-model="scope.row.goodsName"
             :codes='codes'
           />
         </template>
       </el-table-column>
-      <el-table-column
-        label="报溢报损数量"
-        min-width="150"
-      >
-        <template
-          slot-scope="scope"
-          class="d-relative"
-          v-if="scope.row.goodsCode"
-        >
-          <div
-            class="ac"
-            style="width:130px;height:28px;background-color:#F5F7FA;color:#C0C4CC;border:1px solid #E4E7ED;border-radius:5px;line-height:27px"
-          >
-            {{scope.row.commodityInfoList ? scope.row.commodityInfoList.length : '扫码添加'}}
-          </div>
-          <i
-            @click="clickCode(scope)"
-            class="d-text-blue d-absolute f14 b d-pointer"
-            style='right:15px;z-index:200;top:18px;'
-          >码</i>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="成本金额"
-        min-width="100"
-        prop="inventoryPrice"
-      ></el-table-column>
-      <el-table-column
-        label="税率"
-        min-width="100"
-        prop="taxRate"
-      ></el-table-column>
-      <el-table-column
-        label="含税成本金额"
-        min-width="100"
-        prop="name"
-      ></el-table-column>
       <el-table-column
         label="商品图片"
         min-width="120"
@@ -236,33 +194,6 @@ export default {
         }
       })
       this.codes = []
-    },
-    //算合计的
-    getSummaries(param) {
-      const { columns, data } = param;
-      const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = '总计';
-          return;
-        }
-        if (column.property == 'inventoryPrice') {
-          const values = data.map((item) => {
-            if (item.commodityInfoList && item.commodityInfoList.length > 0) {
-              return Number(item.inventoryPrice) * Number(item.commodityInfoList.length)
-            }
-          });
-          sums[index] = values.reduce((prev, curr) => {
-            const value = Number(curr);
-            if (!isNaN(value)) {
-              return prev + curr;
-            } else {
-              return prev;
-            }
-          }, 0);
-        }
-      })
-      return sums;
     },
     expand(row) {
       this.$set(row, 'expanded', !row.expanded);
