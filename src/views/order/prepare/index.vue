@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 09:44:06
+ * @LastEditTime: 2019-11-08 17:31:08
  * @Description: 采购-备货单
 */
 <template>
@@ -12,6 +12,7 @@
       api="seePsiPurchaseService.purchasestockorderList"
       busType="29"
       exportApi="seePsiPurchaseService.purchasestockorderExport"
+      ref="tableView"
       title="备货单"
     >
       <template slot="button">
@@ -21,12 +22,13 @@
         <span v-if="prop=='stockCode'">
           <el-link :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
         </span>
-        <span v-else-if="prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-else-if="prop=='state'">{{stateText[value]}}</span>
+        <span v-else-if="['purchaseArrivalTime','createTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <AddOrderPrepare :visible.sync="showAdd" />
-    <OrderPrepareDetail :code="currentCode" :visible.sync="showDetail" />
+    <AddOrderPrepare :visible.sync="showAdd" @reload="reload" v-if="showAdd" />
+    <OrderPrepareDetail :code="currentCode" :visible.sync="showDetail" @reload="reload" />
   </div>
 </template>
 <script>
@@ -46,18 +48,16 @@ export default {
       showAdd: false,
       showDetail: false,
       currentCode: '',
+      stateText: {
+        '0': '新建',
+        '1': '审核中',
+        '2': '已通过',
+        '3': '部分完成',
+        '4': '已完成',
+        '5': '已驳回'
+      },
       filterOptions: [
         { label: '请购单编号', prop: 'stockCode', default: true },
-        {
-          label: '单据状态', //0新建 1审核中 2已通过3部分完成4已完成5已驳回
-          prop: 'state',
-          default: true
-        },
-        {
-          label: '流程审批状态', //（0 未审核 1审核中 2 完成 3 驳回）
-          prop: 'approvalState',
-          default: true
-        },
         {
           label: '采购预计到货时间',
           prop: 'PurchaseArrivalTime',
@@ -73,6 +73,10 @@ export default {
   methods: {
     logData(e) {
       console.log(e);
+    },
+    reload() {
+      console.log('table reload');
+      this.$refs.tableView.reload(1);
     }
   }
 };

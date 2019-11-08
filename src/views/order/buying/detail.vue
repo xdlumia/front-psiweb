@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 11:52:26
+ * @LastEditTime: 2019-11-08 15:35:21
  * @Description: 采购单详情
 */
 <template>
@@ -79,23 +79,8 @@ export default {
       }
     };
   },
-  computed: {
-    status() {
-      if (!this.detail) return [];
-      else {
-        return [
-          { label: '状态', value: this.stateText[this.detail.state] },
-          { label: '单据创建人', value: this.detail.creatorName },
-          { label: '创建部门', value: this.detail.deptName },
-          { label: '创建时间', value: this.detail.createTime, isTime: true },
-          { label: '来源', value: this.detail.source }
-        ];
-      }
-    }
-  },
   methods: {
     async getDetail() {
-      console.log('detail');
       if (this.code) {
         let {
           data

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 18:20:13
+ * @LastEditTime: 2019-11-08 17:43:11
  * @Description: 采购-直发单
 */
 <template>
@@ -14,8 +14,15 @@
       exportApi="seePsiPurchaseService.purchasedirectExport"
       title="直发单"
     >
-      <template slot-scope="{column,row,value}">
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+      <template slot-scope="{column,row,value,prop}">
+        <span v-if="prop=='directCode'">
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
+        </span>
+        <span v-else-if="prop=='quotationCode'">
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
+        </span>
+        <span v-else-if="prop=='state'">{{stateText[value]}}</span>
+        <span v-else-if="['purchaseDeliverTime','saleDeliverTime','createTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
@@ -35,25 +42,28 @@ export default {
     return {
       status: [],
       showDetail: false,
+      currentCode: '',
+      stateText: {
+        '0': '待完成',
+        '1': '部分完成',
+        '2': '已完成',
+        '3': '已终止'
+      },
       filterOptions: [
         { label: '直发单编号', prop: 'directCode', default: true },
         { label: '报价单', prop: 'quotationCode', default: true },
-        { label: '销售出库单编号', prop: 'shipmentCode', default: true },
-        { label: '单据状态0待完成 1部分完成 2完成3终止', prop: 'state' },
-        {
-          label: '流程审批状态（0 未审核 1审核中 2 完成 3 驳回）',
-          prop: 'approvalState'
-        },
         { label: '客户', prop: 'clientName' },
         {
           label: '销售预计发货时间',
           prop: 'SaleDeliverTime',
-          type: 'dateRange'
+          type: 'dateRange',
+          default: true
         },
         {
           label: '采购预计发货时间',
           prop: 'PurchaseDeliverTime',
-          type: 'dateRange'
+          type: 'dateRange',
+          default: true
         },
         { label: '单据执行人', prop: 'personInChargeId', type: 'employee' },
         { label: '合同创建人', prop: 'creator', type: 'employee' },

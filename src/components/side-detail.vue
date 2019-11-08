@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 16:48:42
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-08 16:42:18
  * @Description: 侧边详情弹框
 */
 <template>
@@ -48,11 +48,6 @@ export default {
     visible() {
       this.showPop = this.visible;
     },
-    showPop() {
-      if (!this.showPop) {
-        this.close();
-      }
-    }
   },
   computed: {
     hasButton() {

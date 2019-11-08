@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 18:20:31
+ * @LastEditTime: 2019-11-08 18:12:15
  * @Description: 直发单详情
 */
 <template>
@@ -21,9 +21,9 @@
       <el-tab-pane label="详情">
         <el-form>
           <approvePanel></approvePanel>
-          <arrivalInfo></arrivalInfo>
-          <customInfo></customInfo>
-          <extrasInfo></extrasInfo>
+          <arrivalInfo :data="detail" disabled></arrivalInfo>
+          <customInfo :data="detail" disabled></customInfo>
+          <extrasInfo :data="detail" disabled></extrasInfo>
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
@@ -37,8 +37,10 @@
 import AddOrderStorage from '../storage/edit'; // 采购入库单
 import EditDirect from './edit'; // 编辑直发单
 import DeliverEdit from './deliverEdit'; // 编辑直发单
+import VisibleMixin from '@/utils/visibleMixin';
 
 export default {
+  mixins: [VisibleMixin],
   components: {
     AddOrderStorage,
     EditDirect,

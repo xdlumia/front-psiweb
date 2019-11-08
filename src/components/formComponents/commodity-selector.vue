@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 14:20:58
+ * @LastEditTime: 2019-11-08 18:33:00
  * @Description: 商品输入选框 字段已绑定 1 
 */
 <template>
@@ -35,7 +35,7 @@
       </el-option>
     </el-select>
     <i @click="openDialog" class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"></i>
-    <commodity-choose :visible.sync="showCommodityGoods" @choose="choose" v-if="showCommodityGoods||showed" />
+    <commodity-choose :params="wmsId?{wmsId}:params" :visible.sync="showCommodityGoods" @choose="choose" v-if="showCommodityGoods||showed" />
   </span>
 </template>
 <script>
@@ -51,6 +51,10 @@ export default {
     },
     type: String,
     value: String,
+    params: {
+      type: Object,
+      default: () => ({})
+    },
     wmsId: '' //库房id,新增报溢报损要筛选当前库房下的id
   },
   data() {

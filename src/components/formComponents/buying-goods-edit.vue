@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 14:22:15
+ * @LastEditTime: 2019-11-08 15:40:59
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -10,15 +10,27 @@
     <form-card title="商品信息">
       <div slot="title">
         <span>商品信息</span>
-        <commodity-selector :codes="goods.map(item=>item.commodityCode)" @choose="choose" class="ml10" />
+        <commodity-selector
+          :codes="this.data.commodityList?this.data.commodityList.map(item=>item.commodityCode):[]"
+          @choose="choose"
+          class="ml10"
+          v-if="!disabled"
+        />
         <span class="fr">
           <span>
             <el-link :underline="false" @click="showInFull=true" type="primary">全屏显示</el-link>
           </span>
         </span>
       </div>
-      <el-table :data="goods" :style="{height:showInFull?'calc(100% - 40px)':''}" ref="table" show-summary size="mini">
-        <el-table-column :reserve-selection="true" label="商品编号" min-width="600" prop="title" show-overflow-tooltip>
+      <el-table
+        :data="data.commodityList"
+        :style="{height:showInFull?'calc(100% - 40px)':''}"
+        :summary-method="getSummaries"
+        ref="table"
+        show-summary
+        size="mini"
+      >
+        <el-table-column :reserve-selection="true" label="商品编号" min-width="140" prop="title" show-overflow-tooltip>
           <template slot-scope="{row}">
             <span class="d-text-blue">{{row.commodityCode}}</span>
           </template>
@@ -47,36 +59,36 @@
             <span>{{row.costAmount||'-'}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="税率" min-width="60" prop="taxRate" show-overflow-tooltip>
+        <el-table-column align="center" label="税率" min-width="60" prop="taxRate" show-overflow-tooltip>
           <template slot-scope="{row}">
             <span>{{row.taxRate ? row.taxRate + '%' : '-'}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="含税总价" min-width="70" prop="preTaxAmount" show-overflow-tooltip>
+        <el-table-column align="center" label="含税总价" min-width="70" prop="preTaxAmount" show-overflow-tooltip>
           <template slot-scope="{row:{taxRate,costAmount,commodityNumber}}">
             <span>{{+Number((costAmount*(1+taxRate)*commodityNumber)||0).toFixed(2)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="总库存" min-width="60" prop="usableInventoryNum" show-overflow-tooltip>
+        <el-table-column align="center" label="总库存" min-width="60" prop="usableInventoryNum" show-overflow-tooltip>
           <template slot-scope="{row}">
             <span>{{row.usableInventoryNum||0}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="商品数量" min-width="80" prop="commodityNumber" show-overflow-tooltip>
-          <template slot-scope="{row}">
-            <el-form-item :rules="[{type:'positiveNum'}]" size="mini">
-              <el-input class="wfull" v-model="row.commodityNumber"></el-input>
+        <el-table-column align="center" label="商品数量" min-width="80" prop="commodityNumber" show-overflow-tooltip>
+          <template slot-scope="{row,$index}">
+            <el-form-item :prop="`commodityList.${$index}.commodityNumber`" :rules="[{required:true},{type:'positiveNum'}]" size="mini">
+              <el-input :disabled="disabled" class="wfull" v-model="row.commodityNumber"></el-input>
             </el-form-item>
           </template>
         </el-table-column>
         <el-table-column label="备注" min-width="240" prop="note" show-overflow-tooltip>
           <template slot-scope="{row}">
             <el-form-item size="mini">
-              <el-input class="wfull" v-model="row.note"></el-input>
+              <el-input :disabled="disabled" class="wfull" v-model="row.note"></el-input>
             </el-form-item>
           </template>
         </el-table-column>
-        <el-table-column label="操作" min-width="60" show-overflow-tooltip>
+        <el-table-column align="center" label="操作" min-width="60" show-overflow-tooltip v-if="!disabled">
           <template slot-scope="{row,$index}">
             <i @click="deleteChoose($index)" class="el-icon-error d-pointer" style="font-size:20px;color:#F5222D"></i>
           </template>
@@ -92,33 +104,53 @@ export default {
     data: {
       type: Object,
       default: () => ({})
-    }
+    },
+    disabled: Boolean
   },
   data() {
     return {
-      showInFull: false,
-      goods: []
+      showInFull: false
     };
   },
   methods: {
-    getSummaries() {
+    getSummaries(param) {
       const { columns, data } = param;
       const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = '总价';
-          return;
-        }
+      columns.forEach((col, index) => {
+        if (['commodityNumber'].includes(col.property)) {
+          let prop = col.property;
+          sums[index] = +Number(
+            data
+              .map(item => Number(item[prop]) || 0)
+              .reduce((sum, item) => sum + item, 0)
+          ).toFixed(2);
+        } else if (['preTaxAmount'].includes(col.property)) {
+          sums[index] = +Number(
+            data
+              .map(
+                item =>
+                  +Number(
+                    item.costAmount *
+                      (1 + item.taxRate) *
+                      item.commodityNumber || 0
+                  ).toFixed(2)
+              )
+              .reduce((sum, item) => sum + item, 0)
+          ).toFixed(2);
+        } else if (index == 0) {
+          sums[0] = '总计';
+        } else sums[index] = '';
       });
-
       return sums;
     },
     choose(e) {
-      this.goods = this.goods.concat(e.map(this.goodToBuyingInfo));
-      console.log(e);
+      this.data.commodityList = this.data.commodityList || [];
+      this.data.commodityList = this.data.commodityList.concat(
+        e.map(this.goodToBuyingInfo)
+      );
     },
     deleteChoose(i) {
-      this.goods.splice(i, 1);
+      this.data.commodityList.splice(i, 1);
     },
     goodToBuyingInfo(good) {
       let target = {
@@ -136,7 +168,7 @@ export default {
         costAmount: 'inventoryPrice',
         discount: '',
         discountSprice: '',
-        goodsPic: '',
+        goodsPic: 'goodsPic',
         inventoryNumber: 'usableInventoryNum',
         isAssembly: '',
         isDirect: '',

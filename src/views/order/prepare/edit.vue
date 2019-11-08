@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 10:33:54
+ * @LastEditTime: 2019-11-08 16:43:54
  * @Description: 新增备货单
 */
 <template>
-  <el-dialog :visible="visible" @close="close" v-dialogDrag>
+  <el-dialog :fullscreen="true" :visible="visible" @close="close" v-dialogDrag v-loading="loading" width="1000">
     <div slot="title">
       <span>新增备货单</span>
       <span class="fr mr20">
@@ -46,12 +46,6 @@ import VisibleMixin from '@/utils/visibleMixin';
 export default {
   mixins: [VisibleMixin],
   components: {},
-  props: {
-    visible: {
-      type: Boolean,
-      default: false
-    }
-  },
   computed: {
     maxHeight() {
       return window.innerHeight - 130;
@@ -59,7 +53,6 @@ export default {
   },
   data() {
     return {
-      activeName: '',
       form: {
         // 附件 undefined
         attachList: [],
@@ -74,7 +67,7 @@ export default {
         // 采购预计到货时间 1572419862629
         purchaseArrivalTime: '',
         // 来源 示例：来源
-        source: '',
+        source: '新建',
         // 请购单编号 示例：请购单编号
         stockCode: ''
       }
@@ -82,15 +75,34 @@ export default {
   },
   mounted() {},
   methods: {
-    handleClick({ label, name }) {
-      this.activeName = '';
+    async getDetail() {
+      if (this.code) {
+        let {
+          data
+        } = this.$api.seePsiPurchaseService.purchasestockorderGetByCode(
+          null,
+          this.code
+        );
+        return data;
+      } else if (this.rowData) return this.rowData;
     },
-    close() {
-      this.$emit('update:visible', false);
-    },
-    save() {
-      this.$refs.form.validate();
-      console.log(JSON.parse(JSON.stringify(this.form)));
+    async save() {
+      await this.$refs.form.validate();
+      this.loading = true;
+      try {
+        if (this.isEdit) {
+          await this.$api.seePsiPurchaseService.purchasestockorderUpdate(
+            this.form
+          );
+        } else {
+          await this.$api.seePsiPurchaseService.purchasestockorderSave(
+            this.form
+          );
+        }
+        this.setEdit();
+        this.close();
+      } catch (error) {}
+      this.loading = false;
     }
   }
 };

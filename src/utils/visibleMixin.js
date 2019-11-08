@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 10:16:42
+ * @LastEditTime: 2019-11-08 17:17:04
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -11,6 +11,7 @@ export default {
         visible: Boolean,
         code: String,
         rowData: Object,
+        type: String,
     },
     data() {
         return {
@@ -20,6 +21,8 @@ export default {
             showDetailPage: false,
             showEditPage: false,
             loading: false,// 加载中
+            stateText: {},
+            closeTimer: null
         }
     },
     watch: {
@@ -29,6 +32,23 @@ export default {
     },
     mounted() {
         this.$checkVisible();
+    },
+    computed: {
+        isEdit() {
+            return this.type == 'edit'
+        },
+        status() {
+            if (!this.detail) return [];
+            else {
+                return [
+                    { label: '状态', value: this.stateText[this.detail.state] },
+                    { label: '单据创建人', value: this.detail.creatorName },
+                    { label: '创建部门', value: this.detail.deptName },
+                    { label: '创建时间', value: this.detail.createTime, isTime: true },
+                    { label: '来源', value: this.detail.source }
+                ];
+            }
+        }
     },
     methods: {
         // 检查可见状态
@@ -42,6 +62,7 @@ export default {
                 try {
                     let data = await this.getDetail();
                     if (data) {
+                        data = JSON.parse(JSON.stringify(data))
                         this.detail = data;
                         this.form = data;
                     }
@@ -62,10 +83,36 @@ export default {
         getDetail() { },
         // 关闭
         close() {
-            if (this.isModified) {
-                this.$emit('reload')
+            if (this.visible) {
+                if (this.isModified) {
+                    this.$emit('reload')
+                }
+                this.$emit('update:visible', false)
             }
-            this.$emit('update:visible', false)
+        },
+        // 审核
+        async $submission(api, data, title, needNote) {
+            if (needNote) {
+                await this.$prompt(`确定要${title}吗？`, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputType: "textarea",
+                    closeOnClickModal: false,
+                    inputValidator(value) {
+                        if (value.length < 300) {
+                            return true;
+                        } else return "字数不能超过300字";
+                    }
+                })
+            } else {
+                await this.$confirm(`是否${title}`, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    closeOnClickModal: false,
+                    type: 'warning'
+                })
+            }
+            return api.split('.').reduce((api, item) => api[item], this.$api)(data)
         }
     }
 }

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 18:26:15
+ * @LastEditTime: 2019-11-08 16:47:29
  * @Description: 采购-请购单
 */
 <template>
@@ -70,18 +70,6 @@ export default {
       filterOptions: [
         { label: '请购单编号', prop: 'purchaseApplyCode', default: true },
         { label: '报价单编号', prop: 'quotationCode', default: true },
-        {
-          label: '单据状态',
-          prop: 'state',
-          default: true,
-          type: 'select',
-          options: [
-            { label: '待完成', value: 0 },
-            { label: '部分完成', value: 1 },
-            { label: '完成', value: 2 },
-            { label: '终止', value: 3 }
-          ]
-        },
         {
           label: '销售要求到货时间',
           prop: 'SaleArrivalTime',

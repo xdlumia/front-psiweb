@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 18:41:34
+ * @LastEditTime: 2019-11-08 18:32:19
  * @Description: 选择商品 字段已绑定 1 
 */
 <template>
@@ -19,6 +19,7 @@
       <!-- 表格 -->
       <el-main>
         <d-table
+          :autoInit="false"
           :params="queryForm"
           :reserve-selection="true"
           :tree-props="{children: 'children', hasChildren: 'children'}"
@@ -186,7 +187,13 @@ export default {
       type: Boolean,
       default: false
     },
-    form: {}
+    form: {},
+    params: {
+      type: Object,
+      default: () => ({
+        wmsId: 1
+      })
+    }
   },
   data() {
     return {
@@ -233,7 +240,9 @@ export default {
       return [].concat(this.preSelection, this.multipleSelection);
     }
   },
-  mounted() {},
+  beforeMount() {
+    Object.assign(this.queryForm, this.params);
+  },
   methods: {
     getPreSelectObj() {
       return this.preSelection.reduce((data, item) => {
