@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 18:04:04
+ * @LastEditTime: 2019-11-08 15:27:01
  * @Description: 促销详情
  -->
 <template>
@@ -115,7 +115,7 @@ export default {
       this.$api.seePsiCommonService.commonpromotionInfoBycode(null, this.code).then(res => {
         this.detailForm = res.data || {}
         this.detailForm.datetimerange = [res.data.begTime, res.data.endTime]
-        this.status[0].value = res.data.state ? '停用' : '启用'
+        this.status[0].value = res.data.promotionName
       }).finally(() => {
         this.loading = false
       })
