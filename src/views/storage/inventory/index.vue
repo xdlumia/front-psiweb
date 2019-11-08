@@ -169,7 +169,7 @@ export default {
     getTableVisible(data) {
       console.log(data, 'rowrow')
       this.tableVisible = true
-      this.drawerData.title = '盘点单' + data.id
+      this.drawerData = data
     },
     //tab换组件
     handleClick() {

@@ -20,39 +20,48 @@
           </span>
         </span>
       </div>
-      <d-table
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+      <el-table
         ref="companyTable"
+        :data="tableData"
+        border
+        size="mini"
         class="college-main"
         style="height:calc(100vh - 340px)"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
       >
         <el-table-column
           fixed
-          prop="title"
+          prop="name"
           label="实际数量"
           min-width="120"
           show-overflow-tooltip
         >
-          <template slot-scope="">
-            <el-input
-              v-model="input"
-              size='mini'
-              placeholder="请输入"
-            ></el-input>
+          <template
+            slot-scope="scope"
+            class="d-relative"
+          >
+            <div
+              class="ac"
+              style="width:100px;height:28px;background-color:#F5F7FA;color:#C0C4CC;border:1px solid #E4E7ED;border-radius:5px;line-height:27px"
+            >
+              {{scope.row.commodityInfoList ? scope.row.commodityInfoList.length : '扫码添加'}}
+            </div>
+            <i
+              @click="clickCode(scope)"
+              class="d-text-blue d-absolute f14 b d-pointer"
+              style='right:15px;z-index:200;top:8px;'
+            >码</i>
           </template>
         </el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="name"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="title"
+          prop="name"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
@@ -63,38 +72,44 @@
         </el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="name"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="name"
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="name"
           min-width="100"
           label="商品配置"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="name"
           min-width="140"
           label="商品规格"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="name"
           min-width="80"
           label="单位"
           show-overflow-tooltip
         ></el-table-column>
 
-      </d-table>
+      </el-table>
+      <scanCodeInventory
+        :visible.sync='codeVisible'
+        :commodityForm='commodityForm'
+        :addform='addform'
+        @sumitSn='sumitSn'
+      />
       <FullscreenElement
         :element="$refs.companyTable"
         :visible.sync="showInFullscreen"
@@ -104,7 +119,10 @@
 </template>
 <script>
 import FullscreenElement from '@/components/fullscreen-element';
+import scanCodeInventory from './scan-code-inventory';
+
 export default {
+  props: ['addform'],
   data() {
     return {
       // 查询表单
@@ -117,17 +135,35 @@ export default {
         page: 1,
         limit: 20
       },
-      dialogVisible: false,
-      showInFullscreen: false
+      tableData: [{ name: '假的' }],
+      codeVisible: false,
+      showInFullscreen: false,
+      commodityForm: {}
     }
   },
   methods: {
     fullscreen() {
       this.showInFullscreen = true;
+    },
+    //点击码字
+    clickCode(scope) {
+      this.codeVisible = true
+      this.commodityForm = scope.row
+      this.ceIndex = scope.$index
+    },
+    //扫码成功以后的保存
+    sumitSn(data) {
+      this.$set(this.tableData[this.ceIndex], 'commodityInfoList', data)
+      this.tableData.forEach((item) => {
+        if (item.goodsCode) {
+          this.addForm.commodityList.push(item)
+        }
+      })
     }
   },
   components: {
-    FullscreenElement
+    FullscreenElement,
+    scanCodeInventory
   },
 }
 </script>

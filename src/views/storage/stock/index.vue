@@ -178,121 +178,121 @@ export default {
           ],
           default: true
         },
-        {
-          label: '商品分类',
-          prop: 'allocationType',
-          type: 'select',
-          options: [
-            { label: '内调', value: '1' },
-            { label: '外调', value: '2' }
-          ],
-          default: true
-        },
-        {
-          label: '商品名称',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '商品规格',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '商品配置',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '单位',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '实物库存',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '期初库存',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '入库数量',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '出库数量',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '待入库数量',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '待出库数量',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '锁库量',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '最低采购价',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
+        // {
+        //   label: '商品分类',
+        //   prop: 'allocationType',
+        //   type: 'select',
+        //   options: [
+        //     { label: '内调', value: '1' },
+        //     { label: '外调', value: '2' }
+        //   ],
+        //   default: true
+        // },
+        // {
+        //   label: '商品名称',
+        //   prop: '',
+        //   type: 'employee',
+        //   dictName: 'FM_FANGYUAN_MJ',
+        //   default: true
+        // },
+        // {
+        //   label: '商品规格',
+        //   prop: '',
+        //   type: 'employee',
+        //   dictName: 'FM_FANGYUAN_MJ',
+        //   default: true
+        // },
+        // {
+        //   label: '商品配置',
+        //   prop: '',
+        //   type: 'employee',
+        //   dictName: 'FM_FANGYUAN_MJ',
+        //   default: true
+        // },
+        // {
+        //   label: '单位',
+        //   prop: '',
+        //   type: 'employee',
+        //   dictName: 'FM_FANGYUAN_MJ',
+        //   default: true
+        // },
+        // {
+        //   label: '实物库存',
+        //   prop: '',
+        //   type: 'employee',
+        //   dictName: 'FM_FANGYUAN_MJ',
+        //   default: true
+        // },
+        // {
+        //   label: '期初库存',
+        //   prop: '',
+        //   type: 'employee',
+        //   dictName: 'FM_FANGYUAN_MJ',
+        //   default: true
+        // },
+        // {
+        //   label: '入库数量',
+        //   prop: '',
+        //   type: 'employee',
+        //   dictName: 'FM_FANGYUAN_MJ',
+        //   default: true
+        // },
+        // {
+        //   label: '出库数量',
+        //   prop: '',
+        //   type: 'employee',
+        //   dictName: 'FM_FANGYUAN_MJ',
+        //   default: true
+        // },
+        // {
+        //   label: '待入库数量',
+        //   prop: '',
+        //   type: 'employee',
+        //   dictName: 'FM_FANGYUAN_MJ',
+        //   default: true
+        // },
+        // {
+        //   label: '待出库数量',
+        //   prop: '',
+        //   type: 'employee',
+        //   dictName: 'FM_FANGYUAN_MJ',
+        //   default: true
+        // },
+        // {
+        //   label: '锁库量',
+        //   prop: '',
+        //   type: 'employee',
+        //   dictName: 'FM_FANGYUAN_MJ',
+        //   default: true
+        // },
+        // {
+        //   label: '最低采购价',
+        //   prop: '',
+        //   type: 'employee',
+        //   dictName: 'FM_FANGYUAN_MJ',
+        //   default: true
+        // },
 
-        {
-          label: '库存成本',
-          prop: 'putawayWmsName',
-          type: 'select',
-          options: [
-            { label: '内调', value: '1' },
-            { label: '外调', value: '2' }
-          ],
-          default: true
-        },
-        {
-          label: '销售参考价',
-          prop: 'shipmentWmsNames',
-          type: 'select',
-          options: [
-            { label: '内调', value: '1' },
-            { label: '外调', value: '2' }
-          ],
-          default: true
-        }
+        // {
+        //   label: '库存成本',
+        //   prop: 'putawayWmsName',
+        //   type: 'select',
+        //   options: [
+        //     { label: '内调', value: '1' },
+        //     { label: '外调', value: '2' }
+        //   ],
+        //   default: true
+        // },
+        // {
+        //   label: '销售参考价',
+        //   prop: 'shipmentWmsNames',
+        //   type: 'select',
+        //   options: [
+        //     { label: '内调', value: '1' },
+        //     { label: '外调', value: '2' }
+        //   ],
+        //   default: true
+        // }
       ],
     };
   },

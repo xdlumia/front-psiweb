@@ -142,23 +142,14 @@
       :visibleData='visibleData'
       :visible='visible'
     />
-    <reportingLossesCode
-      @sumitSn='sumitSn'
-      :visible.sync='codeVisible'
-      v-if="codeVisible"
-      :commodityForm='commodityForm'
-      :addForm='addForm'
-      :type='addForm.type'
-    />
   </form-card>
 </template>
 <script>
 import commodityChoose from './commodity-choose'
-import reportingLossesCode from './reporting-losses-code'
 import commoditySelector from '@/components/formComponents/commodity-selector';
 export default {
   props: ['addForm'],
-  components: { commodityChoose, reportingLossesCode, commoditySelector },
+  components: { commodityChoose, commoditySelector },
   data() {
     return {
       tableData: [{}],
@@ -215,20 +206,7 @@ export default {
     update() {
       this.visible = false
     },
-    //点击码字
-    clickCode(scope) {
-      this.codeVisible = true
-      this.commodityForm = scope.row
-      this.ceIndex = scope.$index
-    },
-    sumitSn(data) {
-      this.$set(this.tableData[this.ceIndex], 'commodityInfoList', data)
-      this.tableData.forEach((item) => {
-        if (item.goodsCode) {
-          this.addForm.commodityList.push(item)
-        }
-      })
-    }
+
   }
 };
 </script>

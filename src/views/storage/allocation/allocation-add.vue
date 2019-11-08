@@ -107,6 +107,7 @@ export default {
         serviceGrade: '',
         wmsCommodityIdList: [],//调出库房ids
         wmsNames: [],//庫房名稱
+        source: '新增',
       }
     };
   },
@@ -126,8 +127,9 @@ export default {
       this.$refs['allForm'].validate((valid) => {
         if (valid) {
           let arr = this.$refs.logisticsEdit.upTableData || []
+          console.log(arr, 'upTableData')
           arr.forEach((item) => {
-            this.allForm.wmsCommodityIdList.push(item.id)
+            this.allForm.wmsCommodityIdList.push(item.wmsId)
             this.allForm.wmsNames.push(item.wmsName)
           })
           if (arr.length > 0) {

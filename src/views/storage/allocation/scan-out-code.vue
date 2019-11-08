@@ -281,7 +281,7 @@ export default {
     //调出走的接口
     wmsallocationorderBatchUpdate() {
       if (this.downTableData.length > 0) {
-        this.$api.seePsiWmsService.wmsallocationorderBatchUpdate({ list: this.downTableData, businessCode: this.dialogData.allocationOrderCode })
+        this.$api.seePsiWmsService.wmsallocationorderBatchUpdate({ putawayCommodityList: this.downTableData, businessCode: this.dialogData.allocationOrderCode })
           .then(res => {
             this.close()
           })

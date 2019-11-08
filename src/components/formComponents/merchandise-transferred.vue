@@ -186,7 +186,11 @@
         </el-table-column>
       </el-table>
     </form-card>
-    <commodityChoose :visible='chooseVisible' />
+    <commodityChoose
+      params=""
+      :visible.sync='chooseVisible'
+      @choose='commodityChoose'
+    />
   </div>
 </template>
 <script>
@@ -256,6 +260,21 @@ export default {
       } else {
         this.downTableData = []
       }
+    },
+    //弹窗选择商品
+    commodityChoose(selected) {
+      let allId = []
+      this.upTableData.forEach((item) => {
+        allId.push(item.id)
+      })
+      let newArr = selected.filter(item => !allId.includes(item.id))
+      if (newArr.length > 0) {
+        newArr.forEach((item) => {
+          this.upTableData.unshift(item)
+        })
+        this.doSth()
+      }
+      console.log(this.upTableData, 'this.upTableDatathis.upTableData')
     },
     //根据SN码或机器号查询商品
     getCommodityBySnCode() {

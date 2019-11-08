@@ -50,7 +50,7 @@
         </el-form>
         <inventoryCommodities
           v-if="addform.type == 2"
-          ref="logisticsEdit"
+          ref="inventory"
           :addform='addform'
         />
       </el-main>
@@ -65,7 +65,7 @@
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="close"
+        @click="submit"
         size="small"
       >保 存</el-button>
     </span>
@@ -100,6 +100,8 @@ export default {
         blitemPerson: '',//盘点人
         type: 1,//盘点类型  1 全盘  2抽盘
         note: '',//备注
+        commodityCodeList: [],//商品列表
+        result: '',//盘点结果（1-盘盈 2-盘亏 3-有盈亏 4-吻合）
       }
     };
   },
@@ -110,6 +112,27 @@ export default {
     },
     close() {
       this.$emit('update:visible', false)
+    },
+    //点一下保存
+    submit() {
+      if (this.addform.type == 2) {
+        let tableData = this.$refs.inventory.tableData
+        tableData.forEach((item) => {
+          if (item.goodsCode) {
+            this.addform.commodityCodeList.push(item)
+          }
+        })
+      } else {
+        this.addform.commodityCodeList = []
+      }
+      this.$api.seePsiWmsService.wmsblitemSave(this.addform)
+        .then(res => {
+          this.close()
+        })
+        .finally(() => {
+
+        })
+
     }
   }
 };

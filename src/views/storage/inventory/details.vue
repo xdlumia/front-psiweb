@@ -11,7 +11,7 @@
     :status="status"
     :visible.sync="visible"
     @close="$emit('update:visible',false)"
-    title="盘点单"
+    :title="'盘点单'+drawerData.blitemCode"
     width="990px"
   >
     <div
@@ -25,12 +25,12 @@
           type="primary"
         >完成盘点</el-button>
         <el-button
-          @click="backVisible=true,isComponents = 'scanOutCode',dialogData.title = '调出扫码'"
+          @click="reportingVisible=true"
           size="mini"
           type="primary"
         >生成报损单</el-button>
         <el-button
-          @click="hangVisible=true"
+          @click="reportingVisible=true"
           size="mini"
           type="primary"
         >生成报溢单</el-button>
@@ -38,12 +38,16 @@
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
           <el-form>
-            <inventoryInfo :disabled='true' />
-            <goodsInventory />
+            <inventoryInfo
+              :disabled='true'
+              :addform='detailForm'
+            />
+            <goodsInventory :addform='detailForm' />
           </el-form>
         </el-tab-pane>
       </el-tabs>
     </div>
+    <reportingGenerate :visible.sync='reportingVisible' />
   </SideDetail>
 
 </template>
@@ -51,15 +55,20 @@
 import inventoryInfo from '@/components/formComponents/inventory-info'
 import goodsInventory from '@/components/formComponents/goods-inventory';
 import SideDetail from '@/components/side-detail';
+import reportingGenerate from './reporting-generate'//生成报溢报损单
 export default {
   props: ['drawerData', 'visible'],
   data() {
     return {
       status: [{ label: '盘点状态', value: '2019-9-21 10:04:38' }, { label: '创建时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       backVisible: false,
+      reportingVisible: false,
       isComponents: '',
       dialogData: {
         title: ''
+      },
+      detailForm: {
+
       }
     };
   },
@@ -67,7 +76,28 @@ export default {
     inventoryInfo,
     goodsInventory,
     SideDetail,
+    reportingGenerate
   },
+  mounted() {
+    this.wmsreportinglossesInfo()
+  },
+  methods: {
+    wmsreportinglossesInfo() {
+      this.$api.seePsiWmsService.wmsblitemInfo(null, this.drawerData.id)
+        .then(res => {
+          this.detailForm = res.data || {}
+          this.status[0].value = this.drawerData.blitemState == 1 ? '进行中' : '盘点完成'
+          this.status[1].value = this.drawerData.creatorName
+          this.status[2].value = this.drawerData.creator
+          this.status[3].value = this.drawerData.deptName
+          this.status[4].value = this.drawerData.source
+          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
+        })
+        .finally(() => {
+
+        })
+    }
+  }
 }
 </script>
 <style lang='scss' scoped>
