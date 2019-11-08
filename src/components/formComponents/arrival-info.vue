@@ -2,25 +2,19 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 16:17:22
+ * @LastEditTime: 2019-11-08 10:24:10
  * @Description: 到货信息
  */
 <template>
   <form-card title="到货信息">
     <el-row :gutter="10">
       <el-col :span="8" v-if="!hide.includes('saleTime')">
-        <el-form-item label="销售要求到货时间" prop="saleTime" :rules="[{ required: true, trigger: 'blur' }]">
-          <el-date-picker
-            :disabled="disabled"
-            :placeholder="`请选择销售要求到货时间`"
-            class="wfull"
-            v-model="data.saleTime"
-            value-format="timestamp"
-          />
+        <el-form-item :rules="[{ required: true, trigger: 'blur' }]" label="销售要求到货时间" prop="saleTime">
+          <el-date-picker :disabled="disabled" :placeholder="`请选择销售要求到货时间`" class="wfull" v-model="data.saleTime" value-format="timestamp" />
         </el-form-item>
       </el-col>
       <el-col :span="8" v-if="!hide.includes('purchaseTime')">
-        <el-form-item label="采购预计到货时间" prop="purchaseTime" :rules="[{ required: true, trigger: 'blur' }]">
+        <el-form-item :rules="[{ required: true, trigger: 'blur' }]" label="采购预计到货时间" prop="purchaseTime">
           <el-date-picker
             :disabled="disabled"
             :placeholder="`请选择采购预计到货时间`"
@@ -35,6 +29,7 @@
           <el-input
             :disabled="disabled"
             :placeholder="`请输入${item.label}`"
+            class="wfull"
             v-if="item.type =='input'"
             v-model.trim="data.logistics[item.prop]"
           />
@@ -57,6 +52,7 @@
           <el-select
             :loading="serviceLoading"
             :remote-method="getServiceProvider"
+            class="wfull"
             filterable
             remote
             v-else-if="item.type=='serviceProvider'"
@@ -83,9 +79,7 @@ export default {
     data: {
       default: () => {
         return {
-          logistics: {
-            serviceCode: ''
-          }
+          logistics: {}
         };
       }
     },
@@ -99,6 +93,7 @@ export default {
     }
   },
   data() {
+    // prettier-ignore
     let formItems = [
       { label: '供应商联系人', prop: 'supplierLinkman', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
       { label: '供应商联系人电话', prop: 'supplierPhone', type: 'input', rules: [{ required: true, }, { type: 'phone' }], },
@@ -131,7 +126,7 @@ export default {
     }
   },
   mounted() {
-    this.getServiceInfo()
+    this.getServiceInfo();
   },
   methods: {
     async getServiceInfo() {
@@ -139,27 +134,33 @@ export default {
         !this.data ||
         !this.data.logistics ||
         !this.data.logistics.serviceCode
-      ){
+      ) {
+        this.getServiceProvider();
         return;
       }
       let [service] = this.serviceOptions.filter(
         a => a.code == this.data.logistics.serviceCode
       );
-      if(!service){
-        let {data} = await this.$api.seePsiCommonService.commonserviceproviderInfoBycode(null,this.data.logistics.serviceCode)
+      if (!service) {
+        let {
+          data
+        } = await this.$api.seePsiCommonService.commonserviceproviderInfoBycode(
+          null,
+          this.data.logistics.serviceCode
+        );
         service = data;
-        this.serviceOptions = [service]
+        this.serviceOptions = [service];
       }
       if (service) {
         this.serviceFilter = service.serviceType.split(',');
         if (
           !this.serviceFilter.includes(this.data.logistics.logisticsModelCode)
         ) {
-          this.data.logistics.logisticsModelCode = '';
+          this.$set(this.data.logistics, 'logisticsModelCode', '');
         }
       }
     },
-    async getServiceProvider(words) {
+    async getServiceProvider(words = '') {
       this.serviceLoading = true;
       let {
         data

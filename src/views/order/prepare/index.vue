@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 18:50:10
+ * @LastEditTime: 2019-11-08 09:44:06
  * @Description: 采购-备货单
 */
 <template>
@@ -17,13 +17,16 @@
       <template slot="button">
         <el-button @click="showAdd=true" size="mini" type="primary">新建</el-button>
       </template>
-      <template slot-scope="{column,row,value}">
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+      <template slot-scope="{column,row,value,prop}">
+        <span v-if="prop=='stockCode'">
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
+        </span>
+        <span v-else-if="prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <AddOrderPrepare :visible.sync="showAdd" />
-    <OrderPrepareDetail :visible.sync="showDetail" />
+    <OrderPrepareDetail :code="currentCode" :visible.sync="showDetail" />
   </div>
 </template>
 <script>
@@ -42,6 +45,7 @@ export default {
       status: [],
       showAdd: false,
       showDetail: false,
+      currentCode: '',
       filterOptions: [
         { label: '请购单编号', prop: 'stockCode', default: true },
         {
@@ -62,7 +66,7 @@ export default {
         },
         { label: '合同创建人', prop: 'creator', type: 'employee' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
-        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' },
+        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
       ]
     };
   },

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 17:38:57
+ * @LastEditTime: 2019-11-08 09:57:05
  * @Description: 采购入库单
 */
 <template>
@@ -129,7 +129,7 @@ export default {
     },
     save() {
       this.$refs.form.validate();
-      console.log(JSON.parse(JSON.stringify(this.form)));
+      console.log(this.form);
     }
   }
 };

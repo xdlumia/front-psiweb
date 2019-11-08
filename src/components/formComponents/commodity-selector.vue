@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 18:18:56
+ * @LastEditTime: 2019-11-08 14:20:58
  * @Description: 商品输入选框 字段已绑定 1 
 */
 <template>
@@ -16,47 +16,26 @@
       popper-class="custom-goods-selector"
       remote
       size="mini"
-      v-model="val"
+      v-model="selectGood"
     >
       <el-option
         :key="item.goodsCode"
-        :label="item.name"
+        :label="type=='code'?item.goodsCode:item.goodsName"
         :value="item.goodsCode"
         v-for="(item,i) in options"
       >
         <el-row>
-          <el-col
-            :span="6"
-            class="b d-text-black"
-            v-if="i==0"
-          >商品名称</el-col>
-          <el-col
-            :span="18"
-            class="b d-text-black"
-            v-if="i==0"
-          >商品编号</el-col>
-          <el-col
-            :span="6"
-            class="d-hidden d-elip"
-          >{{item.goodsName}}</el-col>
-          <el-col
-            :span="18"
-            class="d-hidden d-elip"
-          >
+          <el-col :span="6" class="b d-text-black" v-if="i==0">商品名称</el-col>
+          <el-col :span="18" class="b d-text-black" v-if="i==0">商品编号</el-col>
+          <el-col :span="6" class="d-hidden d-elip">{{item.goodsName}}</el-col>
+          <el-col :span="18" class="d-hidden d-elip">
             <span :title="item.goodsCode">{{item.goodsCode}}</span>
           </el-col>
         </el-row>
       </el-option>
     </el-select>
-    <i
-      @click="openDialog"
-      class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"
-    ></i>
-    <commodity-choose
-      :visible.sync="showCommodityGoods"
-      @choose="choose"
-      v-if="showCommodityGoods||showed"
-    />
+    <i @click="openDialog" class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"></i>
+    <commodity-choose :visible.sync="showCommodityGoods" @choose="choose" v-if="showCommodityGoods||showed" />
   </span>
 </template>
 <script>
@@ -66,13 +45,18 @@ export default {
       type: Array,
       default: () => []
     },
-    val: '',
-    wmsId: ''//库房id,新增报溢报损要筛选当前库房下的id
+    autoClear: {
+      type: Boolean,
+      default: true
+    },
+    type: String,
+    value: String,
+    wmsId: '' //库房id,新增报溢报损要筛选当前库房下的id
   },
   data() {
     return {
       showCommodityGoods: false,
-      value: '',
+      selectGood: '',
       options: [],
       showed: false,
       loading: false,
@@ -80,7 +64,16 @@ export default {
     };
   },
   mounted() {
-    this.search();
+    if (this.value) {
+      this.selectGood = this.value;
+    } else {
+      this.search();
+    }
+  },
+  watch: {
+    value() {
+      this.selectGood = this.value || '';
+    }
   },
   methods: {
     openDialog() {
@@ -115,7 +108,11 @@ export default {
       );
       if (goods.length) {
         this.$emit('choose', goods, 'select');
-        this.val = '';
+        if (this.autoClear) {
+          this.selectGood = '';
+        }
+      } else {
+        this.selectGood = '';
       }
     }
   }
@@ -123,10 +120,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .select-icon {
-  right: 8px;
   z-index: 200;
-  top: 5px;
   background-color: #fff;
+  height: 26px;
+  top: 1px;
+  width: 24px;
+  text-align: center;
+  line-height: 26px;
+  right: 2px;
 }
 </style>
 <style lang="scss">
