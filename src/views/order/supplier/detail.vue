@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 10:41:42
+ * @LastEditTime: 2019-11-08 09:33:56
  * @Description: 供应商编号
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showPop" @close="close" title="供应商编号" v-loading="loading" width="990px">
+  <sideDetail :status="status" :visible.sync="showPop" @close="close" :title="`供应商编号 ${detail?detail.code:''}`" v-loading="loading" width="990px">
     <template slot="button">
       <el-button @click="changeState(0)" size="mini" type="primary" v-if="detail&&detail.state!=0">启用</el-button>
       <el-button @click="changeState(1)" size="mini" type="danger" v-else>停用</el-button>
