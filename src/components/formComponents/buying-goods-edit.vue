@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 14:21:40
+ * @LastEditTime: 2019-11-08 14:22:15
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -21,9 +21,6 @@
         <el-table-column :reserve-selection="true" label="商品编号" min-width="600" prop="title" show-overflow-tooltip>
           <template slot-scope="{row}">
             <span class="d-text-blue">{{row.commodityCode}}</span>
-            0
-            <commodity-selector @choose="choose" v-model="row.commodityName" />
-            <commodity-selector @choose="choose" code="code" v-model="row.commodityCode" />
           </template>
         </el-table-column>
         <el-table-column label="商品图片" min-width="100">
