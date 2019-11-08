@@ -2,36 +2,47 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:05:59
+ * @LastEditTime: 2019-11-08 15:04:02
  * @Description: 销售-销售出库单首页
  */
 <template>
   <div>
     <table-view
-      @clear-filter="reset()"
-      type="1"
+      busType="16"
       ref="table"
       :filter="true"
       :moreButton="true"
       :column="true"
       title="销售出库单"
-      api="bizSystemService.getEmployeeList"
+      api="seePsiSaleService.salesshipmentList"
+      exprotApi="seePsiSaleService.salesshipmentExport"
       :params="Object.assign(queryForm,params)"
-      @selection-change="selectionChange"
+      filterOptions="filterOptions"
     >
-      <template v-slot:filter>
-        <filters
-          ref="filters"
-          @submit-filter="$refs.table.reload(1)"
-          :form="queryForm"
-        />
-      </template>
       <template slot-scope="{column,row,value}">
+        <!-- 销售出库单编号 -->
         <span
-          class="d-text-blue"
+          v-if="column.columnFields=='shipmentCode'"
+          class="d-text-blue d-pointer"
           @click="eventHandle('detailVisible',row)"
-        >销售出库单编号</span>
-        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        >{{value}}}</span>
+        <!-- 有无合同 -->
+        <span v-else-if="column.columnFields=='isContract'">{{value?'有':'无'}}</span>
+
+        <!-- 有无合同 -->
+        <span v-else-if="column.columnFields=='contractTemplate'">{{value}}</span>
+
+        <!-- 销售预计发货时间 -->
+        <span v-else-if="column.columnFields=='salesExpectedShipmentsTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+
+        <!-- 销售要求到货时间 -->
+        <span v-else-if="column.columnFields=='salesRequireArrivalTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+
+        <!-- 采购预计到货时间 -->
+        <span v-else-if="column.columnFields=='procurementExpectedArrivalTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+
+        <!-- 创建时间 -->
+        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
@@ -39,6 +50,9 @@
     <outLib-details
       :visible.sync="detailVisible"
       :rowData="rowData"
+      v-if="detailVisible"
+      :code="rowData.shipmentCode"
+      @reload="$refs.table.reload()"
     />
 
   </div>
@@ -46,10 +60,16 @@
 <script>
 import outLibDetails from './outLib-details' //销售出库单详情
 
-import filters from './filter' //销售出库单详情
+let filterOptions = [
+  { label: '商户编号、商户名称/简称', prop: 'text', type: 'text', default: true, },
+  { label: '联系人、联系人电话', prop: 'text1', type: 'text', default: true, },
+  { label: '商机阶段', prop: 'pushTime', type: 'select', default: true, dicName: 'PSI_SP_KIND' },
+  { label: '跟进时间起止', prop: 'status', type: 'daterange', default: true, },
+  { label: '维护人', prop: 'creator', type: 'employee', default: true, },
+]
 export default {
   name: 'outLibrary',
-  components: { outLibDetails, filters },
+  components: { outLibDetails },
   props: {
     // 是否显示按钮
     button: {
@@ -69,14 +89,23 @@ export default {
       loading: false,
       // 查询表单
       queryForm: {
-        title: "", // 标题
-        city: "", // 城市
-        pushTime: "",
-        messageType: "",
-        status: "",
-        page: 1,
-        limit: 20
+        page: 1,//当前页数
+
+        limit: 20,//每页显示记录数
+        shipmentCode: '',///销售出库单编号
+        state: '',//状态
+        clientId: '',//客户id
+        minSalesExpectedShipmentsTime: '',//起始销售预计发货时间
+        maxSalesExpectedShipmentsTime: '',//结束销售预计发货时间
+        minSalesRequireArrivalTime: '',//起始销售要求到货时间
+        maxSalesRequireArrivalTime: '',//结束销售要求到货时间
+        minProcurementExpectedArrivalTime: '',//起始采购预计到货时间
+        maxProcurementExpectedArrivalTime: '',//结束采购预计到货时间
+        deptTotalCode: '',///部门code
+        creator: '',//创建人
       },
+      // 筛选列表
+      filterOptions: filterOptions,
       // 当前行数据
       rowData: {},
 
@@ -86,19 +115,11 @@ export default {
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
-      this[type] = true
       this.rowData = row
+      this[type] = true
       return
-
     },
-    // 多选
-    selectionChange() { },
 
-    // 重置
-    reset() {
-      this.$refs.filters.$refs.form.resetFields();
-      this.$refs.table.reload(1);
-    },
 
   }
 };

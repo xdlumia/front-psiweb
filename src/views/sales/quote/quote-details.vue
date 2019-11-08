@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 11:16:49
+ * @LastEditTime: 2019-11-08 14:49:58
  * @Description: 报价单详情
 */
 <template>
@@ -51,6 +51,7 @@
           class="d-auto-y"
           :code="this.code"
           :rowData="rowData"
+          :button="false"
           style="height:calc(100vh - 240px)"
           :is="activeName"
         ></components>

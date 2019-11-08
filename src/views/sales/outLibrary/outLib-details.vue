@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:05:05
+ * @LastEditTime: 2019-11-08 14:54:03
  * @Description: 销售出库单详情
 */
 <template>
@@ -47,6 +47,8 @@
         </el-tabs>
         <keep-alive>
           <components
+            :code="this.code"
+            :rowData="rowData"
             class="d-auto-y"
             :button="false"
             style="height:calc(100vh - 200px)"
@@ -70,7 +72,7 @@ export default {
     detail,
     outLibEdit
   },
-  props: ['visible', 'rowData'],
+  props: ['visible', 'rowData', 'code'],
   data() {
     return {
       // 操作按钮

@@ -2,50 +2,12 @@
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 09:41:40
- * @Description: 客户信息 1
+ * @LastEditTime: 2019-11-08 15:11:40
+ * @Description: 客户信息 1  //传入 data:{clientId:'1'} 会自动查询详情
  */
 <template>
   <form-card title='客户信息'>
     <el-row :gutter="10">
-      <!-- <el-col :span="8">
-        <el-form-item
-          v-if="disabled"
-          :rules="{ required: true, trigger: 'blur' }"
-          label="客户名称"
-          prop="clientName"
-        >
-          <el-input
-            :disabled='disabled'
-            v-model.trim="clientInfo.clientName"
-            :placeholder="`请输入客户名称`"
-          />
-        </el-form-item>
-
-        <el-form-item
-          v-else
-          :rules="{ required: true, trigger: 'blur' }"
-          label="客户名称"
-          prop="clientId"
-        >
-          <el-select
-            placeholder="请选择客户"
-            :remote-method="getClinent"
-            class="wfull mr5"
-            filterable
-            remote
-            reserve-keyword
-            v-model="data.clientId"
-          >
-            <el-option
-              :key="item.id"
-              :label="item.clientName"
-              :value="item.id"
-              v-for="item in clientOptions"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-      </el-col> -->
       <el-col
         :span="item.span || 8"
         v-for="(item,index) of formItems"
