@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 15:13:28
+ * @LastEditTime: 2019-11-08 14:48:00
  * @Description: 销售-报价单
  */
 <template>
@@ -165,14 +165,6 @@ export default {
       this.rowData = row ? row : {}
       this[type] = true
     },
-    submitFilter() {
-      this.$emit('submit-filter')
-    },
-    // 重置
-    // reset() {
-    //   this.$refs.filters.$refs.form.resetFields()
-    //   this.$refs.table.reload(1);
-    // },
   }
 };
 </script>

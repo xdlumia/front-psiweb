@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 18:07:04
+ * @LastEditTime: 2019-11-08 11:24:12
  * @Description: file content
 */
 <template>
@@ -100,6 +100,8 @@ export default {
         KIND2Data: [], //临时存放第二步配件列表选中的数据
         apprpvalState: '', //审核状态
         attachList: '', //附件,
+        companyAccountId: 4, //公司发票信息
+        companySettlementId: 6, //公司结算账户
         businessCommoditySaveVoList: [ //商品信息合集
           {
             alterationNumber: '', //9,
