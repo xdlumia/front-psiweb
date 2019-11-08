@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 20:35:28
+ * @LastEditTime: 2019-11-08 09:00:51
  * @Description: 整机列表 和 配件列表  私有组件 你们用不了 
 */
 <template>
@@ -121,21 +121,31 @@ export default {
   },
   computed: {
     kind1List() {
-      // 变平化数据
-      let flattenKindData = this.$$util.jsonFlatten(this.kind1Data)
-      // 根据nama筛选数据
-      let filterData = flattenKindData.filter(item => item.name.indexOf(this.kind1Name) != -1)
-      let newData = this.$$util.formatChildren(filterData, 'className')
-      return newData
+      if (this.kind1Name) {
+        // 变平化数据
+        let flattenKindData = this.$$util.jsonFlatten(this.kind1Data)
+        // 根据nama筛选数据
+        let filterData = flattenKindData.filter(item => item.name.indexOf(this.kind1Name) != -1)
+        let newData = this.$$util.formatChildren(filterData, 'className')
+        return newData
+      } else {
+        return this.kind1Data
+      }
+
     },
     // 配件列表
     kind2List() {
-      // 变平化数据
-      let flattenKindData = this.$$util.jsonFlatten(this.kind2Data)
-      // 根据nama筛选数据
-      let filterData = flattenKindData.filter(item => item.name.indexOf(this.kind2Name) != -1)
-      let newData = this.$$util.formatChildren(filterData, 'secondClassName')
-      return newData
+      if (this.kind2Name) {
+        // 变平化数据
+        let flattenKindData = this.$$util.jsonFlatten(this.kind2Data)
+        // 根据nama筛选数据
+        let filterData = flattenKindData.filter(item => item.name.indexOf(this.kind2Name) != -1)
+        let newData = this.$$util.formatChildren(filterData, 'secondClassName')
+        return newData
+      } else {
+        return this.kind2Data
+      }
+
     }
   },
   methods: {
