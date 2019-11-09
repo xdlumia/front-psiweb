@@ -53,6 +53,7 @@
         <merchandiseTransferred
           v-if="visible = true"
           ref="logisticsEdit"
+          :form='allForm'
         />
       </el-main>
     </el-container>
@@ -96,7 +97,7 @@ export default {
     return {
       activeName: '',
       allForm: {
-        allocationType: '2',//调拨方式
+        allocationType: 2,//调拨方式
         putawayWmsId: '',//调入库房
         facilitatorId: '',//服务商id
         facilitatorName: '',//服务商名称
@@ -105,7 +106,7 @@ export default {
         logisticsFees: '',//物流费用
         note: '',//备注
         serviceGrade: '',
-        wmsCommodityIdList: [],//调出库房ids
+        wmsCommodityIdList: [],//调出库房商品ids
         wmsNames: [],//庫房名稱
         source: '新增',
       }
@@ -127,9 +128,10 @@ export default {
       this.$refs['allForm'].validate((valid) => {
         if (valid) {
           let arr = this.$refs.logisticsEdit.upTableData || []
-          console.log(arr, 'upTableData')
+          this.allForm.wmsCommodityList = arr
+          // console.log(arr, 'upTableData')
           arr.forEach((item) => {
-            this.allForm.wmsCommodityIdList.push(item.wmsId)
+            // this.allForm.wmsCommodityIdList.push(item.wmsId)
             this.allForm.wmsNames.push(item.wmsName)
           })
           if (arr.length > 0) {

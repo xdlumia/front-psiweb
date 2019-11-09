@@ -37,6 +37,7 @@
       </template>
     </TableView>
     <Details
+      @reload='reload'
       ref='details'
       :drawerData='drawerData'
       @update='update'
@@ -113,7 +114,7 @@ export default {
         },
         {
           label: '调入库房',
-          prop: 'putawayWmsName',
+          prop: 'putawayWmsId',
           type: 'select',
           options: [
             { label: '内调', value: '1' },
@@ -121,42 +122,27 @@ export default {
           ],
           default: true
         },
-        {
-          label: '调出库房',
-          prop: 'shipmentWmsNames',
-          type: 'select',
-          options: [
-            { label: '内调', value: '1' },
-            { label: '外调', value: '2' }
-          ],
-          default: true
-        },
+        { label: '调出库房', prop: 'shipmentWmsNames', default: true },
         {
           label: '调拨数量',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
+          prop: 'Num',
+          type: 'numberRange',
+          default: true,
+          int: true
         },
         {
-          label: '开始时间',
-          prop: 'minTime',
-          type: 'daterange',
-          default: true
-        },
-        {
-          label: '结束时间',
-          prop: 'maxTime',
+          label: '创建时间',
+          prop: 'Time',
           type: 'daterange',
           default: true
         },
         {
           label: '单据创建人',
-          prop: 'creatorName',
+          prop: 'creator',
           type: 'employee',
           default: true
         },
-        { label: '创建部门', prop: 'deptName', type: 'dept', default: true },
+        { label: '创建部门', prop: 'deptId', type: 'dept', default: true },
       ],
       usableList: []
     };

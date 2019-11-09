@@ -28,12 +28,12 @@
           >
             <el-option
               label="内调"
-              value="1"
+              :value="1"
             >
             </el-option>
             <el-option
               label="外调"
-              value="2"
+              :value="2"
             >
             </el-option>
           </el-select>
@@ -212,6 +212,11 @@ export default {
     this.commonserviceproviderList()
   },
   mounted() {
+    setTimeout(() => {
+      if (this.form.facilitatorId) {
+        this.facilitatorNameChange(this.form.facilitatorId)
+      }
+    }, 500)
   },
   methods: {
     //请求可用库房
@@ -242,7 +247,6 @@ export default {
           this.serviceTypeList = this.dictionaryOptions('PSI_FWS_FWLX').filter((item) => {
             return serviceTypeArr.includes(item.code)
           })
-          console.log(this.serviceTypeList)
         })
         .finally(() => {
 

@@ -365,6 +365,13 @@ export default {
     'methods': 'delete'
   },
 
+  // 生成报溢报损单
+  wmsblitemGenerateReportingOrder: {
+    'url': '/wmsblitem/generateReportingOrder',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 查看盘点单详细信息
   wmsblitemInfo: {
     'url': '/wmsblitem/info/{id}',
@@ -498,33 +505,33 @@ export default {
     'methods': 'delete'
   },
 
-  // 查看详细信息
+  // 查看借入借出单详细信息
   wmsborrowloanorderInfo: {
     'url': '/wmsborrowloanorder/info/{id}',
     'mock': false
   },
 
-  // 获取列表
+  // 获取借入借出单列表
   wmsborrowloanorderList: {
     'url': '/wmsborrowloanorder/list',
     'mock': false
   },
 
-  // 逻辑删除
+  // 删除借入借出单信息
   wmsborrowloanorderLogicDelete: {
     'url': '/wmsborrowloanorder/logicDelete',
     'mock': false,
     'methods': 'delete'
   },
 
-  // 保存
+  // 保存借入借出单信息
   wmsborrowloanorderSave: {
     'url': '/wmsborrowloanorder/save',
     'mock': false,
     'methods': 'post'
   },
 
-  // 修改
+  // 修改借入借出单信息
   wmsborrowloanorderUpdate: {
     'url': '/wmsborrowloanorder/update',
     'mock': false,
@@ -782,7 +789,8 @@ export default {
   // 根据SN码或机器号查询商品
   wmsinventorydetailGetCommodityBySnCode: {
     'url': '/wmsinventorydetail/getCommodityBySnCode',
-    'mock': false
+    'mock': false,
+    'methods': 'post'
   },
 
   // 查看详细信息
@@ -814,6 +822,12 @@ export default {
   // 商品扫码入库校验
   wmsinventorydetailPutawayCommodityCheck: {
     'url': '/wmsinventorydetail/putawayCommodityCheck',
+    'mock': false
+  },
+
+  // 商品扫码入库校验
+  wmsinventorydetailPutawayCommodityCheck: {
+    'url': '/wmsinventorydetail/putawayCommodityCheck',
     'mock': false,
     'methods': 'post'
   },
@@ -830,6 +844,12 @@ export default {
     'url': '/wmsinventorydetail/shipmentCommodityCheck',
     'mock': false,
     'methods': 'post'
+  },
+
+  // 商品扫码出库校验
+  wmsinventorydetailShipmentCommodityCheck: {
+    'url': '/wmsinventorydetail/shipmentCommodityCheck',
+    'mock': false
   },
 
   // 扫码出库

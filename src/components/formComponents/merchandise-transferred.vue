@@ -30,6 +30,7 @@
         </span>
       </div>
       <el-table
+        style="width: 100%"
         size='mini'
         border
         :data='upTableData'
@@ -278,34 +279,38 @@ export default {
     },
     //根据SN码或机器号查询商品
     getCommodityBySnCode() {
-      if (this.snCode) {
-        this.$api.seePsiWmsService.wmsinventorydetailGetCommodityBySnCode({ snCode: this.snCode })
-          .then(res => {
-            if (res.data) {
-              let arr = this.upTableData.filter((item) => {
-                return item.id == res.data.id
-              })
-              if (arr.length == 0) {
-                this.upTableData.push(res.data)
-                this.doSth()
-              } else {
-                this.$message({
-                  type: 'info',
-                  message: '扫过喽'
+      console.log(this.form, 'this.formthis.formthis.form')
+      if (this.form.putawayWmsId) {
+        if (this.snCode) {
+          this.$api.seePsiWmsService.wmsinventorydetailGetCommodityBySnCode({ snCode: this.snCode, wmsId: this.form.putawayWmsId })
+            .then(res => {
+              if (res.data) {
+                let arr = this.upTableData.filter((item) => {
+                  return item.id == res.data.id
                 })
+                if (arr.length == 0) {
+                  this.upTableData.push(res.data)
+                  this.doSth()
+                } else {
+                  this.$message({
+                    type: 'info',
+                    message: '扫过喽'
+                  })
+                }
+
               }
+            })
+            .finally(() => {
 
-            } else {
-              this.$message({
-                type: 'info',
-                message: '当前商品不存在或已经出库'
-              })
-            }
-          })
-          .finally(() => {
-
-          })
+            })
+        }
+      } else {
+        this.$message({
+          type: 'error',
+          message: '请选择库房'
+        })
       }
+
     },
     //临时商品统计
     wmsallocationorderTempCommodityCount(arr) {

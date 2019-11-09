@@ -257,20 +257,21 @@ export default {
     },
     //扫SN码
     shipmentCommodityCheck() {
+      console.log(this.dialogData, 'dialogDatadialogData')
       this.$api.seePsiWmsService.wmsallocationorderShipmentCommodityCheck({ allocationOrderId: this.dialogData.id, snCode: this.snCode })
         .then(res => {
           if (res.data) {
             let arr = this.downTableData.filter((item) => {
               return item.id == res.data.id
             })
-            if (arr.length == 0) {
-              this.doSth(res.data)
-            } else {
-              this.$message({
-                type: 'info',
-                message: '扫过喽'
-              })
-            }
+            // if (arr.length == 0) {
+            this.doSth(res.data)
+            // } else {
+            //   this.$message({
+            //     type: 'info',
+            //     message: '扫过喽'
+            //   })
+            // }
           }
           this.snCode = ''
         })
@@ -281,9 +282,10 @@ export default {
     //调出走的接口
     wmsallocationorderBatchUpdate() {
       if (this.downTableData.length > 0) {
-        this.$api.seePsiWmsService.wmsallocationorderBatchUpdate({ putawayCommodityList: this.downTableData, businessCode: this.dialogData.allocationOrderCode })
+        this.$api.seePsiWmsService.wmsallocationorderBatchUpdate({ putawayCommodityList: this.downTableData, businessCode: this.dialogData.allocationOrderCode, businessType: 0 })
           .then(res => {
             this.close()
+            this.$emit('reload')
           })
           .finally(() => {
           })

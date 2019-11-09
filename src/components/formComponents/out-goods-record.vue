@@ -23,7 +23,7 @@
               :params="form"
               ref="companyTable"
               class="college-main"
-              style="height:calc(100vh - 340px)"
+              style="height:300px"
             >
               <el-table-column
                 type="index"
@@ -40,6 +40,16 @@
               >
                 <template slot-scope="scope">
                   <span class="">{{scope.row.snCode}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="robotCode"
+                label="机器号"
+                min-width="100"
+                show-overflow-tooltip
+              >
+                <template slot-scope="scope">
+                  <span class="">{{scope.row.robotCode}}</span>
                 </template>
               </el-table-column>
               <el-table-column

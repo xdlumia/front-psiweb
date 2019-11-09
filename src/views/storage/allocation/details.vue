@@ -50,6 +50,7 @@
               v-dialogDrag
             >
               <components
+                @reload='reload'
                 v-if="backVisible"
                 :dialogData='detailForm'
                 :is='isComponents'
@@ -132,6 +133,9 @@ export default {
         });
       });
 
+    },
+    reload() {
+      this.$emit('reload')
     }
   },
 
