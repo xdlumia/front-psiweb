@@ -3,7 +3,7 @@
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
  * @LastEditTime: 2019-11-08 18:33:00
- * @Description: 商品输入选框 字段已绑定 1 
+ * @Description: 商品输入选框 字段已绑定 1
 */
 <template>
   <span class="d-inline d-relative">
@@ -35,7 +35,14 @@
       </el-option>
     </el-select>
     <i @click="openDialog" class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"></i>
-    <commodity-choose :params="wmsId?{wmsId}:params" :visible.sync="showCommodityGoods" @choose="choose" v-if="showCommodityGoods||showed" />
+    <commodity-choose
+      :isChooseOne="isChooseOne"
+      :params="wmsId?{wmsId}:params"
+      :visible.sync="showCommodityGoods"
+      @choose="choose"
+      @chooseOne="chooseOne"
+      v-if="showCommodityGoods||showed"
+    />
   </span>
 </template>
 <script>
@@ -55,7 +62,11 @@ export default {
       type: Object,
       default: () => ({})
     },
-    wmsId: '' //库房id,新增报溢报损要筛选当前库房下的id
+    wmsId: Number, // 库房id,新增报溢报损要筛选当前库房下的id
+    isChooseOne: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -85,10 +96,15 @@ export default {
       this.showed = true;
     },
     choose(e) {
-      let choose = e.filter(a => !this.codes.includes(a.goodsCode));
+      const choose = e.filter(a => !this.codes.includes(a.goodsCode));
       if (choose.length) {
         this.$emit('choose', e, 'choose');
       }
+    },
+    chooseOne(e) {
+      this.options.push(e)
+      this.selectGood = e.goodsCode
+      this.$emit('choose', e)
     },
     async search(words = '') {
       words = String(words).trim();
@@ -96,7 +112,7 @@ export default {
         return (this.options = this.searchTable[words]);
       }
       this.loading = true;
-      let { data } = await this.$api.seePsiWmsService.wmsinventoryList({
+      const { data } = await this.$api.seePsiWmsService.wmsinventoryList({
         page: 1,
         limit: 5,
         goodsName: words,
@@ -107,7 +123,7 @@ export default {
       this.searchTable[words] = data;
     },
     onSelect(e) {
-      let goods = this.options.filter(
+      const goods = this.options.filter(
         item => item.goodsCode == e && !this.codes.includes(item.goodsCode)
       );
       if (goods.length) {

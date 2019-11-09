@@ -2,8 +2,8 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-09 11:18:31
- * @Description: 新增服务商
+ * @LastEditTime: 2019-11-09 11:31:11
+ * @Description: 新增报价单
  -->
 <template>
   <div class>
@@ -16,7 +16,7 @@
       title="新增库房"
     >
       <div slot="title" style="display:flex;">
-        <h3 style="flex:1;text-align:center;">新增服务商</h3>
+        <h3 style="flex:1;text-align:center;">新增报价单</h3>
         <div>
           <el-button type="primary" size="mini" @click="commonserviceproviderSave">保存</el-button>
           <el-button size="mini" @click="$emit('update:visible', false)">关闭</el-button>
@@ -30,15 +30,9 @@
       >
         <d-tabs :style="{maxHeight: maxHeight + 'px'}">
           <d-tab-pane label="基本信息" name="information"></d-tab-pane>
-          <d-tab-pane label="发票信息" name="invoiceInfo"></d-tab-pane>
-          <d-tab-pane label="备注信息" name="extrasInfo"></d-tab-pane>
-          <!-- 基本信息 -->
-          <information :data="facilitatorForm" id="information"></information>
-          <!-- 发票信息 -->
-          <invoice-info :data="facilitatorForm" id="invoiceInfo" />
-          <!-- 备注信息 -->
-          <extras-info :data="facilitatorForm" id="extrasInfo" />
+          <d-tab-pane label="配置信息" name="invoiceInfo"></d-tab-pane>
         </d-tabs>
+        <information></information>
       </el-form>
       <!-- <add-facilitator ref="addFacilitator" :editId="editId" v-if="visible" @refresh="refresh"></add-facilitator> -->
     </el-dialog>
@@ -46,7 +40,7 @@
 </template>
 
 <script type='text/ecmascript-6'>
-import information from './information'
+import information from './components/information'
 export default {
   props: {
     visible: {

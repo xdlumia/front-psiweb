@@ -3,18 +3,32 @@
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
  * @LastEditTime: 2019-11-08 18:34:27
- * @Description: 选择商品 字段已绑定 1 
+ * @Description: 选择商品 字段已绑定 1
 */
 <template>
   <el-dialog :visible.sync="visible" @close="close" title="选择商品" v-dialogDrag width="60%">
     <div class="mb15">
-      <el-input @change="reload" placeholder="搜索商品名称" size="small" style="width:250px" v-model="queryForm.goodsName"></el-input>
-      <el-button @click="multipleVisible = !multipleVisible" class="fr" size="small">已选择（{{selected.length}}）</el-button>
+      <el-input
+        @change="reload"
+        placeholder="搜索商品名称"
+        size="small"
+        style="width:250px"
+        v-model="queryForm.goodsName"
+      ></el-input>
+      <el-button
+        @click="multipleVisible = !multipleVisible"
+        class="fr"
+        size="small"
+      >已选择（{{selected.length}}）</el-button>
     </div>
     <el-container class="choose-container">
       <!-- 左侧 -->
       <el-aside class="choose-aside" width="250px">
-        <commodity-cat :mainCat.sync="queryForm.categoryCode" :subCat.sync="queryForm.classId" @change="reload" />
+        <commodity-cat
+          :mainCat.sync="queryForm.categoryCode"
+          :subCat.sync="queryForm.classId"
+          @change="reload"
+        />
       </el-aside>
       <!-- 表格 -->
       <el-main>
@@ -25,22 +39,35 @@
           :tree-props="{children: 'children', hasChildren: 'children'}"
           @response="onTableData"
           @selection-change="handleSelectionChange"
+          @current-change="handleCurrentChange"
           api="seePsiWmsService.wmsinventoryList"
           class="college-main"
           ref="multipleTable"
           rowKey="goodsCode"
           style="height:100%"
           v-show="!multipleVisible"
+          :highlight-current-row="isChooseOne"
         >
-          <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column :reserve-selection="true" label="商品编号" min-width="100" prop="title" show-overflow-tooltip>
+          <el-table-column type="selection" width="55" v-if="!isChooseOne"></el-table-column>
+          <el-table-column
+            :reserve-selection="true"
+            label="商品编号"
+            min-width="100"
+            prop="title"
+            show-overflow-tooltip
+          >
             <template slot-scope="{row}">
               <span class="d-text-blue">{{row.goodsCode}}</span>
             </template>
           </el-table-column>
           <el-table-column label="商品图片" min-width="130" prop="title" show-overflow-tooltip>
             <template slot-scope="{row}">
-              <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
+              <el-image
+                :src="row.goodsPic"
+                class="d-center"
+                fit="fill"
+                style="width: 100px; height: 40px"
+              >
                 <span slot="error">暂无图片</span>
               </el-image>
             </template>
@@ -64,12 +91,22 @@
               <span>{{row.taxRate ? row.taxRate + '%' : ''}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="可用库存" min-width="100" prop="usableInventoryNum" show-overflow-tooltip>
+          <el-table-column
+            label="可用库存"
+            min-width="100"
+            prop="usableInventoryNum"
+            show-overflow-tooltip
+          >
             <template slot-scope="{row}">
               <span>{{row.usableInventoryNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="期初库存" min-width="100" prop="originalInventoryNum" show-overflow-tooltip>
+          <el-table-column
+            label="期初库存"
+            min-width="100"
+            prop="originalInventoryNum"
+            show-overflow-tooltip
+          >
             <template slot-scope="{row}">
               <span>{{row.originalInventoryNum||0}}</span>
             </template>
@@ -84,12 +121,22 @@
               <span>{{row.sumPutawayNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="待入库数量" min-width="120" prop="waitShipmentNum" show-overflow-tooltip>
+          <el-table-column
+            label="待入库数量"
+            min-width="120"
+            prop="waitShipmentNum"
+            show-overflow-tooltip
+          >
             <template slot-scope="{row}">
               <span>{{row.waitShipmentNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="待出库数量" min-width="120" prop="waitPutawayNum" show-overflow-tooltip>
+          <el-table-column
+            label="待出库数量"
+            min-width="120"
+            prop="waitPutawayNum"
+            show-overflow-tooltip
+          >
             <template slot-scope="{row}">
               <span>{{row.waitPutawayNum||0}}</span>
             </template>
@@ -99,17 +146,32 @@
         <el-table :data="selected" border v-show="multipleVisible">
           <el-table-column fixed label="操作" min-width="50" show-overflow-tooltip>
             <template slot-scope="{row}">
-              <i @click="deleteChoose(row)" class="el-icon-error d-pointer" style="font-size:20px;color:#F5222D"></i>
+              <i
+                @click="deleteChoose(row)"
+                class="el-icon-error d-pointer"
+                style="font-size:20px;color:#F5222D"
+              ></i>
             </template>
           </el-table-column>
-          <el-table-column :reserve-selection="true" label="商品编号" min-width="100" prop="title" show-overflow-tooltip>
+          <el-table-column
+            :reserve-selection="true"
+            label="商品编号"
+            min-width="100"
+            prop="title"
+            show-overflow-tooltip
+          >
             <template slot-scope="{row}">
               <span class="d-text-blue">{{row.goodsCode}}</span>
             </template>
           </el-table-column>
           <el-table-column label="商品图片" min-width="130" prop="title" show-overflow-tooltip>
             <template slot-scope="{row}">
-              <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
+              <el-image
+                :src="row.goodsPic"
+                class="d-center"
+                fit="fill"
+                style="width: 100px; height: 40px"
+              >
                 <span slot="error">暂无图片</span>
               </el-image>
             </template>
@@ -133,12 +195,22 @@
               <span>{{row.taxRate ? row.taxRate + '%' : ''}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="可用库存" min-width="100" prop="usableInventoryNum" show-overflow-tooltip>
+          <el-table-column
+            label="可用库存"
+            min-width="100"
+            prop="usableInventoryNum"
+            show-overflow-tooltip
+          >
             <template slot-scope="{row}">
               <span>{{row.usableInventoryNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="期初库存" min-width="100" prop="originalInventoryNum" show-overflow-tooltip>
+          <el-table-column
+            label="期初库存"
+            min-width="100"
+            prop="originalInventoryNum"
+            show-overflow-tooltip
+          >
             <template slot-scope="{row}">
               <span>{{row.originalInventoryNum||0}}</span>
             </template>
@@ -153,12 +225,22 @@
               <span>{{row.sumPutawayNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="待入库数量" min-width="120" prop="waitShipmentNum" show-overflow-tooltip>
+          <el-table-column
+            label="待入库数量"
+            min-width="120"
+            prop="waitShipmentNum"
+            show-overflow-tooltip
+          >
             <template slot-scope="{row}">
               <span>{{row.waitShipmentNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="待出库数量" min-width="120" prop="waitPutawayNum" show-overflow-tooltip>
+          <el-table-column
+            label="待出库数量"
+            min-width="120"
+            prop="waitPutawayNum"
+            show-overflow-tooltip
+          >
             <template slot-scope="{row}">
               <span>{{row.waitPutawayNum||0}}</span>
             </template>
@@ -177,7 +259,7 @@ import pickAssemble from '@/components/formComponents/pick-assemble';
 import chooseAssembly from '@/components/formComponents/choose-assembly';
 
 export default {
-  name: 'commodityChoose',
+  name: 'CommodityChoose',
   components: {
     pickAssemble,
     chooseAssembly
@@ -188,6 +270,10 @@ export default {
       default: false
     },
     form: {},
+    isChooseOne: {
+      type: Boolean,
+      default: false
+    },
     params: {
       type: Object,
       default: () => ({})
@@ -199,6 +285,7 @@ export default {
       multipleVisible: false,
       preSelection: [],
       multipleSelection: [], // 当前展示选择
+      currentRow: {}, // 单选
       // 查询表单
       queryForm: {
         // 物品类别，例如整机，配件，服务 PSI_SP_KIND-2
@@ -251,10 +338,13 @@ export default {
     reload() {
       this.$refs.multipleTable.reload(1);
     },
+    handleCurrentChange(val) {
+      this.currentRow = val
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    //删除某项
+    // 删除某项
     deleteChoose(row) {
       this.preSelection.some((item, i) => {
         if (item.goodsCode == row.goodsCode) {
@@ -274,7 +364,11 @@ export default {
       this.$emit('update:visible', false);
     },
     save() {
-      this.$emit('choose', this.selected);
+      if (this.isChooseOne) {
+        this.$emit('chooseOne', this.currentRow)
+      } else {
+        this.$emit('choose', this.selected);
+      }
       this.close();
     },
     onTableData(e) {
@@ -284,8 +378,8 @@ export default {
       this.multipleVisible = false;
       if (e.data && e.data.length) {
         this.$nextTick(() => {
-          let selectObj = this.getPreSelectObj();
-          let selection = [];
+          const selectObj = this.getPreSelectObj();
+          const selection = [];
           e.data.map(item => {
             if (selectObj[item.goodsCode]) {
               this.$refs.multipleTable.$refs.elTable.toggleRowSelection(

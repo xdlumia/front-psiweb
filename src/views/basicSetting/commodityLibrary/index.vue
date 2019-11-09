@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 14:35:10
+ * @LastEditTime: 2019-11-08 17:32:35
  * @Description: 商品管理
  -->
 <template>
@@ -13,7 +13,7 @@
         <span class="f18 lh50 b">商品库</span>
         <el-button
           v-if="authorityButtons.includes('decorate_goods_mgr_1001')"
-          size="medium"
+          size="mini"
           type="primary"
           @click="handleAddGood('goodsAdd','add')"
           style="margin-right:5px;margin-top:10px;"
