@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 16:55:57
+ * @LastEditTime: 2019-11-10 21:03:07
  * @Description: 收款滞纳金
  */
 <template>
@@ -29,21 +29,21 @@
           </el-select>
         </el-form-item>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="8" v-if="data.financeConfig">
         <el-form-item :label="`滞纳金${data.financeConfig.limitType==0?'比例':''}`" prop>
           <el-input disabled placeholder="请输入" v-model="data.financeConfig.overdueFineLimit">
             <template slot="append" v-if="data.financeConfig.limitType==0">%</template>
           </el-input>
         </el-form-item>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="8" v-if="data.financeConfig">
         <el-form-item label="滞纳金间隔" prop>
           <el-input disabled placeholder="请输入" v-model="data.financeConfig.overdueFineInterval">
             <template slot="append">天</template>
           </el-input>
         </el-form-item>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="8" v-if="data.financeConfig">
         <el-form-item label="滞纳金上限" prop size="mini">
           <el-input disabled placeholder="请输入" v-model="data.financeConfig.overdueFineUpperLimit"></el-input>
         </el-form-item>
@@ -56,7 +56,9 @@ export default {
   props: {
     data: {
       default: () => {
-        return {};
+        return {
+          financeConfig:{}
+        };
       }
     },
     disabled: {
@@ -73,10 +75,24 @@ export default {
       options: []
     };
   },
+  watch:{
+    data:{
+      deep:true,
+      handler(){
+        this.resetData()
+      }
+    }
+  },
   mounted() {
+    this.resetData()
     this.getList();
   },
   methods: {
+    resetData(){
+      if(this.data&&!this.data.financeConfig){
+        this.data.financeConfig={}
+      }
+    },
     async getList() {
       try {
         let {

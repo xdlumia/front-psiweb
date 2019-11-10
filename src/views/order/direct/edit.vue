@@ -2,65 +2,67 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 11:15:24
+ * @LastEditTime: 2019-11-09 13:37:11
  * @Description: 编辑直发单
 */
 <template>
-  <el-dialog :visible="visible" @close="close" v-dialogDrag>
-    <div slot="title">
-      <span>直发单</span>
-      <span class="fr mr20">
-        <el-button @click="close" size="mini" type="primary">通过</el-button>
-        <el-button @click="close" size="mini">取消</el-button>
-      </span>
-    </div>
-    <d-tabs :style="{
+    <el-dialog :visible="visible" @close="close" v-dialogDrag>
+        <div slot="title">
+            <span>直发单</span>
+            <span class="fr mr20">
+                <el-button @click="close" size="mini" type="primary">通过</el-button>
+                <el-button @click="close" size="mini">取消</el-button>
+            </span>
+        </div>
+        <d-tabs :style="{
       maxHeight:maxHeight+'px'
     }">
-      <d-tab-pane label="发货信息" name="deliverInfo" />
-      <d-tab-pane label="商品信息" name="commodityInfo" />
-      <d-tab-pane label="自定义信息" name="customInfo" />
-      <d-tab-pane label="备注信息" name="extrasInfo" />
-      <div>
-        <el-form :model="form" class="p10">
-          <deliverInfo id="deliverInfo"></deliverInfo>
-          <commodityInfo id="commodityInfo"></commodityInfo>
-          <customInfo id="customInfo"></customInfo>
-          <extrasInfo id="extrasInfo"></extrasInfo>
-        </el-form>
-      </div>
-    </d-tabs>
-  </el-dialog>
+            <d-tab-pane label="发货信息" name="deliverInfo" />
+            <d-tab-pane label="商品信息" name="commodityInfo" />
+            <d-tab-pane label="自定义信息" name="customInfo" />
+            <d-tab-pane label="备注信息" name="extrasInfo" />
+            <div>
+                <el-form :model="form" class="p10">
+                    <deliverInfo :data="form" id="deliverInfo"></deliverInfo>
+                    <commodityInfo :data="form" id="commodityInfo"></commodityInfo>
+                    <customInfo :data="form" id="customInfo"></customInfo>
+                    <extrasInfo :data="form" id="extrasInfo"></extrasInfo>
+                </el-form>
+            </div>
+        </d-tabs>
+    </el-dialog>
 </template>
 <script>
+import VisibleMixin from '@/utils/visibleMixin';
+
 export default {
-  components: {},
-  props: {
-    visible: {
-      type: Boolean,
-      default: false
+    mixins: [VisibleMixin],
+    components: {},
+    props: {},
+    computed: {
+        maxHeight() {
+            return window.innerHeight - 130;
+        }
     },
-    form: {}
-  },
-  computed: {
-    maxHeight() {
-      return window.innerHeight - 130;
-    }
-  },
-  data() {
-    return {
-      activeName: ''
-    };
-  },
-  mounted() {},
-  methods: {
-    handleClick({ label, name }) {
-      this.activeName = '';
+    data() {
+        return {};
     },
-    close() {
-      this.$emit('update:visible', false);
+    mounted() {},
+    methods: {
+        async getDetail() {
+            if (this.code) {
+                let {
+                    data
+                } = await this.$api.seePsiPurchaseService.purchaseputinGetByCode(
+                    null,
+                    this.code
+                );
+                return data;
+            } else if (this.rowData) {
+                return this.rowData;
+            }
+        }
     }
-  }
 };
 </script>
 <style lang="scss" scoped>

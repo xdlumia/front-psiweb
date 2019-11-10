@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 10:24:10
+ * @LastEditTime: 2019-11-10 20:49:09
  * @Description: 到货信息
  */
 <template>
@@ -24,7 +24,7 @@
           />
         </el-form-item>
       </el-col>
-      <el-col :key="index" :span="item.span || 8" v-for="(item,index) of formItems">
+      <el-col :key="index" :span="item.span || 8" v-for="(item,index) of formItems" v-if="data.logistics">
         <el-form-item :label="item.label" :prop="`logistics.${item.prop}`" :rules="item.rules">
           <el-input
             :disabled="disabled"

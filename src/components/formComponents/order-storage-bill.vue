@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 17:39:41
+ * @LastEditTime: 2019-11-10 21:04:28
  * @Description: 账单信息
 */
 <template>
@@ -66,7 +66,23 @@ export default {
   data() {
     return {};
   },
+  mounted(){
+    this.resetBillData()
+  },
+  watch:{
+    data:{
+      deep:true,
+      handler(){
+        this.resetBillData()
+      }
+    }
+  },
   methods: {
+    resetBillData(){
+      if(this.data&&!this.data.financeList){
+        this.data.financeList=[]
+      }
+    },
     // 自定义账单金额数据
     getSummaries(param) {
       const { columns, data } = param;
