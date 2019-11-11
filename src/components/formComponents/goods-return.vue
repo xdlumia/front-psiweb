@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 19:10:49
+ * @LastEditTime: 2019-11-11 14:43:59
  * @Description: 退货商品信息
 */
 <template>
@@ -21,52 +21,59 @@
         </span>
       </div>
       <d-table
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
-        ref="companyTable"
+        api="seePsiSaleService.salesalterationsheetList"
+        :params="data"
+        ref="table"
         class="college-main"
         style="height:calc(100vh - 340px)"
         :tree-props="{children: 'id', hasChildren: 'id'}"
       >
         <el-table-column
           fixed
-          prop="cityName"
+          prop="commodityCode"
           min-width="100"
-          label="组装数量"
+          label="商品编号"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
+          prop="goodsPic"
           min-width="100"
-          label="拣货数量"
+          label="商品图片"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
-          min-width="100"
-          label="可用数量"
-          show-overflow-tooltip
-        ></el-table-column>
-        <el-table-column
-          fixed
-          prop="cityName"
-          min-width="100"
-          label="机器号/SN码"
-          show-overflow-tooltip
-        ></el-table-column>
-
-        <el-table-column
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
+        <el-table-column
+          fixed
+          prop="categoryCode"
+          min-width="100"
+          label="商品类别"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          fixed
+          prop="refundNumber"
+          min-width="100"
+          label="退货数量"
+          show-overflow-tooltip
+        ></el-table-column>
 
         <el-table-column
-          prop="title"
-          label="商品编号"
+          prop="className"
+          min-width="100"
+          label="商品分类"
+          show-overflow-tooltip
+        ></el-table-column>
+
+        <el-table-column
+          prop="configName"
+          label="配置"
           min-width="140"
           show-overflow-tooltip
         >
@@ -76,32 +83,56 @@
         </el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="specOne"
           min-width="100"
-          label="商品类别"
+          label="规格"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="costAmount"
           min-width="100"
-          label="商品分类"
+          label="销售成本"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="salesNumber"
           min-width="100"
-          label="商品配置"
+          label="销售数量"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="taxPrice"
           min-width="140"
-          label="商品规格"
+          label="退货单价"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="taxRate"
+          min-width="120"
+          label="税率"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="taxPrice"
+          min-width="120"
+          label="税后退货单价"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="taxTotalAmount"
+          min-width="120"
+          label="税后总价"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="inventoryNumber"
+          min-width="120"
+          label="总库存"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="note"
           min-width="120"
           label="备注"
           show-overflow-tooltip
@@ -109,7 +140,7 @@
 
       </d-table>
       <FullscreenElement
-        :element="$refs.companyTable"
+        :element="$refs.table"
         :visible.sync="showInFullscreen"
       />
     </form-card>
@@ -118,19 +149,14 @@
 <script>
 import FullscreenElement from '@/components/fullscreen-element';
 export default {
+  props: {
+    data: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data() {
     return {
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
-      dialogVisible: false,
       showInFullscreen: false
     }
   },

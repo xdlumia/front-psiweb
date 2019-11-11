@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:12:18
+ * @LastEditTime: 2019-11-11 11:50:46
  * @Description: 销售出库单详情
 */
 <template>
@@ -38,32 +38,34 @@
         type="card"
       >
         <el-tab-pane
-          v-for="(val,key) of tabs"
-          :key="key"
-          :label="val"
-          :name="key"
+          v-for="(item,index) of tabs"
+          :key="index"
+          :label="item.label"
+          :name="item.comp"
         >
+          <components
+            ref="detail"
+            :code="code"
+            :rowData="rowData"
+            class="d-auto-y"
+            :params="item.params"
+            :button="false"
+            style="height:calc(100vh - 200px)"
+            :is="activeName"
+          />
         </el-tab-pane>
       </el-tabs>
-      <keep-alive>
-        <components
-          class="d-auto-y"
-          style="height:calc(100vh - 200px)"
-          :is="activeName"
-        ></components>
-      </keep-alive>
+
     </el-form>
   </side-detail>
 </template>
 <script>
 import detail from './details/detail' //详情
-import outLib from './details/outLib' //报价单
 export default {
   components: {
     detail,
-    outLib
   },
-  props: ['visible', 'rowData'],
+  props: ['visible', 'code', 'rowData'],
   data() {
     return {
       // 操作按钮
@@ -89,11 +91,11 @@ export default {
         5: [], //已退货
         6: ['提交审核', '编辑', '删除'], //已驳回
       },
-      // tab操作栏
-      tabs: {
-        detail: '详情',
-        outLib: '销售出库单',
-      },
+      // tabs 切换操作栏
+      tabs: [
+        { label: '详情', comp: 'detail' },
+        { label: '销售出库单', comp: 'salesOutLibrary', params: { shipmentCode: this.rowData.shipmentCode } },
+      ],
       activeName: 'detail',
       form: {},
     }

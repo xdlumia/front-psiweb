@@ -1,10 +1,3 @@
-/*
- * @Author: web.王晓冬
- * @Date: 2019-11-04 18:29:08
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 10:15:09
- * @Description: file content
- */
 const MOCK_ADDRESS = '/mock/5dbfdd1bbc54fc3da273f35d/see-psi-sale-service'
 const isMock = false
 export default {
@@ -77,6 +70,21 @@ export default {
   },
   /* =============业务单账期表end=========== */
 
+  /* =============process-event-controllerstart=========== */
+  // allListenerConfig
+  processEventAllListenerConfig: {
+    'url': '/processEvent/allListenerConfig/{processType}',
+    'mock': isMock
+  },
+
+  // onProcessEvent
+  processEventOnProcessEvent: {
+    'url': '/processEvent/onProcessEvent/{processType}',
+    'mock': isMock,
+    'methods': 'post'
+  },
+  /* =============process-event-controllerend=========== */
+
   /* =============RocketMQ失败重试start=========== */
   // 重试失败消息
   rocketMQRetryFailedMessage: {
@@ -104,6 +112,12 @@ export default {
   // 导出
   salesalterationsheetExport: {
     'url': '/salesalterationsheet/export',
+    'mock': isMock
+  },
+
+  // 查看详细信息
+  salesalterationsheetGetInfoByCode: {
+    'url': '/salesalterationsheet/getInfoByCode',
     'mock': isMock
   },
 

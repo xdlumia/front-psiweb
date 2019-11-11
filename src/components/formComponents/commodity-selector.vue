@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 18:33:00
+ * @LastEditTime: 2019-11-11 10:42:25
  * @Description: 商品输入选框 字段已绑定 1
 */
 <template>
@@ -54,7 +54,9 @@
     ></i>
     <commodity-choose
       :isChooseOne="isChooseOne"
+      :kinds="kinds"
       :params="wmsId?{wmsId}:params"
+      :sn="sn"
       :visible.sync="showCommodityGoods"
       @choose="choose"
       @chooseOne="chooseOne"
@@ -73,7 +75,9 @@ export default {
       type: Boolean,
       default: true
     },
+    kinds: Array,
     type: String,
+    sn: Boolean,
     value: String,
     params: {
       type: Object,
@@ -119,9 +123,15 @@ export default {
       }
     },
     chooseOne(e) {
+<<<<<<< HEAD
       this.options.push(e)
       this.selectGood = e.commodityCode
       this.$emit('choose', e)
+=======
+      this.options.push(e);
+      this.selectGood = e.commodityCode;
+      this.$emit('choose', e);
+>>>>>>> 9efeae843efc31cad8bc947aee7127a2596a32bd
     },
     async search(words = '') {
       words = String(words).trim();
@@ -141,7 +151,12 @@ export default {
     },
     onSelect(e) {
       const goods = this.options.filter(
+<<<<<<< HEAD
         item => item.commodityCode == e && !this.codes.includes(item.commodityCode)
+=======
+        item =>
+          item.commodityCode == e && !this.codes.includes(item.commodityCode)
+>>>>>>> 9efeae843efc31cad8bc947aee7127a2596a32bd
       );
       if (goods.length) {
         this.$emit('choose', goods, 'select');

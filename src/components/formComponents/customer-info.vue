@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 15:11:40
+ * @LastEditTime: 2019-11-11 11:06:58
  * @Description: 客户信息 1  //传入 data:{clientId:'1'} 会自动查询详情
  */
 <template>
@@ -19,6 +19,7 @@
           :prop="item.prop"
         >
           <el-select
+            :disabled="disabled"
             v-if="item.type==='select'"
             placeholder="请输入客户名称选择"
             :remote-method="getClinent"
