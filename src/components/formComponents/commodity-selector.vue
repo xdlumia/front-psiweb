@@ -123,15 +123,9 @@ export default {
       }
     },
     chooseOne(e) {
-<<<<<<< HEAD
-      this.options.push(e)
-      this.selectGood = e.commodityCode
-      this.$emit('choose', e)
-=======
       this.options.push(e);
       this.selectGood = e.commodityCode;
       this.$emit('choose', e);
->>>>>>> 9efeae843efc31cad8bc947aee7127a2596a32bd
     },
     async search(words = '') {
       words = String(words).trim();
@@ -151,12 +145,8 @@ export default {
     },
     onSelect(e) {
       const goods = this.options.filter(
-<<<<<<< HEAD
-        item => item.commodityCode == e && !this.codes.includes(item.commodityCode)
-=======
         item =>
           item.commodityCode == e && !this.codes.includes(item.commodityCode)
->>>>>>> 9efeae843efc31cad8bc947aee7127a2596a32bd
       );
       if (goods.length) {
         this.$emit('choose', goods, 'select');
