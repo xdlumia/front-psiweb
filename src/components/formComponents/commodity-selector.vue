@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 18:33:00
+ * @LastEditTime: 2019-11-11 10:42:25
  * @Description: 商品输入选框 字段已绑定 1
 */
 <template>
@@ -19,9 +19,9 @@
       v-model="selectGood"
     >
       <el-option
-        :key="item.goodsCode"
-        :label="type=='code'?item.goodsCode:item.goodsName"
-        :value="item.goodsCode"
+        :key="item.commodityCode"
+        :label="type=='code'?item.commodityCode:item.goodsName"
+        :value="item.commodityCode"
         v-for="(item,i) in options"
       >
         <el-row>
@@ -29,7 +29,7 @@
           <el-col :span="18" class="b d-text-black" v-if="i==0">商品编号</el-col>
           <el-col :span="6" class="d-hidden d-elip">{{item.goodsName}}</el-col>
           <el-col :span="18" class="d-hidden d-elip">
-            <span :title="item.goodsCode">{{item.goodsCode}}</span>
+            <span :title="item.commodityCode">{{item.commodityCode}}</span>
           </el-col>
         </el-row>
       </el-option>
@@ -37,7 +37,9 @@
     <i @click="openDialog" class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"></i>
     <commodity-choose
       :isChooseOne="isChooseOne"
+      :kinds="kinds"
       :params="wmsId?{wmsId}:params"
+      :sn="sn"
       :visible.sync="showCommodityGoods"
       @choose="choose"
       @chooseOne="chooseOne"
@@ -56,7 +58,9 @@ export default {
       type: Boolean,
       default: true
     },
+    kinds: Array,
     type: String,
+    sn: Boolean,
     value: String,
     params: {
       type: Object,
@@ -96,15 +100,15 @@ export default {
       this.showed = true;
     },
     choose(e) {
-      const choose = e.filter(a => !this.codes.includes(a.goodsCode));
+      const choose = e.filter(a => !this.codes.includes(a.commodityCode));
       if (choose.length) {
         this.$emit('choose', e, 'choose');
       }
     },
     chooseOne(e) {
-      this.options.push(e)
-      this.selectGood = e.goodsCode
-      this.$emit('choose', e)
+      this.options.push(e);
+      this.selectGood = e.commodityCode;
+      this.$emit('choose', e);
     },
     async search(words = '') {
       words = String(words).trim();
@@ -124,7 +128,8 @@ export default {
     },
     onSelect(e) {
       const goods = this.options.filter(
-        item => item.goodsCode == e && !this.codes.includes(item.goodsCode)
+        item =>
+          item.commodityCode == e && !this.codes.includes(item.commodityCode)
       );
       if (goods.length) {
         this.$emit('choose', goods, 'select');

@@ -2,15 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-11-05 17:31:44
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 10:09:57
+ * @LastEditTime: 2019-11-11 10:06:18
  * @Description: 商品分类树组件  字段已绑定 1 
 */
 <template>
   <div class="wfull hfull d-auto-y commodity-cat-tree">
     <el-tabs @tab-click="handleMainCatClick" v-model="activeMainCat">
-      <el-tab-pane label="整机" name="PSI_SP_KIND-1"></el-tab-pane>
-      <el-tab-pane label="配件" name="PSI_SP_KIND-2"></el-tab-pane>
-      <el-tab-pane label="服务" name="PSI_SP_KIND-3"></el-tab-pane>
+      <el-tab-pane :key="item.value" :label="item.label" :name="item.value" v-for="item of kinds"></el-tab-pane>
     </el-tabs>
     <el-input class="ml5" placeholder="搜索分类名称" prefix-icon="el-icon-search" size="small" style="width:93%" v-model="filterText"></el-input>
     <el-button @click="selectAll()" class="ml5" type="text">全部</el-button>
@@ -31,7 +29,15 @@ export default {
   components: {},
   props: {
     mainCat: [String, Number],
-    subCat: [String, Number]
+    subCat: [String, Number],
+    kinds: {
+      type: Array,
+      default: () => [
+        { label: '整机', value: 'PSI_SP_KIND-1' },
+        { label: '配件', value: 'PSI_SP_KIND-2' },
+        { label: '服务', value: 'PSI_SP_KIND-3' }
+      ]
+    }
   },
   watch: {
     filterText(val) {
@@ -50,6 +56,7 @@ export default {
     };
   },
   mounted() {
+    this.activeMainCat = this.kinds[0].value;
     this.handleMainCatClick();
   },
   methods: {

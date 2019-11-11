@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-05 16:57:15
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 14:07:55
+ * @LastEditTime: 2019-11-11 10:49:49
  * @Description: 可供商品 以调试 1
 */
 <template>
@@ -20,6 +20,7 @@
           :data="goods"
           :is="supplierId?'d-table':'el-table'"
           :params="params"
+          @response="onTableData"
           api="seePsiCommonService.commonsuppliercommodityList"
           ref="table"
           style="height:calc(100% - 40px);margin-top:10px;"
@@ -128,6 +129,13 @@ export default {
         commodityId: item.id,
         supplierId: this.supplierId
       });
+    },
+    onTableData(e) {
+      if (e.data && e.data.length) {
+        this.goods = e.data;
+      } else {
+        this.goods = [];
+      }
     }
   }
 };
