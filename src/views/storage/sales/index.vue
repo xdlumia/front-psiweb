@@ -9,24 +9,30 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
+      busType="20"
       :filterOptions='filterOptions'
-      :headers="tableHeader"
+      :params="queryForm"
       :selection='false'
-      api="bizSystemService.getEmployeeList"
+      api="seePsiSaleService.salessheetList"
       title="销售单"
     >
       <template slot-scope="{column,row,value}">
+        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span
+          v-else-if="column.columnFields=='salesSheetCode'"
           class="d-text-blue"
           @click="getTableVisible(row)"
-        >点击111</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        >{{value}}</span>
+        <span v-else-if="column.columnFields=='allocationOrderState'">{{value == 1 ? '待调拨' : value == 2 ? '部分调拨' : value == 3 ? '完成调拨' : '终止'}}</span>
+        <span v-else-if="column.columnFields=='allocationType'">{{value == 1 ? '内调' : '外调'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
       :drawerData='drawerData'
       @update='update'
+      :visible.sync='tableVisible'
+      v-if="tableVisible"
     />
   </div>
 </template>
@@ -45,14 +51,10 @@ export default {
     return {
       // 查询表单
       queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
         page: 1,
         limit: 20
       },
+      tableVisible: false,//销售单右侧抽屉
       componentActive: '',//当前的组件
       drawerData: {//弹框的相关数据
         tableVisible: false,//销售单右侧抽屉
@@ -61,115 +63,99 @@ export default {
       },
       activeName: '',
       status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
-      tableHeader: [
-        { label: '销售出库单编号', prop: 'deptName', width: '140' },
-        { label: '客户名称', prop: 'deptName', width: '100' },
-        { label: '销售单编号', prop: 'deptName', width: '140' },
-        { label: '出库状态', prop: 'deptName', width: '100' },
-        { label: '发货状态', prop: 'deptName', width: '100' },
-        { label: '组装任务状态', prop: 'deptName', width: '140' },
-        { label: '拣货状态', prop: 'deptName', width: '100' },
-        { label: '商品类别', prop: 'deptName', width: '100' },
-        { label: '出库数量', prop: 'createTime', width: '100' },
-        { label: '未出库量', prop: 'createTime', width: '100' },
-        { label: '已出库量', prop: 'createTime', width: '100' },
-        { label: '出库人', prop: 'createTime', width: '100' },
-        { label: '生成时间', prop: 'createTime', width: '140' },
-        { label: '单据创建人', prop: 'createTime', width: '100' },
-        { label: '创建部门', prop: 'createTime', width: '100' }
-      ],
       filterOptions: [
-        {
-          label: '排序',
-          type: 'sort',
-          prop: 'sort',
-          options: [
-            { label: '交易记录最高', value: '1' },
-            { label: '交易记录最低', value: '2' }
-          ],
-          default: true
-        },
-        { label: '销售出库单编号', prop: 'orderNo', default: true },
-        { label: '客户名称', prop: 'priceNo', default: true },
-        { label: '销售单编号', prop: 'orderNo', default: true },
-        {
-          label: '出库状态',
-          prop: 'orderStatus',
-          type: 'dict',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '发货状态',
-          prop: 'requireTime',
-          type: 'dict',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '组装任务状态',
-          prop: 'requireTime2',
-          type: 'dict',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '拣货状态',
-          prop: 'actUser',
-          type: 'dict',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '商品类别',
-          prop: 'actUser2',
-          type: 'dict',
-          default: true
-        },
-        {
-          label: '出库数量',
-          prop: 'actUser2',
-          type: 'employee',
-          default: true
-        },
-        {
-          label: '未出库量',
-          prop: 'actUser2',
-          type: 'employee',
-          default: true
-        },
-        {
-          label: '已出库量',
-          prop: 'actUser2',
-          type: 'employee',
-          default: true
-        },
-        {
-          label: '出库人',
-          prop: 'actUser2',
-          type: 'employee',
-          default: true
-        },
-        {
-          label: '生成时间',
-          prop: 'actUser2',
-          type: 'daterange',
-          default: true
-        },
-        {
-          label: '单据创建人',
-          prop: 'actUser2',
-          type: 'employee',
-          default: true
-        },
-        { label: '创建部门', prop: 'actUser3', type: 'employee' },
-      ]
+        // { label: '销售出库单编号', prop: 'shipmentCode', default: true },
+        // { label: '客户名称', prop: 'clientId', default: true },
+        // { label: '销售编号', prop: 'salesSheetCode', default: true },
+        // {
+        //   label: '拣货状态',
+        //   prop: 'pickingState',
+        //   type: 'select',
+        //   options: [
+        //     { label: '待调拨', value: '1' },
+        //     { label: '部分调拨', value: '2' },
+        //     { label: '完成调拨', value: '3' },
+        //     { label: '终止', value: '-1' },
+        //   ],
+        //   default: true
+        // },
+        // {
+        //   label: '组装任务状态',
+        //   prop: 'assemblyState',
+        //   type: 'select',
+        //   options: [
+        //     { label: '内调', value: '1' },
+        //     { label: '外调', value: '2' }
+        //   ],
+        //   default: true
+        // },
+        // {
+        //   label: '发货状态',
+        //   prop: 'deliverState',
+        //   type: 'select',
+        //   options: [
+        //     { label: '内调', value: '1' },
+        //     { label: '外调', value: '2' }
+        //   ],
+        //   default: true
+        // },
+        // {
+        //   label: '商品类别',
+        //   prop: 'categoryCode',
+        //   type: 'select',
+        //   options: [
+        //     { label: '内调', value: '1' },
+        //     { label: '外调', value: '2' }
+        //   ],
+        //   default: true
+        // },
+        // {
+        //   label: '出库数量',
+        //   prop: 'WillShipmentNumber',
+        //   type: 'numberRange',
+        //   default: true,
+        //   int: true
+        // },
+        // {
+        //   label: '未出库量',
+        //   prop: 'WithoutShipmentNumber',
+        //   type: 'numberRange',
+        //   default: true,
+        //   int: true
+        // },
+        // {
+        //   label: '已出库量',
+        //   prop: 'AlreadyShipmentNumber',
+        //   type: 'numberRange',
+        //   default: true,
+        //   int: true
+        // },
+        // {
+        //   label: '出库人',
+        //   prop: 'shipmentHuman',
+        //   type: 'employee',
+        //   default: true
+        // },
+        // {
+        //   label: '生成时间',
+        //   prop: 'Time',
+        //   type: 'daterange',
+        //   default: true
+        // },
+        // {
+        //   label: '单据创建人',
+        //   prop: 'creator',
+        //   type: 'employee',
+        //   default: true
+        // },
+        // { label: '创建部门', prop: 'deptId', type: 'dept', default: true },
+      ],
     };
   },
   methods: {
     //点击打开右侧边栏
     getTableVisible(data) {
-      this.drawerData.tableVisible = true
+      this.tableVisible = true
       this.drawerData.title = '销售单' + data.id
     },
     //tab换组件
@@ -178,7 +164,7 @@ export default {
     },
     update() {
       console.log('324124123')
-      this.drawerData.tableVisible = false
+      this.tableVisible = false
     }
   }
 };

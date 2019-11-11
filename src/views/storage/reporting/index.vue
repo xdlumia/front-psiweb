@@ -81,145 +81,52 @@ export default {
         component: 'Details'
       },
       activeName: '',
-      tableHeader: [
-        { label: '报溢报损单编号', prop: 'deptName', width: '140' },
-        { label: '类别', prop: 'deptName', width: '100' },
-        { label: '报溢/报损数量', prop: 'deptName', width: '100' },
-        { label: '总成本金额', prop: 'deptName', width: '100' },
-        { label: '含税总金额', prop: 'deptName', width: '100' },
-        { label: '创建/生成时间', prop: 'createTime', width: '140' },
-        { label: '单据创建人', prop: 'createTime', width: '100' },
-        { label: '创建部门', prop: 'createTime', width: '100' }
-      ],
       filterOptions: [
-        { label: '商品编号', prop: 'allocationOrderCode', default: true },
+        { label: '报溢报损单编号', prop: 'reportingLossesCode', default: true },
         {
-          label: '商品类别',
-          prop: 'allocationOrderState',
+          label: '类别',
+          prop: 'source',
           type: 'select',
           options: [
-            { label: '待调拨', value: '1' },
-            { label: '部分调拨', value: '2' },
-            { label: '完成调拨', value: '3' },
-            { label: '终止', value: '-1' },
+            { label: '报溢', value: '1' },
+            { label: '报损', value: '2' }
           ],
           default: true
         },
         {
-          label: '商品分类',
-          prop: 'allocationType',
-          type: 'select',
-          options: [
-            { label: '内调', value: '1' },
-            { label: '外调', value: '2' }
-          ],
-          default: true
-        },
-        {
-          label: '商品名称',
+          label: '报溢/报损数量',
           prop: 'num',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '总成本金额',
+          prop: 'totalCostPrice',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '含税总金额',
+          prop: 'taxInclusiveTotalCostPrice',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '创建时间',
+          prop: 'Time',
+          type: 'daterange',
+          default: true
+        },
+        {
+          label: '单据创建人',
+          prop: 'creator',
           type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
           default: true
         },
-        {
-          label: '商品规格',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '商品配置',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '单位',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '实物库存',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '期初库存',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '入库数量',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '出库数量',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '待入库数量',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '待出库数量',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '锁库量',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-        {
-          label: '最低采购价',
-          prop: 'num',
-          type: 'employee',
-          dictName: 'FM_FANGYUAN_MJ',
-          default: true
-        },
-
-        {
-          label: '库存成本',
-          prop: 'putawayWmsName',
-          type: 'select',
-          options: [
-            { label: '内调', value: '1' },
-            { label: '外调', value: '2' }
-          ],
-          default: true
-        },
-        {
-          label: '销售参考价',
-          prop: 'shipmentWmsNames',
-          type: 'select',
-          options: [
-            { label: '内调', value: '1' },
-            { label: '外调', value: '2' }
-          ],
-          default: true
-        }
+        { label: '创建部门', prop: 'deptId', type: 'dept', default: true },
       ],
     };
   },

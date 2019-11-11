@@ -34,10 +34,10 @@
         min-width="80"
         prop="name"
       >
-        <!-- v-if='scope.row.noChildren' v-if='scope.row.goodsCode'-->
+        <!-- v-if='scope.row.noChildren' v-if='scope.row.commodityCode'-->
         <template
           slot-scope="scope"
-          v-if='scope.row.goodsCode'
+          v-if='scope.row.commodityCode'
         >
           <span>
             <!-- <i
@@ -78,11 +78,13 @@
           slot-scope="scope"
           class="d-relative"
         >
+          <!-- 报溢的话 需要选择库房以后再选 商品, 要传过去库房id, 商品是跟库库房来的 报损不需要 -->
           <commoditySelector
-            :wmsId='addForm.wmsId'
+            :wmsId="addForm.type == 2 ? addForm.wmsId : null"
             @choose='commodityChoose(arguments,scope)'
+            :isChooseOne='true'
             type="code"
-            v-model="scope.row.goodsCode"
+            v-model="scope.row.commodityCode"
             :codes='codes'
           />
         </template>
@@ -96,7 +98,7 @@
           class="d-relative"
         >
           <commoditySelector
-            :wmsId='addForm.wmsId'
+            :wmsId="addForm.type == 2 ? addForm.wmsId : null"
             @choose='commodityChoose(arguments,scope)'
             v-model="scope.row.goodsName"
             :codes='codes'
@@ -110,7 +112,7 @@
         <template
           slot-scope="scope"
           class="d-relative"
-          v-if="scope.row.goodsCode"
+          v-if="scope.row.commodityCode"
         >
           <div
             class="ac"
@@ -221,17 +223,18 @@ export default {
   methods: {
     //选择商品
     commodityChoose(e, scope) {
+      console.log(e, 'eeee')
       let list = e[0]
       let type = e[1]
       this.tableData.forEach((item) => {
-        if (item.goodsCode) {
-          this.codes.push(item.goodsCode)
+        if (item.commodityCode) {
+          this.codes.push(item.commodityCode)
         }
       })
       list.forEach((item) => {
-        if (!this.codes.includes(item.goodsCode) && scope.row.goodsCode && type == 'select') {//区分非选择状态下的选择商品信息
+        if (!this.codes.includes(item.commodityCode) && scope.row.commodityCode && type == 'select') {//区分非选择状态下的选择商品信息
           this.$set(this.tableData, scope.$index, item)
-        } else if (!this.codes.includes(item.goodsCode)) {
+        } else if (!this.codes.includes(item.commodityCode)) {
           this.tableData.unshift(item)
         }
       })
@@ -293,7 +296,7 @@ export default {
     sumitSn(data) {
       this.$set(this.tableData[this.ceIndex], 'commodityInfoList', data)
       this.tableData.forEach((item) => {
-        if (item.goodsCode) {
+        if (item.commodityCode) {
           this.addForm.commodityList.push(item)
         }
       })

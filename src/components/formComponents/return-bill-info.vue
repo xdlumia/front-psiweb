@@ -2,11 +2,11 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 11:22:58
- * @Description: 其他费用
+ * @LastEditTime: 2019-11-11 11:25:31
+ * @Description:  退货单账期信息
  */
 <template>
-  <form-card title='其他费用'>
+  <form-card title='账期费用'>
     <el-row :gutter="10">
       <el-col
         :span="item.span || 8"
@@ -40,8 +40,8 @@
             :placeholder="`请选择${item.label}`"
           />
           <el-input
-            v-else-if="item.type =='input'"
             :disabled="disabled"
+            v-else-if="item.type =='input'"
             v-model="data[item.prop]"
             :placeholder="`请输入${item.label}`"
           >
@@ -55,11 +55,9 @@
 <script>
 let formItems = [
   // 客户名称编辑的时候使用clientId显示的时候使用clientName
-  // TODO 费用类型 费用明细 字典值还没有随便取的
-  { label: '费用类型', prop: 'feeTypeCode', type: 'select', dicName: 'PSI_KH_HY-1', rules: [{ required: true, trigger: 'blur' }], },
-  { label: '费用明细', prop: 'feeDetailCode', type: 'select', dicName: 'PSI_KH_HY-1', rules: [{ required: false, trigger: 'blur' }], },
-  { label: '金额', prop: 'payAmount', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
-  { label: '付款时间', prop: 'payTime', type: 'input', rules: [{ required: false, trigger: 'data' }], },
+  { label: '应退金额', prop: 'shouldRefundAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
+  { label: '实退金额', prop: 'actualRefundAmount', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
+  { label: '付款时间', prop: 'payTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
 ]
 export default {
   props: {

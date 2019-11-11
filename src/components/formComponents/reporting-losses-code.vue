@@ -44,20 +44,24 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="goodsCode"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.goodsCode}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="商品类别"
           min-width="110"
           prop="categoryCode"
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span class="">{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           label="商品分类"
           min-width="110"
@@ -82,7 +86,11 @@
           label="单位"
           min-width="80"
           prop="unit"
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span class="">{{scope.row.unit | dictionary('SC_JLDW')}}</span>
+          </template>
+        </el-table-column>
       </el-table>
 
     </form-card>
