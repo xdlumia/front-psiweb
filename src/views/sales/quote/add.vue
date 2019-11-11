@@ -2,12 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 11:24:12
+ * @LastEditTime: 2019-11-11 19:54:02
  * @Description: file content
 */
 <template>
   <el-dialog
-    title="新建报价单"
+    :title="type=='add'?'新建报价单':`编辑:${code}`"
     :visible.sync="showPop"
     width="920px"
     v-dialogDrag
@@ -52,7 +52,6 @@
       </el-form>
       <!-- 确定按钮 -->
       <div class="ac pt20">
-
         <el-button
           @click="$emit('update:visible', false)"
           size="small"
@@ -79,7 +78,7 @@ import selectProduct from './add/select-product'
 import confirmInfo from './add/confirm-info'
 import quoteInfo from './add/quote-info'
 export default {
-  props: ['visible', 'type'],
+  props: ['visible', 'code', 'rowData', 'type'],
   components: {
     selectCustomer,
     selectProduct,

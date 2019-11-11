@@ -2,65 +2,92 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 14:49:58
+ * @LastEditTime: 2019-11-11 19:49:33
  * @Description: 报价单详情
 */
 <template>
-  <side-detail
-    title="报价单详情"
-    :visible.sync="showPop"
-    width="920px"
-    :status="statusData"
-  >
-    <div slot="button">
-      <!-- 操作按钮 -->
-      <span
-        v-for="(item,index) of buttons"
-        :key="index"
-      >
-        <el-button
-          class="mr10"
-          @click="buttonsClick(item.label)"
-          v-if="currStatusType[rowData.state].includes(item.label)"
-          size="mini"
-          :type="item.type"
-        >{{item.label}}</el-button>
-      </span>
-
-    </div>
-    <el-form
-      ref="form"
-      :model="form"
-      size="mini"
-      label-position="top"
+  <div>
+    <side-detail
+      title="报价单详情"
+      :visible.sync="showPop"
+      width="920px"
+      :status="statusData"
     >
-      <el-tabs
-        v-model="activeName"
-        type="card"
-      >
-        <el-tab-pane
-          v-for="(val,key) of tabs"
-          :key="key"
-          :label="val"
-          :name="key"
+      <div slot="button">
+        <!-- 操作按钮 -->
+        <span
+          v-for="(item,index) of buttons"
+          :key="index"
         >
-        </el-tab-pane>
-      </el-tabs>
-      <keep-alive>
-        <components
-          class="d-auto-y"
-          :code="this.code"
-          :rowData="rowData"
-          :button="false"
-          style="height:calc(100vh - 240px)"
-          :is="activeName"
-        ></components>
-      </keep-alive>
-    </el-form>
-  </side-detail>
+          <el-button
+            class="mr10"
+            @click="buttonsClick(item.label)"
+            v-if="currStatusType[rowData.state].includes(item.label)"
+            size="mini"
+            :type="item.type"
+          >{{item.label}}</el-button>
+        </span>
+
+      </div>
+      <el-form
+        ref="form"
+        :model="form"
+        size="mini"
+        label-position="top"
+      >
+        <el-tabs
+          v-model="activeName"
+          type="card"
+        >
+          <el-tab-pane
+            v-for="(val,key) of tabs"
+            :key="key"
+            :label="val"
+            :name="key"
+          >
+          </el-tab-pane>
+        </el-tabs>
+        <keep-alive>
+          <components
+            class="d-auto-y"
+            :code="this.code"
+            :rowData="rowData"
+            :button="false"
+            style="height:calc(100vh - 240px)"
+            :is="activeName"
+          ></components>
+        </keep-alive>
+      </el-form>
+    </side-detail>
+    <!-- 报价单编辑 -->
+    <add
+      :visible.sync="editVisible"
+      :code="code"
+      type="edit"
+      :rowData="rowData"
+    />
+    <!-- 生成销售出库单 -->
+    <outLibAdd
+      :visible.sync="outLibAddVisible"
+      :code="rowData.quotationCode"
+      type="add"
+      :rowData="rowData"
+    />
+    <!-- 生成请购单 -->
+    <buyingAdd
+      v-if="buyingAddVisible"
+      :visible.sync="buyingAddVisible"
+      :code="code"
+      type="add"
+      :rowData="rowData"
+    />
+  </div>
 </template>
 <script>
 import detail from './quoteDetails/detail' //详情
+import add from './add' //编辑
+import outLibAdd from '../outLibrary/add' //生成出库单
+import buyingAdd from '@/views/order/buying/edit' //生成请购单
 import buy from './quoteDetails/buy' //采购单
 import record from '@/components/formComponents/record' //操作记录
 let stateObj = {
@@ -74,6 +101,9 @@ let stateObj = {
 export default {
   components: {
     detail,
+    add,
+    outLibAdd,
+    buyingAdd,
     buy,
     record
   },
@@ -105,13 +135,9 @@ export default {
         '3': [], //完成
         // '4': [] //终止 //没有终止
       },
-      //dialog弹出框
-      drawerData: {
-        visible: false,
-        title: '',
-        type: '',
-        data: '',
-      },
+      editVisible: false, //销售单编辑
+      outLibAddVisible: false, //生成销售出库单
+      buyingAddVisible: false, //生成请购单
       // tab操作栏
       tabs: {
         detail: '详情',
@@ -165,6 +191,9 @@ export default {
       }
       // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
       else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
+        if (label == '编辑') { this.editVisible = true }
+        if (label == '生成销售出库单') { this.outLibAddVisible = true }
+        if (label == '生成请购单') { this.buyingAddVisible = true }
         // this.$emit('buttonClick', label, this.drawerData.data)
       }
     },
