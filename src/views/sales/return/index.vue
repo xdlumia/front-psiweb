@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 10:54:08
+ * @LastEditTime: 2019-11-11 16:45:22
  * @Description: 销售-销售退货单
  */
 <template>
@@ -21,7 +21,7 @@
     >
 
       <template slot-scope="{column,row,value}">
-        <!-- 销售退货单编号 -->
+        <!-- 销售换货单编号 -->
         <span
           class="d-text-blue d-pointer"
           v-if="column.columnFields=='alterationCode'"
@@ -103,10 +103,11 @@ export default {
       // 查询表单
       queryForm: {
         // status: "",
+        busType: 17,
         page: 1,
         limit: 20
       },
-      // 列表筛选
+      // 列表状态
       stateObj: stateObj,
       // 筛选数据
       filterOptions: filterOptions,

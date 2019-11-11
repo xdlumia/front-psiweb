@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 11:44:49
+ * @LastEditTime: 2019-11-11 15:08:33
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -21,8 +21,8 @@
     />
     <!-- 退货商品信息 -->
     <goods-return
+      :params="{busType:17,busCode:code}"
       disabled
-      :data="detailInfo"
     />
     <!-- 其他费用 -->
     <other-fee

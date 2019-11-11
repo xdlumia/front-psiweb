@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:17:53
+ * @LastEditTime: 2019-11-11 18:04:15
  * @Description: 销售换货单详情
 */
 <template>
@@ -57,11 +57,9 @@
 </template>
 <script>
 import detail from './details/detail' //详情
-import outLib from './details/outLib' //报价单
 export default {
   components: {
     detail,
-    outLib
   },
   props: ['visible', 'rowData'],
   data() {
@@ -82,17 +80,17 @@ export default {
        */
       currStatus: 3,
       currStatusType: {
-        1: ['提交审核', '编辑', '删除'], // 新建
-        2: ['撤销审核', '审核通过', '驳回'], // 审核中
-        3: ['退货扫码'], // 待退货
-        4: ['退货扫码'], //部分退货
-        5: [], //已退货
-        6: ['提交审核', '编辑', '删除'], //已驳回
+        '-1': ['提交审核', '编辑', '删除'], // 新建
+        '0': ['撤销审核', '审核通过', '驳回'], // 审核中
+        '1': ['退货扫码'], // 待完成
+        '2': ['退货扫码'], //部分完成
+        '3': [], //已完成
+        '4': ['提交审核', '编辑', '删除'], //已驳回
       },
       // tab操作栏
       tabs: {
         detail: '详情',
-        outLib: '销售出库单',
+        outLibrary: '销售出库单',
       },
       activeName: 'detail',
       form: {},
@@ -111,7 +109,7 @@ export default {
   methods: {
     buttonsClick(label) {
       // handleConfirm里的按钮操作是需要二次确认的
-      let handleConfirm = ['提交审核', '撤销审核', '驳回', '删除', '终止']
+      let handleConfirm = ['提交审核', '撤销审核', '驳回', '删除']
       if (handleConfirm.includes(label)) {
         this.$confirm(`是否${label}?`, "提示", {
           confirmButtonText: "确定",
@@ -119,15 +117,25 @@ export default {
           type: "warning",
           center: true
         }).then(() => {
+          let apiObj = {
+            '提交审核': 'salesalterationsheetApproval',
+            '撤销审核': 'salesalterationsheetApproval',
+            '驳回': 'salesalterationsheetApproval',
+            '删除': 'salesalterationsheetDelete',
+          }
           this.$api.seePumaidongService.collegeManagerDelete({ id: [123] })
             .then(res => {
               this.$emit('reload')
+              this.showPop = false
             });
         });
       }
-      // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
-      else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
-        this.$emit('buttonClick', label, this.drawerData.data)
+      // 如果是 编辑/退货扫码
+      else if (label == '编辑' || label == '退货扫码') {
+        if (label == '编辑') { this.editVisible = true }
+        // TODO 退货扫码 未调用真实组件
+        if (label == '退货扫码') { this.editVisible = true }
+
       }
     },
   },
