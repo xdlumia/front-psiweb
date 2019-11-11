@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-09 11:31:11
+ * @LastEditTime: 2019-11-11 18:32:15
  * @Description: 新增报价单
  -->
 <template>
@@ -18,21 +18,17 @@
       <div slot="title" style="display:flex;">
         <h3 style="flex:1;text-align:center;">新增报价单</h3>
         <div>
-          <el-button type="primary" size="mini" @click="commonserviceproviderSave">保存</el-button>
+          <el-button type="primary" size="mini" @click="commonquotationconfigSave">保存</el-button>
           <el-button size="mini" @click="$emit('update:visible', false)">关闭</el-button>
         </div>
       </div>
-      <el-form
-        ref="facilitatorForm"
-        size="mini"
-        :model="facilitatorForm"
-        :rules="facilitatorFormRule"
-      >
+      <el-form ref="quotationForm" size="mini" :model="quotationForm" :rules="quotationFormRule">
         <d-tabs :style="{maxHeight: maxHeight + 'px'}">
           <d-tab-pane label="基本信息" name="information"></d-tab-pane>
-          <d-tab-pane label="配置信息" name="invoiceInfo"></d-tab-pane>
+          <d-tab-pane label="配置信息" name="goodsInfo"></d-tab-pane>
         </d-tabs>
-        <information></information>
+        <information :data.sync="quotationForm" id="information"></information>
+        <config-info :data.sync="quotationForm" id="goodsInfo"></config-info>
       </el-form>
       <!-- <add-facilitator ref="addFacilitator" :editId="editId" v-if="visible" @refresh="refresh"></add-facilitator> -->
     </el-dialog>
@@ -41,6 +37,7 @@
 
 <script type='text/ecmascript-6'>
 import information from './components/information'
+import configInfo from './components/config-info'
 export default {
   props: {
     visible: {
@@ -54,57 +51,46 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     return {
-      facilitatorForm: {
+      quotationForm: {
         id: '',
-        serviceName: '',
-        serviceTypeList: [],
-        serviceType: '',
-        linkMan: '',
-        phone: '',
-        receiptBank: '',
-        shroffAccountNum: '',
-        serviceGrade: '',
-        trade: '',
-        source: '',
-        address: '',
-        attachList: []
+        quotationName: '',
+        goodName: '',
+        commodityId: '',
+        commodityCode: '',
+        note: '',
+        commonQuotationConfigDetailsEntitys: []
       },
-      facilitatorFormRule: {
-        serviceName: { required: true, message: '请输入', trigger: 'blur' },
+      quotationFormRule: {
+        quotationName: { required: true, message: '请输入', trigger: 'blur' },
+        goodName: { required: true, message: '请选择', trigger: 'change' },
         serviceTypeList: { required: true, message: '请选择', trigger: 'change' },
-        linkMan: { required: true, message: '请输入', trigger: 'blur' },
-        phone: { required: true, message: '请输入', trigger: 'blur' },
-        receiptBank: { required: true, message: '请输入', trigger: 'blur' },
-        shroffAccountNum: { required: true, message: '请输入', trigger: 'blur' },
-        serviceGrade: { required: true, message: '请选择', trigger: 'change' },
-        trade: { required: true, message: '请选择', trigger: 'change' },
-        source: { required: true, message: '请选择', trigger: 'change' },
-        address: { required: true, message: '请输入', trigger: 'blur' }
+        commonQuotationConfigDetailsEntitys: { required: true, message: '请选择', trigger: 'change' }
       },
       loading: false
     }
   },
   components: {
-    information
+    information,
+    configInfo
   },
   computed: {
-    maxHeight () {
+    maxHeight() {
       return window.innerHeight - 130;
     }
   },
-  mounted () {
-    this.facilitatorForm = Object.assign(this.facilitatorForm, this.detailForm)
+  mounted() {
+    this.quotationForm = Object.assign(this.quotationForm, this.detailForm)
+    console.log(this.quotationForm)
   },
   methods: {
-    commonserviceproviderSave () {
-      this.$refs.facilitatorForm.validate(valid => {
+    commonquotationconfigSave() {
+      this.$refs.quotationForm.validate(valid => {
         if (valid) {
           this.loading = true
-          const method = this.facilitatorForm.id ? 'commonserviceproviderUpdate' : 'commonserviceproviderSave'
-          this.facilitatorForm.serviceType = this.facilitatorForm.serviceTypeList.join(',')
-          this.$api.seePsiCommonService[method](this.facilitatorForm).then(res => {
+          const method = this.quotationForm.id ? 'commonquotationconfigUpdate' : 'commonquotationconfigSave'
+          this.$api.seePsiCommonService[method](this.quotationForm).then(res => {
             this.$emit('refresh')
             this.$emit('update:visible', false)
           }).finally(() => { this.loading = false })

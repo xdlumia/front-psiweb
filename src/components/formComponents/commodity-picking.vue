@@ -8,105 +8,82 @@
 <template>
   <div>
     <form-card title='商品拣货'>
-      <d-table
-        :paging='false'
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+      <el-table
+        border
+        size='mini'
+        :data="[data]"
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
       >
         <el-table-column
           fixed
-          prop="cityName"
+          prop="shipmentsNumber"
           min-width="100"
           label="拣货数量"
           show-overflow-tooltip
         ></el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           fixed
-          prop="title"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span
-              @click="getTableVisible(scope.row)"
-              class="d-text-blue"
-            >{{scope.row.id}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           fixed
-          prop="cityName"
+          prop="categoryCode"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
+          prop="className"
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="configName"
           min-width="100"
           label="商品配置"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="title"
+          prop="specOne"
           label="商品规格"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">XSD20190201000001</span>
+            <span class="d-text-blue">{{scope.row.specOne}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="unit"
           min-width="80"
           label="单位"
           show-overflow-tooltip
         ></el-table-column>
-      </d-table>
-      <el-dialog
-        title="机器号/SN码记录"
-        :visible.sync="commDialogVisible"
-        width="600"
-        v-dialogDrag
-      >
-
-      </el-dialog>
+      </el-table>
     </form-card>
   </div>
 </template>
 <script>
 export default {
+  props: ['data'],
   data() {
     return {
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
-      commDialogVisible: false,
     }
   },
   methods: {

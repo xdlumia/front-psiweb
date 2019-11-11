@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:29
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-08 17:31:08
+ * @LastEditTime: 2019-11-11 17:51:04
  * @Description: ip配置文件
  */
 // let model = 'build' // dev 为开发环境 build 为测试环境  product 为生产环境
@@ -32,8 +32,8 @@ const baseURL = {
   // seeHouseConfigService: apisUrl + 'see-house-config-service',
   seeHouseConfigService: apisUrl + 'see-baseinfo-service', // 在这个项目里 seeHouseConfigService 的公共部分都转移到 see-baseinfo-service服务里
   seeBaseinfoService: apisUrl + 'see-baseinfo-service', // 基础服务
-  seePsiCommonService: apisUrl + 'see-psi-common-service',
-  // seePsiCommonService: 'http://10.168.1.130:9201',
+  // seePsiCommonService: apisUrl + 'see-psi-common-service',
+  seePsiCommonService: 'http://10.168.1.130:9201',
   seeExternService: apisUrl + 'see-extern-service', // 9024 see-extern-service
   seeGoodsService: apisUrl + 'see-goods-service', // 物品服务
   seePsiWmsService: apisUrl + 'see-psi-wms-service' // 物品服务

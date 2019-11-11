@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 17:39:50
+ * @LastEditTime: 2019-11-11 18:10:29
  * @Description: 采购入库单
 */
 <template>
   <el-dialog :visible="visible" @close="close" v-dialogDrag>
     <div slot="title">
-      <span>采购入库单{{from?`(${from})`:''}}</span>
+      <span>采购入库单{{form.source?`(${form.source})`:''}}</span>
       <span class="fr mr20">
         <el-button @click="save" size="mini" type="primary">保存</el-button>
         <el-button @click="close" size="mini">关闭</el-button>
@@ -19,7 +19,7 @@
     }">
       <d-tab-pane label="供应商信息" name="supplierInfo" />
       <d-tab-pane label="公司信息" name="companyInfo" />
-      <d-tab-pane label="到货信息" name="arrivalInfo" v-if="from!='直发单'" />
+      <d-tab-pane label="到货信息" name="arrivalInfo" v-if="form.source!='直发单'" />
       <d-tab-pane label="发货信息" name="deliverInfo" v-else />
       <d-tab-pane label="商品信息" name="commodityInfo" />
       <d-tab-pane label="收票滞纳金" name="paymentLate" />
@@ -29,7 +29,7 @@
         <el-form :model="form" class="p10" ref="form" size="mini" v-if="visible">
           <supplierInfo :data="form" @change="supplierChange" id="supplierInfo" />
           <companyInfo :data="form" id="companyInfo" />
-          <arrivalInfo :data="form" id="arrivalInfo" ref="arrivalInfo" v-if="from!='直发单'" />
+          <arrivalInfo :data="form" id="arrivalInfo" ref="arrivalInfo" v-if="form.source!='直发单'" />
           <buyingDeliverInfo :data="form" id="deliverInfo" ref="deliverInfo" v-else />
           <buying-goods-edit
             :data="form"
@@ -44,7 +44,7 @@
              'costAmount','waitPurchaseNumber','note'
           ]"
             fkey="additionalCommodityList"
-            v-if="from=='请购单'"
+            v-if="form.source=='请购单'"
           />
           <paymentLate :data="form" id="paymentLate" />
           <order-storage-bill :data="form" id="billInfo" />

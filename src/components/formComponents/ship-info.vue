@@ -12,7 +12,7 @@
       <el-row>
         <el-col :span="8">
           <div class="d-text-black">销售要求发货日期</div>
-          <div class="d-text-qgray mt5 mb20">2019-9-21</div>
+          <div class="d-text-qgray mt5 mb20">{{data.salesQuotationEntity.salesRequireArrivalTime|timeToStr('YYYY-MM-DD')}}</div>
         </el-col>
         <el-col :span="8">
           <div class="d-text-black">物流方式</div>
@@ -28,19 +28,19 @@
         </el-col>
         <el-col :span="8">
           <div class="d-text-black">收货人</div>
-          <div class="d-text-qgray mt5 mb20">马云</div>
+          <div class="d-text-qgray mt5 mb20">{{data.salesQuotationEntity.clientLinkman || '-'}}</div>
         </el-col>
         <el-col :span="8">
           <div class="d-text-black">收货人电话</div>
-          <div class="d-text-qgray mt5 mb20">15210614992</div>
+          <div class="d-text-qgray mt5 mb20">{{data.salesQuotationEntity.clientPhone || '-'}}</div>
         </el-col>
         <el-col :span="8">
           <div class="d-text-black">收货人地址</div>
-          <div class="d-text-qgray mt5">北京市昌平区霍营街道流星花园</div>
+          <div class="d-text-qgray mt5">{{data.salesQuotationEntity.clientReceivingAddress || '-'}}</div>
         </el-col>
         <el-col :span="14">
           <div class="d-text-black">备注</div>
-          <div class="d-text-qgray mt5">备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注</div>
+          <div class="d-text-qgray mt5">{{data.salesQuotationEntity.note || '-'}}</div>
         </el-col>
 
       </el-row>
@@ -49,6 +49,7 @@
 </template>
 <script>
 export default {
+  props: ['data'],
   data() {
     return {
       // 查询表单

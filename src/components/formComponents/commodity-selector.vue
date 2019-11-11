@@ -123,9 +123,12 @@ export default {
       }
     },
     chooseOne(e) {
-      this.options.push(e);
+      const index = this.options.findIndex(item => item.commodityCode === e.commodityCode)
+      if (index === -1) {
+        this.options.push(e);
+      }
       this.selectGood = e.commodityCode;
-      this.$emit('choose', e);
+      this.$emit('choose', [e]);
     },
     async search(words = '') {
       words = String(words).trim();

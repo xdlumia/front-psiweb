@@ -9,22 +9,12 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="drawerData.tableVisible"
+    :visible.sync="visible"
     @close="$emit('update:visible',false)"
-    title="销售单"
+    :title="'销售单-' + drawerData.salesSheetCode"
     width="990px"
   >
-    <!-- <template slot="button">
-      <el-button
-        @click="orderStorageVisible=true"
-        size="mini"
-        type="primary"
-      >发货</el-button>
-    </template> -->
-    <div
-      class="d-auto-y"
-      style="height:calc(100vh - 240px)"
-    >
+    <div>
       <div class="drawer-header">
         <el-button
           @click="orderStorageVisible=true"
@@ -32,12 +22,16 @@
           type="primary"
         >发货</el-button>
       </div>
-      <el-tabs class="wfull hfull tabs-view">
+      <el-tabs class="wfull hfull tabs-view"> 
         <el-tab-pane label="详情">
           <el-form>
-            <goodsExported />
-            <shipInfo />
-            <generateDeliver :visible.sync='orderStorageVisible' />
+            <goodsExported :detailForm='detailForm' />
+            <deliverInfo
+              :data='detailForm.salesQuotationEntity'
+              :disabled='true'
+            />
+            <generateDeliver :visible.sync='
+              orderStorageVisible' />
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="拣货单">拣货单</el-tab-pane>
@@ -53,11 +47,13 @@
 </template>
 <script>
 import goodsExported from '@/components/formComponents/goods-exported'
-import shipInfo from '@/components/formComponents/ship-info';
+//这里直接用公共的了
+// import shipInfo from '@/components/formComponents/ship-info';
+import deliverInfo from '@/components/formComponents/deliver-info';
 import generateDeliver from './generate-deliver';
 import SideDetail from '@/components/side-detail';
 export default {
-  props: ['drawerData'],
+  props: ['drawerData', 'visible'],
   data() {
     return {
       status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
@@ -67,23 +63,28 @@ export default {
   },
   components: {
     goodsExported,
-    shipInfo,
+    deliverInfo,
     generateDeliver,
     SideDetail
   },
   created() {
 
   },
+  mounted() {
+    this.salessheetInfo()
+  },
   methods: {
+    //查询详情  
     salessheetInfo() {
-      this.$api.seePsiWmsService.salessheetInfo(null, this.drawerData.id)
+      this.$api.seePsiSaleService.salessheetInfo(null, this.drawerData.id)
         .then(res => {
-          // this.detailForm = res.data || {}
-          // this.status[0].value = this.drawerData.createTime
-          // this.status[1].value = this.drawerData.creatorName
-          // this.status[2].value = this.drawerData.deptName
-          // this.status[3].value = this.drawerData.source
-          // console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
+          this.detailForm = res.data || {}
+          this.status[0].value = this.drawerData.assemblyState
+          this.status[1].value = this.drawerData.createTime
+          this.status[2].value = this.drawerData.creator
+          this.status[3].value = this.drawerData.deptName
+          this.status[4].value = this.drawerData.source
+          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 

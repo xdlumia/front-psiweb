@@ -1,5 +1,5 @@
 const MOCK_ADDRESS = '/mock/5db9778bbc54fc3da273f010/common'
-const IS_MOCK  = false
+const IS_MOCK = false
 export default {
   __mockAddress: MOCK_ADDRESS,
   /* =============附件表start=========== */
@@ -496,6 +496,7 @@ export default {
     'mock': IS_MOCK,
     'methods': 'post'
   },
+
   // 设置默认目标
   commonpromotiongoalUpdateDefault: {
     'url': '/commonpromotiongoal/updateDefault',
@@ -602,6 +603,12 @@ export default {
     'mock': IS_MOCK
   },
 
+  // 通过编号详细信息
+  commonquotationconfigInfoBycode: {
+    'url': '/commonquotationconfig/infoBycode/{code}',
+    'mock': IS_MOCK
+  },
+
   // 获取列表
   commonquotationconfigList: {
     'url': '/commonquotationconfig/list',
@@ -647,6 +654,12 @@ export default {
   // 获取列表
   commonquotationconfigdetailsList: {
     'url': '/commonquotationconfigdetails/list',
+    'mock': IS_MOCK
+  },
+
+  // 获取列表
+  commonquotationconfigdetailsListConfigByGoodName: {
+    'url': '/commonquotationconfigdetails/listConfigByGoodName',
     'mock': IS_MOCK
   },
 
