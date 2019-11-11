@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-09 12:27:18
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-11 19:18:40
+ * @LastEditTime: 2019-11-11 23:01:38
  * @Description: description
  -->
 <template>
@@ -17,8 +17,8 @@
       <form-card
         class="mb10"
         :title="index<1"
-        v-for="(itme, index) in data.commonQuotationConfigDetailsEntitys"
-        :key="index.commodityCode"
+        v-for="(item, index) in data.commonQuotationConfigDetailsEntitys"
+        :key="item.commodityCode"
       >
         <div slot="title" style="display:flex;align-items: center">
           <span class="mr10">配置信息</span>
@@ -27,22 +27,22 @@
         <el-row :gutter="10" class="d-relative">
           <el-col :span="8">
             <el-form-item label="商品编号">
-              <el-input v-model="itme.commodityCode" disabled></el-input>
+              <el-input v-model="item.commodityCode" disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="商品名称">
-              <el-input v-model="itme.goodsName" disabled></el-input>
+              <el-input v-model="item.goodsName" disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="所属分类">
-              <el-input v-model="itme.className" disabled></el-input>
+              <el-input v-model="item.className" disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="商品数量">
-              <el-input v-model="itme.commodityNum"></el-input>
+              <el-input v-model="item.commodityNum"></el-input>
             </el-form-item>
           </el-col>
           <el-button
@@ -66,7 +66,7 @@
 
 <script type='text/ecmascript-6'>
 export default {
-  data () {
+  data() {
     return {
       showCommodityGoods: false,
       loading: false
@@ -77,16 +77,16 @@ export default {
   },
   components: {
   },
-  mounted () {
+  mounted() {
     if (this.data.id) {
       this.commonquotationconfigdetailsListConfigByGoodName(this.data.id)
     }
   },
   methods: {
-    add () {
+    add() {
       this.showCommodityGoods = true
     },
-    choose (goods) {
+    choose(goods) {
       const temp = this.data.commonQuotationConfigDetailsEntitys
       goods.forEach(good => {
         const { goodsName, commodityCode, className, commodityNum = 0, id: commodityId } = good
@@ -98,7 +98,7 @@ export default {
       })
       console.log(this.data.commonQuotationConfigDetailsEntitys)
     },
-    commonquotationconfigdetailsListConfigByGoodName (quotationId) {
+    commonquotationconfigdetailsListConfigByGoodName(quotationId) {
       this.loading = true
       this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName({ quotationId }).then(res => {
         this.data.commonQuotationConfigDetailsEntitys = res.data || []
