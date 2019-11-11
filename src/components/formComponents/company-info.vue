@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 15:13:01
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-11 11:16:35
  * @Description: 公司信息  传入 公司发票账户 和公司结算账户id 会自动查询其余信息
 */
 <template>
@@ -168,6 +168,7 @@ export default {
         this.invoiceItem = { id: this.data.companyAccountId }
 
         let [invoiceSelected] = this.invoiceOptions.filter(item => item.id === this.data.companyAccountId) || [{}]
+        invoiceSelected=invoiceSelected||{}
         // 获取结算账户列表
         this.settlementOptions = invoiceSelected.commonCorporationAccountEntities
         // 这里的接口是公共的 .所以字段不对应

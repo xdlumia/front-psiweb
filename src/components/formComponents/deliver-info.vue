@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 20:15:00
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-11 14:01:40
  * @Description: 发货信息 1
 */
 <template>
@@ -58,6 +58,7 @@
 <script>
 let formItems = [
   { label: '销售预计发货时间', prop: 'salesExpectedShipmentsTime', type: 'date', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },
+  { label: '客户名称', prop: 'clientName', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
   { label: '客户联系人', prop: 'clientLinkman', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },
   { label: '客户联系电话', prop: 'clientPhone', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'phone' }], },
   { label: '客户收货地址', prop: 'clientReceivingAddress', type: 'input', rules: [{ required: true, trigger: 'blur' },], },

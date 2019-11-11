@@ -3,7 +3,7 @@
 const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = true;
 /**
-* @date 2019-11-07
+* @date 2019-11-11
 * @host 39.99.132.95:9205
 */
 export default {
@@ -295,6 +295,15 @@ export default {
     purchasedirectDeliver: {
         url: '/purchasedirect/deliver',
         methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 直发单
+     * @description 直发单发货列表
+     */
+    purchasedirectDeliverList: {
+        url: '/purchasedirect/deliverList/{code}',
+        methods: 'get',
         mock: isUseMock
     },
     /**

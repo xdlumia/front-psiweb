@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-10 20:49:09
- * @Description: 到货信息
+ * @LastEditTime: 2019-11-11 15:48:51
+ * @Description: 到货信息 已绑定字段 1
  */
 <template>
   <form-card title="到货信息">

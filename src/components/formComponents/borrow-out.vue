@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-28 15:10:46
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 16:38:59
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-11 15:51:51
  * @Description: 借出信息
 */
 <template>
@@ -86,7 +86,6 @@
           <div v-else>
             <el-input placeholder="请输入借出方" />
             <div>
-              <ChooseManSelect />
             </div>
           </div>
         </el-form-item>
@@ -133,11 +132,9 @@
   </form-card>
 </template>
 <script>
-import ChooseManSelect from './choose-man-select';
 
 export default {
   components: {
-    ChooseManSelect
   },
   props: {
     data: {
