@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 15:10:48
+ * @LastEditTime: 2019-11-11 19:33:03
  * @Description: 报价单详情
 */
 <template>
@@ -12,12 +12,12 @@
     <!-- 客户信息 -->
     <customerInfo
       disabled
-      :data="clientInfo"
+      :data="quoteInfo"
     />
     <!-- 公司信息 -->
     <companyInfo
       disabled
-      :data="clientInfo"
+      :data="quoteInfo"
     />
     <!-- 发货信息 -->
     <deliverInfo
