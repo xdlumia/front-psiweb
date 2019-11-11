@@ -846,12 +846,6 @@ export default {
     'methods': 'post'
   },
 
-  // 商品扫码出库校验
-  wmsinventorydetailShipmentCommodityCheck: {
-    'url': '/wmsinventorydetail/shipmentCommodityCheck',
-    'mock': false
-  },
-
   // 扫码出库
   wmsinventorydetailUpdate: {
     'url': '/wmsinventorydetail/update',

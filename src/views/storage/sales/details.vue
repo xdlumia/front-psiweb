@@ -62,6 +62,7 @@ export default {
     return {
       status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       orderStorageVisible: false,
+      detailForm: {},
     };
   },
   components: {
@@ -70,6 +71,25 @@ export default {
     generateDeliver,
     SideDetail
   },
+  created() {
+
+  },
+  methods: {
+    salessheetInfo() {
+      this.$api.seePsiWmsService.salessheetInfo(null, this.drawerData.id)
+        .then(res => {
+          // this.detailForm = res.data || {}
+          // this.status[0].value = this.drawerData.createTime
+          // this.status[1].value = this.drawerData.creatorName
+          // this.status[2].value = this.drawerData.deptName
+          // this.status[3].value = this.drawerData.source
+          // console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
+        })
+        .finally(() => {
+
+        })
+    }
+  }
 }
 </script>
 <style lang='scss' scoped>

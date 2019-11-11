@@ -48,7 +48,9 @@
             :addForm='addForm'
           />
         </el-form>
+        <!-- 报溢的话 需要选择库房以后再选 商品, 商品是跟库库房来的 报损不需要 -->
         <commodityInfoEdit
+          v-if="addForm.type == 2 ? addForm.wmsId : true"
           ref="logisticsEdit"
           :addForm='addForm'
         />
@@ -96,7 +98,7 @@ export default {
       addForm: {
         commodityList: [],//商品列表
         type: 2,//类别（1-报溢 2-报损）
-        wmsId: '',//库房id
+        wmsId: null,//库房id
         personInChargeId: '',//责任人id
         note: '',//备注
         totalCostPrice: '',//成本金额总计

@@ -9,9 +9,9 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
+      style="height:calc(100vh - 150px)"
       busType="48"
       :filterOptions='filterOptions'
-      :headers="tableHeader"
       :selection='false'
       ref='allTable'
       api="seePsiWmsService.wmsinventoryList"
@@ -35,10 +35,11 @@
         </el-input>
       </template>
       <template slot-scope="{column,row,value}">
+        <span v-if="column.columnFields=='unit'">{{value|dictionary('SC_JLDW')}}</span>
+        <span v-else-if="column.columnFields=='categoryCode'">{{value|dictionary('PSI_SP_KIND')}}</span>
         <span
-          v-if="column.columnFields=='goodsCode'"
-          class="d-text-blue"
-          @click="changeTableVisible(row)"
+          v-else-if="column.columnFields=='inventoryWarning'"
+          :class="value == 1 ? 'd-text-red' : value == 2 ? 'd-text-yellow' : ''"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='goodsPic'">
           <el-image
@@ -47,7 +48,12 @@
             fit="fill"
           ></el-image>
         </span>
-        <span v-else-if="column.columnFields=='allocationType'">{{value == 1 ? '内调' : '外调'}}</span>
+        <span v-else-if="column.columnFields=='commodityCode'">
+          <span
+            class="d-text-blue"
+            @click="changeTableVisible(row)"
+          >{{value}}</span>
+        </span>
         <span v-else>{{value}}</span>
       </template>
       <el-aside
@@ -75,6 +81,7 @@
       <!-- </el-container> -->
       <!-- </template> -->
     </TableView>
+    <span class="f18 d-text-blue b mt20 fr">库存成本总额：<span>{{totalInventoryPrice}}</span></span>
     <Details
       :drawerData='drawerData'
       :visible.sync='tableVisible'
@@ -109,26 +116,6 @@ export default {
       },
       snCode: '',
       queryForm: {
-        commodityCode: '',//商品编号
-        goodsPic: '',//商品图片
-        categoryCode: '',//商品类别
-        firstClassName: '',//商品分类 
-        name: '',//商品名称
-        specOne: '',//规格
-        configName: '',//配置
-        unit: '',//单位
-        classId: '',//树的id
-        inventoryWarning: '',//库存预警
-        unit: '',//虚拟库存
-        unit: '',//实物库存
-        unit: '',//期初库存
-        unit: '',//入库数量
-        unit: '',//出库数量
-        unit: '',//待入库数量
-        unit: '',//锁库量
-        unit: '',//最低采购价
-        unit: '',//库存成本
-        unit: '',//销售参考价
         page: 1,
         limit: 20
       },
@@ -141,34 +128,14 @@ export default {
         title: '',
         component: 'Details'
       },
+      totalInventoryPrice: 0,
       data: [],
-      tableHeader: [
-        { label: '商品编号', prop: 'deptName', width: '140' },
-        { label: '商品图片', prop: 'deptName', width: '100' },
-        { label: '商品类别', prop: 'deptName', width: '140' },
-        { label: '商品分类', prop: 'deptName', width: '100' },
-        { label: '商品名称', prop: 'deptName', width: '100' },
-        { label: '商品规格', prop: 'deptName', width: '140' },
-        { label: '商品配置', prop: 'deptName', width: '100' },
-        { label: '单位', prop: 'deptName', width: '100' },
-        { label: '库存预警', prop: 'createTime', width: '100' },
-        { label: '虚拟库存', prop: 'createTime', width: '100' },
-        { label: '实物库存', prop: 'createTime', width: '100' },
-        { label: '期初库存', prop: 'createTime', width: '100' },
-        { label: '入库数量', prop: 'createTime', width: '100' },
-        { label: '出库数量', prop: 'createTime', width: '100' },
-        { label: '待入库数量', prop: 'createTime', width: '100' },
-        { label: '待出库数量', prop: 'createTime', width: '100' },
-        { label: '锁库量', prop: 'createTime', width: '100' },
-        { label: '最低采购价', prop: 'createTime', width: '100' },
-        { label: '库存成本', prop: 'createTime', width: '100' },
-        { label: '销售参考价', prop: 'createTime', width: '100' }
-      ],
       filterOptions: [
-        { label: '商品编号', prop: 'allocationOrderCode', default: true },
+        { label: '商品编号', prop: 'goodsCodeCustomer', default: true },
+        { label: '商品类别', prop: 'categoryCode', default: true },
         {
-          label: '商品类别',
-          prop: 'allocationOrderState',
+          label: '商品分类',
+          prop: 'className',
           type: 'select',
           options: [
             { label: '待调拨', value: '1' },
@@ -178,126 +145,101 @@ export default {
           ],
           default: true
         },
-        // {
-        //   label: '商品分类',
-        //   prop: 'allocationType',
-        //   type: 'select',
-        //   options: [
-        //     { label: '内调', value: '1' },
-        //     { label: '外调', value: '2' }
-        //   ],
-        //   default: true
-        // },
-        // {
-        //   label: '商品名称',
-        //   prop: '',
-        //   type: 'employee',
-        //   dictName: 'FM_FANGYUAN_MJ',
-        //   default: true
-        // },
-        // {
-        //   label: '商品规格',
-        //   prop: '',
-        //   type: 'employee',
-        //   dictName: 'FM_FANGYUAN_MJ',
-        //   default: true
-        // },
-        // {
-        //   label: '商品配置',
-        //   prop: '',
-        //   type: 'employee',
-        //   dictName: 'FM_FANGYUAN_MJ',
-        //   default: true
-        // },
-        // {
-        //   label: '单位',
-        //   prop: '',
-        //   type: 'employee',
-        //   dictName: 'FM_FANGYUAN_MJ',
-        //   default: true
-        // },
-        // {
-        //   label: '实物库存',
-        //   prop: '',
-        //   type: 'employee',
-        //   dictName: 'FM_FANGYUAN_MJ',
-        //   default: true
-        // },
-        // {
-        //   label: '期初库存',
-        //   prop: '',
-        //   type: 'employee',
-        //   dictName: 'FM_FANGYUAN_MJ',
-        //   default: true
-        // },
-        // {
-        //   label: '入库数量',
-        //   prop: '',
-        //   type: 'employee',
-        //   dictName: 'FM_FANGYUAN_MJ',
-        //   default: true
-        // },
-        // {
-        //   label: '出库数量',
-        //   prop: '',
-        //   type: 'employee',
-        //   dictName: 'FM_FANGYUAN_MJ',
-        //   default: true
-        // },
-        // {
-        //   label: '待入库数量',
-        //   prop: '',
-        //   type: 'employee',
-        //   dictName: 'FM_FANGYUAN_MJ',
-        //   default: true
-        // },
-        // {
-        //   label: '待出库数量',
-        //   prop: '',
-        //   type: 'employee',
-        //   dictName: 'FM_FANGYUAN_MJ',
-        //   default: true
-        // },
-        // {
-        //   label: '锁库量',
-        //   prop: '',
-        //   type: 'employee',
-        //   dictName: 'FM_FANGYUAN_MJ',
-        //   default: true
-        // },
-        // {
-        //   label: '最低采购价',
-        //   prop: '',
-        //   type: 'employee',
-        //   dictName: 'FM_FANGYUAN_MJ',
-        //   default: true
-        // },
-
-        // {
-        //   label: '库存成本',
-        //   prop: 'putawayWmsName',
-        //   type: 'select',
-        //   options: [
-        //     { label: '内调', value: '1' },
-        //     { label: '外调', value: '2' }
-        //   ],
-        //   default: true
-        // },
-        // {
-        //   label: '销售参考价',
-        //   prop: 'shipmentWmsNames',
-        //   type: 'select',
-        //   options: [
-        //     { label: '内调', value: '1' },
-        //     { label: '外调', value: '2' }
-        //   ],
-        //   default: true
-        // }
+        { label: '商品名称', prop: 'goodsName', default: true },
+        { label: '商品规格', prop: 'specOne', default: true },
+        {
+          label: '商品配置',
+          prop: 'configId',
+          type: 'select',
+          options: [
+            { label: '内调', value: '1' },
+            { label: '外调', value: '2' }
+          ],
+          default: true
+        },
+        {
+          label: '单位',
+          prop: 'unit',
+          type: 'select',
+          options: [
+            { label: '内调', value: '1' },
+            { label: '外调', value: '2' }
+          ],
+          default: true
+        },
+        {
+          label: '实物库存',
+          prop: 'usableInventoryNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '入库数量',
+          prop: 'sumShipmentNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '出库数量',
+          prop: 'sumPutawayNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '待入库数量',
+          prop: 'waitShipmentNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '待出库数量',
+          prop: 'waitPutawayNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '锁库量',
+          prop: 'lockInventoryNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '最低采购价',
+          prop: 'minimumPurchasePrice',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '库存成本',
+          prop: 'inventoryPrice',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '销售参考价',
+          prop: 'saleReferencePrice',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
       ],
     };
   },
   created() {
     this.getTreeData()
+  },
+  mounted() {
+    setTimeout(() => {
+      this.totalInventoryPrice = this.$refs.allTable.$refs.table.response.totalInventoryPrice || 0
+    }, 1000)
   },
   methods: {
     //tab换组件
@@ -309,7 +251,6 @@ export default {
     },
     //点击编码
     changeTableVisible(row) {
-      console.log(row)
       this.drawerData = row
       this.tableVisible = true
     },
@@ -387,7 +328,9 @@ export default {
     }
   }
 }
-
+.d-text-yellow {
+  color: rgba(255, 153, 0, 0.647058823529412);
+}
 .choose-aside {
   border: 1px solid #f2f2f2;
   border-bottom: none;
@@ -396,5 +339,11 @@ export default {
 /deep/.d-table {
   width: calc(100% - 250px) !important;
   float: left;
+}
+/deep/.buying-requisition-page {
+  border: 1px solid #f4f4f4;
+}
+/deep/.el-pagination {
+  border-bottom: 1px solid #f4f4f4;
 }
 </style>
