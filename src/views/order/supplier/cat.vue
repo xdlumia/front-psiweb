@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 15:48:58
+ * @LastEditTime: 2019-11-11 18:01:29
  * @Description: 商品供应分类表
 */
 <template>
@@ -21,7 +21,7 @@
       >
         <template slot-scope="{column,row,value,prop}">
           <span v-if="prop=='code'">
-            <el-link :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
+            <el-link class="f12" :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
           </span>
           <span v-else-if="prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
           <span v-else-if="prop=='state'">

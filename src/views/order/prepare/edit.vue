@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 16:43:54
+ * @LastEditTime: 2019-11-11 18:14:46
  * @Description: 新增备货单
 */
 <template>
@@ -32,7 +32,9 @@
               </el-col>
             </el-row>
           </form-card>
-          <buyingGoodsEdit :data="form" id="commodityInfo" />
+          <buyingGoodsEdit :data="form" :hide="[
+            'noteText','waitPurchaseNumber','costAmountPrice'
+          ]" id="commodityInfo" />
           <customInfo :data="form" id="customInfo" />
           <extrasInfo :data="form" id="extrasInfo" />
         </el-form>

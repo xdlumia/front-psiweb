@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 17:40:20
+ * @LastEditTime: 2019-11-11 16:55:18
  * @Description: 供应商信息
 */
 <template>
@@ -97,7 +97,6 @@ export default {
   watch: {
     'data.supplierId': {
       handler() {
-        console.log(this);
         this.setExtrasInfo();
       }
     }

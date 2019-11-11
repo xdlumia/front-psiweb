@@ -2,14 +2,14 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 14:43:59
- * @Description: 退货商品信息
+ * @LastEditTime: 2019-11-11 17:34:26
+ * @Description: 退货商品信息 换入商品信息 换出商品信息
 */
 <template>
   <div>
-    <form-card title='退货商品信息'>
+    <form-card :title="true">
       <div slot="title">
-        <span>退货商品信息</span>
+        <span>{{title}}</span>
         <span class="fr">
           <span>
             <el-link
@@ -21,8 +21,9 @@
         </span>
       </div>
       <d-table
-        api="seePsiSaleService.salesalterationsheetList"
-        :params="data"
+        api="seePsiSaleService.businesscommodityGetBusinessCommodityList"
+        :params="params"
+        :paging="false"
         ref="table"
         class="college-main"
         style="height:calc(100vh - 340px)"
@@ -150,9 +151,17 @@
 import FullscreenElement from '@/components/fullscreen-element';
 export default {
   props: {
-    data: {
+    params: {
       type: Object,
       default: () => ({})
+    },
+    title: {
+      default: '退货商品信息',
+      type: String
+    },
+    disabled: {
+      default: false,
+      type: Boolean
     }
   },
   data() {

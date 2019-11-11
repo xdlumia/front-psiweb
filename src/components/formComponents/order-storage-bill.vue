@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-10 21:04:28
+ * @LastEditTime: 2019-11-11 17:44:10
  * @Description: 账单信息
 */
 <template>
@@ -14,21 +14,22 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="付款时间" min-width="140" prop="payTime" show-overflow-tooltip>
-        <template slot-scope="scope">
+        <template slot-scope="{row}">
           <el-date-picker
+            :disabled="disabled"
             align="right"
             class="wfull"
             placeholder="选择日期"
             size="mini"
             type="date"
-            v-model="scope.row.titme"
+            v-model="row.payTime"
             value-format="timestamp"
           ></el-date-picker>
         </template>
       </el-table-column>
       <el-table-column align="center" label="直接生成应收" min-width="100" prop="isBillFee">
         <template slot-scope="{row}">
-          <el-checkbox v-model="row.isBillFee"></el-checkbox>
+          <el-checkbox :disabled="disabled" v-model="row.isBillFee"></el-checkbox>
         </template>
       </el-table-column>
       <el-table-column align="center" label="付款金额" min-width="140" prop="payAmount" show-overflow-tooltip>
@@ -42,7 +43,7 @@
             size="mini"
             style="margin-bottom:0;"
           >
-            <el-input class="wfull" placeholder="请输入" size="mini" v-model="row.payAmount"></el-input>
+            <el-input :disabled="disabled" class="wfull" placeholder="请输入" size="mini" v-model="row.payAmount"></el-input>
           </el-form-item>
         </template>
       </el-table-column>
@@ -52,7 +53,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div @click="addBill" class="mt10 el-icon-circle-plus-outline d-pointer">增加账期</div>
+    <div @click="addBill" class="mt10 el-icon-circle-plus-outline d-pointer" v-if="!disabled">增加账期</div>
   </form-card>
 </template>
 <script>
@@ -61,26 +62,27 @@ export default {
     data: {
       type: Object,
       default: () => ({})
-    }
+    },
+    disabled: Boolean
   },
   data() {
     return {};
   },
-  mounted(){
-    this.resetBillData()
+  mounted() {
+    this.resetBillData();
   },
-  watch:{
-    data:{
-      deep:true,
-      handler(){
-        this.resetBillData()
+  watch: {
+    data: {
+      deep: true,
+      handler() {
+        this.resetBillData();
       }
     }
   },
   methods: {
-    resetBillData(){
-      if(this.data&&!this.data.financeList){
-        this.data.financeList=[]
+    resetBillData() {
+      if (this.data && !this.data.financeList) {
+        this.data.financeList = [];
       }
     },
     // 自定义账单金额数据

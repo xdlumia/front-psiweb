@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 17:31:08
+ * @LastEditTime: 2019-11-11 18:01:20
  * @Description: 采购-备货单
 */
 <template>
@@ -20,7 +20,7 @@
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='stockCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
+          <el-link class="f12" :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
         </span>
         <span v-else-if="prop=='state'">{{stateText[value]}}</span>
         <span v-else-if="['purchaseArrivalTime','createTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>

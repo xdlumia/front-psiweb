@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 15:40:59
+ * @LastEditTime: 2019-11-11 18:04:01
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -11,10 +11,10 @@
       <div slot="title">
         <span>商品信息</span>
         <commodity-selector
-          :codes="this.data.commodityList?this.data.commodityList.map(item=>item.commodityCode):[]"
+          :codes="this.data[fkey]?this.data[fkey].map(item=>item.commodityCode):[]"
           @choose="choose"
           class="ml10"
-          v-if="!disabled"
+          v-if="(!disabled)&&!hide.includes('add')"
         />
         <span class="fr">
           <span>
@@ -23,7 +23,7 @@
         </span>
       </div>
       <el-table
-        :data="data.commodityList"
+        :data="data[fkey]"
         :style="{height:showInFull?'calc(100% - 40px)':''}"
         :summary-method="getSummaries"
         ref="table"
@@ -54,36 +54,85 @@
           </template>
         </el-table-column>
         <el-table-column label="规格" min-width="80" prop="specOne" show-overflow-tooltip></el-table-column>
-        <el-table-column label="采购成本价" min-width="100" prop="costAmount" show-overflow-tooltip>
+        <el-table-column label="配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
+        <el-table-column label="备注" min-width="120" prop="note" show-overflow-tooltip v-if="!hide.includes('noteText')"></el-table-column>
+        <el-table-column
+          label="待采购数量"
+          min-width="100"
+          prop="waitPurchaseNumber"
+          show-overflow-tooltip
+          v-if="!hide.includes('waitPurchaseNumber')"
+        >
+          <template slot-scope="{row}">
+            <span>{{row.waitPurchaseNumber||'0'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="采购成本价" min-width="100" prop="costAmount" show-overflow-tooltip v-if="!hide.includes('costAmount')">
           <template slot-scope="{row}">
             <span>{{row.costAmount||'-'}}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="税率" min-width="60" prop="taxRate" show-overflow-tooltip>
-          <template slot-scope="{row}">
-            <span>{{row.taxRate ? row.taxRate + '%' : '-'}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="含税总价" min-width="70" prop="preTaxAmount" show-overflow-tooltip>
-          <template slot-scope="{row:{taxRate,costAmount,commodityNumber}}">
-            <span>{{+Number((costAmount*(1+taxRate)*commodityNumber)||0).toFixed(2)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="总库存" min-width="60" prop="usableInventoryNum" show-overflow-tooltip>
-          <template slot-scope="{row}">
-            <span>{{row.usableInventoryNum||0}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="商品数量" min-width="80" prop="commodityNumber" show-overflow-tooltip>
+        <el-table-column label="采购单价" min-width="100" prop="costAmount" show-overflow-tooltip v-if="!hide.includes('costAmountPrice')">
           <template slot-scope="{row,$index}">
-            <el-form-item :prop="`commodityList.${$index}.commodityNumber`" :rules="[{required:true},{type:'positiveNum'}]" size="mini">
+            <el-form-item :prop="`${fkey}.${$index}.costAmount`" :rules="[{required:true},{type:'price'}]" size="mini">
+              <el-input :disabled="disabled" class="wfull" v-model="row.costAmount"></el-input>
+            </el-form-item>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="商品数量"
+          min-width="80"
+          prop="commodityNumber"
+          show-overflow-tooltip
+          v-if="!hide.includes('commodityNumber')"
+        >
+          <template slot-scope="{row,$index}">
+            <el-form-item
+              :prop="`${fkey}.${$index}.commodityNumber`"
+              :rules="[{required:true},{type:'positiveNum'}].concat(Number(row.waitPurchaseNumber)>0?[{
+                min:1,
+                max:row.waitPurchaseNumber,
+                message:`可入库不超过${row.waitPurchaseNumber}个`
+              }]:[])"
+              size="mini"
+            >
               <el-input :disabled="disabled" class="wfull" v-model="row.commodityNumber"></el-input>
             </el-form-item>
           </template>
         </el-table-column>
-        <el-table-column label="备注" min-width="240" prop="note" show-overflow-tooltip>
+        <el-table-column align="center" label="税率" min-width="60" prop="taxRate" show-overflow-tooltip v-if="!hide.includes('taxRate')">
           <template slot-scope="{row}">
-            <el-form-item size="mini">
+            <span>{{row.taxRate ? row.taxRate + '%' : '-'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="含税总价"
+          min-width="70"
+          prop="preTaxAmount"
+          show-overflow-tooltip
+          v-if="!hide.includes('preTaxAmount')"
+        >
+          <template slot-scope="{row:{taxRate,costAmount,commodityNumber}}">
+            <span>{{+Number((costAmount*(1+taxRate)*commodityNumber)||0).toFixed(2)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="总库存"
+          min-width="60"
+          prop="inventoryNumber"
+          show-overflow-tooltip
+          v-if="!hide.includes('inventoryNumber')"
+        >
+          <template slot-scope="{row}">
+            <span>{{row.inventoryNumber||0}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="备注" min-width="240" prop="note" show-overflow-tooltip v-if="!hide.includes('note')">
+          <template slot-scope="{row,$index}">
+            <el-form-item :prop="`${fkey}.${$index}.note`" size="mini">
               <el-input :disabled="disabled" class="wfull" v-model="row.note"></el-input>
             </el-form-item>
           </template>
@@ -105,6 +154,14 @@ export default {
       type: Object,
       default: () => ({})
     },
+    hide: {
+      type: Array,
+      default: () => []
+    },
+    fkey: {
+      type: String,
+      default: 'commodityList'
+    },
     disabled: Boolean
   },
   data() {
@@ -114,7 +171,8 @@ export default {
   },
   methods: {
     getSummaries(param) {
-      const { columns, data } = param;
+      let { columns, data } = param;
+      data = data || [];
       const sums = [];
       columns.forEach((col, index) => {
         if (['commodityNumber'].includes(col.property)) {
@@ -144,13 +202,13 @@ export default {
       return sums;
     },
     choose(e) {
-      this.data.commodityList = this.data.commodityList || [];
-      this.data.commodityList = this.data.commodityList.concat(
+      this.data[this.fkey] = this.data[this.fkey] || [];
+      this.data[this.fkey] = this.data[this.fkey].concat(
         e.map(this.goodToBuyingInfo)
       );
     },
     deleteChoose(i) {
-      this.data.commodityList.splice(i, 1);
+      this.data[this.fkey].splice(i, 1);
     },
     goodToBuyingInfo(good) {
       let target = {
@@ -161,7 +219,7 @@ export default {
         busType: '',
         categoryCode: 'categoryCode',
         className: 'className',
-        commodityCode: 'goodsCode',
+        commodityCode: 'commodityCode',
         commodityName: 'goodsName',
         commodityNumber: '',
         configName: 'configName',

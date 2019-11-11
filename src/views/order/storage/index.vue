@@ -17,10 +17,10 @@
         >
             <template slot-scope="{column,row,value,prop}">
                 <span v-if="prop=='putinCode'">
-                    <el-link :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
+                    <el-link class="f12" :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
                 </span>
                 <span v-else-if="prop=='joinCode'">
-                    <el-link :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
+                    <el-link class="f12" :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
                 </span>
                 <span v-else-if="prop=='state'">{{stateText[value]}}</span>
                 <span v-else-if="['saleTime','purchaseTime','createTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>

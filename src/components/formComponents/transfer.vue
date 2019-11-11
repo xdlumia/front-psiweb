@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-11 15:50:55
  * @Description: 转移
 */
 <template>
@@ -28,7 +28,6 @@
         prop
         size="mini"
       >
-        <ChooseManSelect />
       </el-form-item>
       <el-form-item
         label="转移原因："
@@ -59,10 +58,8 @@
   </el-dialog>
 </template>
 <script>
-import ChooseManSelect from './choose-man-select';
 export default {
   components: {
-    ChooseManSelect
   },
   props: {
     visible: {
