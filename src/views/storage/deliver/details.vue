@@ -13,14 +13,11 @@
     title="发货单"
     width="990px"
   >
-    <div
-      class="d-auto-y"
-      style="height:calc(100vh - 160px)"
-    >
+    <div>
       <div class="drawer-header">
         <!-- <el-button
         @click="orderStorageVisible=true"
-        size="mini"
+        size="mini" 
         type="primary"
       >采购</el-button>
       <el-button
@@ -84,6 +81,7 @@ export default {
     }
   }
   .tabs-view {
+    width: 100% !important;
     position: relative;
     /deep/ {
       & > .el-tabs__header {

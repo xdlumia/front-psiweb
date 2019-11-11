@@ -21,23 +21,23 @@
         </span>
       </div>
       <d-table
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+        api="seePsiSaleService.businesscommodityGetBusinessCommodityList"
+        :params="{busCode:detailForm.salesSheetCode,busType:5}"
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
+        style="min-height:250px"
         :tree-props="{children: 'id', hasChildren: 'id'}"
       >
         <el-table-column
           fixed
-          prop="cityName"
+          prop="shipmentsNumber"
           min-width="100"
           label="发货数量"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
+          prop="pickingNumber"
           min-width="100"
           label="拣货数量"
           show-overflow-tooltip
@@ -45,14 +45,14 @@
         <el-table-column
           fixed
           align="left"
-          prop="cityName"
+          prop="taxTotalAmount"
           label="总组装数量"
           width="100"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
-          prop="title"
+          prop="snCode"
           label="机器号/SN码"
           min-width="100"
           show-overflow-tooltip
@@ -61,75 +61,83 @@
             <span
               @click="getTableVisible(scope.row)"
               class="d-text-blue"
-            >{{scope.row.id}}</span>
+            >{{scope.row.snCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
+          prop="alterationNumber"
           min-width="100"
           label="出库数量"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
+          prop="isTeardown"
           min-width="100"
           label="是否组装"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="inventoryNumber"
           min-width="100"
           label="可用库存"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="title"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.id}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="categoryCode"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span class="d-text-blue">{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="className"
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="specOne"
           min-width="140"
           label="商品规格"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="configName"
           min-width="100"
           label="商品配置"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="unit"
           min-width="80"
           label="单位"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span class="d-text-blue">{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+          </template>
+        </el-table-column>
 
       </d-table>
       <FullscreenElement
@@ -142,8 +150,8 @@
         width="600"
         v-dialogDrag
       >
-        <commodityPicking />
-        <machineSn />
+        <commodityPicking :data='rowData' />
+        <machineSn :data='rowData' />
       </el-dialog>
     </form-card>
   </div>
@@ -153,26 +161,20 @@ import commodityPicking from '@/components/formComponents/commodity-picking'
 import FullscreenElement from '@/components/fullscreen-element';
 import machineSn from '@/components/formComponents/machine-sn'
 export default {
+  props: ['detailForm'],
   data() {
     return {
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
+      rowData: {},
       dialogVisible: false,
       showInFullscreen: false
     }
   },
   methods: {
     //点击机器号和SN码
-    getTableVisible() {
+    getTableVisible(row) {
       this.dialogVisible = true
+      this.rowData = row
+      console.log(this.rowData, 'this.rowDatathis.rowDatathis.rowDatathis.rowData')
     },
     fullscreen() {
       this.showInFullscreen = true;

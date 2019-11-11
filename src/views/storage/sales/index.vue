@@ -66,7 +66,7 @@ export default {
       filterOptions: [
         // { label: '销售出库单编号', prop: 'shipmentCode', default: true },
         // { label: '客户名称', prop: 'clientId', default: true },
-        // { label: '销售编号', prop: 'salesSheetCode', default: true },
+        // { label: '销售单编号', prop: 'salesSheetCode', default: true },
         // {
         //   label: '拣货状态',
         //   prop: 'pickingState',
@@ -148,7 +148,7 @@ export default {
         //   type: 'employee',
         //   default: true
         // },
-        // { label: '创建部门', prop: 'deptId', type: 'dept', default: true },
+        // { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
     };
   },
@@ -156,14 +156,13 @@ export default {
     //点击打开右侧边栏
     getTableVisible(data) {
       this.tableVisible = true
-      this.drawerData.title = '销售单' + data.id
+      this.drawerData = data
     },
     //tab换组件
     handleClick() {
 
     },
     update() {
-      console.log('324124123')
       this.tableVisible = false
     }
   }
