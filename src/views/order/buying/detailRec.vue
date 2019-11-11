@@ -20,7 +20,7 @@
           </span>
           <span v-else-if="prop=='categoryCode'">{{value|dictionary('PSI_SP_KIND')}}</span>
           <span v-else-if="prop=='commodityCode'">
-            <el-link :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
+            <el-link class="f12" :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
           </span>
           <span v-else>{{value}}</span>
         </template>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 14:36:23
+ * @LastEditTime: 2019-11-11 17:08:35
  * @Description: 直发单详情
 */
 <template>
@@ -31,7 +31,7 @@
       </el-tab-pane>
       <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
     </el-tabs>
-    <addOrderStorage :visible.sync="showAddOrderStorage" from="直发单" />
+    <addOrderStorage :visible.sync="showAddOrderStorage" from="直发单" :joinCode="code"/>
     <editDirect :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" />
     <deliverEdit :code="code" :visible.sync="showDeliverGoods" @reload="setEdit(),getDetail()" />
   </sideDetail>

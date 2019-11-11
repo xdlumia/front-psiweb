@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 15:53:26
+ * @LastEditTime: 2019-11-11 17:39:50
  * @Description: 采购入库单
 */
 <template>
@@ -19,7 +19,8 @@
     }">
       <d-tab-pane label="供应商信息" name="supplierInfo" />
       <d-tab-pane label="公司信息" name="companyInfo" />
-      <d-tab-pane label="到货信息" name="arrivalInfo" />
+      <d-tab-pane label="到货信息" name="arrivalInfo" v-if="from!='直发单'" />
+      <d-tab-pane label="发货信息" name="deliverInfo" v-else />
       <d-tab-pane label="商品信息" name="commodityInfo" />
       <d-tab-pane label="收票滞纳金" name="paymentLate" />
       <d-tab-pane label="自定义信息" name="customInfo" />
@@ -28,9 +29,23 @@
         <el-form :model="form" class="p10" ref="form" size="mini" v-if="visible">
           <supplierInfo :data="form" @change="supplierChange" id="supplierInfo" />
           <companyInfo :data="form" id="companyInfo" />
-          <arrivalInfo :data="form" id="arrivalInfo" ref="arrivalInfo" />
-          <buying-goods-edit :data="form" id="commodityInfo" />
-          <buying-goods-edit :data="form" />
+          <arrivalInfo :data="form" id="arrivalInfo" ref="arrivalInfo" v-if="from!='直发单'" />
+          <buyingDeliverInfo :data="form" id="deliverInfo" ref="deliverInfo" v-else />
+          <buying-goods-edit
+            :data="form"
+            :hide="[
+            'add','costAmount','waitPurchaseNumber','note'
+          ]"
+            id="commodityInfo"
+          />
+          <buying-goods-edit
+            :data="form"
+            :hide="[
+             'costAmount','waitPurchaseNumber','note'
+          ]"
+            fkey="additionalCommodityList"
+            v-if="from=='请购单'"
+          />
           <paymentLate :data="form" id="paymentLate" />
           <order-storage-bill :data="form" id="billInfo" />
           <customInfo :data="form" id="customInfo" />
@@ -50,6 +65,7 @@ export default {
       type: Boolean,
       default: false
     },
+    joinCode: String,
     from: String // 来源
   },
   computed: {
@@ -67,8 +83,6 @@ export default {
         arrivalInfo: '',
         // 附件 undefined
         attachList: [],
-        // 商品信息 undefined
-        commodityList: [],
         // 公司发票账户id 100000
         companyAccountId: '',
         // 公司编码 示例：公司编码
@@ -109,12 +123,17 @@ export default {
         state: '',
         // 供应商ID 100000
         supplierId: '',
+        // 商品信息 undefined
+        commodityList: [],
+        additionalCommodityList: [],
         logistics: {},
         financeConfig: {}
       }
     };
   },
-  mounted() {},
+  mounted() {
+    console.log(this);
+  },
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
@@ -123,7 +142,6 @@ export default {
       this.$emit('update:visible', false);
     },
     supplierChange(e) {
-      console.log(e);
       this.$set(this.form.logistics, 'supplierLinkman', e.linkManName || '');
       this.$set(this.form.logistics, 'supplierPhone', e.phone || '');
     },
@@ -138,7 +156,35 @@ export default {
         return data;
       } else if (this.rowData) {
         return this.rowData;
+      } else if (this.joinCode) {
+        return this.getCommodityList();
       }
+    },
+    // 获取入库商品信息
+    async getCommodityList() {
+      let commodityList = [];
+      let api = {
+        备货单: 'purchasestockorderGetByCode',
+        请购单: 'purchaseapplyorderGetByCode',
+        直发单: 'purchasedirectGetByCode'
+      };
+      try {
+        let {
+          data: { commodityEntityList }
+        } = await this.$api.seePsiPurchaseService[api[this.from]](
+          null,
+          this.joinCode
+        );
+        commodityList = commodityEntityList;
+      } catch (error) {}
+      return {
+        commodityList,
+        additionalCommodityList: [],
+        logistics: {},
+        financeConfig: {},
+        source: this.from,
+        joinCode: this.joinCode
+      };
     },
     save() {
       this.$refs.form.validate();

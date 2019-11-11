@@ -1,7 +1,7 @@
 // const MOCK_ADDRESS = '/mock/5dba336abc54fc3da273f11c/39.99.132.95:9205'; // pc端用
 // const MOCK_ADDRESS = 'http://10.168.1.145:7300/mock/5dba336abc54fc3da273f11c/39.99.132.95:9205'; // 小程序用
 const MOCK_ADDRESS = ''; // 禁用easymock
-const isUseMock = true;
+const isUseMock = false;
 /**
 * @date 2019-11-11
 * @host 39.99.132.95:9205
@@ -105,7 +105,7 @@ export default {
      */
     purchasealterationExport: {
         url: '/purchasealteration/export',
-        methods: 'get',
+        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -213,7 +213,7 @@ export default {
      */
     purchaseapplyorderExport: {
         url: '/purchaseapplyorder/export',
-        methods: 'get',
+        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -321,7 +321,7 @@ export default {
      */
     purchasedirectExport: {
         url: '/purchasedirect/export',
-        methods: 'get',
+        methods: 'post',
         mock: isUseMock
     },
     /**

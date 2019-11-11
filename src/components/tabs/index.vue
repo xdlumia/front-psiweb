@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-29 11:57:36
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-02 10:05:00
+ * @LastEditTime: 2019-11-11 16:58:56
  * @Description: tabs
 */
 <template>
@@ -21,10 +21,10 @@
 /**
  * @example 需要通过样式设置最大高度，形成滚动区域，自动监听滚动事件
  *   <d-tabs :style="{maxHeight:'600px'}">
- *     <d-tab-pane label="供应商信息" name="supplierInfo" /> 
+ *     <d-tab-pane label="供应商信息" name="supplierInfo" />
  *     <div slot="body">
  *       <el-form class="p10">
- *         <SupplierInfo id="supplierInfo" /> 
+ *         <SupplierInfo id="supplierInfo" />
  *       </el-form>
  *     </div>
  *   </d-tabs>
@@ -43,16 +43,22 @@ export default {
   computed: {
     tabs() {
       return this.$slots.default
-        .filter(a => a.componentOptions && a.componentOptions.Ctor.extendOptions.name == 'dTabPanel')
+        .filter(
+          a =>
+            a.componentOptions &&
+            a.componentOptions.Ctor.extendOptions.name == 'dTabPanel'
+        )
         .map(node => node.componentOptions.propsData);
     },
-    scrollEl(){
-      if(this.scrollView instanceof HTMLElement){
+    scrollEl() {
+      if (this.scrollView instanceof HTMLElement) {
         return this.scrollView;
-      }else return this.$refs.elMain.$el;
+      } else return this.$refs.elMain.$el;
     }
   },
-  watch: {},
+  watch: {
+    $children() {}
+  },
   mounted() {
     this.scrollEl.onscroll = this.onScroll;
   },
