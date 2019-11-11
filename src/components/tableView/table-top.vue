@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-06 16:40:13
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-11 10:08:27
  * @Description: 表格头部 
  */
 <template>
@@ -247,26 +247,6 @@ export default {
       showCustomColumn: false,
       // 自定义列数据
       tableColList: [], //表格列 表头数据
-      // 临时测试数据
-      // tableHeader: [
-      //   {
-      //     label: "合同编号",
-      //     prop: "deptName",
-      //     width: "180"
-      //   },
-      //   {
-      //     label: "采购入库单编号",
-      //     prop: "deptName",
-      //     width: "180"
-      //   },
-      //   { label: "供应商名称", prop: "deptName", width: "180" },
-      //   { label: "总计数量", prop: "deptName", width: "180" },
-      //   { label: "总计采购价", prop: "deptName", width: "180" },
-      //   { label: "预计到货时间", prop: "deptName", width: "180" },
-      //   { label: "合同创建人", prop: "deptName", width: "180" },
-      //   { label: "创建部门", prop: "deptName", width: "180" },
-      //   { label: "创建时间", prop: "createTime", width: "180" }
-      // ]
     };
   },
   created() {

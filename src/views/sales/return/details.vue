@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 19:12:18
+ * @LastEditTime: 2019-11-11 10:34:41
  * @Description: 销售出库单详情
 */
 <template>
@@ -45,25 +45,26 @@
         >
         </el-tab-pane>
       </el-tabs>
-      <keep-alive>
-        <components
-          class="d-auto-y"
-          style="height:calc(100vh - 200px)"
-          :is="activeName"
-        ></components>
-      </keep-alive>
+
+      <components
+        ref="detail"
+        :code="this.code"
+        :rowData="rowData"
+        class="d-auto-y"
+        :button="false"
+        style="height:calc(100vh - 200px)"
+        :is="activeName"
+      ></components>
     </el-form>
   </side-detail>
 </template>
 <script>
 import detail from './details/detail' //详情
-import outLib from './details/outLib' //报价单
 export default {
   components: {
     detail,
-    outLib
   },
-  props: ['visible', 'rowData'],
+  props: ['visible', 'code', 'rowData'],
   data() {
     return {
       // 操作按钮
@@ -92,7 +93,7 @@ export default {
       // tab操作栏
       tabs: {
         detail: '详情',
-        outLib: '销售出库单',
+        salesOutLibrary: '销售出库单',
       },
       activeName: 'detail',
       form: {},

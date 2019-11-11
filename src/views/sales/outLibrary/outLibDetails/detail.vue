@@ -2,19 +2,19 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 17:39:34
+ * @LastEditTime: 2019-11-11 10:25:10
  * @Description: 销售出库单详情-详情
 */
 <template>
   <div>
     <!-- 审核面板 -->
-    <approve-panel :data="data" />
+    <approve-panel :data="detailInfo" />
     <!-- 客户信息 -->
-    <customerInfo :data="data" />
+    <customerInfo :data="detailInfo" />
     <!-- 公司信息 -->
-    <companyInfo :data="data" />
+    <companyInfo :data="detailInfo" />
     <!-- 报价单信息 -->
-    <quotationInfo :data="data">
+    <quotationInfo :data="detailInfo">
       <el-tabs
         slot="tabs"
         v-model="activeName"
@@ -59,7 +59,7 @@ export default {
   components: {
 
   },
-  props: ['rowData', 'data', 'code'],
+  props: ['rowData', 'code'],
   data() {
     return {
       activeName: 'detail',
