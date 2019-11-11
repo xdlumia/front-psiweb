@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 15:27:11
+ * @LastEditTime: 2019-11-08 17:39:34
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -30,7 +30,7 @@
         <!-- 发货信息 -->
         <deliverInfo />
         <!-- 商品信息 -->
-        <commoditInfo />
+        <buying-goods-edit />
         <!-- 报价有效期 -->
         <payExpire />
         <!-- 附加发票 -->

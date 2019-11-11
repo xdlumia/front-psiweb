@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 15:31:45
+ * @LastEditTime: 2019-11-08 17:40:36
  * @Description: 销售出库单详情
 */
 <template>
@@ -12,11 +12,6 @@
       :visible.sync="showPop"
       width="920px"
     >
-      <el-input
-        v-model="currStatus"
-        placeholder=""
-      ></el-input>
-
       <div slot="button">
         <!-- 操作按钮 -->
         <span
@@ -36,6 +31,7 @@
       <el-form
         ref="form"
         :model="form"
+        size="mini"
         label-position="top"
       >
         <el-tabs

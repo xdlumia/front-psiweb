@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 16:20:57
+ * @LastEditTime: 2019-11-08 17:19:01
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -61,11 +61,11 @@
 import outLibDetails from './outLib-details' //销售出库单详情
 
 let filterOptions = [
-  // { label: '商户编号、商户名称/简称', prop: 'text', type: 'text', default: true, },
-  // { label: '联系人、联系人电话', prop: 'text1', type: 'text', default: true, },
-  // { label: '商机阶段', prop: 'pushTime', type: 'select', default: true, dicName: 'PSI_SP_KIND' },
-  // { label: '跟进时间起止', prop: 'status', type: 'daterange', default: true, },
-  // { label: '维护人', prop: 'creator', type: 'employee', default: true, },
+  { label: '商户编号、商户名称/简称', prop: 'text', type: 'text', default: true, },
+  { label: '联系人、联系人电话', prop: 'text1', type: 'text', default: true, },
+  { label: '商机阶段', prop: 'pushTime', type: 'select', default: true, dicName: 'PSI_SP_KIND' },
+  { label: '跟进时间起止', prop: 'status', type: 'daterange', default: true, },
+  { label: '维护人', prop: 'creator', type: 'employee', default: true, },
 ]
 export default {
   name: 'outLibrary',
