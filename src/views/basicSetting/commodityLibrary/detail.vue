@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-08 16:54:31
+ * @LastEditTime: 2019-11-11 17:49:29
  * @Description: description
  -->
 <template>
@@ -11,10 +11,10 @@
     @close="$emit('update:visible',false)"
     width="990px"
     v-loading="loading"
-    :title="rowData.name + ':' + rowData.goodsCode"
+    :title="(rowData.name || rowData.goodsName) + ':' + (rowData.goodsCode || rowData.commodityCode)"
     class="good-detail"
   >
-    <template slot="button">
+    <template slot="button" v-if="button">
       <el-button
         v-if="!(beginnForm && Object.keys(beginnForm).length)"
         size="mini"
@@ -120,6 +120,10 @@ export default {
     code: {
       type: String,
       default: ''
+    },
+    button: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -139,7 +143,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.rowData)
     this.checkVisible();
     this.wmsinventorycommodityinitialinfoInfo()
   },

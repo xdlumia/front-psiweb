@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-09 12:00:03
+ * @LastEditTime: 2019-11-11 15:47:55
  * @Description: 报价单配置
  -->
 <template>
@@ -11,9 +11,9 @@
       ref="table"
       :filter="true"
       :filterOptions="filterOptions"
-      :busType="36"
+      :busType="35"
       title="报价单管理"
-      api="seePsiCommonService.commonserviceproviderList"
+      api="seePsiCommonService.commonquotationconfigList"
       :params="queryForm"
     >
       <template v-slot:filter>自定义筛选列</template>
@@ -70,7 +70,7 @@ export default {
       filterOptions: [
         { label: '配置编号', prop: 'code', default: true },
         { label: '商品名称', prop: 'goodsName', default: true },
-        { label: '配置名称', prop: 'fuzzyServiceName', default: true },
+        { label: '配置名称', prop: 'quotationName', default: true },
         { label: '状态',
           prop: 'state',
           type: 'select',
