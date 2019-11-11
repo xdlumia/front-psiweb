@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 14:42:36
+ * @LastEditTime: 2019-11-11 14:43:59
  * @Description: 退货商品信息
 */
 <template>
@@ -140,7 +140,7 @@
 
       </d-table>
       <FullscreenElement
-        :element="$refs.companyTable"
+        :element="$refs.table"
         :visible.sync="showInFullscreen"
       />
     </form-card>
@@ -157,17 +157,6 @@ export default {
   },
   data() {
     return {
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
-      dialogVisible: false,
       showInFullscreen: false
     }
   },
