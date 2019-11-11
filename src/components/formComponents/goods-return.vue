@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 19:10:49
+ * @LastEditTime: 2019-11-11 11:58:45
  * @Description: 退货商品信息
 */
 <template>
@@ -32,41 +32,48 @@
           fixed
           prop="cityName"
           min-width="100"
-          label="组装数量"
+          label="商品编号"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
           prop="cityName"
           min-width="100"
-          label="拣货数量"
+          label="商品图片"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
-          min-width="100"
-          label="可用数量"
-          show-overflow-tooltip
-        ></el-table-column>
-        <el-table-column
-          fixed
-          prop="cityName"
-          min-width="100"
-          label="机器号/SN码"
-          show-overflow-tooltip
-        ></el-table-column>
-
-        <el-table-column
           prop="cityName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
+        <el-table-column
+          fixed
+          prop="cityName"
+          min-width="100"
+          label="商品类别"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          fixed
+          prop="cityName"
+          min-width="100"
+          label="退货数量"
+          show-overflow-tooltip
+        ></el-table-column>
+
+        <el-table-column
+          prop="cityName"
+          min-width="100"
+          label="商品分类"
+          show-overflow-tooltip
+        ></el-table-column>
 
         <el-table-column
           prop="title"
-          label="商品编号"
+          label="配置"
           min-width="140"
           show-overflow-tooltip
         >
@@ -78,26 +85,50 @@
         <el-table-column
           prop="cityName"
           min-width="100"
-          label="商品类别"
+          label="规格"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           prop="cityName"
           min-width="100"
-          label="商品分类"
+          label="销售成本"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
           prop="cityName"
           min-width="100"
-          label="商品配置"
+          label="销售数量"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           prop="cityName"
           min-width="140"
-          label="商品规格"
+          label="退货单价"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="cityName"
+          min-width="120"
+          label="税率"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="cityName"
+          min-width="120"
+          label="税后退货单价"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="cityName"
+          min-width="120"
+          label="税后总价"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="cityName"
+          min-width="120"
+          label="总库存"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column

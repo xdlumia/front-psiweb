@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 10:55:42
+ * @LastEditTime: 2019-11-11 11:44:49
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -30,7 +30,7 @@
       :data="detailInfo"
     />
     <!-- 账期信息 -->
-    <bill-info
+    <return-bill-info
       disabled
       :data="detailInfo"
     />
