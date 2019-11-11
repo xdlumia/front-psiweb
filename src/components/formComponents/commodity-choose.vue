@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 10:49:17
+ * @LastEditTime: 2019-11-11 10:53:02
  * @Description: 选择商品 字段已绑定 1
 */
 <template>
@@ -65,7 +65,11 @@
           </el-table-column>
           <el-table-column label="商品配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
           <el-table-column label="商品规格" min-width="140" prop="specOne" show-overflow-tooltip></el-table-column>
-          <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip></el-table-column>
+          <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.unit | dictionary('SC_JLDW')}}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="税率" min-width="80" prop="taxRate" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.taxRate ? row.taxRate + '%' : ''}}</span>
@@ -139,7 +143,11 @@
           </el-table-column>
           <el-table-column label="商品配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
           <el-table-column label="商品规格" min-width="140" prop="specOne" show-overflow-tooltip></el-table-column>
-          <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip></el-table-column>
+          <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.unit | dictionary('SC_JLDW')}}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="税率" min-width="80" prop="taxRate" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.taxRate ? row.taxRate + '%' : ''}}</span>
