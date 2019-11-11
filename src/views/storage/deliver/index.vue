@@ -9,17 +9,27 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
-      :headers="tableHeader"
+      busType="7"
+      :filterOptions='filterOptions'
+      :params="queryForm"
       :selection='false'
-      api="bizSystemService.getEmployeeList"
+      api="seePsiWmsService.wmsshipmentsorderList"
       title="发货单"
     >
-      <template slot-scope="{column,row,value}">
+      <!-- <template slot-scope="{column,row,value}">
         <span @click="getTableVisible(row)">点击111</span>
         <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
+      </template> -->
+      <template slot-scope="{column,row,value}">
+        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span
+          v-else-if="column.columnFields=='shipmentCode'"
+          class="d-text-blue"
+          @click="getTableVisible(row)"
+        >{{value}}</span>
+        <span v-else>{{value}}</span>
       </template>
-
     </TableView>
     <Details
       :drawerData='drawerData'
@@ -41,11 +51,6 @@ export default {
     return {
       // 查询表单
       queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
         page: 1,
         limit: 20
       },
@@ -57,16 +62,26 @@ export default {
         tableVisible: false,
       },
       activeName: '',
-      tableHeader: [
-        { label: '销售出库单编号', prop: 'deptName', width: '140' },
-        { label: '客户名称', prop: 'deptName', width: '100' },
-        { label: '销售单编号', prop: 'deptName', width: '140' },
-        { label: '发货人', prop: 'deptName', width: '100' },
-        { label: '运单编号', prop: 'deptName', width: '100' },
-        { label: '生成时间', prop: 'deptName', width: '140' },
-        { label: '单据创建人', prop: 'deptName', width: '100' },
-        { label: '创建部门', prop: 'createTime', width: '100' }
-      ]
+      filterOptions: [
+        { label: '销售出库单编号', prop: 'shipmentCode', default: true },
+        { label: '客户名称', prop: 'clientId', default: true },
+        { label: '发货单编号', prop: 'salesSheetCode', default: true },
+        { label: '发货人', prop: 'creator', default: true },
+        { label: '运单编号', prop: 'waybillCodes', default: true },
+        {
+          label: '生成时间',
+          prop: 'Time',
+          type: 'daterange',
+          default: true
+        },
+        {
+          label: '单据创建人',
+          prop: 'creator',
+          type: 'employee',
+          default: true
+        },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
+      ],
     };
   },
   methods: {

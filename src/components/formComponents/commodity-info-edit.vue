@@ -223,7 +223,6 @@ export default {
   methods: {
     //选择商品
     commodityChoose(e, scope) {
-      console.log(e, 'eeee')
       let list = e[0]
       let type = e[1]
       this.tableData.forEach((item) => {

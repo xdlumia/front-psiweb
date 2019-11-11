@@ -142,7 +142,7 @@ export default {
           type: 'employee',
           default: true
         },
-        { label: '创建部门', prop: 'deptId', type: 'dept', default: true },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
       usableList: []
     };

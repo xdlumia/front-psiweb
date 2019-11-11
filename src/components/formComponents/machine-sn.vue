@@ -5,45 +5,44 @@
  * @Last Modified time: 2019-10-28 13:52:05
  * @Description: 库房  销售单 详情组件 出库商品弹出框 机器号/SN码
  */
+//  :params="{commodityCode:data.commodityCode,businessCode:data.pickingOrderCode,page:1,limit:15}"
 <template>
   <div>
     <form-card title='机器号/SN码'>
       <d-table
-        :paging='false'
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+        api="seePsiWmsService.wmsflowrecordList"
+        :params="{commodityCode:data.commodityCode,businessCode:data.pickingOrderCode,page:1,limit:15}"
         ref="companyTable"
         class="college-main"
         style="height:calc(100vh - 340px)"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
       >
         <el-table-column
           fixed
-          prop="cityName"
+          type='index'
           min-width="80"
           label="编号"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
-          prop="title"
+          prop="snCode"
           label="SN码"
           min-width="160"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.snCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
           fixed
-          prop="title"
+          prop="robotCode"
           label="机器号"
           min-width="160"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.robotCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -55,13 +54,13 @@
         ></el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
+          prop="wmsName"
           min-width="100"
           label="拣货库房"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="operator"
           min-width="100"
           label="拣货人"
           show-overflow-tooltip
@@ -75,32 +74,14 @@
           <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
         </el-table-column>
       </d-table>
-      <el-dialog
-        title="机器号/SN码记录"
-        :visible.sync="dialogVisible"
-        width="600"
-        v-dialogDrag
-      >
-
-      </el-dialog>
     </form-card>
   </div>
 </template>
 <script>
 export default {
+  props: ['data'],
   data() {
     return {
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
-      dialogVisible: false,
     }
   },
   methods: {
