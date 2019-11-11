@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 10:26:56
+ * @LastEditTime: 2019-11-11 10:55:42
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -52,7 +52,7 @@ export default {
   components: {
 
   },
-  props: ['drawerData'],
+  props: ['rowData', 'code'],
   data() {
     return {
       activeName: 'detail',
@@ -61,12 +61,12 @@ export default {
     }
   },
   mounted() {
-    this.salesshipmentGetInfoByCode()
+    this.salesalterationsheetGetInfoByCode()
   },
   methods: {
     //根据code 查看详情
-    salesshipmentGetInfoByCode() {
-      this.$api.seePsiSaleService.salesshipmentGetInfoByCode({ shipmentCode: this.code })
+    salesalterationsheetGetInfoByCode() {
+      this.$api.seePsiSaleService.salesalterationsheetGetInfoByCode({ code: this.code })
         .then(res => {
           this.detailInfo = res.data || {}
         })

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 10:41:01
+ * @LastEditTime: 2019-11-11 10:54:08
  * @Description: 销售-销售退货单
  */
 <template>
@@ -23,13 +23,13 @@
       <template slot-scope="{column,row,value}">
         <!-- 销售退货单编号 -->
         <span
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           v-if="column.columnFields=='alterationCode'"
           @click="eventHandle('returnVisible',row)"
         > {{value}}</span>
         <!-- 销售出库单编号 -->
         <span
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           v-else-if="column.columnFields=='salesShipmentCode'"
           @click="eventHandle('outLibVisible',row)"
         > {{value}}</span>
@@ -62,7 +62,7 @@
 import returnDetails from './details' //销售退货单详情
 import outLibDetails from '../outLibrary/outLib-details' //销售出库单详情
 let filterOptions = [
-  { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
+  // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
   { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
   // { label: '商机阶段', prop: 'state', default: true, type: 'select', options: [] },
   // { label: '跟进时间起止', prop: 'CreateTime', default: true, type: 'daterange' },
