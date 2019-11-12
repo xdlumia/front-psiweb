@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 20:29:26
+ * @LastEditTime: 2019-11-12 14:51:23
  * @Description: 附加发票 字段对应 但是公式还没计算
 */
 <template>
@@ -32,7 +32,7 @@
             placeholder="请输入"
             :disabled="disabled"
             @input="taxRateChange"
-            v-model="taxRate"
+            v-model="data.taxRate"
           >
             <template slot="append">%</template>
           </el-input>

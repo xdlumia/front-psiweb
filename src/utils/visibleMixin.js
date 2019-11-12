@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 15:18:00
+ * @LastEditTime: 2019-11-12 15:19:04
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -61,6 +61,7 @@ export default {
         this.showDetailPage = true;
         this.showEditPage = true;
         this.loading = true;
+        this.isModified = false;
         try {
           if (this.type == 'add') {
             // 清空form表单

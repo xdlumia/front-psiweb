@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 10:10:04
+ * @LastEditTime: 2019-11-12 15:10:49
  * @Description: 销售-报价单
  */
 <template>
@@ -82,11 +82,11 @@
       @reload="$refs.table.reload()"
     ></quote-add>
     <!-- 合并报价单 -->
-    <quote-merge
+    <!-- <quote-merge
       :visible.sync="mergeVisible"
       type="copy"
       @reload="$refs.table.reload()"
-    ></quote-merge>
+    ></quote-merge> -->
   </div>
 </template>
 <script>
