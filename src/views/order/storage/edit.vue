@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 18:10:29
+ * @LastEditTime: 2019-11-12 08:48:06
  * @Description: 采购入库单
 */
 <template>
-  <el-dialog :visible="visible" @close="close" v-dialogDrag>
+  <el-dialog :visible="visible" @close="close" v-dialogDrag v-loading="loading">
     <div slot="title">
       <span>采购入库单{{form.source?`(${form.source})`:''}}</span>
       <span class="fr mr20">
@@ -186,8 +186,17 @@ export default {
         joinCode: this.joinCode
       };
     },
-    save() {
-      this.$refs.form.validate();
+    async save() {
+      await this.$refs.form.validate();
+      this.loading = true;
+      try {
+        if (!this.isEdit) {
+          await this.$api.seePsiPurchaseService.purchaseputinSave(this.form);
+        } else {
+          await this.$api.seePsiPurchaseService.purchaseputinUpdate(this.form);
+        }
+      } catch (error) {}
+      this.loading = false;
       console.log(this.form);
     }
   }

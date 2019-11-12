@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 17:43:06
+ * @LastEditTime: 2019-11-12 08:46:40
  * @Description: 采购入库单
 */
 <template>
@@ -66,7 +66,7 @@
     </el-tabs>
     <orderReject :visible.sync="showReject" />
     <orderContract :visible.sync="showOrderContract" />
-    <Edit :rowData="detail" :visible.sync="showEdit" v-if="showEdit" />
+    <Edit :rowData="detail" :visible.sync="showEdit" v-if="showEdit" type="edit" />
   </sideDetail>
 </template>
 <script>
