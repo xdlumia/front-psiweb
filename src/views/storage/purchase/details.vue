@@ -60,7 +60,7 @@ export default {
   methods: {
     //查看详情
     wmsallocationorderInfo() {
-      this.$api.seePsiPurchaseService.purchaseInfo(null, this.drawerData.id)
+      this.$api.seePsiPurchaseService.purchaseGetByCode(null, this.drawerData.purchaseCode)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = this.detailForm.putinState == 0 ? '待入库' : this.detailForm.putinState == 1 ? '部分完成' : this.detailForm.putinState == 2 ? '完成入库' : this.detailForm.putinState == 3 ? '终止' : '全部'
