@@ -42,7 +42,7 @@
     />
     <reportingAdd :visible.sync='visible' />
   </div>
-</template>
+</template> 
 <script>
 /**
  * 采购-请购单

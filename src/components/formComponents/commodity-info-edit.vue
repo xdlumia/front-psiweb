@@ -80,8 +80,9 @@
         >
           <!-- 报溢的话 需要选择库房以后再选 商品, 要传过去库房id, 商品是跟库库房来的 报损不需要 -->
           <commoditySelector
-            :sn='true'
-            :wmsId="addForm.type == 2 ? addForm.wmsId : null"
+            v-if="addForm.wmsId"
+            sn
+            :params="addForm.type == 2 ? {wmsId:addForm.wmsId} : null"
             @choose='commodityChoose(arguments,scope)'
             :isChooseOne='true'
             type="code"
@@ -99,7 +100,10 @@
           class="d-relative"
         >
           <commoditySelector
-            :wmsId="addForm.type == 2 ? addForm.wmsId : null"
+            ref='commdity'
+            v-if="addForm.wmsId"
+            :sn="addForm.type == 2 ? true : false"
+            :params="addForm.type == 2 ? {wmsId:addForm.wmsId} : {wmsId:''}"
             @choose='commodityChoose(arguments,scope)'
             v-model="scope.row.goodsName"
             :codes='codes'

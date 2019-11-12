@@ -129,9 +129,7 @@ export default {
         if (valid) {
           let arr = this.$refs.logisticsEdit.upTableData || []
           this.allForm.wmsCommodityList = arr
-          // console.log(arr, 'upTableData')
           arr.forEach((item) => {
-            // this.allForm.wmsCommodityIdList.push(item.wmsId)
             this.allForm.wmsNames.push(item.wmsName)
           })
           if (arr.length > 0) {

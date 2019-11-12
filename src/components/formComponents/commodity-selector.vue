@@ -77,7 +77,10 @@ export default {
     },
     kinds: Array,
     type: String,
-    sn: Boolean,
+    sn: {
+      type: Boolean,
+      default: false
+    },
     value: String,
     params: {
       type: Object,
@@ -136,11 +139,12 @@ export default {
         return (this.options = this.searchTable[words]);
       }
       this.loading = true;
-      const { data } = await this.$api.seePsiWmsService.wmsinventoryList({
+      let api = this.sn ? 'wmsinventorydetailList' : 'wmsinventoryList'
+      const { data } = await this.$api.seePsiWmsService[api]({
         page: 1,
-        limit: 5,
+        limit: 50,
         goodsName: words,
-        wmsId: this.wmsId
+        wmsId: this.params ? this.params.wmsId : ''
       });
       this.options = data || [];
       this.loading = false;
