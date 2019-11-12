@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 14:27:05
+ * @LastEditTime: 2019-11-12 14:45:38
  * @Description: 请购单
 */
 <template>
@@ -65,11 +65,15 @@ export default {
   mounted() {},
   methods: {
     getDetail() {
-      return {
-        quotationCode: '', // 报价单
-        saleArrivalTime: '', // 销售要求到货时间
-        commodityList: []
-      };
+      let form = Object.assign(
+        {
+          quotationCode: '', // 报价单
+          saleArrivalTime: '', // 销售要求到货时间
+          commodityList: []
+        },
+        this.params
+      );
+      return;
     },
     async save() {
       console.log(this.form);

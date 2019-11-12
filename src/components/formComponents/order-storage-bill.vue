@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 12:02:50
+ * @LastEditTime: 2019-11-12 14:33:42
  * @Description: 账单信息
 */
 <template>
@@ -38,7 +38,7 @@
       </el-table-column>
       <el-table-column align="center" label="直接生成应收" min-width="100" prop="isBillFee">
         <template slot-scope="{row}">
-          <el-checkbox :disabled="disabled" v-model="row.isBillFee"></el-checkbox>
+          <el-checkbox :disabled="disabled" v-model="row.isBillFee" :true-label="1" :false-label="1"></el-checkbox>
         </template>
       </el-table-column>
       <el-table-column align="center" label="付款金额" min-width="140" prop="payAmount" show-overflow-tooltip>
@@ -137,7 +137,7 @@ export default {
     },
     addBill() {
       this.data.financeList.push({
-        isBillFee: false,
+        isBillFee: 0,
         payAmount: '',
         payTime: ''
       });
