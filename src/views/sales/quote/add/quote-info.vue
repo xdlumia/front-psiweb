@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 14:54:01
+ * @LastEditTime: 2019-11-12 17:40:59
  * @Description: 填写报价单详情
 */
 <template>
@@ -31,8 +31,9 @@
         id="deliverInfo"
       />
       <!-- 商品信息 -->
-      <commodityInfo
+      <commodity-info-edit
         :data="data"
+        :addForm="data"
         id="commodityInfo"
       />
       <!-- 报价单有效期 -->

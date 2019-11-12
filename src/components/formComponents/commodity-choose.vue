@@ -8,7 +8,6 @@
 <template>
   <el-dialog
     :visible.sync="visible"
-    @close="close"
     title="选择商品"
     v-dialogDrag
     width="60%"
@@ -35,6 +34,7 @@
       >
         <commodity-cat
           :kinds="kinds"
+          :mainCat.sync="queryForm.categoryCode"
           :subCat.sync="queryForm.classId"
           @change="reload"
         />
@@ -44,7 +44,7 @@
         <d-table
           :api="sn?'seePsiWmsService.wmsinventorydetailList':'seePsiWmsService.wmsinventoryList'"
           :autoInit="false"
-          :highlight-current-row="isChooseOne"
+          :highlight-current-row="multiple"
           :params="queryForm"
           :reserve-selection="true"
           :rowKey="sn?'_rowKey':'commodityCode'"
@@ -59,7 +59,7 @@
         >
           <el-table-column
             type="selection"
-            v-if="!isChooseOne"
+            v-if="!multiple"
             width="55"
           ></el-table-column>
           <el-table-column
@@ -448,7 +448,7 @@ export default {
     form: {},
     kinds: Array,
     sn: Boolean,
-    isChooseOne: {
+    multiple: {
       type: Boolean,
       default: false
     },
@@ -546,7 +546,7 @@ export default {
       this.$emit('update:visible', false);
     },
     save() {
-      if (this.isChooseOne) {
+      if (this.multiple) {
         this.$emit('chooseOne', this.currentRow);
       } else {
         this.$emit('choose', this.selected);

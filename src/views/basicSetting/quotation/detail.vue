@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-11 17:53:54
+ * @LastEditTime: 2019-11-12 10:27:47
  * @Description: description
  -->
 <template>
@@ -33,7 +33,7 @@
       <el-tab-pane label="详情">
         <el-form disabled size="mini">
           <information :data="detailForm" :detail="true"></information>
-          <configDetail :quotationId="rowData.id"></configDetail>
+          <configDetail ref="configDetail" :quotationId="rowData.id"></configDetail>
         </el-form>
       </el-tab-pane>
     </el-tabs>
@@ -70,7 +70,7 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       showEdit: false,
       loading: false,
@@ -84,34 +84,35 @@ export default {
       ]
     }
   },
-  mounted () {
+  mounted() {
     this.checkVisible();
     this.commonquotationconfigInfoBycode()
   },
   watch: {
-    visible () {
+    visible() {
       this.checkVisible();
     }
   },
   methods: {
-    refresh () {
+    refresh() {
       this.commonquotationconfigInfoBycode()
       this.$emit('refresh')
     },
-    checkVisible () {
+    checkVisible() {
       this.showPop = this.visible;
     },
-    commonquotationconfigInfoBycode () {
+    commonquotationconfigInfoBycode() {
       this.loading = true
       this.$api.seePsiCommonService.commonquotationconfigInfoBycode(null, this.code).then(res => {
         this.detailForm = res.data || {}
         this.detailForm = Object.assign(this.detailForm, { goodName: this.rowData.goodName })
         this.status[0].value = res.data.state ? '停用' : '启用'
+        this.$refs.configDetail.commonquotationconfigdetailsListConfigByGoodName(res.data.id)
       }).finally(() => {
         this.loading = false
       })
     },
-    commonquotationconfigUpdate (id, state) {
+    commonquotationconfigUpdate(id, state) {
       this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

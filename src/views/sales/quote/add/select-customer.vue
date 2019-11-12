@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 19:42:05
+ * @LastEditTime: 2019-11-12 16:12:31
  * @Description: 选择客户
 */
 <template>
@@ -93,14 +93,14 @@ export default {
 
   },
   watch: {
-    'data.clientId': {
-      handler(val) {
-        if (val) {
-          this.commonclientinfoInfo()
-        }
-      },
-      immediate: true,
-    }
+    // 'data.clientId': {
+    //   handler(val) {
+    //     if (val) {
+    //       this.commonclientinfoInfo()
+    //     }
+    //   },
+    //   immediate: true,
+    // }
   },
   methods: {
     async getClinent(words) {
