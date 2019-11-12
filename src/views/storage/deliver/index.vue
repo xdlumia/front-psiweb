@@ -64,9 +64,9 @@ export default {
       },
       activeName: '',
       filterOptions: [
-        { label: '销售出库单编号', prop: 'shipmentCode', default: true },
-        { label: '客户名称', prop: 'clientId', default: true },
-        { label: '发货单编号', prop: 'salesSheetCode', default: true },
+        { label: '销售出库单编号', prop: 'salesShipmentCode', default: true },
+        { label: '客户名称', prop: 'clientName', default: true },
+        { label: '发货单编号', prop: 'shipmentsOrderCode', default: true },
         { label: '发货人', prop: 'creator', type: 'employee', default: true },
         { label: '运单编号', prop: 'waybillCodes', default: true },
         {
@@ -77,7 +77,7 @@ export default {
         },
         {
           label: '单据创建人',
-          prop: 'creator1',
+          prop: 'creator',
           type: 'employee',
           default: true
         },
@@ -90,7 +90,6 @@ export default {
     getTableVisible(data) {
       this.tableVisible = true
       this.drawerData = data
-      console.log(this.drawerData)
     },
     update() {
       this.tableVisible = false

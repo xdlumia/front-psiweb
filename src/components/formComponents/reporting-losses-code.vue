@@ -251,7 +251,7 @@ export default {
         snCode: this.snCode,
         wmsId: this.addForm.wmsId,
         putawayCommodityList: this.tableData,
-        commodityCode: this.commodityForm.goodsCode,
+        commodityCode: this.commodityForm.commodityCode,
         categoryCode: this.commodityForm.categoryCode,
       }
       this.$api.seePsiWmsService[api](params)

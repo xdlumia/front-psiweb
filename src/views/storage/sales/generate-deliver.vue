@@ -42,12 +42,20 @@
         style="padding:0;"
       >
         <el-form
-          :model="form"
+          :model="addForm"
+          ref='addForm'
           class="p10"
         >
-          <deliverEdit ref="deliverEdit" />
+          <deliverEdit
+            ref="deliverEdit"
+            :data='addForm'
+          />
+          <logisticsEdit
+            ref="logisticsEdit"
+            :data='addForm'
+          />
         </el-form>
-        <logisticsEdit ref="logisticsEdit" />
+
       </el-main>
     </el-container>
     <span
@@ -60,7 +68,7 @@
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="close"
+        @click="submit"
         size="small"
       >保 存</el-button>
     </span>
@@ -89,16 +97,60 @@ export default {
   },
   data() {
     return {
-      activeName: ''
+      activeName: '',
+      addForm: {
+        "clientName": "",
+        "consignee": "",
+        "consigneeAddress": "",
+        "consigneePhone": "",
+        "note": "",
+        "practicalShipmentsTime": "",
+        "requireShipmentsTime": "",
+        "salesSheetCode": "",
+        "salesShipmentCode": "",
+        "shipmentsLogisticsList": [
+          {
+            "facilitator": "",
+            "logisticsFees": "",
+            "serveType": "",
+            "shipmentsOrderId": "",
+            "waybillCode": ""
+          }
+        ],
+        "source": "销售单"
+      },
     };
   },
-  mounted() { },
+  mounted() {
+    console.log(this.form, 'this.addForm.salesShipmentCodethis.addForm.salesShipmentCodethis.addForm.salesShipmentCode')
+    this.addForm.salesShipmentCode = this.form.shipmentCode
+    this.addForm.requireShipmentsTime = this.form.salesQuotationEntity.salesRequireArrivalTime
+  },
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
     },
     close() {
       this.$emit('update:visible', false)
+    },
+    submit() {
+      this.addForm.clientName = this.form.clientName
+      this.addForm.salesSheetCode = this.form.salesSheetCode
+      this.$refs.addForm.validate((valid) => {
+        if (valid) {
+          this.$api.seePsiWmsService.wmsshipmentsorderSave(this.addForm)
+            .then(res => {
+              this.close()
+            })
+            .finally(() => {
+
+            })
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+
     }
   }
 };

@@ -64,21 +64,21 @@ export default {
       activeName: '',
       status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       filterOptions: [
-        // { label: '销售出库单编号', prop: 'shipmentCode', default: true },
-        // { label: '客户名称', prop: 'clientId', default: true },
-        // { label: '销售单编号', prop: 'salesSheetCode', default: true },
-        // {
-        //   label: '拣货状态',
-        //   prop: 'pickingState',
-        //   type: 'select',
-        //   options: [
-        //     { label: '待调拨', value: '1' },
-        //     { label: '部分调拨', value: '2' },
-        //     { label: '完成调拨', value: '3' },
-        //     { label: '终止', value: '-1' },
-        //   ],
-        //   default: true
-        // },
+        { label: '销售出库单编号', prop: 'shipmentCode', default: true },
+        { label: '客户名称', prop: 'clientId', default: true },
+        { label: '销售单编号', prop: 'salesSheetCode', default: true },
+        {
+          label: '拣货状态',
+          prop: 'pickingState',
+          type: 'select',
+          options: [
+            { label: '完成拣货', value: '2' },
+            { label: '部分拣货', value: '1' },
+            { label: '待拣货', value: '0' },
+            { label: '终止', value: '-1' },
+          ],
+          default: true
+        },
         // {
         //   label: '组装任务状态',
         //   prop: 'assemblyState',
@@ -99,56 +99,56 @@ export default {
         //   ],
         //   default: true
         // },
-        // {
-        //   label: '商品类别',
-        //   prop: 'categoryCode',
-        //   type: 'select',
-        //   options: [
-        //     { label: '内调', value: '1' },
-        //     { label: '外调', value: '2' }
-        //   ],
-        //   default: true
-        // },
-        // {
-        //   label: '出库数量',
-        //   prop: 'WillShipmentNumber',
-        //   type: 'numberRange',
-        //   default: true,
-        //   int: true
-        // },
-        // {
-        //   label: '未出库量',
-        //   prop: 'WithoutShipmentNumber',
-        //   type: 'numberRange',
-        //   default: true,
-        //   int: true
-        // },
-        // {
-        //   label: '已出库量',
-        //   prop: 'AlreadyShipmentNumber',
-        //   type: 'numberRange',
-        //   default: true,
-        //   int: true
-        // },
-        // {
-        //   label: '出库人',
-        //   prop: 'shipmentHuman',
-        //   type: 'employee',
-        //   default: true
-        // },
-        // {
-        //   label: '生成时间',
-        //   prop: 'Time',
-        //   type: 'daterange',
-        //   default: true
-        // },
-        // {
-        //   label: '单据创建人',
-        //   prop: 'creator',
-        //   type: 'employee',
-        //   default: true
-        // },
-        // { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
+        {
+          label: '商品类别',
+          prop: 'categoryCode',
+          type: 'select',
+          options: [
+            { label: '内调', value: '1' },
+            { label: '外调', value: '2' }
+          ],
+          default: true
+        },
+        {
+          label: '出库数量',
+          prop: 'WillShipmentNumber',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '未出库量',
+          prop: 'WithoutShipmentNumber',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '已出库量',
+          prop: 'AlreadyShipmentNumber',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '出库人',
+          prop: 'shipmentHuman',
+          type: 'employee',
+          default: true
+        },
+        {
+          label: '生成时间',
+          prop: 'CreateTime',
+          type: 'daterange',
+          default: true
+        },
+        {
+          label: '单据创建人',
+          prop: 'creator',
+          type: 'employee',
+          default: true
+        },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
     };
   },

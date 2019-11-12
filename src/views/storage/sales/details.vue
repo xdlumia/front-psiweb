@@ -22,7 +22,7 @@
           type="primary"
         >发货</el-button>
       </div>
-      <el-tabs class="wfull hfull tabs-view"> 
+      <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
           <el-form>
             <goodsExported :detailForm='detailForm' />
@@ -30,8 +30,11 @@
               :data='detailForm.salesQuotationEntity'
               :disabled='true'
             />
-            <generateDeliver :visible.sync='
-              orderStorageVisible' />
+            <generateDeliver
+              :visible.sync='orderStorageVisible'
+              :form='detailForm'
+              v-if="orderStorageVisible"
+            />
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="拣货单">拣货单</el-tab-pane>

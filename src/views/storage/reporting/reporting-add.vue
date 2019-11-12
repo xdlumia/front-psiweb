@@ -103,6 +103,7 @@ export default {
         note: '',//备注
         totalCostPrice: '',//成本金额总计
         taxInclusiveTotalCostPrice: '',//含税成本金额总计
+        source: '新增'
       },
     };
   },

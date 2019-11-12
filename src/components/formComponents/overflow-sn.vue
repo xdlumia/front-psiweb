@@ -43,6 +43,16 @@
                 </template>
               </el-table-column>
               <el-table-column
+                prop="robotCode"
+                label="机器号"
+                min-width="100"
+                show-overflow-tooltip
+              >
+                <template slot-scope="scope">
+                  <span class="">{{scope.row.robotCode}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
                 prop="wmsName"
                 min-width="100"
                 label="调出库房"

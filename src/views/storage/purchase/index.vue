@@ -9,23 +9,33 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
-      :headers="tableHeader"
+      busType="32"
+      :filterOptions='filterOptions'
+      :params="queryForm"
       :selection='false'
-      api="bizSystemService.getEmployeeList"
+      api="seePsiPurchaseService.purchaseList"
       title="采购单"
     >
       <template slot-scope="{column,row,value}">
         <span
+          v-if="column.columnFields=='putinCode'"
+          class="d-text-blue"
+        >{{value}}</span>
+        <span
+          v-if="column.columnFields=='purchaseCode'"
           class="d-text-blue"
           @click="getTableVisible(row)"
-        >点击111</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        >{{value}}</span>
+        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-else-if="column.columnFields=='putinState'">{{value == 0 ? '待入库' : value == 1 ? '部分完成' : value == 2 ? '完成入库' : value == 3 ? '终止' : '全部'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
       :drawerData='drawerData'
       @update='update'
+      v-if="tableVisible"
+      :visible.sync='tableVisible'
     />
   </div>
 </template>
@@ -44,50 +54,105 @@ export default {
     return {
       // 查询表单
       queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
         page: 1,
         limit: 20
       },
       componentActive: '',//当前的组件
+      tableVisible: false,//销售单右侧抽屉
       drawerData: {//弹框的相关数据
-        tableVisible: false,//销售单右侧抽屉
         title: '',
         component: 'Details'
       },
       activeName: '',
-      tableHeader: [
-        { label: '采购入库单编号', prop: 'deptName', width: '140' },
-        { label: '供应商编号', prop: 'deptName', width: '100' },
-        { label: '采购单编号', prop: 'deptName', width: '140' },
-        { label: '入库状态', prop: 'deptName', width: '100' },
-        { label: '卸载任务状态', prop: 'deptName', width: '100' },
-        { label: '入库数量', prop: 'deptName', width: '100' },
-        { label: '未入库量', prop: 'deptName', width: '100' },
-        { label: '已入库量', prop: 'createTime', width: '100' },
-        { label: '入库人', prop: 'createTime', width: '100' },
-        { label: '生成时间', prop: 'createTime', width: '140' },
-        { label: '单据创建人', prop: 'createTime', width: '100' },
-        { label: '创建部门', prop: 'createTime', width: '100' }
-      ]
+      filterOptions: [
+        { label: '采购入库单编号', prop: 'putinCode', default: true },
+        {
+          label: '供应商名称',
+          prop: 'supplierId',
+          type: 'select',
+          options: [
+            { label: '完成拣货', value: '2' },
+            { label: '部分拣货', value: '1' },
+            { label: '待拣货', value: '0' },
+            { label: '终止', value: '-1' },
+          ],
+          default: true
+        },
+        { label: '采购单编号', prop: 'purchaseCode', default: true },
+        {
+          label: '入库状态',
+          prop: 'putinState',
+          type: 'select',
+          options: [
+            { label: '完成拣货', value: '2' },
+            { label: '部分拣货', value: '1' },
+            { label: '待拣货', value: '0' },
+            { label: '终止', value: '-1' },
+          ],
+          default: true
+        },
+        {
+          label: 'dismantleState',
+          prop: 'pickingState',
+          type: 'select',
+          options: [
+            { label: '完成拣货', value: '2' },
+            { label: '部分拣货', value: '1' },
+            { label: '待拣货', value: '0' },
+            { label: '终止', value: '-1' },
+          ],
+          default: true
+        },
+        {
+          label: '入库数量',
+          prop: 'WillPutinNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '未入库量',
+          prop: 'WithoutPutinNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '已入库量',
+          prop: 'AlreadyPutinNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        // { label: 'creator', prop: 'creator', type: 'employee', default: true },
+        {
+          label: '生成时间',
+          prop: 'CreateTime',
+          type: 'daterange',
+          default: true
+        },
+        {
+          label: '单据创建人',
+          prop: 'creator',
+          type: 'employee',
+          default: true
+        },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
+      ],
     };
   },
   methods: {
     //点击打开右侧边栏
     getTableVisible(data) {
-      this.drawerData.tableVisible = true
-      this.drawerData.title = '采购单' + data.id
+      this.tableVisible = true
+      this.drawerData = data || {}
     },
     //tab换组件
     handleClick() {
 
     },
     update() {
-      console.log('324124123')
-      this.drawerData.tableVisible = false
+      this.tableVisible = false
     }
   }
 };

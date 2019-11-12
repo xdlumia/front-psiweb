@@ -96,7 +96,8 @@
             class="d-inline"
           >
             <el-input
-              :value="employeeName"
+              :disabled='disabled'
+              :value="addForm.leaderName"
               size="mini"
             ></el-input>
           </employees-chosen>
@@ -157,7 +158,7 @@ export default {
     },
     //选择人员
     choose(value) {
-      this.employeeName = value.employeeName
+      this.addForm.leaderName = value.employeeName
       this.addForm.personInChargeId = value.userId
     },
   }

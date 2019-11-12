@@ -80,6 +80,7 @@
         >
           <!-- 报溢的话 需要选择库房以后再选 商品, 要传过去库房id, 商品是跟库库房来的 报损不需要 -->
           <commoditySelector
+            :sn='true'
             :wmsId="addForm.type == 2 ? addForm.wmsId : null"
             @choose='commodityChoose(arguments,scope)'
             :isChooseOne='true'
@@ -136,7 +137,11 @@
         label="税率"
         min-width="100"
         prop="taxRate"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <span v-if="scope.row.taxRate">{{scope.row.taxRate}}%</span>
+        </template>
+      </el-table-column>
       <el-table-column
         label="含税成本金额"
         min-width="100"
@@ -248,6 +253,7 @@ export default {
           sums[index] = '总计';
           return;
         }
+
         if (column.property == 'inventoryPrice') {
           const values = data.map((item) => {
             if (item.commodityInfoList && item.commodityInfoList.length > 0) {
@@ -263,7 +269,24 @@ export default {
             }
           }, 0);
         }
+        if (column.property == 'taxRate') {
+          const values = data.map((item) => {
+            if (item.commodityInfoList && item.commodityInfoList.length > 0) {
+              return (Number(item.taxRate) * 0.01 + 1) * Number(item.commodityInfoList.length) * Number(item.inventoryPrice)
+            }
+          });
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr);
+            if (!isNaN(value)) {
+              return prev + curr;
+            } else {
+              return prev;
+            }
+          }, 0);
+        }
       })
+      this.addForm.totalCostPrice = sums[sums.length - 2] || 0
+      this.addForm.taxInclusiveTotalCostPrice = sums[sums.length - 1] || 0
       return sums;
     },
     expand(row) {
@@ -293,6 +316,7 @@ export default {
       this.ceIndex = scope.$index
     },
     sumitSn(data) {
+
       this.$set(this.tableData[this.ceIndex], 'commodityInfoList', data)
       this.tableData.forEach((item) => {
         if (item.commodityCode) {

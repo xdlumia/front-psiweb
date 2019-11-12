@@ -90,7 +90,11 @@
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.unit|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
 
         <el-table-column
           prop="configName"
@@ -109,7 +113,11 @@
           min-width="80"
           label="单位"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+          </template>
+        </el-table-column>
 
       </el-table>
     </form-card>

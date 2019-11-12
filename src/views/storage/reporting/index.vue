@@ -85,7 +85,7 @@ export default {
         { label: '报溢报损单编号', prop: 'reportingLossesCode', default: true },
         {
           label: '类别',
-          prop: 'source',
+          prop: 'type',
           type: 'select',
           options: [
             { label: '报溢', value: '1' },
@@ -95,21 +95,21 @@ export default {
         },
         {
           label: '报溢/报损数量',
-          prop: 'num',
+          prop: 'Num',
           type: 'numberRange',
           default: true,
           int: true
         },
         {
           label: '总成本金额',
-          prop: 'totalCostPrice',
+          prop: 'TotalCostPrice',
           type: 'numberRange',
           default: true,
           int: true
         },
         {
           label: '含税总金额',
-          prop: 'taxInclusiveTotalCostPrice',
+          prop: 'TaxInclusiveTotalCostPrice',
           type: 'numberRange',
           default: true,
           int: true
