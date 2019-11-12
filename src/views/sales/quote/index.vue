@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 14:48:00
+ * @LastEditTime: 2019-11-12 10:10:04
  * @Description: 销售-报价单
  */
 <template>
@@ -69,6 +69,7 @@
     ></quote-details>
     <!-- 销售出库单详情 -->
     <outLib-details
+      v-if="outLibVisible"
       :visible.sync="outLibVisible"
       :rowData="rowData"
       :code="rowData.shipmentCode"

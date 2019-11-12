@@ -8,29 +8,19 @@
 <template>
   <SideDetail
     :status="status"
-    :visible.sync="drawerData.tableVisible"
+    :visible.sync="visible"
     @close="$emit('update',false)"
-    title="发货单"
+    :title="'发货单-'+drawerData.shipmentsOrderCode"
     width="990px"
   >
     <div>
       <div class="drawer-header">
-        <!-- <el-button
-        @click="orderStorageVisible=true"
-        size="mini" 
-        type="primary"
-      >采购</el-button>
-      <el-button
-        @click="addBorrowInVisible=true"
-        size="mini"
-        type="primary"
-      >借入</el-button> -->
       </div>
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
           <el-form>
-            <pickingDeliverEditable />
-            <pickingLogisticsEditable />
+            <pickingDeliverEditable :data='detailForm' />
+            <pickingLogisticsEditable :data='detailForm' />
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="销售单">销售单</el-tab-pane>
@@ -43,16 +33,37 @@ import pickingDeliverEditable from '@/components/formComponents/picking-deliver-
 import pickingLogisticsEditable from '@/components/formComponents/picking-logistics-editable';
 import SideDetail from '@/components/side-detail';
 export default {
-  props: ['drawerData'],
+  props: ['drawerData', 'visible'],
   data() {
     return {
       status: [{ label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      detailForm: {},
     };
   },
   components: {
     pickingDeliverEditable,
     pickingLogisticsEditable,
     SideDetail
+  },
+  mounted() {
+    this.wmsallocationorderInfo()
+  },
+  methods: {
+    //查看调拨单详情
+    wmsallocationorderInfo() {
+      this.$api.seePsiWmsService.wmsshipmentsorderInfo(null, this.drawerData.id)
+        .then(res => {
+          this.detailForm = res.data || {}
+          this.status[0].value = res.data.createTime
+          this.status[1].value = res.data.creatorName
+          this.status[2].value = res.data.deptName
+          this.status[3].value = res.data.source
+          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
+        })
+        .finally(() => {
+
+        })
+    },
   }
 }
 </script>
