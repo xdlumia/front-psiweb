@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 19:54:02
+ * @LastEditTime: 2019-11-12 10:16:02
  * @Description: file content
 */
 <template>
@@ -78,7 +78,30 @@ import selectProduct from './add/select-product'
 import confirmInfo from './add/confirm-info'
 import quoteInfo from './add/quote-info'
 export default {
-  props: ['visible', 'code', 'rowData', 'type'],
+  props: {
+    // 是否显示弹出框
+    visible: {
+      required: true,
+      default: false,
+      type: Boolean,
+    },
+    // 编号 编辑查询详情时候用到
+    code: [Number, String],
+    // 操作当前行数据 编辑可能会用到
+    rowData: {
+      default: () => ({}),
+      type: Object,
+    },
+    // 类型 当前是编辑还是新增
+    type: {
+      type: String,
+    },
+    // 参数 别的页面调用的时候可能附加的参数
+    params: {
+      default: () => ({}),
+      type: Object,
+    },
+  },
   components: {
     selectCustomer,
     selectProduct,
@@ -207,14 +230,11 @@ export default {
     },
     // 保存表单数据
     saveHandle(formName) {
+
       this.$refs[formName].validate(valid => {
         if (valid) {
-          const [currCity] = this.citys().filter(
-            item => item.id === this.addForm.cityId
-          )
-          this.addForm.cityName = currCity.name
           this.loading = true
-          delete this.addForm.start_date
+          let params = Object.assign(this.addForm, this.params)
           // rules 表单验证是否通过
           let api = 'collegeManagerUpdate' // 默认编辑更新
           // 新增保存
@@ -222,7 +242,7 @@ export default {
             api = 'collegeManagerSave'
             // 编辑保存
           }
-          this.$api.seePumaidongService[api](this.addForm)
+          this.$api.seePumaidongService[api](params)
             .then(res => {
               this.visible = false
               this.$emit('submit', 'success')
