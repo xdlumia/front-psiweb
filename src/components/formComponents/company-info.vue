@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 11:16:35
+ * @LastEditTime: 2019-11-12 10:31:17
  * @Description: 公司信息  传入 公司发票账户 和公司结算账户id 会自动查询其余信息
 */
 <template>
@@ -152,12 +152,17 @@ export default {
     invoiceChange(row) {
       this.isCurrChange = true
       this.settlementOptions = row.commonCorporationAccountEntities || {}
+      this.companyInfo.invoiceTitle = row.corporationName
+      this.companyInfo.taxpayersNum = row.taxpayersNum
+      this.companyInfo.registerAddres = row.address
       this.data.companyAccountId = row.id
       this.data.companySettlementId = ''
     },
     // 公司结算账户更改
     settlementChange(row) {
       this.data.companySettlementId = row.id
+      this.companyInfo.accountBank = row.accountBank
+      this.companyInfo.bankAccount = row.account
     },
     // 初始化表单
     initFrom() {

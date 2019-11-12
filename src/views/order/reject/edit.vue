@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 11:19:03
+ * @LastEditTime: 2019-11-12 10:22:36
  * @Description: 采购退货单
 */
 <template>
@@ -25,7 +25,7 @@
       <d-tab-pane label="自定义信息" name="customInfo" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
       <div>
-        <el-form :model="form" class="p10">
+        <el-form :model="form" class="p10" size="mini">
           <supplierInfo id="supplierInfo"></supplierInfo>
           <companyInfo id="companyInfo"></companyInfo>
           <deliverInfo id="deliverInfo"></deliverInfo>

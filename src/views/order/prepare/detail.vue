@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 17:33:44
+ * @LastEditTime: 2019-11-12 10:16:52
  * @Description: 备货单详情
 */
 <template>
@@ -53,7 +53,9 @@
               </el-col>
             </el-row>
           </form-card>
-          <buyingGoodsEdit :data="detail" disabled />
+          <buyingGoodsEdit :data="detail" :hide="[
+            'noteText','costAmountPrice'
+          ]" disabled />
           <customInfo :data="detail" disabled />
           <extrasInfo :data="detail" disabled />
         </el-form>

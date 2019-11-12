@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-09 10:54:51
+ * @LastEditTime: 2019-11-12 10:38:45
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -59,6 +59,7 @@ export default {
                 this.showDetailPage = true;
                 this.showEditPage = true;
                 this.loading = true;
+                this.isModified = false;
                 try {
                     let data = await this.getDetail();
                     if (data) {
@@ -93,17 +94,18 @@ export default {
         // 审核
         async $submission(api, data, title, needNote) {
             if (needNote) {
-                await this.$prompt(`确定要${title}吗？`, '提示', {
+                let { value } = await this.$prompt(`确定要${title}吗？`, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     inputType: "textarea",
                     closeOnClickModal: false,
                     inputValidator(value) {
-                        if (value.length < 300) {
+                        if (value && value.length < 300) {
                             return true;
-                        } else return "字数不能超过300字";
+                        } else return `请填写${title}原因且字数不能超过300字`;
                     }
                 })
+                data.note = value;
             } else {
                 await this.$confirm(`是否${title}`, '提示', {
                     confirmButtonText: '确定',
