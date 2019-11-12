@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-08 16:59:01
+ * @LastEditTime: 2019-11-12 18:09:00
  * @Description: 库房管理
  -->
 <template>
@@ -86,7 +86,7 @@ export default {
           type: 'employee',
           default: true
         },
-        { label: '创建部门', prop: 'deptName', type: 'dept', default: true },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
         { label: '创建时间', prop: 'Time', type: 'dateRange', default: true }
       ]
     }
