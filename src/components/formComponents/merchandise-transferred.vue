@@ -188,7 +188,7 @@
       </el-table>
     </form-card>
     <commodityChoose
-      params=""
+      sn
       :visible.sync='chooseVisible'
       @choose='commodityChoose'
     />
@@ -275,11 +275,9 @@ export default {
         })
         this.doSth()
       }
-      console.log(this.upTableData, 'this.upTableDatathis.upTableData')
     },
     //根据SN码或机器号查询商品
     getCommodityBySnCode() {
-      console.log(this.form, 'this.formthis.formthis.form')
       if (this.form.putawayWmsId) {
         if (this.snCode) {
           this.$api.seePsiWmsService.wmsinventorydetailGetCommodityBySnCode({ snCode: this.snCode, wmsId: this.form.putawayWmsId })

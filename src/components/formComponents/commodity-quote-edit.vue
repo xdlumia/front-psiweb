@@ -79,7 +79,7 @@
           <commoditySelector
             :wmsId="data.type == 2 ? data.wmsId : null"
             @choose='commodityChoose(arguments,scope)'
-            :isChooseOne='true'
+            :multiple='true'
             type="code"
             v-model="scope.row.commodityCode"
             :codes='codes'

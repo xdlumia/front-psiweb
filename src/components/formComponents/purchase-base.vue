@@ -11,19 +11,15 @@
       <el-row>
         <el-col :span="8">
           <div class="d-text-qgray">采购入库单编号</div>
-          <div class="d-text-black mt5 mb20">XSD20190201000001</div>
+          <div class="d-text-black mt5 mb20">{{data.putinCode || '-'}}</div>
         </el-col>
         <el-col :span="8">
           <div class="d-text-qgray">供应商名称</div>
-          <div class="d-text-black mt5 mb20">2019-9-21 10:04:38</div>
-        </el-col>
-        <el-col :span="8">
-          <div class="d-text-qgray">入库人</div>
-          <div class="d-text-black mt5 mb20">张三</div>
+          <div class="d-text-black mt5 mb20">{{data.supplierName || '-'}}</div>
         </el-col>
         <el-col :span="20">
           <div class="d-text-qgray">备注</div>
-          <div class="d-text-black mt5">备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注</div>
+          <div class="d-text-black mt5">{{data.note || '-'}}</div>
         </el-col>
 
       </el-row>
@@ -32,6 +28,7 @@
 </template>
 <script>
 export default {
+  props: ['data'],
   data() {
     return {
       // 查询表单

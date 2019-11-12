@@ -9,6 +9,7 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
+      @response='response'
       style="height:calc(100vh - 150px)"
       busType="48"
       :filterOptions='filterOptions'
@@ -237,11 +238,12 @@ export default {
     this.getTreeData()
   },
   mounted() {
-    setTimeout(() => {
-      this.totalInventoryPrice = this.$refs.allTable.$refs.table.response.totalInventoryPrice || 0
-    }, 2000)
+
   },
   methods: {
+    response(res) {
+      this.totalInventoryPrice = res.totalInventoryPrice
+    },
     //tab换组件
     handleClick() {
 

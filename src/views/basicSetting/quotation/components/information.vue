@@ -15,7 +15,7 @@
             <commodity-selector
               v-else
               class="wfull"
-              :isChooseOne="true"
+              :multiple="true"
               :autoClear="false"
               @choose="choose"
               :kinds="[{label: '整机', value:'PSI_SP_KIND-1'}]"
@@ -45,7 +45,7 @@
 
 <script type='text/ecmascript-6'>
 export default {
-  data() {
+  data () {
     return {
     }
   },
@@ -64,7 +64,7 @@ export default {
   components: {
   },
   methods: {
-    choose(goods) {
+    choose (goods) {
       this.data.commodityCode = goods[0].commodityCode
       this.data.goodName = goods[0].goodsName
     }

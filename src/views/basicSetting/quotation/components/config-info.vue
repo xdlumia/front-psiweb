@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-09 12:27:18
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-11 23:01:38
+ * @LastEditTime: 2019-11-12 10:39:26
  * @Description: description
  -->
 <template>
@@ -60,6 +60,7 @@
       :visible.sync="showCommodityGoods"
       @choose="choose"
       v-if="showCommodityGoods"
+      :codes="codes"
     />
   </div>
 </template>
@@ -82,6 +83,11 @@ export default {
       this.commonquotationconfigdetailsListConfigByGoodName(this.data.id)
     }
   },
+  computed: {
+    codes() {
+      return this.data.commonQuotationConfigDetailsEntitys.map(item => item.commodityCode)
+    }
+  },
   methods: {
     add() {
       this.showCommodityGoods = true
@@ -92,11 +98,8 @@ export default {
         const { goodsName, commodityCode, className, commodityNum = 0, id: commodityId } = good
         if (!temp.filter(item => item.commodityCode === commodityCode).length) {
           temp.push({ goodsName, commodityCode, className, commodityNum, commodityId })
-          // this.$set(this.data.commonQuotationConfigDetailsEntitys, this.data.commonQuotationConfigDetailsEntitys.length, { goodsName, commodityCode, className, commodityNum, commodityId })
-          // this.data.commonQuotationConfigDetailsEntitys = temp.concat([{ goodsName, commodityCode, className, commodityNum, commodityId }])
         }
       })
-      console.log(this.data.commonQuotationConfigDetailsEntitys)
     },
     commonquotationconfigdetailsListConfigByGoodName(quotationId) {
       this.loading = true

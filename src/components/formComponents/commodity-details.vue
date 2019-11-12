@@ -33,7 +33,9 @@
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</template>
+        </el-table-column>
 
         <el-table-column
           prop="className"

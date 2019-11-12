@@ -22,9 +22,9 @@
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
           <el-form>
-            <purchaseBase />
+            <purchaseBase :data="detailForm" />
             <purchaseReceivingInfo />
-            <!-- <goodsWarehousing /> -->
+            <goodsWarehousing />
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="拆卸任务">拆卸任务</el-tab-pane>
@@ -45,6 +45,7 @@ export default {
   data() {
     return {
       status: [{ label: '入库状态', value: '待入库' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      detailForm: {},
     };
   },
   components: {
@@ -59,11 +60,10 @@ export default {
   methods: {
     //查看详情
     wmsallocationorderInfo() {
-      this.$api.seePsiPurchaseService.purchaseInfo(null, this.drawerData.id)
+      this.$api.seePsiPurchaseService.purchaseGetByCode(null, this.drawerData.purchaseCode)
         .then(res => {
           this.detailForm = res.data || {}
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailFormthis.detailFormthis.detailForm')
-          this.status[0].value = this.detailForm.putinState
+          this.status[0].value = this.detailForm.putinState == 0 ? '待入库' : this.detailForm.putinState == 1 ? '部分完成' : this.detailForm.putinState == 2 ? '完成入库' : this.detailForm.putinState == 3 ? '终止' : '全部'
           this.status[1].value = this.detailForm.createTime
           this.status[2].value = this.detailForm.creatorName
           this.status[3].value = this.detailForm.deptName
