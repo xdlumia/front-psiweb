@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 18:04:01
+ * @LastEditTime: 2019-11-12 10:50:20
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -195,6 +195,7 @@ export default {
               )
               .reduce((sum, item) => sum + item, 0)
           ).toFixed(2);
+          this.$emit('totalAmountChange',sums[index])
         } else if (index == 0) {
           sums[0] = '总计';
         } else sums[index] = '';

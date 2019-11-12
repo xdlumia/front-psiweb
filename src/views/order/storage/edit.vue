@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 09:05:43
+ * @LastEditTime: 2019-11-12 10:52:58
  * @Description: 采购入库单
 */
 <template>
@@ -36,6 +36,7 @@
             :hide="[
             'add','costAmount','waitPurchaseNumber','note'
           ]"
+            @totalAmountChange="a=>goodsTotalPrice[0]=a"
             id="commodityInfo"
           />
           <buying-goods-edit
@@ -43,11 +44,12 @@
             :hide="[
              'costAmount','waitPurchaseNumber','note'
           ]"
+            @totalAmountChange="a=>goodsTotalPrice[1]=a"
             fkey="additionalCommodityList"
             v-if="form.source=='请购单'"
           />
           <paymentLate :data="form" id="paymentLate" />
-          <order-storage-bill :data="form" id="billInfo" />
+          <order-storage-bill :data="form" :max="goodsTotalPrice.reduce((a,b)=>a+=b,0)" id="billInfo" />
           <customInfo :data="form" id="customInfo" />
           <extrasInfo :data="form" id="extrasInfo" />
         </el-form>
@@ -76,6 +78,7 @@ export default {
   data() {
     return {
       activeName: '',
+      goodsTotalPrice: [0, 0],
       form: {
         // 流程审批状态（0 未审核 1审核中 2 完成 3 驳回） 0
         approvalState: '',
@@ -140,8 +143,10 @@ export default {
     },
     supplierChange(e) {
       if (!this.form.logistics) this.$set(this.form, 'logistics', {});
-      this.$set(this.form.logistics, 'supplierLinkman', e.linkManName || '');
-      this.$set(this.form.logistics, 'supplierPhone', e.phone || '');
+      if (!this.form.logistics.supplierLinkman) {
+        this.$set(this.form.logistics, 'supplierLinkman', e.linkManName || '');
+        this.$set(this.form.logistics, 'supplierPhone', e.phone || '');
+      }
     },
     async getDetail() {
       if (this.code) {

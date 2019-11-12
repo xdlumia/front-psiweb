@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 17:44:10
+ * @LastEditTime: 2019-11-12 10:54:40
  * @Description: 账单信息
 */
 <template>
@@ -14,17 +14,26 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="付款时间" min-width="140" prop="payTime" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <el-date-picker
-            :disabled="disabled"
-            align="right"
-            class="wfull"
-            placeholder="选择日期"
+        <template slot-scope="{row,$index}">
+          <el-form-item
+            :prop="`financeList.${$index}.payTime`"
+            :rules="[
+              {required:true}
+          ]"
             size="mini"
-            type="date"
-            v-model="row.payTime"
-            value-format="timestamp"
-          ></el-date-picker>
+            style="margin-bottom:0;"
+          >
+            <el-date-picker
+              :disabled="disabled"
+              align="right"
+              class="wfull"
+              placeholder="选择日期"
+              size="mini"
+              type="date"
+              v-model="row.payTime"
+              value-format="timestamp"
+            ></el-date-picker>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column align="center" label="直接生成应收" min-width="100" prop="isBillFee">

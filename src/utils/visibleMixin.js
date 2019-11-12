@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 13:13:37
+ * @LastEditTime: 2019-11-12 14:38:39
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -108,29 +108,72 @@ export default {
         this.$emit('update:visible', false)
       }
     },
-    // 审核
-    async $submission(api, data, title, needNote) {
-      if (needNote) {
-        await this.$prompt(`确定要${title}吗？`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputType: "textarea",
-          closeOnClickModal: false,
-          inputValidator(value) {
-            if (value.length < 300) {
-              return true;
-            } else return "字数不能超过300字";
+    methods: {
+      // 检查可见状态
+      checkVisible() { },
+      async $checkVisible() {
+        if (this.checkVisible) this.checkVisible()
+        if (this.visible) {
+          this.showDetailPage = true;
+          this.showEditPage = true;
+          this.loading = true;
+          this.isModified = false;
+          try {
+            let data = await this.getDetail();
+            if (data) {
+              data = JSON.parse(JSON.stringify(data))
+              this.detail = data;
+              this.form = data;
+            }
+          } catch (error) {
+            console.error(error)
           }
-        })
-      } else {
-        await this.$confirm(`是否${title}`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          closeOnClickModal: false,
-          type: 'warning'
-        })
+          this.loading = false;
+        } else {
+          this.showDetailPage = false;
+          this.showEditPage = false;
+        }
+      },
+      // 设置编辑过了
+      setEdit() {
+        this.isModified = true;
+      },
+      // 获取详情
+      getDetail() { },
+      // 关闭
+      close() {
+        if (this.visible) {
+          if (this.isModified) {
+            this.$emit('reload')
+          }
+          this.$emit('update:visible', false)
+        }
+      },
+      // 审核
+      async $submission(api, data, title, needNote) {
+        if (needNote) {
+          let { value } = await this.$prompt(`确定要${title}吗？`, '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            inputType: "textarea",
+            closeOnClickModal: false,
+            inputValidator(value) {
+              if (value && value.length < 300) {
+                return true;
+              } else return `请填写${title}原因且字数不能超过300字`;
+            }
+          })
+          data.note = value;
+        } else {
+          await this.$confirm(`是否${title}`, '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            closeOnClickModal: false,
+            type: 'warning'
+          })
+        }
+        return api.split('.').reduce((api, item) => api[item], this.$api)(data)
       }
-      return api.split('.').reduce((api, item) => api[item], this.$api)(data)
     }
   }
 }

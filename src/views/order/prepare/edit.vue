@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 18:14:46
+ * @LastEditTime: 2019-11-12 10:14:42
  * @Description: 新增备货单
 */
 <template>
@@ -32,9 +32,13 @@
               </el-col>
             </el-row>
           </form-card>
-          <buyingGoodsEdit :data="form" :hide="[
+          <buyingGoodsEdit
+            :data="form"
+            :hide="[
             'noteText','waitPurchaseNumber','costAmountPrice'
-          ]" id="commodityInfo" />
+          ]"
+            id="commodityInfo"
+          />
           <customInfo :data="form" id="customInfo" />
           <extrasInfo :data="form" id="extrasInfo" />
         </el-form>
@@ -91,6 +95,11 @@ export default {
     async save() {
       await this.$refs.form.validate();
       this.loading = true;
+      this.form.commodityList.map(item => {
+        item.preTaxAmount = +Number(
+          item.costAmount * (1 + item.taxRate) * item.commodityNumber || 0
+        ).toFixed(2);
+      });
       try {
         if (this.isEdit) {
           await this.$api.seePsiPurchaseService.purchasestockorderUpdate(
