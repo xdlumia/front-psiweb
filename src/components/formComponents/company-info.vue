@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 14:36:52
+ * @LastEditTime: 2019-11-12 18:26:09
  * @Description: 公司信息  传入 公司发票账户 和公司结算账户id 会自动查询其余信息
 */
 <template>
@@ -11,7 +11,7 @@
     <el-row :gutter="10">
       <el-col :span="8">
         <el-form-item
-          :rules="{ required: true, trigger: 'blur' }"
+          :rules="{ required: true, }"
           label="公司发票账户"
           prop="companyAccountId"
         >
@@ -33,7 +33,7 @@
       </el-col>
       <el-col :span="8">
         <el-form-item
-          :rules="{ required: true, trigger: 'blur' }"
+          :rules="{ required: true, }"
           label="公司结算账户"
           prop="companySettlementId"
         >
@@ -95,11 +95,11 @@
 let formItems = [
   // { label: '公司发票账户', prop: 'companyAccountId', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [] },
   // { label: '公司结算账户', prop: 'companySettlementId', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [] },
-  { label: '发票抬头', prop: 'invoiceTitle', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
-  { label: '纳税人识别号', prop: 'taxpayersNum', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
-  { label: '注册地址', prop: 'registerAddres', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
-  { label: '开户银行', prop: 'accountBank', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
-  { label: '开户行账号', prop: 'bankAccount', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
+  { label: '发票抬头', prop: 'invoiceTitle', type: 'input', rules: [{ required: false, trigger: '' }], },
+  { label: '纳税人识别号', prop: 'taxpayersNum', type: 'input', rules: [{ required: false, trigger: '' }], },
+  { label: '注册地址', prop: 'registerAddres', type: 'input', rules: [{ required: false, }], },
+  { label: '开户银行', prop: 'accountBank', type: 'input', rules: [{ required: false, }], },
+  { label: '开户行账号', prop: 'bankAccount', type: 'input', rules: [{ required: false, }], },
 ]
 export default {
   props: {

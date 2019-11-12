@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 17:43:11
+ * @LastEditTime: 2019-11-12 20:37:46
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -18,7 +18,7 @@
       sum-text='总计'
       border
       :summary-method="getSummaries"
-      :data="tableData"
+      :data="data.businessCommoditySaveVoList"
       max-height="400"
       ref="elTable"
       row-key="name"
@@ -35,10 +35,7 @@
         prop="name"
       >
         <!-- v-if='scope.row.noChildren' v-if='scope.row.commodityCode'-->
-        <template
-          slot-scope="scope"
-          v-if='scope.row.commodityCode'
-        >
+        <template slot-scope="scope">
           <span>
             <!-- <i
               class='el-icon-circle-plus f18 d-text-blue d-pointer'
@@ -80,7 +77,7 @@
         >
           <!-- 报溢的话 需要选择库房以后再选 商品, 要传过去库房id, 商品是跟库库房来的 报损不需要 -->
           <commoditySelector
-            :wmsId="addForm.type == 2 ? addForm.wmsId : null"
+            :wmsId="data.type == 2 ? data.wmsId : null"
             @choose='commodityChoose(arguments,scope)'
             :isChooseOne='true'
             type="code"
@@ -98,7 +95,7 @@
           class="d-relative"
         >
           <commoditySelector
-            :wmsId="addForm.type == 2 ? addForm.wmsId : null"
+            :wmsId="data.type == 2 ? data.wmsId : null"
             @choose='commodityChoose(arguments,scope)'
             v-model="scope.row.goodsName"
             :codes='codes'
@@ -106,103 +103,208 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="报溢报损数量"
-        min-width="150"
-      >
-        <template
-          slot-scope="scope"
-          class="d-relative"
-          v-if="scope.row.commodityCode"
-        >
-          <div
-            class="ac"
-            style="width:130px;height:28px;background-color:#F5F7FA;color:#C0C4CC;border:1px solid #E4E7ED;border-radius:5px;line-height:27px"
-          >
-            {{scope.row.commodityInfoList ? scope.row.commodityInfoList.length : '扫码添加'}}
-          </div>
-          <i
-            @click="clickCode(scope)"
-            class="d-text-blue d-absolute f14 b d-pointer"
-            style='right:15px;z-index:200;top:18px;'
-          >码</i>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="成本金额"
-        min-width="100"
-        prop="inventoryPrice"
-      ></el-table-column>
-      <el-table-column
-        label="税率"
-        min-width="100"
-        prop="taxRate"
-      ></el-table-column>
-      <el-table-column
-        label="含税成本金额"
-        min-width="100"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
         label="商品图片"
         min-width="120"
         show-overflow-tooltip
       >
         <template slot-scope="scope">
           <el-image
-            style="width: 100px; height: 40px"
+            style="width: 90px; height: 40px"
             :src="scope.row.goodsPic"
-            fit="fill"
-          ></el-image>
+          />
         </template>
       </el-table-column>
+
       <el-table-column
         label="商品类别"
         min-width="110"
         prop="categoryCode"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          {{scope.row.categoryCode | dictionary('PSI_SP_KIND')}}
+        </template>
+      </el-table-column>
+
       <el-table-column
         label="商品分类"
         min-width="110"
         prop="className"
       ></el-table-column>
+
       <el-table-column
-        label="商品配置"
+        label="配置"
         min-width="110"
         prop="configName"
       ></el-table-column>
+
       <el-table-column
-        label="商品规格"
+        label="规格"
         min-width="110"
         prop="specOne"
       ></el-table-column>
+
       <el-table-column
-        label="单位"
-        min-width="120"
-        prop="unit"
+        label="销售参考价"
+        min-width="110"
+        prop="reference"
       ></el-table-column>
+
+      <el-table-column
+        label="商品数量"
+        min-width="110"
+      >
+        <template slot-scope="scope">
+          <el-form-item
+            :prop="`businessCommoditySaveVoList.${scope.$index}.commodityNumber`"
+            :rules="[{required:true},{type:'positiveNum'}]"
+          >
+            <el-input
+              size="mini"
+              placeholder="请输入商品数量"
+              v-model="scope.row.commodityNumber"
+            />
+          </el-form-item>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="税率%"
+        min-width="100"
+        prop="taxRate"
+      ></el-table-column>
+
+      <el-table-column
+        label="折扣"
+        min-width="110"
+      >
+        <template slot-scope="scope">
+          <el-form-item
+            :prop="`businessCommoditySaveVoList.${scope.$index}.discount`"
+            :rules="[{required:true},{type:'positiveNum'}]"
+          >
+            <el-input
+              size="mini"
+              placeholder="折扣"
+              v-model="scope.row.discount"
+            ></el-input>
+          </el-form-item>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="折后销售单价"
+        min-width="110"
+      >
+        <template slot-scope="scope">
+          <el-form-item
+            :prop="`businessCommoditySaveVoList.${scope.$index}.discountSprice`"
+            :rules="[{required:true},{type:'price'}]"
+          >
+            <el-input
+              size="mini"
+              placeholder="请输入"
+              v-model="scope.row.discountSprice"
+            />
+          </el-form-item>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="备注"
+        min-width="110"
+      >
+        <template slot-scope="scope">
+          <el-form-item :prop="`businessCommoditySaveVoList.${scope.$index}.note`">
+            <el-input
+              size="mini"
+              v-model="scope.row.note"
+            />
+          </el-form-item>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="是否直发"
+        min-width="110"
+      >
+        <template slot-scope="scope">
+          <el-switch
+            :active-value="1"
+            :inactive-value="0"
+            v-model="scope.row.isDirect"
+          ></el-switch>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="是否组装"
+        min-width="110"
+      >
+        <template slot-scope="scope">
+          <el-switch
+            :active-value="1"
+            :inactive-value="0"
+            v-model="scope.row.isAssembly"
+          ></el-switch>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="库存数量"
+        min-width="110"
+        prop="inventoryNumber"
+      />
+      <el-table-column
+        label="最近销售价"
+        min-width="110"
+        prop="recentDiscountSprice"
+      />
+
     </el-table>
+    <el-button
+      class="mt10"
+      size="mini"
+      type="primary"
+      icon="el-icon-plus"
+      @click="addCommodity"
+    >添加新商品</el-button>
     <commodityChoose
       @update=update
+      isChooseOne
       :visibleData='visibleData'
       :visible='visible'
-    />
-    <reportingLossesCode
-      @sumitSn='sumitSn'
-      :visible.sync='codeVisible'
-      v-if="codeVisible"
-      :commodityForm='commodityForm'
-      :addForm='addForm'
-      :type='addForm.type'
     />
   </form-card>
 </template>
 <script>
 import commodityChoose from './commodity-choose'
-import reportingLossesCode from './reporting-losses-code'
 import commoditySelector from '@/components/formComponents/commodity-selector';
+let addRowData = {
+  alterationNumber: '', //退换商品数量(出入数量),
+  alterationPrice: '', //实际退/换单价,
+  apportionmentAmount: '', //分摊后金额,
+  commodityCode: '', //商品编号,
+  commodityNumber: '', //商品数量,
+  costAmount: '', //采购/销售成本金额,
+  discount: '', //折扣,
+  discountSprice: '', //折后单价,
+  isAssembly: '', //是否组装,
+  isDirect: '', //是否直发,
+  isTeardown: '', //是否拆卸,
+  note: '',
+  parentCommodityCode: '', //父商品code,
+  pickingNumber: '', //拣货数量,
+  preTaxAmount: '', //含税总价,
+  putawayType: '0', // 库存类型(出库/入库) 0= 出库,
+  reference: '', //销售参考价,
+  salesPrice: '', //销售单价,
+  shipmentsNumber: '', //发货数量,
+  taxPrice: '', //税后退货单价2,
+  taxTotalAmount: '', //税后退货总价
+}
 export default {
   props: ['data'],
-  components: { commodityChoose, reportingLossesCode, commoditySelector },
+  components: { commodityChoose, commoditySelector },
   data() {
     return {
       tableData: [{}],
@@ -215,29 +317,29 @@ export default {
       visibleData: {
 
       },
-      codeVisible: false,
       visible: false,
-      commodityForm: {}//点击的当前行的商品信息
     };
   },
   methods: {
     //选择商品
     commodityChoose(e, scope) {
-      let list = e[0]
+      let [list] = e[0]
       let type = e[1]
-      this.tableData.forEach((item) => {
+      this.data.businessCommoditySaveVoList[scope.$index].commodityCode = ''
+      this.data.businessCommoditySaveVoList.forEach((item) => {
         if (item.commodityCode) {
           this.codes.push(item.commodityCode)
         }
       })
-      list.forEach((item) => {
-        if (!this.codes.includes(item.commodityCode) && scope.row.commodityCode && type == 'select') {//区分非选择状态下的选择商品信息
-          this.$set(this.tableData, scope.$index, item)
-        } else if (!this.codes.includes(item.commodityCode)) {
-          this.tableData.unshift(item)
-        }
-      })
-      this.codes = []
+      if (!this.codes.includes(list.commodityCode)) {
+        list.reference = list.saleReferencePrice
+        this.$set(this.data.businessCommoditySaveVoList, scope.$index, { ...addRowData, ...list })
+        this.codes = []
+      }
+    },
+    // 添加商品
+    addCommodity() {
+      this.data.businessCommoditySaveVoList.push(addRowData)
     },
     //算合计的
     getSummaries(param) {
@@ -273,28 +375,23 @@ export default {
     fullscreen() {
       this.showInFullscreen = true;
     },
-    //点击新增一行
-    appand(row) {
-      // this.tableData.splice(row.$index + 1, 0, { name: '新的', children: [], noChildren: true })
-      this.tableData.push({})
-    },
+    //点击新增一行 新增暂时不要了
+    // appand(row) {
+    //   // this.data.businessCommoditySaveVoList.splice(row.$index + 1, 0, { name: '新的', children: [], noChildren: true })
+    //   this.data.businessCommoditySaveVoList.push({})
+    // },
     //点击删除当前行
     deleteInfo(row) {
-      this.tableData.splice(row.$index, 1)
+      this.data.businessCommoditySaveVoList.splice(row.$index, 1)
     },
     //关闭弹窗
     update() {
       this.visible = false
     },
-    //点击码字
-    clickCode(scope) {
-      this.codeVisible = true
-      this.commodityForm = scope.row
-      this.ceIndex = scope.$index
-    },
+
     sumitSn(data) {
-      this.$set(this.tableData[this.ceIndex], 'commodityInfoList', data)
-      this.tableData.forEach((item) => {
+      this.$set(this.data.businessCommoditySaveVoList[this.ceIndex], 'commodityInfoList', data)
+      this.data.businessCommoditySaveVoList.forEach((item) => {
         if (item.commodityCode) {
           this.addForm.commodityList.push(item)
         }
@@ -304,6 +401,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.borrow-goods-info {
+  .el-form-item--mini.el-form-item {
+    margin-bottom: 0;
+  }
+}
 .expanded-icons {
   > span {
     display: inline-block;
@@ -314,35 +416,12 @@ export default {
     text-align: center;
   }
 }
-.my-autocomplete {
-  li {
-    line-height: normal;
-    padding: 7px;
 
-    .name {
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-    .addr {
-      font-size: 12px;
-      color: #b4b4b4;
-    }
-
-    .highlighted .addr {
-      color: #ddd;
-    }
-  }
-}
 /deep/.el-table_2_column_13 {
   padding: 0px;
   padding-top: 5px;
 }
 /deep/.el-input__suffix {
   display: none !important;
-}
-</style>
-<style>
-.borrow-goods-info .el-autocomplete-suggestion {
-  width: 400px !important;
 }
 </style>

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 17:39:50
+ * @LastEditTime: 2019-11-12 19:38:17
  * @Description: file content
 */
 <template>
@@ -100,7 +100,7 @@ export default {
         KIND2Data: [], //临时存放第二步配件列表选中的数据
         id: {},
         apprpvalState: '', //审核状态
-        attachList: '', //附件,
+        attachList: [], //附件,
         companyAccountId: '', //公司发票信息
         companySettlementId: '', //公司结算账户
         businessCommoditySaveVoList: [ //商品信息合集
@@ -116,14 +116,14 @@ export default {
           //   isAssembly: '', //是否组装,
           //   isDirect: '', //是否直发,
           //   isTeardown: '', //是否拆卸,
+          //   note: '',
           //   parentCommodityCode: '', //父商品code,
           //   pickingNumber: '', //拣货数量,
           //   preTaxAmount: '', //含税总价,
-          //   putawayType: '', //9,
-          //   reference: '', //库存类型(出库/入库),
+          //   putawayType: '0', // 库存类型(出库/入库) 0= 出库,
+          //   reference: '', //销售参考价,
           //   salesPrice: '', //销售单价,
           //   shipmentsNumber: '', //发货数量,
-          //   snCode: '', //SN码,
           //   taxPrice: '', //税后退货单价2,
           //   taxTotalAmount: '', //税后退货总价
           // }
@@ -134,7 +134,7 @@ export default {
         clientReceivingAddress: '', //客户收货地址,=
         deptTotalCode: '', //部门code,
         failureTime: '', // 报价单有效期,
-        fieldList: '', //自定义字段,
+        fieldList: [], //自定义字段,
         note: '', //备注,
         preTaxAmount: '', //含税总价.12,
         procurementExpectedArrivalTime: '', //采购预计到货时间
@@ -186,18 +186,23 @@ export default {
   methods: {
     // 保存表单数据
     saveHandle() {
+      console.log(this.form);
+
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true
           let params = Object.assign(this.form, this.params)
+          let copyParams = JSON.parse(JSON.stringify(params))
+          delete copyParams.KIND1Data
+          delete copyParams.KIND2Data
           // rules 表单验证是否通过
-          let api = 'salessheetSave' // 默认编辑更新
+          let api = 'salesquotationSave' // 默认编辑更新
           // 新增保存
           if (this.isEdit) {
-            api = 'salessheetUpdate'
+            api = 'salesquotationUpdate'
             // 编辑保存
           }
-          this.$api.seePsiSaleService[api](params)
+          this.$api.seePsiSaleService[api](copyParams)
             .then(res => {
               this.$emit('update:visible', false)
               // 刷新列表
