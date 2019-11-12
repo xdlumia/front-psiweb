@@ -42,7 +42,7 @@
           <buying-goods-edit
             :data="form"
             :hide="[
-             'costAmount','waitPurchaseNumber','note'
+             'costAmount','waitPurchaseNumber','note','salesPrice'
           ]"
             @totalAmountChange="setGoodsTotalPrice(1,$event)"
             fkey="additionalCommodityList"

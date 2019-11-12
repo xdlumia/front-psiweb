@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 10:50:20
+ * @LastEditTime: 2019-11-12 14:11:48
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -65,6 +65,11 @@
         >
           <template slot-scope="{row}">
             <span>{{row.waitPurchaseNumber||'0'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="销售单价" min-width="100" prop="salesPrice" show-overflow-tooltip v-if="!hide.includes('salesPrice')">
+          <template slot-scope="{row}">
+            <span>{{row.salesPrice||'-'}}</span>
           </template>
         </el-table-column>
         <el-table-column label="采购成本价" min-width="100" prop="costAmount" show-overflow-tooltip v-if="!hide.includes('costAmount')">
@@ -137,7 +142,7 @@
             </el-form-item>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作" min-width="60" show-overflow-tooltip v-if="!disabled">
+        <el-table-column align="center" label="操作" min-width="60" show-overflow-tooltip v-if="!disabled&&!hide.includes('action')">
           <template slot-scope="{row,$index}">
             <i @click="deleteChoose($index)" class="el-icon-error d-pointer" style="font-size:20px;color:#F5222D"></i>
           </template>
@@ -158,9 +163,15 @@ export default {
       type: Array,
       default: () => []
     },
+    // 默认列表字段
     fkey: {
       type: String,
       default: 'commodityList'
+    },
+    // 单价字段
+    priceKey: {
+      type: String,
+      default: 'costAmount'
     },
     disabled: Boolean
   },
@@ -188,14 +199,14 @@ export default {
               .map(
                 item =>
                   +Number(
-                    item.costAmount *
+                    item[this.priceKey] *
                       (1 + item.taxRate) *
                       item.commodityNumber || 0
                   ).toFixed(2)
               )
               .reduce((sum, item) => sum + item, 0)
           ).toFixed(2);
-          this.$emit('totalAmountChange',sums[index])
+          this.$emit('totalAmountChange', sums[index]);
         } else if (index == 0) {
           sums[0] = '总计';
         } else sums[index] = '';

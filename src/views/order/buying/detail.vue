@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 18:02:45
+ * @LastEditTime: 2019-11-12 14:19:47
  * @Description: 采购单详情
 */
 <template>
@@ -36,7 +36,7 @@
             </el-row>
           </form-card>
           <buying-goods-edit :data="detail" disabled :hide="[
-            'costAmount','taxRate','preTaxAmount','inventoryNumber'
+            'costAmount','taxRate','preTaxAmount','inventoryNumber','costAmountPrice','noteText','salesPrice'
           ]"/>
           <customInfo :data="detail" disabled />
           <extrasInfo :data="detail" disabled />

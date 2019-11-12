@@ -54,7 +54,7 @@
             </el-row>
           </form-card>
           <buyingGoodsEdit :data="detail" :hide="[
-            'noteText','costAmountPrice'
+            'noteText','costAmountPrice','salesPrice'
           ]" disabled />
           <customInfo :data="detail" disabled />
           <extrasInfo :data="detail" disabled />
