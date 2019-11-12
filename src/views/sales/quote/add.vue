@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 15:13:49
+ * @LastEditTime: 2019-11-12 17:39:50
  * @Description: file content
 */
 <template>
@@ -16,7 +16,6 @@
     <div v-loading="loading">
       <d-step
         v-model="steps"
-        @input="stepsClick"
         :data="['选择客户','选择产品','确定配置信息','填写报价信息']"
       ></d-step>
       <el-form
@@ -37,13 +36,14 @@
         <!-- 选择产品 -->
         <select-product
           :data="form"
-          v-if="steps==2"
+          v-show="steps==2"
         />
 
         <!-- 确定配置信息 -->
         <confirm-info
+          ref="confirmInfo"
           :data="form"
-          v-if="steps==3"
+          v-show="steps==3"
         />
 
         <!-- 填写报价信息 -->
@@ -104,32 +104,29 @@ export default {
         companyAccountId: '', //公司发票信息
         companySettlementId: '', //公司结算账户
         businessCommoditySaveVoList: [ //商品信息合集
-          {
-            alterationNumber: '', //9,
-            alterationPrice: '', //98765432109876.12,
-            apportionmentAmount: '', //98765432109876.12,
-            busCode: '', //业务编号,
-            busType: '', //9,
-            commodityCode: '', //商品编号,
-            commodityNumber: '', //9,
-            costAmount: '', //98765432109876.12,
-            discount: '', //98765432109876.12,
-            discountSprice: '', //98765432109876.12,
-            isAssembly: '', //9,
-            isDirect: '', //9,
-            isTeardown: '', //9,
-            note: '', //备注,
-            parentCommodityCode: '', //100000,
-            pickingNumber: '', //9,
-            preTaxAmount: '', //98765432109876.12,
-            putawayType: '', //9,
-            reference: '', //98765432109876.12,
-            salesPrice: '', //98765432109876.12,
-            shipmentsNumber: '', //9,
-            snCode: '', //SN码,
-            taxPrice: '', //98765432109876.12,
-            taxTotalAmount: '', //98765432109876.12
-          }
+          // {
+          //   alterationNumber: '', //退换商品数量(出入数量),
+          //   alterationPrice: '', //实际退/换单价,
+          //   apportionmentAmount: '', //分摊后金额,
+          //   commodityCode: '', //商品编号,
+          //   commodityNumber: '', //商品数量,
+          //   costAmount: '', //采购/销售成本金额,
+          //   discount: '', //折扣,
+          //   discountSprice: '', //折后单价,
+          //   isAssembly: '', //是否组装,
+          //   isDirect: '', //是否直发,
+          //   isTeardown: '', //是否拆卸,
+          //   parentCommodityCode: '', //父商品code,
+          //   pickingNumber: '', //拣货数量,
+          //   preTaxAmount: '', //含税总价,
+          //   putawayType: '', //9,
+          //   reference: '', //库存类型(出库/入库),
+          //   salesPrice: '', //销售单价,
+          //   shipmentsNumber: '', //发货数量,
+          //   snCode: '', //SN码,
+          //   taxPrice: '', //税后退货单价2,
+          //   taxTotalAmount: '', //税后退货总价
+          // }
         ],
         clientId: '', //客户id
         clientLinkman: '', //客户联系人,
@@ -161,19 +158,9 @@ export default {
     // this.initForm()
   },
   computed: {
-    showPop: {
-      get() {
-        return this.visible
-      },
-      set(val) {
-        this.$emit('update:visible', val)
-      }
-    }
   },
-  methods: {
-
-    // 步骤点击
-    stepsClick(index) {
+  watch: {
+    steps(index) {
       // 点击第二步的时候判断有没有选择客户
       // if (index == 2 && !this.form.clientId) {
       //   this.$message.error({
@@ -183,17 +170,22 @@ export default {
       //   this.steps = 1
       //   return
       // }
-      if (this.type != 'add') {
-        this.$message.error({
-          showClose: true,
-          message: '编辑和复制的时候只能操作当前步骤'
-        })
-        this.steps = 4
+      if (index === 3) {
+        // 确定配置信息的时候查询整机
+        this.$refs.confirmInfo.commonquotationconfigdetailsListConfigByGoodName()
       }
+      // if (this.type != 'add') {
+      //   this.$message.error({
+      //     showClose: true,
+      //     message: '编辑和复制的时候只能操作当前步骤'
+      //   })
+      //   this.steps = 4
+      // }
     },
+  },
+  methods: {
     // 保存表单数据
     saveHandle() {
-
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true
@@ -201,7 +193,7 @@ export default {
           // rules 表单验证是否通过
           let api = 'salessheetSave' // 默认编辑更新
           // 新增保存
-          if (this.type === 'add') {
+          if (this.isEdit) {
             api = 'salessheetUpdate'
             // 编辑保存
           }
