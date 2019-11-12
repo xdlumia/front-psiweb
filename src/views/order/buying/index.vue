@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 18:01:46
+ * @LastEditTime: 2019-11-12 14:18:49
  * @Description: 采购-请购单
 */
 <template>
@@ -35,6 +35,7 @@
     </TableView>
     <OrderBuyingDetail :code="currentCode" :visible.sync="showDetail" @reload="reload" />
     <OrderBuyingDetailRec :visible.sync="orderBuyingDetailRecVisible" @reload="reload" />
+    <Edit :visible="showEdit" />
   </div>
 </template>
 <script>
@@ -43,6 +44,7 @@ import OrderBuyingDetail from './detail';
 import OrderStorage from '../storage/edit';
 import OrderBuyingDetailRec from './detailRec';
 import AddBorrowIn from '@/views/order/borrow/addIn';
+import Edit from './edit'
 /**
  * 采购-请购单
  */
@@ -52,11 +54,13 @@ export default {
     OrderBuyingDetail,
     OrderBuyingDetailRec,
     OrderStorage,
-    AddBorrowIn
+    AddBorrowIn,
+    Edit
   },
   data() {
     return {
       status: [],
+      showEdit:false,
       showDetail: false,
       addBorrowInVisible: false,
       orderBuyingDetailRecVisible: false,

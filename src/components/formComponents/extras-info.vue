@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 20:04:49
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-12 13:47:25
  * @Description: 备注信息 字段已绑定 1 
 */
 <template>
@@ -185,6 +185,7 @@ export default {
     //   }
     // },
     uploadFile({ name, url, oldName }) {
+      if(!this.data.attachList) this.$set(this.data,'attachList',[])
       this.data.attachList = this.data.attachList || [];
       this.data.attachList.push({
         fileName: oldName,

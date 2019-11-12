@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 17:08:35
+ * @LastEditTime: 2019-11-12 14:22:38
  * @Description: 直发单详情
 */
 <template>
@@ -23,7 +23,7 @@
             disabled
           ></deliverInfo>
           <buying-goods-edit :data="detail" disabled fkey="commodityEntityList" :hide="[
-            'costAmount','taxRate','preTaxAmount','inventoryNumber'
+            'costAmount','taxRate','preTaxAmount','inventoryNumber','salesPrice'
           ]"/>
           <customInfo :data="detail" disabled></customInfo>
           <extrasInfo :data="detail" disabled></extrasInfo>

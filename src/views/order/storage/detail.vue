@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 08:46:40
+ * @LastEditTime: 2019-11-12 14:58:02
  * @Description: 采购入库单
 */
 <template>
@@ -94,7 +94,7 @@
           <buying-goods-edit
             :data="detail"
             :hide="[
-             'costAmount','waitPurchaseNumber','note'
+             'costAmount','waitPurchaseNumber','note','salesPrice'
           ]"
             disabled
             id="commodityInfo"
@@ -102,7 +102,7 @@
           <buying-goods-edit
             :data="detail"
             :hide="[
-             'costAmount','waitPurchaseNumber','note'
+             'costAmount','waitPurchaseNumber','note','salesPrice'
           ]"
             disabled
             fkey="additionalCommodityList"

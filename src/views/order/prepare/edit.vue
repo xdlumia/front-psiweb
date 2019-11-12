@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 10:14:42
+ * @LastEditTime: 2019-11-12 14:22:51
  * @Description: 新增备货单
 */
 <template>
@@ -35,7 +35,7 @@
           <buyingGoodsEdit
             :data="form"
             :hide="[
-            'noteText','waitPurchaseNumber','costAmountPrice'
+            'noteText','waitPurchaseNumber','costAmountPrice','salesPrice'
           ]"
             id="commodityInfo"
           />
