@@ -2,8 +2,8 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 16:55:18
- * @Description: 供应商信息
+ * @LastEditTime: 2019-11-12 09:24:28
+ * @Description: 供应商信息 已绑定 1
 */
 <template>
   <form-card title="供应商信息">

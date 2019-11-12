@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 15:48:51
+ * @LastEditTime: 2019-11-12 09:08:14
  * @Description: 到货信息 已绑定字段 1
  */
 <template>
@@ -101,7 +101,10 @@ export default {
       { label: '服务类型', prop: 'logisticsModelCode', type: 'select', dictName:'PSI_FWS_FWLX',
         exclude:'serviceFilter' },
       { label: '物流单号', prop: 'logisticsSn', type: 'input', },
-      { label: '是否到付', prop: 'controlType', type: 'input', },
+      { label: '是否到付', prop: 'collected', type: 'select',options:[
+        {code:0,content:'否'},
+        {code:1,content:'是'},
+      ] },
       { label: '物流费用', prop: 'totalAmount', type: 'input', rules: [{ type: 'price' }], },
     ];
     return {

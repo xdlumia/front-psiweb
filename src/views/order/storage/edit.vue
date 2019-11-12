@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 08:48:06
+ * @LastEditTime: 2019-11-12 09:05:43
  * @Description: 采购入库单
 */
 <template>
@@ -138,10 +138,8 @@ export default {
     handleClick({ label, name }) {
       this.activeName = '';
     },
-    close() {
-      this.$emit('update:visible', false);
-    },
     supplierChange(e) {
+      if (!this.form.logistics) this.$set(this.form, 'logistics', {});
       this.$set(this.form.logistics, 'supplierLinkman', e.linkManName || '');
       this.$set(this.form.logistics, 'supplierPhone', e.phone || '');
     },
@@ -169,14 +167,13 @@ export default {
         直发单: 'purchasedirectGetByCode'
       };
       try {
-        let {
-          data: { commodityEntityList }
-        } = await this.$api.seePsiPurchaseService[api[this.from]](
+        let { data } = await this.$api.seePsiPurchaseService[api[this.from]](
           null,
           this.joinCode
         );
-        commodityList = commodityEntityList;
+        commodityList = data.commodityList || data.commodityEntityList;
       } catch (error) {}
+      console.log(commodityList);
       return {
         commodityList,
         additionalCommodityList: [],
@@ -195,6 +192,8 @@ export default {
         } else {
           await this.$api.seePsiPurchaseService.purchaseputinUpdate(this.form);
         }
+        this.setEdit();
+        this.close();
       } catch (error) {}
       this.loading = false;
       console.log(this.form);
