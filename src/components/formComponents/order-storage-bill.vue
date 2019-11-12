@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 10:54:40
+ * @LastEditTime: 2019-11-12 12:02:50
  * @Description: 账单信息
 */
 <template>
@@ -62,6 +62,9 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="wfull ac">
+      <el-form-item :rules="financeListRule" class="ac pt5" prop="financeList"></el-form-item>
+    </div>
     <div @click="addBill" class="mt10 el-icon-circle-plus-outline d-pointer" v-if="!disabled">增加账期</div>
   </form-card>
 </template>
@@ -72,10 +75,30 @@ export default {
       type: Object,
       default: () => ({})
     },
-    disabled: Boolean
+    disabled: Boolean,
+    max: Number
   },
   data() {
-    return {};
+    return {
+      financeListRule: [
+        {
+          validator: (rule, value, cb) => {
+            let max = Number(this.max) || 0;
+            let now = Number(this.billTotalAmount) || 0;
+            if (!this.data.financeList || !this.data.financeList.length) {
+              cb(new Error('请填写账单信息'));
+            }
+            if (max) {
+              if (now != max) {
+                return cb(new Error('账单总金额须为商品总金额之和'));
+              }
+            }
+            cb();
+          }
+        }
+      ],
+      billTotalAmount: 0
+    };
   },
   mounted() {
     this.resetBillData();
@@ -105,6 +128,7 @@ export default {
               .map(item => Number(item.payAmount) || 0)
               .reduce((sum, item) => sum + item, 0)
           ).toFixed(2);
+          this.billTotalAmount = sums[index];
         } else if (index == 0) {
           sums[0] = '总计';
         } else sums[index] = '';

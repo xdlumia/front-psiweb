@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 10:52:58
+ * @LastEditTime: 2019-11-12 11:59:24
  * @Description: 采购入库单
 */
 <template>
@@ -36,7 +36,7 @@
             :hide="[
             'add','costAmount','waitPurchaseNumber','note'
           ]"
-            @totalAmountChange="a=>goodsTotalPrice[0]=a"
+            @totalAmountChange="setGoodsTotalPrice(0,$event)"
             id="commodityInfo"
           />
           <buying-goods-edit
@@ -44,12 +44,12 @@
             :hide="[
              'costAmount','waitPurchaseNumber','note'
           ]"
-            @totalAmountChange="a=>goodsTotalPrice[1]=a"
+            @totalAmountChange="setGoodsTotalPrice(1,$event)"
             fkey="additionalCommodityList"
             v-if="form.source=='请购单'"
           />
           <paymentLate :data="form" id="paymentLate" />
-          <order-storage-bill :data="form" :max="goodsTotalPrice.reduce((a,b)=>a+=b,0)" id="billInfo" />
+          <order-storage-bill :data="form" :max="goodsTotalSum" id="billInfo" />
           <customInfo :data="form" id="customInfo" />
           <extrasInfo :data="form" id="extrasInfo" />
         </el-form>
@@ -79,6 +79,7 @@ export default {
     return {
       activeName: '',
       goodsTotalPrice: [0, 0],
+      goodsTotalSum: 0,
       form: {
         // 流程审批状态（0 未审核 1审核中 2 完成 3 驳回） 0
         approvalState: '',
@@ -140,6 +141,10 @@ export default {
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
+    },
+    setGoodsTotalPrice(index, total) {
+      this.goodsTotalPrice[index] = total;
+      this.goodsTotalSum = this.goodsTotalPrice.reduce((a, b) => (a += b), 0);
     },
     supplierChange(e) {
       if (!this.form.logistics) this.$set(this.form, 'logistics', {});
