@@ -2,14 +2,15 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 10:16:02
+ * @LastEditTime: 2019-11-12 14:32:36
  * @Description: file content
 */
 <template>
   <el-dialog
     :title="type=='add'?'新建报价单':`编辑:${code}`"
-    :visible.sync="showPop"
+    :visible.sync="showDetailPage"
     width="920px"
+    @close="close"
     v-dialogDrag
   >
     <div v-loading="loading">
@@ -20,34 +21,35 @@
       ></d-step>
       <el-form
         v-if="visible"
+        ref="form"
         size="small"
-        :model="addForm"
+        :model="form"
         class="d-auto-y"
         style="height:calc(100vh - 220px)"
       >
         <!--  选择客户 和 填写报价信息  有相同的操作.两边数据要实时更新 所以使用 v-if 切换到当前的页面重新查询数据 -->
         <!-- 选择客户  -->
         <select-customer
-          :data="addForm"
+          :data="form"
           v-show="steps==1"
         />
 
         <!-- 选择产品 -->
         <select-product
-          :data="addForm"
-          v-show="steps==2"
+          :data="form"
+          v-if="steps==2"
         />
 
         <!-- 确定配置信息 -->
         <confirm-info
-          :data="addForm"
-          v-show="steps==3"
+          :data="form"
+          v-if="steps==3"
         />
 
         <!-- 填写报价信息 -->
         <quote-info
-          :data="addForm"
-          v-show="steps==4"
+          :data="form"
+          v-if="steps==4"
         />
       </el-form>
       <!-- 确定按钮 -->
@@ -65,7 +67,7 @@
         <el-button
           v-else
           type="primary"
-          @click="saveHandle('addForm')"
+          @click="saveHandle('form')"
           size="small"
         >保 存</el-button>
       </div>
@@ -77,31 +79,9 @@ import selectCustomer from './add/select-customer'
 import selectProduct from './add/select-product'
 import confirmInfo from './add/confirm-info'
 import quoteInfo from './add/quote-info'
+import VisibleMixin from '@/utils/visibleMixin';
 export default {
-  props: {
-    // 是否显示弹出框
-    visible: {
-      required: true,
-      default: false,
-      type: Boolean,
-    },
-    // 编号 编辑查询详情时候用到
-    code: [Number, String],
-    // 操作当前行数据 编辑可能会用到
-    rowData: {
-      default: () => ({}),
-      type: Object,
-    },
-    // 类型 当前是编辑还是新增
-    type: {
-      type: String,
-    },
-    // 参数 别的页面调用的时候可能附加的参数
-    params: {
-      default: () => ({}),
-      type: Object,
-    },
-  },
+  mixins: [VisibleMixin],
   components: {
     selectCustomer,
     selectProduct,
@@ -114,16 +94,15 @@ export default {
       currCompont: 'clientInfo',
       // 当前操作步骤
       steps: 1,
-      clientno: '',
-      activeName: 'first', // 数据源
       // 新增orEdit框内容
-      addForm: {
+      form: {
         KIND1Data: [], //临时存放第二步整机列表选中的数据
         KIND2Data: [], //临时存放第二步配件列表选中的数据
+        id: {},
         apprpvalState: '', //审核状态
         attachList: '', //附件,
-        companyAccountId: 4, //公司发票信息
-        companySettlementId: 6, //公司结算账户
+        companyAccountId: '', //公司发票信息
+        companySettlementId: '', //公司结算账户
         businessCommoditySaveVoList: [ //商品信息合集
           {
             alterationNumber: '', //9,
@@ -187,32 +166,45 @@ export default {
         return this.visible
       },
       set(val) {
-        this.$emit('update:visible', false)
+        this.$emit('update:visible', val)
       }
     }
   },
   methods: {
+    // async getDetail() {
+    //   if (this.code) {
+    //     let {
+    //       data
+    //     } = await this.$api.seePsiPurchaseService.purchasedirectGetByCode(
+    //       null,
+    //       this.code
+    //     );
+    //     return data;
+    //   } else if (this.rowData) {
+    //     return this.rowData;
+    //   }
+    // },
     // 初始化表单
-    initForm() {
-      if (this.type === 'edit' || this.type === 'copy') {
-        this.steps = 4
-        const data = this.data
-        for (const key in this.addForm) {
-          this.addForm[key] = data[key]
-        }
+    // initForm() {
+    //   if (this.type === 'edit' || this.type === 'copy') {
+    //     this.steps = 4
+    //     const data = this.data
+    //     for (const key in this.form) {
+    //       this.form[key] = data[key]
+    //     }
 
-      } else if (this.type === 'add') {
-        // 清空form表单
-        this.$nextTick(() => {
-          this.$refs.addForm.resetFields()
-          this.addForm.id = ''
-        })
-      }
-    },
+    //   } else if (this.type === 'add') {
+    //     // 清空form表单
+    //     this.$nextTick(() => {
+    //       this.$refs.form.resetFields()
+    //       this.form.id = ''
+    //     })
+    //   }
+    // },
     // 步骤点击
     stepsClick(index) {
       // 点击第二步的时候判断有没有选择客户
-      // if (index == 2 && !this.addForm.clientId) {
+      // if (index == 2 && !this.form.clientId) {
       //   this.$message.error({
       //     showClose: true,
       //     message: '请先选择客户'
@@ -229,23 +221,24 @@ export default {
       }
     },
     // 保存表单数据
-    saveHandle(formName) {
+    saveHandle() {
 
-      this.$refs[formName].validate(valid => {
+      this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true
-          let params = Object.assign(this.addForm, this.params)
+          let params = Object.assign(this.form, this.params)
           // rules 表单验证是否通过
-          let api = 'collegeManagerUpdate' // 默认编辑更新
+          let api = 'salessheetSave' // 默认编辑更新
           // 新增保存
           if (this.type === 'add') {
-            api = 'collegeManagerSave'
+            api = 'salessheetUpdate'
             // 编辑保存
           }
-          this.$api.seePumaidongService[api](params)
+          this.$api.seePsiSaleService[api](params)
             .then(res => {
-              this.visible = false
-              this.$emit('submit', 'success')
+              this.$emit('update:visible', false)
+              // 刷新列表
+              this.$emit('reload')
             })
             .finally(() => {
               this.loading = false

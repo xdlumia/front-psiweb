@@ -2,22 +2,67 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 09:03:19
+ * @LastEditTime: 2019-11-12 14:28:46
  * @Description: 确定配置信息
 */
 <template>
   <div v-loading="loading">
+    <div
+      class="ac mt20"
+      v-if="!data.KIND1Data.length && !data.KIND2Data.length"
+    >请先选择产品</div>
+    <!-- 配件列表 -->
     <quotationInfo
-      v-for="(item,index) of data.KIND1Data"
-      :key="index"
-      :title="item.name"
+      v-for="(val,key) of KIND2List"
+      :key="key"
+      :title="key"
     >
       <div slot="body">
-        这是个表单数据
+        <el-table
+          size="mini"
+          max-height="350px"
+          :data="val.children"
+          ref="kind2"
+          border
+        >
+          <el-table-column
+            prop="secondClassName"
+            label="商品分类"
+            width="180"
+          >
+          </el-table-column>
+          <el-table-column
+            show-overflow-tooltip
+            label="编号"
+            min-width="180"
+          >
+            <template slot-scope="scope">
+              <span class="d-text-blue">{{scope.row.goodsCode}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="name"
+            label="商品名称"
+            min-width="120"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="specOne"
+            min-width="120"
+            label="规格"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="price"
+            width="120"
+            label="销售参考价"
+          >
+          </el-table-column>
+        </el-table>
       </div>
     </quotationInfo>
-    <quotationInfo
-      v-for="(item,index) of data.KIND2Data"
+    <!-- <quotationInfo
+      v-for="(item,index) of data.KIND1Data"
       :key="index"
       :title="item.name"
     >
@@ -29,7 +74,7 @@
       <div slot="body">
         这是个表单数据
       </div>
-    </quotationInfo>
+    </quotationInfo> -->
   </div>
 </template>
 <script>
@@ -47,77 +92,42 @@ export default {
   data() {
     return {
       loading: false,
-      // 当前操作步骤
-      clientno: '',
-      // 新增orEdit框内容
-      addForm: {
-        title: '', // 标题
-        cityName: '', // 城市
-        cityId: this.$local.fetch('cityInfo').id, // 城市
-        id: '', // 主键id
-        mainPic: '', // 主图
-        content: '' // 内容
-      },
+
     }
   },
   created() {
-    // this.initCompanyAdd()
+
   },
   mounted() {
-    // this.currStep()
+    let params = {}
+    this.commonquotationconfigdetailsListConfigByGoodName(params)
   },
-  methods: {
-    // 点击步骤条触发
-    editClick() {
-
-    },
-    // 编辑和新增
-    initCompanyAdd() {
-      if (this.dialogMeta.type === 'add') {
-        // 清空form表单
-        this.$nextTick(() => {
-          this.$refs.addForm.resetFields()
-          this.addForm.id = ''
-        })
-      } else {
-        const data = this.dialogMeta.data
-        for (const key in this.addForm) {
-          this.addForm[key] = data[key]
+  computed: {
+    KIND2List() {
+      let newJson = {}
+      this.data.KIND2Data.forEach(item => {
+        // 如果没有当前key 创建当前key 并创建.chiler 为数组
+        if (!newJson.hasOwnProperty(item.secondClassName)) {
+          newJson[item.secondClassName] = {}
+          newJson[item.secondClassName].children = [item]
         }
-        this.addForm.start_date = [
-          new Date(data.startTime),
-          new Date(data.endTime)
-        ]
-      }
-    },
-    // 保存表单数据
-    saveHandle(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          const [currCity] = this.citys().filter(
-            item => item.id === this.addForm.cityId
-          )
-          this.addForm.cityName = currCity.name
-          this.loading = true
-          delete this.addForm.start_date
-          // rules 表单验证是否通过
-          let api = 'collegeManagerUpdate' // 默认编辑更新
-          // 新增保存
-          if (this.dialogMeta.type === 'add') {
-            api = 'collegeManagerSave'
-            // 编辑保存
-          }
-          this.$api.seePumaidongService[api](this.addForm)
-            .then(res => {
-              this.dialogMeta.visible = false
-              this.$emit('submit', 'success')
-            })
-            .finally(() => {
-              this.loading = false
-            })
+        // 如果当前有key 那一定有子项.children
+        else {
+          newJson[item.secondClassName].children.push(item)
         }
       })
+      return newJson
     }
+  },
+  methods: {
+    // 根据名称获取整机信息
+    commonquotationconfigdetailsListConfigByGoodName(params) {
+      this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(params)
+        .then(res => {
+
+        })
+    },
+
   }
 }
 </script>

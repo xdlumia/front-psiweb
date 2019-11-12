@@ -2,14 +2,14 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 19:49:33
+ * @LastEditTime: 2019-11-12 14:27:56
  * @Description: 报价单详情
 */
 <template>
   <div>
     <side-detail
       title="报价单详情"
-      :visible.sync="showPop"
+      :visible.sync="showDetailPage"
       width="920px"
       :status="statusData"
     >
@@ -158,14 +158,14 @@ export default {
     }
   },
   computed: {
-    showPop: {
-      get() {
-        return this.visible
-      },
-      set(val) {
-        this.$emit('update:visible', false)
-      }
-    }
+    // showPop: {
+    //   get() {
+    //     return this.visible
+    //   },
+    //   set(val) {
+    //     this.$emit('update:visible', false)
+    //   }
+    // }
   },
   watch: {
     visible(val) {

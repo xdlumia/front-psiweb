@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 16:52:22
+ * @LastEditTime: 2019-11-12 13:14:00
  * @Description: file content
 */
 <template>
@@ -69,13 +69,11 @@
 <script>
 
 export default {
-  props: ['visible', 'code', 'type'],
   components: {
 
   },
   data() {
     return {
-      loading: false,
       // 新增orEdit框内容
       addForm: {
         id: '',
@@ -154,14 +152,6 @@ export default {
   },
 
   computed: {
-    showPop: {
-      get() {
-        return this.visible
-      },
-      set(val) {
-        this.$emit('update:visible', false)
-      }
-    }
   },
   watch: {
     visible(val) {
@@ -172,17 +162,17 @@ export default {
   },
   methods: {
     // 初始化表单
-    initForm() {
-      if (this.type === 'edit') {
-        this.salesalterationsheetGetInfoByCode()
-      } else if (this.type === 'add') {
-        // 清空form表单
-        this.$nextTick(() => {
-          this.$refs.addForm.resetFields()
-          this.addForm.id = ''
-        })
-      }
-    },
+    // initForm() {
+    //   if (this.type === 'edit') {
+    //     this.salesalterationsheetGetInfoByCode()
+    //   } else if (this.type === 'add') {
+    //     // 清空form表单
+    //     this.$nextTick(() => {
+    //       this.$refs.addForm.resetFields()
+    //       this.addForm.id = ''
+    //     })
+    //   }
+    // },
     // 保存表单数据
     saveHandle() {
       this.$refs.addForm.validate(valid => {

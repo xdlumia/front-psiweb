@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 11:16:35
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-12 14:35:25
  * @Description: 公司信息  传入 公司发票账户 和公司结算账户id 会自动查询其余信息
 */
 <template>
@@ -154,10 +154,21 @@ export default {
       this.settlementOptions = row.commonCorporationAccountEntities || {}
       this.data.companyAccountId = row.id
       this.data.companySettlementId = ''
+
+      // 这里的接口是公共的 .所以字段不对应
+      this.companyInfo.invoiceTitle = row.corporationName
+      this.companyInfo.taxpayersNum = row.taxpayersNum
+      this.companyInfo.registerAddres = row.address
+      this.companyInfo.accountBank = ''
+      this.companyInfo.bankAccount = ''
+
     },
     // 公司结算账户更改
     settlementChange(row) {
       this.data.companySettlementId = row.id
+      // 这里的接口是公共的 .所以字段不对应
+      this.companyInfo.accountBank = row.accountBank
+      this.companyInfo.bankAccount = row.account
     },
     // 初始化表单
     initFrom() {
@@ -168,7 +179,7 @@ export default {
         this.invoiceItem = { id: this.data.companyAccountId }
 
         let [invoiceSelected] = this.invoiceOptions.filter(item => item.id === this.data.companyAccountId) || [{}]
-        invoiceSelected=invoiceSelected||{}
+        invoiceSelected = invoiceSelected || {}
         // 获取结算账户列表
         this.settlementOptions = invoiceSelected.commonCorporationAccountEntities
         // 这里的接口是公共的 .所以字段不对应
