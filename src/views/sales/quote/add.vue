@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 14:32:36
+ * @LastEditTime: 2019-11-12 15:13:49
  * @Description: file content
 */
 <template>
@@ -49,7 +49,7 @@
         <!-- 填写报价信息 -->
         <quote-info
           :data="form"
-          v-if="steps==4"
+          v-show="steps==4"
         />
       </el-form>
       <!-- 确定按钮 -->
@@ -171,36 +171,7 @@ export default {
     }
   },
   methods: {
-    // async getDetail() {
-    //   if (this.code) {
-    //     let {
-    //       data
-    //     } = await this.$api.seePsiPurchaseService.purchasedirectGetByCode(
-    //       null,
-    //       this.code
-    //     );
-    //     return data;
-    //   } else if (this.rowData) {
-    //     return this.rowData;
-    //   }
-    // },
-    // 初始化表单
-    // initForm() {
-    //   if (this.type === 'edit' || this.type === 'copy') {
-    //     this.steps = 4
-    //     const data = this.data
-    //     for (const key in this.form) {
-    //       this.form[key] = data[key]
-    //     }
 
-    //   } else if (this.type === 'add') {
-    //     // 清空form表单
-    //     this.$nextTick(() => {
-    //       this.$refs.form.resetFields()
-    //       this.form.id = ''
-    //     })
-    //   }
-    // },
     // 步骤点击
     stepsClick(index) {
       // 点击第二步的时候判断有没有选择客户
