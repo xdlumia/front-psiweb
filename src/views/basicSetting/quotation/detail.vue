@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-09 11:26:30
+ * @LastEditTime: 2019-11-11 17:53:54
  * @Description: description
  -->
 <template>
@@ -19,21 +19,23 @@
         v-if="!detailForm.state"
         size="mini"
         type="danger"
-        @click="commonserviceproviderUpdate(rowData.id, 1)"
+        @click="commonquotationconfigUpdate(rowData.id, 1)"
       >停用</el-button>
       <el-button
         v-else
         size="mini"
         type="primary"
-        @click="commonserviceproviderUpdate(rowData.id, 0)"
+        @click="commonquotationconfigUpdate(rowData.id, 0)"
       >启用</el-button>
       <el-button size="mini" type="primary" @click="showEdit = true">编辑</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form disabled size="mini"></el-form>
+        <el-form disabled size="mini">
+          <information :data="detailForm" :detail="true"></information>
+          <configDetail :quotationId="rowData.id"></configDetail>
+        </el-form>
       </el-tab-pane>
-      <el-tab-pane label="应付账单">应付账单</el-tab-pane>
     </el-tabs>
     <addQuotation
       :visible.sync="showEdit"
@@ -47,9 +49,13 @@
 
 <script>
 import addQuotation from './add-quotation'
+import information from './components/information'
+import configDetail from './components/config-detail'
 export default {
   components: {
-    addQuotation
+    addQuotation,
+    information,
+    configDetail
   },
   props: {
     visible: Boolean,
@@ -64,7 +70,7 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     return {
       showEdit: false,
       loading: false,
@@ -72,48 +78,47 @@ export default {
       detailForm: {},
       status: [
         { label: '状态', value: this.rowData.state ? '停用' : '启用' },
-        { label: '报价单创建人', value: this.rowData.creatorName },
+        { label: '提交人', value: this.rowData.creatorName },
         { label: '创建部门', value: this.rowData.deptName },
-        { label: '创建时间', value: this.rowData.createTime, isTime: true },
-        { label: '来源', value: this.rowData.source, dictName: 'PSI_KHGL_LY' }
+        { label: '创建时间', value: this.rowData.createTime, isTime: true }
       ]
     }
   },
-  mounted() {
+  mounted () {
     this.checkVisible();
-    this.commonserviceproviderInfoBycode()
+    this.commonquotationconfigInfoBycode()
   },
   watch: {
-    visible() {
+    visible () {
       this.checkVisible();
     }
   },
   methods: {
-    refresh() {
-      this.commonserviceproviderInfoBycode()
+    refresh () {
+      this.commonquotationconfigInfoBycode()
       this.$emit('refresh')
     },
-    checkVisible() {
+    checkVisible () {
       this.showPop = this.visible;
     },
-    commonserviceproviderInfoBycode() {
+    commonquotationconfigInfoBycode () {
       this.loading = true
-      this.$api.seePsiCommonService.commonserviceproviderInfoBycode(null, this.code).then(res => {
+      this.$api.seePsiCommonService.commonquotationconfigInfoBycode(null, this.code).then(res => {
         this.detailForm = res.data || {}
-        this.detailForm.serviceTypeList = res.data.serviceType.split(',')
+        this.detailForm = Object.assign(this.detailForm, { goodName: this.rowData.goodName })
         this.status[0].value = res.data.state ? '停用' : '启用'
       }).finally(() => {
         this.loading = false
       })
     },
-    commonserviceproviderUpdate(id, state) {
+    commonquotationconfigUpdate (id, state) {
       this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiCommonService.commonserviceproviderUpdate({ id, state }).then(res => {
-          this.commonserviceproviderInfoBycode()
+        this.$api.seePsiCommonService.commonquotationconfigUpdate({ id, state }).then(res => {
+          this.commonquotationconfigInfoBycode()
           this.$emit('refresh')
         })
       }).catch(() => {

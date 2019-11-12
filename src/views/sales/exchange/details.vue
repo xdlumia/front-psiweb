@@ -2,61 +2,71 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 18:04:15
+ * @LastEditTime: 2019-11-11 18:27:42
  * @Description: 销售换货单详情
 */
 <template>
-  <side-detail
-    title="销售退货单"
-    :visible.sync="showPop"
-    width="920px"
-  >
-    <div slot="button">
-      <!-- 操作按钮 -->
-      <span
-        v-for="(item,index) of buttons"
-        :key="index"
-      >
-        <el-button
-          class="mr10"
-          @click="buttonsClick(item.label)"
-          v-if="currStatusType[currStatus].includes(item.label)"
-          size="mini"
-          :type="item.type"
-        >{{item.label}}</el-button>
-      </span>
-
-    </div>
-    <el-form
-      ref="form"
-      :model="form"
-      size="mini"
-      label-position="top"
+  <div>
+    <side-detail
+      title="销售退货单"
+      :visible.sync="showPop"
+      width="920px"
     >
-      <el-tabs
-        v-model="activeName"
-        type="card"
-      >
-        <el-tab-pane
-          v-for="(val,key) of tabs"
-          :key="key"
-          :label="val"
-          :name="key"
+      <div slot="button">
+        <!-- 操作按钮 -->
+        <span
+          v-for="(item,index) of buttons"
+          :key="index"
         >
-        </el-tab-pane>
-      </el-tabs>
-      <keep-alive>
-        <components
-          class="d-auto-y"
-          style="height:calc(100vh - 200px)"
-          :is="activeName"
-        ></components>
-      </keep-alive>
-    </el-form>
-  </side-detail>
+          <el-button
+            class="mr10"
+            @click="buttonsClick(item.label)"
+            v-if="currStatusType[rowData.state].includes(item.label)"
+            size="mini"
+            :type="item.type"
+          >{{item.label}}</el-button>
+        </span>
+
+      </div>
+      <el-form
+        ref="form"
+        :model="form"
+        size="mini"
+        label-position="top"
+      >
+        <el-tabs
+          v-model="activeName"
+          type="card"
+        >
+          <el-tab-pane
+            v-for="(val,key) of tabs"
+            :key="key"
+            :label="val"
+            :name="key"
+          >
+          </el-tab-pane>
+        </el-tabs>
+        <keep-alive>
+          <components
+            class="d-auto-y"
+            style="height:calc(100vh - 200px)"
+            :is="activeName"
+          ></components>
+        </keep-alive>
+      </el-form>
+    </side-detail>
+    <!-- 退货单新增/编辑 -->
+    <add
+      :visible.sync="editVisible"
+      :code="code"
+      type="edit"
+      :rowData="rowData"
+    />
+  </div>
 </template>
 <script>
 import detail from './details/detail' //详情
+import add from '../return/add'
 export default {
   components: {
     detail,
@@ -78,7 +88,7 @@ export default {
       /**
        * 根据当前状态判断显示哪些按钮
        */
-      currStatus: 3,
+      // currStatus: 3,
       currStatusType: {
         '-1': ['提交审核', '编辑', '删除'], // 新建
         '0': ['撤销审核', '审核通过', '驳回'], // 审核中
@@ -87,6 +97,7 @@ export default {
         '3': [], //已完成
         '4': ['提交审核', '编辑', '删除'], //已驳回
       },
+      editVisible: false,
       // tab操作栏
       tabs: {
         detail: '详情',

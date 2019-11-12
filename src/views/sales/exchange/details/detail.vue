@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 17:31:02
+ * @LastEditTime: 2019-11-11 18:18:01
  * @Description: 销售换货单详情-详情
 */
 <template>
@@ -19,11 +19,7 @@
       disabled
       :data="detailInfo"
     />
-    <!-- 退货商品信息 -->
-    <goods-return
-      :params="{busType:17,busCode:code}"
-      disabled
-    />
+    <!-- 换入商品信息 -->
     <goods-return
       title="换入商品信息"
       disabled

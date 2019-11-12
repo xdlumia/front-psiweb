@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 17:40:36
+ * @LastEditTime: 2019-11-11 19:11:07
  * @Description: 销售出库单详情
 */
 <template>
@@ -59,19 +59,19 @@
       </el-form>
     </side-detail>
     <!-- 编辑 -->
-    <outLib-edit
+    <add
       :visible.sync="editVisible"
       :rowData="rowData"
     />
   </div>
 </template>
 <script>
-import outLibEdit from './edit' //销售出库单编辑
+import add from './add' //销售出库单编辑
 import detail from './outLibDetails/detail' //详情
 export default {
   components: {
     detail,
-    outLibEdit
+    add
   },
   props: ['visible', 'rowData', 'code'],
   data() {

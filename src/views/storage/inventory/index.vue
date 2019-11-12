@@ -157,7 +157,7 @@ export default {
         },
         {
           label: '创建部门',
-          prop: 'deptId',
+          prop: 'deptTotalCode',
           type: 'employee',
           default: true
         },
