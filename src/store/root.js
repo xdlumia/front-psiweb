@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-25 11:23:44
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-04 16:39:05
+ * @LastEditTime: 2019-11-12 16:31:07
  * @Description: description
  */
 
@@ -26,7 +26,7 @@ export const getters = {
 export const mutations = {
   setNavData(state, list) {
     list = list || JSON.parse(localStorage.getItem('navData')) || []
-    const navList = recursionNav(list).concat(['/home', '/404', '/403', '/500', '/login'])
+    const navList = recursionNav(list).concat(['/home', '/404', '/403', '/500', '/login', '/todo'])
     state.navData = navList
   }
 }

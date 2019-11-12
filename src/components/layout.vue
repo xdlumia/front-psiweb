@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-31 18:55:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-04 15:33:59
+ * @LastEditTime: 2019-11-12 16:30:23
  * @Description: description
  -->
 /*
@@ -54,7 +54,7 @@
                 <!-- <p> 帮助房地产中介提升企业产能 </p> -->
               </div>
             </el-menu-item>
-            <el-menu-item style="height: 32px;line-height: 33px;margin-top: 10px;border-bottom:none">
+            <el-menu-item index="/todo" style="height: 32px;line-height: 33px;margin-top: 10px;border-bottom:none">
               <el-badge
                 :value="12"
                 class="backlog-wrapper"

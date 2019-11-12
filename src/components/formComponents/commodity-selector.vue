@@ -25,35 +25,18 @@
         v-for="(item,i) in options"
       >
         <el-row>
-          <el-col
-            :span="6"
-            class="b d-text-black"
-            v-if="i==0"
-          >商品名称</el-col>
-          <el-col
-            :span="18"
-            class="b d-text-black"
-            v-if="i==0"
-          >商品编号</el-col>
-          <el-col
-            :span="6"
-            class="d-hidden d-elip"
-          >{{item.goodsName}}</el-col>
-          <el-col
-            :span="18"
-            class="d-hidden d-elip"
-          >
+          <el-col :span="6" class="b d-text-black" v-if="i==0">商品名称</el-col>
+          <el-col :span="18" class="b d-text-black" v-if="i==0">商品编号</el-col>
+          <el-col :span="6" class="d-hidden d-elip">{{item.goodsName}}</el-col>
+          <el-col :span="18" class="d-hidden d-elip">
             <span :title="item.commodityCode">{{item.commodityCode}}</span>
           </el-col>
         </el-row>
       </el-option>
     </el-select>
-    <i
-      @click="openDialog"
-      class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"
-    ></i>
+    <i @click="openDialog" class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"></i>
     <commodity-choose
-      :isChooseOne="isChooseOne"
+      :multiple="multiple"
       :kinds="kinds"
       :params="wmsId?{wmsId}:params"
       :sn="sn"
@@ -84,12 +67,12 @@ export default {
       default: () => ({})
     },
     wmsId: Number, // 库房id,新增报溢报损要筛选当前库房下的id
-    isChooseOne: {
+    multiple: {
       type: Boolean,
       default: false
     }
   },
-  data() {
+  data () {
     return {
       showCommodityGoods: false,
       selectGood: '',
@@ -99,7 +82,7 @@ export default {
       searchTable: {}
     };
   },
-  mounted() {
+  mounted () {
     if (this.value) {
       this.selectGood = this.value;
     } else {
@@ -107,22 +90,22 @@ export default {
     }
   },
   watch: {
-    value() {
+    value () {
       this.selectGood = this.value || '';
     }
   },
   methods: {
-    openDialog() {
+    openDialog () {
       this.showCommodityGoods = true;
       this.showed = true;
     },
-    choose(e) {
+    choose (e) {
       const choose = e.filter(a => !this.codes.includes(a.commodityCode));
       if (choose.length) {
         this.$emit('choose', e, 'choose');
       }
     },
-    chooseOne(e) {
+    chooseOne (e) {
       const index = this.options.findIndex(item => item.commodityCode === e.commodityCode)
       if (index === -1) {
         this.options.push(e);
@@ -130,7 +113,7 @@ export default {
       this.selectGood = e.commodityCode;
       this.$emit('choose', [e]);
     },
-    async search(words = '') {
+    async search (words = '') {
       words = String(words).trim();
       if (this.searchTable[words]) {
         return (this.options = this.searchTable[words]);
@@ -146,7 +129,7 @@ export default {
       this.loading = false;
       this.searchTable[words] = data;
     },
-    onSelect(e) {
+    onSelect (e) {
       const goods = this.options.filter(
         item =>
           item.commodityCode == e && !this.codes.includes(item.commodityCode)
