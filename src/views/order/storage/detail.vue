@@ -2,17 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 14:58:02
+ * @LastEditTime: 2019-11-12 14:58:56
  * @Description: 采购入库单
 */
 <template>
-  <sideDetail
-    :status="status"
-    :title="`采购入库单 ${detail?detail.putinCode:''}`"
-    :visible.sync="showDetailPage"
-    @close="close"
-    width="990px"
-  >
+  <sideDetail :status="status" :title="`采购入库单 ${detail?detail.putinCode:''}`" :visible.sync="showDetailPage" @close="close" width="990px">
     <template slot="button">
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinSubmission',{ busCode:detail.stockCode },'提交审核')"
@@ -24,73 +18,22 @@
         size="mini"
         type="danger"
       >撤销审核</el-button>
-      <el-button
-        @click="$submission('seePsiPurchaseService.purchaseputinExamine',{ isAgree:true },'通过')"
-        size="mini"
-        type="primary"
-      >通过</el-button>
-      <el-button
-        @click="$submission('seePsiPurchaseService.purchaseputinExamine',{ isAgree:false },'驳回',true)"
-        size="mini"
-        type="danger"
-      >驳回</el-button>
-      <el-button
-        @click="showEdit=true"
-        size="mini"
-        type="primary"
-      >编辑</el-button>
-      <el-button
-        @click="del"
-        size="mini"
-        type="primary"
-      >删除</el-button>
-      <el-button
-        @click="showReject=true"
-        size="mini"
-        type="primary"
-      >退货</el-button>
-      <el-button
-        size="mini"
-        type="primary"
-      >终止</el-button>
-      <el-button
-        size="mini"
-        type="primary"
-      >收票申请</el-button>
-      <el-button
-        @click="showOrderContract=true"
-        size="mini"
-        type="primary"
-      >生成合同</el-button>
+      <el-button @click="$submission('seePsiPurchaseService.purchaseputinExamine',{ isAgree:true },'通过')" size="mini" type="primary">通过</el-button>
+      <el-button @click="$submission('seePsiPurchaseService.purchaseputinExamine',{ isAgree:false },'驳回',true)" size="mini" type="danger">驳回</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
+      <el-button @click="del" size="mini" type="primary">删除</el-button>
+      <el-button @click="showReject=true" size="mini" type="primary">退货</el-button>
+      <el-button size="mini" type="primary">终止</el-button>
+      <el-button size="mini" type="primary">收票申请</el-button>
+      <el-button @click="showOrderContract=true" size="mini" type="primary">生成合同</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form
-          size="mini"
-          v-if="detail"
-        >
-          <supplierInfo
-            :data="detail"
-            disabled
-            id="supplierInfo"
-          />
-          <companyInfo
-            :data="detail"
-            disabled
-            id="companyInfo"
-          />
-          <arrivalInfo
-            :data="detail"
-            disabled
-            id="arrivalInfo"
-            v-if="detail.source!='直发单'"
-          />
-          <buyingDeliverInfo
-            :data="detail"
-            id="deliverInfo"
-            ref="deliverInfo"
-            v-else
-          />
+        <el-form size="mini" v-if="detail">
+          <supplierInfo :data="detail" disabled id="supplierInfo" />
+          <companyInfo :data="detail" disabled id="companyInfo" />
+          <arrivalInfo :data="detail" disabled id="arrivalInfo" v-if="detail.source!='直发单'" />
+          <buyingDeliverInfo :data="detail" id="deliverInfo" ref="deliverInfo" v-else />
           <buying-goods-edit
             :data="detail"
             :hide="[
@@ -108,26 +51,10 @@
             fkey="additionalCommodityList"
             v-if="detail.source=='请购单'"
           />
-          <paymentLate
-            :data="detail"
-            disabled
-            id="paymentLate"
-          />
-          <order-storage-bill
-            :data="form"
-            disabled
-            id="billInfo"
-          />
-          <customInfo
-            :data="detail"
-            disabled
-            id="customInfo"
-          />
-          <extrasInfo
-            :data="detail"
-            disabled
-            id="extrasInfo"
-          />
+          <paymentLate :data="detail" disabled id="paymentLate" />
+          <order-storage-bill :data="form" disabled id="billInfo" />
+          <customInfo :data="detail" disabled id="customInfo" />
+          <extrasInfo :data="detail" disabled id="extrasInfo" />
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="请购单"></el-tab-pane>
@@ -139,12 +66,7 @@
     </el-tabs>
     <orderReject :visible.sync="showReject" />
     <orderContract :visible.sync="showOrderContract" />
-    <Edit
-      :rowData="detail"
-      :visible.sync="showEdit"
-      v-if="showEdit"
-      type="edit"
-    />
+    <Edit :rowData="detail" :visible.sync="showEdit" type="edit" v-if="showEdit" />
   </sideDetail>
 </template>
 <script>
@@ -200,7 +122,7 @@ export default {
         console.log('删除采购入库单');
         this.setEdit();
         this.close();
-      } catch (error) { }
+      } catch (error) {}
       this.loading = false;
     }
   }

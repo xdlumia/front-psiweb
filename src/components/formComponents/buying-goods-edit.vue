@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 14:11:48
+ * @LastEditTime: 2019-11-12 15:15:33
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -42,7 +42,7 @@
             </el-image>
           </template>
         </el-table-column>
-        <el-table-column label="商品名称" min-width="100" prop="commodityName" show-overflow-tooltip></el-table-column>
+        <el-table-column label="商品名称" min-width="100" prop="goodsName" show-overflow-tooltip></el-table-column>
         <el-table-column label="商品类别" min-width="80" prop="categoryCode" show-overflow-tooltip>
           <template slot-scope="{row}">
             <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
