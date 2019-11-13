@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 10:21:13
+ * @LastEditTime: 2019-11-13 15:23:40
  * @Description: file content
 */
 <template>
@@ -44,8 +44,9 @@
         ref="form"
         size="small"
         :model="form"
+        label-position="top"
         class="d-auto-y"
-        style="height:calc(100vh - 140px)"
+        style="height:calc(100vh - 110px)"
       >
         <!--  选择客户 和 填写报价信息  有相同的操作.两边数据要实时更新 所以使用 v-if 切换到当前的页面重新查询数据 -->
         <!-- 选择客户  -->

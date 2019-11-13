@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 10:47:10
+ * @LastEditTime: 2019-11-13 15:33:34
  * @Description: 公司信息  传入 公司发票账户 和公司结算账户id 会自动查询其余信息
 */
 <template>
@@ -95,8 +95,8 @@
 let formItems = [
   // { label: '公司发票账户', prop: 'companyAccountId', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [] },
   // { label: '公司结算账户', prop: 'companySettlementId', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [] },
-  { label: '发票抬头', prop: 'invoiceTitle', type: 'input', rules: [{ required: false, trigger: '' }], },
-  { label: '纳税人识别号', prop: 'taxpayersNum', type: 'input', rules: [{ required: false, trigger: '' }], },
+  { label: '发票抬头', prop: 'invoiceTitle', type: 'input', rules: [{ required: false, trigger: 'change' }], },
+  { label: '纳税人识别号', prop: 'taxpayersNum', type: 'input', rules: [{ required: false, trigger: 'change' }], },
   { label: '注册地址', prop: 'registerAddres', type: 'input', rules: [{ required: false, }], },
   { label: '开户银行', prop: 'accountBank', type: 'input', rules: [{ required: false, }], },
   { label: '开户行账号', prop: 'bankAccount', type: 'input', rules: [{ required: false, }], },

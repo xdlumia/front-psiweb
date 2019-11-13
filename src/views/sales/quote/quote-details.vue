@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 14:09:15
+ * @LastEditTime: 2019-11-13 15:09:40
  * @Description: 报价单详情
 */
 <template>
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[rowData.state].includes(item.label)"
+            v-if="currStatusType[rowData.state =1].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -70,12 +70,12 @@
       :rowData="rowData"
     />
     <!-- 生成销售出库单 -->
-    <!-- <outLibAdd
+    <outLibAdd
       :visible.sync="outLibAddVisible"
       :code="rowData.quotationCode"
       type="add"
       :rowData="rowData"
-    /> -->
+    />
     <!-- 生成请购单 -->
     <!-- <buyingAdd
       v-if="buyingAddVisible"
@@ -89,7 +89,7 @@
 <script>
 import detail from './quoteDetails/detail' //详情
 import add from './add' //编辑
-// import outLibAdd from '../outLibrary/add' //生成出库单
+import outLibAdd from '../outLibrary/add' //生成出库单
 // import buyingAdd from '@/views/order/buying/edit' //生成请购单
 // import record from '@/components/formComponents/record' //操作记录
 import VisibleMixin from '@/utils/visibleMixin';
@@ -98,7 +98,7 @@ export default {
   components: {
     detail,
     add,
-    // outLibAdd,
+    outLibAdd,
     // buyingAdd,
     // record
   },
@@ -190,8 +190,8 @@ export default {
             needNote: null
           },
           '删除': {
-            api: 'seePsiSaleService.salesquotationApproval',
-            data: { busCode: this.detail.quotationCode },
+            api: 'seePsiSaleService.salesquotationLogicDelete',
+            data: ({ id: this.detail.id }),
             needNote: null
           },
           '终止': {

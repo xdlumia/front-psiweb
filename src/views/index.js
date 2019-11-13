@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-30 16:25:12
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 14:38:55
+ * @LastEditTime: 2019-11-13 15:14:11
  * @Description: 每个模块首页全局引入解决无限调用自己递归的问题
  */
 
@@ -65,11 +65,18 @@ export default {
       },
     }
     // for (let key in cmps) {
-    //   if (cmps[key].hasOwnProperty(props)) {
-    //     cmps[key].props = { ...cmps[key].props, ...props }
-    //   } else {
-    //     cmps[key].props = props
-    //   }
+    //   // cmps[key].mixin(
+    //   //   {
+    //   //     created() {
+    //   //       console.log('minxin')
+    //   //     }
+    //   //   }
+    //   // )
+    //   // if (cmps[key].hasOwnProperty(props)) {
+    //   //   cmps[key].props = { ...cmps[key].props, ...props }
+    //   // } else {
+    //   //   cmps[key].props = props
+    //   // }
     // }
     if (process.env.NODE_ENV != 'production') {
       console.log(cmps)
