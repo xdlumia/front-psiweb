@@ -9,6 +9,7 @@
   <el-dialog
     :visible.sync="visible"
     title="拣货"
+    @close="close"
     v-dialogDrag
   >
     <el-container>
@@ -18,13 +19,91 @@
             }"
         style="padding:0;"
       >
-        <el-form
-          :model="form"
-          class="p10"
-        >
-          <goodsPicking ref="goodsPicking" />
-        </el-form>
-        <pickingSn ref="pickingSn" />
+        <form-card title='拣货商品'>
+          <el-table
+            border
+            size='mini'
+            :data='data.commodityList'
+            ref="companyTable"
+            class="college-main"
+            style="max-height:300px"
+          >
+            <el-table-column
+              prop="title"
+              label="拣货数量"
+              min-width="120"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <span>{{scope.row.pickingAccomplishNum}}/{{scope.row.pickingNum}}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+              prop="usableNum"
+              min-width="100"
+              label="可用库存"
+              show-overflow-tooltip
+            ></el-table-column>
+
+            <el-table-column
+              prop="commodityCode"
+              label="商品编号"
+              min-width="140"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+              prop="categoryCode"
+              min-width="100"
+              label="商品类别"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="className"
+              min-width="100"
+              label="商品分类"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              prop="goodsName"
+              min-width="100"
+              label="商品名称"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              prop="configName"
+              min-width="100"
+              label="商品配置"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              prop="specOne"
+              min-width="140"
+              label="商品规格"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              prop="note"
+              min-width="120"
+              label="备注"
+              show-overflow-tooltip
+            ></el-table-column>
+
+          </el-table>
+        </form-card>
+        <pickingSn
+          ref="pickingSn"
+          :data='data'
+        />
       </el-main>
     </el-container>
     <span
@@ -32,12 +111,12 @@
       class="dialog-footer"
     >
       <el-button
-        @click="centerDialogVisible = false"
+        @click="close"
         size="small"
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="centerDialogVisible = false"
+        @click="submit"
         size="small"
       >保 存</el-button>
     </span>
@@ -48,6 +127,7 @@ import goodsPicking from '@/components/formComponents/goods-picking'
 import pickingSn from '@/components/formComponents/picking-sn';
 
 export default {
+  props: ['data'],
   components: {
     goodsPicking,
     pickingSn
@@ -55,9 +135,10 @@ export default {
   props: {
     visible: {
       type: Boolean,
-      default: true
+      default: false
     },
-    form: {}
+    form: {},
+    data: {}
   },
   computed: {
     maxHeight() {
@@ -73,6 +154,20 @@ export default {
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
+    },
+    close() {
+      this.$emit('update:visible', false)
+    },
+    //保存
+    submit() {
+      this.$api.seePsiWmsService.wmspickingorderSave()
+        .then(res => {
+          this.close()
+          this.$emit('reload')
+        })
+        .finally(() => {
+
+        })
     }
   }
 };

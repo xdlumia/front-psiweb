@@ -776,6 +776,15 @@ export default {
     },
     /**
      * @tag 库房商品明细
+     * @description 批量扫码入库
+     */
+    wmsinventorydetailBatchPutaway: {
+        url: '/wmsinventorydetail/batchPutaway',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房商品明细
      * @description 批量扫码出库
      */
     wmsinventorydetailBatchShipment: {

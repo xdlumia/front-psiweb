@@ -26,10 +26,10 @@
           placeholder="请选择"
         >
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in usableList"
+            :key="item.id "
+            :label="item.name"
+            :value="item.id"
           >
           </el-option>
         </el-select>
@@ -288,6 +288,7 @@ export default {
   data() {
     return {
       activeName: '',
+      usableList: [],
       queryForm: {
         title: '', // 标题
         city: '', // 城市
@@ -306,7 +307,17 @@ export default {
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
-    }
+    },
+    //请求可用库房
+    commonwmsmanagerUsableList() {
+      this.$api.seePsiWmsService.commonwmsmanagerUsableList()
+        .then(res => {
+          this.usableList = res.data
+        })
+        .finally(() => {
+
+        })
+    },
   }
 };
 </script>

@@ -125,7 +125,8 @@ export default {
     submit() {
       this.$api.seePsiWmsService.wmsreportinglossesSave(this.addForm)
         .then(res => {
-
+          this.close()
+          this.$emit("reload")
         })
         .finally(() => {
 

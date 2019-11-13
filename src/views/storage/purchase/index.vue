@@ -1,6 +1,6 @@
 /*
- * @Author: 徐贺 
- * @Date: 2019-10-25 15:24:18 
+ * @Author: 徐贺
+ * @Date: 2019-10-25 15:24:18
  * @Last Modified by: 徐贺
  * @Last Modified time: 2019-10-28 14:00:41
  * @Description: 采购 采购单
@@ -57,9 +57,9 @@ export default {
         page: 1,
         limit: 20
       },
-      componentActive: '',//当前的组件
-      tableVisible: false,//销售单右侧抽屉
-      drawerData: {//弹框的相关数据
+      componentActive: '', // 当前的组件
+      tableVisible: false, // 销售单右侧抽屉
+      drawerData: { // 弹框的相关数据
         title: '',
         component: 'Details'
       },
@@ -74,7 +74,7 @@ export default {
             { label: '完成拣货', value: '2' },
             { label: '部分拣货', value: '1' },
             { label: '待拣货', value: '0' },
-            { label: '终止', value: '-1' },
+            { label: '终止', value: '-1' }
           ],
           default: true
         },
@@ -87,7 +87,7 @@ export default {
             { label: '完成拣货', value: '2' },
             { label: '部分拣货', value: '1' },
             { label: '待拣货', value: '0' },
-            { label: '终止', value: '-1' },
+            { label: '终止', value: '-1' }
           ],
           default: true
         },
@@ -99,7 +99,7 @@ export default {
             { label: '完成拣货', value: '2' },
             { label: '部分拣货', value: '1' },
             { label: '待拣货', value: '0' },
-            { label: '终止', value: '-1' },
+            { label: '终止', value: '-1' }
           ],
           default: true
         },
@@ -137,17 +137,17 @@ export default {
           type: 'employee',
           default: true
         },
-        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
-      ],
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true }
+      ]
     };
   },
   methods: {
-    //点击打开右侧边栏
+    // 点击打开右侧边栏
     getTableVisible(data) {
       this.tableVisible = true
       this.drawerData = data || {}
     },
-    //tab换组件
+    // tab换组件
     handleClick() {
 
     },

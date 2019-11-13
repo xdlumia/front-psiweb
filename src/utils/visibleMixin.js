@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 19:02:04
+ * @LastEditTime: 2019-11-13 19:23:14
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -133,7 +133,8 @@ export default {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           closeOnClickModal: false,
-          type: 'warning'
+          type: 'warning',
+          center: true
         })
       }
       let fn = api.split('.').reduce((api, item) => api[item], this.$api)
@@ -142,7 +143,12 @@ export default {
       } else {
         await fn(data)
       }
-      this.getDetail()
+      if (title === '删除') {
+        this.setEdit()
+        this.close()
+      } else {
+        this.getDetail()
+      }
     }
   }
 }
