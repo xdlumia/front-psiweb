@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 18:42:09
+ * @LastEditTime: 2019-11-13 09:12:05
  * @Description: 采购入库单
 */
 <template>
@@ -29,7 +29,7 @@
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form size="mini" v-if="detail">
+        <el-form size="mini" v-if="detail" :model="detail">
           <supplierInfo :data="detail" disabled id="supplierInfo" />
           <companyInfo :data="detail" disabled id="companyInfo" />
           <arrivalInfo :data="detail" disabled id="arrivalInfo" v-if="detail.source!='直发单'" />

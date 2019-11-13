@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 18:50:00
+ * @LastEditTime: 2019-11-13 10:33:59
  * @Description: 采购退货单
 */
 <template>
@@ -28,12 +28,17 @@
         <el-form :model="form" class="p10" size="mini" v-if="visible&&form">
           <supplierInfo :data="form" disabled id="supplierInfo"></supplierInfo>
           <companyInfo :data="form" disabled id="companyInfo"></companyInfo>
-          <buyingRejectDeliver :data="form" id="deliverInfo" :hide="[
+          <buyingRejectDeliver :data="form" :hide="[
             'saleTime','logisticsSn','collected'
-          ]" />
-          <buyingGoodsEdit :data="form" id="commodityInfo" :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','action'
-          ]" />
+          ]" id="deliverInfo" />
+          <buyingGoodsEdit
+            :data="form"
+            :show="[
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','action',
+          ]"
+            :summaryMethod="getSummarys"
+            id="commodityInfo"
+          />
           <orderStorageBill :data="form" id="billInfo" />
           <customInfo :data="form" id="customInfo"></customInfo>
           <extrasInfo :data="form" id="extrasInfo"></extrasInfo>
@@ -71,6 +76,39 @@ export default {
         this.params
       );
       return form;
+    },
+    getSummarys(param) {
+      let { columns, data } = param;
+      data = data || [];
+      const sums = [];
+      columns.forEach((col, index) => {
+        if (['commodityNumber'].includes(col.property)) {
+          let prop = col.property;
+          sums[index] = +Number(
+            data
+              .map(item => Number(item[prop]) || 0)
+              .reduce((sum, item) => sum + item, 0)
+          ).toFixed(2);
+        } else if (['preTaxAmount'].includes(col.property)) {
+          // 'alterationNumber','alterationPrice'
+          sums[index] = +Number(
+            data
+              .map(
+                item =>
+                  +Number(
+                    item.alterationPrice *
+                      (1 + item.taxRate) *
+                      item.alterationNumber || 0
+                  ).toFixed(2)
+              )
+              .reduce((sum, item) => sum + item, 0)
+          ).toFixed(2);
+          this.$emit('totalAmountChange', sums[index]);
+        } else if (index == 0) {
+          sums[0] = '总计';
+        } else sums[index] = '';
+      });
+      return sums;
     }
   }
 };

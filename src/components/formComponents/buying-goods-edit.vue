@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 18:48:17
+ * @LastEditTime: 2019-11-13 10:46:53
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -25,7 +25,7 @@
       <el-table
         :data="data[fkey]"
         :style="{height:showInFull?'calc(100% - 40px)':''}"
-        :summary-method="summaryMethod||getSummaries"
+        :summary-method="getSummaries"
         ref="table"
         show-summary
         size="mini"
@@ -57,11 +57,7 @@
             <!-- 字典结束 -->
             <!-- 价格输入开始 -->
             <template v-else-if="item.type=='input'">
-              <el-form-item
-                :prop="`${fkey}.${$index}.${item.prop}`"
-                :rules="item.rules||[]"
-                size="mini"
-              >
+              <el-form-item :prop="`${fkey}.${$index}.${item.prop}`" :rules="item.rules||[]" size="mini">
                 <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]" />
               </el-form-item>
             </template>
@@ -92,14 +88,19 @@
             <!-- 选择开始 -->
             <template v-else-if="item.type=='selection'">
               <el-form-item :prop="`${fkey}.${$index}.${item.prop}`" size="mini">
-                <el-checkbox v-model="row[item.prop]"></el-checkbox>
+                <el-checkbox :false-label="0" :true-label="1" @change="columnSelect(item,$event)" v-model="row[item.prop]"></el-checkbox>
               </el-form-item>
             </template>
             <!-- 选择结束 -->
             <template v-else>{{row[item.prop]}}</template>
           </template>
           <template slot="header" v-if="item.type=='selection'">
-            <el-checkbox>{{item.label}}</el-checkbox>
+            <el-checkbox
+              :false-label="0"
+              :true-label="1"
+              @change="headerSelect(item,$event)"
+              v-model="headerSelections[item.prop]"
+            >{{item.label}}</el-checkbox>
           </template>
         </el-table-column>
       </el-table>
@@ -110,14 +111,17 @@
 <script>
 export default {
   props: {
+    // 数据
     data: {
       type: Object,
       default: () => ({})
     },
+    // 隐藏
     hide: {
       type: Array,
       default: () => []
     },
+    // 显示
     show: {
       type: Array,
       default: () => []
@@ -132,8 +136,13 @@ export default {
       type: String,
       default: 'costAmount'
     },
+    // 统计方法
     summaryMethod: {
       type: Function
+    },
+    // 排序
+    sort: {
+      type: Array
     },
     disabled: Boolean,
     title: String
@@ -177,27 +186,41 @@ export default {
     ];
     return {
       showInFull: false,
-      columns
+      columns,
+      headerSelections: {}
     };
   },
   computed: {
     useColumns() {
+      let list = [];
       if (this.hide.length) {
         if (this.disabled)
           ['add', 'action'].map(
             a => this.hide.includes(a) || this.hide.push(a)
           );
-        return this.columns.filter(item => !this.hide.includes(item.key));
+        list = this.columns.filter(item => !this.hide.includes(item.key));
       } else if (this.show.length) {
-        return this.columns.filter(item => this.show.includes(item.key));
-      } else return this.columns;
+        list = this.columns.filter(item => this.show.includes(item.key));
+      } else {
+        list = this.columns;
+      }
+      if (this.sort && this.sort.length) {
+        let map = list.reduce((data, item) => (data[item.key] = item), {});
+        list = [];
+        this.sort.map(key => list.push(map[key]));
+      }
+      list.map(item => {
+        if (item.type == 'selection') {
+          this.$set(this.headerSelections, item.prop, 0);
+        }
+      });
+      return list;
     }
   },
-  mounted() {
-    console.log(this);
-  },
+  mounted() {},
   methods: {
     getSummaries(param) {
+      if (this.summaryMethod) return this.summaryMethod(param);
       let { columns, data } = param;
       data = data || [];
       const sums = [];
@@ -280,6 +303,23 @@ export default {
         nGood[key] = target[key] ? good[target[key]] : '';
       });
       return nGood;
+    },
+    headerSelect({ prop }, select) {
+      this.data[this.fkey].map(item => (item[prop] = select));
+    },
+    columnSelect({ prop }, select) {
+      let first = 0;
+      if (
+        this.data[this.fkey].some((item, i) => {
+          if (i == 0) first = item[prop];
+          else return first != item[prop];
+        })
+      ) {
+        this.headerSelections[prop] = 0;
+      } else {
+        this.headerSelections[prop] = 1;
+      }
+      console.log(this.headerSelections);
     }
   }
 };
