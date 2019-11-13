@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 14:27:56
+ * @LastEditTime: 2019-11-13 08:57:22
  * @Description: 报价单详情
 */
 <template>
@@ -90,6 +90,7 @@ import outLibAdd from '../outLibrary/add' //生成出库单
 import buyingAdd from '@/views/order/buying/edit' //生成请购单
 import buy from './quoteDetails/buy' //采购单
 import record from '@/components/formComponents/record' //操作记录
+import VisibleMixin from '@/utils/visibleMixin';
 let stateObj = {
   '-1': '新建',
   '0': '审核中',
@@ -99,6 +100,7 @@ let stateObj = {
   '4': '终止',
 }
 export default {
+  mixin: [VisibleMixin],
   components: {
     detail,
     add,
