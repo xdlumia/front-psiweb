@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 19:42:32
- * @Description: 编辑出库单
+ * @LastEditTime: 2019-11-13 19:40:53
+ * @Description: 编辑换货单
 */
 <template>
   <el-dialog
@@ -15,7 +15,7 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{type=='add'?'生成销售出库单':`编辑:${code}`}}</span>
+      <span>{{type=='add'?'生成销售换货单':`编辑:${code}`}}</span>
       <div class="fr mr30">
         <el-button
           type="primary"
@@ -55,17 +55,34 @@
           id="companyInfo"
           :data="form"
         />
-        <quoteInfo></quoteInfo>
-        <!-- 收款滞纳金 -->
-        <payment-late-sales
-          id="paymentLateSales"
-          :data="form"
+        <!-- 换入商品信息 -->
+        <goods-return
+          title="换入商品信息"
+          id="goodsReturn"
+          disabled
+          :params="{busType:17,putawayType:0}"
+        />
+        <!-- 换出商品信息 -->
+        <!-- <commodity-info-edit /> -->
+        <goods-return
+          id="goodsReturn"
+          title="换出商品信息"
+          disabled
+          :params="{busType:17,putawayType:1}"
         />
         <!-- 账期信息 -->
-        <billInfo
-          id="billInfo"
+        <return-bill-info
+          id="returnBillInfo"
+          disabled
           :data="form"
         />
+        <!-- 其他费用 -->
+        <other-fee
+          id="otherFee"
+          disabled
+          :data="form"
+        />
+
         <!-- 自定义信息 -->
         <customInfo
           id="customInfo"
@@ -82,12 +99,12 @@
 </template>
 <script>
 // 填写报价信息
-import quoteInfo from './quote-info';
+
 import VisibleMixin from '@/utils/visibleMixin';
 export default {
   mixins: [VisibleMixin],
   components: {
-    quoteInfo
+
   },
   data() {
     return {
@@ -96,8 +113,10 @@ export default {
       tabs: {
         customerInfo: '客户信息',
         companyInfo: '公司信息',
-        quoteInfo: '报价单信息',
-        billInfo: '账期信息',
+        goodsReturn: '换入商品信息',
+        billInfo: '换出商品信息',
+        otherFee: '其他费用',
+        returnBillInfo: '账期信息',
         customInfo: '自定义信息',
         extrasInfo: '备注信息',
       },
