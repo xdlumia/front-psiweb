@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 08:57:22
+ * @LastEditTime: 2019-11-13 11:22:42
  * @Description: 报价单详情
 */
 <template>
@@ -11,7 +11,8 @@
       title="报价单详情"
       :visible.sync="showDetailPage"
       width="920px"
-      :status="statusData"
+      :status="status"
+      @close="close"
     >
       <div slot="button">
         <!-- 操作按钮 -->
@@ -47,16 +48,17 @@
           >
           </el-tab-pane>
         </el-tabs>
-        <keep-alive>
-          <components
-            class="d-auto-y"
-            :code="this.code"
-            :rowData="rowData"
-            :button="false"
-            style="height:calc(100vh - 240px)"
-            :is="activeName"
-          ></components>
-        </keep-alive>
+
+        <components
+          class="d-auto-y"
+          :code="this.code"
+          :rowData="rowData"
+          :button="false"
+          :data="detail || {}"
+          style="height:calc(100vh - 200px)"
+          :is="activeName"
+        ></components>
+
       </el-form>
     </side-detail>
     <!-- 报价单编辑 -->
@@ -67,49 +69,38 @@
       :rowData="rowData"
     />
     <!-- 生成销售出库单 -->
-    <outLibAdd
+    <!-- <outLibAdd
       :visible.sync="outLibAddVisible"
       :code="rowData.quotationCode"
       type="add"
       :rowData="rowData"
-    />
+    /> -->
     <!-- 生成请购单 -->
-    <buyingAdd
+    <!-- <buyingAdd
       v-if="buyingAddVisible"
       :visible.sync="buyingAddVisible"
       :code="code"
       type="add"
       :rowData="rowData"
-    />
+    /> -->
   </div>
 </template>
 <script>
 import detail from './quoteDetails/detail' //详情
 import add from './add' //编辑
-import outLibAdd from '../outLibrary/add' //生成出库单
-import buyingAdd from '@/views/order/buying/edit' //生成请购单
-import buy from './quoteDetails/buy' //采购单
-import record from '@/components/formComponents/record' //操作记录
+// import outLibAdd from '../outLibrary/add' //生成出库单
+// import buyingAdd from '@/views/order/buying/edit' //生成请购单
+// import record from '@/components/formComponents/record' //操作记录
 import VisibleMixin from '@/utils/visibleMixin';
-let stateObj = {
-  '-1': '新建',
-  '0': '审核中',
-  '1': '已通过',
-  '2': '已驳回',
-  '3': '完成',
-  '4': '终止',
-}
 export default {
-  mixin: [VisibleMixin],
+  mixins: [VisibleMixin],
   components: {
     detail,
     add,
-    outLibAdd,
-    buyingAdd,
-    buy,
-    record
+    // outLibAdd,
+    // buyingAdd,
+    // record
   },
-  props: ['visible', 'rowData', 'code'],
   data() {
     return {
       // 操作按钮
@@ -148,26 +139,19 @@ export default {
         record: '操作记录',
       },
       activeName: 'detail',
-      form: {},
       //头部状态数据
-      statusData: [
-        { label: '状态', value: stateObj[this.rowData.state] },
-        { label: '创建人', value: this.rowData.creatorName, },
-        { label: '创建部门', value: this.rowData.deptName, },
-        { label: '创建时间', value: this.rowData.createTime, isTime: true },
-        { label: '来源', value: this.rowData.source },
-      ],
+      stateText: {
+        '-1': '新建',
+        '0': '审核中',
+        '1': '已通过',
+        '2': '已驳回',
+        '3': '完成',
+        '4': '终止',
+      },
     }
   },
   computed: {
-    // showPop: {
-    //   get() {
-    //     return this.visible
-    //   },
-    //   set(val) {
-    //     this.$emit('update:visible', false)
-    //   }
-    // }
+
   },
   watch: {
     visible(val) {
@@ -175,8 +159,17 @@ export default {
     }
   },
   methods: {
+    async getDetail() {
+      if (this.code) {
+        let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
+        return data;
+      }
+    },
     buttonsClick(label) {
       // handleConfirm里的按钮操作是需要二次确认的
+      if (label == '提交审核') {
+        $submission('seePsiPurchaseService.purchasestockorderSubmission', { busCode: detail.stockCode }, '提交审核')
+      }
       let handleConfirm = ['提交审核', '撤销审核', '驳回', '删除', '终止']
       if (handleConfirm.includes(label)) {
         this.$confirm(`是否${label}?`, "提示", {
@@ -185,7 +178,8 @@ export default {
           type: "warning",
           center: true
         }).then(() => {
-          this.$api.seePumaidongService.collegeManagerDelete({ id: [123] })
+
+          this.$api.seePsiSaleService.collegeManagerDelete({ id: [123] })
             .then(res => {
               this.$emit('reload')
             });

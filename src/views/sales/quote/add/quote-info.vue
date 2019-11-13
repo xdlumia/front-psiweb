@@ -2,12 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 17:45:29
+ * @LastEditTime: 2019-11-13 09:49:04
  * @Description: 填写报价单详情
 */
 <template>
   <div v-loading="loading">
-    <d-tabs :style="{maxHeight:'calc(100vh - 220px)'}">
+    <d-tabs>
       <d-tab-pane
         v-for="(val,key) of tabs"
         :key="key"

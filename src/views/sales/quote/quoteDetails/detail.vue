@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 19:33:03
+ * @LastEditTime: 2019-11-13 11:16:55
  * @Description: 报价单详情
 */
 <template>
@@ -12,42 +12,43 @@
     <!-- 客户信息 -->
     <customerInfo
       disabled
-      :data="quoteInfo"
+      :data="data"
     />
     <!-- 公司信息 -->
     <companyInfo
       disabled
-      :data="quoteInfo"
+      :data="data"
     />
     <!-- 发货信息 -->
     <deliverInfo
       disabled
-      :data="quoteInfo"
+      :data="data"
     />
     <!-- 商品信息 -->
-    <commodityInfo
+    <commodity-quote-info
+      v-if="data"
       disabled
-      :data="quoteInfo "
+      :data="data"
     />
     <!-- 报价有效期 -->
     <payExpire
       disabled
-      :data="quoteInfo "
+      :data="data"
     />
     <!-- 附加发票 -->
     <extrataxInfo
       disabled
-      :data="quoteInfo "
+      :data="data"
     />
     <!-- 自定义信息 -->
     <customInfo
       disabled
-      :data="quoteInfo "
+      :data="data "
     />
     <!-- 备注信息 -->
     <extrasInfo
       disabled
-      :data="quoteInfo "
+      :data="data "
     />
   </div>
 </template>
@@ -56,7 +57,13 @@
 export default {
   components: {
   },
-  props: ['rowData', 'code'],
+  props: {
+    rowData: Object,
+    data: {
+      default: () => ({}),
+      type: Object
+    },
+  },
   data() {
     return {
       // 销售单详情
@@ -64,16 +71,9 @@ export default {
     }
   },
   mounted() {
-    this.salesquotationGetinfoByCode()
+
   },
   methods: {
-    //根据code 查看详情
-    salesquotationGetinfoByCode() {
-      this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
-        .then(res => {
-          this.quoteInfo = res.data || {}
-        })
-    },
 
   },
   beforeDestroy() {

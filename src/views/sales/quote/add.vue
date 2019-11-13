@@ -2,17 +2,38 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 19:38:17
+ * @LastEditTime: 2019-11-13 10:21:13
  * @Description: file content
 */
 <template>
   <el-dialog
-    :title="type=='add'?'新建报价单':`编辑:${code}`"
     :visible.sync="showDetailPage"
     width="920px"
     @close="close"
     v-dialogDrag
   >
+    <!-- 确定按钮 -->
+    <div slot="title">
+      <span>{{type=='add'?'新建报价单':`编辑:${code}`}}</span>
+      <div class="fr mr30">
+        <el-button
+          @click="$emit('update:visible', false)"
+          size="mini"
+        >取 消</el-button>
+        <el-button
+          @click="steps++"
+          type="primary"
+          v-if="steps < 4"
+          size="mini"
+        >下一步</el-button>
+        <el-button
+          v-else
+          type="primary"
+          @click="saveHandle('form')"
+          size="mini"
+        >保 存</el-button>
+      </div>
+    </div>
     <div v-loading="loading">
       <d-step
         v-model="steps"
@@ -24,7 +45,7 @@
         size="small"
         :model="form"
         class="d-auto-y"
-        style="height:calc(100vh - 220px)"
+        style="height:calc(100vh - 140px)"
       >
         <!--  选择客户 和 填写报价信息  有相同的操作.两边数据要实时更新 所以使用 v-if 切换到当前的页面重新查询数据 -->
         <!-- 选择客户  -->
@@ -52,25 +73,7 @@
           v-show="steps==4"
         />
       </el-form>
-      <!-- 确定按钮 -->
-      <div class="ac pt20">
-        <el-button
-          @click="$emit('update:visible', false)"
-          size="small"
-        >取 消</el-button>
-        <el-button
-          @click="steps++"
-          type="primary"
-          v-if="steps < 4"
-          size="small"
-        >下一步</el-button>
-        <el-button
-          v-else
-          type="primary"
-          @click="saveHandle('form')"
-          size="small"
-        >保 存</el-button>
-      </div>
+
     </div>
   </el-dialog>
 </template>
@@ -184,17 +187,25 @@ export default {
     },
   },
   methods: {
+    async getDetail() {
+      if (this.code) {
+        let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
+        return data;
+      }
+    },
     // 保存表单数据
     saveHandle() {
-      console.log(this.form);
-
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true
           let params = Object.assign(this.form, this.params)
           let copyParams = JSON.parse(JSON.stringify(params))
+
           delete copyParams.KIND1Data
           delete copyParams.KIND2Data
+          // copyParams.businessCommoditySaveVoList.forEach(item => {
+          //   item.parentCommodityCode = item.commodityCode
+          // })
           // rules 表单验证是否通过
           let api = 'salesquotationSave' // 默认编辑更新
           // 新增保存

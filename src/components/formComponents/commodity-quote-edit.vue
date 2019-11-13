@@ -2,12 +2,12 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 20:37:46
+ * @LastEditTime: 2019-11-13 10:23:18
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
   <form-card
-    class="borrow-goods-info"
+    class="commodity-quote-edit"
     title="商品信息"
   >
     <div slot="title">
@@ -324,6 +324,8 @@ export default {
     //选择商品
     commodityChoose(e, scope) {
       let [list] = e[0]
+      console.log(list);
+
       let type = e[1]
       this.data.businessCommoditySaveVoList[scope.$index].commodityCode = ''
       this.data.businessCommoditySaveVoList.forEach((item) => {
@@ -332,7 +334,9 @@ export default {
         }
       })
       if (!this.codes.includes(list.commodityCode)) {
-        list.reference = list.saleReferencePrice
+
+        list.reference = list.saleReferencePrice //销售参考价
+
         this.$set(this.data.businessCommoditySaveVoList, scope.$index, { ...addRowData, ...list })
         this.codes = []
       }
@@ -401,7 +405,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.borrow-goods-info {
+.commodity-quote-edit {
   .el-form-item--mini.el-form-item {
     margin-bottom: 0;
   }

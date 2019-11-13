@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 18:26:09
+ * @LastEditTime: 2019-11-13 10:47:10
  * @Description: 公司信息  传入 公司发票账户 和公司结算账户id 会自动查询其余信息
 */
 <template>
@@ -104,7 +104,7 @@ let formItems = [
 export default {
   props: {
     data: {
-      default: () => ({})
+      default: () => { return {} }
     },
     disabled: {
       type: Boolean,
@@ -175,7 +175,6 @@ export default {
     },
     // 初始化表单
     initFrom() {
-
       // 初始化数据的时候 要有发票id 并且有下拉数据
       if (this.data.companyAccountId && this.invoiceOptions.length) {
         // 获取公司发票选中项 

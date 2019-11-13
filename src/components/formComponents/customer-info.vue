@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 15:35:57
+ * @LastEditTime: 2019-11-13 10:54:32
  * @Description: 客户信息 1  //传入 data:{clientId:'1'} 会自动查询详情
  */
 <template>
@@ -64,11 +64,6 @@ export default {
     data: {
       default: () => ({})
     },
-    // 有可能辉出现禁用的时候客户名称可以选择
-    // select: {
-    //   type: Boolean,
-    //   default: false
-    // },
     // 是否禁用
     disabled: {
       type: Boolean,
@@ -127,11 +122,7 @@ export default {
       this.loading = true
       this.$api.seePsiCommonService.commonclientinfoInfo(null, id)
         .then(res => {
-          console.log(res.data);
-
           this.clientInfo = res.data || {}
-          console.log(this.clientInfo);
-
           this.clientOptions = [this.clientInfo];
         })
         .finally(() => {

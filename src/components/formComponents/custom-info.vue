@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 20:40:09
+ * @LastEditTime: 2019-11-13 11:08:51
  * @Description: 自定义信息 1
 */
 <template>
@@ -16,7 +16,7 @@
     >
       <el-table-column
         label="字段名称"
-        min-width="80"
+        width="280"
         show-overflow-tooltip
       >
         <template slot-scope="scope">
@@ -34,7 +34,7 @@
       </el-table-column>
       <el-table-column
         label="字段内容"
-        min-width="80"
+        width="280"
         prop="fieldVal"
         show-overflow-tooltip
       >
@@ -54,10 +54,12 @@
       <el-table-column
         label="操作"
         min-width="80"
+        v-if="!disabled"
       >
         <template slot-scope="scope">
           <el-button
             size="mini"
+            class="f18"
             type="text"
             icon='el-icon-remove-outline'
             @click="data.fieldList.splice(scope.$index,1)"
