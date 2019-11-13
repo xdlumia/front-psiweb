@@ -70,7 +70,7 @@ export default {
           this.status[0].value = this.drawerData.createTime
           this.status[1].value = this.drawerData.creatorName
           this.status[2].value = this.drawerData.deptName
-          this.status[3].value = this.drawerData.source
+          this.status[3].value = this.detailForm.source
           console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {

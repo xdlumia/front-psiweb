@@ -9,59 +9,38 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
-      :headers="tableHeader"
+      busType="8"
+      :filterOptions='filterOptions'
+      :params="queryForm"
       :selection='false'
-      api="bizSystemService.getEmployeeList"
+      api="seePsiWmsService.wmspickingorderList"
       title="拣货单"
     >
       <template slot-scope="{column,row,value}">
-        <span @click="getTableVisible(row)">点击111</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span
+          v-else-if="column.columnFields=='assembleTaskCode'"
+          class="d-text-blue"
+        >{{value}}</span>
+        <span
+          v-else-if="column.columnFields=='shipmentCode'"
+          class="d-text-blue"
+        >{{value}}</span>
+        <span
+          v-else-if="column.columnFields=='pickingOrderCode'"
+          class="d-text-blue"
+          @click="getTableVisible(row)"
+        >{{value}}</span>
+        <span v-else-if="column.columnFields=='state'">{{value == -1 ? '终止' : value == 0 ? '待拣货' : value == 1 ? '部分拣货' : '完成拣货'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
       :drawerData='drawerData'
       @update='update'
+      v-if='tableVisible'
+      :visible.sync='tableVisible'
     />
-    <!-- <side-popup
-      class="side-page"
-      :title="drawerData.title"
-      :visible.sync="tableVisible"
-      size="50%"
-    >
-      <el-container class="wfull hfull">
-        <el-header
-          class="p0 d-bg-gray"
-          style="height:70px;"
-        >
-          <div class="pl10 pr10 ar">
-            <el-button
-              size="mini"
-              type="primary"
-            >拣货</el-button>
-          </div>
-          <SideStatusbar :status='status' />
-        </el-header>
-        <el-main class="p0">
-          <el-tabs
-            class='tabs-view'
-            v-model="activeName"
-            @tab-click="handleClick"
-          >
-            <el-tab-pane label="详情"></el-tab-pane>
-            <el-tab-pane label="销售单"></el-tab-pane>
-          </el-tabs>
-          <div class="p10">
-            <components
-              :is='drawerData.component'
-              :drawerData="drawerData"
-            >
-            </components>
-          </div>
-        </el-main>
-      </el-container>
-    </side-popup> -->
   </div>
 </template>
 <script>
@@ -81,11 +60,6 @@ export default {
     return {
       // 查询表单
       queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
         page: 1,
         limit: 20
       },
@@ -94,32 +68,69 @@ export default {
       drawerData: {//弹框的相关数据
         title: '',
         component: 'Details',
-        tableVisible: false,//销售单右侧抽屉
       },
       activeName: '',
-      tableHeader: [
-        { label: '操作', prop: 'deptName', width: '140' },
-        { label: '销售单编号', prop: 'deptName', width: '140' },
-        { label: '组装任务编号', prop: 'deptName', width: '100' },
-        { label: '客户名称', prop: 'deptName', width: '100' },
-        { label: '拣货单编号', prop: 'deptName', width: '140' },
-        { label: '拣货状态', prop: 'deptName', width: '100' },
-        { label: '拣货数量', prop: 'deptName', width: '100' },
-        { label: '未拣数量', prop: 'deptName', width: '100' },
-        { label: '已拣数量', prop: 'deptName', width: '100' },
-        { label: '拣货人', prop: 'createTime', width: '100' },
-        { label: '商品类别', prop: 'createTime', width: '100' },
-        { label: '商品名称', prop: 'createTime', width: '100' },
-        { label: '生成时间', prop: 'createTime', width: '140' },
-        { label: '单据创建人', prop: 'createTime', width: '100' },
-        { label: '创建部门', prop: 'createTime', width: '100' }
-      ]
+      filterOptions: [
+        { label: '销售单编号', prop: 'salesShipmentCode', default: true },
+        { label: '组装任务编号', prop: 'salesShipmentCode', default: true },
+        { label: '客户名称', prop: 'clientName', default: true },
+        {
+          label: '拣货状态',
+          prop: 'pickingState',
+          type: 'select',
+          options: [
+            { label: '完成拣货', value: '2' },
+            { label: '部分拣货', value: '1' },
+            { label: '待拣货', value: '0' },
+            { label: '终止', value: '-1' },
+          ],
+          default: true
+        },
+        {
+          label: '拣货数量',
+          prop: 'WillShipmentNumber',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '未拣数量',
+          prop: 'WillShipmentNumber',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '已拣数量',
+          prop: 'WillShipmentNumber',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        { label: '拣货人', prop: 'creator1', type: 'employee', default: true },
+        { label: '商品类别', prop: 'clientName1', default: true },
+        { label: '商品名称', prop: 'clientName2', default: true },
+        { label: '运单编号', prop: 'waybillCodes', default: true },
+        {
+          label: '生成时间',
+          prop: 'Time',
+          type: 'daterange',
+          default: true
+        },
+        {
+          label: '单据创建人',
+          prop: 'creator',
+          type: 'employee',
+          default: true
+        },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
+      ],
     };
   },
   methods: {
     //点击打开右侧边栏
     getTableVisible(data) {
-      this.drawerData.tableVisible = true
+      this.tableVisible = true
       this.drawerData.title = '拣货单-' + data.id
     },
     //tab换组件

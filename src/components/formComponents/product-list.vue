@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 09:00:51
+ * @LastEditTime: 2019-11-12 17:02:36
  * @Description: 整机列表 和 配件列表  私有组件 你们用不了 
 */
 <template>
@@ -83,7 +83,7 @@
       >
       </el-table-column>
       <el-table-column
-        prop="price"
+        prop="saleReferencePrice"
         width="120"
         label="销售参考价"
       >

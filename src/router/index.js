@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-04 17:12:10
+ * @LastEditTime: 2019-11-12 16:28:43
  * @Description: 路由文件
  */
 import Vue from 'vue'
@@ -39,6 +39,9 @@ import storageRoute from '@/views/storage/route.js'
 // 首页
 const Home = () => import('@/views/home')
 
+// 待办事项
+const todo = () => import('@/views/todoList')
+
 //  辅助管理
 import assistant from '@/views/asistant/route'
 
@@ -66,22 +69,31 @@ const router = new Router({
     path: '/',
     component: Layout,
     redirect: '/home',
-    children: [{
-      path: '/home',
-      component: Home,
-      meta: {
-        parent: '首页',
-        title: '首页'
-      }
-    },
-    ...assistant, // 辅助管理模块
-    ...Object.values(systemRoute), // 系统设置
-    ...salesRoute, // 销售路由配置
-    ...OrderRoute, // 采购模块路由配置
-    ...ContractRoute, // 合同模块路由配置
-    ...storageRoute, // 库房模块路由配置
-    ...financeRoute, // 财务模块路由配置
-    ...basicSetting // 基础配置
+    children: [
+      {
+        path: '/home',
+        component: Home,
+        meta: {
+          parent: '首页',
+          title: '首页'
+        }
+      },
+      {
+        path: '/todo',
+        component: todo,
+        meta: {
+          parent: '首页',
+          title: '待办'
+        }
+      },
+      ...assistant, // 辅助管理模块
+      ...Object.values(systemRoute), // 系统设置
+      ...salesRoute, // 销售路由配置
+      ...OrderRoute, // 采购模块路由配置
+      ...ContractRoute, // 合同模块路由配置
+      ...storageRoute, // 库房模块路由配置
+      ...financeRoute, // 财务模块路由配置
+      ...basicSetting // 基础配置
     ]
   },
   // 404

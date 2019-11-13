@@ -6,15 +6,16 @@
  * @Description: 物流信息 可编辑
 */
 <template>
-  <el-form
-    :model="logForm"
+  <!-- <el-form
+    :model="data"
     class="p10"
     label-position='top'
-  >
+  > -->
+  <div>
     <form-card
       class="mb10 d-relative"
       :title="index == 0 ? '物流信息' : ''"
-      v-for="(item, index) in logForm.logArr"
+      v-for="(item, index) in data.shipmentsLogisticsList"
       :key="index"
     >
       <i
@@ -25,12 +26,11 @@
       ></i>
       <el-row>
         <el-col
-          :span="
-        8"
+          :span="8"
           class="pl5 pr5 pb5"
         >
           <el-form-item
-            :prop="'item.' + index + '.value'"
+            :prop="'shipmentsLogisticsList.' + index + '.facilitator'"
             :rules="[ 
                     {required:true,message:'请选择服务商'}
                 ]"
@@ -38,15 +38,16 @@
             size="mini"
           >
             <el-select
+              @change='facilitatorNameChange($event,index)'
               class="wfull"
-              v-model="value"
+              v-model="item.facilitator"
               placeholder="请选择"
             >
               <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="item in providerList"
+                :key="item.id"
+                :label="item.serviceName"
+                :value="item.id"
               >
               </el-option>
             </el-select>
@@ -57,7 +58,7 @@
           class="pl5 pr5 pb5"
         >
           <el-form-item
-            :prop="'item.' + index + '.value'"
+            :prop="'shipmentsLogisticsList.' + index + '.serveType'"
             :rules="[ 
                     {required:true,message:'请选择服务类型'}
                 ]"
@@ -66,14 +67,14 @@
           >
             <el-select
               class="wfull"
-              v-model="value"
+              v-model="item.serveType"
               placeholder="请选择"
             >
               <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="item1 in item.serviceTypeList"
+                :key="item1.code"
+                :label="item1.content"
+                :value="item1.code"
               >
               </el-option>
             </el-select>
@@ -84,16 +85,16 @@
           class="pl5 pr5 pb5"
         >
           <el-form-item
-            :prop="'item.' + index + '.value'"
+            :prop="'shipmentsLogisticsList.' + index + '.logisticsFees'"
             maxlength="32"
-            :rules="[{type:'telePhone'},
+            :rules="[{type:'price'},
                     {required:true,message:'请输入运费金额'}]"
             label="运费金额"
             size="mini"
           >
             <el-input
               placeholder="请输入运费金额"
-              v-model="form.telPhone"
+              v-model="item.logisticsFees"
             />
           </el-form-item>
         </el-col>
@@ -102,7 +103,7 @@
           class="pl5 pr5 pb5"
         >
           <el-form-item
-            :prop="'item.' + index + '.value'"
+            :prop="'shipmentsLogisticsList.' + index + '.waybillCode'"
             :rules="[ 
                     {required:true,message:'请输入运单号'}
                 ]"
@@ -110,7 +111,10 @@
             label="运单号"
             size="mini"
           >
-            <el-input placeholder="请输入运单号" />
+            <el-input
+              placeholder="请输入运单号"
+              v-model="item.waybillCode"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -120,7 +124,8 @@
       icon="el-icon-circle-plus"
       type="text"
     >增加物流信息</el-button>
-  </el-form>
+    <!-- </el-form> -->
+  </div>
 </template>
 <script>
 export default {
@@ -128,27 +133,60 @@ export default {
     form: {
       type: Object,
       default: () => ({})
-    }
+    },
+    data: {},
   },
   data() {
     return {
       options: [],
-      logForm: {
-        logArr: [{
-          value: ''
-        }]
-      }
+      providerList: [],//服务商列表
     };
+  },
+  mounted() {
+    this.commonserviceproviderList()
+    console.log(this.dictionaryOptions('PSI_FWS_FWLX'))
   },
   methods: {
     //增加物流信息
     addLogArr() {
-      this.logForm.logArr.push({ value: '' })
+      this.data.shipmentsLogisticsList.push({
+        facilitator: "",
+        logisticsFees: 0,
+        serveType: "",
+        shipmentsOrderId: 0,
+        waybillCode: ""
+      })
     },
     //删除物流信息
     deleteLogArr(index) {
-      console.log(index)
-      this.logForm.logArr.splice(index, 1)
+      this.data.shipmentsLogisticsList.splice(index, 1)
+    },
+    //请求服务商列表
+    commonserviceproviderList() {
+      this.$api.seePsiCommonService.commonserviceproviderList({ page: 1, limit: 1000 })
+        .then(res => {
+          this.providerList = res.data
+          console.log(this.providerList, 'this.providerListthis.providerListthis.providerList')
+        })
+        .finally(() => {
+
+        })
+    },
+    //服务商列表切换的时候, 找出当前服务商对应的服务类型
+    facilitatorNameChange(val, index) {
+      console.log(val, index)
+      this.$api.seePsiCommonService.commonserviceproviderInfo(null, val)
+        .then(res => {
+          let serviceTypeList = []
+          let serviceTypeArr = res.data.serviceType.split(',')
+          serviceTypeList = this.dictionaryOptions('PSI_FWS_FWLX').filter((item) => {
+            return serviceTypeArr.includes(item.code)
+          })
+          this.$set(this.data.shipmentsLogisticsList[index], 'serviceTypeList', serviceTypeList)
+        })
+        .finally(() => {
+
+        })
     }
   }
 };

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 11:06:58
+ * @LastEditTime: 2019-11-12 15:35:57
  * @Description: 客户信息 1  //传入 data:{clientId:'1'} 会自动查询详情
  */
 <template>
@@ -97,11 +97,14 @@ export default {
       handler(val) {
         if (val) {
           // 如果当前列表里有当前id 数据name可以正常显示 
-          let index = this.clientOptions.findIndex(item => val == item.id)
-          // 否则根据id查询当前数据 一般用户初始化页面显示数据的时候
-          if (index == -1) {
-            this.commonclientinfoInfo(val)
-          }
+          // let index = this.clientOptions.findIndex(item => val == item.id)
+          // // 否则根据id查询当前数据 一般用户初始化页面显示数据的时候
+          // console.log(index);
+          // if (index == -1)
+          this.commonclientinfoInfo(val)
+          // if (!this.clientOptions.length) {
+          //   this.commonclientinfoInfo(val)
+          // }
         }
       },
       immediate: true,
@@ -124,7 +127,11 @@ export default {
       this.loading = true
       this.$api.seePsiCommonService.commonclientinfoInfo(null, id)
         .then(res => {
+          console.log(res.data);
+
           this.clientInfo = res.data || {}
+          console.log(this.clientInfo);
+
           this.clientOptions = [this.clientInfo];
         })
         .finally(() => {

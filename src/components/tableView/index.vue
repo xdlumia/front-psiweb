@@ -236,6 +236,7 @@ export default {
       this.statusList = this.$refs.table.response.statisticData || []
       // 获取统计列表数据(财务独有)
       this.staList = this.$refs.table.response.staList || []
+      this.$emit('response', res)
     },
     // 统计点击筛选
     staHandle(row) {

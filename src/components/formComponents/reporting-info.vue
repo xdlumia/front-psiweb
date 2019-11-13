@@ -21,6 +21,7 @@
           size="mini"
         >
           <el-select
+            @change="typeChange"
             v-model='addForm.type'
             :disabled='disabled'
             placeholder="请选择"
@@ -53,6 +54,7 @@
           size="mini"
         >
           <el-select
+            @change="wmsChange"
             v-model='addForm.wmsId'
             :disabled='disabled'
             placeholder="请选择"
@@ -88,6 +90,7 @@
           :closeOnSelect="false"
           @input="choose" -->
           <employees-chosen
+            v-model="employee"
             :disabled='disabled'
             :multiple="false"
             :closeOnSelect="false"
@@ -96,7 +99,8 @@
             class="d-inline"
           >
             <el-input
-              :value="employeeName"
+              :disabled='disabled'
+              :value="addForm.leaderName"
               size="mini"
             ></el-input>
           </employees-chosen>
@@ -141,6 +145,7 @@ export default {
       options: [],
       usableList: [],
       employeeName: '',
+      employee: null,
     };
   },
   components: {
@@ -156,10 +161,20 @@ export default {
       this.usableList = data || []
     },
     //选择人员
-    choose(value) {
-      this.employeeName = value.employeeName
-      this.addForm.personInChargeId = value.userId
+    choose() {
+      this.addForm.leaderName = this.employee.employeeName
+      this.addForm.personInChargeId = this.employee.userId
     },
+    //在报损的情况下每次切换库房,需要重新请求当前商品
+    wmsChange() {
+      if (this.addForm.type == 2) {
+        this.$emit('wmsChange')
+      }
+    },
+    //切换报溢报损的时候,清空库房,重新请求商品信息
+    typeChange() {
+      this.addForm.wmsId = ''
+    }
   }
 };
 </script>

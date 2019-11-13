@@ -46,11 +46,12 @@
           <reportingInfo
             ref="deliverEdit"
             :addForm='addForm'
+            @wmsChange='wmsChange'
           />
         </el-form>
         <!-- 报溢的话 需要选择库房以后再选 商品, 商品是跟库库房来的 报损不需要 -->
         <commodityInfoEdit
-          v-if="addForm.type == 2 ? addForm.wmsId : true"
+          v-if="addForm.wmsId"
           ref="logisticsEdit"
           :addForm='addForm'
         />
@@ -103,6 +104,7 @@ export default {
         note: '',//备注
         totalCostPrice: '',//成本金额总计
         taxInclusiveTotalCostPrice: '',//含税成本金额总计
+        source: '新增'
       },
     };
   },
@@ -110,6 +112,11 @@ export default {
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
+    },
+    //每次切换库房,刷新商品信息
+    wmsChange() {
+      this.$refs.logisticsEdit.$refs.commdity.searchTable = {}
+      this.$refs.logisticsEdit.$refs.commdity.search()
     },
     close() {
       this.$emit('update:visible', false)

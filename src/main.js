@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 19:07:17
+ * @LastEditTime: 2019-11-12 18:36:19
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -30,6 +30,15 @@ import './utils/utils'
 import citys from './utils/citys'
 
 import './api'
+ElementUI.Input.render = (function (old) {
+  return function () {
+    if (this.$attrs.placeholder === undefined) {
+      this.$attrs.placeholder = '请输入'
+    }
+
+    return old.apply(this, arguments)
+  }
+})(ElementUI.Input.render)
 
 // 公共组件
 import commonComponents from './components/index'

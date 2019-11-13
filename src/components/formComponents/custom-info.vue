@@ -2,11 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 14:46:32
+ * @LastEditTime: 2019-11-12 20:40:09
  * @Description: 自定义信息 1
 */
 <template>
-  <form-card title="自定义信息">
+  <form-card
+    title="自定义信息"
+    class="custom-info"
+  >
     <el-table
       :data="data.fieldList||[]"
       size="mini"
@@ -14,26 +17,62 @@
       <el-table-column
         label="字段名称"
         min-width="80"
-        prop="fieldCode"
         show-overflow-tooltip
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <el-form-item
+            class="mb0"
+            :rules="{required:true}"
+            :prop="`fieldList.${scope.$index}.fieldCode`"
+          >
+            <el-input
+              :disabled="disabled"
+              v-model.trim="scope.row.fieldCode"
+            />
+          </el-form-item>
+        </template>
+      </el-table-column>
       <el-table-column
         label="字段内容"
         min-width="80"
         prop="fieldVal"
         show-overflow-tooltip
-      ></el-table-column>
-      <!-- <el-table-column label="字段内容" min-width="200" prop="value" show-overflow-tooltip>
-        <template>
-          <el-form-item class="mt10" prop size="mini">
-            <div class="d-text-gray mt10 d-elip wfull" v-if="disabled">字段名称字段内容</div>
-            <el-select class="wfull" placeholder="请选择" v-else v-model="form.value">
-              <el-option :key="item.value" :label="item.label" :value="item.value" v-for="item in options"></el-option>
-            </el-select>
+      >
+        <template slot-scope="scope">
+          <el-form-item
+            class="mb0"
+            :rules="{required:true}"
+            :prop="`fieldList.${scope.$index}.fieldVal`"
+          >
+            <el-input
+              :disabled="disabled"
+              v-model.trim="scope.row.fieldVal"
+            />
           </el-form-item>
         </template>
-      </el-table-column> -->
+      </el-table-column>
+      <el-table-column
+        label="操作"
+        min-width="80"
+      >
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon='el-icon-remove-outline'
+            @click="data.fieldList.splice(scope.$index,1)"
+          ></el-button>
+        </template>
+      </el-table-column>
     </el-table>
+    <el-button
+      v-if="!disabled"
+      class="mt10"
+      type="text"
+      icon="el-icon-circle-plus"
+      @click="data.fieldList.push({fieldCode:'',fieldVal:''})"
+    >添加自定义字段</el-button>
+
   </form-card>
 </template>
 <script>
@@ -50,5 +89,8 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+.custom-info .el-form-item--mini.el-form-item {
+  margin-bottom: 0;
+}
 </style>

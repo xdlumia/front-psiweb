@@ -16,7 +16,7 @@
       <el-row>
         <el-col :span="8">
           <div class="d-text-qgray">服务商</div>
-          <div class="d-text-black mt5 mb20">{{item.facilitator || '-'}}</div>
+          <div class="d-text-black mt5 mb20">{{item.facilitatorName || '-'}}</div>
         </el-col>
         <el-col :span="8">
           <div class="d-text-qgray">服务类型</div>
