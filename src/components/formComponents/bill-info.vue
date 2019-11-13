@@ -2,14 +2,19 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 17:19:48
+ * @LastEditTime: 2019-11-13 18:48:56
  * @Description: 账期信息
  */
 <template>
   <form-card title='账期信息'>
-    <div class="d-text-black">结账方式</div>
-    <el-form-item prop="paymentType">
-      <el-select v-model="data.paymentType">
+    <el-form-item
+      label="结账方式"
+      prop="paymentType"
+    >
+      <el-select
+        :disabled="disabled"
+        v-model="data.paymentType"
+      >
         <!-- TODO 字典码不对 后期调整 -->
         <el-option
           v-for="item in dictionaryOptions('PSI_FWS_FWLX')"
@@ -46,6 +51,7 @@
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.payTime`"
           >
             <el-date-picker
+              :disabled="disabled"
               size="mini"
               value-format="timestamp"
               v-model="scope.row.payTime"
@@ -67,6 +73,7 @@
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.isBillFee`"
           >
             <el-switch
+              :disabled="disabled"
               :active-value="1"
               :inactive-value="0"
               v-model="scope.row.isBillFee"
@@ -85,6 +92,7 @@
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.payAmount`"
           >
             <el-input
+              :disabled="disabled"
               size="mini"
               placeholder="请输入"
               v-model="scope.row.payAmount"
@@ -94,6 +102,7 @@
       </el-table-column>
     </el-table>
     <el-button
+      v-if="!disabled"
       class="mt10 el-icon-circle-plus-outline"
       size="mini"
       @click="addBill"

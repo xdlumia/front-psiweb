@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 15:09:40
+ * @LastEditTime: 2019-11-13 18:53:30
  * @Description: 报价单详情
 */
 <template>
@@ -169,8 +169,8 @@ export default {
     buttonsClick(label) {
       if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
         if (label == '编辑') { this.editVisible = true }
-        if (label == '生成销售出库单') { this.outLibAddVisible = true }
-        if (label == '生成请购单') { this.buyingAddVisible = true }
+        else if (label == '生成销售出库单') { this.outLibAddVisible = true }
+        else if (label == '生成请购单') { this.buyingAddVisible = true }
         // this.$emit('buttonClick', label, this.drawerData.data)
       } else {
         let apiObj = {
@@ -195,11 +195,12 @@ export default {
             needNote: null
           },
           '终止': {
-            api: 'seePsiSaleService.salesquotationApproval',
+            api: 'seePsiSaleService.salesquotationPause',
             data: { busCode: this.detail.quotationCode },
             needNote: null
           }
         }
+        // 公共方法 mixin 引进来的
         this.$submission(
           apiObj[label].api,
           apiObj[label].data,

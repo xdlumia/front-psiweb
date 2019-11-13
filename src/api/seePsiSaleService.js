@@ -163,6 +163,13 @@ export default {
     'methods': 'post'
   },
 
+  // 撤销审核
+  salescostapportionCancel: {
+    'url': '/salescostapportion/cancel',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 删除
   salescostapportionDelete: {
     'url': '/salescostapportion/delete',
@@ -173,6 +180,12 @@ export default {
   // 导出
   salescostapportionExport: {
     'url': '/salescostapportion/export',
+    'mock': false
+  },
+
+  // 查看详细信息
+  salescostapportionGetInfoByCode: {
+    'url': '/salescostapportion/getInfoByCode',
     'mock': false
   },
 
@@ -195,9 +208,30 @@ export default {
     'methods': 'delete'
   },
 
+  // 审核通过
+  salescostapportionPassApproval: {
+    'url': '/salescostapportion/passApproval',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 驳回
+  salescostapportionReject: {
+    'url': '/salescostapportion/reject',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 保存
   salescostapportionSave: {
     'url': '/salescostapportion/save',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 提交审核
+  salescostapportionSubmitApproval: {
+    'url': '/salescostapportion/submitApproval',
     'mock': false,
     'methods': 'post'
   },
@@ -210,10 +244,92 @@ export default {
   },
   /* =============销售费用分摊单end=========== */
 
+  /* =============销售退换货单start=========== */
+  // 撤销审核
+  salesexchangeCancel: {
+    'url': '/salesexchange/cancel',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 删除
+  salesexchangeDelete: {
+    'url': '/salesexchange/delete',
+    'mock': false,
+    'methods': 'delete'
+  },
+
+  // 导出
+  salesexchangeExport: {
+    'url': '/salesexchange/export',
+    'mock': false
+  },
+
+  // 查看详细信息
+  salesexchangeGetInfoByCode: {
+    'url': '/salesexchange/getInfoByCode',
+    'mock': false
+  },
+
+  // 查看详细信息
+  salesexchangeInfo: {
+    'url': '/salesexchange/info/{id}',
+    'mock': false
+  },
+
+  // 获取列表
+  salesexchangeList: {
+    'url': '/salesexchange/list',
+    'mock': false
+  },
+
+  // 逻辑删除
+  salesexchangeLogicDelete: {
+    'url': '/salesexchange/logicDelete',
+    'mock': false,
+    'methods': 'delete'
+  },
+
+  // 审核通过
+  salesexchangePassApproval: {
+    'url': '/salesexchange/passApproval',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 驳回
+  salesexchangeReject: {
+    'url': '/salesexchange/reject',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 保存
+  salesexchangeSave: {
+    'url': '/salesexchange/save',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 修改
+  salesexchangeUpdate: {
+    'url': '/salesexchange/update',
+    'mock': false,
+    'methods': 'post'
+  },
+  /* =============销售退换货单end=========== */
+
   /* =============报价单start=========== */
   // 审核
   salesquotationApproval: {
     'url': '/salesquotation/approval',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 撤销审核
+  salesquotationCancel: {
+    'url': '/salesquotation/cancel',
     'mock': false,
     'methods': 'post'
   },
@@ -270,15 +386,36 @@ export default {
     'methods': 'delete'
   },
 
+  // 审核通过
+  salesquotationPassApproval: {
+    'url': '/salesquotation/passApproval',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 终止
   salesquotationPause: {
     'url': '/salesquotation/pause',
     'mock': false
   },
 
+  // 驳回
+  salesquotationReject: {
+    'url': '/salesquotation/reject',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 保存
   salesquotationSave: {
     'url': '/salesquotation/save',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 提交审核
+  salesquotationSubmitApproval: {
+    'url': '/salesquotation/submitApproval',
     'mock': false,
     'methods': 'post'
   },
@@ -297,6 +434,88 @@ export default {
     'methods': 'post'
   },
   /* =============报价单end=========== */
+
+  /* =============销售退换货单start=========== */
+  // 撤销审核
+  salesreturnedCancel: {
+    'url': '/salesreturned/cancel',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 删除
+  salesreturnedDelete: {
+    'url': '/salesreturned/delete',
+    'mock': false,
+    'methods': 'delete'
+  },
+
+  // 导出
+  salesreturnedExport: {
+    'url': '/salesreturned/export',
+    'mock': false
+  },
+
+  // 查看详细信息
+  salesreturnedGetInfoByCode: {
+    'url': '/salesreturned/getInfoByCode',
+    'mock': false
+  },
+
+  // 查看详细信息
+  salesreturnedInfo: {
+    'url': '/salesreturned/info/{id}',
+    'mock': false
+  },
+
+  // 获取列表
+  salesreturnedList: {
+    'url': '/salesreturned/list',
+    'mock': false
+  },
+
+  // 逻辑删除
+  salesreturnedLogicDelete: {
+    'url': '/salesreturned/logicDelete',
+    'mock': false,
+    'methods': 'delete'
+  },
+
+  // 审核通过
+  salesreturnedPassApproval: {
+    'url': '/salesreturned/passApproval',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 驳回
+  salesreturnedReject: {
+    'url': '/salesreturned/reject',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 保存
+  salesreturnedSave: {
+    'url': '/salesreturned/save',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 提交审核
+  salesreturnedSubmitApproval: {
+    'url': '/salesreturned/submitApproval',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 修改
+  salesreturnedUpdate: {
+    'url': '/salesreturned/update',
+    'mock': false,
+    'methods': 'post'
+  },
+  /* =============销售退换货单end=========== */
 
   /* =============销售单start=========== */
   // 删除
@@ -360,6 +579,13 @@ export default {
     'methods': 'post'
   },
 
+  // 撤销审核
+  salesshipmentCancel: {
+    'url': '/salesshipment/cancel',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 合并生成销售出库单规则校验
   salesshipmentCheckInsertSalesShipment: {
     'url': '/salesshipment/checkInsertSalesShipment',
@@ -411,6 +637,20 @@ export default {
     'methods': 'delete'
   },
 
+  // 审核通过
+  salesshipmentPassApproval: {
+    'url': '/salesshipment/passApproval',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 合同完善
+  salesshipmentPassContractApproval: {
+    'url': '/salesshipment/passContractApproval',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 终止
   salesshipmentPause: {
     'url': '/salesshipment/pause',
@@ -418,9 +658,30 @@ export default {
     'methods': 'post'
   },
 
+  // 审核采购时间
+  salesshipmentPurchaseTimeApproval: {
+    'url': '/salesshipment/purchaseTimeApproval',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 驳回
+  salesshipmentReject: {
+    'url': '/salesshipment/reject',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 保存
   salesshipmentSave: {
     'url': '/salesshipment/save',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 提交审核
+  salesshipmentSubmitApproval: {
+    'url': '/salesshipment/submitApproval',
     'mock': false,
     'methods': 'post'
   },
@@ -435,6 +696,13 @@ export default {
   // 编辑合同
   salesshipmentUpdateContract: {
     'url': '/salesshipment/updateContract',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 收回合同
+  salesshipmentWithdrawApproval: {
+    'url': '/salesshipment/withdrawApproval',
     'mock': false,
     'methods': 'post'
   },

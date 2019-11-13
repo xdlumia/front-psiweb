@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 14:17:11
+ * @LastEditTime: 2019-11-13 18:28:00
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -26,6 +26,8 @@
           class="d-text-blue d-pointer"
           @click="eventHandle('detailVisible',row)"
         >{{value}}}</span>
+        <!-- 状态 -->
+        <span v-else-if="column.columnFields=='state'">{{stateText[value]}}</span>
         <!-- 有无合同 -->
         <span v-else-if="column.columnFields=='isContract'">{{value?'有':'无'}}</span>
 
@@ -58,8 +60,7 @@
   </div>
 </template>
 <script>
-import outLibDetails from './outLib-details' //销售出库单详情
-
+import outLibDetails from './outLib-details' //销售出库单详
 let filterOptions = [
   { label: '商户编号、商户名称/简称', prop: 'text', type: 'text', default: true, },
   { label: '联系人、联系人电话', prop: 'text1', type: 'text', default: true, },
@@ -92,6 +93,17 @@ export default {
         // shipmentCode: '',///销售出库单编号
         state: '',//状态
         creator: '',//创建人
+      },
+      //头部状态数据
+      stateText: {
+        '-1': '新建',
+        '0': '审核中',
+        '1': '请购处理',
+        '2': '回收合同',
+        '3': '已通过',
+        '4': '完成',
+        '5': '已驳回',
+        '6': '终止',
       },
       // 筛选列表
       filterOptions: filterOptions,

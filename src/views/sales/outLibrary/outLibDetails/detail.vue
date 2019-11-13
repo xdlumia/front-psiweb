@@ -2,81 +2,82 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 10:25:10
+ * @LastEditTime: 2019-11-13 18:41:19
  * @Description: 销售出库单详情-详情
 */
 <template>
   <div>
     <!-- 审核面板 -->
-    <approve-panel :data="detailInfo" />
+    <approve-panel
+      disabled
+      :data="data"
+    />
     <!-- 客户信息 -->
-    <customerInfo :data="detailInfo" />
+    <customerInfo
+      disabled
+      :data="data"
+    />
     <!-- 公司信息 -->
-    <companyInfo :data="detailInfo" />
+    <companyInfo
+      disabled
+      :data="data"
+    />
     <!-- 报价单信息 -->
-    <quotationInfo :data="detailInfo">
-      <el-tabs
-        slot="tabs"
-        v-model="activeName"
-      >
-        <el-tab-pane
-          v-for="(item,index) of 11"
-          :key="index"
-          :label="`报价单${index}`"
-          :name="index+''"
-        ></el-tab-pane>
-      </el-tabs>
-      <div slot="body">
-        <!-- 发货信息 -->
-        <deliverInfo />
-        <!-- 商品信息 -->
-        <buying-goods-edit />
-        <!-- 报价有效期 -->
-        <payExpire />
-        <!-- 附加发票 -->
-        <extrataxInfo />
-        <!-- 自定义信息 -->
-        <customInfo />
-        <!-- 备注信息 -->
-        <extraInfo />
-      </div>
-    </quotationInfo>
+    <quote-info :rowDatas="rowDatas" />
 
     <!-- 收款滞纳金 -->
-    <paymentLate ref="paymentLate" />
+    <payment-late-sales
+      disabled
+      :data="data"
+    />
     <!-- 账期信息 -->
-    <billInfo ref="billInfo" />
+    <billInfo
+      disabled
+      :data="data"
+    />
     <!-- 自定义信息 -->
-    <customInfo />
+    <customInfo
+      disabled
+      :data="data"
+    />
     <!-- 备注信息 -->
-    <extraInfo />
+    <extrasInfo
+      disabled
+      :data="data"
+    />
   </div>
 </template>
 <script>
-
+import quoteInfo from '../quote-info'
 
 export default {
-  components: {
-
+  props: {
+    rowData: Object,
+    data: {
+      default: () => ({}),
+      type: Object
+    },
   },
-  props: ['rowData', 'code'],
+  components: {
+    quoteInfo
+  },
+
   data() {
     return {
       activeName: 'detail',
       detailInfo: {}, ///详情信息
     }
   },
+  computed: {
+    rowDatas() {
+      return []
+    }
+  },
   mounted() {
-    this.salesshipmentGetInfoByCode()
+
   },
   methods: {
-    //根据code 查看详情
-    salesshipmentGetInfoByCode() {
-      this.$api.seePsiSaleService.salesshipmentGetInfoByCode({ shipmentCode: this.code })
-        .then(res => {
-          this.detailInfo = res.data || {}
-        })
-    }
+
   },
   beforeDestroy() {
   }

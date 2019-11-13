@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 18:03:33
+ * @LastEditTime: 2019-11-13 19:02:45
  * @Description: 报价单信息 编辑查看时使用
 */
 <template>
@@ -66,7 +66,7 @@ export default {
   },
   data() {
     return {
-      activeName: this.rowDatas[0].quotationCode + '', // 数据源
+      activeName: this.rowDatas[0] ? this.rowDatas[0].quotationCode + '' : '', // 数据源
       detail: {},
     }
   },
