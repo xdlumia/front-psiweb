@@ -27,7 +27,7 @@
             <el-table-column
               label="商品编号"
               min-width="140"
-              prop="goodsCode"
+              prop="commodityCode"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
@@ -66,7 +66,7 @@
               prop="unit"
               show-overflow-tooltip
             >
-              <template slot-scope="scope">{{scope.row.createTime | dictionary('PSI_SP_KIND')}}</template>
+              <template slot-scope="scope">{{scope.row.unit | dictionary('SC_JLDW')}}</template>
             </el-table-column>
           </el-table>
         </form-card>
@@ -77,7 +77,7 @@
             style="height:300px"
             border
             api="seePsiWmsService.wmsinventoryQueryInventoryDistribution"
-            :params="{commodityCode:drawerData.goodsCode}"
+            :params="{commodityCode:drawerData.commodityCode}"
             size="mini"
           >
             <el-table-column
