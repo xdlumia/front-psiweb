@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 13:47:25
+ * @LastEditTime: 2019-11-13 10:49:42
  * @Description: 备注信息 字段已绑定 1 
 */
 <template>
@@ -71,7 +71,7 @@
           <upload-file
             :disabled="disabled"
             :limit="{
-            type:['doc','pdf','xls','ppt','zip','rar'],
+            type:['doc','pdf','xls','ppt','docx','xlsx','pptx','zip','rar'],
           }"
             @uploadSuccess="uploadFile"
             list-type="text"
