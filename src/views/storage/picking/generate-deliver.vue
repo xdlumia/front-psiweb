@@ -127,7 +127,6 @@ import goodsPicking from '@/components/formComponents/goods-picking'
 import pickingSn from '@/components/formComponents/picking-sn';
 
 export default {
-  props: ['data'],
   components: {
     goodsPicking,
     pickingSn
@@ -138,7 +137,8 @@ export default {
       default: false
     },
     form: {},
-    data: {}
+    data: {},
+    drawerData: {}
   },
   computed: {
     maxHeight() {
@@ -160,7 +160,8 @@ export default {
     },
     //保存
     submit() {
-      this.$api.seePsiWmsService.wmspickingorderSave()
+      console.log(this.$refs.pickingSn.tableData, 'tableDatatableDatatableData')
+      this.$api.seePsiWmsService.wmspickingorderBatchShipment({ businessCode: this.drawerData.pickingOrderCode, businessId: this.drawerData.id, putawayCommodityList: this.$refs.pickingSn.tableData })
         .then(res => {
           this.close()
           this.$emit('reload')

@@ -124,7 +124,6 @@ export default {
   methods: {
     changeDialog(row) {
       this.row = row
-      console.log(row, 'rowrowrowrow')
       this.dialogVisible = true
     }
   },

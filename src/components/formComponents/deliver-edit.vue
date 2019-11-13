@@ -7,7 +7,6 @@
 */
 <template>
   <form-card title="发货信息">
-    <!-- 弃用 使用 deliver-info 组件 -->
     <el-row>
       <el-col
         :span="8"

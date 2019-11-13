@@ -98,7 +98,7 @@
               :params="{commodityCode:data.commodityCode,businessCode:drawerData.pickingOrderCode,page:1,limit:15}"
               ref="companyTable"
               class="college-main"
-              style="height:calc(100vh - 340px)"
+              style="max-height:300px"
             >
               <el-table-column
                 type="index"

@@ -10,9 +10,12 @@
     <!-- 右侧滑出 -->
     <TableView
       busType="32"
+      :filter="true"
       :filterOptions='filterOptions'
       :params="queryForm"
       :selection='false'
+      exportApi="seePsiPurchaseService.purchaseExport"
+      ref='allTable'
       api="seePsiPurchaseService.purchaseList"
       title="采购单"
     >
@@ -33,7 +36,7 @@
     </TableView>
     <Details
       :drawerData='drawerData'
-      @update='update'
+      @reload='reload'
       v-if="tableVisible"
       :visible.sync='tableVisible'
     />
@@ -59,6 +62,7 @@ export default {
       },
       componentActive: '', // 当前的组件
       tableVisible: false, // 销售单右侧抽屉
+      button: true,
       drawerData: { // 弹框的相关数据
         title: '',
         component: 'Details'
@@ -84,15 +88,16 @@ export default {
           prop: 'putinState',
           type: 'select',
           options: [
-            { label: '完成拣货', value: '2' },
-            { label: '部分拣货', value: '1' },
-            { label: '待拣货', value: '0' },
-            { label: '终止', value: '-1' }
+            { label: '待入库', value: '0' },
+            { label: '部分完成', value: '1' },
+            { label: '完成入库', value: '2' },
+            { label: '终止', value: '3' },
+            { label: '全部', value: '' },
           ],
           default: true
         },
         {
-          label: 'dismantleState',
+          label: '拆卸任务状态',
           prop: 'pickingState',
           type: 'select',
           options: [
@@ -153,6 +158,9 @@ export default {
     },
     update() {
       this.tableVisible = false
+    },
+    reload() {
+      this.$refs.allTable.reload()
     }
   }
 };

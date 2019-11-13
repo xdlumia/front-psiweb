@@ -56,6 +56,7 @@ export default {
         page: 1,
         limit: 20
       },
+      button: true,
       tableVisible: false,//销售单右侧抽屉
       componentActive: '',//当前的组件
       drawerData: {//弹框的相关数据

@@ -10,7 +10,7 @@
   <div>
     <form-card title='机器号/SN码'>
       <d-table
-        api="seePsiWmsService.wmsflowrecordList"
+        api="seePsiWmsService."
         :params="{commodityCode:data.commodityCode,businessCode:data.pickingOrderCode,page:1,limit:15}"
         ref="companyTable"
         class="college-main"

@@ -24,7 +24,11 @@
           <el-form>
             <purchaseBase :data="detailForm" />
             <purchaseReceivingInfo :data="detailForm" />
-            <goodsWarehousing :data="detailForm" />
+            <goodsWarehousing
+              @reload='reload'
+              :data="detailForm"
+              :drawerData="drawerData"
+            />
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="拆卸任务">拆卸任务</el-tab-pane>
@@ -35,7 +39,7 @@
   </SideDetail>
 
 </template>
-<script>
+<script> 
 import purchaseBase from '@/components/formComponents/purchase-base'
 import purchaseReceivingInfo from '@/components/formComponents/purchase-receiving-info';
 import goodsWarehousing from '@/components/formComponents/goods-warehousing';
@@ -68,11 +72,14 @@ export default {
           this.status[2].value = this.detailForm.creatorName
           this.status[3].value = this.detailForm.deptName
           this.status[4].value = this.detailForm.source
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailFormthis.detailFormthis.detailFormthis.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 
         })
+    },
+    reload() {
+      this.$emit('reload')
+      this.wmsallocationorderInfo()
     }
   }
 }

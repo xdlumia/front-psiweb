@@ -829,6 +829,20 @@ export default {
   /* =============库房商品期初信息end=========== */
 
   /* =============库房商品明细start=========== */
+  // 批量扫码入库
+  wmsinventorydetailBatchPutaway: {
+    'url': '/wmsinventorydetail/batchPutaway',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 批量扫码出库
+  wmsinventorydetailBatchShipment: {
+    'url': '/wmsinventorydetail/batchShipment',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 批量商品入库
   wmsinventorydetailBatchSsave: {
     'url': '/wmsinventorydetail/batchSsave',
@@ -896,11 +910,6 @@ export default {
     'methods': 'post'
   },
 
-  // 商品扫码入库校验
-  wmsinventorydetailPutawayCommodityCheck: {
-    'url': '/wmsinventorydetail/putawayCommodityCheck',
-    'mock': false
-  },
 
   // 商品入库
   wmsinventorydetailSave: {
@@ -973,6 +982,13 @@ export default {
   /* =============库房拣货商品清单end=========== */
 
   /* =============库房拣货单start=========== */
+  // 拣货单批量扫码出库
+  wmspickingorderBatchShipment: {
+    'url': '/wmspickingorder/batchShipment',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 删除
   wmspickingorderDelete: {
     'url': '/wmspickingorder/delete',

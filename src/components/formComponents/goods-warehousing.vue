@@ -35,11 +35,11 @@
           min-width="120"
           show-overflow-tooltip
         >
-          <template slot-scope="">
+          <template slot-scope="scope">
             <el-button
               type="primary"
               size="mini"
-              @click="wareVisible = true,dialogData.title = '入库-IADFGHIDASHUN',dialogData.type = 'able'"
+              @click="changeWareVisible(scope)"
             >入库</el-button>
           </template>
         </el-table-column>
@@ -68,8 +68,8 @@
           <template slot-scope="scope">
             <span
               class="d-text-blue"
-              @click="wareVisible = true,dialogData.title = '机器号/SN码记录',dialogData.type = 'disable'"
-            >{{scope.row.putinNumber }}</span>
+              @click="changeWareDisabledVisible(scope)"
+            >{{scope.row.putinNumber}}{{scope.row.commodityNumber}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -140,45 +140,60 @@
       />
     </form-card>
     <purchaseWarehousing
-      :visible='wareVisible'
+      :visible.sync='wareVisible'
       :dialogData='dialogData'
-      @close='wareVisible = false'
+      :drawerData='drawerData'
+      v-if="wareVisible"
+      @reload='reload'
+    />
+    <purchaseWareDisabled
+      :visible.sync='wareDisabledVisible'
+      :dialogData='dialogData'
+      :drawerData='drawerData'
+      v-if="wareDisabledVisible"
     />
   </div>
-</template>
+</template> 
 <script>
 import FullscreenElement from '@/components/fullscreen-element';
 import purchaseWarehousing from './purchase-warehousing'
+import purchaseWareDisabled from './purchase-ware-disabled'
+
 export default {
-  props: ['data'],
+  props: ['data', 'drawerData'],
   data() {
     return {
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
       dialogVisible: false,
       showInFullscreen: false,
+      wareDisabledVisible: false,
       wareVisible: false,
       dialogData: {
-        title: ''
-      }
+      },
+      row: {}
     }
   },
   methods: {
     fullscreen() {
       this.showInFullscreen = true;
+    },
+    //点击SN码一栏
+    changeWareDisabledVisible(scope) {
+      this.wareDisabledVisible = true
+      this.dialogData = scope.row
+    },
+    //点击SN码一栏
+    changeWareVisible(scope) {
+      this.wareVisible = true
+      this.dialogData = scope.row
+    },
+    reload() {
+      this.$emit('reload')
     }
   },
   components: {
     purchaseWarehousing,
-    FullscreenElement
+    FullscreenElement,
+    purchaseWareDisabled
   },
 }
 </script>

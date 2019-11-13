@@ -32,6 +32,7 @@
               :visible='orderStorageVisible'
               v-if='orderStorageVisible'
               :data='detailForm'
+              :drawerData='drawerData'
               @reload='reload'
             />
           </el-form>

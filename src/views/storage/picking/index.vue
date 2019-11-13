@@ -66,6 +66,7 @@ export default {
         title: '',
         component: 'Details',
       },
+      button: true,
       activeName: '',
       filterOptions: [
         { label: '销售单编号', prop: 'shipmentCode', default: true },
@@ -100,14 +101,14 @@ export default {
         },
         {
           label: '已拣数量',
-          prop: 'AlreadyPickingNum',
+          prop: 'PickingAccomplishNum',
           type: 'numberRange',
           default: true,
           int: true
         },
         { label: '拣货人', prop: 'PickingPerson', type: 'employee', default: true },
         { label: '商品类别', prop: 'commodityCategorys', default: true },
-        { label: '商品名称', prop: 'commodityName', default: true },
+        { label: '商品名称', prop: 'commodityNames', default: true },
         {
           label: '生成时间',
           prop: 'Time',
@@ -129,6 +130,7 @@ export default {
     getTableVisible(data) {
       this.tableVisible = true
       this.drawerData = data
+      console.log(this.drawerData, 'this.drawerDatathis.drawerDatathis.drawerDatathis.drawerDatathis.drawerDatathis.drawerData')
     },
     reload() {
       this.$refs.table.reload()

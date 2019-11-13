@@ -295,7 +295,6 @@ export default {
                     message: '扫过喽'
                   })
                 }
-
               }
             })
             .finally(() => {
