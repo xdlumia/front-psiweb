@@ -33,10 +33,10 @@ export default {
     // Vue.component('salesAdjustPrice', salesAdjustPrice)
 
     // 采购 合同 start
-    const indexFiles = require.context(`./`, true, /index\.vue$/)// 如果要引入其他文件，可以去掉index，或者加|
+    const indexFiles = require.context(`./`, true, /index\.vue$/) // 如果要引入其他文件，可以去掉index，或者加|
     const cmps = indexFiles.keys()
       // 找出 采购(order) 合同(contract) 下的index列表页，如果要引入其他模块，也可以在下面加
-      .filter(a => a.match(/^\.\/(sales|finance|order|contract)/))
+      .filter(a => a.match(/^\.\/(sales|finance|storage|order|contract)/))
       .map(item => {
         let cmpName = item.match(/([a-z]*)/gi)
           .filter(a => a).reverse()

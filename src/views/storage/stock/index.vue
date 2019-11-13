@@ -41,7 +41,7 @@
         <span
           v-else-if="column.columnFields=='inventoryWarning'"
           :class="value == 1 ? 'd-text-red' : value == 2 ? 'd-text-yellow' : ''"
-        >{{value == 0 ? '正常' : value == 0 ? '库存预警' : '库存不足'}}</span>
+        >{{value == 0 ? '正常' : value == 1 ? '库存积压' : '库存不足'}}</span>
         <span v-else-if="column.columnFields=='goodsPic'">
           <el-image
             style="width: 100px; height: 30px"
