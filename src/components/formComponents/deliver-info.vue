@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 14:50:48
+ * @LastEditTime: 2019-11-13 15:55:05
  * @Description: 发货信息 1
 */
 <template>
@@ -56,16 +56,6 @@
   </form-card>
 </template>
 <script>
-let formItems = [
-  { label: '销售预计发货时间', prop: 'salesExpectedShipmentsTime', type: 'date', rules: [{ required: true, trigger: 'blur' }], },
-  // { label: '客户名称', prop: 'clientName', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
-  { label: '客户联系人', prop: 'clientLinkman', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },
-  { label: '客户联系电话', prop: 'clientPhone', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'phone' }], },
-  { label: '客户收货地址', prop: 'clientReceivingAddress', type: 'input', rules: [{ required: true, trigger: 'blur' },], },
-  { label: '销售要求到货时间', prop: 'salesRequireArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
-  { label: '采购预计到货时间', prop: 'procurementExpectedArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
-  { label: '备注', prop: 'note', type: 'date', maxlength: 300, rules: [{ required: false, trigger: 'blur' }], },
-]
 export default {
   props: {
     data: {
@@ -85,7 +75,21 @@ export default {
   data() {
     return {
       // 遍历表单
-      formItems: formItems.filter(item => !this.hide.includes(item.prop)),
+      Items: [
+        { label: '销售预计发货时间', prop: 'salesExpectedShipmentsTime', type: 'date', rules: [{ required: true && !this.disabled, trigger: 'blur' }], },
+        // { label: '客户名称', prop: 'clientName', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
+        { label: '客户联系人', prop: 'clientLinkman', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }, { type: 'name' }], },
+        { label: '客户联系电话', prop: 'clientPhone', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }, { type: 'phone' }], },
+        { label: '客户收货地址', prop: 'clientReceivingAddress', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' },], },
+        { label: '销售要求到货时间', prop: 'salesRequireArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
+        { label: '采购预计到货时间', prop: 'procurementExpectedArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
+        { label: '备注', prop: 'note', type: 'date', maxlength: 300, rules: [{ required: false, trigger: 'blur' }], },
+      ]
+    }
+  },
+  computed: {
+    formItems() {
+      return this.Items.filter(item => !this.hide.includes(item.prop))
     }
   },
 }

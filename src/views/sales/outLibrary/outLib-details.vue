@@ -2,15 +2,16 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 19:11:07
+ * @LastEditTime: 2019-11-13 19:18:56
  * @Description: 销售出库单详情
 */
 <template>
   <div>
     <side-detail
       title="出库单详情"
-      :visible.sync="showPop"
+      :visible.sync="showDetailPage"
       width="920px"
+      @close="close"
     >
       <div slot="button">
         <!-- 操作按钮 -->
@@ -21,7 +22,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[currStatus].includes(item.label)"
+            v-if="currStatusType[rowData.state = 4 || -1].includes(item.label)"
             size="small"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -48,8 +49,10 @@
         </el-tabs>
         <components
           ref="detail"
+          :params="{shipmentCode:code}"
           :code="this.code"
           :rowData="rowData"
+          :data="detail || {}"
           class="d-auto-y"
           :button="false"
           style="height:calc(100vh - 200px)"
@@ -62,22 +65,43 @@
     <add
       :visible.sync="editVisible"
       :rowData="rowData"
+      type="edit"
+      :params="{salesShipmentCode:rowData.shipmentCode}"
+      :code="rowData.shipmentCode"
+    />
+    <exchangeAdd
+      :visible.sync="exchangeAddVisible"
+      :rowData="rowData"
+      type="add"
+      :params="{salesShipmentCode:rowData.shipmentCode}"
+      :code="rowData.shipmentCode"
+    />
+    <returnAdd
+      :visible.sync="returnAddVisible"
+      :rowData="rowData"
+      type="add"
+      :params="{salesShipmentCode:rowData.shipmentCode}"
+      :code="rowData.shipmentCode"
     />
   </div>
 </template>
 <script>
-import add from './add' //销售出库单编辑
+import add from './add' //销售出库单新增编辑
+import returnAdd from './add' //退货单新增
+import exchangeAdd from './add' //换货单新增
+
 import detail from './outLibDetails/detail' //详情
+import VisibleMixin from '@/utils/visibleMixin';
 export default {
+  mixins: [VisibleMixin],
   components: {
     detail,
     add
   },
-  props: ['visible', 'rowData', 'code'],
+
   data() {
     return {
       // 操作按钮
-
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
         { label: '提交审核', type: 'primary', authCode: '' },
@@ -99,18 +123,28 @@ export default {
       ],
       /**
        * 根据当前状态判断显示哪些按钮
-       * 1:新建 2:审核中 3:请购处理 4:合同收回 5:已通过 6:已完成 7:已驳回 8:已终止
        */
+      //头部状态数据
+      stateText: {
+        '-1': '新建',
+        '0': '审核中',
+        '1': '请购处理',
+        '2': '回收合同',
+        '3': '已通过',
+        '4': '完成',
+        '5': '已驳回',
+        '6': '终止',
+      },
       currStatus: 1,
       currStatusType: {
-        1: ['提交审核', '编辑', '删除', '生成合同'], // 新建
-        2: ['撤销审核', '审核通过', '驳回', '合同完善追加合同附件'], //审核中
-        3: ['审核采购时间', '追加合同附件'], //请购处理
-        4: ['收回合同', '追加合同附件'], //合同收回
-        5: ['终止', '生成退货单', '追加合同附件'], //已通过
-        6: ['生成退货单', '生成换货单', '开票申请', '追加合同附件'], //已完成
-        7: ['提交审核', '编辑', '删除', '编辑合同'], //已驳回
-        8: ['生成退货单'] //已终止
+        '-1': ['提交审核', '编辑', '删除', '生成合同'], // 新建
+        '0': ['撤销审核', '审核通过', '驳回', '合同完善追加合同附件'], //审核中
+        '1': ['审核采购时间', '追加合同附件'], //请购处理
+        '2': ['收回合同', '追加合同附件'], //合同收回
+        '3': ['终止', '生成退货单', '追加合同附件'], //已通过
+        '4': ['生成退货单', '生成换货单', '开票申请', '追加合同附件'], //已完成
+        '5': ['提交审核', '编辑', '删除', '编辑合同'], //已驳回
+        '6': ['生成退货单'] //已终止
       },
       // tabs 组件名称对应的label名称
       tabs: {
@@ -128,65 +162,73 @@ export default {
       activeName: 'detail',
       form: {},
       editVisible: false, // 销售出库单编辑
+      returnAddVisible: false,
+      exchangeAddVisible: false,
 
     }
   },
   computed: {
-    showPop: {
-      get() {
-        return this.visible
-      },
-      set(val) {
-        this.$emit('update:visible', false)
-      }
-    }
+
   },
   mounted() {
-    this.salesshipmentGetInfoByCode()
+
   },
   methods: {
     buttonsClick(label) {
-      // handleConfirm里的按钮操作是需要二次确认的
-      let handleConfirm = ['提交审核', '撤销审核', '驳回', '删除', '终止']
-      if (handleConfirm.includes(label)) {
-        this.$confirm(`是否${label}?`, "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-          center: true
-        }).then(() => {
-          let apiObj = {
-            '提交审核': 'salesshipmentApproval',
-            '撤销审核': '',
-            '驳回': '',
-            '删除': 'salesshipmentLogicDelete',
-            '终止': 'salesshipmentPause',
-          }
-          this.$api.seePsiSaleService.collegeManagerDelete({ id: [123] })
-            .then(res => {
-              // 刷新列表
-              this.$emit('reload')
-              // 关闭弹出框
-              this.showPop = false
-              // if (this.activeName == 'detail') {
-              //   this.showPop = false
-              //   // this.$refs.detail.
-              // }
-            });
-        });
+      let labelObj = {
+        '编辑': 'editVisible',
+        '生成合同': 'editVisible',
+        '追加合同附件': 'editVisible',
+        '生成退货单': 'returnAddVisible',
+        '生成换货单': 'exchangeAddVisible',
       }
-      // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
-      else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
-        if (label == '编辑') { this.editVisible = true }
+      if (labelObj.hasOwnProperty(label)) {
+        let visible = labelObj[label]
+        this[visible] = true
+      }
+      // 需要二次确认操作
+      else {
+        let apiObj = {
+          '提交审核': {
+            api: 'seePsiSaleService.salesshipmentApproval',
+            data: { isAgree: 1, busCode: this.detail.shipmentCode },
+            needNote: null
+          },
+          '撤销审核': {
+            api: 'seePsiSaleService.salesshipmentApproval',
+            data: { isAgree: 0, busCode: this.detail.shipmentCode },
+            needNote: null
+          },
+          '驳回': {
+            api: 'seePsiSaleService.salesshipmentApproval',
+            data: { busCode: this.detail.shipmentCode },
+            needNote: null
+          },
+          '删除': {
+            api: 'seePsiSaleService.salesshipmentLogicDelete',
+            data: ({ id: this.detail.id }),
+            needNote: null
+          },
+          '终止': {
+            api: 'seePsiSaleService.salesshipmentPause',
+            data: { busCode: this.detail.shipmentCode },
+            needNote: null
+          }
+        }
+        // 公共方法 mixin 引进来的
+        this.$submission(
+          apiObj[label].api,
+          apiObj[label].data,
+          label,
+          apiObj[label].needNote)
       }
     },
-    //根据code 查看详情
-    salesshipmentGetInfoByCode() {
-      this.$api.seePsiSaleService.salesshipmentGetInfoByCode({ shipmentCode: this.code })
-        .then(res => {
-          this.detailInfo = res.data || {}
-        })
-    }
+    async getDetail() {
+      if (this.code) {
+        let { data } = await this.$api.seePsiSaleService.salesshipmentGetInfoByCode({ shipmentCode: this.code })
+        return data;
+      }
+    },
   },
   beforeDestroy() {
   }

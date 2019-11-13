@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 19:23:14
+ * @LastEditTime: 2019-11-13 19:23:47
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -10,7 +10,7 @@ export default {
   props: {
     visible: Boolean,
     code: String,
-    rowData: Object,
+    rowData: [Object, Array], //报价单需要批量处理
     type: String,
     // 新增用到
     params: { default: () => ({}), type: Object },
