@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 10:33:59
+ * @LastEditTime: 2019-11-13 15:31:39
  * @Description: 采购退货单
 */
 <template>
@@ -10,7 +10,7 @@
     <div slot="title">
       <span>采购退货单</span>
       <span class="fr mr20">
-        <el-button @click="close" size="mini" type="primary">保存</el-button>
+        <el-button @click="save" size="mini" type="primary">保存</el-button>
         <el-button @click="close" size="mini">关闭</el-button>
       </span>
     </div>
@@ -25,8 +25,8 @@
       <d-tab-pane label="自定义信息" name="customInfo" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
       <div>
-        <el-form :model="form" class="p10" size="mini" v-if="visible&&form">
-          <supplierInfo :data="form" disabled id="supplierInfo"></supplierInfo>
+        <el-form :model="form" class="p10" ref="form" size="mini" v-if="visible&&form">
+          <supplierInfo :data="form" @change="supplierChange" disabled id="supplierInfo"></supplierInfo>
           <companyInfo :data="form" disabled id="companyInfo"></companyInfo>
           <buyingRejectDeliver :data="form" :hide="[
             'saleTime','logisticsSn','collected'
@@ -34,12 +34,12 @@
           <buyingGoodsEdit
             :data="form"
             :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','action',
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','action','!add'
           ]"
             :summaryMethod="getSummarys"
             id="commodityInfo"
           />
-          <orderStorageBill :data="form" id="billInfo" />
+          <orderStorageBill :data="form" :hide="['isBillFee']" :max="rejectAmount" :type="1" id="billInfo" />
           <customInfo :data="form" id="customInfo"></customInfo>
           <extrasInfo :data="form" id="extrasInfo"></extrasInfo>
         </el-form>
@@ -60,10 +60,37 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      rejectAmount: 0
+    };
   },
   mounted() {},
   methods: {
+    supplierChange(e) {
+      if (!this.form.logistics) this.$set(this.form, 'logistics', {});
+      if (!this.form.logistics.supplierLinkman) {
+        this.$set(this.form.logistics, 'supplierLinkman', e.linkManName || '');
+        this.$set(this.form.logistics, 'supplierPhone', e.phone || '');
+      }
+    },
+    async save() {
+      await this.$refs.form.validate();
+      this.loading = true;
+      try {
+        if (this.isEdit) {
+          await this.$api.seePsiPurchaseService.purchasealterationUpdate(
+            this.form
+          );
+        } else {
+          await this.$api.seePsiPurchaseService.purchasealterationSave(
+            this.form
+          );
+        }
+        // this.setEdit();
+        // this.close();
+      } catch (error) {}
+      this.loading = false;
+    },
     getDetail() {
       let form = Object.assign(
         {
@@ -75,6 +102,14 @@ export default {
         },
         this.params
       );
+      form = JSON.parse(JSON.stringify(form));
+      if (form.commodityList && form.commodityList.length) {
+        form.commodityList.map(item => {
+          item.alterationPrice = item.costAmount;
+          item.alterationNumber = item.commodityNumber;
+        });
+      }
+      console.log(form);
       return form;
     },
     getSummarys(param) {
@@ -97,13 +132,13 @@ export default {
                 item =>
                   +Number(
                     item.alterationPrice *
-                      (1 + item.taxRate) *
+                      (1 + item.taxRate / 100) *
                       item.alterationNumber || 0
                   ).toFixed(2)
               )
               .reduce((sum, item) => sum + item, 0)
           ).toFixed(2);
-          this.$emit('totalAmountChange', sums[index]);
+          this.rejectAmount = sums[index];
         } else if (index == 0) {
           sums[0] = '总计';
         } else sums[index] = '';

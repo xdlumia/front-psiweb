@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 18:23:17
+ * @LastEditTime: 2019-11-13 15:51:22
  * @Description: 采购-采购退货单
 */
 <template>
@@ -12,14 +12,22 @@
       api="seePsiPurchaseService.purchasealterationList"
       busType="31"
       exportApi="seePsiPurchaseService.purchasealterationExport"
+      ref="tableView"
       title="采购退货单"
     >
-      <template slot-scope="{column,row,value}">
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+      <template slot-scope="{column,row,value,prop}">
+        <span v-if="prop=='alterationCode'">
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+        </span>
+        <span v-else-if="prop=='putinCode'">
+          <el-link :underline="false" class="f12" type="primary">{{value}}</el-link>
+        </span>
+        <span v-else-if="prop=='state'">{{stateText[value]}}</span>
+        <span v-else-if="['purchasePlanTime','createTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :visible.sync="showDetail" />
+    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" />
   </div>
 </template>
 <script>
@@ -36,36 +44,35 @@ export default {
     return {
       status: [],
       showDetail: false,
+      currentCode: '',
+      stateText: {
+        '0': '新建',
+        '1': '审核中',
+        '2': '待退货',
+        '3': '部分退货',
+        '4': '已退货',
+        '5': '已驳回'
+      },
+      // prettier-ignore
       filterOptions: [
         { label: '退换货编号', prop: 'alterationCode', default: true },
         { label: '入库单编号', prop: 'putinCode', default: true },
-        { label: '单据状态', prop: 'state', default: true },
-        {
-          label: '流程审批状态（0 未审核 1审核中 2 完成 3 驳回）',
-          prop: 'approvalState'
-        },
-        { label: '供应商', prop: 'supplierId' },
-        {
-          label: '最小退货数量',
-          prop: 'AlterationNum',
-          type: 'numberRange',
-          int: true
-        },
-        { label: '最小退货价', prop: 'AlterationAmount', type: 'numberRange' },
-        {
-          label: '最小预计发货时间',
-          prop: 'PurchasePlanTime',
-          type: 'dateRange'
-        },
-        { label: '合同创建人', prop: 'creator', type: 'employee' },
+        { label: '供应商', prop: 'supplierId', type: 'supplier', default: true },
+        { label: '最小退货数量', prop: 'AlterationNum', type: 'numberRange', int: true, default: true },
+        { label: '退货价', prop: 'AlterationAmount', type: 'numberRange', default: true },
+        { label: '采购预计发货时间', prop: 'PurchasePlanTime', type: 'dateRange', default: true },
+        // { label: '创建人', prop: 'creator', type: 'employee' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
-        { label: '最小创建时间', prop: 'CreateTime', type: 'dateRange' }
+        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
       ]
     };
   },
   methods: {
     logData(e) {
       console.log(e);
+    },
+    reload() {
+      this.$refs.tableView.reload(1);
     }
   }
 };

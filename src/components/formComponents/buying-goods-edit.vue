@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 10:46:53
+ * @LastEditTime: 2019-11-13 15:25:19
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -95,12 +95,7 @@
             <template v-else>{{row[item.prop]}}</template>
           </template>
           <template slot="header" v-if="item.type=='selection'">
-            <el-checkbox
-              :false-label="0"
-              :true-label="1"
-              @change="headerSelect(item,$event)"
-              v-model="headerSelections[item.prop]"
-            >{{item.label}}</el-checkbox>
+            <el-checkbox :false-label="0" :true-label="1" @change="headerSelect(item,$event)" v-model="item.selected">{{item.label}}</el-checkbox>
           </template>
         </el-table-column>
       </el-table>
@@ -174,20 +169,19 @@ export default {
       { label: '退货单价', key: 'alterationPrice', width: 80, prop: 'alterationPrice',type:'input',rules:[{required:true},{type:'price'}] },
       { label: '税率', key: 'taxRate', width: 60, prop: 'taxRate', format:a=>a?`${a}%`:'-' },
       { label: '含税总价', key: 'preTaxAmount', width: 70, prop: 'preTaxAmount', 
-        format:(a,{costAmount,taxRate,commodityNumber})=>+Number((costAmount*(1+taxRate)*commodityNumber)||0).toFixed(2) 
+        format:(a,{costAmount,taxRate,commodityNumber})=>+Number((costAmount*(1+(taxRate/100))*commodityNumber)||0).toFixed(2) 
       },
       { label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount', 
-        format:(a,{alterationPrice,taxRate,alterationNumber})=>+Number((alterationPrice*(1+taxRate)*alterationNumber)||0).toFixed(2) 
+        format:(a,{alterationPrice,taxRate,alterationNumber})=>+Number((alterationPrice*(1+(taxRate/100))*alterationNumber)||0).toFixed(2) 
       },
       { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber',type:'number' },
       { label: '备注', key: 'note', width: 100, prop: 'note',type:'input',rules:[] },
-      { label: '是否组装', key: 'isAssembly', align:"center", width: 100, prop: 'isAssembly',type:'selection' },
+      { label: '是否组装', key: 'isAssembly', align:"center", width: 100, prop: 'isAssembly',type:'selection',selected:0 },
       { label: '操作', key: 'action', width: 100, prop: 'action' },
     ];
     return {
       showInFull: false,
-      columns,
-      headerSelections: {}
+      columns
     };
   },
   computed: {
@@ -209,15 +203,11 @@ export default {
         list = [];
         this.sort.map(key => list.push(map[key]));
       }
-      list.map(item => {
-        if (item.type == 'selection') {
-          this.$set(this.headerSelections, item.prop, 0);
-        }
-      });
       return list;
     }
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     getSummaries(param) {
       if (this.summaryMethod) return this.summaryMethod(param);
@@ -239,7 +229,7 @@ export default {
                 item =>
                   +Number(
                     item[this.priceKey] *
-                      (1 + item.taxRate) *
+                      (1 + item.taxRate / 100) *
                       item.commodityNumber || 0
                   ).toFixed(2)
               )
@@ -307,19 +297,24 @@ export default {
     headerSelect({ prop }, select) {
       this.data[this.fkey].map(item => (item[prop] = select));
     },
-    columnSelect({ prop }, select) {
+    columnSelect(item, select) {
+      let { prop } = item;
       let first = 0;
-      if (
-        this.data[this.fkey].some((item, i) => {
-          if (i == 0) first = item[prop];
-          else return first != item[prop];
-        })
-      ) {
-        this.headerSelections[prop] = 0;
-      } else {
-        this.headerSelections[prop] = 1;
+      if (this.data[this.fkey].length > 1) {
+        if (
+          this.data[this.fkey].some((item, i) => {
+            if (i == 0) first = item[prop];
+            else return first != item[prop];
+          })
+        ) {
+          item.selected = 0;
+        } else {
+          item.selected = 1;
+        }
+      } else if (this.data[this.fkey].length == 1) {
+        item.selected = this.data[this.fkey][0][prop];
       }
-      console.log(this.headerSelections);
+      this.$set(item, 'selected', item.selected);
     }
   }
 };

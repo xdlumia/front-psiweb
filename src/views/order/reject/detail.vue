@@ -2,30 +2,52 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 11:18:38
+ * @LastEditTime: 2019-11-13 15:53:26
  * @Description: 采购退货单
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showPop" @close="$emit('update:visible',false)" title="采购退货单" width="990px">
+  <sideDetail :status="status" :visible.sync="showDetailPage" @close="$emit('update:visible',false)" title="采购退货单" width="990px">
     <template slot="button">
-      <el-button size="mini" type="primary">提交审核</el-button>
-      <el-button size="mini" type="primary">撤销审核</el-button>
-      <el-button size="mini" type="primary">通过</el-button>
-      <el-button size="mini" type="primary">驳回</el-button>
+      <el-button
+        @click="$submission('seePsiPurchaseService.purchasealterationSubmission',{ busCode:detail.stockCode },'提交审核')"
+        size="mini"
+        type="primary"
+      >提交审核</el-button>
+      <el-button
+        @click="$submission('seePsiPurchaseService.purchasealterationUnsubmission',{ busCode:detail.stockCode },'撤销审核')"
+        size="mini"
+        type="danger"
+      >撤销审核</el-button>
+      <el-button @click="$submission('seePsiPurchaseService.purchasealterationExamine',{ isAgree:0 },'通过')" size="mini" type="primary">通过</el-button>
+      <el-button
+        @click="$submission('seePsiPurchaseService.purchasealterationExamine',{ isAgree:1 },'驳回',true)"
+        size="mini"
+        type="danger"
+      >驳回</el-button>
       <el-button size="mini" type="primary">编辑</el-button>
       <el-button size="mini" type="primary">删除</el-button>
       <el-button @click="showScanGoods=true" size="mini" type="primary">退货扫码</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form>
-          <approvePanel id="approvePanel"></approvePanel>
-          <supplierInfo id="supplierInfo" />
-          <companyInfo id="companyInfo" />
-          <arrivalInfo id="arrivalInfo" />
-          <commodityInfo id="commodityInfo" />
-          <customInfo id="customInfo" />
-          <extrasInfo id="extrasInfo" />
+        <el-form :model="detail" size="mini" v-if="detail">
+          <supplierInfo :data="detail" disabled id="supplierInfo"></supplierInfo>
+          <companyInfo :data="detail" disabled id="companyInfo"></companyInfo>
+          <buyingRejectDeliver :data="detail" :hide="[
+            'saleTime','logisticsSn','collected'
+          ]" id="deliverInfo" />
+          <buyingGoodsEdit
+            :data="detail"
+            :show="[
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','action','!add'
+          ]"
+            :summaryMethod="getSummarys"
+            disabled
+            id="commodityInfo"
+          />
+          <orderStorageBill :data="detail" :hide="['isBillFee']" :type="1" disabled id="billInfo" />
+          <customInfo :data="detail" disabled id="customInfo"></customInfo>
+          <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="请购单">请购单</el-tab-pane>
@@ -38,8 +60,10 @@
 </template>
 <script>
 import ScanGoods from './scanGoods';
+import VisibleMixin from '@/utils/visibleMixin';
 
 export default {
+  mixins: [VisibleMixin],
   components: {
     ScanGoods
   },
@@ -50,26 +74,65 @@ export default {
     return {
       showPop: false,
       showScanGoods: false,
-      status: [
-        { label: '状态', value: '新建' },
-        { label: '单据创建人', value: '张收纳' },
-        { label: '创建部门', value: '销售部' },
-        { label: '创建时间', value: +new Date(), isTime: true },
-        { label: '来源', value: '新建' }
-      ]
+      stateText: {
+        '0': '新建',
+        '1': '审核中',
+        '2': '待退货',
+        '3': '部分退货',
+        '4': '已退货',
+        '5': '已驳回'
+      }
     };
   },
-  mounted() {
-    this.checkVisible();
-  },
-  watch: {
-    visible() {
-      this.checkVisible();
-    }
-  },
+  mounted() {},
+  watch: {},
   methods: {
-    checkVisible() {
-      this.showPop = this.visible;
+    async getDetail() {
+      if (this.code) {
+        let {
+          data
+        } = await this.$api.seePsiPurchaseService.purchasealterationGetByCode(
+          null,
+          this.code
+        );
+        data.commodityList = data.commodityList || [];
+        return data;
+      } else if (this.rowData) {
+        return this.rowData;
+      }
+    },
+    getSummarys(param) {
+      let { columns, data } = param;
+      data = data || [];
+      const sums = [];
+      columns.forEach((col, index) => {
+        if (['commodityNumber'].includes(col.property)) {
+          let prop = col.property;
+          sums[index] = +Number(
+            data
+              .map(item => Number(item[prop]) || 0)
+              .reduce((sum, item) => sum + item, 0)
+          ).toFixed(2);
+        } else if (['preTaxAmount'].includes(col.property)) {
+          // 'alterationNumber','alterationPrice'
+          sums[index] = +Number(
+            data
+              .map(
+                item =>
+                  +Number(
+                    item.alterationPrice *
+                      (1 + item.taxRate / 100) *
+                      item.alterationNumber || 0
+                  ).toFixed(2)
+              )
+              .reduce((sum, item) => sum + item, 0)
+          ).toFixed(2);
+          this.$emit('totalAmountChange', sums[index]);
+        } else if (index == 0) {
+          sums[0] = '总计';
+        } else sums[index] = '';
+      });
+      return sums;
     }
   }
 };

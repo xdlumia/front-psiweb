@@ -2,18 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-11-05 16:57:15
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 10:52:29
+ * @LastEditTime: 2019-11-13 16:49:07
  * @Description: 可供商品 以调试 1
 */
 <template>
   <form-card title="可供商品">
     <el-container class="supplier-goods-form-card">
       <el-aside v-if="showCat">
-        <commodity-cat
-          :mainCat.sync="params.categoryCode"
-          :subCat.sync="params.goodClassId"
-          @change="getSupplierGoods()"
-        />
+        <commodity-cat :mainCat.sync="params.categoryCode" :subCat.sync="params.goodClassId" @change="getSupplierGoods()" />
       </el-aside>
       <el-main>
         <div>
@@ -29,74 +25,34 @@
           ref="table"
           style="height:calc(100% - 40px);margin-top:10px;"
         >
-          <el-table-column
-            label="操作"
-            min-width="60"
-            prop="title"
-            show-overflow-tooltip
-          >
+          <el-table-column label="操作" min-width="60" prop="title" show-overflow-tooltip>
             <template slot-scope="{$index}">
-              <el-link
-                :underline="false"
-                @click="remove($index)"
-                class="el-icon-remove f20"
-              ></el-link>
+              <el-link :underline="false" @click="remove($index)" class="el-icon-remove f20"></el-link>
             </template>
           </el-table-column>
-          <el-table-column
-            label="商品编号"
-            min-width="200"
-            prop="title"
-            show-overflow-tooltip
-          >
+          <el-table-column label="商品编号" min-width="200" prop="title" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span class="d-text-blue">{{row.goodsCode}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="商品名称"
-            min-width="100"
-            prop="goodsName"
-            show-overflow-tooltip
-          >
+          <el-table-column label="商品名称" min-width="100" prop="goodsName" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span>{{row.name||row.goodsName}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="商品类别"
-            min-width="80"
-            prop="categoryCode"
-            show-overflow-tooltip
-          >
+          <el-table-column label="商品类别" min-width="80" prop="categoryCode" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="商品分类"
-            min-width="100"
-            prop="className"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            label="配置"
-            min-width="100"
-            prop="configName"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            label="商品规格"
-            min-width="140"
-            prop="specOne"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            label="单位"
-            min-width="80"
-            prop="unit"
-            show-overflow-tooltip
-          ></el-table-column>
+          <el-table-column label="商品分类" min-width="100" prop="className" show-overflow-tooltip></el-table-column>
+          <el-table-column label="配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="商品规格" min-width="140" prop="specOne" show-overflow-tooltip></el-table-column>
+          <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip>
+            <template slot-scope="{row}">
+              <span>{{row.unit | dictionary('SC_JLDW')}}</span>
+            </template>
+          </el-table-column>
         </component>
       </el-main>
     </el-container>
@@ -140,7 +96,7 @@ export default {
           try {
             await Promise.all(goods.map(this.addGoods));
             this.getSupplierGoods();
-          } catch (error) { }
+          } catch (error) {}
           this.loading = false;
         })();
         return;
