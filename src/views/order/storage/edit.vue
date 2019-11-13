@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 11:59:24
+ * @LastEditTime: 2019-11-12 18:44:24
  * @Description: 采购入库单
 */
 <template>
@@ -33,19 +33,20 @@
           <buyingDeliverInfo :data="form" id="deliverInfo" ref="deliverInfo" v-else />
           <buying-goods-edit
             :data="form"
-            :hide="[
-            'add','costAmount','waitPurchaseNumber','note'
+            :show="[
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmountPrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber','!add','action'
           ]"
             @totalAmountChange="setGoodsTotalPrice(0,$event)"
             id="commodityInfo"
           />
           <buying-goods-edit
             :data="form"
-            :hide="[
-             'costAmount','waitPurchaseNumber','note','salesPrice'
+            :show="[
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmountPrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber','action'
           ]"
             @totalAmountChange="setGoodsTotalPrice(1,$event)"
             fkey="additionalCommodityList"
+            title="附加商品"
             v-if="form.source=='请购单'"
           />
           <paymentLate :data="form" id="paymentLate" />

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-10 21:03:07
+ * @LastEditTime: 2019-11-12 15:53:05
  * @Description: 收款滞纳金
  */
 <template>
@@ -10,7 +10,7 @@
     <el-row :gutter="10">
       <el-col :span="8">
         <el-form-item label="收票时间" prop="ticketTime">
-          <el-date-picker :disabled="disabled" :placeholder="`请选择收票时间`" class="wfull" v-model="data.saleTime" value-format="timestamp" />
+          <el-date-picker :disabled="disabled" :placeholder="`请选择收票时间`" class="wfull" v-model="data.ticketTime" value-format="timestamp" />
         </el-form-item>
       </el-col>
       <el-col :span="8">

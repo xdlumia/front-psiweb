@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 14:58:56
+ * @LastEditTime: 2019-11-12 18:42:09
  * @Description: 采购入库单
 */
 <template>
@@ -36,16 +36,16 @@
           <buyingDeliverInfo :data="detail" id="deliverInfo" ref="deliverInfo" v-else />
           <buying-goods-edit
             :data="detail"
-            :hide="[
-             'costAmount','waitPurchaseNumber','note','salesPrice'
+            :show="[
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmountPrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
           ]"
             disabled
             id="commodityInfo"
           />
           <buying-goods-edit
             :data="detail"
-            :hide="[
-             'costAmount','waitPurchaseNumber','note','salesPrice'
+            :show="[
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmountPrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
           ]"
             disabled
             fkey="additionalCommodityList"
@@ -64,7 +64,9 @@
       <el-tab-pane label="应付账单">应付账单</el-tab-pane>
       <el-tab-pane label="发票记录">发票记录</el-tab-pane>
     </el-tabs>
-    <orderReject :visible.sync="showReject" />
+    <orderReject :params="{
+      putinCode:detail.putinCode
+    }" :visible.sync="showReject" v-if="detail" />
     <orderContract :visible.sync="showOrderContract" />
     <Edit :rowData="detail" :visible.sync="showEdit" type="edit" v-if="showEdit" />
   </sideDetail>

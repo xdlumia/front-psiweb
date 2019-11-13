@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 14:22:51
+ * @LastEditTime: 2019-11-12 18:44:46
  * @Description: 新增备货单
 */
 <template>
@@ -34,8 +34,8 @@
           </form-card>
           <buyingGoodsEdit
             :data="form"
-            :hide="[
-            'noteText','waitPurchaseNumber','costAmountPrice','salesPrice'
+            :show="[
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','commodityNumber','taxRate','preTaxAmount','inventoryNumber','action'
           ]"
             id="commodityInfo"
           />
@@ -99,6 +99,7 @@ export default {
         item.preTaxAmount = +Number(
           item.costAmount * (1 + item.taxRate) * item.commodityNumber || 0
         ).toFixed(2);
+        item.waitPurchaseNumber = item.commodityNumber;
       });
       try {
         if (this.isEdit) {

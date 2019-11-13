@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 10:16:52
+ * @LastEditTime: 2019-11-12 18:32:29
  * @Description: 备货单详情
 */
 <template>
@@ -53,8 +53,8 @@
               </el-col>
             </el-row>
           </form-card>
-          <buyingGoodsEdit :data="detail" :hide="[
-            'noteText','costAmountPrice','salesPrice'
+          <buyingGoodsEdit :data="detail" :show="[
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','waitPurchaseNumber','costAmount','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
           ]" disabled />
           <customInfo :data="detail" disabled />
           <extrasInfo :data="detail" disabled />

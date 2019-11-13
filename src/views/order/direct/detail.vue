@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 14:22:38
+ * @LastEditTime: 2019-11-12 18:34:28
  * @Description: 直发单详情
 */
 <template>
@@ -22,8 +22,8 @@
             ]"
             disabled
           ></deliverInfo>
-          <buying-goods-edit :data="detail" disabled fkey="commodityEntityList" :hide="[
-            'costAmount','taxRate','preTaxAmount','inventoryNumber','salesPrice'
+          <buying-goods-edit :data="detail" disabled fkey="commodityEntityList" :show="[
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','waitPurchaseNumber','inventoryNumber'
           ]"/>
           <customInfo :data="detail" disabled></customInfo>
           <extrasInfo :data="detail" disabled></extrasInfo>

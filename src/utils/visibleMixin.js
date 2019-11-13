@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 15:19:04
+ * @LastEditTime: 2019-11-12 18:41:19
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -74,8 +74,7 @@ export default {
             if (data) {
               data = JSON.parse(JSON.stringify(data))
               this.detail = data;
-              if (this.form) {
-                if (this.type == 'edit') {
+              if (this.form&&this.type == 'edit') {
                   for (let key in this.form) {
                     if (this.form[key] instanceof Array) {
                       this.form[key] = data[key] || []
@@ -83,7 +82,6 @@ export default {
                       this.form[key] = data[key]
                     }
                   }
-                }
               } else {
                 this.form = data;
               }

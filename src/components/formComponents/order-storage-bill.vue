@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 14:33:42
+ * @LastEditTime: 2019-11-12 15:56:08
  * @Description: 账单信息
 */
 <template>
@@ -38,7 +38,7 @@
       </el-table-column>
       <el-table-column align="center" label="直接生成应收" min-width="100" prop="isBillFee">
         <template slot-scope="{row}">
-          <el-checkbox :disabled="disabled" v-model="row.isBillFee" :true-label="1" :false-label="1"></el-checkbox>
+          <el-checkbox :disabled="disabled" :false-label="1" :true-label="1" v-model="row.isBillFee"></el-checkbox>
         </template>
       </el-table-column>
       <el-table-column align="center" label="付款金额" min-width="140" prop="payAmount" show-overflow-tooltip>
@@ -90,7 +90,11 @@ export default {
             }
             if (max) {
               if (now != max) {
-                return cb(new Error('账单总金额须为商品总金额之和'));
+                return cb(
+                  new Error(
+                    '账单总金额须为商品总金额之和,当前总和' + max + '元'
+                  )
+                );
               }
             }
             cb();

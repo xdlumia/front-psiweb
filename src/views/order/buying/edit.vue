@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 14:45:38
+ * @LastEditTime: 2019-11-12 18:45:03
  * @Description: 请购单
 */
 <template>
@@ -34,8 +34,9 @@
           </form-card>
           <buyingGoodsEdit
             :data="form"
-            :hide="[
-              'costAmount',' add','action','waitPurchaseNumber','costAmountPrice','note'
+            disabled
+            :show="[
+              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','salesPrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
             ]"
             id="commodityInfo"
             priceKey="salesPrice"
@@ -79,6 +80,10 @@ export default {
       console.log(this.form);
       if (!this.form.commodityList || !this.form.commodityList.length) {
         return this.$message({ message: '无商品信息', type: 'warning' });
+      } else {
+        this.form.commodityList.map(
+          item => (item.waitPurchaseNumber = item.commodityNumber)
+        );
       }
       await this.$refs.form.validate();
       this.loading = true;

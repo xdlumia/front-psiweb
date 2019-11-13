@@ -2,19 +2,19 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 15:15:33
+ * @LastEditTime: 2019-11-12 18:48:17
  * @Description: 采购模块用的商品信息 1
 */
 <template>
   <div class="buying-goods-selector">
     <form-card title="商品信息">
       <div slot="title">
-        <span>商品信息</span>
+        <span>{{title||'商品信息'}}</span>
         <commodity-selector
           :codes="this.data[fkey]?this.data[fkey].map(item=>item.commodityCode):[]"
           @choose="choose"
           class="ml10"
-          v-if="(!disabled)&&!hide.includes('add')"
+          v-if="(!disabled)&&!hide.includes('add')&&!show.includes(`!add`)"
         />
         <span class="fr">
           <span>
@@ -25,126 +25,81 @@
       <el-table
         :data="data[fkey]"
         :style="{height:showInFull?'calc(100% - 40px)':''}"
-        :summary-method="getSummaries"
+        :summary-method="summaryMethod||getSummaries"
         ref="table"
         show-summary
         size="mini"
       >
-        <el-table-column :reserve-selection="true" label="商品编号" min-width="140" prop="title" show-overflow-tooltip>
-          <template slot-scope="{row}">
-            <span class="d-text-blue">{{row.commodityCode}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="商品图片" min-width="100">
-          <template slot-scope="{row}">
-            <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
-              <span slot="error">暂无图片</span>
-            </el-image>
-          </template>
-        </el-table-column>
-        <el-table-column label="商品名称" min-width="100" prop="goodsName" show-overflow-tooltip></el-table-column>
-        <el-table-column label="商品类别" min-width="80" prop="categoryCode" show-overflow-tooltip>
-          <template slot-scope="{row}">
-            <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="商品分类" min-width="80" prop="cityName" show-overflow-tooltip>
-          <template slot-scope="{row}">
-            <span>{{ row.className }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="规格" min-width="80" prop="specOne" show-overflow-tooltip></el-table-column>
-        <el-table-column label="配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
-        <el-table-column label="备注" min-width="120" prop="note" show-overflow-tooltip v-if="!hide.includes('noteText')"></el-table-column>
         <el-table-column
-          label="待采购数量"
-          min-width="100"
-          prop="waitPurchaseNumber"
-          show-overflow-tooltip
-          v-if="!hide.includes('waitPurchaseNumber')"
-        >
-          <template slot-scope="{row}">
-            <span>{{row.waitPurchaseNumber||'0'}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="销售单价" min-width="100" prop="salesPrice" show-overflow-tooltip v-if="!hide.includes('salesPrice')">
-          <template slot-scope="{row}">
-            <span>{{row.salesPrice||'-'}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="采购成本价" min-width="100" prop="costAmount" show-overflow-tooltip v-if="!hide.includes('costAmount')">
-          <template slot-scope="{row}">
-            <span>{{row.costAmount||'-'}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="采购单价" min-width="100" prop="costAmount" show-overflow-tooltip v-if="!hide.includes('costAmountPrice')">
-          <template slot-scope="{row,$index}">
-            <el-form-item :prop="`${fkey}.${$index}.costAmount`" :rules="[{required:true},{type:'price'}]" size="mini">
-              <el-input :disabled="disabled" class="wfull" v-model="row.costAmount"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          label="商品数量"
-          min-width="80"
-          prop="commodityNumber"
-          show-overflow-tooltip
-          v-if="!hide.includes('commodityNumber')"
+          :align="item.align"
+          :key="item.key"
+          :label="item.label"
+          :min-width="item.width"
+          :prop="item.prop"
+          v-for="item of useColumns"
         >
           <template slot-scope="{row,$index}">
-            <el-form-item
-              :prop="`${fkey}.${$index}.commodityNumber`"
-              :rules="[{required:true},{type:'positiveNum'}].concat(Number(row.waitPurchaseNumber)>0?[{
-                min:1,
-                max:row.waitPurchaseNumber,
-                message:`可入库不超过${row.waitPurchaseNumber}个`
-              }]:[])"
-              size="mini"
-            >
-              <el-input :disabled="disabled" class="wfull" v-model="row.commodityNumber"></el-input>
-            </el-form-item>
+            <template v-if="item.key=='commodityCode'">
+              <div class="d-text-blue d-elip">{{row.commodityCode}}</div>
+            </template>
+            <template v-else-if="item.key=='goodsPic'">
+              <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
+                <span slot="error">暂无图片</span>
+              </el-image>
+            </template>
+            <!-- 字典开始 -->
+            <template v-else-if="item.dictName">
+              <span>{{row[item.prop] | dictionary(item.dictName)}}</span>
+            </template>
+            <template v-else-if="item.type=='number'">
+              <span>{{row[item.prop]||0}}</span>
+            </template>
+            <!-- 字典结束 -->
+            <!-- 价格输入开始 -->
+            <template v-else-if="item.type=='input'">
+              <el-form-item
+                :prop="`${fkey}.${$index}.${item.prop}`"
+                :rules="item.rules||[]"
+                size="mini"
+              >
+                <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]" />
+              </el-form-item>
+            </template>
+            <!-- 价格输入结束 -->
+            <!-- 商品数量开始 -->
+            <template v-else-if="item.type=='inputinteger'">
+              <el-form-item
+                :prop="`${fkey}.${$index}.${item.prop}`"
+                :rules="[{required:true},{type:'positiveNum'}].concat(Number(row[
+                  `max${item.prop}`
+                ])>0?[{
+                  min:1,
+                  max:row[`max${item.prop}`],
+                  message:`可输入区间 [1-${row[`max${item.prop}`]}]`
+                }]:[])"
+                size="mini"
+              >
+                <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]"></el-input>
+              </el-form-item>
+            </template>
+            <!-- 商品数量结束 -->
+            <template v-else-if="item.format">
+              <span>{{item.format(row[item.prop],row)}}</span>
+            </template>
+            <template v-else-if="item.key=='action'">
+              <i @click="deleteChoose($index)" class="el-icon-error d-pointer f20 d-text-red"></i>
+            </template>
+            <!-- 选择开始 -->
+            <template v-else-if="item.type=='selection'">
+              <el-form-item :prop="`${fkey}.${$index}.${item.prop}`" size="mini">
+                <el-checkbox v-model="row[item.prop]"></el-checkbox>
+              </el-form-item>
+            </template>
+            <!-- 选择结束 -->
+            <template v-else>{{row[item.prop]}}</template>
           </template>
-        </el-table-column>
-        <el-table-column align="center" label="税率" min-width="60" prop="taxRate" show-overflow-tooltip v-if="!hide.includes('taxRate')">
-          <template slot-scope="{row}">
-            <span>{{row.taxRate ? row.taxRate + '%' : '-'}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          label="含税总价"
-          min-width="70"
-          prop="preTaxAmount"
-          show-overflow-tooltip
-          v-if="!hide.includes('preTaxAmount')"
-        >
-          <template slot-scope="{row:{taxRate,costAmount,commodityNumber}}">
-            <span>{{+Number((costAmount*(1+taxRate)*commodityNumber)||0).toFixed(2)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          label="总库存"
-          min-width="60"
-          prop="inventoryNumber"
-          show-overflow-tooltip
-          v-if="!hide.includes('inventoryNumber')"
-        >
-          <template slot-scope="{row}">
-            <span>{{row.inventoryNumber||0}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="备注" min-width="240" prop="note" show-overflow-tooltip v-if="!hide.includes('note')">
-          <template slot-scope="{row,$index}">
-            <el-form-item :prop="`${fkey}.${$index}.note`" size="mini">
-              <el-input :disabled="disabled" class="wfull" v-model="row.note"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="操作" min-width="60" show-overflow-tooltip v-if="!disabled&&!hide.includes('action')">
-          <template slot-scope="{row,$index}">
-            <i @click="deleteChoose($index)" class="el-icon-error d-pointer" style="font-size:20px;color:#F5222D"></i>
+          <template slot="header" v-if="item.type=='selection'">
+            <el-checkbox>{{item.label}}</el-checkbox>
           </template>
         </el-table-column>
       </el-table>
@@ -163,6 +118,10 @@ export default {
       type: Array,
       default: () => []
     },
+    show: {
+      type: Array,
+      default: () => []
+    },
     // 默认列表字段
     fkey: {
       type: String,
@@ -173,12 +132,69 @@ export default {
       type: String,
       default: 'costAmount'
     },
-    disabled: Boolean
+    summaryMethod: {
+      type: Function
+    },
+    disabled: Boolean,
+    title: String
   },
   data() {
+    // prettier-ignore
+    // 类型说明
+    // type = number        数字类型，默认0，无法输入
+    // type = input         可输入input框，可定义rules进行校验
+    // type = inputinteger  正整数输入框，可定义每一行数据的 `max${item.prop}` 值为其最大值进行校验，必填
+    // type = selection     可选列表
+    // dictName             如有该值表明是业务字典
+    // format               定义format函数，会传值进去并显示返回数据 Function(value,row)
+    let columns = [
+      { label: '商品编号', key: 'commodityCode', width: 140, prop: 'commodityCode' },
+      { label: '商品图片', key: 'goodsPic', width: 100, prop: 'goodsPic' },
+      { label: '商品名称', key: 'goodsName', width: 100, prop: 'goodsName' },
+      { label: '商品类别', key: 'categoryCode', width: 80, prop: 'categoryCode',dictName:'PSI_SP_KIND' },
+      { label: '商品分类', key: 'className', width: 80, prop: 'className', },
+      { label: '规格', key: 'specOne', width: 80, prop: 'specOne', },
+      { label: '配置', key: 'configName', width: 100, prop: 'configName', },
+      { label: '备注', key: 'noteText', width: 120, prop: 'note', },
+      { label: '待采购数量', key: 'waitPurchaseNumber', width: 100, prop: 'waitPurchaseNumber',type:'number' },
+      { label: '销售单价', key: 'salesPrice', width: 100, prop: 'salesPrice',type:'number' },
+      { label: '采购成本价', key: 'costAmount', width: 100, prop: 'costAmount',type:'number' },
+      { label: '采购单价', key: 'costAmountPrice', width: 100, prop: 'costAmount',type:'input',rules:[{required:true},{type:'price'}] },
+      { label: '商品数量', key: 'commodityNumber', width: 80, prop: 'commodityNumber',type:'inputinteger' },
+      { label: '退货商品数量', key: 'alterationNumber', width: 140, prop: 'alterationNumber',type:'inputinteger' },
+      { label: '退货单价', key: 'alterationPrice', width: 80, prop: 'alterationPrice',type:'input',rules:[{required:true},{type:'price'}] },
+      { label: '税率', key: 'taxRate', width: 60, prop: 'taxRate', format:a=>a?`${a}%`:'-' },
+      { label: '含税总价', key: 'preTaxAmount', width: 70, prop: 'preTaxAmount', 
+        format:(a,{costAmount,taxRate,commodityNumber})=>+Number((costAmount*(1+taxRate)*commodityNumber)||0).toFixed(2) 
+      },
+      { label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount', 
+        format:(a,{alterationPrice,taxRate,alterationNumber})=>+Number((alterationPrice*(1+taxRate)*alterationNumber)||0).toFixed(2) 
+      },
+      { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber',type:'number' },
+      { label: '备注', key: 'note', width: 100, prop: 'note',type:'input',rules:[] },
+      { label: '是否组装', key: 'isAssembly', align:"center", width: 100, prop: 'isAssembly',type:'selection' },
+      { label: '操作', key: 'action', width: 100, prop: 'action' },
+    ];
     return {
-      showInFull: false
+      showInFull: false,
+      columns
     };
+  },
+  computed: {
+    useColumns() {
+      if (this.hide.length) {
+        if (this.disabled)
+          ['add', 'action'].map(
+            a => this.hide.includes(a) || this.hide.push(a)
+          );
+        return this.columns.filter(item => !this.hide.includes(item.key));
+      } else if (this.show.length) {
+        return this.columns.filter(item => this.show.includes(item.key));
+      } else return this.columns;
+    }
+  },
+  mounted() {
+    console.log(this);
   },
   methods: {
     getSummaries(param) {
@@ -232,7 +248,7 @@ export default {
         categoryCode: 'categoryCode',
         className: 'className',
         commodityCode: 'commodityCode',
-        commodityName: 'goodsName',
+        goodsName: 'goodsName',
         commodityNumber: '',
         configName: 'configName',
         costAmount: 'inventoryPrice',
