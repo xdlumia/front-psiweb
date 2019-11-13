@@ -1,20 +1,32 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 15:53:05
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-13 16:38:01
  * @Description: 收款滞纳金
  */
 <template>
   <form-card title="收款滞纳金">
     <el-row :gutter="10">
       <el-col :span="8">
-        <el-form-item label="收票时间" prop="ticketTime">
-          <el-date-picker :disabled="disabled" :placeholder="`请选择收票时间`" class="wfull" v-model="data.ticketTime" value-format="timestamp" />
+        <el-form-item
+          label="收票时间"
+          prop="ticketTime"
+        >
+          <el-date-picker
+            :disabled="disabled"
+            :placeholder="`请选择收票时间`"
+            class="wfull"
+            v-model="data.ticketTime"
+            value-format="timestamp"
+          />
         </el-form-item>
       </el-col>
       <el-col :span="8">
-        <el-form-item label="滞纳金" prop="financeConfig">
+        <el-form-item
+          label="滞纳金"
+          prop="financeConfig"
+        >
           <el-select
             :disabled="disabled"
             @change="overdueChange"
@@ -24,28 +36,69 @@
             v-model="data.financeConfig"
             value-key="overdueFineName"
           >
-            <el-option :value="{}" label="请选择"></el-option>
-            <el-option :key="i" :label="item.overdueFineName" :value="item" v-for="(item,i) in options"></el-option>
+            <el-option
+              :value="{}"
+              label="请选择"
+            ></el-option>
+            <el-option
+              :key="i"
+              :label="item.overdueFineName"
+              :value="item"
+              v-for="(item,i) in options"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-col>
-      <el-col :span="8" v-if="data.financeConfig">
-        <el-form-item :label="`滞纳金${data.financeConfig.limitType==0?'比例':''}`" prop>
-          <el-input disabled placeholder="请输入" v-model="data.financeConfig.overdueFineLimit">
-            <template slot="append" v-if="data.financeConfig.limitType==0">%</template>
+      <el-col
+        :span="8"
+        v-if="data.financeConfig"
+      >
+        <el-form-item
+          :label="`滞纳金${data.financeConfig.limitType==0?'比例':''}`"
+          prop
+        >
+          <el-input
+            disabled
+            placeholder="请输入"
+            v-model="data.financeConfig.overdueFineLimit"
+          >
+            <template
+              slot="append"
+              v-if="data.financeConfig.limitType==0"
+            >%</template>
           </el-input>
         </el-form-item>
       </el-col>
-      <el-col :span="8" v-if="data.financeConfig">
-        <el-form-item label="滞纳金间隔" prop>
-          <el-input disabled placeholder="请输入" v-model="data.financeConfig.overdueFineInterval">
+      <el-col
+        :span="8"
+        v-if="data.financeConfig"
+      >
+        <el-form-item
+          label="滞纳金间隔"
+          prop
+        >
+          <el-input
+            disabled
+            placeholder="请输入"
+            v-model="data.financeConfig.overdueFineInterval"
+          >
             <template slot="append">天</template>
           </el-input>
         </el-form-item>
       </el-col>
-      <el-col :span="8" v-if="data.financeConfig">
-        <el-form-item label="滞纳金上限" prop size="mini">
-          <el-input disabled placeholder="请输入" v-model="data.financeConfig.overdueFineUpperLimit"></el-input>
+      <el-col
+        :span="8"
+        v-if="data.financeConfig"
+      >
+        <el-form-item
+          label="滞纳金上限"
+          prop
+        >
+          <el-input
+            disabled
+            placeholder="请输入"
+            v-model="data.financeConfig.overdueFineUpperLimit"
+          ></el-input>
         </el-form-item>
       </el-col>
     </el-row>
@@ -57,7 +110,7 @@ export default {
     data: {
       default: () => {
         return {
-          financeConfig:{}
+          financeConfig: {}
         };
       }
     },
@@ -75,10 +128,10 @@ export default {
       options: []
     };
   },
-  watch:{
-    data:{
-      deep:true,
-      handler(){
+  watch: {
+    data: {
+      deep: true,
+      handler() {
         this.resetData()
       }
     }
@@ -88,9 +141,9 @@ export default {
     this.getList();
   },
   methods: {
-    resetData(){
-      if(this.data&&!this.data.financeConfig){
-        this.data.financeConfig={}
+    resetData() {
+      if (this.data && !this.data.financeConfig) {
+        this.data.financeConfig = {}
       }
     },
     async getList() {

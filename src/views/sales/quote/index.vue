@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 12:01:54
+ * @LastEditTime: 2019-11-13 18:12:05
  * @Description: 销售-报价单
  */
 <template>
@@ -19,6 +19,7 @@
       exportApi="seePsiSaleService.salesquotationExport"
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
+      @selection-change="selectionChange"
     >
       <!-- 自定义按钮功能 -->
       <template
@@ -81,19 +82,20 @@
       type="add"
       @reload="$refs.table.reload()"
     ></quote-add>
-    <!-- 合并报价单 -->
-    <!-- <quote-merge
+    <!-- 合并生成出库单 所以rowData是多行数据 -->
+    <outLibAdd
       :visible.sync="mergeVisible"
-      type="copy"
+      type="add"
+      :rowData="selectionData"
       @reload="$refs.table.reload()"
-    ></quote-merge> -->
+    />
   </div>
 </template>
 <script>
 import quoteDetails from './quote-details' //报价详情
 import outLibDetails from '../outLibrary/outLib-details' //销售详
 import quoteAdd from './add' //新增
-import quoteMerge from './merge' //合并
+import outLibAdd from '../outLibrary/add' //生成出库单
 let stateObj = {
   '-1': '新建',
   '0': '审核中',
@@ -115,7 +117,7 @@ export default {
     quoteDetails,
     outLibDetails,
     quoteAdd,
-    quoteMerge
+    outLibAdd,
   },
   props: {
     // 是否显示按钮
@@ -134,6 +136,7 @@ export default {
       loading: false,
       // 当前行数据
       rowData: {},
+      selectionData: [],
       stateObj: stateObj,
       // 查询表单
       queryForm: {
@@ -161,9 +164,20 @@ export default {
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
+      if (type === 'mergeVisible' && !this.selectionData.length) {
+        this.$message.error({
+          showClose: true,
+          message: '请先选择数据'
+        })
+        return
+      }
       this.rowData = row ? row : {}
       this[type] = true
     },
+    // 多选
+    selectionChange(val) {
+      this.selectionData = val
+    }
   }
 };
 </script>

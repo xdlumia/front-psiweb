@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 11:08:51
+ * @LastEditTime: 2019-11-13 18:07:29
  * @Description: 自定义信息 1
 */
 <template>
@@ -20,16 +20,17 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <el-form-item
+
+          <!-- <el-form-item
             class="mb0"
             :rules="{required:true}"
             :prop="`fieldList.${scope.$index}.fieldCode`"
-          >
-            <el-input
-              :disabled="disabled"
-              v-model.trim="scope.row.fieldCode"
-            />
-          </el-form-item>
+          > -->
+          <el-input
+            :disabled="disabled"
+            v-model.trim="scope.row.fieldCode"
+          />
+          <!-- </el-form-item> -->
         </template>
       </el-table-column>
       <el-table-column
@@ -39,16 +40,16 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <el-form-item
+          <!-- <el-form-item
             class="mb0"
             :rules="{required:true}"
             :prop="`fieldList.${scope.$index}.fieldVal`"
-          >
-            <el-input
-              :disabled="disabled"
-              v-model.trim="scope.row.fieldVal"
-            />
-          </el-form-item>
+          > -->
+          <el-input
+            :disabled="disabled"
+            v-model.trim="scope.row.fieldVal"
+          />
+          <!-- </el-form-item> -->
         </template>
       </el-table-column>
       <el-table-column
@@ -82,7 +83,9 @@ export default {
   props: {
     data: {
       type: Object,
-      default: () => ({})
+      default: () => {
+        return { fieldList: [] }
+      }
     },
     disabled: {
       type: Boolean,

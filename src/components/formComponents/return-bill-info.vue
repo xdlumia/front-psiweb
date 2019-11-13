@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 11:25:31
- * @Description:  退货单账期信息
+ * @LastEditTime: 2019-11-13 16:46:25
+ * @Description:  退货单账期信息 账期费用
  */
 <template>
   <form-card title='账期费用'>
