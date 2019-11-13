@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 11:01:36
+ * @LastEditTime: 2019-11-13 15:52:39
  * @Description: 采购退货扫码
 */
 <template>
@@ -23,26 +23,19 @@
   </el-dialog>
 </template>
 <script>
+import VisibleMixin from '@/utils/visibleMixin';
+
 export default {
+  mixins: [VisibleMixin],
   components: {},
-  props: {
-    visible: {
-      type: Boolean,
-      default: false
-    },
-    form: {},
-    from: String // 来源
-  },
+  props: {},
   computed: {
     maxHeight() {
       return window.innerHeight - 130;
     }
   },
   data() {
-    return {
-      activeName: '',
-      randomStr: +new Date() + '-' + Math.random()
-    };
+    return {};
   },
   mounted() {},
   methods: {

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 10:54:49
+ * @LastEditTime: 2019-11-13 15:18:08
  * @Description: 采购入库单
 */
 <template>
@@ -29,7 +29,7 @@
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form size="mini" v-if="detail" :model="detail">
+        <el-form :model="detail" size="mini" v-if="detail">
           <supplierInfo :data="detail" disabled id="supplierInfo" />
           <companyInfo :data="detail" disabled id="companyInfo" />
           <arrivalInfo :data="detail" disabled id="arrivalInfo" v-if="detail.source!='直发单'" />
@@ -51,8 +51,8 @@
             fkey="additionalCommodityList"
             v-if="detail.source=='请购单'"
           />
-          <paymentLate :data="detail" disabled id="paymentLate" />
-          <order-storage-bill :data="form" disabled id="billInfo" />
+          <buyingPaymentLate :data="detail" disabled id="paymentLate" />
+          <order-storage-bill :data="detail" disabled id="billInfo" />
           <customInfo :data="detail" disabled id="customInfo" />
           <extrasInfo :data="detail" disabled id="extrasInfo" />
         </el-form>
@@ -64,9 +64,17 @@
       <el-tab-pane label="应付账单">应付账单</el-tab-pane>
       <el-tab-pane label="发票记录">发票记录</el-tab-pane>
     </el-tabs>
-    <orderReject :params="{
-      putinCode:detail.putinCode
-    }" :visible.sync="showReject" v-if="detail" />
+    <orderReject
+      :params="{
+      putinCode:detail.putinCode,
+      companyAccountId:detail.companyAccountId,
+      companySettlementId:detail.companySettlementId,
+      supplierId:detail.supplierId,
+      commodityList:[].concat(detail.commodityList||[],detail.additionalCommodityList||[])
+    }"
+      :visible.sync="showReject"
+      v-if="detail"
+    />
     <orderContract :visible.sync="showOrderContract" />
     <Edit :rowData="detail" :visible.sync="showEdit" type="edit" v-if="showEdit" />
   </sideDetail>

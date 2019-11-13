@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 15:56:08
+ * @LastEditTime: 2019-11-13 13:51:08
  * @Description: 账单信息
 */
 <template>
@@ -36,12 +36,12 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="直接生成应收" min-width="100" prop="isBillFee">
+      <el-table-column align="center" label="直接生成应收" min-width="100" prop="isBillFee" v-if="!hide.includes('isBillFee')">
         <template slot-scope="{row}">
           <el-checkbox :disabled="disabled" :false-label="1" :true-label="1" v-model="row.isBillFee"></el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="付款金额" min-width="140" prop="payAmount" show-overflow-tooltip>
+      <el-table-column :label="type==0?'付款金额':'收款金额'" align="center" min-width="140" prop="payAmount" show-overflow-tooltip>
         <template slot-scope="{row,$index}">
           <el-form-item
             :prop="`financeList.${$index}.payAmount`"
@@ -74,6 +74,14 @@ export default {
     data: {
       type: Object,
       default: () => ({})
+    },
+    hide: {
+      type: Array,
+      default: () => []
+    },
+    type: {
+      type: Number,
+      default: 0 // 0 付款金额 1 收款金额
     },
     disabled: Boolean,
     max: Number

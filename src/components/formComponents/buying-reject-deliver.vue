@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 16:48:34
+ * @LastEditTime: 2019-11-13 15:15:23
  * @Description: 采购退货单发货信息 已绑定字段 1
  */
 <template>
@@ -13,13 +13,13 @@
           <el-date-picker :disabled="disabled" :placeholder="`请选择销售要求发货时间`" class="wfull" v-model="data.saleTime" value-format="timestamp" />
         </el-form-item>
       </el-col>
-      <el-col :span="8" v-if="!hide.includes('purchaseTime')">
+      <el-col :span="8" v-if="!hide.includes('purchasePlanTime')">
         <el-form-item :rules="[{ required: true, trigger: 'blur' }]" label="采购预计发货时间" prop="purchasePlanTime">
           <el-date-picker
             :disabled="disabled"
             :placeholder="`请选择采购预计发货时间`"
             class="wfull"
-            v-model="data.purchaseTime"
+            v-model="data.purchasePlanTime"
             value-format="timestamp"
           />
         </el-form-item>

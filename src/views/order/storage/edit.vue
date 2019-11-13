@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 18:44:24
+ * @LastEditTime: 2019-11-13 16:51:45
  * @Description: 采购入库单
 */
 <template>
@@ -49,7 +49,7 @@
             title="附加商品"
             v-if="form.source=='请购单'"
           />
-          <paymentLate :data="form" id="paymentLate" />
+          <buyingPaymentLate :data="form" id="paymentLate" />
           <order-storage-bill :data="form" :max="goodsTotalSum" id="billInfo" />
           <customInfo :data="form" id="customInfo" />
           <extrasInfo :data="form" id="extrasInfo" />
