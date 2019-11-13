@@ -42,7 +42,6 @@
       :sn="sn"
       :visible.sync="showCommodityGoods"
       @choose="choose"
-      @chooseOne="chooseOne"
       v-if="showCommodityGoods||showed"
     />
   </span>
@@ -72,10 +71,10 @@ export default {
     wmsId: Number, // 库房id,新增报溢报损要筛选当前库房下的id
     multiple: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
-  data () {
+  data() {
     return {
       showCommodityGoods: false,
       selectGood: '',
@@ -85,7 +84,7 @@ export default {
       searchTable: {}
     };
   },
-  mounted () {
+  mounted() {
     if (this.value) {
       this.selectGood = this.value;
     } else {
@@ -93,36 +92,35 @@ export default {
     }
   },
   watch: {
-    value () {
+    value() {
       this.selectGood = this.value || '';
     }
   },
   methods: {
-    openDialog () {
+    openDialog() {
       this.showCommodityGoods = true;
       this.showed = true;
     },
-    choose (e) {
+    choose(e) {
+      if (!this.multiple) {
+        const index = this.options.findIndex(item => item.commodityCode === e.commodityCode)
+        if (index === -1) {
+          this.options.push(e);
+        }
+        this.selectGood = e.commodityCode;
+      }
       const choose = e.filter(a => !this.codes.includes(a.commodityCode));
       if (choose.length) {
         this.$emit('choose', e, 'choose');
       }
     },
-    chooseOne (e) {
-      const index = this.options.findIndex(item => item.commodityCode === e.commodityCode)
-      if (index === -1) {
-        this.options.push(e);
-      }
-      this.selectGood = e.commodityCode;
-      this.$emit('choose', [e]);
-    },
-    async search (words = '') {
+    async search(words = '') {
       words = String(words).trim();
       if (this.searchTable[words]) {
         return (this.options = this.searchTable[words]);
       }
       this.loading = true;
-      let api = this.sn ? 'wmsinventorydetailList' : 'wmsinventoryList'
+      const api = this.sn ? 'wmsinventorydetailList' : 'wmsinventoryList'
       const { data } = await this.$api.seePsiWmsService[api]({
         page: 1,
         limit: 50,
@@ -133,7 +131,7 @@ export default {
       this.loading = false;
       this.searchTable[words] = data;
     },
-    onSelect (e) {
+    onSelect(e) {
       const goods = this.options.filter(
         item =>
           item.commodityCode == e && !this.codes.includes(item.commodityCode)

@@ -6,12 +6,7 @@
  * @Description: 选择商品 字段已绑定 1
 */
 <template>
-  <el-dialog
-    :visible.sync="visible"
-    title="选择商品"
-    v-dialogDrag
-    width="60%"
-  >
+  <el-dialog :visible.sync="visible" title="选择商品" v-dialogDrag width="60%">
     <div class="mb15">
       <el-input
         @change="reload"
@@ -28,10 +23,7 @@
     </div>
     <el-container class="choose-container">
       <!-- 左侧 -->
-      <el-aside
-        class="choose-aside"
-        width="250px"
-      >
+      <el-aside class="choose-aside" width="250px">
         <commodity-cat
           :kinds="kinds"
           :mainCat.sync="queryForm.categoryCode"
@@ -44,24 +36,21 @@
         <d-table
           :api="sn?'seePsiWmsService.wmsinventorydetailList':'seePsiWmsService.wmsinventoryList'"
           :autoInit="false"
-          :highlight-current-row="multiple"
           :params="queryForm"
           :reserve-selection="true"
           :rowKey="sn?'_rowKey':'commodityCode'"
           :tree-props="{children: 'children', hasChildren: 'children'}"
-          @current-change="handleCurrentChange"
           @response="onTableData"
           @selection-change="handleSelectionChange"
           class="college-main"
           ref="multipleTable"
           style="height:100%"
           v-show="!multipleVisible"
+          :class="{'remove-selection': !multiple}"
         >
-          <el-table-column
-            type="selection"
-            v-if="!multiple"
-            width="55"
-          ></el-table-column>
+          <el-table-column type="selection" width="55" :selectable="selectable">
+            <tempalte slot="header" v-if="!multiple">3</tempalte>
+          </el-table-column>
           <el-table-column
             :reserve-selection="true"
             label="商品编号"
@@ -84,12 +73,7 @@
               <span>{{row.snCode||row.robotCode}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="商品图片"
-            min-width="130"
-            prop="title"
-            show-overflow-tooltip
-          >
+          <el-table-column label="商品图片" min-width="130" prop="title" show-overflow-tooltip>
             <template slot-scope="{row}">
               <el-image
                 :src="row.goodsPic"
@@ -101,50 +85,20 @@
               </el-image>
             </template>
           </el-table-column>
-          <el-table-column
-            label="商品名称"
-            min-width="100"
-            prop="goodsName"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            label="商品类别"
-            min-width="100"
-            prop="categoryCode"
-            show-overflow-tooltip
-          >
+          <el-table-column label="商品名称" min-width="100" prop="goodsName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="商品类别" min-width="100" prop="categoryCode" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="商品分类"
-            min-width="100"
-            prop="cityName"
-            show-overflow-tooltip
-          >
+          <el-table-column label="商品分类" min-width="100" prop="cityName" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span>{{ row.className }}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="商品配置"
-            min-width="100"
-            prop="configName"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            label="商品规格"
-            min-width="140"
-            prop="specOne"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            label="单位"
-            min-width="80"
-            prop="unit"
-            show-overflow-tooltip
-          >
+          <el-table-column label="商品配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="商品规格" min-width="140" prop="specOne" show-overflow-tooltip></el-table-column>
+          <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span>{{row.unit | dictionary('SC_JLDW')}}</span>
             </template>
@@ -228,17 +182,8 @@
           </el-table-column>
         </d-table>
         <!-- 点击数量覆盖下来的表格 -->
-        <el-table
-          :data="selected"
-          border
-          v-show="multipleVisible"
-        >
-          <el-table-column
-            fixed
-            label="操作"
-            min-width="50"
-            show-overflow-tooltip
-          >
+        <el-table :data="selected" border v-show="multipleVisible">
+          <el-table-column fixed label="操作" min-width="50" show-overflow-tooltip>
             <template slot-scope="{row}">
               <i
                 @click="deleteChoose(row)"
@@ -269,12 +214,7 @@
               <span>{{row.snCode||row.robotCode}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="商品图片"
-            min-width="130"
-            prop="title"
-            show-overflow-tooltip
-          >
+          <el-table-column label="商品图片" min-width="130" prop="title" show-overflow-tooltip>
             <template slot-scope="{row}">
               <el-image
                 :src="row.goodsPic"
@@ -286,50 +226,20 @@
               </el-image>
             </template>
           </el-table-column>
-          <el-table-column
-            label="商品名称"
-            min-width="100"
-            prop="goodsName"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            label="商品类别"
-            min-width="100"
-            prop="categoryCode"
-            show-overflow-tooltip
-          >
+          <el-table-column label="商品名称" min-width="100" prop="goodsName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="商品类别" min-width="100" prop="categoryCode" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="商品分类"
-            min-width="100"
-            prop="cityName"
-            show-overflow-tooltip
-          >
+          <el-table-column label="商品分类" min-width="100" prop="cityName" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span>{{ row.className }}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="商品配置"
-            min-width="100"
-            prop="configName"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            label="商品规格"
-            min-width="140"
-            prop="specOne"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            label="单位"
-            min-width="80"
-            prop="unit"
-            show-overflow-tooltip
-          >
+          <el-table-column label="商品配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="商品规格" min-width="140" prop="specOne" show-overflow-tooltip></el-table-column>
+          <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span>{{row.unit | dictionary('SC_JLDW')}}</span>
             </template>
@@ -414,19 +324,9 @@
         </el-table>
       </el-main>
     </el-container>
-    <span
-      class="dialog-footer"
-      slot="footer"
-    >
-      <el-button
-        @click="close"
-        size="small"
-      >关 闭</el-button>
-      <el-button
-        @click="save"
-        size="small"
-        type="primary"
-      >保 存</el-button>
+    <span class="dialog-footer" slot="footer">
+      <el-button @click="close" size="small">关 闭</el-button>
+      <el-button @click="save" size="small" type="primary">保 存</el-button>
     </span>
   </el-dialog>
 </template>
@@ -450,7 +350,7 @@ export default {
     sn: Boolean,
     multiple: {
       type: Boolean,
-      default: false
+      default: true
     },
     params: {
       type: Object,
@@ -503,6 +403,12 @@ export default {
     Object.assign(this.queryForm, this.params);
   },
   methods: {
+    selectable(row, index) {
+      if (!this.multiple && this.multipleSelection.length > 0) {
+        return this.multipleSelection.every(item => item.commodityCode === row.commodityCode)
+      }
+      return true
+    },
     getPreSelectObj() {
       return this.preSelection.reduce((data, item) => {
         data[this.sn ? item._rowKey : item.commodityCode] = item;
@@ -546,11 +452,7 @@ export default {
       this.$emit('update:visible', false);
     },
     save() {
-      if (this.multiple) {
-        this.$emit('chooseOne', this.currentRow);
-      } else {
-        this.$emit('choose', this.selected);
-      }
+      this.$emit('choose', this.selected);
       this.close();
     },
     onTableData(e) {
@@ -605,6 +507,20 @@ export default {
   height: 500px;
   .choose-aside {
     border-right: 1px solid #f2f2f2;
+  }
+}
+/deep/ .remove-selection {
+  .el-table__header {
+    .cell {
+      text-align: center;
+      .el-checkbox {
+        display: none;
+      }
+      &:before {
+        content: "选择";
+        white-space: nowrap;
+      }
+    }
   }
 }
 </style>

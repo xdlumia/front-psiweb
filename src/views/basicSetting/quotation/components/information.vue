@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-09 11:24:00
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-11 17:59:04
+ * @LastEditTime: 2019-11-13 09:50:40
  * @Description: description
  -->
 <template>
@@ -15,7 +15,7 @@
             <commodity-selector
               v-else
               class="wfull"
-              :multiple="true"
+              :multiple="false"
               :autoClear="false"
               @choose="choose"
               :kinds="[{label: '整机', value:'PSI_SP_KIND-1'}]"
