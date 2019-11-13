@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 18:32:29
+ * @LastEditTime: 2019-11-13 10:54:40
  * @Description: 备货单详情
 */
 <template>
@@ -25,9 +25,9 @@
         size="mini"
         type="danger"
       >撤销审核</el-button>
-      <el-button @click="$submission('seePsiPurchaseService.purchasestockorderExamine',{ isAgree:true },'通过')" size="mini" type="primary">通过</el-button>
+      <el-button @click="$submission('seePsiPurchaseService.purchasestockorderExamine',{ isAgree:0 },'通过')" size="mini" type="primary">通过</el-button>
       <el-button
-        @click="$submission('seePsiPurchaseService.purchasestockorderExamine',{ isAgree:false },'驳回',true)"
+        @click="$submission('seePsiPurchaseService.purchasestockorderExamine',{ isAgree:1 },'驳回',true)"
         size="mini"
         type="danger"
       >驳回</el-button>

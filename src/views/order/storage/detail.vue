@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 09:12:05
+ * @LastEditTime: 2019-11-13 10:54:49
  * @Description: 采购入库单
 */
 <template>
@@ -18,8 +18,8 @@
         size="mini"
         type="danger"
       >撤销审核</el-button>
-      <el-button @click="$submission('seePsiPurchaseService.purchaseputinExamine',{ isAgree:true },'通过')" size="mini" type="primary">通过</el-button>
-      <el-button @click="$submission('seePsiPurchaseService.purchaseputinExamine',{ isAgree:false },'驳回',true)" size="mini" type="danger">驳回</el-button>
+      <el-button @click="$submission('seePsiPurchaseService.purchaseputinExamine',{ isAgree:0 },'通过')" size="mini" type="primary">通过</el-button>
+      <el-button @click="$submission('seePsiPurchaseService.purchaseputinExamine',{ isAgree:1 },'驳回',true)" size="mini" type="danger">驳回</el-button>
       <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
       <el-button @click="del" size="mini" type="primary">删除</el-button>
       <el-button @click="showReject=true" size="mini" type="primary">退货</el-button>

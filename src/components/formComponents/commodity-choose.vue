@@ -2,11 +2,11 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 10:53:02
+ * @LastEditTime: 2019-11-13 11:01:07
  * @Description: 选择商品 字段已绑定 1
 */
 <template>
-  <el-dialog :visible.sync="visible" title="选择商品" v-dialogDrag width="60%">
+  <el-dialog :visible="visible" @close="close" title="选择商品" v-dialogDrag width="60%">
     <div class="mb15">
       <el-input
         @change="reload"
