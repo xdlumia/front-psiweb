@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 11:15:59
+ * @LastEditTime: 2019-11-13 11:43:25
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -12,7 +12,7 @@
   >
     <d-table
       border
-      style="height:450px"
+      style="max-height:250px"
       api="seePsiSaleService.businesscommodityGetBusinessCommodityList"
       :params="{busCode:data.quotationCode}"
       size="mini"
@@ -41,13 +41,13 @@
       <el-table-column
         prop="goodsName"
         label="商品名称"
-        min-width="150"
+        min-width="110"
         show-overflow-tooltip
       />
 
       <el-table-column
         label="商品类别"
-        min-width="110"
+        min-width="80"
         prop="categoryCode"
       >
         <template slot-scope="scope">

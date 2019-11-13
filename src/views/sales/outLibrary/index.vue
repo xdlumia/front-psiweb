@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 17:19:01
+ * @LastEditTime: 2019-11-13 14:17:11
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -79,9 +79,7 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => {
-        return {}
-      }
+      default: () => ({})
     },
   },
   data() {

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-30 16:25:12
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 10:20:58
+ * @LastEditTime: 2019-11-13 14:38:55
  * @Description: 每个模块首页全局引入解决无限调用自己递归的问题
  */
 
@@ -32,6 +32,7 @@ export default {
     // Vue.component('salesAdjust', salesAdjust)
     // Vue.component('salesAdjustPrice', salesAdjustPrice)
 
+
     // 采购 合同 start
     const indexFiles = require.context(`./`, true, /index\.vue$/) // 如果要引入其他文件，可以去掉index，或者加|
     const cmps = indexFiles.keys()
@@ -50,6 +51,26 @@ export default {
         ...data,
         [name]: file,
       }), {})
+
+    let props = {
+      // 是否显示按钮
+      button: {
+        type: Boolean,
+        default: true
+      },
+      // 在当做组件引用的时候替换的参数
+      params: {
+        type: Object,
+        default: () => ({})
+      },
+    }
+    // for (let key in cmps) {
+    //   if (cmps[key].hasOwnProperty(props)) {
+    //     cmps[key].props = { ...cmps[key].props, ...props }
+    //   } else {
+    //     cmps[key].props = props
+    //   }
+    // }
     if (process.env.NODE_ENV != 'production') {
       console.log(cmps)
     }

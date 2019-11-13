@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 18:36:19
+ * @LastEditTime: 2019-11-13 12:43:03
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -39,6 +39,7 @@ ElementUI.Input.render = (function (old) {
     return old.apply(this, arguments)
   }
 })(ElementUI.Input.render)
+
 
 // 公共组件
 import commonComponents from './components/index'

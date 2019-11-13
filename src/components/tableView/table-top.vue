@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 10:08:27
+ * @LastEditTime: 2019-11-13 14:06:16
  * @Description: 表格头部 
  */
 <template>
@@ -15,7 +15,10 @@
             class="b f16 d-nowrap"
             style="margin-right:30px; color:#333;"
           >{{title}}</div>
-          <div class="f12 d-text-qgray d-auto-x">
+          <div
+            v-if="this.$parent.$parent.button"
+            class="f12 d-text-qgray d-auto-x"
+          >
             <span
               class="mr20 sta-item"
               :class="{active:index == staActive}"
