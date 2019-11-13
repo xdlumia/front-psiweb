@@ -24,7 +24,7 @@
           <el-form>
             <purchaseBase :data="detailForm" />
             <purchaseReceivingInfo />
-            <goodsWarehousing />
+            <!-- <goodsWarehousing /> -->
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="拆卸任务">拆卸任务</el-tab-pane>
