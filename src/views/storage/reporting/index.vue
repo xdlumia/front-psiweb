@@ -10,8 +10,10 @@
     <!-- 右侧滑出 -->
     <TableView
       busType="3"
+      @reload='reload'
       :filterOptions='filterOptions'
       :params="queryForm"
+      ref="allTable"
       :selection='false'
       api="seePsiWmsService.wmsreportinglossesList"
       title="报溢报损单"
@@ -135,7 +137,6 @@ export default {
     getTableVisible(row) {
       this.drawerData = row
       this.tableVisible = true
-      console.log(row, 'rowrow')
     },
     //tab换组件
     handleClick() {
@@ -143,7 +144,10 @@ export default {
     },
     update() {
       this.tableVisible = false
-    }
+    },
+    reload() {
+      this.$refs.allTable.reload()
+    },
   }
 };
 </script>

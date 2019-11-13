@@ -505,6 +505,12 @@ export default {
     'methods': 'delete'
   },
 
+  // 获取借入借出单编号对应的商品信息
+  wmsborrowloanorderGetCommodityByBorrowLoanCode: {
+    'url': '/wmsborrowloanorder/getCommodityByBorrowLoanCode',
+    'mock': false
+  },
+
   // 查看借入借出单详细信息
   wmsborrowloanorderInfo: {
     'url': '/wmsborrowloanorder/info/{id}',
@@ -524,11 +530,41 @@ export default {
     'methods': 'delete'
   },
 
+  // 通过借入借出单审核
+  wmsborrowloanorderPassAudit: {
+    'url': '/wmsborrowloanorder/passAudit/{id}',
+    'mock': false
+  },
+
+  // 驳回借入借出单审核
+  wmsborrowloanorderRejectAudit: {
+    'url': '/wmsborrowloanorder/rejectAudit/{id}',
+    'mock': false
+  },
+
+  // 撤销借入借出单审核
+  wmsborrowloanorderRevocationAudit: {
+    'url': '/wmsborrowloanorder/revocationAudit/{id}',
+    'mock': false
+  },
+
   // 保存借入借出单信息
   wmsborrowloanorderSave: {
     'url': '/wmsborrowloanorder/save',
     'mock': false,
     'methods': 'post'
+  },
+
+  // 提交借入借出单审核
+  wmsborrowloanorderSubmitAudit: {
+    'url': '/wmsborrowloanorder/submitAudit/{id}',
+    'mock': false
+  },
+
+  // 终止借入借出单信息
+  wmsborrowloanorderTerminationOrder: {
+    'url': '/wmsborrowloanorder/terminationOrder/{id}',
+    'mock': false
   },
 
   // 修改借入借出单信息
@@ -540,6 +576,20 @@ export default {
   /* =============库房借入借出单end=========== */
 
   /* =============库房借入借任务start=========== */
+  // 归还商品
+  wmsborrowloantaskBackCommodity: {
+    'url': '/wmsborrowloantask/backCommodity',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 借入商品
+  wmsborrowloantaskBorrowCommodity: {
+    'url': '/wmsborrowloantask/borrowCommodity',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 删除
   wmsborrowloantaskDelete: {
     'url': '/wmsborrowloantask/delete',
@@ -553,10 +603,17 @@ export default {
     'mock': false
   },
 
-  // 获取列表
+  // 获取借入借任务列表
   wmsborrowloantaskList: {
     'url': '/wmsborrowloantask/list',
     'mock': false
+  },
+
+  // 借出商品
+  wmsborrowloantaskLoanCommodity: {
+    'url': '/wmsborrowloantask/loanCommodity',
+    'mock': false,
+    'methods': 'post'
   },
 
   // 逻辑删除
@@ -564,6 +621,13 @@ export default {
     'url': '/wmsborrowloantask/logicDelete',
     'mock': false,
     'methods': 'delete'
+  },
+
+  // 返还商品
+  wmsborrowloantaskReturnCommodity: {
+    'url': '/wmsborrowloantask/returnCommodity',
+    'mock': false,
+    'methods': 'post'
   },
 
   // 保存
@@ -793,6 +857,12 @@ export default {
     'methods': 'post'
   },
 
+  // 根据SN码或机器号查询商品
+  wmsinventorydetailGetCommodityBySnCode: {
+    'url': '/wmsinventorydetail/getCommodityBySnCode',
+    'mock': false
+  },
+
   // 查看详细信息
   wmsinventorydetailInfo: {
     'url': '/wmsinventorydetail/info/{id}',
@@ -806,7 +876,7 @@ export default {
     'methods': 'post'
   },
 
-  // 获取列表
+  // 获取库房可用商品列表
   wmsinventorydetailList: {
     'url': '/wmsinventorydetail/list',
     'mock': false
@@ -822,14 +892,14 @@ export default {
   // 商品扫码入库校验
   wmsinventorydetailPutawayCommodityCheck: {
     'url': '/wmsinventorydetail/putawayCommodityCheck',
-    'mock': false
+    'mock': false,
+    'methods': 'post'
   },
 
   // 商品扫码入库校验
   wmsinventorydetailPutawayCommodityCheck: {
     'url': '/wmsinventorydetail/putawayCommodityCheck',
-    'mock': false,
-    'methods': 'post'
+    'mock': false
   },
 
   // 商品入库
@@ -844,6 +914,12 @@ export default {
     'url': '/wmsinventorydetail/shipmentCommodityCheck',
     'mock': false,
     'methods': 'post'
+  },
+
+  // 商品扫码出库校验
+  wmsinventorydetailShipmentCommodityCheck: {
+    'url': '/wmsinventorydetail/shipmentCommodityCheck',
+    'mock': false
   },
 
   // 扫码出库
@@ -904,13 +980,13 @@ export default {
     'methods': 'delete'
   },
 
-  // 查看详细信息
+  // 查看拣货单详细信息
   wmspickingorderInfo: {
     'url': '/wmspickingorder/info/{id}',
     'mock': false
   },
 
-  // 获取列表
+  // 获取拣货单列表
   wmspickingorderList: {
     'url': '/wmspickingorder/list',
     'mock': false
@@ -923,9 +999,16 @@ export default {
     'methods': 'delete'
   },
 
-  // 保存
+  // 保存拣货单信息
   wmspickingorderSave: {
     'url': '/wmspickingorder/save',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 拣货单扫码出库校验
+  wmspickingorderShipmentCommodityCheck: {
+    'url': '/wmspickingorder/shipmentCommodityCheck',
     'mock': false,
     'methods': 'post'
   },

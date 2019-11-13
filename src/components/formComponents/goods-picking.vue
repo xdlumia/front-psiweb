@@ -8,13 +8,13 @@
 <template>
   <div>
     <form-card title='拣货商品'>
-      <d-table
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+      <el-table
+        border
+        size='mini'
+        :data='data.commodityList'
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
+        style="max-height:300px"
       >
         <el-table-column
           fixed
@@ -24,97 +24,112 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.id}}</span>
+            <span>{{scope.row.pickingAccomplishNum}}/{{scope.row.pickingNum}}</span>
           </template>
         </el-table-column>
 
         <el-table-column
           fixed
-          prop="cityName"
+          prop="pickingAccomplishNum"
           min-width="100"
           label="机器号/SN码"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span
+              @click="changeDialog(scope.row)"
+              class="d-text-blue"
+            >{{scope.row.pickingAccomplishNum}}</span>
+          </template>
+        </el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="usableNum"
           min-width="100"
           label="可用库存"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="title"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.id}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
         </el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="categoryCode"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="className"
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="configName"
           min-width="100"
           label="商品配置"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="specOne"
           min-width="140"
           label="商品规格"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="note"
           min-width="120"
           label="备注"
           show-overflow-tooltip
         ></el-table-column>
 
-      </d-table>
+      </el-table>
     </form-card>
+    <pickingJsn
+      :visible.sync='dialogVisible'
+      :data='row'
+      :drawerData='data'
+    />
   </div>
 </template>
 <script>
+import pickingJsn from './picking-jsn'
 export default {
+  props: ['data'],
   data() {
     return {
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
       dialogVisible: false,
+      row: {}
     }
   },
   methods: {
+    changeDialog(row) {
+      this.row = row
+      console.log(row, 'rowrowrowrow')
+      this.dialogVisible = true
+    }
   },
   components: {
+    pickingJsn
   },
 }
 </script>

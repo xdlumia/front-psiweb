@@ -84,7 +84,6 @@
             sn
             :params="addForm.type == 2 ? {wmsId:addForm.wmsId} : null"
             @choose='commodityChoose(arguments,scope)'
-            :multiple='true'
             type="code"
             v-model="scope.row.commodityCode"
             :codes='codes'

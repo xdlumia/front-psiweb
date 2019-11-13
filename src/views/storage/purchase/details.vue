@@ -1,6 +1,6 @@
 /*
- * @Author: 徐贺 
- * @Date: 2019-10-25 15:24:18 
+ * @Author: 徐贺
+ * @Date: 2019-10-25 15:24:18
  * @Last Modified by: mikey.zhaopeng
  * @Last Modified time: 2019-10-28 14:01:02
  * @Description: 库房  采购单 详情组件
@@ -23,8 +23,8 @@
         <el-tab-pane label="详情">
           <el-form>
             <purchaseBase :data="detailForm" />
-            <purchaseReceivingInfo />
-            <!-- <goodsWarehousing /> -->
+            <purchaseReceivingInfo :data="detailForm" />
+            <goodsWarehousing :data="detailForm" />
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="拆卸任务">拆卸任务</el-tab-pane>
@@ -44,8 +44,8 @@ export default {
   props: ['drawerData', 'visible'],
   data() {
     return {
-      status: [{ label: '入库状态', value: '待入库' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
-      detailForm: {},
+      status: [{ label: '入库状态', value: '待入库' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      detailForm: {}
     };
   },
   components: {
@@ -58,7 +58,7 @@ export default {
     this.wmsallocationorderInfo()
   },
   methods: {
-    //查看详情
+    // 查看详情
     wmsallocationorderInfo() {
       this.$api.seePsiPurchaseService.purchaseGetByCode(null, this.drawerData.purchaseCode)
         .then(res => {
@@ -68,11 +68,12 @@ export default {
           this.status[2].value = this.detailForm.creatorName
           this.status[3].value = this.detailForm.deptName
           this.status[4].value = this.detailForm.source
+          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailFormthis.detailFormthis.detailFormthis.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 
         })
-    },
+    }
   }
 }
 </script>

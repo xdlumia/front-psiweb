@@ -9,6 +9,7 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
+      ref='table'
       busType="8"
       :filterOptions='filterOptions'
       :params="queryForm"
@@ -19,11 +20,7 @@
       <template slot-scope="{column,row,value}">
         <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span
-          v-else-if="column.columnFields=='assembleTaskCode'"
-          class="d-text-blue"
-        >{{value}}</span>
-        <span
-          v-else-if="column.columnFields=='shipmentCode'"
+          v-else-if="column.columnFields=='assembleTaskCode' || column.columnFields=='shipmentCode'"
           class="d-text-blue"
         >{{value}}</span>
         <span
@@ -37,9 +34,9 @@
     </TableView>
     <Details
       :drawerData='drawerData'
-      @update='update'
       v-if='tableVisible'
       :visible.sync='tableVisible'
+      @reload='reload'
     />
   </div>
 </template>
@@ -71,12 +68,13 @@ export default {
       },
       activeName: '',
       filterOptions: [
-        { label: '销售单编号', prop: 'salesShipmentCode', default: true },
-        { label: '组装任务编号', prop: 'salesShipmentCode', default: true },
+        { label: '销售单编号', prop: 'shipmentCode', default: true },
+        { label: '组装任务编号', prop: 'assembleTaskCode', default: true },
         { label: '客户名称', prop: 'clientName', default: true },
+        { label: '拣货单编号', prop: 'pickingOrderCode', default: true },
         {
           label: '拣货状态',
-          prop: 'pickingState',
+          prop: 'state',
           type: 'select',
           options: [
             { label: '完成拣货', value: '2' },
@@ -88,29 +86,28 @@ export default {
         },
         {
           label: '拣货数量',
-          prop: 'WillShipmentNumber',
+          prop: 'PickingNum',
           type: 'numberRange',
           default: true,
           int: true
         },
         {
           label: '未拣数量',
-          prop: 'WillShipmentNumber',
+          prop: 'NoPickingNum',
           type: 'numberRange',
           default: true,
           int: true
         },
         {
           label: '已拣数量',
-          prop: 'WillShipmentNumber',
+          prop: 'AlreadyPickingNum',
           type: 'numberRange',
           default: true,
           int: true
         },
-        { label: '拣货人', prop: 'creator1', type: 'employee', default: true },
-        { label: '商品类别', prop: 'clientName1', default: true },
-        { label: '商品名称', prop: 'clientName2', default: true },
-        { label: '运单编号', prop: 'waybillCodes', default: true },
+        { label: '拣货人', prop: 'PickingPerson', type: 'employee', default: true },
+        { label: '商品类别', prop: 'commodityCategorys', default: true },
+        { label: '商品名称', prop: 'commodityName', default: true },
         {
           label: '生成时间',
           prop: 'Time',
@@ -131,11 +128,10 @@ export default {
     //点击打开右侧边栏
     getTableVisible(data) {
       this.tableVisible = true
-      this.drawerData.title = '拣货单-' + data.id
+      this.drawerData = data
     },
-    //tab换组件
-    handleClick() {
-
+    reload() {
+      this.$refs.table.reload()
     }
   }
 };

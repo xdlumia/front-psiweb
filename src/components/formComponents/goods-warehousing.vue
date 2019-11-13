@@ -20,13 +20,13 @@
           </span>
         </span>
       </div>
-      <d-table
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+      <el-table
+        border
+        size='mini'
+        :data='data.commodityList'
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
+        style="max-height:300px"
       >
         <el-table-column
           fixed
@@ -45,20 +45,22 @@
         </el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
           min-width="100"
           label="入库数量"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">{{scope.row.putinNumber}}/{{scope.row.commodityNumber}}</template>
+        </el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
+          prop="teardownNumber"
           min-width="100"
           label="拆卸数量"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">{{scope.row.teardownNumber}}/{{scope.row.commodityNumber}}</template>
+        </el-table-column>
         <el-table-column
-          prop="title"
           label="机器号/SN码"
           min-width="140"
           show-overflow-tooltip
@@ -67,59 +69,71 @@
             <span
               class="d-text-blue"
               @click="wareVisible = true,dialogData.title = '机器号/SN码记录',dialogData.type = 'disable'"
-            >{{scope.row.id}}</span>
+            >{{scope.row.putinNumber }}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="isTeardown"
           min-width="100"
           label="是否拆卸"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span class="">{{scope.row.isTeardown == 1 ? '是' : '-'}}</span>
+          </template>
+        </el-table-column>
 
         <el-table-column
-          prop="title"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.id}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="categoryCode"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="className"
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="specOne"
           min-width="140"
           label="商品规格"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="unit"
           min-width="80"
           label="单位"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.categoryCode|dictionary('SC_JLDW')}}</span>
+          </template>
+        </el-table-column>
 
-      </d-table>
+      </el-table>
       <FullscreenElement
         :element="$refs.companyTable"
         :visible.sync="showInFullscreen"
@@ -136,6 +150,7 @@
 import FullscreenElement from '@/components/fullscreen-element';
 import purchaseWarehousing from './purchase-warehousing'
 export default {
+  props: ['data'],
   data() {
     return {
       // 查询表单

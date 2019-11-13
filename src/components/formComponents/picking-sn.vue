@@ -8,37 +8,21 @@
 <template>
   <div>
     <form-card title='机器号/SN码'>
-      <el-form
-        :inline="true"
-        :model="formInline"
-        class="demo-form-inline"
-      >
-        <el-form-item label="扫SN码">
-          <el-input
-            size='small'
-            v-model="formInline.user"
-            placeholder="配件请录入SN码"
-          ></el-input>
-        </el-form-item>
-        <el-form-item
-          label="扫机器码"
-          class="ml10"
-        >
-          <el-input
-            size='small'
-            v-model="formInline.user"
-            placeholder="整机请录入机器号"
-          ></el-input>
-        </el-form-item>
-      </el-form>
-      <d-table
-        :paging='false'
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+      <span class="b mt5">机器号/扫SN码</span>
+      <el-input
+        v-model='snCode'
+        size="mini"
+        style="width:200px;"
+        class="ml10 mt5"
+        v-on:keyup.13.native="shipmentCommodityCheck"
+      ></el-input>
+      <el-table
+        border
+        size="mini"
+        :data="tableData"
         ref="companyTable"
-        class="college-main"
-        style="height:calc(100vh - 340px)"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
+        class="college-main mt20"
+        style="max-height:300px"
       >
         <el-table-column
           fixed
@@ -46,14 +30,16 @@
           label="操作"
           show-overflow-tooltip
         >
-          <template slot-scope="">
+          <template slot-scope="scope">
             <i
+              @click='deleteUpTable(scope)'
               class="el-icon-error d-pointer"
               style="font-size:20px;color:#F5222D"
             ></i>
           </template>
         </el-table-column>
         <el-table-column
+          type='index'
           fixed
           prop="cityName"
           min-width="80"
@@ -62,24 +48,24 @@
         ></el-table-column>
         <el-table-column
           fixed
-          prop="title"
+          prop="snCode"
           label="SN码"
           min-width="160"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.snCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
           fixed
-          prop="title"
+          prop="robotCode"
           label="机器号"
           min-width="160"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.robotCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -91,13 +77,13 @@
         ></el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
+          prop="wmsName"
           min-width="100"
           label="拣货库房"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="creator"
           min-width="100"
           label="拣货人"
           show-overflow-tooltip
@@ -111,57 +97,63 @@
           <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="commodityCode"
           min-width="100"
           label="商品编号"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="configName"
           min-width="100"
           label="配置"
           show-overflow-tooltip
         ></el-table-column>
-      </d-table>
-      <el-dialog
-        title="机器号/SN码记录"
-        :visible.sync="dialogVisible"
-        width="600"
-        v-dialogDrag
-      >
-
-      </el-dialog>
+      </el-table>
     </form-card>
   </div>
-</template>
+</template> 
 <script>
 export default {
+  props: ['data'],
   data() {
     return {
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
-      formInline: {
-        user: ''
-      },
       dialogVisible: false,
+      snCode: '',
+      tableData: []
     }
   },
   methods: {
-    //点击机器号和SN码
+    //回车机器号和SN码
+    shipmentCommodityCheck() {
+      this.$api.seePsiWmsService.wmspickingorderShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id })
+        .then(res => {
+          if (res.data) {
+            this.tableData.push(res.data)
+            let Index = this.data.commodityList.findIndex((item) => {
+              return item.commodityCode == res.data.commodityCode
+            })
+            this.data.commodityList[Index].pickingAccomplishNum++
+          }
+          this.snCode = ''
+        })
+        .finally(() => {
+
+        })
+    },
+    //删除某一项
+    deleteUpTable(scope) {
+      this.tableData.splice(scope.$index, 1)
+      let Index = this.data.commodityList.findIndex((item) => {
+        return item.commodityCode == scope.row.commodityCode
+      })
+      this.data.commodityList[Index].pickingAccomplishNum--
+    }
   },
   components: {
   },
