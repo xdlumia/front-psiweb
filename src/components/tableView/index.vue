@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 18:23:51
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-14 17:56:51
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -138,7 +138,7 @@
             :prop="item.columnFields"
             :row="scope.row"
             :scope="scope"
-            :value="scope.row[item.columnFields]"
+            :value="formatState(scope.row,item.columnFields)"
           />
         </template>
       </el-table-column>
@@ -147,6 +147,7 @@
 </template>
 <script>
 import tableTop from "./table-top";
+import { log } from 'util';
 export default {
   components: {
     tableTop
@@ -211,6 +212,7 @@ export default {
       statusList: [],
       // 财务统计数据列表
       staList: [],
+      statusText: {},
     };
   },
   created() {
@@ -222,8 +224,7 @@ export default {
     // 判断当前表格的高度
     tableHeader() {
       return this.$parent.button && this.staList.length ? 'calc(100% - 110px)' : this.height
-    }
-
+    },
   },
   methods: {
     // 重新加载
@@ -234,6 +235,11 @@ export default {
     tabelRes(res) {
       // 获取状态列表数据
       this.statusList = this.$refs.table.response.statisticData || []
+      this.statusList.forEach(item => {
+        if (item.name != '全部') {
+          this.statusText[item.state] = item.name
+        }
+      })
       // 获取统计列表数据(财务独有)
       this.staList = this.$refs.table.response.staList || []
       this.$emit('response', res)
@@ -266,6 +272,17 @@ export default {
           });
 
       }
+    },
+    formatState(row, fields) {
+      if (fields.match('Time')) {
+        return this.$options.filters.timeToStr(row[fields], 'YYYY-MM-DD hh:mm:ss')
+      }
+      else if (fields == 'state') {
+        return this.statusText[row[fields]]
+      } else {
+        return row[fields]
+      }
+
     },
     // 返回的列数据
     columnHandle(cols) {

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 14:14:33
+ * @LastEditTime: 2019-11-14 17:55:45
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -26,25 +26,11 @@
           class="d-text-blue d-pointer"
           @click="eventHandle('detailVisible',row)"
         >{{value}}</span>
-        <!-- 状态 -->
-        <span v-else-if="column.columnFields=='state'">{{stateText[value]}}</span>
         <!-- 有无合同 -->
         <span v-else-if="column.columnFields=='isContract'">{{value?'有':'无'}}</span>
 
         <!-- 有无合同 -->
         <span v-else-if="column.columnFields=='contractTemplate'">{{value}}</span>
-
-        <!-- 销售预计发货时间 -->
-        <span v-else-if="column.columnFields=='salesExpectedShipmentsTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
-
-        <!-- 销售要求到货时间 -->
-        <span v-else-if="column.columnFields=='salesRequireArrivalTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
-
-        <!-- 采购预计到货时间 -->
-        <span v-else-if="column.columnFields=='procurementExpectedArrivalTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
-
-        <!-- 创建时间 -->
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
@@ -93,17 +79,6 @@ export default {
         // shipmentCode: '',///销售出库单编号
         state: '',//状态
         creator: '',//创建人
-      },
-      //头部状态数据
-      stateText: {
-        '-1': '新建',
-        '0': '审核中',
-        '1': '请购处理',
-        '2': '回收合同',
-        '3': '已通过',
-        '4': '完成',
-        '5': '已驳回',
-        '6': '终止',
       },
       // 筛选列表
       filterOptions: filterOptions,

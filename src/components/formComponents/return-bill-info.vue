@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 16:46:25
+ * @LastEditTime: 2019-11-14 15:36:12
  * @Description:  退货单账期信息 账期费用
  */
 <template>
@@ -18,29 +18,16 @@
           :label="item.label"
           :prop="item.prop"
         >
-          <el-select
-            :disabled="disabled"
-            v-if="item.type==='select'"
-            class="wfull mr5"
-            v-model="data[item.prop]"
-          >
-            <el-option
-              :key="item.id"
-              :label="item.label"
-              :value="item.id"
-              v-for="item in item.options || dictionaryOptions(item.dicName)"
-            ></el-option>
-          </el-select>
           <el-date-picker
             class="wfull"
-            v-else-if="item.type =='date'"
+            v-if="item.type =='date'"
             value-format="timestamp"
             :disabled='disabled'
             v-model="form[item.prop]"
             :placeholder="`请选择${item.label}`"
           />
           <el-input
-            :disabled="disabled"
+            :disabled="disabled || index==0"
             v-else-if="item.type =='input'"
             v-model="data[item.prop]"
             :placeholder="`请输入${item.label}`"

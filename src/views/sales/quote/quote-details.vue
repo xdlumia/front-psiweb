@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 18:53:30
+ * @LastEditTime: 2019-11-14 16:15:28
  * @Description: 报价单详情
 */
 <template>
@@ -155,9 +155,7 @@ export default {
 
   },
   watch: {
-    visible(val) {
-      // this.statusData = []
-    }
+
   },
   methods: {
     async getDetail() {
