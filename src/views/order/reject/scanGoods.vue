@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 17:55:55
+ * @LastEditTime: 2019-11-14 18:06:32
  * @Description: 采购退货扫码
 */
 <template>
@@ -42,6 +42,12 @@ export default {
     async save() {
       console.log(this.form);
       await this.$refs.form.validate();
+      if (
+        !this.form.putawayCommodityList ||
+        !this.form.putawayCommodityList.length
+      ) {
+        return this.close();
+      }
       this.loading = true;
       try {
         let {

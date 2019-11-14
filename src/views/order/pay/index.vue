@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 13:48:05
+ * @LastEditTime: 2019-11-14 18:04:31
  * @Description: 采购-付款单
 */
 <template>
@@ -11,8 +11,8 @@
       <template slot="button"> 
         <el-button size="mini" type="primary" @click="payMultiApply=true">批量付款申请</el-button>
       </template>
-      <template slot-scope="{column,row,value}">
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
+      <template slot-scope="{column,row,value,prop}">
+        <span v-if="prop=='createTime'">{{value}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>

@@ -21,8 +21,6 @@
         <span v-else-if="prop=='quotationCode'">
           <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
-        <span v-else-if="prop=='state'">{{stateText[value]}}</span>
-        <span v-else-if="['purchaseDeliverTime','saleDeliverTime','createTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
