@@ -23,11 +23,11 @@ axios.defaults.timeout = 200000
 
 const apiFiles = require.context(`./`, false, /.js$/)
 
-let oldRegistry = {}
-let newRegistry = {}
+const oldRegistry = {}
+const newRegistry = {}
 apiFiles.keys().forEach(item => {
   if (item !== './index.js') {
-    let key = item.split(/[.\/.]/).slice(-2)[0]
+    const key = item.split(/[.\/.]/).slice(-2)[0]
     if (item.match(/^\.\/(seeContractService|seeGoodsService|seeExternService)/)) {
       oldRegistry[key] = apiFiles(item).default
     } else {
