@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 18:33:28
+ * @LastEditTime: 2019-11-14 10:57:46
  * @Description: 采购-借入借出单
 */
 <template>
@@ -13,7 +13,7 @@
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='borrowLoanCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=row" class="f12" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else-if="prop=='salesSheetCode'">
           <el-link :underline="false" class="f12" type="primary">{{value}}</el-link>
@@ -24,7 +24,7 @@
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :rowData="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
+    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
     <AddIn :visible.sync="showEdit" @reload="reload" type="add" />
   </div>
 </template>
@@ -39,6 +39,18 @@ export default {
     TableView,
     Detail,
     AddIn
+  },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   data() {
     return {

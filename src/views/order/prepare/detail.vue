@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 10:54:40
+ * @LastEditTime: 2019-11-14 10:36:39
  * @Description: 备货单详情
 */
 <template>
@@ -37,7 +37,7 @@
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form size="mini" v-if="detail">
+        <el-form size="mini" v-if="detail&&form">
           <form-card id="arrivalInfo" title="到货信息">
             <el-row :gutter="10">
               <el-col :span="8">
