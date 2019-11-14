@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 09:02:20
+ * @LastEditTime: 2019-11-14 14:48:17
  * @Description: 借入/借出商品
 */  
 <template>
@@ -55,10 +55,12 @@
       </el-table-column>
       <el-table-column label="商品编号" min-width="130" prop="commodityCode">
         <template slot-scope="{row}">
-          <el-link :underline="false" class="f12" type="primary">{{row.commodityCode}}</el-link>
+          <div class="d-elip">
+            <el-link :underline="false" class="f12" type="primary">{{row.commodityCode}}</el-link>
+          </div>
         </template>
       </el-table-column>
-      <el-table-column label="商品分类" min-width="100" prop="goodsName" show-overflow-tooltip></el-table-column>
+      <el-table-column label="商品名称" min-width="100" prop="goodsName" show-overflow-tooltip></el-table-column>
       <el-table-column label="商品图片" min-width="100" prop="title" show-overflow-tooltip>
         <template slot-scope="{row}">
           <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
