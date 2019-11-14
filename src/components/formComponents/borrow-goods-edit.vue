@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 18:02:29
+ * @LastEditTime: 2019-11-14 10:59:23
  * @Description: 借入/借出商品编辑页面
 */  
 <template>
@@ -29,40 +29,44 @@
       </el-table-column>-->
       <el-table-column label="商品编号" min-width="130" prop="commodityCode">
         <template slot-scope="{row,$index}">
-          <commodity-selector
-            :codes="data.commodityList.map(item=>item.commodityCode)"
-            @choose="chooseGoods($event,$index)"
-            type="code"
-            v-model="row.commodityCode"
-          />
+          <el-form-item :prop="`commodityList.${$index}.commodityCode`" :rules="[{required:true}]">
+            <commodity-selector
+              :codes="data.commodityList.map(item=>item.commodityCode)"
+              @choose="chooseGoods($event,$index)"
+              type="code"
+              v-model="row.commodityCode"
+            />
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="商品名称" min-width="130" prop="goodsName">
         <template slot-scope="{row,$index}">
-          <commodity-selector
-            :codes="data.commodityList.map(item=>item.commodityCode)"
-            @choose="chooseGoods($event,$index)"
-            v-model="row.goodsName"
-          />
+          <el-form-item :prop="`commodityList.${$index}.goodsName`" :rules="[{required:true}]">
+            <commodity-selector
+              :codes="data.commodityList.map(item=>item.commodityCode)"
+              @choose="chooseGoods($event,$index)"
+              v-model="row.goodsName"
+            />
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="借出数量" min-width="100" prop="borrowLoanNum" v-if="data.borrowLoanType==1">
-        <template slot-scope="{row}">
-          <el-form-item :rules="[{required:true},{type:'positiveNum'}]">
+        <template slot-scope="{row,$index}">
+          <el-form-item :prop="`commodityList.${$index}.borrowLoanNum`" :rules="[{required:true},{type:'positiveNum'}]">
             <el-input v-model="row.borrowLoanNum"></el-input>
           </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="借入数量" min-width="100" prop="borrowLoanNum" v-else>
-        <template slot-scope="{row}">
-          <el-form-item :rules="[{required:true},{type:'positiveNum'}]">
+        <template slot-scope="{row,$index}">
+          <el-form-item :prop="`commodityList.${$index}.borrowLoanNum`" :rules="[{required:true},{type:'positiveNum'}]">
             <el-input v-model="row.borrowLoanNum"></el-input>
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="借入价格(不含税)" min-width="120" prop="name">
-        <template slot-scope="{row}">
-          <el-form-item :rules="[{required:true},{type:'price'}]">
+      <el-table-column label="借入价格(不含税)" min-width="120" prop="name" v-if="data.borrowLoanType==0">
+        <template slot-scope="{row,$index}">
+          <el-form-item :prop="`commodityList.${$index}.costUnivalence`" :rules="[{required:true},{type:'price'}]">
             <el-input v-model="row.costUnivalence"></el-input>
           </el-form-item>
         </template>

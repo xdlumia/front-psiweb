@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 17:57:27
+ * @LastEditTime: 2019-11-14 10:35:09
  * @Description: 采购-请购明细表
 */
 <template>
@@ -20,7 +20,7 @@
           </span>
           <span v-else-if="prop=='categoryCode'">{{value|dictionary('PSI_SP_KIND')}}</span>
           <span v-else-if="prop=='commodityCode'">
-            <el-link class="f12" :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
+            <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
           </span>
           <span v-else>{{value}}</span>
         </template>
@@ -35,7 +35,17 @@ import TableView from '@/components/tableView';
  */
 export default {
   props: {
-    visible: Boolean
+    visible: Boolean,
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   components: {
     TableView

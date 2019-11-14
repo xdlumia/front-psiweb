@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 18:32:57
+ * @LastEditTime: 2019-11-14 09:02:20
  * @Description: 借入/借出商品
 */  
 <template>
@@ -15,9 +15,9 @@
         </span>
       </span>
     </div>
-    <el-table :data="tableData" max-height="400" ref="elTable" row-key="name" size="mini">
+    <el-table :data="data.commodityList||[]" max-height="400" ref="elTable" row-key="name" size="mini">
       <el-table-column class-name="hide-children" fixed min-width="1" width="1"></el-table-column>
-      <el-table-column fixed min-width="60">
+      <el-table-column fixed min-width="40">
         <template slot-scope="{row}">
           <div class="expanded-icons d-text-gray" v-if="row.children&&row.children.length">
             <span @click="expand(row)" class="el-icon-plus d-pointer" v-if="!row.expanded"></span>
@@ -25,18 +25,32 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column fixed label="借入数量" min-width="70" prop="name"></el-table-column>
-      <el-table-column fixed label="借入库房" min-width="70" prop="name"></el-table-column>
-      <el-table-column fixed label="机器号/SN码" min-width="110" show-overflow-tooltip>
+      <el-table-column fixed label="借入数量" min-width="70" prop="borrowLoanNum">
         <template slot-scope="{row}">
-          <span @click="visible = true" class="d-text-blue d-pointer">{{row.name}}</span>
+          <span>{{row.borrowLoanAccomplishNum}}/{{row.borrowLoanNum}}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed label="返还数量" min-width="70" prop="name"></el-table-column>
-      <el-table-column fixed label="返还库房" min-width="70" prop="name"></el-table-column>
-      <el-table-column fixed label="机器号/SN码" min-width="110" prop="name" show-overflow-tooltip>
+      <el-table-column fixed label="借入库房" min-width="70" prop="borrowWmsName"></el-table-column>
+      <el-table-column fixed label="机器号/SN码" min-width="100" prop="borrowLoanAccomplishNum" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span @click="visible = true" class="d-text-blue d-pointer">{{row.name}}</span>
+          <span
+            @click="visible=true,currentCode=row.commodityCode,operationType=0"
+            class="d-text-blue d-pointer"
+          >{{row.borrowLoanAccomplishNum}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column fixed label="返还数量" min-width="70" prop="returnNum">
+        <template slot-scope="{row}">
+          <span>{{row.returnAccomplishNum}}/{{row.returnNum}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column fixed label="返还库房" min-width="70" prop="returnWmsName"></el-table-column>
+      <el-table-column fixed label="机器号/SN码" min-width="100" prop="returnAccomplishNum" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span
+            @click="visible=true,currentCode=row.commodityCode,operationType=1"
+            class="d-text-blue d-pointer"
+          >{{row.returnAccomplishNum}}</span>
         </template>
       </el-table-column>
       <el-table-column label="商品编号" min-width="130" prop="commodityCode">
@@ -44,6 +58,7 @@
           <el-link :underline="false" class="f12" type="primary">{{row.commodityCode}}</el-link>
         </template>
       </el-table-column>
+      <el-table-column label="商品分类" min-width="100" prop="goodsName" show-overflow-tooltip></el-table-column>
       <el-table-column label="商品图片" min-width="100" prop="title" show-overflow-tooltip>
         <template slot-scope="{row}">
           <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
@@ -66,7 +81,15 @@
       </el-table-column>
     </el-table>
     <FullscreenElement :element="$refs.elTable" :visible.sync="showInFullscreen" />
-    <commodityRecordBorrow :visible.sync="visible" />
+    <commodityRecordBorrow
+      :params="{
+      commodityCode:currentCode,
+      businessCode:data.borrowLoanCode,
+      operation:operationType
+    }"
+      :visible.sync="visible"
+      v-if="visible"
+    />
   </form-card>
 </template>
 <script>
@@ -77,10 +100,28 @@ export default {
     FullscreenElement,
     commodityRecordBorrow
   },
+  props: {
+    data: {
+      default: () => {
+        return {
+          commodityList: []
+        };
+      }
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    hide: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
-      tableData: [{ name: '110', children: [{ name: '1120' }] }],
+      currentCode: '',
       showInFullscreen: false,
+      operationType: 0,
       visible: false
     };
   },

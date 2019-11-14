@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 18:47:56
+ * @LastEditTime: 2019-11-14 10:40:18
  * @Description: 新增借入单
 */
 <template>
@@ -16,12 +16,12 @@
     </div>
     <d-tabs :style="{
       maxHeight:maxHeight+'px'
-    }">
-      <d-tab-pane label="借入信息" name="borrowIn" />
-      <d-tab-pane label="借入商品" name="borrowGoods" />
+    }" v-if="form&&visible">
+      <d-tab-pane :label="form.borrowLoanType==1?'借出信息':'借入信息'" name="borrowIn" />
+      <d-tab-pane :label="form.borrowLoanType==1?'借出商品':'借入商品'" name="borrowGoods" />
       <div>
-        <el-form :model="form" class="p10" ref="form" size="mini" v-if="visible">
-          <borrowIn :data="form" id="borrowIn" />
+        <el-form :model="form" class="p10" ref="form" size="mini" v-if="visible&&form">
+          <borrowIn :data="form" :disables="isEdit||from?['borrowLoanType']:[]" id="borrowIn" />
           <borrowGoodsEdit :data="form" id="borrowGoods" />
         </el-form>
       </div>
@@ -82,9 +82,15 @@ export default {
       }
     };
   },
-  mounted() {},
+  mounted() {
+    console.log("borrow add in",this)
+  },
   methods: {
-    getDetail() {},
+    getDetail() {
+      if (this.rowData) {
+        return this.rowData;
+      }
+    },
     async save() {
       await this.$refs.form.validate();
       this.loading = true;

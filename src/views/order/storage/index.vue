@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 15:45:49
+ * @LastEditTime: 2019-11-14 10:34:23
  * @Description: 采购-采购入库单
 */
 <template>
@@ -39,6 +39,18 @@ export default {
   components: {
     TableView,
     Detail
+  },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   data() {
     return {

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 19:02:27
+ * @LastEditTime: 2019-11-14 10:58:25
  * @Description: 借入借出详情
 */
 <template>
@@ -14,18 +14,18 @@
         type="primary"
       >提交审核</el-button>
       <el-button
-        @click="$submission('seePsiPurchaseService.purchasealterationUnsubmission',[null,detail.id],'撤销审核')"
+        @click="$submission('seePsiWmsService.wmsborrowloanorderRevocationAudit',[null,detail.id],'撤销审核')"
         size="mini"
         type="danger"
       >撤销审核</el-button>
-      <el-button @click="$submission('seePsiPurchaseService.purchasealterationExamine',{ isAgree:0 },'通过')" size="mini" type="primary">通过</el-button>
+      <el-button @click="$submission('seePsiWmsService.wmsborrowloanorderPassAudit',[null,detail.id],'通过')" size="mini" type="primary">通过</el-button>
       <el-button
-        @click="$submission('seePsiPurchaseService.purchasealterationExamine',{ isAgree:1 },'驳回',true)"
+        @click="$submission('seePsiWmsService.wmsborrowloanorderRejectAudit',[null,detail.id],'驳回',true)"
         size="mini"
         type="danger"
       >驳回</el-button>
-      <el-button size="mini" type="primary">编辑</el-button>
-      <el-button @click="del" size="mini" type="primary">删除</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
+      <el-button @click="$submission('seePsiWmsService.wmsborrowloanorderLogicDelete',[null,detail.id],'删除')" size="mini" type="primary">删除</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
@@ -36,17 +36,22 @@
       </el-tab-pane>
       <el-tab-pane label="销售单">销售单</el-tab-pane>
     </el-tabs>
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
   </sideDetail>
 </template>
 <script>
 import VisibleMixin from '@/utils/visibleMixin';
+import Edit from './addIn';
 
 export default {
   mixins: [VisibleMixin],
-  components: {},
+  components: {
+    Edit
+  },
   props: {},
   data() {
     return {
+      showEdit: false,
       stateText: {
         '0': '新建',
         '1': '审核中',
@@ -70,23 +75,16 @@ export default {
       if (this.code) {
         let {
           data
-        } = await this.$api.seePsiWmsService.wmsborrowloanorderGetCommodityByBorrowLoanCode(
-          {
-            borrowLoanCode: this.code
-          }
+        } = await this.$api.seePsiWmsService.wmsborrowloanorderQueryInfoByOrderCode(
+          null,
+          this.code
         );
-        data.commodityList = data.commodityList || [];
+        data.commodityList = data.commodityShowList || [];
         return data;
       } else if (this.rowData) {
-        console.log(this.rowData);
-        let { data } = await this.$api.seePsiWmsService.wmsborrowloanorderInfo(
-          null,
-          this.rowData.id
-        );
-        return data;
+        return this.rowData;
       }
-    },
-    del() {}
+    }
   }
 };
 </script>
