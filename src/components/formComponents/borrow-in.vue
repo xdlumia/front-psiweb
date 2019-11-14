@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 17:50:58
+ * @LastEditTime: 2019-11-14 10:09:47
  * @Description: 借入借出信息 已绑定字段 1
  */
 <template>
@@ -32,7 +32,7 @@
             v-model.trim="data[item.prop]"
           />
           <el-select
-            :disabled="disabled"
+            :disabled="disabled||disables.includes(item.prop)"
             :placeholder="`请输入${item.label}`"
             class="wfull"
             v-else-if="item.type =='select'"
@@ -94,6 +94,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    disables: {
+      type: Array,
+      default: () => []
     },
     hide: {
       type: Array,

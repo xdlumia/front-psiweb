@@ -1,44 +1,30 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 14:19:01
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-14 10:30:35
  * @Description: 采购-请购单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
       :filterOptions="filterOptions"
+      :params="params"
       :selection="true"
       api="seePsiPurchaseService.purchaseapplyorderList"
-      :params="params"
       busType="27"
       exportApi="seePsiPurchaseService.purchaseapplyorderExport"
       title="请购单"
     >
       <template slot="button">
-        <el-button
-          @click="orderBuyingDetailRecVisible=true"
-          size="mini"
-          type="primary"
-        >请购单明细表</el-button>
+        <el-button @click="orderBuyingDetailRecVisible=true" size="mini" type="primary">请购单明细表</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='purchaseApplyCode'">
-          <el-link
-            :underline="false"
-            @click="showDetail=true,currentCode=value"
-            class="f12"
-            type="primary"
-          >{{value}}</el-link>
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else-if="prop=='quotationCode'">
-          <el-link
-            :underline="false"
-            @click="showDetail=true,currentCode=value"
-            class="f12"
-            type="primary"
-          >{{value}}</el-link>
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else-if="prop=='state'">
           <!-- 单据状态0待完成 1部分完成 2完成3终止 -->
@@ -48,15 +34,8 @@
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <OrderBuyingDetail
-      :code="currentCode"
-      :visible.sync="showDetail"
-      @reload="reload"
-    />
-    <OrderBuyingDetailRec
-      :visible.sync="orderBuyingDetailRecVisible"
-      @reload="reload"
-    />
+    <OrderBuyingDetail :code="currentCode" :visible.sync="showDetail" @reload="reload" />
+    <OrderBuyingDetailRec :visible.sync="orderBuyingDetailRecVisible" @reload="reload" />
     <Edit :visible="showEdit" />
   </div>
 </template>
@@ -66,7 +45,7 @@ import OrderBuyingDetail from './detail';
 import OrderStorage from '../storage/edit';
 import OrderBuyingDetailRec from './detailRec';
 import AddBorrowIn from '@/views/order/borrow/addIn';
-import Edit from './edit'
+import Edit from './edit';
 /**
  * 采购-请购单
  */
@@ -88,8 +67,8 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => ({})
-    },
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   data() {
     return {
@@ -132,8 +111,7 @@ export default {
       ]
     };
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     logData(e) {
       console.log(e);

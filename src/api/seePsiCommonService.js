@@ -976,6 +976,13 @@ export default {
   runlogCompressAndDownload: {
     'url': '/ws/runlog/compressAndDownload',
     'mock': IS_MOCK
-  }
+  },
   /* =============文件压缩下载（日志和配置文件）end=========== */
+  /* =============首页start=========== */
+  // 查询待办
+  homePageQueryList: {
+    'url': '/homePage/queryList',
+    'mock': IS_MOCK
+  }
+  /* =============首页end=========== */
 }

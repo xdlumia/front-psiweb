@@ -30,8 +30,8 @@ import './utils/utils'
 import citys from './utils/citys'
 
 import './api'
-ElementUI.Input.render = (function (old) {
-  return function () {
+ElementUI.Input.render = (function(old) {
+  return function() {
     if (this.$attrs.placeholder === undefined) {
       this.$attrs.placeholder = '请输入'
     }
