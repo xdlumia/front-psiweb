@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 16:51:59
+ * @LastEditTime: 2019-11-14 18:22:34
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -34,13 +34,21 @@ export default {
   },
   mounted() {
     this.$checkVisible();
+    if (this.type !== 'add' && this.type !== 'edit') {
+      let statusList = this.$parent.$refs.table.statusList
+      statusList.forEach(item => {
+        if (item.name != '全部') {
+          this.stateText[item.state] = item.name
+        }
+      })
+    }
+
   },
   computed: {
     isEdit() {
       return this.type == 'edit'
     },
     status() {
-
       if (!this.getDetail) return [];
       else {
         return [
