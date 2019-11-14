@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-08 17:32:35
+ * @LastEditTime: 2019-11-13 11:06:00
  * @Description: 商品管理
  -->
 <template>
@@ -135,7 +135,9 @@
               label="单位"
               min-width="100"
               show-overflow-tooltip
-            ></el-table-column>
+            >
+              <template slot-scope="{row}">{{row.unit | dictionary('SC_JLDW')}}</template>
+            </el-table-column>
             <el-table-column
               prop="taxRate"
               align="center"
