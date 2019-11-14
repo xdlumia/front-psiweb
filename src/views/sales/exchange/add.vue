@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 09:49:45
+ * @LastEditTime: 2019-11-14 11:14:38
  * @Description: 生成销售换货单
 */
 <template>
@@ -55,19 +55,13 @@
           id="companyInfo"
           :data="form"
         />
-        <!-- 换入商品信息 -->
-        <goods-return
+        <!-- 退换货商品 -->
+        <goods-change-edit
           title="换入商品信息"
           :data="form"
-          id="commodityInfo"
+          :rowData="rowData"
+          id="goodsChangeEdit"
           :params="{busType:17,putawayType:0}"
-        />
-        <!-- 换出商品信息 -->
-        <goods-return
-          title="换出商品信息"
-          :data="form"
-          id="commodityInfo"
-          :params="{busType:17,putawayType:1}"
         />
         <!-- 账期信息 -->
         <return-bill-info
@@ -112,8 +106,7 @@ export default {
       tabs: {
         customerInfo: '客户信息',
         companyInfo: '公司信息',
-        goodsReturn: '换入商品信息',
-        billInfo: '换出商品信息',
+        goodsChangeEdit: '退货商品信息',
         otherFee: '其他费用',
         returnBillInfo: '账期信息',
         customInfo: '自定义信息',
