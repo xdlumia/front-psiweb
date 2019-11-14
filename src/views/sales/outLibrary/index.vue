@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 18:28:00
+ * @LastEditTime: 2019-11-14 14:14:33
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -25,7 +25,7 @@
           v-if="column.columnFields=='shipmentCode'"
           class="d-text-blue d-pointer"
           @click="eventHandle('detailVisible',row)"
-        >{{value}}}</span>
+        >{{value}}</span>
         <!-- 状态 -->
         <span v-else-if="column.columnFields=='state'">{{stateText[value]}}</span>
         <!-- 有无合同 -->

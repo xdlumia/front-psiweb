@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 11:21:18
+ * @LastEditTime: 2019-11-14 12:04:13
  * @Description: 生成销售退货单
 */
 <template>
@@ -115,37 +115,35 @@ export default {
       form: {
         actualRefundAmount: '',//98765432109876.12,
         alterationCode: '',//退换货编号,
-        apprpvalNode: '',//9,
+        apprpvalNode: '',//9,//节点
         attachList: '',//附件,
-        attachs: '',//附件,
-        busType: '',//9,
         businessCommoditySaveVoList: [
-          // {
-          //   alterationNumber:'',//9,
-          //   alterationPrice:'',//98765432109876.12,
-          //   apportionmentAmount:'',//98765432109876.12,
-          //   busCode:'',//业务编号,
-          //   busType:'',//9,
-          //   commodityCode:'',//商品编号,
-          //   commodityNumber:'',//9,
-          //   costAmount:'',//98765432109876.12,
-          //   discount:'',//98765432109876.12,
-          //   discountSprice:'',//98765432109876.12,
-          //   isAssembly:'',//9,
-          //   isDirect:'',//9,
-          //   isTeardown:'',//9,
-          //   note:'',//备注,
-          //   parentCommodityCode:'',//100000,
-          //   pickingNumber:'',//9,
-          //   preTaxAmount:'',//98765432109876.12,
-          //   putawayType:'',//9,
-          //   reference:'',//98765432109876.12,
-          //   salesPrice:'',//98765432109876.12,
-          //   shipmentsNumber:'',//9,
-          //   snCode:'',//SN码,
-          //   taxPrice:'',//98765432109876.12,
-          //   taxTotalAmount:'',//98765432109876.12
-          // }
+          {
+            alterationNumber: '',//9,
+            alterationPrice: '',//98765432109876.12,
+            apportionmentAmount: '',//98765432109876.12,
+            busCode: '',//业务编号,
+            busType: '',//9,
+            commodityCode: '',//商品编号,
+            commodityNumber: '',//9,
+            costAmount: '',//98765432109876.12,
+            discount: '',//98765432109876.12,
+            discountSprice: '',//98765432109876.12,
+            isAssembly: '',//9,
+            isDirect: '',//9,
+            isTeardown: '',//9,
+            note: '',//备注,
+            parentCommodityCode: '',//100000,
+            pickingNumber: '',//9,
+            preTaxAmount: '',//98765432109876.12,
+            putawayType: '',//9,
+            reference: '',//98765432109876.12,
+            salesPrice: '',//98765432109876.12,
+            shipmentsNumber: '',//9,
+            snCode: '',//SN码,
+            taxPrice: '',//98765432109876.12,
+            taxTotalAmount: '',//98765432109876.12
+          }
         ],
         clientId: '',//100000,
         companyAccountId: '',//100000,
@@ -163,17 +161,17 @@ export default {
         salesNumber: '',//9,
         salesShipmentCode: '',//销售出库单编号,
         shipmentFinanceSaveVoList: [
-          // {
-          //   busCode: '',//业务编号,
-          //   busType: '',//9,
-          //   feeDetailCode: '',//费用明细,
-          //   feeTypeCode: '',//费用类型,
-          //   isBillFee: '',//0,
-          //   payAmount: '',//98765432109876.12,
-          //   payTime: '',//1572403069534,
-          //   paymenDays: '',//账期,
-          //   paymentType: '',//9
-          // }
+          {
+            busCode: '',//业务编号,
+            busType: '',//9,
+            feeDetailCode: '',//费用明细,
+            feeTypeCode: '',//费用类型,
+            isBillFee: '',//0,
+            payAmount: '',//98765432109876.12,
+            payTime: '',//1572403069534,
+            paymenDays: '',//账期,
+            paymentType: '',//9
+          }
         ],
         shouldRefundAmount: '',//98765432109876.12,
         source: '',//来源,

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 11:14:38
+ * @LastEditTime: 2019-11-14 12:09:02
  * @Description: 生成销售换货单
 */
 <template>
@@ -57,6 +57,7 @@
         />
         <!-- 退换货商品 -->
         <goods-change-edit
+          :options="rowData.quotationCodes || []"
           title="换入商品信息"
           :data="form"
           :rowData="rowData"

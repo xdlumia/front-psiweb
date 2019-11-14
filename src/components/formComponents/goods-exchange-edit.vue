@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 11:10:01
+ * @LastEditTime: 2019-11-14 12:11:35
  * @Description: 退货商品信息 换入商品信息 换出商品信息
 */
 <template>
@@ -15,10 +15,10 @@
           placeholder=""
         >
           <el-option
-            v-for="item in 5"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in options"
+            :key="item"
+            :label="item"
+            :value="item"
           >
           </el-option>
         </el-select>
@@ -162,11 +162,13 @@ export default {
     disabled: {
       default: false,
       type: Boolean
-    }
+    },
+    // 销售单编号列表下拉
+    options: Array
   },
   data() {
     return {
-      showInFullscreen: false
+      quotationCode: (this.options[0] || '')
     }
   },
   methods: {
