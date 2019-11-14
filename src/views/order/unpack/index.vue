@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 17:52:43
+ * @LastEditTime: 2019-11-14 18:04:20
  * @Description: 采购-拆卸单
 */
 <template>
@@ -13,8 +13,8 @@
         <el-switch class="mr10" v-model="switchValue"></el-switch>
         <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
       </template>
-      <template slot-scope="{column,row,value}">
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
+      <template slot-scope="{column,row,value,prop}">
+        <span v-if="prop=='createTime'">{{value}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>

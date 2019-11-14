@@ -8,8 +8,8 @@
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView :filterOptions="filterOptions" :headers="tableHeader" api="bizSystemService.getEmployeeList" title="采购合同">
-      <template slot-scope="{column,row,value}">
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
+      <template slot-scope="{column,row,value,prop}">
+        <span v-if="prop=='createTime'">{{value}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>

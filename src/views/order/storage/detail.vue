@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 15:18:08
+ * @LastEditTime: 2019-11-14 18:40:05
  * @Description: 采购入库单
 */
 <template>
@@ -37,18 +37,20 @@
           <buying-goods-edit
             :data="detail"
             :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmountPrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
           ]"
             disabled
             id="commodityInfo"
+            priceKey="purchasePrice"
           />
           <buying-goods-edit
             :data="detail"
             :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmountPrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
           ]"
             disabled
             fkey="additionalCommodityList"
+            priceKey="purchasePrice"
             v-if="detail.source=='请购单'"
           />
           <buyingPaymentLate :data="detail" disabled id="paymentLate" />

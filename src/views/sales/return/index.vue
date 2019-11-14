@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 17:38:19
+ * @LastEditTime: 2019-11-14 18:05:49
  * @Description: 销售-销售退货单
  */
 <template>
@@ -56,7 +56,6 @@
       :code="rowData.salesShipmentCode"
       @reload="this.$refs.table.reload()"
     />
-    1{{stateText1}}
   </div>
 </template>
 <script>
@@ -118,22 +117,13 @@ export default {
     };
   },
   computed: {
-    stateText1() {
-      return this.$nextTick(() => {
-        let i = 1
 
-        console.log(this.$refs.table.statusList);
-        return this.$refs.table.statusList
-      })
-    },
   },
   watch: {
   },
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
-      console.log(row);
-
       this[type] = true
       this.rowData = row
       return

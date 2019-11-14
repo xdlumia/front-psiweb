@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 16:43:46
+ * @LastEditTime: 2019-11-14 18:31:05
  * @Description: 销售出库单详情
 */
 <template>
@@ -11,6 +11,7 @@
       title="销售退货单"
       :visible.sync="showDetailPage"
       width="920px"
+      :status="status"
       @close="close"
     >
       <div class="drawer-header">
@@ -53,7 +54,7 @@
               class="d-auto-y"
               :params="item.params"
               :button="false"
-              style="height:calc(100vh - 200px)"
+              style="height:calc(100vh - 160px)"
               :is="activeName"
             />
           </el-tab-pane>
@@ -74,6 +75,7 @@
 import detail from './details/detail' //详情
 import add from './add' // 新增退货单
 import VisibleMixin from '@/utils/visibleMixin';
+import { log } from 'util';
 export default {
   mixins: [VisibleMixin],
   components: {
@@ -106,6 +108,8 @@ export default {
         '3': [], //已完成
         '4': ['提交审核', '编辑', '删除'], //已驳回
       },
+
+
       // tabs 切换操作栏
       tabs: [
         { label: '详情', comp: 'detail' },
@@ -115,7 +119,14 @@ export default {
       form: {},
     }
   },
+
   computed: {
+
+  },
+  created() {
+
+  },
+  mounted() {
 
   },
   methods: {

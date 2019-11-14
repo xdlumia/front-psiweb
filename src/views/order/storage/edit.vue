@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 16:51:45
+ * @LastEditTime: 2019-11-14 18:39:00
  * @Description: 采购入库单
 */
 <template>
@@ -34,18 +34,20 @@
           <buying-goods-edit
             :data="form"
             :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmountPrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber','!add','action'
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber','!add','action'
           ]"
             @totalAmountChange="setGoodsTotalPrice(0,$event)"
             id="commodityInfo"
+            priceKey="purchasePrice"
           />
           <buying-goods-edit
             :data="form"
             :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmountPrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber','action'
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber','action'
           ]"
             @totalAmountChange="setGoodsTotalPrice(1,$event)"
             fkey="additionalCommodityList"
+            priceKey="purchasePrice"
             title="附加商品"
             v-if="form.source=='请购单'"
           />

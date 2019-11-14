@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 11:17:14
+ * @LastEditTime: 2019-11-14 18:30:32
  * @Description: 销售出库单详情
 */
 <template>
@@ -11,6 +11,7 @@
       title="出库单详情"
       :visible.sync="showDetailPage"
       width="920px"
+      :status="status"
       @close="close"
     >
       <div slot="button">
@@ -55,7 +56,7 @@
           :data="detail || {}"
           class="d-auto-y"
           :button="false"
-          style="height:calc(100vh - 200px)"
+          style="height:calc(100vh - 160px)"
           :is="activeName"
         ></components>
 
@@ -127,16 +128,7 @@ export default {
        * 根据当前状态判断显示哪些按钮
        */
       //头部状态数据
-      stateText: {
-        '-1': '新建',
-        '0': '审核中',
-        '1': '请购处理',
-        '2': '回收合同',
-        '3': '已通过',
-        '4': '完成',
-        '5': '已驳回',
-        '6': '终止',
-      },
+      stateText: {},
       currStatus: 1,
       currStatusType: {
         '-1': ['提交审核', '编辑', '删除', '生成合同'], // 新建
@@ -171,6 +163,14 @@ export default {
   },
   computed: {
 
+  },
+  created() {
+    let statusList = this.$parent.$refs.table.statusList
+    statusList.forEach(item => {
+      if (item.name != '全部') {
+        this.stateText[item.state] = item.name
+      }
+    })
   },
   mounted() {
 

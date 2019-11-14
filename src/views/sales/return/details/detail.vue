@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 16:42:07
+ * @LastEditTime: 2019-11-14 18:17:57
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -71,13 +71,6 @@ export default {
 
   },
   methods: {
-    //根据code 查看详情
-    salesalterationsheetGetInfoByCode() {
-      this.$api.seePsiSaleService.salesalterationsheetGetInfoByCode({ code: this.code })
-        .then(res => {
-          this.detailInfo = res.data || {}
-        })
-    }
   },
   beforeDestroy() {
   }
