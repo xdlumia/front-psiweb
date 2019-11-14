@@ -7,136 +7,137 @@
 */
 <template>
   <div>
-    <!-- 换入库商品 -->
     <form-card
       class="borrow-goods-info mt10"
       title="借出库商品"
     >
-      <div class="mt10 mb10">
-        <span class="b mt5">机器号/扫SN码</span>
-        <el-input
-          size="mini"
-          style="width:200px;"
-          class="ml10 mt5"
-        ></el-input>
-        <span class="fr d-text-black mr10 mt5">
-          <span>本次成功扫码</span>
-          <span class="b d-text-red f16"> 3 </span>
-          <span>件，历史扫码</span>
-          <span class="b d-text-green f16"> 5 </span>
-          <span>件，还需扫码</span>
-          <span class="b d-text-blue f16"> 127 </span>
-          <span>件</span>
-        </span>
-      </div>
+
       <el-table
         border
-        :data="
-      tableData"
+        :data="data.commodityShowList"
         max-height="400"
         size="mini"
       >
         <el-table-column
           label="数量"
           min-width="100"
-          prop="name"
-        ></el-table-column>
+          prop="borrowLoanAccomplishNum"
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.borrowLoanAccomplishNum}}/{{scope.row.borrowLoanNum}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="name"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.name}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="商品类别"
           min-width="110"
-          prop="name"
-        ></el-table-column>
+          prop="categoryCode"
+        >
+          <template slot-scope="scope"><span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span></template>
+        </el-table-column>
         <el-table-column
           label="商品分类"
           min-width="110"
-          prop="name"
+          prop="className"
         ></el-table-column>
         <el-table-column
           label="商品名称"
           min-width="110"
-          prop="name"
+          prop="goodsName"
         ></el-table-column>
         <el-table-column
           label="商品规格"
           min-width="110"
-          prop="name"
+          prop="specOne"
         ></el-table-column>
         <el-table-column
           label="单位"
           min-width="80"
-          prop="name"
-        ></el-table-column>
+          prop="unit"
+        >
+          <template slot-scope="scope"><span>{{scope.row.unit|dictionary('SC_JLDW')}}</span></template>
+        </el-table-column>
       </el-table>
 
     </form-card>
 
     <!-- 机器号/SN码 -->
     <form-card title='机器号/SN码'>
-      <d-table
-        :paging='false'
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+      <div class="mt10 mb10">
+        <span class="b mt5">机器号/扫SN码</span>
+        <el-input
+          v-on:keyup.13.native="shipmentCommodityCheck"
+          v-model="snCode"
+          size="mini"
+          style="width:200px;"
+          class="ml10 mt5"
+        ></el-input>
+      </div>
+      <el-table
+        border
+        size="mini"
+        :data="tableData"
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
+        style="max-height:300px"
       >
         <el-table-column
           min-width="50"
           label="操作"
           show-overflow-tooltip
         >
-          <template slot-scope="">
+          <template slot-scope="scope">
             <i
+              @click='deleteLend(scope)'
               class="el-icon-error d-pointer"
               style="font-size:20px;color:#F5222D"
             ></i>
           </template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          type='
+              index'
           min-width="80"
           label="编号"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="title"
+          prop="snCode"
           label="SN码"
           min-width="160"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.snCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="title"
+          prop="robotCode"
           label="机器号"
           min-width="160"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.robotCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="wmsName"
           min-width="100"
           label="借出库房"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="creator"
           min-width="100"
           label="借出人"
           show-overflow-tooltip
@@ -150,39 +151,39 @@
           <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="commodityCode"
           min-width="100"
           label="商品编号"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="configName"
           min-width="100"
           label="配置"
           show-overflow-tooltip
         ></el-table-column>
-      </d-table>
+      </el-table>
     </form-card>
-    <span
+    <div
       slot="footer"
-      class="dialog-footer"
+      class="dialog-footer mt20"
     >
       <el-button
-        @click="close"
+        @click="close()"
         size="small"
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="close"
+        @click="submit"
         size="small"
       >保 存</el-button>
-    </span>
+    </div>
   </div>
 </template>
 <script>
@@ -198,7 +199,7 @@ export default {
     dialogData: {
       type: Object,
     },
-    form: {}
+    data: {}
   },
   computed: {
     maxHeight() {
@@ -208,19 +209,8 @@ export default {
   data() {
     return {
       activeName: '',
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
-      tableData: [{ name: '写的假的' }],
-      formInline: {
-        user: ''
-      },
+      snCode: '',
+      tableData: [],
     };
   },
   mounted() { },
@@ -229,13 +219,63 @@ export default {
       this.activeName = '';
     },
     close() {
-      this.$emit('update:visible', false)
+      this.$emit('close')
+    },
+    //回车 出库
+    shipmentCommodityCheck() {
+      this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData })
+        .then(res => {
+          if (res.data) {
+            this.data.commodityShowList.forEach((item, index) => {
+              // res.data.commodityCode  C1P0009RCSP20191107000003
+              if (item.commodityCode == res.data.commodityCode) {
+                if (this.data.commodityShowList[index].borrowLoanAccomplishNum < this.data.commodityShowList[index].borrowLoanNum) {
+                  this.data.commodityShowList[index].borrowLoanAccomplishNum++
+                  this.tableData.push(res.data)
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: '当前商品已经扫够啦!'
+                  })
+                }
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: '当前商品不在借出库商品列表内!'
+                })
+              }
+            })
+          }
+        })
+        .finally(() => {
+        })
+    },
+    //点击删除
+    deleteLend(scope) {
+      this.tableData.splice(scope.$index, 1)
+      this.data.commodityShowList.forEach((item, index) => {
+        if (item.commodityCode == scope.row.commodityCode) {
+          this.data.commodityShowList[index].borrowLoanAccomplishNum--
+        }
+      })
+    },
+    //保存按钮
+    submit() {
+      this.$api.seePsiWmsService.wmsborrowloantaskLoanCommodity({ businessCode: this.data.borrowLoanCode, businessId: this.data.id, putawayCommodityList: this.tableData })
+        .then(res => {
+          this.close()
+          this.$emit('reload')
+        })
+        .finally(() => {
+
+        })
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-/deep/.el-dialog__footer {
-  text-align: center;
+/deep/.dialog-footer {
+  text-align: center !important;
+  display: block;
 }
 </style>

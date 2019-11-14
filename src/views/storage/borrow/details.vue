@@ -11,48 +11,66 @@
     :status="status"
     :visible.sync="visible"
     @close="close"
-    title="借入借出任务"
+    :title="'借入借出任务-'+detailForm.borrowLoanCode"
     width="990px"
   >
     <div>
       <div class="drawer-header">
+
+        <!-- v-if="drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 6 || drawerData.borrowLoanState == 9" -->
         <el-button
           @click="backVisible=true,isComponents = 'borrowPayback',dialogData.title='借入归还-UYGVUOUY'"
           size="mini"
           type="primary"
         >归还</el-button>
+        <!-- v-if="drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 7 || drawerData.borrowLoanState == 8" -->
         <el-button
-          @click="backVisible=true,isComponents = 'lendBack',dialogData.title='借出返还-UYGVUOUY'"
+          @click="backVisible=true,isComponents = 'lendBack',dialogData.title='借出返还-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
         >返还</el-button>
+
+        <!-- v-if="drawerData.borrowLoanState == 2 || drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 9" -->
         <el-button
-          @click="backVisible=true,isComponents = 'borrowScanCode',dialogData.title='借入扫码-UYGVUOUY'"
+          @click="backVisible=true,isComponents = 'borrowScanCode',dialogData.title='借入扫码-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
         >借入扫码</el-button>
+
+        <!-- v-if="drawerData.borrowLoanState == 3 || drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 10" -->
         <el-button
-          @click="backVisible=true,isComponents = 'lendScanCode',dialogData.title='借出扫码-UYGVUOUY'"
+          @click="backVisible=true,isComponents = 'lendScanCode',dialogData.title='借出扫码-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
         >借出扫码</el-button>
       </div>
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
-          <el-form size="mini">
+          <el-form
+            size="mini"
+            :model="detailForm"
+            v-if="detailForm"
+          >
             <borrowIn
+              :data="detailForm"
+              disabled
+            />
+            <borrowGoods
               :data="detailForm"
               v-if="detailForm"
               disabled
             />
-            <borrowGoods />
             <el-dialog
-              center
               :visible.sync="backVisible"
               :title="dialogData.title"
               v-dialogDrag
             >
-              <components :is='isComponents'>
+              <components
+                :is='isComponents'
+                :data='detailForm'
+                @close='close'
+                @reload='reload'
+              >
               </components>
             </el-dialog>
             <!-- <borrowPayback :visible='backVisible' />
@@ -80,7 +98,7 @@ export default {
   props: ['drawerData', 'visible'],
   data() {
     return {
-      status: [{ label: '借入/借出状态', value: '待归还/待返还' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '借入/借出状态', value: '待归还/待返还' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       backVisible: false,
       lendVisible: false,
       borrowVisible: false,
@@ -88,6 +106,19 @@ export default {
       isComponents: 'borrowPayback',
       dialogData: {
         title: ''
+      },
+      state: {
+        2: '待借入',
+        3: '待借出',
+        4: '部分借入',
+        5: '部分借出',
+        6: '待归还',
+        7: '待返还',
+        8: '部分返还',
+        9: '部分归还',
+        10: '完成返还',
+        11: '完成归还',
+        '-1': '终止',
       },
       detailForm: {}
     };
@@ -106,18 +137,25 @@ export default {
   },
   methods: {
     close() {
-      this.$emit('updata:visible', false)
+      this.backVisible = false
+
+      this.$emit('update:visible', false)
+    },
+    reload() {
+      this.$emit('reload')
     },
     //查看调拨单详情
     wmsallocationorderInfo() {
       this.$api.seePsiWmsService.wmsborrowloanorderQueryInfoByOrderCode(null, this.drawerData.borrowLoanOrderCode)
         .then(res => {
           this.detailForm = res.data || {}
-          // this.status[0].value = res.data.createTime
-          // this.status[1].value = res.data.creatorName
-          // this.status[2].value = res.data.deptName
-          // this.status[3].value = res.data.source
+          this.status[0].value = this.state[res.data.borrowLoanState] || '全部'
+          this.status[1].value = res.data.createTime
+          this.status[2].value = res.data.creatorName
+          this.status[3].value = res.data.deptName
+          this.status[4].value = res.data.source
           console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
+          this.detailForm.commodityList = this.detailForm.commodityShowList || [];
         })
         .finally(() => {
 

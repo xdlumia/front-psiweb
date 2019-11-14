@@ -931,12 +931,6 @@ export default {
     'methods': 'post'
   },
 
-  // 商品扫码入库校验
-  wmsinventorydetailPutawayCommodityCheck: {
-    'url': '/wmsinventorydetail/putawayCommodityCheck',
-    'mock': false
-  },
-
   // 商品入库
   wmsinventorydetailSave: {
     'url': '/wmsinventorydetail/save',
@@ -949,12 +943,6 @@ export default {
     'url': '/wmsinventorydetail/shipmentCommodityCheck',
     'mock': false,
     'methods': 'post'
-  },
-
-  // 商品扫码出库校验
-  wmsinventorydetailShipmentCommodityCheck: {
-    'url': '/wmsinventorydetail/shipmentCommodityCheck',
-    'mock': false
   },
 
   // 扫码出库

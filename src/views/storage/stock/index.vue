@@ -91,6 +91,7 @@
     <commodityInquiry
       :visible.sync='commVisible'
       :snCode='snCode'
+      v-if="commVisible"
     />
   </div>
 </template>
