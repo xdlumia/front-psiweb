@@ -10,37 +10,43 @@ const purchase = [
     label: '待采购请购单',
     key: '',
     component: '',
-    authorityCode: ''
+    authorityCode: '',
+    processNum: 0
   },
   {
     label: '待审批备货单',
     key: '',
     component: '',
-    authorityCode: ''
+    authorityCode: '',
+    processNum: 0
   },
   {
     label: '待采购直发单',
     key: '',
     component: '',
-    authorityCode: ''
+    authorityCode: '',
+    processNum: 0
   },
   {
     label: '待发货直发单',
     key: '',
     component: '',
-    authorityCode: ''
+    authorityCode: '',
+    processNum: 0
   },
   {
     label: '待审批采购入库单',
     key: '',
     component: '',
-    authorityCode: ''
+    authorityCode: '',
+    processNum: 0
   },
   {
     label: '待审批采购退货单',
     key: '',
     component: '',
-    authorityCode: ''
+    authorityCode: '',
+    processNum: 0
   }
 ]
 
