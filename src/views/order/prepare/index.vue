@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 18:01:20
+ * @LastEditTime: 2019-11-14 10:34:13
  * @Description: 采购-备货单
 */
 <template>
@@ -20,7 +20,7 @@
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='stockCode'">
-          <el-link class="f12" :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else-if="prop=='state'">{{stateText[value]}}</span>
         <span v-else-if="['purchaseArrivalTime','createTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
@@ -41,6 +41,18 @@ export default {
     TableView,
     AddOrderPrepare,
     OrderPrepareDetail
+  },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   data() {
     return {

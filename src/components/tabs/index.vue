@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-29 11:57:36
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 16:58:56
+ * @LastEditTime: 2019-11-14 10:49:33
  * @Description: tabs
 */
 <template>
@@ -37,19 +37,11 @@ export default {
     return {
       activeName: '',
       tabsVisible: {},
+      tabs: [],
       timer: null
     };
   },
   computed: {
-    tabs() {
-      return this.$slots.default
-        .filter(
-          a =>
-            a.componentOptions &&
-            a.componentOptions.Ctor.extendOptions.name == 'dTabPanel'
-        )
-        .map(node => node.componentOptions.propsData);
-    },
     scrollEl() {
       if (this.scrollView instanceof HTMLElement) {
         return this.scrollView;
@@ -61,8 +53,21 @@ export default {
   },
   mounted() {
     this.scrollEl.onscroll = this.onScroll;
+    this.$on('tab-pane-update', () => {
+      this.getTabs();
+    });
+    this.getTabs();
   },
   methods: {
+    getTabs() {
+      this.tabs = this.$slots.default
+        .filter(
+          a =>
+            a.componentOptions &&
+            a.componentOptions.Ctor.extendOptions.name == 'dTabPanel'
+        )
+        .map(node => node.componentOptions.propsData);
+    },
     onScroll() {
       clearTimeout(this.timer);
       let baseDom = this.scrollEl;

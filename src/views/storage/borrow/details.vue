@@ -9,15 +9,12 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="drawerData.tableVisible"
-    @close="$emit('update:visible',false)"
+    :visible.sync="visible"
+    @close="close"
     title="借入借出任务"
     width="990px"
   >
-    <div
-      class="d-auto-y"
-      style="height:calc(100vh - 160px)"
-    >
+    <div>
       <div class="drawer-header">
         <el-button
           @click="backVisible=true,isComponents = 'borrowPayback',dialogData.title='借入归还-UYGVUOUY'"
@@ -42,8 +39,12 @@
       </div>
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
-          <el-form>
-            <lendInfo />
+          <el-form size="mini">
+            <borrowIn
+              :data="detailForm"
+              v-if="detailForm"
+              disabled
+            />
             <borrowGoods />
             <el-dialog
               center
@@ -67,7 +68,7 @@
 
 </template>
 <script>
-import lendInfo from '@/components/formComponents/lend-info'
+import borrowIn from '@/components/formComponents/borrow-in'
 import borrowGoods from '@/components/formComponents/borrow-goods';
 import SideDetail from '@/components/side-detail';
 import borrowPayback from './borrow-payback';//借入归还
@@ -76,7 +77,7 @@ import borrowScanCode from './borrow-scan-code';//借入扫码
 import lendScanCode from './lend-scan-code';//借出扫码
 
 export default {
-  props: ['drawerData'],
+  props: ['drawerData', 'visible'],
   data() {
     return {
       status: [{ label: '借入/借出状态', value: '待归还/待返还' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
@@ -87,11 +88,12 @@ export default {
       isComponents: 'borrowPayback',
       dialogData: {
         title: ''
-      }
+      },
+      detailForm: {}
     };
   },
   components: {
-    lendInfo,
+    borrowIn,
     borrowGoods,
     borrowPayback,
     SideDetail,
@@ -99,6 +101,29 @@ export default {
     borrowScanCode,
     lendScanCode
   },
+  mounted() {
+    this.wmsallocationorderInfo()
+  },
+  methods: {
+    close() {
+      this.$emit('updata:visible', false)
+    },
+    //查看调拨单详情
+    wmsallocationorderInfo() {
+      this.$api.seePsiWmsService.wmsborrowloanorderQueryInfoByOrderCode(null, this.drawerData.borrowLoanOrderCode)
+        .then(res => {
+          this.detailForm = res.data || {}
+          // this.status[0].value = res.data.createTime
+          // this.status[1].value = res.data.creatorName
+          // this.status[2].value = res.data.deptName
+          // this.status[3].value = res.data.source
+          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
+        })
+        .finally(() => {
+
+        })
+    },
+  }
 }
 </script>
 <style lang='scss' scoped>
