@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-14 14:29:48
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-14 18:11:20
+ * @LastEditTime: 2019-11-14 18:57:51
  * @Description: 常用功能入口
  -->
 <template>
@@ -41,6 +41,7 @@
 </template>
 
 <script type='text/ecmascript-6'>
+import { debounce } from '@/utils/debounce'
 const imgs = require.context('../img', false, /\.png$/)
 // 获取文件名
 function toCamel(path) {
@@ -86,7 +87,8 @@ export default {
       selected: {}, // 选中的值
       imgList: {}, // icon对象
       allMenuList: [], // 所有菜单列表
-      entryList: [] // 用户的入口数组
+      entryList: [], // 用户的入口数组
+      change: true // 用作watch监听使用
     }
   },
   created() {
@@ -96,6 +98,13 @@ export default {
     const menu = JSON.parse(localStorage.getItem('navData')) || []
     this.allMenuList = recursionNav(menu)
     this.homePageQueryTab()
+    this.$watch('change', {
+      deep: true,
+      handler: debounce(() => {
+        const result = this.allMenuList.filter(item => this.actived.includes(String(item.id)))
+        this.homePageSaveCommonUserTabEntity(JSON.stringify(result))
+      }, 1000)
+    })
   },
   components: {
   },
@@ -123,8 +132,7 @@ export default {
       })
     },
     switchChange() {
-      const result = this.allMenuList.filter(item => this.actived.includes(String(item.id)))
-      this.homePageSaveCommonUserTabEntity(JSON.stringify(result))
+      this.change = !this.change
     }
   }
 }
