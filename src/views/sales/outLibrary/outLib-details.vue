@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 19:39:21
+ * @LastEditTime: 2019-11-14 10:27:20
  * @Description: 销售出库单详情
 */
 <template>
@@ -76,18 +76,18 @@
       :params="{salesShipmentCode:rowData.shipmentCode}"
       :code="rowData.shipmentCode"
     />
-    <returnAdd
+    <!-- <returnAdd
       :visible.sync="returnAddVisible"
       :rowData="rowData"
       type="add"
       :params="{salesShipmentCode:rowData.shipmentCode}"
       :code="rowData.shipmentCode"
-    />
+    /> -->
   </div>
 </template>
 <script>
 import add from './add' //销售出库单新增编辑
-import returnAdd from '../return/add' //退货单新增
+// import returnAdd from '../return/add' //退货单新增
 import exchangeAdd from '../exchange/add' //换货单新增
 
 import detail from './outLibDetails/detail' //详情
@@ -97,7 +97,7 @@ export default {
   components: {
     detail,
     add,
-    returnAdd,
+    // returnAdd,
     exchangeAdd
   },
 
