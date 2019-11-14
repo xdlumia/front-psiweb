@@ -983,6 +983,17 @@ export default {
   homePageQueryList: {
     'url': '/homePage/queryList',
     'mock': IS_MOCK
+  },
+  homePageQueryTab: {
+    'url': '/homePage/queryTab',
+    'mock': IS_MOCK
+  },
+
+  // 保存用户页签
+  homePageSaveCommonUserTabEntity: {
+    'url': '/homePage/saveCommonUserTabEntity',
+    'mock': IS_MOCK,
+    'methods': 'post'
   }
   /* =============首页end=========== */
 }

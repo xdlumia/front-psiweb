@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:20:37
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-12 16:16:54
+ * @LastEditTime: 2019-11-14 17:49:51
  * @Description: description
  */
 const purchase = [
@@ -44,6 +44,13 @@ const purchase = [
   {
     label: '待审批采购退货单',
     key: '',
+    component: '',
+    authorityCode: '',
+    processNum: 0
+  },
+  {
+    label: '采购调价单',
+    key: 'CGTJD-001',
     component: '',
     authorityCode: '',
     processNum: 0

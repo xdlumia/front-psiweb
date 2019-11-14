@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:16:28
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-14 13:48:36
+ * @LastEditTime: 2019-11-14 17:56:29
  * @Description: 待办事项
  -->
 <template>
@@ -51,22 +51,23 @@ export default {
   },
   methods: {
     homePageQueryList() {
-      const obj = Object.create(null)
-      this.$api.seePsiCommonService.homePageQueryList().then(res => {
+      return this.$api.seePsiCommonService.homePageQueryList().then(res => {
+        const obj = Object.create(null);
         (res.data || []).forEach(item => {
           obj[item.processTypeCode] = item.processNum
         })
+        return obj
       })
-      return obj
     },
     handleList() {
-      const obj = this.homePageQueryList()
-      this.list.forEach(item => {
-        const num = item.children.reduce((val, sub) => {
-          sub['processNum'] = obj[sub.key] || 0
-          return val + sub.processNum
-        }, 0)
-        item.processNum = num
+      this.homePageQueryList().then(res => {
+        this.list.forEach(item => {
+          const num = item.children.reduce((val, sub) => {
+            sub.processNum = res[sub.key] || 0
+            return val + sub.processNum
+          }, 0)
+          item.processNum = num
+        })
       })
     }
   }

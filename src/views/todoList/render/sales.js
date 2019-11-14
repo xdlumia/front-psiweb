@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:20:17
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-14 13:45:51
+ * @LastEditTime: 2019-11-14 17:50:35
  * @Description: 销售
  */
 
@@ -52,6 +52,13 @@ const sales = [
   {
     label: '待审批费用分摊',
     key: '',
+    component: '',
+    authorityCode: '',
+    processNum: 0
+  },
+  {
+    label: '销售调价单',
+    key: 'XSTJD-001',
     component: '',
     authorityCode: '',
     processNum: 0
