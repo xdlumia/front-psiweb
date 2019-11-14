@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:16:28
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-14 17:56:29
+ * @LastEditTime: 2019-11-14 18:20:59
  * @Description: 待办事项
  -->
 <template>
@@ -39,18 +39,18 @@
 <script type='text/ecmascript-6'>
 import list from './render'
 export default {
-  data() {
+  data () {
     return {
       list
     }
   },
   components: {
   },
-  mounted() {
+  mounted () {
     this.handleList()
   },
   methods: {
-    homePageQueryList() {
+    homePageQueryList () {
       return this.$api.seePsiCommonService.homePageQueryList().then(res => {
         const obj = Object.create(null);
         (res.data || []).forEach(item => {
@@ -59,7 +59,7 @@ export default {
         return obj
       })
     },
-    handleList() {
+    handleList () {
       this.homePageQueryList().then(res => {
         this.list.forEach(item => {
           const num = item.children.reduce((val, sub) => {
@@ -93,7 +93,7 @@ export default {
     display: flex;
     overflow: hidden;
     .menu {
-      flex: 0 0 250px;
+      flex: 0 0 260px;
       background: #fff;
       margin-left: 20px;
       border-radius: 10px;
