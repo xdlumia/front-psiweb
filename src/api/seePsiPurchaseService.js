@@ -3,12 +3,30 @@
 const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = false;
 /**
-* @date 2019-11-11
+* @date 2019-11-14
 * @host 39.99.132.95:9205
 */
 export default {
     __mockAddress: MOCK_ADDRESS,
 
+    /**
+     * @tag process-event-controller
+     * @description allListenerConfig
+     */
+    processEventAllListenerConfig: {
+        url: '/processEvent/allListenerConfig/{processType}',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag process-event-controller
+     * @description onProcessEvent
+     */
+    processEventOnProcessEvent: {
+        url: '/processEvent/onProcessEvent/{processType}',
+        methods: 'post',
+        mock: isUseMock
+    },
     /**
      * @tag 采购单
      * @description 删除
@@ -24,7 +42,7 @@ export default {
      */
     purchaseExport: {
         url: '/purchase/export',
-        methods: 'get',
+        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -160,6 +178,15 @@ export default {
     purchasealterationSave: {
         url: '/purchasealteration/save',
         methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购退货单
+     * @description 库存统计数字
+     */
+    purchasealterationStatWms: {
+        url: '/purchasealteration/statWms/{code}',
+        methods: 'get',
         mock: isUseMock
     },
     /**
@@ -438,7 +465,7 @@ export default {
      */
     purchaseputinExport: {
         url: '/purchaseputin/export',
-        methods: 'get',
+        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -555,7 +582,7 @@ export default {
      */
     purchasestockorderExport: {
         url: '/purchasestockorder/export',
-        methods: 'get',
+        methods: 'post',
         mock: isUseMock
     },
     /**

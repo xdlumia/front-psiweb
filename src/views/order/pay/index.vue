@@ -12,7 +12,7 @@
         <el-button size="mini" type="primary" @click="payMultiApply=true">批量付款申请</el-button>
       </template>
       <template slot-scope="{column,row,value}">
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
@@ -28,6 +28,18 @@ export default {
   components: {
     TableView,
     Detail
+  },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   data() {
     return {

@@ -22,7 +22,7 @@
       </el-row>
       <el-row type="flex">
         <el-col :key="index" class="d-elip" v-for="(item,index) of status">
-          <span v-if="item.isTime">{{item.value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+          <span v-if="item.isTime">{{item.value|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
           <span v-else-if="item.dictName">{{item.value|dictionary(item.dictName)}}</span>
           <span v-else-if="item.options">{{getOptions(item)}}</span>
           <span v-else>{{item.value}}</span>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 10:59:23
+ * @LastEditTime: 2019-11-14 13:46:51
  * @Description: 借入/借出商品编辑页面
 */  
 <template>
@@ -80,7 +80,7 @@
       </el-table-column>
       <el-table-column label="商品类别" min-width="80" prop="categoryCode" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
+          <div>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</div>
         </template>
       </el-table-column>
       <el-table-column label="商品分类" min-width="100" prop="className" show-overflow-tooltip></el-table-column>
@@ -121,7 +121,13 @@ export default {
   },
   mounted() {
     if (!this.data.commodityList || !this.data.commodityList.length) {
-      this.data.commodityList = [{}];
+      this.data.commodityList = [
+        {
+          borrowLoanNum: '',
+          commodityCode: '',
+          costUnivalence: ''
+        }
+      ];
     }
   },
   methods: {
@@ -145,7 +151,11 @@ export default {
       list.splice.apply(list, [i, 1].concat(e));
     },
     add(i) {
-      this.data.commodityList.splice(i + 1, 0, {});
+      this.data.commodityList.splice(i + 1, 0, {
+        borrowLoanNum: '',
+        commodityCode: '',
+        costUnivalence: ''
+      });
     },
     del(i) {
       this.data.commodityList.splice(i, 1);

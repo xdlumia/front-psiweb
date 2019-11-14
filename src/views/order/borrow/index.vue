@@ -20,7 +20,7 @@
         </span>
         <span v-else-if="prop=='borrowLoanState'">{{stateText[value]}}</span>
         <span v-else-if="prop=='borrowLoanType'">{{value==0?'借入':'借出'}}</span>
-        <span v-else-if="['returnTime','createTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-else-if="['returnTime','createTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>

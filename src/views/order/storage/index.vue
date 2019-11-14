@@ -23,7 +23,7 @@
           <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else-if="prop=='state'">{{stateText[value]}}</span>
-        <span v-else-if="['saleTime','purchaseTime','createTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-else-if="['saleTime','purchaseTime','createTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>

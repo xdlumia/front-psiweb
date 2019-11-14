@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 18:25:29
+ * @LastEditTime: 2019-11-14 17:52:43
  * @Description: 采购-拆卸单
 */
 <template>
@@ -14,7 +14,7 @@
         <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
       </template>
       <template slot-scope="{column,row,value}">
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
@@ -33,6 +33,18 @@ export default {
     TableView,
     Detail,
     Edit
+  },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   data() {
     return {
