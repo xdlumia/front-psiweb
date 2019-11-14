@@ -2,34 +2,40 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 11:10:01
- * @Description: 退货商品信息 换入商品信息 换出商品信息
+ * @LastEditTime: 2019-11-14 15:46:27
+ * @Description: 换货商品信息 -退货商品商品信息
 */
 <template>
   <div>
     <form-card :title="true">
       <div slot="title">
         <span>{{title}}</span>
-        <el-select
-          v-model="value"
-          placeholder=""
-        >
-          <el-option
-            v-for="item in 5"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+        <span class="f14 ml30">
+          报价单:
+          <el-select
+            size="mini"
+            v-model="quotationCode"
           >
-          </el-option>
-        </el-select>
+            <el-option
+              v-for="item in options"
+              :key="item"
+              :label="item"
+              :value="item"
+            >
+            </el-option>
+          </el-select>
+        </span>
+
       </div>
       <d-table
+        show-summary
+        :summary-method="getSummaries"
+        :autoInit="false"
         api="seePsiSaleService.businesscommodityGetBusinessCommodityList"
-        :params="params"
+        :params="queryFrom"
         :paging="false"
         ref="table"
-        class="college-main"
-        style="max-height:340px"
+        style="height:340px"
       >
         <el-table-column
           prop="commodityCode"
@@ -55,7 +61,11 @@
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
-        />
+        >
+          <template slot-scope="scope">
+            {{scope.row.categoryCode | dictionary('PSI_SP_KIND')}}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="className"
           min-width="100"
@@ -162,17 +172,52 @@ export default {
     disabled: {
       default: false,
       type: Boolean
-    }
+    },
+    // 销售单编号列表下拉
+    options: Array
   },
   data() {
     return {
-      showInFullscreen: false
+      quotationCode: this.options[0] || '',
+      queryFrom: {
+        busType: 17,
+        putawayType: 0,
+        busCode: '',
+      }
+    }
+  },
+  watch: {
+    quotationCode: {
+      handler(val) {
+        this.$nextTick(() => {
+          this.queryFrom.busCode = this.quotationCode
+          this.$refs.table.reload(1)
+        })
+
+        console.log(val);
+      },
+      deep: true,
+      immediate: true
     }
   },
   methods: {
-    fullscreen() {
-      this.showInFullscreen = true;
-    }
+    // 自定义账单金额数据
+    getSummaries(param) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((col, index) => {
+        if (index == 0) {
+          sums[index] = '总价'
+        } else if (index == 3) {
+          const values = data.map(item => Number(item.payAmount || 0));
+          sums[index] = values.reduce((sum, curr) => {
+            const val = Number(curr)
+            return sum + curr
+          }, 0)
+        }
+      });
+      return sums
+    },
   },
 }
 </script>

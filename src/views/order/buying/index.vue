@@ -30,7 +30,7 @@
           <!-- 单据状态0待完成 1部分完成 2完成3终止 -->
           <span>{{stateText[value]}}</span>
         </span>
-        <span v-else-if="['createTime','saleArrivalTime','purchaseArrivalTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-else-if="['createTime','saleArrivalTime','purchaseArrivalTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>

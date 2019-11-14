@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 16:17:27
+ * @LastEditTime: 2019-11-14 16:07:21
  * @Description: 其他费用
  */
 <template>
@@ -26,7 +26,7 @@
           <el-form-item
             :rules="sub.rules"
             :label="sub.label"
-            :prop="'shipmentFinanceSaveVoList.'+ index +','+ item.prop"
+            :prop="'shipmentFinanceSaveVoList.'+ index +'.'+ sub.prop"
           >
             <el-select
               :disabled="disabled"
@@ -35,10 +35,10 @@
               v-model="item[sub.prop]"
             >
               <el-option
-                :key="option.id"
-                :label="option.label"
-                :value="option.id"
-                v-for="option in item.options || dictionaryOptions(item.dicName)"
+                :key="option.code"
+                :label="option.content"
+                :value="option.code"
+                v-for="option in dictionaryOptions(sub.dicName)"
               ></el-option>
             </el-select>
             <el-date-picker
@@ -74,8 +74,8 @@
 let formItems = [
   // 客户名称编辑的时候使用clientId显示的时候使用clientName
   // TODO 费用类型 费用明细 字典值还没有随便取的
-  { label: '费用类型', prop: 'feeTypeCode', type: 'select', dicName: 'PSI_KH_HY-1', rules: [{ required: true, trigger: 'blur' }], },
-  { label: '费用明细', prop: 'feeDetailCode', type: 'select', dicName: 'PSI_KH_HY-1', rules: [{ required: true, trigger: 'blur' }], },
+  { label: '费用类型', prop: 'feeTypeCode', type: 'select', dicName: 'PSI_GSSZ_ZHLX', rules: [{ required: true, trigger: 'blur' }], },
+  { label: '费用明细', prop: 'feeDetailCode', type: 'select', dicName: 'PSI_GSSZ_ZHLX', rules: [{ required: true, trigger: 'blur' }], },
   { label: '金额', prop: 'payAmount', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
   { label: '付款时间', prop: 'payTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
 ]

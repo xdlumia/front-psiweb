@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 15:56:17
+ * @LastEditTime: 2019-11-14 17:27:18
  * @Description: 拆卸单
 */
 <template>
@@ -20,8 +20,8 @@
       <d-tab-pane label="商品信息" name="unpackGoods" />
       <d-tab-pane label="基本信息" name="extrasInfo" />
       <div>
-        <el-form :model="form" class="p10">
-          <unpackGoods id="unpackGoods" />
+        <el-form :model="form" class="p10" size="mini">
+          <unpackGoods id="unpackGoods" :data="form" />
           <extrasInfo id="unpackGoods" :needUpload="false" />
         </el-form>
       </div>

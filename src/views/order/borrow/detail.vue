@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 11:15:09
+ * @LastEditTime: 2019-11-14 11:25:11
  * @Description: 借入借出详情
 */
 <template>
@@ -25,9 +25,13 @@
         type="danger"
       >驳回</el-button>
       <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
-      <el-button @click="$submission('seePsiWmsService.wmsborrowloanorderLogicDelete',{
+      <el-button
+        @click="$submission('seePsiWmsService.wmsborrowloanorderLogicDelete',{
         id:detail.id
-      },'删除')" size="mini" type="primary">删除</el-button>
+      },'删除')"
+        size="mini"
+        type="primary"
+      >删除</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
@@ -71,6 +75,20 @@ export default {
         '-1': '终止'
       }
     };
+  },
+  computed: {
+    status() {
+      if (!this.detail) return [];
+      else {
+        return [
+          { label: '状态', value: this.stateText[this.detail.borrowLoanState] },
+          { label: '单据创建人', value: this.detail.creatorName },
+          { label: '创建部门', value: this.detail.deptName },
+          { label: '创建时间', value: this.detail.createTime, isTime: true },
+          { label: '来源', value: this.detail.source }
+        ];
+      }
+    }
   },
   methods: {
     async getDetail() {

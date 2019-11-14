@@ -2,15 +2,16 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 18:03:55
+ * @LastEditTime: 2019-11-14 16:43:46
  * @Description: 销售出库单详情
 */
 <template>
   <div>
     <side-detail
       title="销售退货单"
-      :visible.sync="showPop"
+      :visible.sync="showDetailPage"
       width="920px"
+      @close="close"
     >
       <div class="drawer-header">
         <!-- 操作按钮 -->
@@ -48,6 +49,7 @@
               ref="detail"
               :code="code"
               :rowData="rowData"
+              :data="detail || {}"
               class="d-auto-y"
               :params="item.params"
               :button="false"
@@ -71,12 +73,13 @@
 <script>
 import detail from './details/detail' //详情
 import add from './add' // 新增退货单
+import VisibleMixin from '@/utils/visibleMixin';
 export default {
+  mixins: [VisibleMixin],
   components: {
     detail,
     add
   },
-  props: ['visible', 'code', 'rowData'],
   data() {
     return {
       // 操作按钮
@@ -113,45 +116,60 @@ export default {
     }
   },
   computed: {
-    showPop: {
-      get() {
-        return this.visible
-      },
-      set(val) {
-        this.$emit('update:visible', false)
-      }
-    }
+
   },
   methods: {
-    buttonsClick(label) {
-      // handleConfirm里的按钮操作是需要二次确认的
-      let handleConfirm = ['提交审核', '撤销审核', '驳回', '删除']
-      if (handleConfirm.includes(label)) {
-        this.$confirm(`是否${label}?`, "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-          center: true
-        }).then(() => {
-          let apiObj = {
-            '提交审核': 'salesalterationsheetApproval',
-            '撤销审核': 'salesalterationsheetApproval',
-            '驳回': 'salesalterationsheetApproval',
-            '删除': 'salesalterationsheetDelete',
-          }
-          this.$api.seePumaidongService.collegeManagerDelete({ id: [123] })
-            .then(res => {
-              this.$emit('reload')
-              this.showPop = false
-            });
-        });
+    async getDetail() {
+      if (this.code) {
+        let { data } = await this.$api.seePsiSaleService.salesreturnedGetInfoByCode({ code: this.code })
+        return data;
       }
-      // 如果是 编辑/退货扫码
-      else if (label == '编辑' || label == '退货扫码') {
+    },
+    buttonsClick(label) {
+      if (label == '编辑' || label == '退货扫码') {
         if (label == '编辑') { this.editVisible = true }
-        // TODO 退货扫码 未调用真实组件
-        if (label == '退货扫码') { this.editVisible = true }
-
+        else if (label == '退货扫码') { this.outLibAddVisible = true }
+      } else {
+        let params = {
+          busCode: this.code,//业务编号,
+          busType: 17,//业务类型,
+          id: this.detail.id,
+          isAgree: 1,//是否同意,
+          taskCode: '',//当前功能权限码"        
+        }
+        let apiObj = {
+          '提交审核': {
+            api: 'seePsiSaleService.salesreturnedSubmitApproval',
+            data: { ...params, ...{} },
+            needNote: null
+          },
+          '审核通过': {
+            api: 'seePsiSaleService.salesreturnedPassApproval',
+            data: { ...params, ...{} },
+            needNote: null
+          },
+          '撤销审核': {
+            api: 'seePsiSaleService.salesreturnedCancel',
+            data: { ...params, ...{} },
+            needNote: null
+          },
+          '驳回': {
+            api: 'seePsiSaleService.salesreturnedReject',
+            data: { ...params, ...{} },
+            needNote: null
+          },
+          '删除': {
+            api: 'seePsiSaleService.salesreturnedLogicDelete',
+            data: { ...params, ...{} },
+            needNote: null
+          }
+        }
+        // 公共方法 mixin 引进来的
+        this.$submission(
+          apiObj[label].api,
+          apiObj[label].data,
+          label,
+          apiObj[label].needNote)
       }
     },
   },

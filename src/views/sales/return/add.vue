@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 11:21:18
+ * @LastEditTime: 2019-11-14 16:04:59
  * @Description: 生成销售退货单
 */
 <template>
   <el-dialog
     :visible.sync="showEditPage"
-    width="920px"
+    width="1120px"
     @close="close"
     v-dialogDrag
     v-loading="loading"
@@ -58,20 +58,21 @@
         <!-- 退换货商品 -->
         <goods-return
           :data="form"
+          :options="rowData.quotationCodes || []"
           :rowData="rowData"
           id="goodsChangeEdit"
           :params="{busType:17,putawayType:0}"
         />
-        <!-- 账期信息 -->
-        <return-bill-info
-          id="returnBillInfo"
-          disabled
-          :data="form"
-        />
+
         <!-- 其他费用 -->
         <other-fee
           id="otherFee"
-          disabled
+          :data="form"
+        />
+
+        <!-- 账期信息 -->
+        <return-bill-info
+          id="returnBillInfo"
           :data="form"
         />
 
@@ -113,49 +114,42 @@ export default {
       },
       // 新增orEdit框内容
       form: {
-        actualRefundAmount: '',//98765432109876.12,
+        actualRefundAmount: '',//实退金额
         alterationCode: '',//退换货编号,
-        apprpvalNode: '',//9,
-        attachList: '',//附件,
-        attachs: '',//附件,
-        busType: '',//9,
-        businessCommoditySaveVoList: [
-          // {
-          //   alterationNumber:'',//9,
-          //   alterationPrice:'',//98765432109876.12,
-          //   apportionmentAmount:'',//98765432109876.12,
-          //   busCode:'',//业务编号,
-          //   busType:'',//9,
-          //   commodityCode:'',//商品编号,
-          //   commodityNumber:'',//9,
-          //   costAmount:'',//98765432109876.12,
-          //   discount:'',//98765432109876.12,
-          //   discountSprice:'',//98765432109876.12,
-          //   isAssembly:'',//9,
-          //   isDirect:'',//9,
-          //   isTeardown:'',//9,
-          //   note:'',//备注,
-          //   parentCommodityCode:'',//100000,
-          //   pickingNumber:'',//9,
-          //   preTaxAmount:'',//98765432109876.12,
-          //   putawayType:'',//9,
-          //   reference:'',//98765432109876.12,
-          //   salesPrice:'',//98765432109876.12,
-          //   shipmentsNumber:'',//9,
-          //   snCode:'',//SN码,
-          //   taxPrice:'',//98765432109876.12,
-          //   taxTotalAmount:'',//98765432109876.12
-          // }
+        attachList: [],//附件,
+        businessCommoditySaveVoList: [ //商品信息
+          {
+            alterationNumber: '',//9,
+            alterationPrice: '',//98765432109876.12,
+            apportionmentAmount: '',//98765432109876.12,
+            busCode: '',//业务编号,
+            busType: '',//9,
+            commodityCode: '',//商品编号,
+            commodityNumber: '',//9,
+            costAmount: '',//98765432109876.12,
+            discount: '',//98765432109876.12,
+            discountSprice: '',//98765432109876.12,
+            isAssembly: '',//9,
+            isDirect: '',//9,
+            isTeardown: '',//9,
+            note: '',//备注,
+            parentCommodityCode: '',//100000,
+            pickingNumber: '',//9,
+            preTaxAmount: '',//98765432109876.12,
+            putawayType: '',//9,
+            reference: '',//98765432109876.12,
+            salesPrice: '',//98765432109876.12,
+            shipmentsNumber: '',//9,
+            snCode: '',//SN码,
+            taxPrice: '',//98765432109876.12,
+            taxTotalAmount: '',//98765432109876.12
+          }
         ],
         clientId: '',//100000,
         companyAccountId: '',//100000,
-        companyCode: '',//公司编码code,
         companySettlementId: '',//100000,
-        deptTotalCode: '',//部门code,
         exchangeNumber: '',//9,
-        fieldList: '',//自定义字段,
-        fields: '',//自定义字段,
-        isDelete: '',//9,
+        fieldList: [],//自定义字段,
         note: '',//备注,
         payTime: '',//1572403069457,
         quotationCode: '',//报价单编号,
@@ -175,12 +169,10 @@ export default {
           //   paymentType: '',//9
           // }
         ],
-        shouldRefundAmount: '',//98765432109876.12,
-        source: '',//来源,
-        state: '',//9,
-        totalExchangeNumber: '',//9,
-        totalRefundAmount: '',//98765432109876.12,
-        totalRefundNumber: '',//9
+        shouldRefundAmount: '1',//应退金额
+        totalExchangeNumber: '',//换货总数量,
+        totalRefundAmount: '',//总计退货价格（影响金额）
+        totalRefundNumber: '',//退货总数量
       }
     }
   },
@@ -204,14 +196,16 @@ export default {
 
     // 保存表单数据
     saveHandle() {
+      console.log(this.form);
+
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true
           // rules 表单验证是否通过
-          let api = 'salesexchangeUpdate' // 默认编辑更新
+          let api = 'salesreturnedUpdate' // 默认编辑更新
           // 新增保存
           if (this.type === 'add') {
-            api = 'salesexchangeSave'
+            api = 'salesreturnedSave'
             // 编辑保存
           }
           this.$api.seePsiSaleService[api](this.form)

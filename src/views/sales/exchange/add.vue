@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 11:14:38
+ * @LastEditTime: 2019-11-14 14:51:41
  * @Description: 生成销售换货单
 */
 <template>
   <el-dialog
     :visible.sync="showEditPage"
-    width="920px"
+    width="1120px"
     @close="close"
     v-dialogDrag
     v-loading="loading"
@@ -56,12 +56,10 @@
           :data="form"
         />
         <!-- 退换货商品 -->
-        <goods-change-edit
-          title="换入商品信息"
+        <goods-exchange-edit
+          :options="rowData.quotationCodes || []"
           :data="form"
-          :rowData="rowData"
           id="goodsChangeEdit"
-          :params="{busType:17,putawayType:0}"
         />
         <!-- 账期信息 -->
         <return-bill-info

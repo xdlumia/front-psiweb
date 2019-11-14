@@ -23,7 +23,7 @@
           <span v-if="prop=='code'">
             <el-link class="f12" :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
           </span>
-          <span v-else-if="prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+          <span v-else-if="prop=='createTime'">{{value|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
           <span v-else-if="prop=='state'">
             <span v-if="value==0">启用</span>
             <span v-else>禁用</span>
