@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 10:58:25
+ * @LastEditTime: 2019-11-14 11:15:09
  * @Description: 借入借出详情
 */
 <template>
@@ -25,7 +25,9 @@
         type="danger"
       >驳回</el-button>
       <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
-      <el-button @click="$submission('seePsiWmsService.wmsborrowloanorderLogicDelete',[null,detail.id],'删除')" size="mini" type="primary">删除</el-button>
+      <el-button @click="$submission('seePsiWmsService.wmsborrowloanorderLogicDelete',{
+        id:detail.id
+      },'删除')" size="mini" type="primary">删除</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">

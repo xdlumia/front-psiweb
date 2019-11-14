@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 10:40:18
+ * @LastEditTime: 2019-11-14 11:05:45
  * @Description: 新增借入单
 */
 <template>
@@ -78,7 +78,8 @@ export default {
         // 来源 示例：来源
         source: '',
         // 运单号 示例：运单号
-        waybillCode: ''
+        waybillCode: '',
+        id:''
       }
     };
   },
