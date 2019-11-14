@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 15:53:26
+ * @LastEditTime: 2019-11-14 15:05:01
  * @Description: 采购退货单
 */
 <template>
@@ -24,8 +24,12 @@
         size="mini"
         type="danger"
       >驳回</el-button>
-      <el-button size="mini" type="primary">编辑</el-button>
-      <el-button size="mini" type="primary">删除</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
+      <el-button
+        @click="$submission('seePsiPurchaseService.purchasealterationLogicDelete',{ id:detail.id },'删除')"
+        size="mini"
+        type="primary"
+      >删除</el-button>
       <el-button @click="showScanGoods=true" size="mini" type="primary">退货扫码</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
@@ -33,13 +37,18 @@
         <el-form :model="detail" size="mini" v-if="detail">
           <supplierInfo :data="detail" disabled id="supplierInfo"></supplierInfo>
           <companyInfo :data="detail" disabled id="companyInfo"></companyInfo>
-          <buyingRejectDeliver :data="detail" :hide="[
+          <buyingRejectDeliver
+            :data="detail"
+            :hide="[
             'saleTime','logisticsSn','collected'
-          ]" id="deliverInfo" />
+          ]"
+            disabled
+            id="deliverInfo"
+          />
           <buyingGoodsEdit
             :data="detail"
             :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','action','!add'
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','!add'
           ]"
             :summaryMethod="getSummarys"
             disabled
@@ -55,17 +64,27 @@
       <el-tab-pane label="采购单">采购单</el-tab-pane>
       <el-tab-pane label="应收账单">应收账单</el-tab-pane>
     </el-tabs>
-    <scanGoods :visible.sync="showScanGoods" />
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" />
+    <scanGoods
+      :rowData="{
+      businessCode: detail.alterationCode,
+      commodityList: detail.commodityList
+    }"
+      :visible.sync="showScanGoods"
+      v-if="showScanGoods"
+    />
   </sideDetail>
 </template>
 <script>
 import ScanGoods from './scanGoods';
+import Edit from './edit';
 import VisibleMixin from '@/utils/visibleMixin';
 
 export default {
   mixins: [VisibleMixin],
   components: {
-    ScanGoods
+    ScanGoods,
+    Edit
   },
   props: {
     visible: Boolean
@@ -73,6 +92,7 @@ export default {
   data() {
     return {
       showPop: false,
+      showEdit: false,
       showScanGoods: false,
       stateText: {
         '0': '新建',

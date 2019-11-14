@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 18:12:05
+ * @LastEditTime: 2019-11-14 18:20:26
  * @Description: 销售-报价单
  */
 <template>
@@ -53,10 +53,7 @@
           class="d-text-blue d-pointer"
           @click="eventHandle('outLibVisible',row)"
         > {{value}}</span>
-        <!-- 状态 -->
-        <span v-else-if="column.columnFields == 'state'"> {{stateObj[value]}}</span>
         <!-- 时间 -->
-        <span v-else-if="column.columnFields=='createTime' || column.columnFields=='salesExpectedShipmentsTime' || column.columnFields=='salesRequireArrivalTime'||column.columnFields=='procurementExpectedArrivalTime'||column.columnFields=='failureTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
@@ -96,14 +93,6 @@ import quoteDetails from './quote-details' //报价详情
 import outLibDetails from '../outLibrary/outLib-details' //销售详
 import quoteAdd from './add' //新增
 import outLibAdd from '../outLibrary/add' //生成出库单
-let stateObj = {
-  '-1': '新建',
-  '0': '审核中',
-  '1': '已通过',
-  '2': '已驳回',
-  '3': '完成',
-  '4': '终止',
-}
 let filterOptions = [
   { label: '报价单编号', prop: 'quotationCode', default: true, type: 'text' },
   { label: '销售出库单编号', prop: 'shipmentCode', default: true, type: 'text' },
@@ -137,7 +126,6 @@ export default {
       // 当前行数据
       rowData: {},
       selectionData: [],
-      stateObj: stateObj,
       // 查询表单
       queryForm: {
         page: 1,

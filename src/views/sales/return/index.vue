@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 16:45:22
+ * @LastEditTime: 2019-11-14 18:05:49
  * @Description: 销售-销售退货单
  */
 <template>
@@ -14,8 +14,8 @@
       :moreButton="true"
       :column="true"
       title="销售退货单"
-      api="seePsiSaleService.salesalterationsheetList"
-      exportApi="seePsiSaleService.salesalterationsheetExport"
+      api="seePsiSaleService.salesreturnedList"
+      exportApi="seePsiSaleService.salesreturnedExport"
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
     >
@@ -34,7 +34,7 @@
           @click="eventHandle('outLibVisible',row)"
         > {{value}}</span>
         <!-- 状态 -->
-        <span v-else-if="column.columnFields=='state'">{{stateObj[value]}}</span>
+        <span v-else-if="column.columnFields=='state'">{{value}}</span>
         <!-- 创建时间 -->
         <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
@@ -69,14 +69,6 @@ let filterOptions = [
   // { label: '维护人', prop: 'creator', default: true, type: 'employee' }
 ]
 
-let stateObj = {
-  '-1': '新建',
-  '0': '审核中',
-  '1': '待完成',
-  '2': '部分完成',
-  '3': '已完成',
-  '4': '已驳回',
-}
 export default {
   name: 'return',
   components: {
@@ -108,7 +100,14 @@ export default {
         limit: 20
       },
       // 列表状态
-      stateObj: stateObj,
+      stateText: {
+        '-1': '新建',
+        '0': '审核中',
+        '1': '待完成',
+        '2': '部分完成',
+        '3': '已完成',
+        '4': '已驳回',
+      },
       // 筛选数据
       filterOptions: filterOptions,
       // 当前行数据
@@ -117,11 +116,14 @@ export default {
       outLibVisible: false,
     };
   },
+  computed: {
+
+  },
+  watch: {
+  },
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
-      console.log(row);
-
       this[type] = true
       this.rowData = row
       return

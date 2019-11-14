@@ -2,176 +2,141 @@
  * @Author: 赵伦
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-30 17:43:52
+ * @LastEditTime: 2019-11-14 17:54:37
  * @Description: 换退货商品扫码卡片 
 */
 <template>
-  <div>
+  <div v-loading="loading">
     <!-- 商品列表 -->
-    <el-table
-      :data="tableData"
-      max-height="400"
-      size="mini"
-    >
-      <el-table-column
-        label="换出数量"
-        min-width="70"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="商品编号"
-        min-width="110"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="库房"
-        min-width="70"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="商品类别"
-        min-width="110"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="商品分类"
-        min-width="110"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="商品名称"
-        min-width="110"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="商品配置"
-        min-width="110"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="商品规格"
-        min-width="110"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="单位"
-        min-width="60"
-        prop="name"
-      ></el-table-column>
-    </el-table>
-    <div class="mt10 mb10">
+    <buying-goods-edit
+      :data="data"
+      :show="[
+        'commodityCode','goodsName','wsm','categoryCode','className','specOne','configName','alterationNumberRate','unit','!formTitle'
+      ]"
+      disabled
+    />
+    <div class="mt10 mb20">
       <span class="b">扫SN码/机器号</span>
-      <el-input
-        size="mini"
-        style="width:200px;"
-        class="ml10"
-        v-model="data"
-      ></el-input>
+      <el-input @keypress.13.native="checkSN" class="ml10" size="mini" style="width:200px;" type="input" v-model="inputSN"></el-input>
       <span class="fr">
         <span>本次成功扫码</span>
-        <span class="b d-text-red">3</span>
+        <span class="b d-text-red">{{status.current||0}}</span>
         <span>件，历史扫码</span>
-        <span class="b d-text-green">5</span>
+        <span class="b d-text-green">{{status.historyNum||0}}</span>
         <span>件，还需扫码</span>
-        <span class="b d-text-blue">127</span>
+        <span class="b d-text-blue">{{status.allNum||0-status.historyNum||0-status.current||0}}</span>
         <span>件</span>
       </span>
     </div>
     <div class="b">机器号/SN记录</div>
-    <el-table
-      :data="tableData"
-      max-height="400"
-      size="mini"
-    >
+    <el-table :data="data.putawayCommodityList||[]" size="mini" style="height:400px;">
       <el-table-column min-width="60">
-        <template>
-          <span class="el-icon-circle-close f18 d-pointer d-text-red"></span>
+        <template slot-scope="{$index}">
+          <span @click="remove($index)" class="el-icon-circle-close f18 d-pointer d-text-red"></span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="借入数量"
-        min-width="70"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="借入库房"
-        min-width="70"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="机器号/SN码"
-        min-width="110"
-        prop="name"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        label="返还数量"
-        min-width="70"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="返还库房"
-        min-width="70"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="机器号/SN码"
-        min-width="110"
-        prop="name"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        label="成本单价(含税)"
-        min-width="110"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="商品编号"
-        min-width="110"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="商品名称"
-        min-width="110"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="商品类别"
-        min-width="110"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="商品分类"
-        min-width="110"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="商品配置"
-        min-width="110"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="商品规格"
-        min-width="110"
-        prop="name"
-      ></el-table-column>
-      <el-table-column
-        label="单位"
-        min-width="60"
-        prop="name"
-      ></el-table-column>
+      <el-table-column label="状态" min-width="100" prop="state" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span>{{row.state?'已退货':'待退货'}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="SN码" min-width="100" prop="snCode" show-overflow-tooltip></el-table-column>
+      <el-table-column label="机器号" min-width="100" prop="robotCode" show-overflow-tooltip></el-table-column>
+      <el-table-column label="出库库房" min-width="100" prop="wmsName" show-overflow-tooltip></el-table-column>
+      <el-table-column label="出库人" min-width="100" prop="operator" show-overflow-tooltip></el-table-column>
+      <el-table-column label="出库时间" min-width="100" prop="createTime" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span>{{row.createTime|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="商品编号" min-width="100" prop="commodityCode" show-overflow-tooltip></el-table-column>
+      <el-table-column label="商品名称" min-width="100" prop="goodsName" show-overflow-tooltip></el-table-column>
+      <el-table-column label="商品类别" min-width="80" prop="categoryCode" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="商品分类" min-width="100" prop="className" show-overflow-tooltip></el-table-column>
+      <el-table-column label="配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
+      <el-table-column label="商品规格" min-width="140" prop="specOne" show-overflow-tooltip></el-table-column>
     </el-table>
   </div>
 </template>
 <script>
 export default {
+  props: {
+    // 数据
+    data: {
+      type: Object,
+      default: () => ({})
+    },
+    // 隐藏
+    hide: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
-      data: '',
-      tableData: Array(12)
-        .fill('')
-        .map(() => ({ name: '' }))
+      inputSN: '',
+      loading: false,
+      status: {
+        current: '',
+        allNum: 0,
+        historyNum: 0
+      }
     };
+  },
+  mounted() {
+    this.getScanStatus();
+  },
+  methods: {
+    async getScanStatus() {
+      let {
+        data
+      } = await this.$api.seePsiPurchaseService.purchasealterationStatWms(
+        null,
+        this.data.businessCode
+      );
+      this.status = data || {};
+    },
+    async checkSN(e) {
+      e.preventDefault();
+      this.loading = true;
+      try {
+        let {
+          data
+        } = await this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck(
+          {
+            businessId: this.data.businessId,
+            commodityList: this.data.commodityList,
+            snCode: this.inputSN
+          }
+        );
+        let [commodity] = this.data.commodityList.filter(
+          item => item.commodityCode == data.commodityCode
+        );
+        if (
+          commodity &&
+          !this.data.putawayCommodityList.some(
+            item =>
+              item.snCode == data.snCode || item.robotCode == data.robotCode
+          )
+        ) {
+          if (!this.data.putawayCommodityList) {
+            this.$set(this.data, 'putawayCommodityList', []);
+          }
+          this.data.putawayCommodityList.push({ ...commodity, ...data });
+        }
+      } catch (error) {}
+      this.loading = false;
+    },
+    onTableData(e) {
+      console.log(e.data);
+    },
+    remove(i) {
+      this.data.putawayCommodityList.splice(i, 1);
+    }
   }
 };
 </script>

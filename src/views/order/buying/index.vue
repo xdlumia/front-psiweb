@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 10:30:35
+ * @LastEditTime: 2019-11-14 18:01:55
  * @Description: 采购-请购单
 */
 <template>
@@ -26,11 +26,6 @@
         <span v-else-if="prop=='quotationCode'">
           <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
-        <span v-else-if="prop=='state'">
-          <!-- 单据状态0待完成 1部分完成 2完成3终止 -->
-          <span>{{stateText[value]}}</span>
-        </span>
-        <span v-else-if="['createTime','saleArrivalTime','purchaseArrivalTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 10:57:46
+ * @LastEditTime: 2019-11-14 18:01:43
  * @Description: 采购-借入借出单
 */
 <template>
@@ -20,7 +20,6 @@
         </span>
         <span v-else-if="prop=='borrowLoanState'">{{stateText[value]}}</span>
         <span v-else-if="prop=='borrowLoanType'">{{value==0?'借入':'借出'}}</span>
-        <span v-else-if="['returnTime','createTime'].includes(prop)">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>

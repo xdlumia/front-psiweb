@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:16:48
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-12 16:26:00
+ * @LastEditTime: 2019-11-14 13:46:22
  * @Description: description
  *
  */
@@ -15,22 +15,26 @@ const list = [
   {
     label: '销售',
     key: '',
-    children: sales
+    children: sales,
+    processNum: 0
   },
   {
     label: '采购',
     key: '',
-    children: purchase
+    children: purchase,
+    processNum: 0
   },
   {
     label: '库房',
     key: '',
-    children: storeroom
+    children: storeroom,
+    processNum: 0
   },
   {
     label: '财务',
     key: '',
-    children: finance
+    children: finance,
+    processNum: 0
   }
 ]
 

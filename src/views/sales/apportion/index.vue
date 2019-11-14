@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 09:53:02
+ * @LastEditTime: 2019-11-14 16:46:49
  * @Description: 销售-费用分摊单
  */
 <template>
   <div>
     <table-view
-      busType="1"
+      busType="19"
       ref="table"
       :filter="true"
       :moreButton="true"
@@ -36,14 +36,23 @@
         />
       </template>
       <!-- 自定义按钮功能 -->
-
-      <template v-slot:moreButton>自定义更多按钮</template>
       <template slot-scope="{column,row,value}">
+        <!-- 报价单编号 -->
         <span
-          class="d-text-blue"
-          @click="eventHandle('detailVisible',row)"
-        > 费用分摊单编号</span>
-        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+          v-if="column.columnFields == 'quotationCode'"
+          class="d-text-blue d-pointer"
+          @click="eventHandle('quoteVisible',row)"
+        > {{value}}</span>
+        <!-- 销售出库单编号 -->
+        <span
+          v-else-if="column.columnFields == 'shipmentCode'"
+          class="d-text-blue d-pointer"
+          @click="eventHandle('outLibVisible',row)"
+        > {{value}}</span>
+        <!-- 状态 -->
+        <span v-else-if="column.columnFields == 'state'"> {{stateObj[value]}}</span>
+        <!-- 时间 -->
+        <span v-else-if="column.columnFields=='createTime' || column.columnFields=='salesExpectedShipmentsTime' || column.columnFields=='salesRequireArrivalTime'||column.columnFields=='procurementExpectedArrivalTime'||column.columnFields=='failureTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>

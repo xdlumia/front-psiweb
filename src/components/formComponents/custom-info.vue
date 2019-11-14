@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 18:07:29
+ * @LastEditTime: 2019-11-14 16:04:27
  * @Description: 自定义信息 1
 */
 <template>
@@ -27,6 +27,7 @@
             :prop="`fieldList.${scope.$index}.fieldCode`"
           > -->
           <el-input
+            size="mini"
             :disabled="disabled"
             v-model.trim="scope.row.fieldCode"
           />
@@ -46,6 +47,7 @@
             :prop="`fieldList.${scope.$index}.fieldVal`"
           > -->
           <el-input
+            size="mini"
             :disabled="disabled"
             v-model.trim="scope.row.fieldVal"
           />

@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:16:28
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-12 18:30:21
+ * @LastEditTime: 2019-11-14 18:20:59
  * @Description: 待办事项
  -->
 <template>
@@ -18,13 +18,16 @@
             :index="item.label"
           >
             <template slot="title">
-              <span>{{item.label}}</span>
+              <span class="b">{{item.label}}（{{item.processNum}}）</span>
             </template>
-            <el-menu-item
-              :index="sub.label"
-              v-for="(sub, key) in item.children"
-              :key="key"
-            >{{sub.label}}</el-menu-item>
+            <el-menu-item :index="sub.label" v-for="(sub, key) in item.children" :key="key">
+              <div style="display: flex;justify-content: space-between;align-items: center;">
+                <span style="flex:0 0 180px">{{sub.label}}</span>
+                <div class="badge">
+                  <span>{{sub.processNum > 99 ? '99+' : sub.processNum}}</span>
+                </div>
+              </div>
+            </el-menu-item>
           </el-submenu>
         </el-menu>
       </div>
@@ -42,6 +45,31 @@ export default {
     }
   },
   components: {
+  },
+  mounted () {
+    this.handleList()
+  },
+  methods: {
+    homePageQueryList () {
+      return this.$api.seePsiCommonService.homePageQueryList().then(res => {
+        const obj = Object.create(null);
+        (res.data || []).forEach(item => {
+          obj[item.processTypeCode] = item.processNum
+        })
+        return obj
+      })
+    },
+    handleList () {
+      this.homePageQueryList().then(res => {
+        this.list.forEach(item => {
+          const num = item.children.reduce((val, sub) => {
+            sub.processNum = res[sub.key] || 0
+            return val + sub.processNum
+          }, 0)
+          item.processNum = num
+        })
+      })
+    }
   }
 }
 </script>
@@ -65,7 +93,7 @@ export default {
     display: flex;
     overflow: hidden;
     .menu {
-      flex: 0 0 250px;
+      flex: 0 0 260px;
       background: #fff;
       margin-left: 20px;
       border-radius: 10px;
@@ -74,6 +102,25 @@ export default {
       max-height: 100%;
       /deep/ .el-menu {
         border-right: none;
+      }
+      .badge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 18px;
+        background: #f56c6c;
+        color: #fff;
+        border-radius: 9px/50%;
+        font-size: 0;
+        padding: 0 3px;
+        border: 1px solid #fff;
+        box-sizing: border-box;
+        span {
+          display: inline-block;
+          min-width: 18px;
+          font-size: 12px;
+          text-align: center;
+        }
       }
     }
     .content {

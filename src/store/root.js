@@ -2,10 +2,10 @@
  * @Author: 高大鹏
  * @Date: 2019-10-25 11:23:44
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-14 11:21:48
+ * @LastEditTime: 2019-11-14 11:53:49
  * @Description: description
  */
-import { apiConfig as Api } from 'see-web-basic'
+import Api from 'see-web-basic/dist/api/index'
 function recursionNav(list) {
   const result = [].concat(...list.map(item => {
     if (item.children && item.children.length) {
