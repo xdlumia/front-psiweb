@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 19:24:02
+ * @LastEditTime: 2019-11-14 18:34:29
  * @Description: 销售-销售换货单
  */
 <template>
@@ -21,11 +21,11 @@
     >
 
       <template slot-scope="{column,row,value}">
-        <!-- 销售退货单编号 -->
+        <!-- 销售换货单编号 -->
         <span
           class="d-text-blue d-pointer"
           v-if="column.columnFields=='alterationCode'"
-          @click="eventHandle('returnVisible',row)"
+          @click="eventHandle('exchangeVisible',row)"
         > {{value}}</span>
         <!-- 销售出库单编号 -->
         <span
@@ -33,16 +33,13 @@
           v-else-if="column.columnFields=='salesShipmentCode'"
           @click="eventHandle('outLibVisible',row)"
         > {{value}}</span>
-        <!-- 状态 -->
-        <span v-else-if="column.columnFields=='state'">{{stateObj[value]}}</span>
         <!-- 创建时间 -->
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <returnDetails
-      v-if="returnVisible"
-      :visible.sync="returnVisible"
+    <exchangeDetails
+      v-if="exchangeVisible"
+      :visible.sync="exchangeVisible"
       :rowData="rowData"
       :code="rowData.alterationCode"
       @reload="this.$refs.table.reload()"
@@ -58,7 +55,7 @@
   </div>
 </template>
 <script>
-import returnDetails from './details' //销售换货单详情
+import exchangeDetails from './details' //销售换货单详情
 import outLibDetails from '../outLibrary/outLib-details' //销售出库单详情
 let filterOptions = [
   // { label: '排序', prop: 'sort', default: true, type: 'sort', options: [], },
@@ -70,18 +67,11 @@ let filterOptions = [
   { label: '部门', prop: 'messageType2', default: true, type: 'employee', },
   { label: '提交时间', prop: 'messageType3', default: true, type: 'daterange', },
 ]
-let stateObj = {
-  '-1': '新建',
-  '0': '审核中',
-  '1': '待完成',
-  '2': '部分完成',
-  '3': '已完成',
-  '4': '已驳回',
-}
+
 export default {
   name: 'return',
   components: {
-    returnDetails,
+    exchangeDetails,
     outLibDetails
   },
   props: {
@@ -108,12 +98,10 @@ export default {
         page: 1,
         limit: 20
       },
-      // 列表状态
-      stateObj: stateObj,
       // 列表筛选
       filterOptions: filterOptions,
       rowData: {},
-      returnVisible: false,
+      exchangeVisible: false,
       outLibVisible: false,
     };
   },

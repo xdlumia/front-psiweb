@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 16:15:28
+ * @LastEditTime: 2019-11-14 18:30:55
  * @Description: 报价单详情
 */
 <template>
@@ -56,7 +56,7 @@
           :button="false"
           :data="detail || {}"
           :params="{quotationCode:code}"
-          style="height:calc(100vh - 200px)"
+          style="height:calc(100vh - 160px)"
           :is="activeName"
         ></components>
 
@@ -140,21 +140,15 @@ export default {
         record: '操作记录',
       },
       activeName: 'detail',
-      //头部状态数据
-      stateText: {
-        '-1': '新建',
-        '0': '审核中',
-        '1': '已通过',
-        '2': '已驳回',
-        '3': '完成',
-        '4': '终止',
-      },
     }
   },
   computed: {
 
   },
   watch: {
+
+  },
+  created() {
 
   },
   methods: {

@@ -64,8 +64,7 @@ export default {
 
   data() {
     return {
-      activeName: 'detail',
-      detailInfo: {}, ///详情信息
+
     }
   },
   computed: {

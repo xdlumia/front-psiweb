@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 15:59:52
+ * @LastEditTime: 2019-11-14 18:30:45
  * @Description: 客户详情
 */
 <template>
@@ -52,7 +52,7 @@
         <keep-alive>
           <components
             class="d-auto-y"
-            style="height:calc(100vh - 200px)"
+            style="height:calc(100vh - 160px)"
             :is="activeName"
             :code="this.code"
             :rowData="rowData"
