@@ -70,11 +70,20 @@
         </el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
-          min-width="100"
-          label="自定义项"
+          v-for="(item,index) of custom"
+          :key="index"
+          min-width="150"
+          :label="item"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <el-input
+              size='mini'
+              v-model="scope.row[item]"
+              placeholder="请输入内容"
+            ></el-input>
+          </template>
+        </el-table-column>
         <el-table-column
           fixed
           prop="wmsName"
@@ -125,8 +134,12 @@ export default {
     return {
       dialogVisible: false,
       snCode: '',
-      tableData: []
+      tableData: [],
+      custom: [],
     }
+  },
+  mounted() {
+    this.commonsystemconfigInfo()
   },
   methods: {
     //回车机器号和SN码
@@ -153,6 +166,17 @@ export default {
         return item.commodityCode == scope.row.commodityCode
       })
       this.data.commodityList[Index].pickingAccomplishNum--
+    },
+    //查看自定义头部
+    commonsystemconfigInfo() {
+      this.$api.seePsiCommonService.commonsystemconfigInfo(null, 2)
+        .then(res => {
+          if (res.data) {
+            this.custom = JSON.parse(res.data.configJson).pickingOrdersConfigArray
+          }
+        })
+        .finally(() => {
+        })
     }
   },
   components: {

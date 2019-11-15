@@ -155,7 +155,7 @@ export default {
     sumitSn(data) {
       this.$set(this.tableData[this.ceIndex], 'commodityInfoList', data)
       this.tableData.forEach((item) => {
-        if (item.goodsCode) {
+        if (item.commodityCode) {
           this.addForm.commodityList.push(item)
         }
       })

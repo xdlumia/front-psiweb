@@ -31,10 +31,10 @@
         min-width="80"
         prop="name"
       >
-        <!-- v-if='scope.row.noChildren' v-if='scope.row.goodsCode'-->
+        <!-- v-if='scope.row.noChildren' v-if='scope.row.commodityCode'-->
         <template
           slot-scope="scope"
-          v-if='scope.row.goodsCode'
+          v-if='scope.row.commodityCode'
         >
           <span>
             <!-- <i
@@ -78,7 +78,7 @@
           <commoditySelector
             @choose='commodityChoose(arguments,scope)'
             type="code"
-            v-model="scope.row.goodsCode"
+            v-model="scope.row.commodityCode"
             :codes='codes'
           />
         </template>
@@ -173,14 +173,14 @@ export default {
       let list = e[0]
       let type = e[1]
       this.tableData.forEach((item) => {
-        if (item.goodsCode) {
-          this.codes.push(item.goodsCode)
+        if (item.commodityCode) {
+          this.codes.push(item.commodityCode)
         }
       })
       list.forEach((item) => {
-        if (!this.codes.includes(item.goodsCode) && scope.row.goodsCode && type == 'select') {//区分非选择状态下的选择商品信息
+        if (!this.codes.includes(item.commodityCode) && scope.row.commodityCode && type == 'select') {//区分非选择状态下的选择商品信息
           this.$set(this.tableData, scope.$index, item)
-        } else if (!this.codes.includes(item.goodsCode)) {
+        } else if (!this.codes.includes(item.commodityCode)) {
           this.tableData.unshift(item)
         }
       })

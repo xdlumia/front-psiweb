@@ -44,13 +44,13 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="goodsCode"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.goodsCode}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -238,7 +238,7 @@ export default {
         snCode: this.snCode,
         // wmsId: this.addForm.wmsId,
         putawayCommodityList: this.tableData,
-        commodityCode: this.commodityForm.goodsCode,
+        commodityCode: this.commodityForm.commodityCode,
         categoryCode: this.commodityForm.categoryCode,
       }
       this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck(params)

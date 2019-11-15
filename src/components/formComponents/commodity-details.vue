@@ -5,13 +5,12 @@
  * @Last Modified time: 2019-10-28 14:02:43
  * @Description: 商品明细
  */
-//  drawerData.goodsCode
 <template>
   <div>
     <form-card title='商品明细'>
       <d-table
         api="seePsiWmsService.wmsflowrecordList"
-        :params="{page:1,limit:20,commodityCode:drawerData.goodsCode}"
+        :params="{page:1,limit:20,commodityCode:drawerData.commodityCode}"
         ref="companyTable"
         class="college-main"
         style="height:calc(100vh - 340px)"
