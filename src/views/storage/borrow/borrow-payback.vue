@@ -13,59 +13,73 @@
     >
       <el-form
         label-position='top'
-        size='small'
-        ref="queryForm"
+        size='mini'
+        ref="form"
         label-width="100px"
+        :model="form"
       >
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item
+              :rules="[ 
+                    {required:form.logisticsFees ? true : false,message:'请选择服务商名称', trigger: 'change'}
+                ]"
               label="服务商名称"
-              prop="name"
-              :rules="[
-            { required: true, message: '请输入服务商名称', trigger: 'blur' },
-          ]"
+              maxlength="32"
+              size="mini"
+              prop="serviceProviderId"
             >
-              <el-input
-                v-model="queryForm.title"
-                placeholder="请输入"
-              ></el-input>
+              <el-select
+                @change='facilitatorNameChange'
+                v-model="form.serviceProviderId"
+                placeholder="请选择"
+                class="wfull"
+              >
+                <el-option
+                  v-for="item in providerList"
+                  :key="item.id"
+                  :label="item.serviceName"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item
+              :rules="[ 
+                    {required:form.logisticsFees ? true : false,message:'请选择服务类型', trigger: 'change'}
+                ]"
               label="服务类型"
-              prop="name"
-              :rules="[
-            { required: true, message: '请选择服务类型', trigger: 'change' },
-          ]"
+              maxlength="32"
+              size="mini"
+              prop="serveType"
             >
               <el-select
-                class="wfull"
-                v-model="queryForm.title"
+                v-model="form.serveType"
                 placeholder="请选择"
+                class="wfull"
               >
                 <el-option
-                  label="区域一"
-                  value="shanghai"
-                ></el-option>
-                <el-option
-                  label="区域二"
-                  value="beijing"
-                ></el-option>
+                  v-for="item in serviceTypeList"
+                  :key="item.code"
+                  :label="item.content"
+                  :value="item.code"
+                >
+                </el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item
               label="运单号"
-              prop="name"
+              prop="waybillCode"
               :rules="[
-            { required: true, message: '请输入运单号', trigger: 'blur' },
+            { required: form.logisticsFees ? true : false, message: '请输入运单号', trigger: 'blur' },
           ]"
             >
               <el-input
-                v-model="queryForm.title"
+                v-model="form.waybillCode"
                 placeholder="请输入"
               ></el-input>
             </el-form-item>
@@ -76,11 +90,12 @@
               label="物流费用"
               prop="name"
               :rules="[
-            { required: false, message: '', trigger: 'blur' },
-          ]"
+              { required: false, message: '', trigger: 'blur' },
+              { type: 'price', message: '', trigger: 'blur' },
+            ]"
             >
               <el-input
-                v-model="queryForm.title"
+                v-model="form.logisticsFees"
                 placeholder="请输入"
               ></el-input>
             </el-form-item>
@@ -90,166 +105,165 @@
     </form-card>
     <!-- 换入库商品 -->
     <form-card
-      v-for="index of 2"
-      :key='index'
       class="borrow-goods-info mt10"
       title="归还商品"
     >
       <el-table
         border
-        :data="tableData"
+        :data="data.commodityShowList"
         max-height="400"
         size="mini"
       >
         <el-table-column
           label="数量"
           min-width="100"
-          prop="name"
-        ></el-table-column>
+          prop="borrowLoanAccomplishNum"
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.borrowLoanAccomplishNum}}/{{scope.row.borrowLoanNum}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="name"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.name}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="商品类别"
           min-width="110"
-          prop="name"
-        ></el-table-column>
+          prop="categoryCode"
+        >
+          <template slot-scope="scope"><span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span></template>
+        </el-table-column>
         <el-table-column
           label="商品分类"
           min-width="110"
-          prop="name"
+          prop="className"
         ></el-table-column>
         <el-table-column
           label="商品名称"
           min-width="110"
-          prop="name"
+          prop="goodsName"
         ></el-table-column>
         <el-table-column
           label="商品规格"
           min-width="110"
-          prop="name"
+          prop="specOne"
         ></el-table-column>
         <el-table-column
           label="单位"
           min-width="80"
-          prop="name"
-        ></el-table-column>
+          prop="unit"
+        >
+          <template slot-scope="scope"><span>{{scope.row.unit|dictionary('SC_JLDW')}}</span></template>
+        </el-table-column>
       </el-table>
-
-      <div class="mt10 mb10">
-        <span class="b mt5">机器号/扫SN码</span>
-        <el-input
-          size="mini"
-          style="width:200px;"
-          class="ml10 mt5"
-        ></el-input>
-        <span class="fr d-text-black mr10 mt5">
-          <span>本次成功扫码</span>
-          <span class="b d-text-red f16"> 3 </span>
-          <span>件，历史扫码</span>
-          <span class="b d-text-green f16"> 5 </span>
-          <span>件，还需扫码</span>
-          <span class="b d-text-blue f16"> 127 </span>
-          <span>件</span>
-        </span>
-      </div>
     </form-card>
 
     <!-- 机器号/SN码 -->
     <form-card title='机器号/SN码记录'>
-      <d-table
-        :paging='false'
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+      <div class="mt10 mb10">
+        <span class="b mt5">机器号/扫SN码</span>
+        <el-input
+          v-on:keyup.13.native="shipmentCommodityCheck"
+          v-model="snCode"
+          size="mini"
+          style="width:200px;"
+          class="ml10 mt5"
+        ></el-input>
+      </div>
+      <el-table
+        border
+        size="mini"
+        :data="tableData"
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
+        style="max-height:300px"
       >
         <el-table-column
           min-width="50"
           label="操作"
           show-overflow-tooltip
         >
-          <template slot-scope="">
+          <template slot-scope="scope">
             <i
+              @click='deleteLend(scope)'
               class="el-icon-error d-pointer"
               style="font-size:20px;color:#F5222D"
             ></i>
           </template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          type='
+              index'
           min-width="80"
           label="编号"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="title"
+          prop="snCode"
           label="SN码"
           min-width="160"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.snCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="title"
+          prop="robotCode"
           label="机器号"
           min-width="160"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.robotCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="wmsName"
           min-width="100"
-          label="出库库房"
+          label="借出库房"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="creator"
           min-width="100"
-          label="出库人"
+          label="借出人"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           prop="createTime"
-          label="出库时间"
+          label="借出时间"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="commodityCode"
           min-width="100"
           label="商品编号"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="configName"
           min-width="100"
           label="配置"
           show-overflow-tooltip
         ></el-table-column>
-      </d-table>
+      </el-table>
     </form-card>
     <span
       slot="footer"
@@ -261,7 +275,7 @@
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="close"
+        @click="submit"
         size="small"
       >保 存</el-button>
     </span>
@@ -281,7 +295,7 @@ export default {
     dialogData: {
       type: Object,
     },
-    form: {}
+    data: {}
   },
   computed: {
     maxHeight() {
@@ -291,34 +305,112 @@ export default {
   data() {
     return {
       activeName: '',
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
-      tableData: [{ name: '写的假的' }],
-      formInline: {
-        user: ''
+      snCode: '',
+      tableData: [],
+      providerList: [],//服务商列表
+      serviceTypeList: [],//服务类型
+      form: {
+        serviceProviderId: '',//服务商id
+        serveType: '',//服务类型
+        waybillCode: "",//运单号
+        logisticsFees: '',//物流费用
       },
     };
   },
-  mounted() { },
+  mounted() {
+    this.commonserviceproviderList()
+  },
   methods: {
-    handleClick({ label, name }) {
-      this.activeName = '';
-    },
     close() {
-      this.$emit('update:visible', false)
+      this.$emit('close')
+    },
+    //请求服务商列表
+    commonserviceproviderList() {
+      this.$api.seePsiCommonService.commonserviceproviderList({ page: 1, limit: 1000 })
+        .then(res => {
+          this.providerList = res.data
+        })
+        .finally(() => {
+
+        })
+    },
+    //选择服务商切换的方法,请求服务商详情,拿出服务类型的code码
+    facilitatorNameChange(val) {
+      this.$api.seePsiCommonService.commonserviceproviderInfo(null, val)
+        .then(res => {
+          let serviceTypeArr = res.data.serviceType.split(',')
+          this.serviceTypeList = this.dictionaryOptions('PSI_FWS_FWLX').filter((item) => {
+            return serviceTypeArr.includes(item.code)
+          })
+        })
+        .finally(() => {
+
+        })
+    },
+    //回车 出库
+    shipmentCommodityCheck() {
+      this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData })
+        .then(res => {
+          if (res.data) {
+            this.data.commodityShowList.forEach((item, index) => {
+              if (item.commodityCode == res.data.commodityCode) {
+                if (this.data.commodityShowList[index].borrowLoanAccomplishNum < this.data.commodityShowList[index].borrowLoanNum) {
+                  this.data.commodityShowList[index].borrowLoanAccomplishNum++
+                  this.tableData.push(res.data)
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: '当前商品已经扫够啦!'
+                  })
+                }
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: '当前商品不在借出库商品列表内!'
+                })
+              }
+            })
+          }
+        })
+        .finally(() => {
+        })
+    },
+    //点击删除
+    deleteLend(scope) {
+      this.tableData.splice(scope.$index, 1)
+      this.data.commodityShowList.forEach((item, index) => {
+        if (item.commodityCode == scope.row.commodityCode) {
+          this.data.commodityShowList[index].borrowLoanAccomplishNum--
+        }
+      })
+    },
+    //保存按钮
+    submit() {
+      let params = { businessCode: this.data.borrowLoanCode, businessId: this.data.id, putawayCommodityList: this.tableData }
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.$api.seePsiWmsService.wmsborrowloantaskBackCommodity(Object.assign(params, this.form))
+            .then(res => {
+              this.close()
+              this.$emit('reload')
+            })
+            .finally(() => {
+
+            })
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-/deep/.el-dialog__footer {
-  text-align: center;
+/deep/.dialog-footer {
+  text-align: center !important;
+  display: block;
+  margin-top: 20px;
 }
 </style>

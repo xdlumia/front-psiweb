@@ -25,16 +25,33 @@
         v-for="(item,i) in options"
       >
         <el-row>
-          <el-col :span="6" class="b d-text-black" v-if="i==0">商品名称</el-col>
-          <el-col :span="18" class="b d-text-black" v-if="i==0">商品编号</el-col>
-          <el-col :span="6" class="d-hidden d-elip">{{item.goodsName}}</el-col>
-          <el-col :span="18" class="d-hidden d-elip">
+          <el-col
+            :span="6"
+            class="b d-text-black"
+            v-if="i==0"
+          >商品名称</el-col>
+          <el-col
+            :span="18"
+            class="b d-text-black"
+            v-if="i==0"
+          >商品编号</el-col>
+          <el-col
+            :span="6"
+            class="d-hidden d-elip"
+          >{{item.goodsName}}</el-col>
+          <el-col
+            :span="18"
+            class="d-hidden d-elip"
+          >
             <span :title="item.commodityCode">{{item.commodityCode}}</span>
           </el-col>
         </el-row>
       </el-option>
     </el-select>
-    <i @click="openDialog" class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"></i>
+    <i
+      @click="openDialog"
+      class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"
+    ></i>
     <commodity-choose
       :multiple="multiple"
       :kinds="kinds"

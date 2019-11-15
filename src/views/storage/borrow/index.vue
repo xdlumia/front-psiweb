@@ -14,6 +14,7 @@
       busType="4"
       :filterOptions='filterOptions'
       :params="queryForm"
+      ref='table'
       :selection='false'
       api="seePsiWmsService.wmsborrowloantaskList"
       title="借入借出任务"
@@ -24,16 +25,17 @@
           class="d-text-blue"
         >{{value}}</span>
         <span
-          v-if="column.columnFields=='borrowLoanState'"
+          v-if="column.columnFields=='borrowLoanTaskCode'"
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-else-if="column.columnFields=='borrowLoanType'">{{value == 0 ? '借入' : '借出'}}</span>
         <span v-else-if="column.columnFields=='borrowLoanState'">{{state[value] || '全部'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
+      @reload='reload'
       :drawerData='drawerData'
       :visible.sync='tableVisible'
       v-if="tableVisible"
@@ -85,7 +87,7 @@ export default {
         { label: '销售出库单编号', prop: 'salesShipmentCode', default: true },
         {
           label: '借入借出状态',
-          prop: 'pickingState',
+          prop: 'state',
           type: 'select',
           options: [
             { label: '全部', value: '' },
@@ -160,6 +162,9 @@ export default {
     handleClick() {
 
     },
+    reload() {
+      this.$refs.table.reload()
+    }
   }
 };
 </script>

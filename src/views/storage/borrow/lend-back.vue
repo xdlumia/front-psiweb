@@ -13,7 +13,7 @@
     >
       <el-form
         label-position='top'
-        size='small'
+        size='mini'
         ref="queryForm"
         label-width="100px"
       >
@@ -21,190 +21,204 @@
           style="width:30%"
           label="返还库房"
           prop="name"
-          :rules="[
-            { required: true, message: '请选择返还库房', trigger: 'change' },
-          ]"
         >
           <el-select
             style="width:30%"
             class="wfull"
-            v-model="queryForm.title"
+            v-model="wmsId"
             placeholder="请选择"
           >
             <el-option
-              label="区域一"
-              value="shanghai"
-            ></el-option>
-            <el-option
-              label="区域二"
-              value="beijing"
-            ></el-option>
+              v-for="item in usableList"
+              :key="item.id "
+              :label="item.name"
+              :value="item.id"
+            >
+            </el-option>
           </el-select>
         </el-form-item>
       </el-form>
     </form-card>
     <!-- 换入库商品 -->
     <form-card
-      v-for="index of 2"
+      v-for="(item,index) of data.commodityShowList"
       :key='index'
       class="borrow-goods-info mt10"
-      title="返还商品"
+      :title="index == 0 ? '返还商品' : ''"
     >
       <el-table
         border
-        :data="tableData"
+        :data="[item]"
         max-height="400"
         size="mini"
       >
         <el-table-column
           label="数量"
           min-width="100"
-          prop="name"
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.returnAccomplishNum}}/{{scope.row.returnNum}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="name"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.name}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="商品类别"
           min-width="110"
-          prop="name"
-        ></el-table-column>
+          prop="categoryCode"
+        >
+          <template slot-scope="scope"><span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span></template>
+        </el-table-column>
         <el-table-column
           label="商品分类"
           min-width="110"
-          prop="name"
+          prop="className"
         ></el-table-column>
         <el-table-column
           label="商品名称"
           min-width="110"
-          prop="name"
+          prop="goodsName"
         ></el-table-column>
         <el-table-column
           label="商品规格"
           min-width="110"
-          prop="name"
+          prop="specOne"
         ></el-table-column>
         <el-table-column
           label="单位"
           min-width="80"
-          prop="name"
-        ></el-table-column>
+          prop="unit"
+        >
+          <template slot-scope="scope"><span>{{scope.row.unit|dictionary('SC_JLDW')}}</span></template>
+        </el-table-column>
       </el-table>
 
       <div class="mt10 mb10">
         <span class="b mt5">机器号/扫SN码</span>
         <el-input
+          v-on:keyup.13.native="shipmentCommodityCheck(item)"
+          v-model="item.snCode"
           size="mini"
           style="width:200px;"
           class="ml10 mt5"
         ></el-input>
         <span class="fr d-text-black mr10 mt5">
-          <span>本次成功扫码</span>
-          <span class="b d-text-red f16"> 3 </span>
-          <span>件，历史扫码</span>
-          <span class="b d-text-green f16"> 5 </span>
-          <span>件，还需扫码</span>
-          <span class="b d-text-blue f16"> 127 </span>
-          <span>件</span>
+          <span>本次成功扫码 </span>
+          <span class="b d-text-red f16">{{item.timeNum || 0}}</span>
+          <span> 件，历史扫码 </span>
+          <span class="b d-text-green f16">{{item.returnAccomplishNum}}</span>
+          <span> 件，还需扫码 </span>
+          <span class="b d-text-blue f16">{{item.returnNum - item.returnAccomplishNum - (item.timeNum || 0)}}</span>
+          <span> 件</span>
         </span>
       </div>
     </form-card>
 
     <!-- 机器号/SN码 -->
-    <form-card title='机器号/SN码记录'>
-      <d-table
-        :paging='false'
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+    <form-card title='机器号/SN码'>
+      <el-table
+        border
+        size="mini"
+        :data="tableData"
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
+        style="max-height:300px"
       >
         <el-table-column
           min-width="50"
           label="操作"
           show-overflow-tooltip
         >
-          <template slot-scope="">
+          <template slot-scope="scope">
             <i
+              @click='deleteLend(scope)'
               class="el-icon-error d-pointer"
               style="font-size:20px;color:#F5222D"
             ></i>
           </template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          type='index'
           min-width="80"
           label="编号"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="title"
+          prop="snCode"
           label="SN码"
           min-width="160"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.snCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="title"
+          prop="robotCode"
           label="机器号"
           min-width="160"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{scope.row.robotCode}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="wmsName"
           min-width="100"
-          label="入库库房"
+          label="借入库房"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="operator"
           min-width="100"
-          label="入库人"
+          label="借入人"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           prop="createTime"
-          label="入库时间"
+          label="借入时间"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
         </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="commodityCode"
           min-width="100"
           label="商品编号"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
-          min-width="100"
-          label="商品名称"
-          show-overflow-tooltip
+          label="商品分类"
+          min-width="110"
+          prop="className"
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          label="商品名称"
+          min-width="110"
+          prop="goodsName"
+        ></el-table-column>
+        <el-table-column
+          prop="configName"
           min-width="100"
           label="配置"
           show-overflow-tooltip
         ></el-table-column>
-      </d-table>
+        <el-table-column
+          label="商品规格"
+          min-width="110"
+          prop="specOne"
+        ></el-table-column>
+      </el-table>
     </form-card>
     <span
       slot="footer"
@@ -216,7 +230,7 @@
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="close"
+        @click="submit"
         size="small"
       >保 存</el-button>
     </span>
@@ -235,7 +249,7 @@ export default {
     dialogData: {
       type: Object,
     },
-    form: {}
+    data: {}
   },
   computed: {
     maxHeight() {
@@ -245,34 +259,77 @@ export default {
   data() {
     return {
       activeName: '',
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
-      tableData: [{ name: '写的假的' }],
-      formInline: {
-        user: ''
-      },
+      tableData: [],
+      usableList: [],
+      wmsId: ''
     };
   },
-  mounted() { },
+  mounted() {
+    this.commonwmsmanagerUsableList()
+  },
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
     },
     close() {
-      this.$emit('update:visible', false)
+      this.$emit('close')
+    },
+    //请求可用库房
+    commonwmsmanagerUsableList() {
+      this.$api.seePsiWmsService.commonwmsmanagerUsableList()
+        .then(res => {
+          this.usableList = res.data || []
+        })
+        .finally(() => {
+
+        })
+    },
+    //回车 入库
+    shipmentCommodityCheck(item) {
+      this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: item.snCode, putawayCommodityList: this.tableData, categoryCode: item.categoryCode, commodityCode: item.commodityCode, wmsId: this.wmsId })
+        .then(res => {
+          if (res.data) {
+            if ((item.returnNum - item.returnAccomplishNum - (item.timeNum || 0)) > 0) {
+              this.tableData.push(res.data)
+              item.timeNum ? item.timeNum++ : item.timeNum = 1
+            } else {
+              this.$message({
+                type: 'error',
+                message: '当前商品已经扫够了!'
+              })
+            }
+          }
+        })
+        .finally(() => {
+        })
+    },
+    //删除
+    deleteLend(scope) {
+      this.tableData.splice(scope.$index, 1)
+      this.data.commodityShowList.forEach((item, index) => {
+        if (item.commodityCode == scope.row.commodityCode) {
+          this.data.commodityShowList[index].timeNum--
+        }
+      })
+    },
+    //保存按钮
+    submit() {
+      this.$api.seePsiWmsService.wmsborrowloantaskReturnCommodity({ businessCode: this.data.borrowLoanCode, businessId: this.data.id, putawayCommodityList: this.tableData })
+        .then(res => {
+          this.close()
+          this.$emit('reload')
+        })
+        .finally(() => {
+
+        })
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-/deep/.el-dialog__footer {
-  text-align: center;
+/deep/.dialog-footer {
+  text-align: center !important;
+  display: block;
+  margin-top: 20px;
 }
 </style>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 15:43:02
+ * @LastEditTime: 2019-11-14 18:37:08
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -177,7 +177,7 @@ export default {
       { label: '待采购数量', key: 'waitPurchaseNumber', width: 100, prop: 'waitPurchaseNumber',showOverflowTip:true,type:'number' },
       { label: '销售单价', key: 'salesPrice', width: 100, prop: 'salesPrice',showOverflowTip:true,type:'number' },
       { label: '采购成本价', key: 'costAmount', width: 100, prop: 'costAmount',showOverflowTip:true,type:'number' },
-      { label: '采购单价', key: 'costAmountPrice', width: 100, prop: 'costAmount',type:'input',showOverflowTip:true,rules:[{required:true},{type:'price'}] },
+      { label: '采购单价', key: 'purchasePrice', width: 100, prop: 'purchasePrice',type:'input',showOverflowTip:true,rules:[{required:true},{type:'price'}] },
       { label: '商品数量', key: 'commodityNumber', width: 80, prop: 'commodityNumber',showOverflowTip:true,type:'inputinteger' },
       { label: '单位', key: 'unit', width: 80, prop: 'unit',dictName:'SC_JLDW' },
       { label: '退货商品数量', key: 'alterationNumber', width: 140, prop: 'alterationNumber',showOverflowTip:true,type:'inputinteger' },
@@ -185,6 +185,9 @@ export default {
       { label: '退货单价', key: 'alterationPrice', width: 80, prop: 'alterationPrice',type:'input',showOverflowTip:true,rules:[{required:true},{type:'price'}] },
       { label: '税率', key: 'taxRate', width: 60, prop: 'taxRate', format:a=>a?`${a}%`:'-' },
       { label: '含税总价', key: 'preTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip:true,
+        format:(a,{costAmount,taxRate,commodityNumber})=>+Number((costAmount*(1+(taxRate/100))*commodityNumber)||0).toFixed(2) 
+      },
+      { label: '含税总价', key: 'purchasePreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip:true,
         format:(a,{costAmount,taxRate,commodityNumber})=>+Number((costAmount*(1+(taxRate/100))*commodityNumber)||0).toFixed(2) 
       },
       { label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount',showOverflowTip:true, 

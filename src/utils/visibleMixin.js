@@ -35,12 +35,15 @@ export default {
   mounted() {
     this.$checkVisible();
     if (this.type !== 'add' && this.type !== 'edit') {
-      let statusList = this.$parent.$refs.table.statusList
-      statusList.forEach(item => {
-        if (item.name != '全部') {
-          this.stateText[item.state] = item.name
-        }
-      })
+      let statusList
+      try {
+        statusList = this.$parent.$refs.table.statusList
+        statusList.forEach(item => {
+          if (item.name != '全部') {
+            this.stateText[item.state] = item.name
+          }
+        })
+      } catch (error) { }
     }
 
   },

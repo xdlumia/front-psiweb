@@ -2,14 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 15:56:31
+ * @LastEditTime: 2019-11-14 18:04:06
  * @Description: 销售合同
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView :filterOptions="filterOptions" :headers="tableHeader" api="bizSystemService.getEmployeeList" title="销售合同">
-      <template slot-scope="{column,row,value}">
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
+      <template slot-scope="{column,row,value,prop}">
+        <span v-if="prop=='createTime'">{{value}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
