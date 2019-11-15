@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 15:51:07
+ * @LastEditTime: 2019-11-15 15:54:49
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -87,8 +87,8 @@ export default {
             let data = await this.getDetail();
             if (data) {
               data = JSON.parse(JSON.stringify(data))
-              this.detail = dat || {}
-              this.rowData = dat || {}
+              this.detail = data || {}
+              this.rowData = data || {}
               if (this.form && this.type == 'edit') {
                 for (let key in this.form) {
                   if (this.form[key] instanceof Array) {
