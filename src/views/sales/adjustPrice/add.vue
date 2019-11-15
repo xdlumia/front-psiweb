@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 16:04:04
+ * @LastEditTime: 2019-11-15 16:16:39
  * @Description: 新增账单调价单
 */
 <template>
@@ -75,20 +75,35 @@ export default {
       },
       activeName: 'baseInfo',
       form: {
-        adjustAfterAmount: '',// 调整后金额
-        adjustAmount: '',// 调整金额
-        adjustBeforAmount: '',// 调整前金额
-        adjustCode: '',// 调整单编号,
-        adjustDate: '',// 调整时间
-        apprpvalState: '',//审核状态
-        attachList: [],// 示例：附件,
-        companyCode: '',// 示例：公司编码code,
-        deptTotalCode: '',// 示例：部门code,
-        fbiiBusCode: '',// 示例：账单业务编号,
-        fbiiBusType: '',// 100000,
-        fbillId: '1232',// 100000,
-        id: '',
+        adjustPriceDifference: '', //调价差异
+        adjustPriceType: 1, // 调价类型(1-销售调价，2-采购调价)
+        approvalState: '',// 状态
+        attachList: [],
+        code: [],// 调价单编号,
+        commonAdjustPriceDetailedEntityList: [
+          // {
+          //   adjustPriceDifference: '',// 调价差异
+          //   adjustPriceMoney: '',// 9876543210987654,
+          //   commodityCode: '',// 示例：商品编号,
+          //   commodityId: '',// 9,
+          //   companyCode: '',// 示例：公司编码code,
+          //   createTime: '',// 1572342343503,
+          //   creator: '',// 100000,
+          //   deptTotalCode: '',// 示例：部门code,
+          //   id: '',// 100000,
+          //   isDelete: '',// 9,
+          //   modifier: '',// 100000,
+          //   modifyTime: '',// 1572342343503,
+          //   note: '',// 示例：备注,
+          //   originalMoney: '',// 9876543210987654,
+          //   profitRatio: '',// 10.01,
+          //   repertoryCost: '',// 9876543210987654,
+          //   sellBillsId: '',// 100000,
+          //   sellReferencePrice: '',// 9876543210987654
+          // }
+        ],
         note: '',// 示例：备注,
+        taskNode: '',// string
       },
     }
   },

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 16:04:59
+ * @LastEditTime: 2019-11-15 18:24:22
  * @Description: 生成销售退货单
 */
 <template>
@@ -37,7 +37,7 @@
       class="d-auto-y"
       style="height:calc(100vh - 110px)"
     >
-      <d-tabs :style="{maxHeight:'calc(100vh - 180px)'}">
+      <d-tabs :style="{maxHeight:'calc(100vh - 110px)'}">
         <d-tab-pane
           v-for="(val,key) of tabs"
           :key="key"
@@ -56,12 +56,10 @@
           :data="form"
         />
         <!-- 退换货商品 -->
-        <goods-return
+        <goods-return-edit
           :data="form"
           :options="rowData.quotationCodes || []"
-          :rowData="rowData"
           id="goodsChangeEdit"
-          :params="{busType:17,putawayType:0}"
         />
 
         <!-- 其他费用 -->
@@ -114,6 +112,7 @@ export default {
       },
       // 新增orEdit框内容
       form: {
+        busType: 0, // 0退货 1换货
         actualRefundAmount: '',//实退金额
         alterationCode: '',//退换货编号,
         attachList: [],//附件,
@@ -131,7 +130,7 @@ export default {
             discountSprice: '',//98765432109876.12,
             isAssembly: '',//9,
             isDirect: '',//9,
-            isTeardown: '',//9,
+            isTeardown: '',//是否拆卸
             note: '',//备注,
             parentCommodityCode: '',//100000,
             pickingNumber: '',//9,
@@ -169,7 +168,7 @@ export default {
           //   paymentType: '',//9
           // }
         ],
-        shouldRefundAmount: '1',//应退金额
+        shouldRefundAmount: '',//应退金额
         totalExchangeNumber: '',//换货总数量,
         totalRefundAmount: '',//总计退货价格（影响金额）
         totalRefundNumber: '',//退货总数量
@@ -196,9 +195,16 @@ export default {
 
     // 保存表单数据
     saveHandle() {
-      console.log(this.form);
 
       this.$refs.form.validate(valid => {
+        if (!this.form.shipmentFinanceSaveVoList.length) {
+          this.$message({
+            message: '请添加账期信息',
+            type: 'error',
+            showClose: true,
+          });
+
+        }
         if (valid) {
           this.loading = true
           // rules 表单验证是否通过
