@@ -2,12 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 11:41:48
- * @Description: 客户管理-账单调整单
+ * @LastEditTime: 2019-11-15 16:04:04
+ * @Description: 新增账单调价单
 */
 <template>
   <el-dialog
-    title="账单调整单"
+    title="新增账单调价单"
     :visible.sync="showEditPage"
     width="920px"
     :status="status"
@@ -16,11 +16,11 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{type=='add'?'新增账单调整单':`编辑:${code}`}}</span>
+      <span>{{type=='add'?'新增账单调价单':`编辑:${code}`}}</span>
       <div class="fr mr30">
         <el-button
           type="primary"
-          @click="saveHandle('form')"
+          @click="saveHandle()"
           size="mini"
         >保存</el-button>
         <el-button
@@ -31,6 +31,7 @@
     </div>
 
     <el-form
+      v-if="visible"
       ref="form"
       :model="form"
       size="mini"

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 14:44:16
+ * @LastEditTime: 2019-11-15 16:04:44
  * @Description: 销售-账单调价单
  */
 <template>
@@ -48,22 +48,21 @@
       @reload="$refs.table.reload()"
     />
     <!-- 新增账单调整-->
-    <!-- <add
+    <add
       type="add"
       :visible.sync="addVisible"
-      :rowData="rowData"
       @reload="$refs.table.reload()"
-    /> -->
+    />
   </div>
 </template>
 <script>
-import add from './add' // 新增账单调整
+import add from './add' // 新增账单调价
 import detail from './details' //详情
 
 export default {
   name: 'return',
   components: {
-    // add,
+    add,
     detail
   },
   props: {
@@ -104,8 +103,8 @@ export default {
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
+      this.rowData = row ? row : {}
       this[type] = true
-      this.rowData = row
       return
     },
     // 多选
