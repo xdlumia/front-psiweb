@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:16:28
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-15 11:21:00
+ * @LastEditTime: 2019-11-15 11:25:09
  * @Description: 待办事项
  -->
 <template>
@@ -50,7 +50,7 @@
 <script type='text/ecmascript-6'>
 import list from './render'
 export default {
-  data() {
+  data () {
     return {
       list: list.filter(item => item.show),
       componentName: '',
@@ -59,31 +59,28 @@ export default {
   },
   components: {
   },
-  mounted() {
+  mounted () {
     this.handleList()
     this.defaultMenu()
   },
   methods: {
-    showDetail(item) {
-      console.log(item)
+    showDetail (item) {
       this.componentName = item.component
     },
-    defaultMenu() {
+    defaultMenu () {
       const menu = this.list.find(item => {
         return item.children.some(sub => {
           return sub.show
         })
       })
       const sub = menu.children.find(item => item.show)
-      console.log(sub)
       this.componentName = sub.component
       this.defaultActived = sub.label
-      console.log(this.defaultActived)
     },
-    filterChildren(list) {
+    filterChildren (list) {
       return list.filter(item => item.show)
     },
-    homePageQueryList() {
+    homePageQueryList () {
       return this.$api.seePsiCommonService.homePageQueryList().then(res => {
         const obj = Object.create(null);
         (res.data || []).forEach(item => {
@@ -92,7 +89,7 @@ export default {
         return obj
       })
     },
-    handleList() {
+    handleList () {
       this.homePageQueryList().then(res => {
         this.list.forEach(item => {
           const num = item.children.reduce((val, sub) => {
