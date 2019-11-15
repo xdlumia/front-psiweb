@@ -2,15 +2,17 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 10:02:45
+ * @LastEditTime: 2019-11-15 10:04:24
  * @Description: 费用分摊单详情
 */
 <template>
   <div>
     <side-detail
       title="费用分摊单详情"
-      :visible.sync="showPop"
+      :visible.sync="showDetailPage"
       width="920px"
+      :status="status"
+      @close="close"
     >
       <div slot="button">
         <!-- 操作按钮 -->
@@ -21,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[currStatus].includes(item.label)"
+            v-if="currStatusType[detail.state || -1].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -46,19 +48,23 @@
           >
           </el-tab-pane>
         </el-tabs>
-        <keep-alive>
-          <components
-            class="d-auto-y"
-            style="height:calc(100vh - 200px)"
-            :is="activeName"
-            :button="false"
-          ></components>
-        </keep-alive>
+        <components
+          ref="detail"
+          :code="code"
+          :rowData="rowData"
+          :data="detail || {}"
+          class="d-auto-y"
+          :params="{}"
+          :button="false"
+          style="height:calc(100vh - 200px)"
+          :is="activeName"
+        />
       </el-form>
     </side-detail>
     <!-- 客户编辑 -->
-    <clientAdd
+    <add
       :visible.sync="editVisible"
+      :code="code"
       type="edit"
       :rowData="rowData"
     />
@@ -67,30 +73,34 @@
 <script>
 
 import detailDetail from './details/detail' //详情
-import clientAdd from './add' //详情
+import add from './add' //新增
+import VisibleMixin from '@/utils/visibleMixin';
 
 export default {
+  mixins: [VisibleMixin],
   components: {
     detailDetail,
-    clientAdd
+    add
   },
-  props: ['visible', 'rowData'],
   data() {
     return {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '停用', type: 'primary', authCode: '' },
-        { label: '编辑', type: '', authCode: '' },
-        { label: '新增报价单', type: 'primary', authCode: '' }
+        { label: '提交审核', type: 'primary', authCode: '' },
+        { label: '编辑', type: 'primary', authCode: '' },
+        { label: '删除', type: 'danger', authCode: '' },
+        { label: '撤销审核', type: 'primary', authCode: '' },
+        { label: '通过', type: 'primary', authCode: '' },
+        { label: '驳回', type: 'primary', authCode: '' },
       ],
       /**
        * 根据当前状态判断显示哪些按钮
        */
-      currStatus: 1,
       currStatusType: {
-        1: ['停用', '编辑', '新增报价单'], // 启用中
-        2: ['启用', '编辑', '新增报价单'], // 已停用
+        '-1': ['提交审核', '编辑', '删除'], // 新建
+        '0': ['撤销审核', '通过', '驳回'], // 审核中
+        '1': [], // 已分摊
       },
       // tab操作栏
       tabs: {
@@ -104,38 +114,57 @@ export default {
     }
   },
   computed: {
-    showPop: {
-      get() {
-        return this.visible
-      },
-      set(val) {
-        this.$emit('update:visible', false)
-      }
-    }
+
   },
   methods: {
-    buttonsClick(label) {
-      // handleConfirm里的按钮操作是需要二次确认的
-      let handleConfirm = ['提交审核', '撤销审核', '驳回', '删除', '终止']
-      if (handleConfirm.includes(label)) {
-        this.$confirm(`是否${label}?`, "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-          center: true
-        }).then(() => {
-          this.$api.seePumaidongService.collegeManagerDelete({ id: [123] })
-            .then(res => {
-              this.$emit('reload')
-            });
-        });
+    async getDetail() {
+      if (this.code) {
+        let { data } = await this.$api.seePsiSaleService.salescostapportionGetInfoByCode({ code: this.code })
+        return data;
       }
-      // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
-      else if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
-        if (label == '编辑') {
-          this.editVisible = true
-          return
+    },
+    buttonsClick(label) {
+      if (label == '编辑') {
+        if (label == '编辑') { this.editVisible = true }
+      } else {
+        let params = {
+          apprpvalNode: this.detail.apprpvalNode || 'XSHHD-001',
+          id: this.detail.id,
+          processType: 'XSTHD-001',//报价单的权限吗
         }
+        let apiObj = {
+          '提交审核': {
+            api: 'seePsiSaleService.salescostapportionSubmitApproval',
+            data: { ...params },
+            needNote: null
+          },
+          '通过': {
+            api: 'seePsiSaleService.salescostapportionPassApproval',
+            data: { ...params },
+            needNote: null
+          },
+          '撤销审核': {
+            api: 'seePsiSaleService.salescostapportionCancel',
+            data: { ...params, ...{} },
+            needNote: null
+          },
+          '驳回': {
+            api: 'seePsiSaleService.salescostapportionReject',
+            data: { ...params, ...{} },
+            needNote: this.detail.apprpvalNode || true
+          },
+          '删除': {
+            api: 'seePsiSaleService.salescostapportionLogicDelete',
+            data: { ...params, ...{} },
+            needNote: null
+          }
+        }
+        // 公共方法 mixin 引进来的
+        this.$submission(
+          apiObj[label].api,
+          apiObj[label].data,
+          label,
+          apiObj[label].needNote)
       }
     },
   },

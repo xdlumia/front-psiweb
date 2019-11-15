@@ -2,16 +2,32 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 09:43:55
+ * @LastEditTime: 2019-11-15 10:24:20
  * @Description: 客户管理-账单调整单
 */
 <template>
   <el-dialog
     title="账单调整单"
-    :visible.sync="showPop"
+    :visible.sync="showEditPage"
     width="920px"
+    :status="status"
     v-dialogDrag
   >
+    <!-- 确定按钮 -->
+    <div slot="title">
+      <span>{{type=='add'?'新增账单调整单':`编辑:${code}`}}</span>
+      <div class="fr mr30">
+        <el-button
+          type="primary"
+          @click="saveHandle('form')"
+          size="mini"
+        >保存</el-button>
+        <el-button
+          @click="$emit('update:visible', false)"
+          size="mini"
+        >取消</el-button>
+      </div>
+    </div>
 
     <el-form
       ref="form"
@@ -47,11 +63,11 @@
   </el-dialog>
 </template>
 <script>
-
+import VisibleMixin from '@/utils/visibleMixin';
 export default {
+  mixins: [VisibleMixin],
   components: {
   },
-  props: ['visible', 'type', 'rowData'],
   data() {
     return {
       // tab操作栏
@@ -60,18 +76,26 @@ export default {
         extrasInfo: '备注信息',
       },
       activeName: 'baseInfo',
-      form: {},
+      form: {
+        adjustAfterAmount: '',// 调整后金额
+        adjustAmount: '',// 调整金额
+        adjustBeforAmount: '',// 调整前金额
+        adjustCode: '',// 调整单编号,
+        adjustDate: '',// 调整时间
+        apprpvalState: '',//审核状态
+        attachs: '',// 示例：附件,
+        companyCode: '',// 示例：公司编码code,
+        deptTotalCode: '',// 示例：部门code,
+        fbiiBusCode: '',// 示例：账单业务编号,
+        fbiiBusType: '',// 100000,
+        fbillId: '',// 100000,
+        id: '',
+        note: '',// 示例：备注,
+      },
     }
   },
   computed: {
-    showPop: {
-      get() {
-        return this.visible
-      },
-      set(val) {
-        this.$emit('update:visible', false)
-      }
-    }
+
   },
   methods: {
     // 保存表单数据

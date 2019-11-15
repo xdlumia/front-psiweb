@@ -21,7 +21,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[rowData.state].includes(item.label)"
+            v-if="currStatusType[detail.state].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -55,7 +55,7 @@
           :data="detail || {}"
           class="d-auto-y"
           :button="false"
-          style="height:calc(100vh - 160px)"
+          style="height:calc(100vh - 200px)"
           :is="activeName"
         ></components>
       </el-form>

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-01 17:15:43
+ * @LastEditTime: 2019-11-14 18:55:01
  * @Description: 分摊信息
  */
 <template>
@@ -13,12 +13,11 @@
           <el-form-item
             :rules="[{required:true,message:'必填项'}]"
             label="费用单"
-            prop
+            prop="costCode"
           >
             <el-input
               :disabled="disabled"
-              placeholder="请输入"
-              v-model="form.telPhone"
+              v-model="data.costCode"
             >
               <el-button
                 slot="append"
@@ -36,8 +35,7 @@
           >
             <el-input
               :disabled="disabled"
-              placeholder="请输入"
-              v-model="form.telPhone"
+              v-model="data.telPhone"
             >
               <template slot="append">元</template>
             </el-input>
@@ -52,9 +50,8 @@
             <el-select
               class="wfull"
               :disabled="disabled"
-              placeholder="请选择销售出库单"
               :rules="[{required:true,message:'必填项'}]"
-              v-model="form.customerName"
+              v-model="data.customerName"
             >
               <el-option
                 :key="item.value"
@@ -73,8 +70,7 @@
           >
             <el-input
               :disabled="disabled"
-              placeholder="请输入"
-              v-model="form.telPhone"
+              v-model="data.telPhone"
             >
               <el-button
                 slot="append"

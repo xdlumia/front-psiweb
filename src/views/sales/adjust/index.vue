@@ -2,23 +2,22 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 15:48:18
+ * @LastEditTime: 2019-11-15 10:16:55
  * @Description: 销售-账单调整单
  */
 <template>
   <div>
     <table-view
-      busType="1"
+      busType="39"
       ref="table"
       :filter="true"
       :moreButton="true"
       :column="true"
       title="账单调整单"
       @clear-filter="reset()"
-      api="bizSystemService.getEmployeeList"
-      exportApi="bizSystemService.getEmployeeList"
+      api="seePsiFinanceService.fbilladjustList"
+      exportApi="seePsiFinanceService.fbilladjustExport"
       :params="Object.assign(queryForm,params)"
-      @selection-change="selectionChange"
       :filterOptions="filterOptions"
     >
       <template v-slot:button>
@@ -28,33 +27,40 @@
           @click="eventHandle('addVisible')"
         >新增账单调整</el-button>
       </template>
-      <template v-slot:filter>
-        <filters
-          ref="filters"
-          @submit-filter="$refs.table.reload(1)"
-          :form="queryForm"
-        />
-      </template>
-      <!-- 自定义按钮功能 -->
-
-      <template v-slot:moreButton>自定义更多按钮</template>
       <template slot-scope="{column,row,value}">
+        <!-- 调整单编号 -->
         <span
-          class="d-text-blue"
-          @click="eventHandle('detailVisible',row)"
-        > 账单调整</span>
-        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+          v-if="column.columnFields == 'adjustCode'"
+          class="d-text-blue d-pointer"
+          @click="eventHandle('quoteVisible',row)"
+        > {{value}}</span>
+        <!-- 销售出库单编号 -->
+        <span
+          v-else-if="column.columnFields == 'shipmentCode'"
+          class="d-text-blue d-pointer"
+          @click="eventHandle('outLibVisible',row)"
+        > {{value}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
 
-    <!-- 费用分摊详情 -->
+    <!-- 费用调整详情-->
     <detail
+      v-if="detailVisible"
       :visible.sync="detailVisible"
       :rowData="rowData"
+      :code="rowData.costApportionCode"
       @reload="this.$refs.table.reload()"
     />
-    <!-- 新增账单调整-->
+    <!-- 销售出库单详情 -->
+    <outLibDetails
+      v-if="outLibVisible"
+      :visible.sync="outLibVisible"
+      :rowData="rowData"
+      :code="rowData.salesShipmentCode"
+      @reload="this.$refs.table.reload()"
+    />
+    <!-- 新增分摊-->
     <add
       type="add"
       :visible.sync="addVisible"
@@ -66,14 +72,8 @@
 <script>
 import add from './add' // 新增账单调整
 import detail from './details' //客户详情
-let filterList = [
-  { label: '排序', prop: 'sort', default: true, type: 'sort', options: [{ label: '最新跟进', value: '' }, { label: '最新录入', value: '' }], },
-  { label: '商户编号、商户名称/简称', prop: 'title', default: true, type: 'text' },
-  { label: '联系人、联系人电话', prop: 'city', default: true, type: 'text' },
-  { label: '商机阶段', prop: 'pushTime', default: true, type: 'select', },
-  { label: '跟进时间起止', prop: 'status', default: true, type: 'daterange' },
-  { label: '维护人', prop: 'messageType', default: true, type: 'employee', },
-]
+import outLibDetails from '../outLibrary/outLib-details' //客户详情
+
 export default {
   name: 'return',
   components: {
@@ -99,19 +99,22 @@ export default {
       loading: false,
       // 查询表单
       queryForm: {
-        title: "", // 标题
-        city: "", // 城市
-        pushTime: "",
-        messageType: "",
-        status: "",
+
         page: 1,
         limit: 20
       },
       rowData: {},
       addVisible: false,
       detailVisible: false,
+      outLibVisible: false,
       // 筛选框数据
-      filterOptions: filterList
+      filterOptions: [
+        { label: '商户编号、商户名称/简称', prop: 'title', default: true, type: 'text' },
+        { label: '联系人、联系人电话', prop: 'city', default: true, type: 'text' },
+        { label: '商机阶段', prop: 'pushTime', default: true, type: 'select', },
+        { label: '跟进时间起止', prop: 'status', default: true, type: 'daterange' },
+        { label: '维护人', prop: 'messageType', default: true, type: 'employee', },
+      ]
     };
   },
   methods: {
@@ -120,20 +123,7 @@ export default {
       this[type] = true
       this.rowData = row
       return
-    },
-    // 多选
-    selectionChange(val) {
-      console.log(val);
-
-    },
-    submitFilter() {
-      this.$emit('submit-filter')
-    },
-    // 重置
-    reset() {
-      this.$refs.filters.$refs.form.resetFields()
-      this.$refs.table.reload(1);
-    },
+    }
   }
 };
 </script>
