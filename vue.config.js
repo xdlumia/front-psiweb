@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-06-13 17:33:33
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 14:35:02
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-11-15 16:28:50
  * @Description: 配置文件
  */
 module.exports = {
@@ -31,7 +31,10 @@ module.exports = {
   productionSourceMap: true,
 
   lintOnSave: false,
-
+  transpileDependencies: [
+    'vue-echarts',
+    'resize-detector'
+  ],
   chainWebpack: config => {
     config.plugins.delete('prefetch')
   }

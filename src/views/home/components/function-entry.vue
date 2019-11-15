@@ -2,11 +2,11 @@
  * @Author: 高大鹏
  * @Date: 2019-11-14 14:29:48
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-14 18:57:51
+ * @LastEditTime: 2019-11-15 14:31:35
  * @Description: 常用功能入口
  -->
 <template>
-  <div class>
+  <div class="mb20">
     <div style="display: flex;justify-content: space-between;align-items: center;">
       <h3 class="b" style="text-indent:20px">常用功能入口</h3>
       <el-popover placement="bottom" width="200" trigger="click">
@@ -44,15 +44,15 @@
 import { debounce } from '@/utils/debounce'
 const imgs = require.context('../img', false, /\.png$/)
 // 获取文件名
-function toCamel(path) {
+function toCamel (path) {
   const pathReg = /([^\.\/]+)\.([a-z]+)$/i
   path = pathReg.exec(path)[1]
-  return path.replace(/-(\w)/g, function() {
+  return path.replace(/-(\w)/g, function () {
     return arguments[1].toUpperCase();
   })
 }
 // 获取所有菜单列表
-function recursionNav(list) {
+function recursionNav (list) {
   const result = [].concat(...list.map(item => {
     if (item.children && item.children.length) {
       return [].concat(...recursionNav(item.children).concat([{ route: item.url, icon: pathKey(item.url), label: item.name, id: item.id }]))
@@ -63,7 +63,7 @@ function recursionNav(list) {
   return result
 }
 // icon
-function pathKey(route) {
+function pathKey (route) {
   if (route.length < 2) {
     return null
   }
@@ -82,7 +82,7 @@ function pathKey(route) {
   }
 }
 export default {
-  data() {
+  data () {
     return {
       selected: {}, // 选中的值
       imgList: {}, // icon对象
@@ -91,7 +91,7 @@ export default {
       change: true // 用作watch监听使用
     }
   },
-  created() {
+  created () {
     imgs.keys().forEach(item => {
       this.imgList[toCamel(item)] = imgs(item)
     })
@@ -110,13 +110,13 @@ export default {
   },
   computed: {
     // 选中的页签数组
-    actived() {
+    actived () {
       return Object.keys(this.selected).filter(item => this.selected[item])
     }
   },
   methods: {
     // 获取页签信息
-    homePageQueryTab() {
+    homePageQueryTab () {
       this.$api.seePsiCommonService.homePageQueryTab().then(res => {
         const temp = (res.data && res.data.tabJson) ? JSON.parse(res.data.tabJson) : []
         this.entryList = temp
@@ -126,12 +126,12 @@ export default {
       })
     },
     // 保存页签信息
-    homePageSaveCommonUserTabEntity(tabJson) {
+    homePageSaveCommonUserTabEntity (tabJson) {
       this.$api.seePsiCommonService.homePageSaveCommonUserTabEntity({ tabJson }).then(res => {
         this.homePageQueryTab()
       })
     },
-    switchChange() {
+    switchChange () {
       this.change = !this.change
     }
   }
