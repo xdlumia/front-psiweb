@@ -2,11 +2,11 @@
  * @Author: 高大鹏
  * @Date: 2019-11-15 14:30:04
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-15 16:27:31
+ * @LastEditTime: 2019-11-15 17:52:25
  * @Description: 基础数据
  -->
 <template>
-  <div class>
+  <div class="mb20">
     <h3 class="b mb5" style="text-indent:20px">基础数据</h3>
     <el-row :gutter="40">
       <el-col :span="6">
@@ -92,7 +92,7 @@
 
 <script type='text/ecmascript-6'>
 import IEcharts from 'vue-echarts'
-import 'echarts/lib/chart/themeRiver' // 引入折线图
+import 'echarts/lib/chart/themeRiver' // 引入河流图
 
 export default {
   data() {
@@ -108,7 +108,7 @@ export default {
     maxTask() {
       return Math.max(...this.taskList)
     },
-    options: function() {
+    options() {
       return {
         tooltip: {
           trigger: 'axis',
