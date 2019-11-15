@@ -16,25 +16,29 @@ const list = [
     label: '销售',
     key: '',
     children: sales,
-    processNum: 0
+    processNum: 0,
+    show: true
   },
   {
     label: '采购',
     key: '',
     children: purchase,
-    processNum: 0
+    processNum: 0,
+    show: true
   },
   {
     label: '库房',
     key: '',
     children: storeroom,
-    processNum: 0
+    processNum: 0,
+    show: true
   },
   {
     label: '财务',
     key: '',
     children: finance,
-    processNum: 0
+    processNum: 0,
+    show: true
   }
 ]
 

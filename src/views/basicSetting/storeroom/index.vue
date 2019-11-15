@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-12 18:49:04
+ * @LastEditTime: 2019-11-15 10:49:11
  * @Description: 库房管理
  -->
 <template>
@@ -27,22 +27,27 @@
             v-if="!scope.row.state"
             type="text"
             @click="editId = scope.row.id,visible = true"
+            style="padding:0"
           >编辑</el-button>
           <el-button
             type="text"
             v-if="!scope.row.state"
             @click="commonwmsmanagerLogicDelete(scope.row.id)"
+            style="padding:0"
           >删除</el-button>
           <el-button
             type="text"
             v-if="scope.row.state"
             @click="commonwmsmanagerUpdateState(scope.row.id, 0)"
+            style="padding:0"
           >停用</el-button>
-          <el-button @click="commonwmsmanagerUpdateState(scope.row.id, 1)" type="text" v-else>启用</el-button>
+          <el-button
+            @click="commonwmsmanagerUpdateState(scope.row.id, 1)"
+            type="text"
+            v-else
+            style="padding:0"
+          >启用</el-button>
         </span>
-        <span
-          v-else-if="column.columnFields=='createTime'"
-        >{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
@@ -61,7 +66,8 @@
           <el-button size="mini" @click="visible=false">关闭</el-button>
         </div>
       </div>
-      <add-store-room ref="addStoreRoom" :editId="editId" v-if="visible" @refresh="refresh"></add-store-room>
+      <add-store-room ref="addStoreRoom" :editId="editId" v-if="visible"
+@refresh="refresh"></add-store-room>
     </el-dialog>
   </div>
 </template>
@@ -69,7 +75,7 @@
 <script type='text/ecmascript-6'>
 import addStoreRoom from './add-storeroom'
 export default {
-  data () {
+  data() {
     return {
       visible: false,
       queryForm: {
@@ -91,13 +97,13 @@ export default {
       ]
     }
   },
-  mounted () {
+  mounted() {
   },
   components: {
     addStoreRoom
   },
   methods: {
-    commonwmsmanagerUpdateState (id, state) {
+    commonwmsmanagerUpdateState(id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -113,7 +119,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete (id) {
+    commonwmsmanagerLogicDelete(id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -129,10 +135,10 @@ export default {
         })
       })
     },
-    saveStoreRoom () {
+    saveStoreRoom() {
       this.$refs.addStoreRoom && this.$refs.addStoreRoom.commonwmsmanagerSave()
     },
-    refresh () {
+    refresh() {
       this.visible = false
       this.$refs.table.reload()
     }
