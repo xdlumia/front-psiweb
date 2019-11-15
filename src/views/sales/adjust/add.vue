@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 10:24:20
+ * @LastEditTime: 2019-11-15 11:41:48
  * @Description: 客户管理-账单调整单
 */
 <template>
@@ -12,6 +12,7 @@
     width="920px"
     :status="status"
     v-dialogDrag
+    v-loading="loading"
   >
     <!-- 确定按钮 -->
     <div slot="title">
@@ -36,7 +37,7 @@
       label-position="top"
     >
 
-      <d-tabs :style="{maxHeight:'calc(100vh - 180px)'}">
+      <d-tabs :style="{maxHeight:'calc(100vh - 110px)'}">
         <d-tab-pane
           v-for="(val,key) of tabs"
           :key="key"
@@ -44,21 +45,16 @@
           :name="key"
         />
         <!-- 账单调整 -->
-        <bill-adjust id="billAdjust" />
+        <bill-adjust
+          :data="form"
+          id="billAdjust"
+        />
         <!-- 备注信息 -->
-        <extras-info id="extrasInfo" />
+        <extras-info
+          :data="form"
+          id="extrasInfo"
+        />
       </d-tabs>
-      <div class="ac pt20">
-        <el-button
-          @click="$emit('update:visible', false)"
-          size="small"
-        >取消</el-button>
-        <el-button
-          type="primary"
-          @click="saveHandle()"
-          size="small"
-        >保存</el-button>
-      </div>
     </el-form>
   </el-dialog>
 </template>
@@ -70,6 +66,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       // tab操作栏
       tabs: {
         billAdjust: '账单调整',
@@ -83,12 +80,12 @@ export default {
         adjustCode: '',// 调整单编号,
         adjustDate: '',// 调整时间
         apprpvalState: '',//审核状态
-        attachs: '',// 示例：附件,
+        attachList: [],// 示例：附件,
         companyCode: '',// 示例：公司编码code,
         deptTotalCode: '',// 示例：部门code,
         fbiiBusCode: '',// 示例：账单业务编号,
         fbiiBusType: '',// 100000,
-        fbillId: '',// 100000,
+        fbillId: '1232',// 100000,
         id: '',
         note: '',// 示例：备注,
       },
@@ -100,25 +97,22 @@ export default {
   methods: {
     // 保存表单数据
     saveHandle(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs.form.validate(valid => {
         if (valid) {
-          const [currCity] = this.citys().filter(
-            item => item.id === this.addForm.cityId
-          )
-          this.addForm.cityName = currCity.name
           this.loading = true
-          delete this.addForm.start_date
+
           // rules 表单验证是否通过
-          let api = 'collegeManagerUpdate' // 默认编辑更新
+          let api = 'fbilladjustUpdate' // 默认编辑更新
           // 新增保存
-          if (this.dialogMeta.type === 'add') {
-            api = 'collegeManagerSave'
+          if (this.type === 'add') {
+            api = 'fbilladjustSave'
             // 编辑保存
           }
-          this.$api.seePumaidongService[api](this.addForm)
+          let params = Object.assign(this.form, this.params)
+          this.$api.seePsiFinanceService[api](params)
             .then(res => {
-              this.dialogMeta.visible = false
-              this.$emit('submit', 'success')
+              this.setEdit()
+              this.close()
             })
             .finally(() => {
               this.loading = false

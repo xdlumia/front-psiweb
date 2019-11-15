@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-06-13 17:33:33
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 16:17:38
+ * @LastEditTime: 2019-11-15 14:35:02
  * @Description: 配置文件
  */
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
     proxy: {
       '/apis': {
         target: 'http://39.99.132.95:7011/',
-        // target: 'http://39.105.103.188:7011/',
+        // target: 'http://10.168.1.130:7011/',
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
         pathRewrite: {
           '^/apis': ''

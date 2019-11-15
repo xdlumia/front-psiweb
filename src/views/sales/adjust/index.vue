@@ -2,19 +2,18 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 10:16:55
+ * @LastEditTime: 2019-11-15 14:12:10
  * @Description: 销售-账单调整单
  */
 <template>
   <div>
     <table-view
-      busType="39"
+      busType="56"
       ref="table"
       :filter="true"
       :moreButton="true"
       :column="true"
       title="账单调整单"
-      @clear-filter="reset()"
       api="seePsiFinanceService.fbilladjustList"
       exportApi="seePsiFinanceService.fbilladjustExport"
       :params="Object.assign(queryForm,params)"
@@ -36,7 +35,7 @@
         > {{value}}</span>
         <!-- 销售出库单编号 -->
         <span
-          v-else-if="column.columnFields == 'shipmentCode'"
+          v-else-if="column.columnFields == 'salesShipmentCode'"
           class="d-text-blue d-pointer"
           @click="eventHandle('outLibVisible',row)"
         > {{value}}</span>
@@ -50,7 +49,7 @@
       :visible.sync="detailVisible"
       :rowData="rowData"
       :code="rowData.costApportionCode"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
     <!-- 销售出库单详情 -->
     <outLibDetails
@@ -58,14 +57,14 @@
       :visible.sync="outLibVisible"
       :rowData="rowData"
       :code="rowData.salesShipmentCode"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
     <!-- 新增分摊-->
     <add
       type="add"
       :visible.sync="addVisible"
       :rowData="rowData"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
   </div>
 </template>
@@ -109,11 +108,11 @@ export default {
       outLibVisible: false,
       // 筛选框数据
       filterOptions: [
-        { label: '商户编号、商户名称/简称', prop: 'title', default: true, type: 'text' },
-        { label: '联系人、联系人电话', prop: 'city', default: true, type: 'text' },
-        { label: '商机阶段', prop: 'pushTime', default: true, type: 'select', },
-        { label: '跟进时间起止', prop: 'status', default: true, type: 'daterange' },
-        { label: '维护人', prop: 'messageType', default: true, type: 'employee', },
+        // { label: '商户编号、商户名称/简称', prop: 'title', default: true, type: 'text' },
+        // { label: '联系人、联系人电话', prop: 'city', default: true, type: 'text' },
+        // { label: '商机阶段', prop: 'pushTime', default: true, type: 'select', },
+        // { label: '跟进时间起止', prop: 'status', default: true, type: 'daterange' },
+        // { label: '维护人', prop: 'messageType', default: true, type: 'employee', },
       ]
     };
   },

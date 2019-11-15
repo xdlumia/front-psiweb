@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 09:47:17
+ * @LastEditTime: 2019-11-15 10:53:38
  * @Description: 账单调整
  */
 <template>
@@ -13,12 +13,12 @@
           <el-form-item
             :rules="[{required:true,message:'必填项'}]"
             label="应收账单"
-            prop
+            prop="fbillId"
           >
             <el-input
               :disabled="disabled"
               placeholder="请输入"
-              v-model="form.telPhone"
+              v-model="data.fbillId"
             >
               <el-button
                 slot="append"
@@ -30,14 +30,14 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :rules="[{required:true,message:'必填项'}]"
+            :rules="[{required:true},{type:'price'}]"
             label="账单金额"
-            prop
+            prop="adjustBeforAmount"
           >
             <el-input
               :disabled="disabled"
               placeholder="请输入"
-              v-model="form.telPhone"
+              v-model.trim="data.adjustBeforAmount"
             >
               <template slot="append">元</template>
             </el-input>
@@ -45,14 +45,14 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :rules="[{required:true,message:'必填项'}]"
+            :rules="[{required:true},{type:'price'}]"
             label="调整金额（正数增加金额，负数减少金额）"
-            prop
+            prop="adjustAmount"
           >
             <el-input
               :disabled="disabled"
               placeholder="请输入"
-              v-model="form.telPhone"
+              v-model.trim="data.adjustAmount"
             >
               <template slot="append">元</template>
             </el-input>
@@ -60,14 +60,14 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :rules="[{required:true,message:'必填项'}]"
+            :rules="[{required:true},{type:'price'}]"
             label="调整后金额"
-            prop
+            prop="adjustAfterAmount"
           >
             <el-input
               :disabled="disabled"
               placeholder="请输入"
-              v-model="form.telPhone"
+              v-model="data.adjustAfterAmount"
             >
               <template slot="append">元</template>
             </el-input>
@@ -83,10 +83,10 @@
       v-dialogDrag
     >
       <components
-        :status="false"
         :more="false"
         :button="false"
         :column="false"
+        @selection-change="selectionChange"
         :is="dialogData.component"
         :dialogData="dialogData"
       ></components>
@@ -94,8 +94,9 @@
   </div>
 </template>
 <script>
+import { log } from 'util'
 export default {
-  name: 'apportionInfo',
+  name: 'bill-adjust',
   props: {
     data: {
       default: () => { return {} }
@@ -121,6 +122,9 @@ export default {
     }
   },
   methods: {
+    selectionChange(val) {
+      console.log(val)
+    },
     // 按钮功能操作
     eventHandle(type, row) {
       // 防止row为undefined 导致报错
@@ -130,10 +134,8 @@ export default {
         'financeFee': { comp: 'financeFee', title: `费用单` }
       }
       this.dialogData.visible = true
-      this.dialogData.type = type
       this.dialogData.title = typeObj[type].title
       this.dialogData.component = typeObj[type].comp
-      this.dialogData.data = row;
 
     },
   },
