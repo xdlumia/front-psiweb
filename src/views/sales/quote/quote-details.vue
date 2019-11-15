@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state+'' || 0].includes(item.label)"
+            v-if="currStatusType[detail.state || 0].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>

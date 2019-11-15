@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 10:19:15
+ * @LastEditTime: 2019-11-15 18:48:54
  * @Description: 客户详情
 */
 <template>
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state+'' || 0].includes(item.label)"
+            v-if="currStatusType[detail.state || 0].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>

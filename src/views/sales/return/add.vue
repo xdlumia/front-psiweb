@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 18:24:22
+ * @LastEditTime: 2019-11-15 19:14:31
  * @Description: 生成销售退货单
 */
 <template>
@@ -151,7 +151,7 @@ export default {
         fieldList: [],//自定义字段,
         note: '',//备注,
         payTime: '',//1572403069457,
-        quotationCode: '',//报价单编号,
+        quotationCode: (this.rowData.quotationCodes || [])[0] || '',//默认取报价单编号第一个,
         refundNumber: '',//9,
         salesNumber: '',//9,
         salesShipmentCode: '',//销售出库单编号,
@@ -195,7 +195,6 @@ export default {
 
     // 保存表单数据
     saveHandle() {
-
       this.$refs.form.validate(valid => {
         if (!this.form.shipmentFinanceSaveVoList.length) {
           this.$message({
@@ -203,8 +202,9 @@ export default {
             type: 'error',
             showClose: true,
           });
-
+          return
         }
+
         if (valid) {
           this.loading = true
           // rules 表单验证是否通过
@@ -217,7 +217,7 @@ export default {
           this.$api.seePsiSaleService[api](this.form)
             .then(res => {
               this.close()
-              teis.setEdit()
+              this.setEdit()
             })
             .finally(() => {
               this.loading = false

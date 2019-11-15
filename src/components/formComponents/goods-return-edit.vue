@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 18:24:58
+ * @LastEditTime: 2019-11-15 19:13:56
  * @Description: 换货商品信息 -退货商品商品信息
 */
 <template>
@@ -15,7 +15,7 @@
           <el-select
             size="mini"
             :disabled="disabled"
-            v-model="quotationCode"
+            v-model="data.quotationCode"
           >
             <el-option
               v-for="item in options"
@@ -221,10 +221,10 @@ export default {
     }
   },
   watch: {
-    quotationCode: {
+    'data.quotationCode': {
       handler(val) {
         this.$nextTick(() => {
-          this.queryFrom.busCode = this.quotationCode
+          this.queryFrom.busCode = this.data.quotationCode
           this.businesscommodityGetBusinessCommodityList()
         })
       },
