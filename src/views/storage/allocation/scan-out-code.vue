@@ -42,7 +42,11 @@
             label="商品类别"
             min-width="110"
             prop="categoryCode"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="商品分类"
             min-width="110"
@@ -62,7 +66,11 @@
             label="单位"
             min-width="80"
             prop="unit"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+            </template>
+          </el-table-column>
         </el-table>
 
       </form-card>
@@ -77,16 +85,18 @@
             v-model="snCode"
             style="width:200px;"
             class="ml10 mt5"
-            v-on:keyup.13.native="shipmentCommodityCheck"
+            v-on:keyup.13.native="shipmentCommodityCheck(snCode)"
           ></el-input>
           <el-button
             type="primary"
             size='mini'
             class='fr mr5'
             @click="chooseVisible = true"
-          >选择</el-button>
+          >选择商品</el-button>
         </div>
         <el-table
+          border
+          size='mini'
           :data="downTableData"
           ref="companyTable"
           class="college-main"
@@ -185,7 +195,11 @@
         >保 存</el-button>
       </span>
     </div>
-    <commodityChoose :visible.sync='chooseVisible' />
+    <commodityChoose
+      :visible.sync='chooseVisible'
+      @choose='commodityChoose'
+      sn
+    />
   </div>
 </template>
 <script>
@@ -229,10 +243,18 @@ export default {
     close() {
       this.$emit('update:visible', false)
     },
+    //弹窗选择商品
+    commodityChoose(selected) {
+      if (selected.length > 0) {
+        selected.forEach((item) => {
+          let snCode = item.snCode ? item.snCode : item.robotCode
+          this.shipmentCommodityCheck(snCode)
+        })
+      }
+    },
     //每次扫码,对应上边的
     doSth(data) {
       this.dialogData.allocationCommodityList.forEach((item) => {
-        // item.accomplishNum = 0
         if (item.commodityCode == data.commodityCode) {
           if (Number(item.accomplishNum) < Number(item.total)) {//数量还不够的时候可以继续扫
             item.accomplishNum++
@@ -240,7 +262,7 @@ export default {
           } else {
             this.$message({
               type: 'info',
-              message: '扫过喽'
+              message: '当前商品已经调完了!'
             })
           }
         }
@@ -256,9 +278,9 @@ export default {
       })
     },
     //扫SN码
-    shipmentCommodityCheck() {
+    shipmentCommodityCheck(snCode) {
       console.log(this.dialogData, 'dialogDatadialogData')
-      this.$api.seePsiWmsService.wmsallocationorderShipmentCommodityCheck({ allocationOrderId: this.dialogData.id, snCode: this.snCode })
+      this.$api.seePsiWmsService.wmsallocationorderShipmentCommodityCheck({ allocationOrderId: this.dialogData.id, snCode: snCode, facilitatorId: this.dialogData.facilitatorId })
         .then(res => {
           if (res.data) {
             let arr = this.downTableData.filter((item) => {

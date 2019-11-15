@@ -217,7 +217,7 @@ export default {
           this.$api.seePsiSaleService[api](this.form)
             .then(res => {
               this.close()
-              teis.setEdit()
+              this.setEdit()
             })
             .finally(() => {
               this.loading = false

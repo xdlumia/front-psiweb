@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 09:42:05
+ * @LastEditTime: 2019-11-15 18:52:44
  * @Description: 销售出库单详情
 */
 <template>
@@ -20,10 +20,11 @@
           v-for="(item,index) of buttons"
           :key="index"
         >
+          <!-- detail.state 没有值得情况下会报错 detail.state也有可能为0 所以容错处理这里 必须是0   -->
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state+''|| 0].includes(item.label)"
+            v-if="currStatusType[detail.state|| 0].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>

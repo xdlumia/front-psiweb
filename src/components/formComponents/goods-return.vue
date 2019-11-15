@@ -2,12 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-11 17:34:26
+ * @LastEditTime: 2019-11-15 18:56:43
  * @Description: 退货商品信息 换入商品信息 换出商品信息
 */
 <template>
   <div>
     <form-card :title="true">
+      弃用
       <div slot="title">
         <span>{{title}}</span>
         <span class="fr">
