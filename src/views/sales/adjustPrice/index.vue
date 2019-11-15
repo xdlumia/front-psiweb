@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 14:35:48
+ * @LastEditTime: 2019-11-15 14:44:16
  * @Description: 销售-账单调价单
  */
 <template>
@@ -33,13 +33,7 @@
         <span
           v-if="column.columnFields == 'code'"
           class="d-text-blue d-pointer"
-          @click="eventHandle('quoteVisible',row)"
-        > {{value}}</span>
-        <!-- 销售出库单编号 -->
-        <span
-          v-else-if="column.columnFields == 'salesShipmentCode'"
-          class="d-text-blue d-pointer"
-          @click="eventHandle('outLibVisible',row)"
+          @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
         <span v-else>{{value}}</span>
       </template>
@@ -50,7 +44,7 @@
       v-if="detailVisible"
       :visible.sync="detailVisible"
       :rowData="rowData"
-      :code="rowData.costApportionCode"
+      :code="rowData.code"
       @reload="$refs.table.reload()"
     />
     <!-- 新增账单调整-->

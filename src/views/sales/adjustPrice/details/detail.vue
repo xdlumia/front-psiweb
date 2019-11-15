@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 12:02:55
+ * @LastEditTime: 2019-11-15 14:46:53
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -12,32 +12,8 @@
       disabled
       :data="data"
     />
-    <!-- 客户信息 -->
-    <customerInfo
-      disabled
-      :data="data"
-    />
-    <!-- 公司信息 -->
-    <companyInfo
-      disabled
-      :data="data"
-    />
 
-    <!-- 收款滞纳金 -->
-    <payment-late-sales
-      disabled
-      :data="data"
-    />
-    <!-- 账期信息 -->
-    <billInfo
-      disabled
-      :data="data"
-    />
-    <!-- 自定义信息 -->
-    <customInfo
-      disabled
-      :data="data"
-    />
+    <goods-return :data="data"></goods-return>
     <!-- 备注信息 -->
     <extrasInfo
       disabled
