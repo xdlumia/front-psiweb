@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 15:15:35
+ * @LastEditTime: 2019-11-15 08:48:15
  * @Description: 采购退货单
 */
 <template>
@@ -78,7 +78,7 @@ export default {
       this.loading = true;
       this.form.commodityList.reduce((data, item) => {
         data.alterationNum = data.alterationNum || 0;
-        data.alterationNum += parseInt(item.alterationNumber);
+        data.alterationNum += parseInt(item.alterationNumber) || 0;
         return data;
       }, this.form);
       this.form.alterationAmount = this.rejectAmount;

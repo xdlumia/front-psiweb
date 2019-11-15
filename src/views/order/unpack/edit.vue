@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 17:27:18
+ * @LastEditTime: 2019-11-15 09:00:36
  * @Description: 拆卸单
 */
 <template>
-  <el-dialog :visible="visible" @close="close" v-dialogDrag>
+  <el-dialog :visible="showEditPage" @close="close" v-dialogDrag>
     <div slot="title">
       <span>拆卸单{{from?`(${from})`:''}}</span>
       <span class="fr mr20">
@@ -20,23 +20,21 @@
       <d-tab-pane label="商品信息" name="unpackGoods" />
       <d-tab-pane label="基本信息" name="extrasInfo" />
       <div>
-        <el-form :model="form" class="p10" size="mini">
-          <unpackGoods id="unpackGoods" :data="form" />
-          <extrasInfo id="unpackGoods" :needUpload="false" />
+        <el-form :model="form" class="p10" size="mini" v-if="form&&visible">
+          <unpackGoods :data="form" id="unpackGoods" />
+          <extrasInfo :data="form" :needUpload="false" id="unpackGoods" />
         </el-form>
       </div>
     </d-tabs>
   </el-dialog>
 </template>
 <script>
+import VisibleMixin from '@/utils/visibleMixin';
+
 export default {
+  mixins: [VisibleMixin],
   components: {},
   props: {
-    visible: {
-      type: Boolean,
-      default: false
-    },
-    form: {},
     from: String // 来源
   },
   computed: {
@@ -45,18 +43,14 @@ export default {
     }
   },
   data() {
-    return {
-      activeName: '',
-      randomStr: +new Date() + '-' + Math.random()
-    };
+    return {};
   },
   mounted() {},
   methods: {
-    handleClick({ label, name }) {
-      this.activeName = '';
-    },
-    close() {
-      this.$emit('update:visible', false);
+    getDetail() {
+      return {
+        commodityList: []
+      };
     }
   }
 };

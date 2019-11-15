@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 18:39:00
+ * @LastEditTime: 2019-11-15 08:49:24
  * @Description: 采购入库单
 */
 <template>
@@ -200,6 +200,17 @@ export default {
       await this.$refs.form.validate();
       this.loading = true;
       try {
+        []
+          .concat(
+            this.form.commodityList || [],
+            this.form.additionalCommodityList
+          )
+          .reduce((data, item) => {
+            data.putinNum = data.putinNum || 0;
+            data.putinNum += parseInt(item.commodityNumber) || 0;
+            return data;
+          }, this.form);
+        this.form.putinAmount = this.goodsTotalSum;
         if (!this.isEdit) {
           await this.$api.seePsiPurchaseService.purchaseputinSave(this.form);
         } else {
@@ -207,7 +218,9 @@ export default {
         }
         this.setEdit();
         this.close();
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      }
       this.loading = false;
       console.log(this.form);
     }

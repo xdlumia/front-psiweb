@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 18:04:20
+ * @LastEditTime: 2019-11-15 08:51:44
  * @Description: 采购-拆卸单
 */
 <template>
@@ -19,7 +19,7 @@
       </template>
     </TableView>
     <Detail :visible.sync="showDetail" />
-    <Edit :visible.sync="showEdit" />
+    <Edit :visible.sync="showEdit" v-if="showEdit" />
   </div>
 </template>
 <script>
