@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:20:17
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-15 10:19:51
+ * @LastEditTime: 2019-11-15 11:43:39
  * @Description: 销售
  */
 
@@ -33,7 +33,7 @@ const sales = [
   },
   {
     label: '待审批销售退货单',
-    key: '',
+    key: 'psi_purchase_alteration',
     component: 'SalesReturn',
     authorityCode: '',
     processNum: 0,
@@ -65,9 +65,9 @@ const sales = [
   },
   {
     label: '销售调价单',
-    key: 'XSTJD-001',
+    key: 'psi_adjustPrice_1003',
     component: 'SalesAdjustPrice',
-    authorityCode: '',
+    authorityCode: 'psi_adjustPrice_1003',
     processNum: 0,
     show: true
   }

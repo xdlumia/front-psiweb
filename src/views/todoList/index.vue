@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:16:28
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-15 11:25:09
+ * @LastEditTime: 2019-11-15 14:21:46
  * @Description: 待办事项
  -->
 <template>
@@ -50,24 +50,24 @@
 <script type='text/ecmascript-6'>
 import list from './render'
 export default {
-  data () {
+  data() {
     return {
-      list: list.filter(item => item.show),
+      list,
       componentName: '',
       defaultActived: ''
     }
   },
   components: {
   },
-  mounted () {
+  mounted() {
     this.handleList()
     this.defaultMenu()
   },
   methods: {
-    showDetail (item) {
+    showDetail(item) {
       this.componentName = item.component
     },
-    defaultMenu () {
+    defaultMenu() {
       const menu = this.list.find(item => {
         return item.children.some(sub => {
           return sub.show
@@ -77,10 +77,15 @@ export default {
       this.componentName = sub.component
       this.defaultActived = sub.label
     },
-    filterChildren (list) {
-      return list.filter(item => item.show)
+    filterChildren(list) {
+      return list.filter(item => {
+        if (item.authorityCode) {
+          return item.show && this.authorityButtons.includes(item.authorityCode)
+        }
+        return item.show
+      })
     },
-    homePageQueryList () {
+    homePageQueryList() {
       return this.$api.seePsiCommonService.homePageQueryList().then(res => {
         const obj = Object.create(null);
         (res.data || []).forEach(item => {
@@ -89,7 +94,8 @@ export default {
         return obj
       })
     },
-    handleList () {
+    handleList() {
+      this.list = this.list.filter(item => item.show && this.filterChildren(item.children).length)
       this.homePageQueryList().then(res => {
         this.list.forEach(item => {
           const num = item.children.reduce((val, sub) => {

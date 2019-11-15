@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:20:37
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-15 10:30:08
+ * @LastEditTime: 2019-11-15 11:54:36
  * @Description: description
  */
 const purchase = [
@@ -12,13 +12,13 @@ const purchase = [
     component: 'OrderBuying',
     authorityCode: '',
     processNum: 0,
-    show: true
+    show: false
   },
   {
     label: '待审批备货单',
-    key: 'psi_purchase_stock',
+    key: 'psi_purchase_stock_01',
     component: 'OrderPrepare',
-    authorityCode: '',
+    authorityCode: 'psi_purchase_stock_01',
     processNum: 0,
     show: true
   },
@@ -28,29 +28,29 @@ const purchase = [
     component: 'OrderDirect',
     authorityCode: '',
     processNum: 0,
-    show: true
+    show: false
   },
   {
     label: '待审批采购入库单',
-    key: '',
+    key: ' psi_purchase_putin_01',
     component: 'OrderStorage',
-    authorityCode: '',
+    authorityCode: ' psi_purchase_putin_01',
     processNum: 0,
     show: true
   },
   {
     label: '待审批采购退货单',
-    key: '',
+    key: ' psi_purchase_alteration_01',
     component: 'OrderReject',
-    authorityCode: '',
+    authorityCode: 'psi_purchase_alteration_01',
     processNum: 0,
     show: true
   },
   {
     label: '采购调价单',
-    key: 'CGTJD-001',
+    key: 'psi_purchase_adjust_pric_01',
     component: 'OrderPrice',
-    authorityCode: '',
+    authorityCode: 'psi_purchase_adjust_pric_01',
     processNum: 0,
     show: true
   }
