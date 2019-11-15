@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 09:53:27
+ * @LastEditTime: 2019-11-15 16:05:51
  * @Description: 销售-费用分摊单
  */
 <template>
@@ -131,7 +131,7 @@ export default {
     // 按钮功能操作
     eventHandle(type, row) {
       this[type] = true
-      this.rowData = row
+      this.rowData = row ? row : {}
       return
     },
   }

@@ -2,21 +2,20 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 15:48:06
+ * @LastEditTime: 2019-11-15 10:59:47
  * @Description: 财务-费用单
  */
 <template>
   <div>
     <table-view
-      type="1"
+      busType="62"
       ref="table"
       :filter="true"
       :moreButton="true"
       :column="true"
       title="费用单"
-      @clear-filter="reset()"
-      api="bizSystemService.getEmployeeList"
-      exportApi="bizSystemService.getEmployeeList"
+      api="seePsiFinanceService.fcostList"
+      exportApi="seePsiFinanceService.fcostExport"
       :params="Object.assign(queryForm,params)"
       @selection-change="selectionChange"
       :filterOptions="filterOptions"
@@ -66,14 +65,7 @@
 <script>
 import add from './add' // 新增账单调整
 import detail from './details' //客户详情
-let filterList = [
-  { label: '排序', prop: 'sort', default: true, type: 'sort', options: [{ label: '最新跟进', value: '1' }, { label: '最新录入', value: '' }], },
-  { label: '商户编号、商户名称/简称', prop: 'title', default: true, type: 'text' },
-  { label: '联系人、联系人电话', prop: 'city', default: true, type: 'text' },
-  { label: '商机阶段', prop: 'pushTime', default: true, type: 'select', },
-  { label: '跟进时间起止', prop: 'status', default: true, type: 'daterange' },
-  { label: '维护人', prop: 'messageType', default: true, type: 'employee', },
-]
+
 export default {
   name: 'return',
   components: {
@@ -111,7 +103,14 @@ export default {
       addVisible: false,
       detailVisible: false,
       // 筛选框数据
-      filterOptions: filterList
+      filterOptions: [
+        { label: '排序', prop: 'sort', default: true, type: 'sort', options: [{ label: '最新跟进', value: '1' }, { label: '最新录入', value: '' }], },
+        { label: '商户编号、商户名称/简称', prop: 'title', default: true, type: 'text' },
+        { label: '联系人、联系人电话', prop: 'city', default: true, type: 'text' },
+        { label: '商机阶段', prop: 'pushTime', default: true, type: 'select', },
+        { label: '跟进时间起止', prop: 'status', default: true, type: 'daterange' },
+        { label: '维护人', prop: 'messageType', default: true, type: 'employee', },
+      ]
     };
   },
   methods: {
@@ -121,18 +120,9 @@ export default {
       this.rowData = row
       return
     },
-    // 多选
+    // 多选 别的地方调用组件的时候回用到这里
     selectionChange(val) {
-      console.log(val);
-
-    },
-    submitFilter() {
-      this.$emit('submit-filter')
-    },
-    // 重置
-    reset() {
-      this.$refs.filters.$refs.form.resetFields()
-      this.$refs.table.reload(1);
+      this.$emit('selection-change', val)
     },
   }
 };

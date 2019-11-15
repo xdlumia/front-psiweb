@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 19:07:30
+ * @LastEditTime: 2019-11-15 15:56:52
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -40,7 +40,7 @@ export default {
         statusList = this.$parent.$refs.table.statusList
         statusList.forEach(item => {
           if (item.name != '全部') {
-            this.stateText[item.state] = item.name
+            this.stateText[item.state || item.approvalState] = item.name
           }
         })
       } catch (error) { }
@@ -87,7 +87,8 @@ export default {
             let data = await this.getDetail();
             if (data) {
               data = JSON.parse(JSON.stringify(data))
-              this.detail = data;
+              this.detail = data || {}
+              // this.rowData = data || {}
               if (this.form && this.type == 'edit') {
                 for (let key in this.form) {
                   if (this.form[key] instanceof Array) {
