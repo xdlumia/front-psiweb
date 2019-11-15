@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 18:31:05
+ * @LastEditTime: 2019-11-15 09:42:05
  * @Description: 销售出库单详情
 */
 <template>
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[rowData.state].includes(item.label)"
+            v-if="currStatusType[detail.state|| 0].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -54,7 +54,7 @@
               class="d-auto-y"
               :params="item.params"
               :button="false"
-              style="height:calc(100vh - 160px)"
+              style="height:calc(100vh - 200px)"
               :is="activeName"
             />
           </el-tab-pane>
@@ -142,16 +142,14 @@ export default {
         else if (label == '退货扫码') { this.outLibAddVisible = true }
       } else {
         let params = {
-          busCode: this.code,//业务编号,
-          busType: 17,//业务类型,
+          apprpvalNode: this.detail.apprpvalNode || 'XSHHD-001',
           id: this.detail.id,
-          isAgree: 1,//是否同意,
-          taskCode: '',//当前功能权限码"        
+          processType: 'XSTHD-001',//报价单的权限吗
         }
         let apiObj = {
           '提交审核': {
             api: 'seePsiSaleService.salesreturnedSubmitApproval',
-            data: { ...params, ...{} },
+            data: { ...params },
             needNote: null
           },
           '审核通过': {

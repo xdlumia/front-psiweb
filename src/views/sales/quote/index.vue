@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 18:20:26
+ * @LastEditTime: 2019-11-15 10:13:54
  * @Description: 销售-报价单
  */
 <template>
@@ -53,7 +53,7 @@
           class="d-text-blue d-pointer"
           @click="eventHandle('outLibVisible',row)"
         > {{value}}</span>
-        <!-- 时间 -->
+
         <span v-else>{{value}}</span>
       </template>
     </table-view>

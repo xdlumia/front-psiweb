@@ -29,8 +29,7 @@
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='returnTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-else-if="column.columnFields=='borrowLoanType'">{{value == 0 ? '借入' : '借出'}}</span>
         <span v-else-if="column.columnFields=='borrowLoanState'">{{state[value] || '全部'}}</span>
         <span v-else>{{value}}</span>
       </template>
