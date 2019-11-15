@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 14:10:40
+ * @LastEditTime: 2019-11-15 15:50:32
  * @Description: 账单调整详情
 */
 <template>
@@ -20,10 +20,11 @@
           v-for="(item,index) of buttons"
           :key="index"
         >
+          <!-- apprpvalState可能为0的情况 -->
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.id || -1].includes(item.label)"
+            v-if="currStatusType[detail.apprpvalState+'' || -1].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -36,53 +37,37 @@
         size="mini"
         label-position="top"
       >
-        <el-tabs
-          v-model="activeName"
-          type="card"
-        >
-          <el-tab-pane
-            v-for="(val,key) of tabs"
-            :key="key"
-            :label="val"
-            :name="key"
-          >
-          </el-tab-pane>
-        </el-tabs>
-
-        <components
-          ref="detail"
-          :code="code"
-          :rowData="rowData"
-          :data="detail || {}"
-          class="d-auto-y"
-          :params="item.params"
-          :button="false"
-          style="height:calc(100vh - 200px)"
-          :is="activeName"
-        ></components>
+        <!-- 账单调整 -->
+        <bill-adjust
+          disabled
+          :data="detail"
+        />
+        <!-- 备注信息 -->
+        <extras-info
+          disabled
+          :data="detail"
+        />
 
       </el-form>
     </side-detail>
     <!-- 客户编辑 -->
-    <add
+    <!-- <add
       :visible.sync="addVisible"
       :rowData="rowData"
       type="edit"
       :params="{salesShipmentCode:rowData.shipmentCode}"
       :code="rowData.shipmentCode"
-    />
+    /> -->
   </div>
 </template>
 <script>
 
-import detail from './details/detail' //详情
 import add from './add' //详情
 import VisibleMixin from '@/utils/visibleMixin';
 
 export default {
   mixins: [VisibleMixin],
   components: {
-    detail,
     add
   },
   data() {
@@ -90,7 +75,7 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '账单调整申请', type: 'primary', authCode: '' },
+        { label: '调整申请', type: 'primary', authCode: '' },
         { label: '撤销审核', type: 'primary', authCode: '' },
         { label: '通过', type: 'primary', authCode: '' },
         { label: '驳回', type: 'primary', authCode: '' },
@@ -101,16 +86,13 @@ export default {
        */
 
       currStatusType: {
-        '-1': ['账单调整申请'], // 新建
+        '-1': ['调整申请'], // 新建
         '0': ['撤销审核', '通过', '驳回'], // 审核中
         '1': [], // 已通过
-        '2': ['账单调整申请', '编辑'], // 已驳回
+        '2': ['调整申请', '编辑'], // 已驳回
       },
       // tab操作栏
-      tabs: {
-        detail: '详情',
-      },
-      activeName: 'detail',
+      detail: {},
       form: {},
       editVisible: false,
     }
@@ -132,15 +114,15 @@ export default {
         let params = {
           apprpvalNode: this.detail.apprpvalNode || 'XSHHD-001',
           id: this.detail.id,
-          processType: 'XSTHD-001',//报价单的权限吗
+          processType: 'TTZD-001',//报价单的权限吗
         }
         let apiObj = {
-          '提交审核': {
+          '调整申请': {
             api: 'seePsiFinanceService.fbilladjustSubmitApproval',
-            data: { ...params },
+            data: { ...params, ...{ apprpvalNode: '' } },
             needNote: null
           },
-          '审核通过': {
+          '通过': {
             api: 'seePsiFinanceService.fbilladjustPassApproval',
             data: { ...params, ...{} },
             needNote: null

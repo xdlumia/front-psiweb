@@ -99,6 +99,13 @@ export default {
     'methods': 'post'
   },
 
+  // 撤销审核
+  fbilladjustCancel: {
+    'url': '/fbilladjust/cancel',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 删除
   fbilladjustDelete: {
     'url': '/fbilladjust/delete',
@@ -114,6 +121,12 @@ export default {
   },
 
   // 查看详细信息
+  fbilladjustGetInfoByCode: {
+    'url': '/fbilladjust/getInfoByCode',
+    'mock': false
+  },
+
+  // 查看详细信息
   fbilladjustInfo: {
     'url': '/fbilladjust/info/{id}',
     'mock': false
@@ -125,9 +138,30 @@ export default {
     'mock': false
   },
 
+  // 审核通过
+  fbilladjustPassApproval: {
+    'url': '/fbilladjust/passApproval',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 驳回
+  fbilladjustReject: {
+    'url': '/fbilladjust/reject',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 保存
   fbilladjustSave: {
     'url': '/fbilladjust/save',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 账单调整申请
+  fbilladjustSubmitApproval: {
+    'url': '/fbilladjust/submitApproval',
     'mock': false,
     'methods': 'post'
   },
@@ -153,6 +187,12 @@ export default {
     'url': '/fborrowing/export',
     'mock': false,
     'methods': 'post'
+  },
+
+  // 根据code查看详细信息
+  fborrowingGetInfoByCode: {
+    'url': '/fborrowing/getInfoByCode',
+    'mock': false
   },
 
   // 查看详细信息

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 14:52:00
+ * @LastEditTime: 2019-11-15 15:00:02
  * @Description: 账单调整详情
 */
 <template>
@@ -122,7 +122,6 @@ export default {
   methods: {
     async getDetail() {
       if (this.code) {
-        console.log(11)
         let { data } = await this.$api.seePsiCommonService.commonadjustpriceInfoByCode(null, this.code)
         return data;
       }
