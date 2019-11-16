@@ -9,9 +9,9 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="drawerData.tableVisible"
-    @close="$emit('update:visible',false)"
-    title="销售单"
+    :visible.sync="visible"
+    @close="close"
+    title="拆卸任务"
     width="990px"
   >
     <div
@@ -51,11 +51,11 @@
               <el-row>
                 <el-col :span="20">
                   <div class="d-text-black">拆卸人</div>
-                  <div class="d-text-qgray mt5 mb20">太上老君</div>
+                  <div class="d-text-qgray mt5 mb20">{{detailForm.disassemblyPersonName}}</div>
                 </el-col>
                 <el-col :span="20">
                   <div class="d-text-black">备注</div>
-                  <div class="d-text-qgray mt5">备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注</div>
+                  <div class="d-text-qgray mt5">{{detailForm.note}}</div>
                 </el-col>
 
               </el-row>
@@ -64,38 +64,70 @@
         </el-tab-pane>
         <el-tab-pane label="拆卸单">拆卸单</el-tab-pane>
       </el-tabs>
-      <hangUp
+      <!-- <hangUp
         :visible='hangVisible'
         @close='hangVisible = false'
       />
       <disassembleGoodsChoose
         :visible='disassembleVisible'
         @close='disassembleVisible = false'
-      />
+      /> -->
     </div>
   </SideDetail>
 
 </template>
 <script>
 import dismantlingMerchandise from '@/components/formComponents/dismantling-merchandise'
-import disassembleGoodsChoose from '@/components/formComponents/disassemble-goods-choose'
-import hangUp from '@/components/formComponents/hang-up';
+// import disassembleGoodsChoose from '@/components/formComponents/disassemble-goods-choose'
+// import hangUp from '@/components/formComponents/hang-up';
 import SideDetail from '@/components/side-detail';
 export default {
-  props: ['drawerData'],
+  props: ['drawerData', 'visible'],
   data() {
     return {
-      status: [{ label: '拆卸状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '拆卸状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       hangVisible: false,
       generateVisible: false,
-      disassembleVisible: false
+      disassembleVisible: false,
+      detailForm: {},
+      state: {
+        '-1': '终止',
+        '0': '未开始',
+        '1': '待拆卸',
+        '2': '部分拆卸',
+        '3': '完成拆卸',
+      }
     };
   },
   components: {
     dismantlingMerchandise,
     SideDetail,
-    hangUp,
-    disassembleGoodsChoose
+    // hangUp,
+    // disassembleGoodsChoose
+  },
+  mounted() {
+    this.wmsallocationorderInfo()
+  },
+  methods: {
+    //查看拆卸任务详情
+    wmsallocationorderInfo() {
+      this.$api.seePsiWmsService.wmsdisassemblytaskInfo(null, this.drawerData.id)
+        .then(res => {
+          this.detailForm = res.data || {}
+          this.status[0].value = this.state[res.data.disassemblyTaskState]
+          this.status[1].value = res.data.createTime
+          this.status[2].value = res.data.creatorName
+          this.status[3].value = res.data.deptName
+          this.status[4].value = res.data.source
+          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
+        })
+        .finally(() => {
+
+        })
+    },
+    close() {
+      this.$emit('update:visible', false)
+    }
   },
 }
 </script>
@@ -124,6 +156,7 @@ export default {
     }
   }
   .tabs-view {
+    width: 100% !important;
     position: relative;
     /deep/ {
       & > .el-tabs__header {

@@ -212,6 +212,7 @@ export default {
     this.commonserviceproviderList()
   },
   mounted() {
+    console.log(this.dictionaryOptions('PSI_FWS_FWLX'))
     setTimeout(() => {
       if (this.form.facilitatorId) {
         this.facilitatorNameChange(this.form.facilitatorId)

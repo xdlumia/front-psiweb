@@ -9,26 +9,37 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
-      :headers="tableHeader"
+      busType="12"
+      :filterOptions='filterOptions'
       :selection='false'
-      api="bizSystemService.getEmployeeList"
+      ref='allTable'
+      api="seePsiWmsService.wmsdisassemblytaskList"
+      :params="queryForm"
       title="拆卸任务"
     >
       <template slot-scope="{column,row,value}">
+        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span
+          v-else-if="column.columnFields=='disassemblyTaskCode'"
           class="d-text-blue"
           @click="getTableVisible(row)"
-        >点击111</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        >{{value}}</span>
+        <span
+          v-else-if="column.columnFields=='disassemblyOrderCode'"
+          class="d-text-blue"
+          @click="getTableVisible(row)"
+        >{{value}}</span>
+        <span v-else-if="column.columnFields=='disassemblyTaskState'">{{value == 0 ? '未开始' : value == 1 ? '待拆卸' : value == 2 ? '部分小孩鞋' : value == 3 ? '完成拆卸' : '全部'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
       :drawerData='drawerData'
-      @update='update'
+      :visible.sync='tableVisible'
+      v-if="tableVisible"
     />
   </div>
-</template>
+</template> 
 <script>
 /**
  * 采购-请购单
@@ -44,50 +55,76 @@ export default {
     return {
       // 查询表单
       queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
         page: 1,
         limit: 20
       },
-      componentActive: '',//当前的组件
+      button: true,
+      tableVisible: false,//销售单右侧抽屉
       drawerData: {//弹框的相关数据
-        tableVisible: false,//销售单右侧抽屉
-        title: '',
-        component: 'Details'
       },
-      activeName: '',
-      tableHeader: [
-        { label: '拆卸任务编号', prop: 'deptName', width: '140' },
-        { label: '拆卸单编号', prop: 'deptName', width: '140' },
-        { label: '拆卸状态', prop: 'deptName', width: '100' },
-        { label: '商品名称', prop: 'deptName', width: '100' },
-        { label: '拆卸数量', prop: 'createTime', width: '100' },
-        { label: '未拆卸量', prop: 'createTime', width: '100' },
-        { label: '已拆卸量', prop: 'createTime', width: '100' },
-        { label: '拆卸人', prop: 'createTime', width: '100' },
-        { label: '创建/生成时间', prop: 'createTime', width: '140' },
-        { label: '单据创建人', prop: 'createTime', width: '100' },
-        { label: '创建部门', prop: 'createTime', width: '100' }
-      ]
+      filterOptions: [
+        { label: '拆卸任务编号', prop: 'disassemblyTaskCode', default: true },
+        { label: '拆卸单编号', prop: 'disassemblyOrderCode', default: true },
+        {
+          label: '拆卸状态',
+          prop: 'state',
+          type: 'select',
+          options: [
+            { label: '待拆卸', value: '1' },
+            { label: '部分拆卸', value: '2' },
+            { label: '完成拆卸', value: '3' },
+            { label: '未开始', value: '0' },
+            { label: '终止', value: '-1' },
+          ],
+          default: true
+        },
+        {
+          label: '拆卸数量',
+          prop: 'DisassemblyNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '未拆卸数量',
+          prop: 'NoDisassemblyNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '已拆卸数量',
+          prop: 'AccomplishDisassemblyNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '创建时间',
+          prop: 'CreateTime',
+          type: 'daterange',
+          default: true
+        },
+        {
+          label: '单据创建人',
+          prop: 'creator',
+          type: 'employee',
+          default: true
+        },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
+      ],
     };
   },
   methods: {
     //点击打开右侧边栏
     getTableVisible(data) {
-      this.drawerData.tableVisible = true
-      this.drawerData.title = '销售单' + data.id
+      this.tableVisible = true
+      this.drawerData = data
     },
     //tab换组件
     handleClick() {
 
     },
-    update() {
-      console.log('324124123')
-      this.drawerData.tableVisible = false
-    }
   }
 };
 </script>

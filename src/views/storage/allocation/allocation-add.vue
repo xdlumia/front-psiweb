@@ -129,9 +129,10 @@ export default {
         if (valid) {
           let arr = this.$refs.logisticsEdit.upTableData || []
           this.allForm.wmsCommodityList = arr
-          arr.forEach((item) => {
-            this.allForm.wmsNames.push(item.wmsName)
-          })
+          console.log(arr, 'arrarrarrarrarrarr')
+          // arr.forEach((item) => {
+          //   this.allForm.wmsNames.push(item.name)
+          // })
           if (arr.length > 0) {
             this.$api.seePsiWmsService.wmsallocationorderSave(this.allForm)
               .then(res => {
