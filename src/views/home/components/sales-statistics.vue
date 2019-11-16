@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-15 16:45:27
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-15 19:11:10
+ * @LastEditTime: 2019-11-16 13:31:51
  * @Description: description
  -->
 <template>
@@ -21,13 +21,17 @@
               <div style="flex:1">
                 <h4>累计销售总额</h4>
                 <div>
-                  <span class="f24 b mr5 arial">124,543,233</span>元
+                  <span
+                    class="f24 b mr5 arial"
+                  >{{Math.floor(Math.random() * 10000) | thousandBitSeparator}}</span>元
                 </div>
               </div>
               <div style="flex:1">
                 <h4>累计销售利润</h4>
                 <div>
-                  <span class="f24 b mr5 arial">12,123</span>元
+                  <span
+                    class="f24 b mr5 arial"
+                  >{{Math.floor(Math.random() * 10000) | thousandBitSeparator}}</span>元
                 </div>
               </div>
             </div>
@@ -42,7 +46,21 @@
           </div>
           <div class="ba" style="display:flex;flex:0 0 540px">
             <IEcharts style="flex:1;height:500px;" :option="pieOptions"></IEcharts>
-            <div style="flex:1">232322323233</div>
+            <div style="flex:1;display: flex;align-items: center">
+              <el-row style="flex:1" class="mr20">
+                <div v-for="(item, index) in mockData" :key="index" class="mb20 d-hidden">
+                  <el-col :span="8" class="br">
+                    <span
+                      style="display:inline-block;width:10px;height:10px;margin-right:10px;"
+                      :style="{background: color[index]}"
+                    ></span>
+                    <span>{{item.name}}</span>
+                  </el-col>
+                  <el-col :span="4" class="ac">{{Math.floor(item.value / salesSum * 100)}}%</el-col>
+                  <el-col :span="12" class="ar">￥{{item.value | thousandBitSeparator}}</el-col>
+                </div>
+              </el-row>
+            </div>
           </div>
         </div>
       </el-col>
@@ -54,16 +72,56 @@
 import IEcharts from 'vue-echarts-v3'
 import 'echarts/lib/chart/line' // 引入折线
 import 'echarts/lib/chart/pie' // 引入饼图
+import filterMix from './filter'
 
 export default {
+  mixins: [filterMix],
   data() {
     return {
+      color: ['#45a1ff', '#5bcb75', '#fcd44b', '#f04864', '#9861e5', '#4ecbcb'],
+      mockData: [
+        {
+          name: 'test1',
+          percent: Math.floor(Math.random() * 100),
+          value: Math.floor(Math.random() * 10000)
+        },
+        {
+          name: 'test2',
+          percent: Math.floor(Math.random() * 100),
+          value: Math.floor(Math.random() * 10000)
+        },
+        {
+          name: 'test3',
+          percent: Math.floor(Math.random() * 100),
+          value: Math.floor(Math.random() * 10000)
+        },
+        {
+          name: 'test4',
+          percent: Math.floor(Math.random() * 100),
+          value: Math.floor(Math.random() * 10000)
+        },
+        {
+          name: 'test5',
+          percent: Math.floor(Math.random() * 100),
+          value: Math.floor(Math.random() * 10000)
+        },
+        {
+          name: 'test6',
+          percent: Math.floor(Math.random() * 100),
+          value: Math.floor(Math.random() * 10000)
+        }
+      ]
     }
   },
   components: {
     IEcharts
   },
   computed: {
+    salesSum() {
+      return this.mockData.reduce((val, item) => {
+        return val + parseFloat(item.value)
+      }, 0)
+    },
     brokenOptions() {
       return {
         tooltip: {
@@ -95,6 +153,7 @@ export default {
         tooltip: {
           trigger: 'axis'
         },
+        color: this.color,
         height: '500px',
         graphic: {
           type: 'group',
@@ -124,7 +183,7 @@ export default {
               zlevel: 100,
               style: {
                 y: 100,
-                text: '￥19999',
+                text: '￥' + this.$options.filter.thousandBitSeparator(this.salesSum),
                 fontSize: 28,
                 textAlign: 'center',
                 fontFamily: '"Arial Normal", "Arial"'
@@ -157,13 +216,7 @@ export default {
                 borderColor: '#ffffff'
               }
             },
-            data: [
-              { value: 335, name: '直接访问' },
-              { value: 310, name: '邮件营销' },
-              { value: 234, name: '联盟广告' },
-              { value: 135, name: '视频广告' },
-              { value: 1548, name: '搜索引擎' }
-            ]
+            data: this.mockData
           }
         ]
       }

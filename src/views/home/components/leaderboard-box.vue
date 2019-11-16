@@ -1,7 +1,7 @@
 <!--
  * @Author: xiaomin
  * @Date: 2019-11-15 15:32:30
- * @LastEditTime: 2019-11-15 17:58:15
+ * @LastEditTime: 2019-11-16 13:27:02
  -->
 <template>
   <div class="leaderboard-box">
@@ -16,9 +16,9 @@
       </el-tabs>
       <div class="leaderboard-item-panel">
         <div class="leaderboard-item" v-for="(item, index) in rankData" :key="index">
-          <span class="item-number" v-text="item.rank"></span>
-          <span class="item-name" v-text="item.name"></span>
-          <span class="item-performance" v-text="item.performance"></span>
+          <span class="item-number">{{item.rank}}</span>
+          <span class="item-name">{{item.name}}</span>
+          <span class="item-performance">{{item.performance | thousandBitSeparator}}</span>
         </div>
       </div>
     </div>
@@ -26,7 +26,10 @@
 </template>
 
 <script>
+import filterMix from './filter'
+
 export default {
+  mixins: [filterMix],
   data() {
     return {
       currTab: '',
@@ -35,37 +38,37 @@ export default {
         {
           rank: 1,
           name: '小丽',
-          performance: 12345
+          performance: Math.floor(Math.random() * 10000)
         },
         {
           rank: 2,
           name: '李强',
-          performance: 890987
+          performance: Math.floor(Math.random() * 10000)
         },
         {
           rank: 3,
           name: '张三',
-          performance: 999345
+          performance: Math.floor(Math.random() * 10000)
         },
         {
           rank: 4,
           name: '王麻子',
-          performance: 23
+          performance: Math.floor(Math.random() * 10000)
         },
         {
           rank: 6,
           name: 'candy',
-          performance: 1111
+          performance: Math.floor(Math.random() * 10000)
         },
         {
           rank: 7,
           name: '阿吉斯坦',
-          performance: 3333
+          performance: Math.floor(Math.random() * 10000)
         },
         {
           rank: 8,
           name: '啦啦啦',
-          performance: 3333
+          performance: Math.floor(Math.random() * 10000)
         }
       ]
     }

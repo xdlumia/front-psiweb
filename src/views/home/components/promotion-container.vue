@@ -38,42 +38,42 @@ export default {
             title: '国庆促销',
             total: 100,
             nums: 20,
-            percent: 20
+            percent: Math.floor(Math.random() * 100)
           },
           {
             id: 2,
             title: '国庆促销',
             total: 120,
             nums: 20,
-            percent: 20
+            percent: Math.floor(Math.random() * 100)
           },
           {
             id: 3,
             title: '国庆促销',
             total: 80,
             nums: 20,
-            percent: 20
+            percent: Math.floor(Math.random() * 100)
           },
           {
             id: 4,
             title: '国庆促销',
             total: 90,
             nums: 20,
-            percent: 20
+            percent: Math.floor(Math.random() * 100)
           },
           {
             id: 5,
             title: '国庆促销',
             total: 100,
             nums: 10,
-            percent: 20
+            percent: Math.floor(Math.random() * 100)
           },
           {
             id: 6,
             title: '国庆促销',
             total: 100,
             nums: 4,
-            percent: 20
+            percent: Math.floor(Math.random() * 100)
           }
         ],
         aims: []

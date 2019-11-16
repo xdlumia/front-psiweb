@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-15 14:30:04
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-15 17:52:25
+ * @LastEditTime: 2019-11-16 13:31:24
  * @Description: 基础数据
  -->
 <template>
@@ -39,9 +39,16 @@
               <span>季</span>
             </div>
           </h5>
-          <h1 class="number">{{1260 | thousandBitSeparator}}/{{756690 | thousandBitSeparator}}</h1>
-          <div style="flex:1;">
-            <el-slider v-model="cycle" disabled :show-tooltip="false"></el-slider>
+          <h1 class="number">{{Math.floor(Math.random() * 10000) | thousandBitSeparator}}/{{756690 | thousandBitSeparator}}</h1>
+          <div style="flex:1;display: flex;align-items: center">
+            <!-- <el-slider v-model="cycle" disabled :show-tooltip="false"></el-slider> -->
+            <div style="flex:1">
+              <el-progress
+                :text-inside="true"
+                :stroke-width="16"
+                :percentage="Math.floor(Math.random() * 100)"
+              ></el-progress>
+            </div>
           </div>
         </div>
       </el-col>
@@ -55,7 +62,7 @@
               </el-tooltip>
             </div>
           </h5>
-          <h1 class="number">{{8846 | thousandBitSeparator}}</h1>
+          <h1 class="number">{{Math.floor(Math.random() * 10000) | thousandBitSeparator}}</h1>
           <div style="flex:1;">
             <IEcharts class="store" style="width:100%;height:100%;" :options="options"></IEcharts>
           </div>
@@ -71,7 +78,7 @@
               </el-tooltip>
             </div>
           </h5>
-          <h1 class="number">{{12650 | thousandBitSeparator}}</h1>
+          <h1 class="number">{{Math.floor(Math.random() * 10000) | thousandBitSeparator}}</h1>
           <div style="flex:1;display: flex;justify-content: space-between;align-items: center">
             <div style="flex:1;display: flex;align-items: center">
               <span style="flex:0 0 50%;">周同比</span>
@@ -93,8 +100,10 @@
 <script type='text/ecmascript-6'>
 import IEcharts from 'vue-echarts'
 import 'echarts/lib/chart/themeRiver' // 引入河流图
+import filterMix from './filter'
 
 export default {
+  mixins: [filterMix],
   data() {
     return {
       taskList: Array.from({ length: 14 }, () => Math.floor(Math.random() * 100)),
@@ -166,14 +175,6 @@ export default {
   },
   components: {
     IEcharts
-  },
-  filter: {
-    // 千位分隔符转换
-    thousandBitSeparator(num) {
-      return num && num
-        .toString()
-        .replace(/^\d+/, (m) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
-    }
   }
 }
 </script>
