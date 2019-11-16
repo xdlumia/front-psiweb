@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-28 14:00:55
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-15 15:35:15
+ * @LastEditTime: 2019-11-16 14:30:28
  * @Description: 生成拣货单和组装任务 人员分配 1
 */
 <template>
@@ -15,7 +15,7 @@
               {required:true,message:'必填项'}
           ]"
             label="选择拆卸人"
-            prop
+            prop="disassemblyPerson"
             size="mini"
             v-if="!hide.includes('chooseTeardown')"
           >
@@ -39,7 +39,7 @@
     </div>
     <div>
       <el-form-item label="备注" size="mini">
-        <el-input :rows="3" maxlength="300" placeholder="备注" show-word-limit type="textarea" />
+        <el-input :rows="3" maxlength="300" placeholder="备注" show-word-limit type="textarea" v-model="data.note" />
       </el-form-item>
     </div>
   </form-card>
@@ -81,6 +81,7 @@ export default {
       //   positionName: '',
       //   userId: '791'
       // };
+      this.$set(this.data,'disassemblyPerson',value.userId)
       this.employeeName = value.employeeName;
       this.addform.blitemPerson = value.userId;
     }

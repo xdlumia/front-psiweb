@@ -3,7 +3,7 @@
 const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = false;
 /**
-* @date 2019-11-15
+* @date 2019-11-16
 * @host 39.99.132.95:9211
 */
 export default {
@@ -587,6 +587,15 @@ export default {
     },
     /**
      * @tag 库房拆卸单
+     * @description 生成拆卸任务
+     */
+    wmsdisassemblyorderGenerateTask: {
+        url: '/wmsdisassemblyorder/generateTask',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房拆卸单
      * @description 查看拆卸单详细信息
      */
     wmsdisassemblyorderInfo: {
@@ -641,16 +650,7 @@ export default {
     },
     /**
      * @tag 库房拆卸任务
-     * @description 删除
-     */
-    wmsdisassemblytaskDelete: {
-        url: '/wmsdisassemblytask/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
-     * @tag 库房拆卸任务
-     * @description 查看详细信息
+     * @description 查看拆卸任务详细信息
      */
     wmsdisassemblytaskInfo: {
         url: '/wmsdisassemblytask/info/{id}',
@@ -659,7 +659,7 @@ export default {
     },
     /**
      * @tag 库房拆卸任务
-     * @description 获取列表
+     * @description 获取拆卸任务列表
      */
     wmsdisassemblytaskList: {
         url: '/wmsdisassemblytask/list',
@@ -668,25 +668,7 @@ export default {
     },
     /**
      * @tag 库房拆卸任务
-     * @description 逻辑删除
-     */
-    wmsdisassemblytaskLogicDelete: {
-        url: '/wmsdisassemblytask/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
-     * @tag 库房拆卸任务
-     * @description 保存
-     */
-    wmsdisassemblytaskSave: {
-        url: '/wmsdisassemblytask/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
-     * @tag 库房拆卸任务
-     * @description 修改
+     * @description 修改拆卸任务信息
      */
     wmsdisassemblytaskUpdate: {
         url: '/wmsdisassemblytask/update',

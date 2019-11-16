@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-15 18:11:36
+ * @LastEditTime: 2019-11-16 13:51:50
  * @Description: 拆卸单
 */
 <template>
@@ -46,7 +46,6 @@ export default {
     return {};
   },
   mounted() {
-    console.log(this);
   },
   methods: {
     getDetail() {
@@ -58,7 +57,7 @@ export default {
       };
     },
     afterDetailInit() {
-      console.log('afterDetailInit', this.form);
+      // console.log('afterDetailInit', this.form);
     },
     getCommodityInfo({
       children,
@@ -87,7 +86,7 @@ export default {
           type: 'info'
         });
       }
-      // await this.$refs.form.validate();
+      await this.$refs.form.validate();
       this.loading = true;
       try {
         let form = { ...this.form };

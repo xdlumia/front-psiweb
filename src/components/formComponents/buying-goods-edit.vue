@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-15 19:26:09
+ * @LastEditTime: 2019-11-16 14:15:44
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -31,6 +31,7 @@
         row-key="_rowKey"
         show-summary
         size="mini"
+        :expand-row-keys="expandRowKeys"
       >
         <el-table-column
           :align="item.align"
@@ -113,7 +114,7 @@
                 :formProp="getCurrentFormProp(row,item.prop)"
                 :item="item"
                 :name="item.slot"
-                :parent="getParentInfo(row)"
+                :info="getParentInfo(row)"
                 :prop="item.prop"
                 :row="row"
               />
@@ -141,6 +142,7 @@
   </div>
 </template>
 <script>
+let fakeId = 1;
 export default {
   props: {
     // 数据
@@ -197,7 +199,6 @@ export default {
     // dictName             如有该值表明是业务字典
     // format               定义format函数，会传值进去并显示返回数据 Function(value,row)
     let columns = [
-      { label: '', fixed:true, key: 'expanded', width: 40, type:'expanded' },
       { label: '商品编号', key: 'commodityCode', width: 160, prop: 'commodityCode' },
       { label: '商品图片', key: 'goodsPic', width: 100, prop: 'goodsPic' },
       { label: '商品名称', key: 'goodsName', width: 100, prop: 'goodsName' },
@@ -233,7 +234,9 @@ export default {
     ];
     return {
       showInFull: false,
-      columns
+      columns,
+      fakeId: 1,
+      expandRowKeys:[]
     };
   },
   computed: {
@@ -253,12 +256,6 @@ export default {
       if (this.customColumns) {
         list = list.concat(this.customColumns);
       }
-      list.unshift({
-        key: 'hideChildren',
-        fixed: true,
-        width: 1,
-        className: 'hide-children'
-      });
       if (this.sort && this.sort.length) {
         let sort = ['hideChildren'].concat(this.sort);
         let map = list.reduce((data, item) => {
@@ -274,24 +271,32 @@ export default {
         });
         Object.values(map).map(item => list.push(item));
       }
+      list.unshift(
+        { key: 'hideChildren', fixed: true, width: 1, className: 'hide-children' },
+        { label: '', fixed: true, key: 'expanded', width: 40, type:'expanded' },
+      );
       return list;
     }
   },
   mounted() {},
   methods: {
     getParentInfo(row) {
+      let top = this.data[this.fkey]
       let isChild = row._rowKey != row.commodityCode;
       let ks = row._rowKey.split('_');
+      isChild = ks.length>1;
       let parentIndex = -1;
-      let parent = this.data[this.fkey].filter(
+      let parent = top.filter(
         item => item.commodityCode == ks[0]
       );
-      return {
+      let info = {
         isChild,
-        parent: isChild ? parent[0] : this.data[this.fkey],
-        parentIndex: isChild ? this.data[this.fkey].indexOf(parent[0]) : null,
-        index: isChild ? parent[0].children.indexOf(row) : parentIndex
-      };
+        parent: isChild ? parent[0] : null,
+        parentArray: isChild ? parent[0].children : top,
+        parentIndex: isChild ? top.indexOf(parent[0]) : null,
+        index: isChild ? parent[0].children.indexOf(row) : top.indexOf(row)
+      }
+      return info;
     },
     getCurrentFormProp(row, prop) {
       let info = this.getParentInfo(row);
@@ -302,9 +307,9 @@ export default {
     },
     recalcRowKey(list, pk = '') {
       (list || []).map(item => {
-        item._rowKey = [pk, item.commodityCode].filter(a => a).join('_');
+        this.$set(item,'_rowKey',String(item._rowKey || [pk, item.commodityCode||fakeId++].filter(a => a).join('_')))
         if (pk) {
-          item.$parentCode = pk;
+          this.$set(item,'$parentCode',pk)
         }
         if (item.children) {
           this.recalcRowKey(item.children, item._rowKey);
@@ -312,9 +317,13 @@ export default {
       });
       return list || [];
     },
-    expand(row) {
-      this.$set(row, 'expanded', !row.expanded);
-      this.$refs.table.toggleRowExpansion(row, row.expanded);
+    expand(row,isExpand) {
+      this.$nextTick(()=>{
+        isExpand = typeof isExpand=="boolean"?isExpand:!row.expanded;
+        this.$set(row, 'expanded', isExpand);
+        this.$refs.table.toggleRowExpansion(row, isExpand);
+        // this.expandRowKeys = [row._rowKey]
+      })
     },
     getSummaries(param) {
       if (this.summaryMethod) return this.summaryMethod(param);
