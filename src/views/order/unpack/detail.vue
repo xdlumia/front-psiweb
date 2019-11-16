@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-16 14:32:51
+ * @LastEditTime: 2019-11-16 15:31:59
  * @Description: 拆卸单
 */
 <template>
@@ -69,6 +69,21 @@ export default {
                 '-1': '终止'
             }
         };
+    },
+    computed: {
+        status() {
+            // prettier-ignore
+            if (!this.detail) return [];
+            else {
+                return [
+                    { label: '状态', value: this.stateText[this.detail.disassemblyOrderState] },
+                    { label: '单据创建人', value: this.detail.creatorName },
+                    { label: '创建部门', value: this.detail.deptName },
+                    { label: '创建时间', value: this.detail.createTime, isTime: true },
+                    { label: '来源', value: this.detail.source }
+                ];
+            }
+        }
     },
     methods: {
         async getDetail() {

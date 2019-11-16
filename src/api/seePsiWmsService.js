@@ -649,6 +649,15 @@ export default {
         mock: isUseMock
     },
     /**
+     * @tag 库房拆卸单
+     * @description 调整拆卸任务生成顺序
+     */
+    wmsdisassemblyorderUpdatesSquence: {
+        url: '/wmsdisassemblyorder/updatesSquence',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
      * @tag 库房拆卸任务
      * @description 查看拆卸任务详细信息
      */

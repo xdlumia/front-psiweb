@@ -13,14 +13,14 @@
         { label:'待分配', fixed:true, key:'waitTeardownNumber', width:100, prop:'teardownNumber',format:(a,row)=>`${row.teardownNumber||0}` },
         { label:'机器号/SN码', fixed:true, key:'code', width:100, prop:'teardownNumber', click:(e)=>getTableVisible(e), format:()=> 1 },
         { label:'配件数量', key:'singleNum', width:100, prop:'singleNum', },
-        { label:'采购单价', key:'purchasePrice', width:100, prop:'purchasePrice',format:(a,row)=>row.purchaseUnivalence||row.inventoryPrice },
+        { label:'采购单价', key:'purchaseUnivalence', width:100, prop:'purchaseUnivalence',format:(a,row)=>row.purchaseUnivalence||row.inventoryPrice },
       ]"
       :data="data"
       :show="[
         'commodityCode','goodsName','categoryCode','className','specOne','configName','noteText','costAmountPrice','taxRate','!add','unit','expanded'
       ]"
       :showSummary="false"
-      :sort="['expanded','disassemblyNum','commodityCode','goodsName','singleNum','purchasePrice','costAmountPrice','taxRate','categoryCode','className','specOne','configName',]"
+      :sort="['expanded','disassemblyNum','commodityCode','goodsName','singleNum','purchaseUnivalence','costAmountPrice','taxRate','categoryCode','className','specOne','configName',]"
       title="拆卸商品"
     ></buying-goods-edit>
     <goods-unpack-record :commodityList="recCommodity" :visible.sync="showRec" v-if="showRec" />

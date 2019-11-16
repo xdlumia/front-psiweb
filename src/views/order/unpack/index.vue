@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-16 15:10:14
+ * @LastEditTime: 2019-11-16 15:44:02
  * @Description: 采购-拆卸单
 */
 <template>
-    <div class="buying-requisition-page wfull hfull">
+    <div class="buying-requisition-page wfull hfull" v-loading="loading">
         <TableView
             :filterOptions="filterOptions"
             @response="onTableData"
@@ -66,6 +66,7 @@ export default {
             showDetail: false,
             showEdit: false,
             switchValue: false,
+            loading: false,
             currentCode: '',
             stateText: {
                 '0': '新建',
@@ -75,42 +76,18 @@ export default {
                 '4': '已完成',
                 '-1': '终止'
             },
+            // prettier-ignore
             filterOptions: [
-                { label: '采购单编号', prop: 'purchaseCode' },
-                { label: '拆卸单编号', prop: 'disassemblyOrderCode' },
-                {
-                    label: '最小任务数量',
-                    prop: 'TaskNum',
-                    type: 'numberRange',
-                    int: true
-                },
-                {
-                    label: '最小未分配数量',
-                    prop: 'UndistributedNum',
-                    type: 'numberRange',
-                    int: true
-                },
-                {
-                    label: '最小未拆卸数量',
-                    prop: 'NoDisassemblyNum',
-                    type: 'numberRange',
-                    int: true
-                },
-                {
-                    label: '最小已拆卸数量',
-                    prop: 'AccomplishDisassemblyNum',
-                    type: 'numberRange',
-                    int: true
-                },
-                {
-                    label: '最小生成顺序',
-                    prop: 'Sequence',
-                    type: 'numberRange',
-                    int: true
-                },
-                { label: '部门code', prop: 'deptTotalCode', type: 'dept' },
-                { label: '开始时间', prop: 'CreateTime', type: 'dateRange' },
-                { label: '创建人ID', prop: 'creator', type: 'employee' }
+                { label: '采购单编号', prop: 'purchaseCode', default:true, },
+                { label: '拆卸单编号', prop: 'disassemblyOrderCode', default:true, },
+                { label: '任务数量', prop: 'TaskNum', type: 'numberRange', int: true, default:true, },
+                { label: '未分配数量', prop: 'UndistributedNum', type: 'numberRange', int: true, default:true, },
+                { label: '未拆卸数量', prop: 'NoDisassemblyNum', type: 'numberRange', int: true, default:true, },
+                { label: '已拆卸数量', prop: 'AccomplishDisassemblyNum', type: 'numberRange', int: true, default:true, },
+                { label: '生成顺序', prop: 'Sequence', type: 'numberRange', int: true, default:true, },
+                { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
+                { label: '创建人', prop: 'creator', type: 'employee' },
+                { label: '创建时间', prop: 'CreateTime', type: 'dateRange' },
             ]
         };
     },
@@ -127,12 +104,24 @@ export default {
         logData(e) {
             console.log(e);
         },
-        onDrag(list) {
+        async onDrag(list) {
             let changed = list.filter((item, i) => {
                 let isChanged = item.$index != i;
                 item.$index = i;
                 return isChanged;
             });
+            let [a, b] = changed;
+            this.loading = true;
+            try {
+                await this.$api.seePsiWmsService.wmsdisassemblyorderUpdatesSquence(
+                    [
+                        { id: a.id, sequence: b.sequence },
+                        { id: b.id, sequence: a.sequence }
+                    ]
+                );
+                this.reload();
+            } catch (e) {}
+            this.loading = false;
             console.log(changed);
         },
         reload() {

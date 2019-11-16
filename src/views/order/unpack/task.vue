@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-16 14:35:39
+ * @LastEditTime: 2019-11-16 16:19:52
  * @Description: 拆卸任务单
 */
 <template>
@@ -113,6 +113,12 @@ export default {
             form.commoditySaveVoList = form.commodityList.map(item => {
                 return this.getCommodityInfo(item);
             });
+            form.commoditySaveVoList.map(item => {
+                (item.childrenCommoditySaveVoList || []).map(citem => {
+                    citem.disassemblyNum =
+                        item.disassemblyNum * citem.singleNum;
+                });
+            });
             delete form.commodityList;
             form.source = this.from || '新建';
             this.loading = true;
@@ -120,8 +126,8 @@ export default {
                 await this.$api.seePsiWmsService.wmsdisassemblyorderGenerateTask(
                     form
                 );
-                this.setEdit()
-                this.close()
+                this.setEdit();
+                this.close();
             } catch (error) {}
             this.loading = false;
             console.log(form);

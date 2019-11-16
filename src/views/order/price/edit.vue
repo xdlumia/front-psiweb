@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-15 17:42:28
+ * @LastEditTime: 2019-11-16 16:27:11
  * @Description: 采购调价单
 */
 <template>
@@ -20,11 +20,17 @@
       <d-tab-pane label="商品信息" name="commodityInfo" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
       <div>
-        <el-form :model="form" class="p10" v-if="form&visible">
+        <el-form :model="form" class="p10" v-if="form&&visible">
           <buying-goods-edit
             :data="form"
+            :customColumns="[
+            { label:'采购价(平均值)',key:'priceAverage',prop:'priceAverage', },
+            { label:'库存成本(税前)',key:'priceAverage',prop:'priceAverage', },
+            { label:'库存成本(税前)',key:'priceAverage',prop:'priceAverage', },
+            { label:'调整金额',key:'priceAverage',prop:'priceAverage', },
+            ]"
             :show="[
-              'commodityCode','goodsName','categoryCode','className','specOne','configName','noteText','!fullscreen'
+              'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','configName','noteText','!fullscreen'
             ]"
             :showSummary="false"
             title="商品信息"
@@ -57,6 +63,7 @@ export default {
   },
   methods: {
     getDetail() {
+      console.log('get detail')
       return {
         commodityList: []
       };
