@@ -2,56 +2,137 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 15:54:50
+ * @LastEditTime: 2019-11-16 16:19:52
  * @Description: 拆卸任务单
 */
 <template>
-  <el-dialog :visible="visible" @close="close" v-dialogDrag>
-    <div slot="title">
-      <span>拆卸任务{{from?`(${from})`:''}}</span>
-      <span class="fr mr20"></span>
-    </div>
-    <el-form :model="form" class="p10">
-      <pickAssemble />
-      <chooseMan />
-    </el-form>
-    <div class="ac" slot="footer">
-      <el-button @click="close" size="mini" type="primary">保存</el-button>
-      <el-button @click="close" size="mini">关闭</el-button>
-    </div>
-  </el-dialog>
+    <el-dialog :visible="visible" @close="close" v-dialogDrag v-loading="loading">
+        <div slot="title">
+            <span>拆卸任务{{from?`(${from})`:''}}</span>
+            <span class="fr mr20"></span>
+        </div>
+        <el-form :model="form" class="p10" ref="form" v-if="form&&visible">
+            <buying-goods-edit
+                :customColumns="[
+           { label:'待分配', fixed:true, key:'waitTearNumber', width:100, prop:'teardownNumber',format:(a,row)=>`0/${row.teardownNumber||0}` },
+           { label:'本次分配数量', fixed:true, key:'disassemblyNum', width:100, prop:'disassemblyNum',slot:'disassemblyNum' },
+        ]"
+                :data="form"
+                :show="[
+          'commodityCode','goodsName','categoryCode','className','specOne','configName','noteText','!add','!fullscreen'
+        ]"
+                :showSummary="false"
+                title="拆卸信息"
+            >
+                <template slot="disassemblyNum" slot-scope="{row,info,formProp}">
+                    <el-form-item
+                        :prop="formProp"
+                        :rules="[{required:true},{type:'positiveNum'},{validator:checkDisassemblyNum.bind(this,row)}]"
+                        v-if="!info.isChild"
+                    >
+                        <el-input size="mini" v-model="row.disassemblyNum"></el-input>
+                    </el-form-item>
+                </template>
+            </buying-goods-edit>
+            <choose-assembly :data="form" :hide="['chooseContact']" />
+        </el-form>
+        <div class="ac" slot="footer">
+            <el-button @click="save" size="mini" type="primary">保存</el-button>
+            <el-button @click="close" size="mini">关闭</el-button>
+        </div>
+    </el-dialog>
 </template>
 <script>
+import VisibleMixin from '@/utils/visibleMixin';
+
 export default {
-  components: {},
-  props: {
-    visible: {
-      type: Boolean,
-      default: false
+    mixins: [VisibleMixin],
+    components: {},
+    props: {
+        from: String // 来源
     },
-    form: {},
-    from: String // 来源
-  },
-  computed: {
-    maxHeight() {
-      return window.innerHeight - 130;
-    }
-  },
-  data() {
-    return {
-      activeName: '',
-      randomStr: +new Date() + '-' + Math.random()
-    };
-  },
-  mounted() {},
-  methods: {
-    handleClick({ label, name }) {
-      this.activeName = '';
+    computed: {
+        maxHeight() {
+            return window.innerHeight - 130;
+        }
     },
-    close() {
-      this.$emit('update:visible', false);
+    data() {
+        return {};
+    },
+    mounted() {},
+    methods: {
+        checkDisassemblyNum(row, rule, value, cb) {
+            if (!(parseInt(value) || 0 > 1)) {
+                cb(new Error('数量最低为1'));
+            } else cb();
+        },
+        getCommodityInfo({
+            children,
+            commodityCode,
+            goodsName,
+            disassemblyNum,
+            purchaseUnivalence,
+            singleNum
+        }) {
+            return {
+                childrenCommoditySaveVoList:
+                    children && children.length
+                        ? children.map(this.getCommodityInfo)
+                        : undefined,
+                commodityCode,
+                goodsName,
+                disassemblyNum,
+                purchaseUnivalence,
+                singleNum
+            };
+        },
+        async getDetail() {
+            if (this.code) {
+                let {
+                    data
+                } = await this.$api.seePsiWmsService.wmsdisassemblyorderInfo(
+                    null,
+                    this.code
+                );
+                data.commodityList = [
+                    {
+                        id: 1,
+                        commodityCode: '000',
+                        children: [{ id: 2 }]
+                    }
+                ];
+                return data;
+            } else if (this.rowData) {
+                return this.rowData;
+            }
+        },
+        async save() {
+            console.log(this.form);
+            await this.$refs.form.validate();
+            let form = { ...this.form };
+            form.commoditySaveVoList = form.commodityList.map(item => {
+                return this.getCommodityInfo(item);
+            });
+            form.commoditySaveVoList.map(item => {
+                (item.childrenCommoditySaveVoList || []).map(citem => {
+                    citem.disassemblyNum =
+                        item.disassemblyNum * citem.singleNum;
+                });
+            });
+            delete form.commodityList;
+            form.source = this.from || '新建';
+            this.loading = true;
+            try {
+                await this.$api.seePsiWmsService.wmsdisassemblyorderGenerateTask(
+                    form
+                );
+                this.setEdit();
+                this.close();
+            } catch (error) {}
+            this.loading = false;
+            console.log(form);
+        }
     }
-  }
 };
 </script>
 <style lang="scss" scoped>

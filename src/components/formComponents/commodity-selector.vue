@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 10:42:25
+ * @LastEditTime: 2019-11-15 10:08:09
  * @Description: 商品输入选框 字段已绑定 1
 */
 <template>
@@ -25,36 +25,19 @@
         v-for="(item,i) in options"
       >
         <el-row>
-          <el-col
-            :span="6"
-            class="b d-text-black"
-            v-if="i==0"
-          >商品名称</el-col>
-          <el-col
-            :span="18"
-            class="b d-text-black"
-            v-if="i==0"
-          >商品编号</el-col>
-          <el-col
-            :span="6"
-            class="d-hidden d-elip"
-          >{{item.goodsName}}</el-col>
-          <el-col
-            :span="18"
-            class="d-hidden d-elip"
-          >
+          <el-col :span="6" class="b d-text-black" v-if="i==0">商品名称</el-col>
+          <el-col :span="18" class="b d-text-black" v-if="i==0">商品编号</el-col>
+          <el-col :span="6" class="d-hidden d-elip">{{item.goodsName}}</el-col>
+          <el-col :span="18" class="d-hidden d-elip">
             <span :title="item.commodityCode">{{item.commodityCode}}</span>
           </el-col>
         </el-row>
       </el-option>
     </el-select>
-    <i
-      @click="openDialog"
-      class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"
-    ></i>
+    <i @click="openDialog" class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"></i>
     <commodity-choose
-      :multiple="multiple"
       :kinds="kinds"
+      :multiple="multiple"
       :params="wmsId?{wmsId}:params"
       :sn="sn"
       :visible.sync="showCommodityGoods"
@@ -120,7 +103,9 @@ export default {
     },
     choose(e) {
       if (!this.multiple) {
-        const index = this.options.findIndex(item => item.commodityCode === e.commodityCode)
+        const index = this.options.findIndex(
+          item => item.commodityCode === e.commodityCode
+        );
         if (index === -1) {
           this.options.push(e);
         }
@@ -137,13 +122,18 @@ export default {
         return (this.options = this.searchTable[words]);
       }
       this.loading = true;
-      const api = this.sn ? 'wmsinventorydetailList' : 'wmsinventoryList'
-      const { data } = await this.$api.seePsiWmsService[api]({
-        page: 1,
-        limit: 50,
-        goodsName: words,
-        wmsId: this.params ? this.params.wmsId : ''
-      });
+      const api = this.sn ? 'wmsinventorydetailList' : 'wmsinventoryList';
+      const { data } = await this.$api.seePsiWmsService[api](
+        Object.assign(
+          {
+            page: 1,
+            limit: 50,
+            goodsName: words,
+            categoryCode: this.kinds && this.kinds.length ? this.kinds[0].value : ''
+          },
+          this.params
+        )
+      );
       this.options = data || [];
       this.loading = false;
       this.searchTable[words] = data;

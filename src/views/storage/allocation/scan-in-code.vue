@@ -47,7 +47,7 @@
             min-width="110"
           >
             <template slot-scope="">
-              <span>{{item.categoryCode}}</span>
+              <span>{{item.categoryCode|dictionary('PSI_SP_KIND')}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -79,7 +79,7 @@
             min-width="80"
           >
             <template slot-scope="">
-              <span>{{item.unit}}</span>
+              <span>{{item.unit|dictionary('SC_JLDW')}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -88,20 +88,20 @@
           <span class="b mt5">扫SN码</span>
           <el-input
             v-model="item.snCode"
-            v-on:keyup.13.native="shipmentCommodityCheck(item.snCode,index)"
+            v-on:keyup.13.native="shipmentCommodityCheck(item,index)"
             size="mini"
             style="width:200px;"
             class="ml10 mt5"
           ></el-input>
-          <span class="fr d-text-black mr10 mt5">
+          <!-- <span class="fr d-text-black mr10 mt5">
             <span>本次成功扫码</span>
-            <span class="b d-text-red f16"> 3 </span>
+            <span class="b d-text-red f16"> {{downTableData.length}} </span>
             <span>件，历史扫码</span>
             <span class="b d-text-green f16"> 5 </span>
             <span>件，还需扫码</span>
             <span class="b d-text-blue f16"> 127 </span>
             <span>件</span>
-          </span>
+          </span> -->
         </div>
       </form-card>
 
@@ -111,7 +111,7 @@
         :data='downTableData'
         ref="companyTable"
         class="college-main mt20"
-        style="max-height:300px"
+        style="calc(100vh - 340px)"
       >
         <el-table-column
           min-width="50"
@@ -247,23 +247,24 @@ export default {
       this.$emit('update:visible', false)
     },
     //扫SN码
-    shipmentCommodityCheck(snCode, index) {
-      this.$api.seePsiWmsService.wmsallocationorderShipmentCommodityCheck({ allocationOrderId: this.dialogData.id, snCode: snCode })
+    shipmentCommodityCheck(item, index) {
+      console.log(item, this.dialogData, 'dialogDatadialogDatadialogDatadialogDatadialogDatadialogDatadialogDatadialogData')
+      this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ putawayCommodityList: this.downTableData, snCode: item.snCode, categoryCode: item.categoryCode, commodityCode: item.commodityCode, wmsId: this.dialogData.putawayWmsId })
         .then(res => {
-          if (res.data) {
-            let arr = this.downTableData.filter((item) => {
-              return item.id == res.data.id
-            })
-            if (arr.length == 0) {
-              this.doSth(res.data)
-            } else {
-              this.$message({
-                type: 'info',
-                message: '扫过喽'
-              })
-            }
-          }
-          this.snCode = ''
+          // if (res.data) {
+          //   let arr = this.downTableData.filter((item) => {
+          //     return item.id == res.data.id
+          //   })
+          //   if (arr.length == 0) {
+          //     this.doSth(res.data)
+          //   } else {
+          //     this.$message({
+          //       type: 'info',
+          //       message: '扫过喽'
+          //     })
+          //   }
+          // }
+          // this.snCode = ''
         })
         .finally(() => {
 

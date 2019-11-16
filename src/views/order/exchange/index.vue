@@ -2,14 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 15:56:21
+ * @LastEditTime: 2019-11-15 09:38:15
  * @Description: 采购-换货单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="换货单">
-      <template slot="button"> 
-        <el-button size="mini" type="primary" @click="showEdit=true">新增</el-button>
+    <TableView api="bizSystemService.getEmployeeList" busType="1" title="换货单">
+      <template slot="button">
+        <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
