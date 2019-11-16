@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 18:05:49
+ * @LastEditTime: 2019-11-15 16:56:03
  * @Description: 销售-销售退货单
  */
 <template>
@@ -125,7 +125,7 @@ export default {
     // 按钮功能操作
     eventHandle(type, row) {
       this[type] = true
-      this.rowData = row
+      this.rowData = row ? row : {}
       return
     },
   }

@@ -78,6 +78,7 @@
     <storehouseDistribution
       :visible.sync='backVisible'
       :drawerData='drawerData'
+      v-if='backVisible'
     />
   </SideDetail>
 

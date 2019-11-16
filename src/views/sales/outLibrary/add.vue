@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 19:47:00
+ * @LastEditTime: 2019-11-15 19:02:38
  * @Description: 编辑出库单
 */
 <template>
@@ -173,7 +173,7 @@ export default {
           this.$api.seePsiSaleService[api](this.form)
             .then(res => {
               this.close()
-              teis.setEdit()
+              this.setEdit()
             })
             .finally(() => {
               this.loading = false

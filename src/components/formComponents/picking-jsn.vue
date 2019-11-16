@@ -97,8 +97,9 @@
               api="seePsiWmsService.wmsflowrecordList"
               :params="{commodityCode:data.commodityCode,businessCode:drawerData.pickingOrderCode,page:1,limit:15}"
               ref="companyTable"
+              @response='response'
               class="college-main"
-              style="max-height:300px"
+              style="height:200px"
             >
               <el-table-column
                 type="index"
@@ -125,6 +126,17 @@
               >
                 <template slot-scope="scope">
                   <span class="">{{scope.row.robotCode}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                v-for="(item,index) of custom"
+                :key="index"
+                min-width="150"
+                :label="item"
+                show-overflow-tooltip
+              >
+                <template slot-scope="scope">
+                  <span>{{scope.row[item]}}</span>
                 </template>
               </el-table-column>
               <el-table-column
@@ -179,14 +191,26 @@ export default {
   },
   data() {
     return {
-      tableData: Array(12)
-        .fill('')
-        .map(() => ({ name: '' })),
+      tableData: [],
+      custom: []
     };
   },
   methods: {
     close() {
       this.$emit('update:visible', false)
+    },
+    response(res) {
+      let tableData = res.data || []
+      tableData.forEach((item) => {
+        if (item.fieldList.length > 0) {
+          item.fieldList.forEach((item1) => {
+            item[item1.fieldVal] = item1.fieldCode
+            if (!this.custom.includes(item1.fieldVal)) {
+              this.custom.push(item1.fieldVal)
+            }
+          })
+        }
+      })
     }
   }
 };

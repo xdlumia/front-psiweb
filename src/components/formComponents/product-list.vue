@@ -67,7 +67,7 @@
         min-width="180"
       >
         <template slot-scope="scope">
-          <span class="d-text-blue">{{scope.row.goodsCode}}</span>
+          <span class="d-text-blue">{{scope.row.commodityCode}}</span>
         </template>
       </el-table-column>
       <el-table-column

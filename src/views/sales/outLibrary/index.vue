@@ -90,7 +90,7 @@ export default {
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
-      this.rowData = row
+      this.rowData = row ? row : {}
       this[type] = true
       return
     },

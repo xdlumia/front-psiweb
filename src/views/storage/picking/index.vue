@@ -18,9 +18,8 @@
       title="拣货单"
     >
       <template slot-scope="{column,row,value}">
-        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span
-          v-else-if="column.columnFields=='assembleTaskCode' || column.columnFields=='shipmentCode'"
+          v-if="column.columnFields=='assembleTaskCode' || column.columnFields=='shipmentCode'"
           class="d-text-blue"
         >{{value}}</span>
         <span

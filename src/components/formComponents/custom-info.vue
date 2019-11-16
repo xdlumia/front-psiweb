@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 16:04:27
+ * @LastEditTime: 2019-11-15 18:39:45
  * @Description: 自定义信息 1
 */
 <template>
@@ -21,17 +21,27 @@
       >
         <template slot-scope="scope">
 
-          <!-- <el-form-item
+          <el-form-item
             class="mb0"
             :rules="{required:true}"
             :prop="`fieldList.${scope.$index}.fieldCode`"
-          > -->
-          <el-input
-            size="mini"
-            :disabled="disabled"
-            v-model.trim="scope.row.fieldCode"
-          />
-          <!-- </el-form-item> -->
+          >
+            <el-select v-model="scope.row.fieldCode">
+              <el-option
+                v-for="item in fieldOptions"
+                :key="item.id"
+                :label="item.fieldName"
+                :value="item.fieldCode"
+              >
+              </el-option>
+            </el-select>
+
+            <!-- <el-input
+              size="mini"
+              :disabled="disabled"
+              v-model.trim="scope.row.fieldCode"
+            /> -->
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column
@@ -41,17 +51,17 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <!-- <el-form-item
+          <el-form-item
             class="mb0"
             :rules="{required:true}"
             :prop="`fieldList.${scope.$index}.fieldVal`"
-          > -->
-          <el-input
-            size="mini"
-            :disabled="disabled"
-            v-model.trim="scope.row.fieldVal"
-          />
-          <!-- </el-form-item> -->
+          >
+            <el-input
+              size="mini"
+              :disabled="disabled"
+              v-model.trim="scope.row.fieldVal"
+            />
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column
@@ -93,11 +103,25 @@ export default {
       type: Boolean,
       default: false
     }
-  }
+  },
+  data() {
+    return {
+      fieldOptions: []
+    }
+  },
+  created() {
+    this.queryFieldsByForm()
+  },
+  methods: {
+
+    queryFieldsByForm() {
+      this.$api.seeBaseinfoService.formfieldsQueryFieldsByForm(null, 1)
+        .then(res => {
+          this.fieldOptions = res.data || []
+        })
+    }
+  },
 };
 </script>
 <style lang="scss">
-.custom-info .el-form-item--mini.el-form-item {
-  margin-bottom: 0;
-}
 </style>

@@ -63,7 +63,7 @@
         class="choose-aside fl"
         style="height: calc(100% - 40px);"
       >
-        <el-button
+        <el-button 
           type="text"
           class="ml10"
           @click="clickAll"

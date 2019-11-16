@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 18:17:57
+ * @LastEditTime: 2019-11-15 19:04:09
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -20,10 +20,7 @@
       :data="data"
     />
     <!-- 退货商品信息 -->
-    <goods-return
-      :params="{busType:17,busCode:code}"
-      disabled
-    />
+    <goods-return-edit disabled />
     <!-- 其他费用 -->
     <other-fee
       disabled
@@ -62,9 +59,6 @@ export default {
   },
   data() {
     return {
-      activeName: 'detail',
-      // 详情信息
-      detailInfo: {},
     }
   },
   mounted() {

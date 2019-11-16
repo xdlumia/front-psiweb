@@ -160,7 +160,14 @@ export default {
     },
     //保存
     submit() {
-      console.log(this.$refs.pickingSn.tableData, 'tableDatatableDatatableData')
+      let tableData = this.$refs.pickingSn.tableData
+      let custom = this.$refs.pickingSn.custom
+      tableData.forEach((item) => {
+        item.fieldList = [];
+        custom.forEach((item1) => {
+          item.fieldList.push({ fieldVal: item1, fieldCode: item[item1] })
+        })
+      })
       this.$api.seePsiWmsService.wmspickingorderBatchShipment({ businessCode: this.drawerData.pickingOrderCode, businessId: this.drawerData.id, putawayCommodityList: this.$refs.pickingSn.tableData })
         .then(res => {
           this.close()

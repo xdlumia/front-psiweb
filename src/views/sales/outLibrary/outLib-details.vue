@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 18:30:32
+ * @LastEditTime: 2019-11-15 18:49:45
  * @Description: 销售出库单详情
 */
 <template>
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[rowData.state = 4 || -1].includes(item.label)"
+            v-if="currStatusType[detail.state=3 || 0].includes(item.label)"
             size="small"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -56,7 +56,7 @@
           :data="detail || {}"
           class="d-auto-y"
           :button="false"
-          style="height:calc(100vh - 160px)"
+          style="height:calc(100vh - 200px)"
           :is="activeName"
         ></components>
 

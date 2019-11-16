@@ -109,7 +109,7 @@ export default {
     // 按钮功能操作
     eventHandle(type, row) {
       this[type] = true
-      this.rowData = row
+      this.rowData = row ? row : {}
       return
     },
     // 多选

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 16:46:49
+ * @LastEditTime: 2019-11-15 16:05:51
  * @Description: 销售-费用分摊单
  */
 <template>
@@ -15,10 +15,9 @@
       :column="true"
       title="费用分摊单"
       @clear-filter="reset()"
-      api="bizSystemService.getEmployeeList"
-      exportApi="bizSystemService.getEmployeeList"
+      api="seePsiSaleService.salescostapportionList"
+      exportApi="seePsiSaleService.salescostapportioExport"
       :params="Object.assign(queryForm,params)"
-      @selection-change="selectionChange"
       :filterOptions="filterOptions"
     >
       <template v-slot:button>
@@ -37,30 +36,36 @@
       </template>
       <!-- 自定义按钮功能 -->
       <template slot-scope="{column,row,value}">
-        <!-- 报价单编号 -->
+        <!-- 费用分摊单编号 -->
         <span
-          v-if="column.columnFields == 'quotationCode'"
+          v-if="column.columnFields == 'costApportionCode'"
           class="d-text-blue d-pointer"
-          @click="eventHandle('quoteVisible',row)"
+          @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
         <!-- 销售出库单编号 -->
         <span
-          v-else-if="column.columnFields == 'shipmentCode'"
+          v-else-if="column.columnFields == 'costCode'"
           class="d-text-blue d-pointer"
           @click="eventHandle('outLibVisible',row)"
         > {{value}}</span>
-        <!-- 状态 -->
-        <span v-else-if="column.columnFields == 'state'"> {{stateObj[value]}}</span>
-        <!-- 时间 -->
-        <span v-else-if="column.columnFields=='createTime' || column.columnFields=='salesExpectedShipmentsTime' || column.columnFields=='salesRequireArrivalTime'||column.columnFields=='procurementExpectedArrivalTime'||column.columnFields=='failureTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
 
-    <!-- 费用分摊详情 -->
+    <!-- 费用分摊单详情-->
     <detail
+      v-if="detailVisible"
       :visible.sync="detailVisible"
       :rowData="rowData"
+      :code="rowData.costApportionCode"
+      @reload="this.$refs.table.reload()"
+    />
+    <!-- 销售出库单详情 -->
+    <feeDetails
+      v-if="feeVisible"
+      :visible.sync="feeVisible"
+      :rowData="rowData"
+      :code="rowData.salesShipmentCode"
       @reload="this.$refs.table.reload()"
     />
     <!-- 新增分摊-->
@@ -75,21 +80,22 @@
 <script>
 import add from './add' // 新增分摊
 import detail from './details' //客户详情
+import feeDetail from './details' //客户详情
 let filterList = [
-  { label: '排序', prop: 'sort', default: true, type: 'sort', options: [], },
-  { label: '客户编号', prop: 'title', default: true, type: 'text' },
-  { label: '客户名称', prop: 'city', default: true, type: 'text' },
-  { label: '联系人', prop: 'pushTime', default: true, type: 'employee', },
-  { label: '联系电话', prop: 'status', default: true, type: 'text' },
-  { label: '提交人', prop: 'messageType', default: true, type: 'employee', },
-  { label: '部门', prop: 'messageType2', default: true, type: 'employee', },
-  { label: '提交时间', prop: 'messageType3', default: true, type: 'daterange', },
+  // { label: '客户编号', prop: 'title', default: true, type: 'text' },
+  // { label: '客户名称', prop: 'city', default: true, type: 'text' },
+  // { label: '联系人', prop: 'pushTime', default: true, type: 'employee', },
+  // { label: '联系电话', prop: 'status', default: true, type: 'text' },
+  // { label: '提交人', prop: 'messageType', default: true, type: 'employee', },
+  // { label: '部门', prop: 'messageType2', default: true, type: 'employee', },
+  // { label: '提交时间', prop: 'messageType3', default: true, type: 'daterange', },
 ]
 export default {
   name: 'return',
   components: {
     add,
-    detail
+    detail,
+    feeDetail
   },
   props: {
     // 是否显示按钮
@@ -110,16 +116,12 @@ export default {
       loading: false,
       // 查询表单
       queryForm: {
-        title: "", // 标题
-        city: "", // 城市
-        pushTime: "",
-        messageType: "",
-        status: "",
         page: 1,
         limit: 20
       },
       rowData: {},
       addVisible: false,
+      feeVisible: false,
       detailVisible: false,
       // 筛选框数据
       filterOptions: filterList
@@ -129,21 +131,8 @@ export default {
     // 按钮功能操作
     eventHandle(type, row) {
       this[type] = true
-      this.rowData = row
+      this.rowData = row ? row : {}
       return
-    },
-    // 多选
-    selectionChange(val) {
-      console.log(val);
-
-    },
-    submitFilter() {
-      this.$emit('submit-filter')
-    },
-    // 重置
-    reset() {
-      this.$refs.filters.$refs.form.resetFields()
-      this.$refs.table.reload(1);
     },
   }
 };

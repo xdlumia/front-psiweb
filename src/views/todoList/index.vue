@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:16:28
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-14 18:20:59
+ * @LastEditTime: 2019-11-15 14:21:46
  * @Description: 待办事项
  -->
 <template>
@@ -10,7 +10,7 @@
     <h3>待办事项</h3>
     <div class="todo-wrapper">
       <div class="menu">
-        <el-menu>
+        <el-menu :default-active="defaultActived">
           <el-submenu
             v-for="(item, index) in list"
             :key="index"
@@ -20,7 +20,12 @@
             <template slot="title">
               <span class="b">{{item.label}}（{{item.processNum}}）</span>
             </template>
-            <el-menu-item :index="sub.label" v-for="(sub, key) in item.children" :key="key">
+            <el-menu-item
+              :index="sub.label"
+              v-for="(sub, key) in filterChildren(item.children)"
+              :key="key"
+              @click="showDetail(sub)"
+            >
               <div style="display: flex;justify-content: space-between;align-items: center;">
                 <span style="flex:0 0 180px">{{sub.label}}</span>
                 <div class="badge">
@@ -31,7 +36,13 @@
           </el-submenu>
         </el-menu>
       </div>
-      <div class="content"></div>
+      <div class="content">
+        <component
+          :is="componentName"
+          :button="false"
+          :params="{page: 1, limit: 15, backlogType: 1}"
+        ></component>
+      </div>
     </div>
   </div>
 </template>
@@ -39,18 +50,42 @@
 <script type='text/ecmascript-6'>
 import list from './render'
 export default {
-  data () {
+  data() {
     return {
-      list
+      list,
+      componentName: '',
+      defaultActived: ''
     }
   },
   components: {
   },
-  mounted () {
+  mounted() {
     this.handleList()
+    this.defaultMenu()
   },
   methods: {
-    homePageQueryList () {
+    showDetail(item) {
+      this.componentName = item.component
+    },
+    defaultMenu() {
+      const menu = this.list.find(item => {
+        return item.children.some(sub => {
+          return sub.show
+        })
+      })
+      const sub = menu.children.find(item => item.show)
+      this.componentName = sub.component
+      this.defaultActived = sub.label
+    },
+    filterChildren(list) {
+      return list.filter(item => {
+        if (item.authorityCode) {
+          return item.show && this.authorityButtons.includes(item.authorityCode)
+        }
+        return item.show
+      })
+    },
+    homePageQueryList() {
       return this.$api.seePsiCommonService.homePageQueryList().then(res => {
         const obj = Object.create(null);
         (res.data || []).forEach(item => {
@@ -59,7 +94,8 @@ export default {
         return obj
       })
     },
-    handleList () {
+    handleList() {
+      this.list = this.list.filter(item => item.show && this.filterChildren(item.children).length)
       this.homePageQueryList().then(res => {
         this.list.forEach(item => {
           const num = item.children.reduce((val, sub) => {
@@ -127,6 +163,10 @@ export default {
       flex: 1;
       background: #fff;
       margin-left: 10px;
+      overflow-y: auto;
+      /deep/ .main-content {
+        height: calc(100vh - 150px);
+      }
     }
   }
 }

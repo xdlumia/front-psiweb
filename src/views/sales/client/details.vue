@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 18:30:45
+ * @LastEditTime: 2019-11-15 18:48:54
  * @Description: 客户详情
 */
 <template>
@@ -12,7 +12,7 @@
       :title="`客户详情:${rowData.code}`"
       :visible.sync="showPop"
       width="920px"
-      :status="statusData"
+      :status="status"
     >
       <div slot="button">
         <!-- 操作按钮 -->
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[rowData.state || 0].includes(item.label)"
+            v-if="currStatusType[detail.state || 0].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -52,7 +52,7 @@
         <keep-alive>
           <components
             class="d-auto-y"
-            style="height:calc(100vh - 160px)"
+            style="height:calc(100vh - 200px)"
             :is="activeName"
             :code="this.code"
             :rowData="rowData"
@@ -83,8 +83,9 @@ import basicInfo from './details/basic-info' //详情
 import clientData from './details/client-data' //详情
 import clientAdd from './add' //详情
 import quoteAdd from '../quote/add' //新建报价单
-
+import VisibleMixin from '@/utils/visibleMixin';
 export default {
+  mixins: [VisibleMixin],
   components: {
     basicInfo,
     clientData,
@@ -106,7 +107,7 @@ export default {
       /**
        * 根据当前状态判断显示哪些按钮
        */
-      // currStatus: this.rowData.state,
+      // currStatus: this.detail.state,
       currStatusType: {
         0: ['停用', '编辑', '新建报价单'], // 启用中
         1: ['启用', '编辑', '新建报价单'], // 已停用
@@ -128,14 +129,7 @@ export default {
       },
       // tabs 默认显示项
       activeName: 'basicInfo',
-      //头部状态数据
-      statusData: [
-        { label: '状态', value: this.rowData.state == 1 ? '停用' : '启用', },
-        { label: '客户创建人', value: this.rowData.creatorName, },
-        { label: '创建部门', value: this.rowData.deptName, },
-        { label: '创建时间', value: this.rowData.createTime, isTime: true },
-        { label: '来源', value: this.rowData.source, dictName: 'PSI_KHGL_LY' },
-      ],
+
       // form表单 详情里可以不注入数据
       form: {},
       editVisible: false,
@@ -158,7 +152,7 @@ export default {
   watch: {
     visible(val) {
       if (val) {
-        // this.statusData = 
+
       }
     }
   },

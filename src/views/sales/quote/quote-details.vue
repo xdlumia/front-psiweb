@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 18:30:55
+ * @LastEditTime: 2019-11-15 15:52:17
  * @Description: 报价单详情
 */
 <template>
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[rowData.state =1].includes(item.label)"
+            v-if="currStatusType[detail.state || 0].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -56,7 +56,7 @@
           :button="false"
           :data="detail || {}"
           :params="{quotationCode:code}"
-          style="height:calc(100vh - 160px)"
+          style="height:calc(100vh - 200px)"
           :is="activeName"
         ></components>
 
@@ -120,7 +120,7 @@ export default {
       /**
        * 根据当前状态判断显示哪些按钮
        */
-      // currStatus: 1,  //this.rowData.state//当前状态
+      // currStatus: 1,  //this.detail.state//当前状态
       currStatusType: {
         '-1': ['提交审核', '编辑', '删除'], //新建 -1
         '0': ['撤销审核', '审核通过', '驳回'], //审核中

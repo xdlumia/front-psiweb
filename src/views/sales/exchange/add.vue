@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 14:51:41
+ * @LastEditTime: 2019-11-15 10:18:10
  * @Description: 生成销售换货单
 */
 <template>
@@ -10,6 +10,7 @@
     :visible.sync="showEditPage"
     width="1120px"
     @close="close"
+    :status="status"
     v-dialogDrag
     v-loading="loading"
   >
@@ -216,7 +217,7 @@ export default {
           this.$api.seePsiSaleService[api](this.form)
             .then(res => {
               this.close()
-              teis.setEdit()
+              this.setEdit()
             })
             .finally(() => {
               this.loading = false
