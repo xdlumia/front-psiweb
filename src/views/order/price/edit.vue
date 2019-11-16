@@ -2,15 +2,15 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 15:55:31
+ * @LastEditTime: 2019-11-15 17:42:28
  * @Description: 采购调价单
 */
 <template>
-  <el-dialog :visible="visible" @close="close" v-dialogDrag>
+  <el-dialog :visible="showEditPage" @close="close" v-dialogDrag>
     <div slot="title">
       <span>采购调价单{{from?`(${from})`:''}}</span>
       <span class="fr mr20">
-        <el-button @click="close" size="mini" type="primary">保存</el-button>
+        <el-button @click="save" size="mini" type="primary">保存</el-button>
         <el-button @click="close" size="mini">关闭</el-button>
       </span>
     </div>
@@ -20,8 +20,15 @@
       <d-tab-pane label="商品信息" name="commodityInfo" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
       <div>
-        <el-form :model="form" class="p10">
-          <commodityInfo id="commodityInfo" />
+        <el-form :model="form" class="p10" v-if="form&visible">
+          <buying-goods-edit
+            :data="form"
+            :show="[
+              'commodityCode','goodsName','categoryCode','className','specOne','configName','noteText','!fullscreen'
+            ]"
+            :showSummary="false"
+            title="商品信息"
+          ></buying-goods-edit>
           <extrasInfo id="extrasInfo" />
         </el-form>
       </div>
@@ -29,14 +36,12 @@
   </el-dialog>
 </template>
 <script>
+import VisibleMixin from '@/utils/visibleMixin';
+
 export default {
+  mixins: [VisibleMixin],
   components: {},
   props: {
-    visible: {
-      type: Boolean,
-      default: false
-    },
-    form: {},
     from: String // 来源
   },
   computed: {
@@ -45,18 +50,19 @@ export default {
     }
   },
   data() {
-    return {
-      activeName: '',
-      randomStr: +new Date() + '-' + Math.random()
-    };
+    return {};
   },
-  mounted() {},
+  mounted() {
+    console.log(this);
+  },
   methods: {
-    handleClick({ label, name }) {
-      this.activeName = '';
+    getDetail() {
+      return {
+        commodityList: []
+      };
     },
-    close() {
-      this.$emit('update:visible', false);
+    save() {
+      console.log(this.form);
     }
   }
 };

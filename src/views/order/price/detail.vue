@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-31 16:10:35
+ * @LastEditTime: 2019-11-15 17:42:41
  * @Description: 采购调价单
 */
 <template>
@@ -26,21 +26,17 @@
   </sideDetail>
 </template>
 <script>
+import VisibleMixin from '@/utils/visibleMixin';
+
 export default {
+  mixins: [VisibleMixin],
   components: {},
   props: {
     visible: Boolean
   },
   data() {
     return {
-      showPop: false,
-      status: [
-        { label: '状态', value: '新建' },
-        { label: '单据创建人', value: '张收纳' },
-        { label: '创建部门', value: '销售部' },
-        { label: '创建时间', value: +new Date(), isTime: true },
-        { label: '来源', value: '新建' }
-      ]
+      showPop: false
     };
   },
   mounted() {

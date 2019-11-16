@@ -3,53 +3,27 @@
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: mikey.zhaopeng
  * @Last Modified time: 2019-10-28 14:02:43 
- * @Description: 拆卸商品
+ * @Description: 拆卸商品 已绑定 1
  */
 <template>
   <div>
-    <form-card title="拆卸商品">
-      <div slot="title">
-        <span>拆卸商品</span>
-        <span class="fr">
-          <span>
-            <el-link :underline="false" @click="fullscreen" type="primary">全屏显示</el-link>
-          </span>
-        </span>
-      </div>
-      <d-table
-        :params="queryForm"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
-        api="seePumaidongService.collegeManagerList"
-        class="college-main"
-        ref="companyTable"
-        style="height:calc(100vh - 340px)"
-      >
-        <el-table-column fixed label="拆卸数量" min-width="100" prop="cityName" show-overflow-tooltip></el-table-column>
-        <el-table-column fixed label="待分配" min-width="100" prop="cityName" show-overflow-tooltip></el-table-column>
-        <el-table-column fixed label="机器号/SN码" min-width="100" prop="title" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span @click="getTableVisible(scope.row)" class="d-text-blue">{{scope.row.id}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="商品编号" min-width="140" prop="title" show-overflow-tooltip></el-table-column>
-        <el-table-column label="配件数量" min-width="140" prop="title" show-overflow-tooltip></el-table-column>
-        <el-table-column label="采购单价" min-width="140" prop="title" show-overflow-tooltip></el-table-column>
-        <el-table-column label="税率" min-width="140" prop="title" show-overflow-tooltip></el-table-column>
-        <el-table-column label="含税总价" min-width="140" prop="title" show-overflow-tooltip></el-table-column>
-        <el-table-column label="商品名称" min-width="100" prop="cityName" show-overflow-tooltip></el-table-column>
-        <el-table-column label="商品类别" min-width="100" prop="cityName" show-overflow-tooltip></el-table-column>
-        <el-table-column label="商品分类" min-width="100" prop="cityName" show-overflow-tooltip></el-table-column>
-        <el-table-column label="商品规格" min-width="140" prop="cityName" show-overflow-tooltip></el-table-column>
-        <el-table-column label="商品配置" min-width="100" prop="cityName" show-overflow-tooltip></el-table-column>
-        <el-table-column label="单位" min-width="80" prop="cityName" show-overflow-tooltip></el-table-column>
-        <el-table-column label="备注" min-width="80" prop="cityName" show-overflow-tooltip></el-table-column>
-      </d-table>
-      <FullscreenElement :element="$refs.companyTable" :visible.sync="showInFullscreen" />
-      <el-dialog :visible.sync="dialogVisible" title="机器号/SN码记录" v-dialogDrag width="600">
-        <commodityPicking />
-        <machineSn />
-      </el-dialog>
-    </form-card>
+    <buying-goods-edit
+      :customColumns="[
+        { label:'拆卸数量', fixed:true, key:'disassemblyNum', width:100, prop:'disassemblyNum',format:(a,row)=>`0/${row.disassemblyNum||0}` },
+        { label:'待分配', fixed:true, key:'waitTeardownNumber', width:100, prop:'teardownNumber',format:(a,row)=>`${row.teardownNumber||0}` },
+        { label:'机器号/SN码', fixed:true, key:'code', width:100, prop:'teardownNumber', click:(e)=>getTableVisible(e), format:()=> 1 },
+        { label:'配件数量', key:'singleNum', width:100, prop:'singleNum', },
+        { label:'采购单价', key:'purchasePrice', width:100, prop:'purchasePrice',format:(a,row)=>row.purchaseUnivalence||row.inventoryPrice },
+      ]"
+      :data="data"
+      :show="[
+        'commodityCode','goodsName','categoryCode','className','specOne','configName','noteText','costAmountPrice','taxRate','!add','unit','expanded'
+      ]"
+      :showSummary="false"
+      :sort="['expanded','disassemblyNum','commodityCode','goodsName','singleNum','purchasePrice','costAmountPrice','taxRate','categoryCode','className','specOne','configName',]"
+      title="拆卸商品"
+    ></buying-goods-edit>
+    <goods-unpack-record :commodityList="recCommodity" :visible.sync="showRec" v-if="showRec" />
   </div>
 </template>
 <script>
@@ -57,6 +31,23 @@ import commodityPicking from '@/components/formComponents/commodity-picking';
 import FullscreenElement from '@/components/fullscreen-element';
 import machineSn from '@/components/formComponents/machine-sn';
 export default {
+  props: {
+    data: {
+      default: () => {
+        return {
+          commodityList: []
+        };
+      }
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    hide: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
       // 查询表单
@@ -69,14 +60,21 @@ export default {
         page: 1,
         limit: 20
       },
+      showRec: false,
+      recCommodity: [],
       dialogVisible: false,
       showInFullscreen: false
     };
   },
   methods: {
+    expand(row) {
+      this.$set(row, 'expanded', !row.expanded);
+      this.$refs.elTable.toggleRowExpansion(row, row.expanded);
+    },
     //点击机器号和SN码
-    getTableVisible() {
-      this.dialogVisible = true;
+    getTableVisible(row) {
+      this.showRec = true;
+      this.recCommodity = [row];
     },
     fullscreen() {
       this.showInFullscreen = true;

@@ -2,12 +2,12 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-15 08:51:44
+ * @LastEditTime: 2019-11-15 18:05:14
  * @Description: 采购-拆卸单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView api="seePsiWmsService.wmsdisassemblyorderList" busType="11" title="拆卸单">
+    <TableView api="seePsiWmsService.wmsdisassemblyorderList" busType="11" ref="tableView" title="拆卸单">
       <template slot="button">
         <span>自动分配：</span>
         <el-switch class="mr10" v-model="switchValue"></el-switch>
@@ -15,11 +15,18 @@
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
+        <span v-else-if="prop=='operation'">
+          <span class="elTableDragDefault el-icon-rank f20"></span>
+        </span>
+        <span v-else-if="prop=='disassemblyOrderState'">{{stateText[value]}}</span>
+        <span v-else-if="prop=='disassemblyOrderCode'">
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+        </span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :visible.sync="showDetail" />
-    <Edit :visible.sync="showEdit" v-if="showEdit" />
+    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload()" v-if="showDetail" />
+    <Edit :visible.sync="showEdit" @reload="reload()" v-if="showEdit" />
   </div>
 </template>
 <script>
@@ -51,12 +58,28 @@ export default {
       status: [],
       showDetail: false,
       showEdit: false,
-      switchValue: false
+      switchValue: false,
+      currentCode: '',
+      stateText: {
+        '0': '新建',
+        '1': '审核中',
+        '2': '待执行',
+        '3': '部分完成',
+        '4': '已完成',
+        '-1': '终止'
+      }
     };
+  },
+  mounted() {
+    this.$refs.tableView.$refs.table.rowDrop();
+    this.$refs.tableView.$refs.table.$on('dragEnd', e => console.log(e));
   },
   methods: {
     logData(e) {
       console.log(e);
+    },
+    reload() {
+      this.$refs.tableView.reload(1);
     }
   }
 };
