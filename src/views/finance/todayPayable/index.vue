@@ -2,83 +2,78 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 15:38:41
- * @Description: 财务-今日应付账单
+ * @LastEditTime: 2019-11-18 09:02:36
+ * @Description: 销售-销售退货单
  */
 <template>
   <div>
     <table-view
-      type="1"
+      busType="17"
       ref="table"
       :filter="true"
       :moreButton="true"
       :column="true"
-      title="今日应付账单"
-      @clear-filter="reset()"
-      api="bizSystemService.getEmployeeList"
-      exportApi="bizSystemService.getEmployeeList"
+      title="销售退货单"
+      api="seePsiSaleService.salesreturnedList"
+      exportApi="seePsiSaleService.salesreturnedExport"
       :params="Object.assign(queryForm,params)"
-      @selection-change="selectionChange"
       :filterOptions="filterOptions"
     >
-      <!-- <template v-slot:button>
-        <el-button
-          type="primary"
-          size="mini"
-          @click="eventHandle('addVisible')"
-        >新增账单调整</el-button>
-      </template> -->
-      <template v-slot:filter>
-        <filters
-          ref="filters"
-          @submit-filter="$refs.table.reload(1)"
-          :form="queryForm"
-        />
-      </template>
-      <!-- 自定义按钮功能 -->
 
-      <template v-slot:moreButton>自定义更多按钮</template>
       <template slot-scope="{column,row,value}">
+        <!-- 销售换货单编号 -->
         <span
-          class="d-text-blue"
-          @click="eventHandle('detailVisible',row)"
-        > 账单编号</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+          class="d-text-blue d-pointer"
+          v-if="column.columnFields=='alterationCode'"
+          @click="eventHandle('returnVisible',row)"
+        > {{value}}</span>
+        <!-- 销售出库单编号 -->
+        <span
+          class="d-text-blue d-pointer"
+          v-else-if="column.columnFields=='salesShipmentCode'"
+          @click="eventHandle('outLibVisible',row)"
+        > {{value}}</span>
+        <!-- 状态 -->
+        <span v-else-if="column.columnFields=='state'">{{value}}</span>
+        <!-- 创建时间 -->
+        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-
-    <!-- 费用分摊详情 -->
-    <detail
-      :visible.sync="detailVisible"
+    <!-- 销售退货单详情 -->
+    <returnDetails
+      v-if="returnVisible"
+      :visible.sync="returnVisible"
       :rowData="rowData"
+      :code="rowData.alterationCode"
       @reload="this.$refs.table.reload()"
     />
-    <!-- 新增账单调整-->
-    <add
-      type="add"
-      :visible.sync="addVisible"
+    <!-- 销售出库单详情 -->
+    <!-- <outLibDetails
+      v-if="outLibVisible"
+      :visible.sync="outLibVisible"
       :rowData="rowData"
+      :code="rowData.salesShipmentCode"
       @reload="this.$refs.table.reload()"
-    />
+    /> -->
   </div>
 </template>
 <script>
-import add from './add' // 新增账单调整
-import detail from './details' //客户详情
-let filterList = [
-  { label: '排序', prop: 'sort', default: true, type: 'sort', options: [{ label: '最新跟进', value: '1' }, { label: '最新录入', value: '' }], },
-  { label: '商户编号、商户名称/简称', prop: 'title', default: true, type: 'text' },
-  { label: '联系人、联系人电话', prop: 'city', default: true, type: 'text' },
-  { label: '商机阶段', prop: 'pushTime', default: true, type: 'select', },
-  { label: '跟进时间起止', prop: 'status', default: true, type: 'daterange' },
-  { label: '维护人', prop: 'messageType', default: true, type: 'employee', },
+import returnDetails from './details' //销售退货单详情
+
+let filterOptions = [
+  // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
+  { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
+  // { label: '商机阶段', prop: 'state', default: true, type: 'select', options: [] },
+  // { label: '跟进时间起止', prop: 'CreateTime', default: true, type: 'daterange' },
+  // { label: '维护人', prop: 'creator', default: true, type: 'employee' }
 ]
+
 export default {
   name: 'return',
   components: {
-    add,
-    detail
+    returnDetails,
+
   },
   props: {
     // 是否显示按钮
@@ -99,40 +94,39 @@ export default {
       loading: false,
       // 查询表单
       queryForm: {
-        title: "", // 标题
-        city: "", // 城市
-        pushTime: "",
-        messageType: "",
-        status: "",
+        // status: "",
+        busType: 17,
         page: 1,
         limit: 20
       },
+      // 列表状态
+      stateText: {
+        '-1': '新建',
+        '0': '审核中',
+        '1': '待完成',
+        '2': '部分完成',
+        '3': '已完成',
+        '4': '已驳回',
+      },
+      // 筛选数据
+      filterOptions: filterOptions,
+      // 当前行数据
       rowData: {},
-      addVisible: false,
-      detailVisible: false,
-      // 筛选框数据
-      filterOptions: filterList
+      returnVisible: false,
+      outLibVisible: false,
     };
+  },
+  computed: {
+
+  },
+  watch: {
   },
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
       this[type] = true
-      this.rowData = row
+      this.rowData = row ? row : {}
       return
-    },
-    // 多选
-    selectionChange(val) {
-      console.log(val);
-
-    },
-    submitFilter() {
-      this.$emit('submit-filter')
-    },
-    // 重置
-    reset() {
-      this.$refs.filters.$refs.form.resetFields()
-      this.$refs.table.reload(1);
     },
   }
 };

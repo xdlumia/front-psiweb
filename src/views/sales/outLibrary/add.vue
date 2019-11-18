@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 19:02:38
+ * @LastEditTime: 2019-11-18 11:53:45
  * @Description: 编辑出库单
 */
 <template>
@@ -55,7 +55,8 @@
           id="companyInfo"
           :data="form"
         />
-        <quote-info :rowDatas="rowDatas" />
+        <!-- 报价单信息 -->
+        <quote-info :options="quoteCodes" />
         <!-- 收款滞纳金 -->
         <payment-late-sales
           id="paymentLateSales"
@@ -145,12 +146,12 @@ export default {
 
   },
   computed: {
-    rowDatas() {
+    quoteCodes() {
       // 判断rowData 是多行数据还是单行数据
       if (this.rowData instanceof Array) {
-        return this.rowData
+        return this.rowData.map(item => item.quotationCode)
       } else {
-        return [this.rowData]
+        return [this.rowData].map(item => item.quotationCode)
       }
     },
   },
@@ -159,10 +160,15 @@ export default {
     // 保存表单数据
     saveHandle() {
       this.$refs.form.validate(valid => {
-
         if (valid) {
           this.loading = true
-          this.form.quotationIds = this.rowDatas.map(item => item.id)
+
+          if (this.rowData instanceof Array) {
+            this.form.quotationIds = this.rowData.map(item => item.id)
+          } else {
+            this.form.quotationIds = [this.rowData].map(item => item.id)
+          }
+
           // rules 表单验证是否通过
           let api = 'salesshipmentUpdate' // 默认编辑更新
           // 新增保存
