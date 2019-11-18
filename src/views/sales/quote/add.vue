@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 15:23:40
+ * @LastEditTime: 2019-11-18 20:02:10
  * @Description: file content
 */
 <template>
@@ -102,6 +102,8 @@ export default {
       form: {
         KIND1Data: [], //临时存放第二步整机列表选中的数据
         KIND2Data: [], //临时存放第二步配件列表选中的数据
+        KIND1List: [], //临时存放第三步整机列表选中的数据 数组存放
+        KIND2List: {},//临时存放第三步配件列表选中的数据 对象存放
         id: {},
         apprpvalState: '', //审核状态
         attachList: [], //附件,
@@ -177,6 +179,17 @@ export default {
       if (index === 3) {
         // 确定配置信息的时候查询整机
         this.$refs.confirmInfo.commonquotationconfigdetailsListConfigByGoodName()
+      } else if (index === 4) {
+        // 最终以第三步存放的数据为准
+        let wholeList = this.form.KIND1List.reduce((prev, cur) => {
+          return prev.concat(cur.children)
+        }, [])
+        console.log(wholeList)
+        this.form.KIND1List = []
+        this.form.KIND2List = []
+        // let
+        // 第4步整合商品信息
+        this.businessCommoditySaveVoList = []
       }
       // if (this.type != 'add') {
       //   this.$message.error({

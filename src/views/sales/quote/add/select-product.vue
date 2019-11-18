@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-08 09:19:26
+ * @LastEditTime: 2019-11-18 18:47:54
  * @Description: 选择产品
 */
 <template>
@@ -180,10 +180,6 @@ export default {
       } else {
         this.$refs.kind1.toggleRowSelection(row, false);
       }
-
-      // this.KIND1Data.forEach(row => {
-      //   this.$refs.kind1.toggleRowSelection(row);
-      // });
     }
   }
 }
