@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 20:02:10
+ * @LastEditTime: 2019-11-18 20:16:44
  * @Description: file content
 */
 <template>
@@ -46,7 +46,7 @@
         :model="form"
         label-position="top"
         class="d-auto-y"
-        style="height:calc(100vh - 110px)"
+        style="height:calc(100vh - 140px)"
       >
         <!--  选择客户 和 填写报价信息  有相同的操作.两边数据要实时更新 所以使用 v-if 切换到当前的页面重新查询数据 -->
         <!-- 选择客户  -->
@@ -84,6 +84,7 @@ import selectProduct from './add/select-product'
 import confirmInfo from './add/confirm-info'
 import quoteInfo from './add/quote-info'
 import VisibleMixin from '@/utils/visibleMixin';
+import { log } from 'util'
 export default {
   mixins: [VisibleMixin],
   components: {
@@ -184,12 +185,15 @@ export default {
         let wholeList = this.form.KIND1List.reduce((prev, cur) => {
           return prev.concat(cur.children)
         }, [])
-        console.log(wholeList)
-        this.form.KIND1List = []
-        this.form.KIND2List = []
+        // 配件列表
+        let fixingsList = []
+        for (let key in this.form.KIND2List) {
+          fixingsList = fixingsList.concat(this.form.KIND2List[key])
+        }
+
         // let
         // 第4步整合商品信息
-        this.businessCommoditySaveVoList = []
+        this.form.businessCommoditySaveVoList = [...wholeList, ...fixingsList]
       }
       // if (this.type != 'add') {
       //   this.$message.error({
