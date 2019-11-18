@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 15:47:16
+ * @LastEditTime: 2019-11-18 16:14:49
  * @Description: 账期信息
  */
 <template>
@@ -27,7 +27,7 @@
     </el-form-item>
     <el-table
       size="mini"
-      :data="data.shipmentFinanceSaveVoList || []"
+      :data="data.shipmentFinanceEntityList || []"
       show-summary
       :summary-method="getSummaries"
       ref="table"

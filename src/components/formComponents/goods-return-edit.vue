@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 19:18:25
- * @Description: 换货商品信息 -退货商品商品信息
+ * @LastEditTime: 2019-11-18 10:29:15
+ * @Description: 退货商品商品信息
 */
 <template>
   <div>
@@ -188,13 +188,20 @@
         />
       </el-table>
     </form-card>
+    <!-- 对退货的商品进行编辑 -->
+    <goodsChangeEdit :data="data"></goodsChangeEdit>
   </div>
 </template>
 <script>
-import { log } from 'util'
+import goodsChangeEdit from '@/components/formComponents/goods-exchange-edit.vue'
 export default {
+  components: { goodsChangeEdit },
   props: {
     data: {
+      type: Object,
+      default: () => ({})
+    },
+    params: {
       type: Object,
       default: () => ({})
     },
@@ -213,18 +220,18 @@ export default {
     return {
       tableData: [],
       quotationCode: this.options[0] || '',
-      queryFrom: {
-        busType: 1,
-        putawayType: 1,
-        busCode: '',
-      }
+      // queryFrom: {
+      //   busType: 1, // 1报价单 2请购单]
+      //   putawayType: 1,
+      //   busCode: '',
+      // }
     }
   },
   watch: {
     'data.quotationCode': {
       handler(val) {
         this.$nextTick(() => {
-          this.queryFrom.busCode = this.data.quotationCode
+          this.params.busCode = this.data.quotationCode
           this.businesscommodityGetBusinessCommodityList()
         })
       },
@@ -234,9 +241,15 @@ export default {
   },
   methods: {
     businesscommodityGetBusinessCommodityList() {
-      this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.queryFrom)
+      this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.params)
         .then(res => {
-          this.data.businessCommoditySaveVoList = res.data || []
+          let data = res.data || []
+          this.data.businessCommoditySaveVoList = data
+          // this.data.exChangeCommodityList 是临时数据 存放换货后的数据
+          if (this.data.exChangeCommodityList) {
+            this.data.exChangeCommodityList = JSON.parse(JSON.stringify(data))
+          }
+
         })
     },
     sumTaxPrice(row, index) {

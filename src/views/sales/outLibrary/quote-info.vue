@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 19:02:45
+ * @LastEditTime: 2019-11-18 12:01:16
  * @Description: 报价单信息 编辑查看时使用
 */
 <template>
@@ -14,10 +14,10 @@
       v-model="activeName"
     >
       <el-tab-pane
-        v-for="(item,index) of rowDatas"
+        v-for="(item,index) of options"
         :key="index"
-        :label="item.quotationCode"
-        :name="item.quotationCode+''"
+        :label="item"
+        :name="item"
       ></el-tab-pane>
     </el-tabs>
     <div slot="body">
@@ -60,13 +60,13 @@
 import quoteDetail from '../quote/quoteDetails/detail'
 import { log } from 'util'
 export default {
-  props: ['rowDatas'],
+  props: ['options'],
   components: {
     quoteDetail
   },
   data() {
     return {
-      activeName: this.rowDatas[0] ? this.rowDatas[0].quotationCode + '' : '', // 数据源
+      activeName: this.options[0], // 数据源
       detail: {},
     }
   },

@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 11:43:25
+ * @LastEditTime: 2019-11-18 16:11:27
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -14,7 +14,7 @@
       border
       style="max-height:250px"
       api="seePsiSaleService.businesscommodityGetBusinessCommodityList"
-      :params="{busCode:data.quotationCode}"
+      :params="queryForm"
       size="mini"
       :paging="false"
     >
@@ -83,8 +83,11 @@ export default {
   props: ['data'],
   data() {
     return {
-
-      visible: false,
+      queryForm: {
+        busType: 1, // 1报价单 2请购单]
+        putawayType: 1,
+        busCode: this.data.quotationCode
+      },
     };
   },
   methods: {
