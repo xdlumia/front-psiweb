@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 18:37:08
+ * @LastEditTime: 2019-11-16 14:15:44
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -16,22 +16,27 @@
           class="ml10"
           v-if="(!disabled)&&!hide.includes('add')&&!show.includes(`!add`)"
         />
-        <span class="fr">
+        <span class="fr" v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')">
           <span>
             <el-link :underline="false" @click="showInFull=true" type="primary">全屏显示</el-link>
           </span>
         </span>
       </div>
       <el-table
-        :data="data[fkey]"
+        :class="[showSummary?'':'hide-summary']"
+        :data="recalcRowKey(data[fkey])"
         :style="{height:showInFull?'calc(100% - 40px)':''}"
-        :summary-method="getSummaries"
+        :summary-method="showSummary?getSummaries:null"
         ref="table"
+        row-key="_rowKey"
         show-summary
         size="mini"
+        :expand-row-keys="expandRowKeys"
       >
         <el-table-column
           :align="item.align"
+          :class-name="item.className"
+          :fixed="item.fixed"
           :key="item.key"
           :label="item.label"
           :min-width="item.width"
@@ -39,7 +44,7 @@
           :show-overflow-tooltip="item.showOverflowTip"
           v-for="item of useColumns"
         >
-          <template slot-scope="{row,$index}">
+          <template slot-scope="{row}">
             <template v-if="item.key=='commodityCode'">
               <div class="d-text-blue d-elip">{{row.commodityCode}}</div>
             </template>
@@ -58,7 +63,7 @@
             <!-- 字典结束 -->
             <!-- 价格输入开始 -->
             <template v-else-if="item.type=='input'">
-              <el-form-item :prop="`${fkey}.${$index}.${item.prop}`" :rules="item.rules||[]" size="mini">
+              <el-form-item :prop="`${getCurrentFormProp(row,item.prop)}`" :rules="item.rules||[]" size="mini">
                 <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]" />
               </el-form-item>
             </template>
@@ -66,7 +71,7 @@
             <!-- 商品数量开始 -->
             <template v-else-if="item.type=='inputinteger'">
               <el-form-item
-                :prop="`${fkey}.${$index}.${item.prop}`"
+                :prop="`${getCurrentFormProp(row,item.prop)}`"
                 :rules="[{required:true},{type:'positiveNum'}].concat(Number(row[
                   `max${item.prop}`
                 ])>0?[{
@@ -80,15 +85,12 @@
               </el-form-item>
             </template>
             <!-- 商品数量结束 -->
-            <template v-else-if="item.format">
-              <span>{{item.format(row[item.prop],row)}}</span>
-            </template>
             <template v-else-if="item.key=='action'">
-              <i @click="deleteChoose($index)" class="el-icon-error d-pointer f20 d-text-red"></i>
+              <i @click="deleteChoose(row)" class="el-icon-error d-pointer f20 d-text-red"></i>
             </template>
             <!-- 选择开始 -->
             <template v-else-if="item.type=='selection'">
-              <el-form-item :prop="`${fkey}.${$index}.${item.prop}`" size="mini">
+              <el-form-item :prop="`${getCurrentFormProp(row,item.prop)}`" size="mini">
                 <el-checkbox
                   :disabled="disabled"
                   :false-label="0"
@@ -99,7 +101,30 @@
               </el-form-item>
             </template>
             <!-- 选择结束 -->
-            <template v-else>{{row[item.prop]}}</template>
+            <!-- 展开子项开始 -->
+            <template v-else-if="item.type=='expanded'">
+              <div class="expanded-icons d-text-gray" v-if="row.children&&row.children.length">
+                <span @click="expand(row)" class="el-icon-plus d-pointer" v-if="!row.expanded"></span>
+                <span @click="expand(row)" class="el-icon-minus d-pointer" v-else></span>
+              </div>
+            </template>
+            <!-- 展开子项结束 -->
+            <template v-else-if="typeof item.slot!='undefined'">
+              <slot
+                :formProp="getCurrentFormProp(row,item.prop)"
+                :item="item"
+                :name="item.slot"
+                :info="getParentInfo(row)"
+                :prop="item.prop"
+                :row="row"
+              />
+            </template>
+            <template v-else>
+              <span
+                :class="[item.click?'d-text-blue d-pointer':'']"
+                @click="item.click?item.click(row,item):''"
+              >{{item.format?item.format(row[item.prop],row):row[item.prop]}}</span>
+            </template>
           </template>
           <template slot="header" v-if="item.type=='selection'">
             <el-checkbox
@@ -117,6 +142,7 @@
   </div>
 </template>
 <script>
+let fakeId = 1;
 export default {
   props: {
     // 数据
@@ -134,6 +160,10 @@ export default {
       type: Array,
       default: () => []
     },
+    customColumns: {
+      type: Array,
+      default: () => []
+    },
     // 默认列表字段
     fkey: {
       type: String,
@@ -143,6 +173,10 @@ export default {
     priceKey: {
       type: String,
       default: 'costAmount'
+    },
+    showSummary: {
+      type: Boolean,
+      default: true
     },
     // 统计方法
     summaryMethod: {
@@ -200,7 +234,9 @@ export default {
     ];
     return {
       showInFull: false,
-      columns
+      columns,
+      fakeId: 1,
+      expandRowKeys:[]
     };
   },
   computed: {
@@ -217,16 +253,78 @@ export default {
       } else {
         list = this.columns;
       }
-      if (this.sort && this.sort.length) {
-        let map = list.reduce((data, item) => (data[item.key] = item), {});
-        list = [];
-        this.sort.map(key => list.push(map[key]));
+      if (this.customColumns) {
+        list = list.concat(this.customColumns);
       }
+      if (this.sort && this.sort.length) {
+        let sort = ['hideChildren'].concat(this.sort);
+        let map = list.reduce((data, item) => {
+          data[item.key] = item;
+          return data;
+        }, {});
+        list = [];
+        sort.map(key => {
+          if (map[key]) {
+            list.push(map[key]);
+            delete map[key];
+          }
+        });
+        Object.values(map).map(item => list.push(item));
+      }
+      list.unshift(
+        { key: 'hideChildren', fixed: true, width: 1, className: 'hide-children' },
+        { label: '', fixed: true, key: 'expanded', width: 40, type:'expanded' },
+      );
       return list;
     }
   },
   mounted() {},
   methods: {
+    getParentInfo(row) {
+      let top = this.data[this.fkey]
+      let isChild = row._rowKey != row.commodityCode;
+      let ks = row._rowKey.split('_');
+      isChild = ks.length>1;
+      let parentIndex = -1;
+      let parent = top.filter(
+        item => item.commodityCode == ks[0]
+      );
+      let info = {
+        isChild,
+        parent: isChild ? parent[0] : null,
+        parentArray: isChild ? parent[0].children : top,
+        parentIndex: isChild ? top.indexOf(parent[0]) : null,
+        index: isChild ? parent[0].children.indexOf(row) : top.indexOf(row)
+      }
+      return info;
+    },
+    getCurrentFormProp(row, prop) {
+      let info = this.getParentInfo(row);
+      let key = info.isChild
+        ? `commodityList.${info.parentIndex}.children.${info.index}.${prop}`
+        : `commodityList.${info.index}.${prop}`;
+      return key;
+    },
+    recalcRowKey(list, pk = '') {
+      (list || []).map(item => {
+        this.$set(item,'_rowKey',String(item._rowKey || [pk, item.commodityCode||fakeId++].filter(a => a).join('_')))
+        if (pk) {
+          this.$set(item,'$parentCode',pk)
+        }
+        if (item.children) {
+          this.recalcRowKey(item.children, item._rowKey);
+        }
+      });
+      return list || [];
+    },
+    expand(row,isExpand) {
+      this.$nextTick(()=>{
+        isExpand = typeof isExpand=="boolean"?isExpand:!row.expanded;
+        this.$set(row, 'expanded', isExpand);
+        this.$refs.table.toggleRowExpansion(row, isExpand);
+        // this.expandRowKeys = [row._rowKey]
+      })
+    },
     getSummaries(param) {
       if (this.summaryMethod) return this.summaryMethod(param);
       let { columns, data } = param;
@@ -266,8 +364,13 @@ export default {
         e.map(this.goodToBuyingInfo)
       );
     },
-    deleteChoose(i) {
-      this.data[this.fkey].splice(i, 1);
+    deleteChoose(row) {
+      let { parent, index, isChild } = this.getParentInfo(row);
+      if (isChild) {
+        parent.splice(index, 1);
+      } else {
+        this.data[this.fkey].splice(index, 1);
+      }
     },
     goodToBuyingInfo(good) {
       let target = {
@@ -346,6 +449,14 @@ export default {
     .el-input__suffix {
       display: none;
     }
+  }
+}
+</style>
+<style lang="scss">
+.hide-summary {
+  .el-table__footer-wrapper,
+  .el-table__fixed-footer-wrapper {
+    display: none;
   }
 }
 </style>

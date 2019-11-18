@@ -25,6 +25,7 @@
     "vue": "^2.6.10",
     "vue-baidu-map": "^0.21.11",
     "vue-echarts": "^4.0.1",
+    "vue-echarts-v3": "^1.0.19",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.1",
     "vuedraggable": "^2.19.0",
@@ -42,8 +43,8 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-vue": "^5.2.3",
-    "node-sass": "^4.12.0",
-    "sass-loader": "^8.0.0",
+    "node-sass": "4.12.0",
+    "sass-loader": "8.0.0",
     "swiper": "^5.2.0",
     "vue-template-compiler": "^2.6.10"
   },

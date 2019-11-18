@@ -2,40 +2,26 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 11:01:07
+ * @LastEditTime: 2019-11-15 10:04:59
  * @Description: 选择商品 字段已绑定 1
 */
 <template>
   <el-dialog :visible="visible" @close="close" title="选择商品" v-dialogDrag width="60%">
     <div class="mb15">
-      <el-input
-        @change="reload"
-        placeholder="搜索商品名称"
-        size="small"
-        style="width:250px"
-        v-model="queryForm.goodsName"
-      ></el-input>
-      <el-button
-        @click="multipleVisible = !multipleVisible"
-        class="fr"
-        size="small"
-      >已选择（{{selected.length}}）</el-button>
+      <el-input @change="reload" placeholder="搜索商品名称" size="small" style="width:250px" v-model="queryForm.goodsName"></el-input>
+      <el-button @click="multipleVisible = !multipleVisible" class="fr" size="small">已选择（{{selected.length}}）</el-button>
     </div>
     <el-container class="choose-container">
       <!-- 左侧 -->
       <el-aside class="choose-aside" width="250px">
-        <commodity-cat
-          :kinds="kinds"
-          :mainCat.sync="queryForm.categoryCode"
-          :subCat.sync="queryForm.classId"
-          @change="reload"
-        />
+        <commodity-cat :kinds="kinds" :mainCat.sync="queryForm.categoryCode" :subCat.sync="queryForm.classId" @change="reload" />
       </el-aside>
       <!-- 表格 -->
       <el-main>
         <d-table
           :api="sn?'seePsiWmsService.wmsinventorydetailList':'seePsiWmsService.wmsinventoryList'"
           :autoInit="false"
+          :class="{'remove-selection': !multiple}"
           :params="queryForm"
           :reserve-selection="true"
           :rowKey="sn?'_rowKey':'commodityCode'"
@@ -46,41 +32,23 @@
           ref="multipleTable"
           style="height:100%"
           v-show="!multipleVisible"
-          :class="{'remove-selection': !multiple}"
         >
-          <el-table-column type="selection" width="55" :selectable="selectable">
+          <el-table-column :selectable="selectable" type="selection" width="55">
             <tempalte slot="header" v-if="!multiple">3</tempalte>
           </el-table-column>
-          <el-table-column
-            :reserve-selection="true"
-            label="商品编号"
-            min-width="200"
-            prop="title"
-            show-overflow-tooltip
-          >
+          <el-table-column :reserve-selection="true" label="商品编号" min-width="200" prop="title" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span class="d-text-blue">{{row.commodityCode}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="SN码/机器码"
-            min-width="100"
-            prop="goodsName"
-            show-overflow-tooltip
-            v-if="sn"
-          >
+          <el-table-column label="SN码/机器码" min-width="100" prop="goodsName" show-overflow-tooltip v-if="sn">
             <template slot-scope="{row}">
               <span>{{row.snCode||row.robotCode}}</span>
             </template>
           </el-table-column>
           <el-table-column label="商品图片" min-width="130" prop="title" show-overflow-tooltip>
             <template slot-scope="{row}">
-              <el-image
-                :src="row.goodsPic"
-                class="d-center"
-                fit="fill"
-                style="width: 100px; height: 40px"
-              >
+              <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
                 <span slot="error">暂无图片</span>
               </el-image>
             </template>
@@ -103,79 +71,37 @@
               <span>{{row.unit | dictionary('SC_JLDW')}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="税率"
-            min-width="80"
-            prop="taxRate"
-            show-overflow-tooltip
-            v-if="!sn"
-          >
+          <el-table-column label="税率" min-width="80" prop="taxRate" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.taxRate ? row.taxRate + '%' : ''}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="可用库存"
-            min-width="100"
-            prop="usableInventoryNum"
-            show-overflow-tooltip
-            v-if="!sn"
-          >
+          <el-table-column label="可用库存" min-width="100" prop="usableInventoryNum" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.usableInventoryNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="期初库存"
-            min-width="100"
-            prop="originalInventoryNum"
-            show-overflow-tooltip
-            v-if="!sn"
-          >
+          <el-table-column label="期初库存" min-width="100" prop="originalInventoryNum" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.originalInventoryNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="入库数量"
-            min-width="80"
-            prop="sumShipmentNum"
-            show-overflow-tooltip
-            v-if="!sn"
-          >
+          <el-table-column label="入库数量" min-width="80" prop="sumShipmentNum" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.sumShipmentNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="出库数量"
-            min-width="80"
-            prop="sumPutawayNum"
-            show-overflow-tooltip
-            v-if="!sn"
-          >
+          <el-table-column label="出库数量" min-width="80" prop="sumPutawayNum" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.sumPutawayNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="待入库数量"
-            min-width="120"
-            prop="waitShipmentNum"
-            show-overflow-tooltip
-            v-if="!sn"
-          >
+          <el-table-column label="待入库数量" min-width="120" prop="waitShipmentNum" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.waitShipmentNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="待出库数量"
-            min-width="120"
-            prop="waitPutawayNum"
-            show-overflow-tooltip
-            v-if="!sn"
-          >
+          <el-table-column label="待出库数量" min-width="120" prop="waitPutawayNum" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.waitPutawayNum||0}}</span>
             </template>
@@ -185,43 +111,22 @@
         <el-table :data="selected" border v-show="multipleVisible">
           <el-table-column fixed label="操作" min-width="50" show-overflow-tooltip>
             <template slot-scope="{row}">
-              <i
-                @click="deleteChoose(row)"
-                class="el-icon-error d-pointer"
-                style="font-size:20px;color:#F5222D"
-              ></i>
+              <i @click="deleteChoose(row)" class="el-icon-error d-pointer" style="font-size:20px;color:#F5222D"></i>
             </template>
           </el-table-column>
-          <el-table-column
-            :reserve-selection="true"
-            label="商品编号"
-            min-width="100"
-            prop="title"
-            show-overflow-tooltip
-          >
+          <el-table-column :reserve-selection="true" label="商品编号" min-width="100" prop="title" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span class="d-text-blue">{{row.commodityCode}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="SN码/机器码"
-            min-width="100"
-            prop="goodsName"
-            show-overflow-tooltip
-            v-if="sn"
-          >
+          <el-table-column label="SN码/机器码" min-width="100" prop="goodsName" show-overflow-tooltip v-if="sn">
             <template slot-scope="{row}">
               <span>{{row.snCode||row.robotCode}}</span>
             </template>
           </el-table-column>
           <el-table-column label="商品图片" min-width="130" prop="title" show-overflow-tooltip>
             <template slot-scope="{row}">
-              <el-image
-                :src="row.goodsPic"
-                class="d-center"
-                fit="fill"
-                style="width: 100px; height: 40px"
-              >
+              <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
                 <span slot="error">暂无图片</span>
               </el-image>
             </template>
@@ -244,79 +149,37 @@
               <span>{{row.unit | dictionary('SC_JLDW')}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="税率"
-            min-width="80"
-            prop="taxRate"
-            show-overflow-tooltip
-            v-if="!sn"
-          >
+          <el-table-column label="税率" min-width="80" prop="taxRate" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.taxRate ? row.taxRate + '%' : ''}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="可用库存"
-            min-width="100"
-            prop="usableInventoryNum"
-            show-overflow-tooltip
-            v-if="!sn"
-          >
+          <el-table-column label="可用库存" min-width="100" prop="usableInventoryNum" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.usableInventoryNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="期初库存"
-            min-width="100"
-            prop="originalInventoryNum"
-            show-overflow-tooltip
-            v-if="!sn"
-          >
+          <el-table-column label="期初库存" min-width="100" prop="originalInventoryNum" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.originalInventoryNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="入库数量"
-            min-width="80"
-            prop="sumShipmentNum"
-            show-overflow-tooltip
-            v-if="!sn"
-          >
+          <el-table-column label="入库数量" min-width="80" prop="sumShipmentNum" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.sumShipmentNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="出库数量"
-            min-width="80"
-            prop="sumPutawayNum"
-            show-overflow-tooltip
-            v-if="!sn"
-          >
+          <el-table-column label="出库数量" min-width="80" prop="sumPutawayNum" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.sumPutawayNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="待入库数量"
-            min-width="120"
-            prop="waitShipmentNum"
-            show-overflow-tooltip
-            v-if="!sn"
-          >
+          <el-table-column label="待入库数量" min-width="120" prop="waitShipmentNum" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.waitShipmentNum||0}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="待出库数量"
-            min-width="120"
-            prop="waitPutawayNum"
-            show-overflow-tooltip
-            v-if="!sn"
-          >
+          <el-table-column label="待出库数量" min-width="120" prop="waitPutawayNum" show-overflow-tooltip v-if="!sn">
             <template slot-scope="{row}">
               <span>{{row.waitPutawayNum||0}}</span>
             </template>
@@ -405,9 +268,11 @@ export default {
   methods: {
     selectable(row, index) {
       if (!this.multiple && this.multipleSelection.length > 0) {
-        return this.multipleSelection.every(item => item.commodityCode === row.commodityCode)
+        return this.multipleSelection.every(
+          item => item.commodityCode === row.commodityCode
+        );
       }
-      return true
+      return true;
     },
     getPreSelectObj() {
       return this.preSelection.reduce((data, item) => {
@@ -517,7 +382,7 @@ export default {
         display: none;
       }
       &:before {
-        content: "选择";
+        content: '选择';
         white-space: nowrap;
       }
     }

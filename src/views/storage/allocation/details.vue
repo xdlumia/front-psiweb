@@ -9,8 +9,8 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="drawerData.tableVisible"
-    @close="$emit('update:visible',false)"
+    :visible.sync="visible"
+    @close="close"
     :title="drawerData.title"
     width="990px"
   >
@@ -73,10 +73,10 @@ import SideDetail from '@/components/side-detail';
 import scanOutCode from './scan-out-code';
 import scanInCode from './scan-in-code';
 export default {
-  props: ['drawerData'],
+  props: ['drawerData', 'visible'],
   data() {
     return {
-      status: [{ label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       backVisible: false,
       isComponents: '',
       dialogData: {
@@ -103,7 +103,7 @@ export default {
       this.$api.seePsiWmsService.wmsallocationorderInfo(null, this.drawerData.code)
         .then(res => {
           this.detailForm = res.data || {}
-          // this.status[0].value = res.data.createTime
+          this.status[0].value = res.data.createTime
           this.status[1].value = res.data.creatorName
           this.status[2].value = res.data.deptName
           this.status[3].value = res.data.source

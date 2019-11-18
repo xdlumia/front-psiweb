@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 17:21:35
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-16 15:50:44
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -99,6 +99,7 @@ export default {
                 this.form = data;
               }
             }
+            if(this.afterDetailInit) this.afterDetailInit()
           }
         } catch (error) {
           console.error(error)
