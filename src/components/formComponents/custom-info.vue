@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 18:39:45
+ * @LastEditTime: 2019-11-18 09:18:38
  * @Description: 自定义信息 1
 */
 <template>
@@ -26,7 +26,10 @@
             :rules="{required:true}"
             :prop="`fieldList.${scope.$index}.fieldCode`"
           >
-            <el-select v-model="scope.row.fieldCode">
+            <el-select
+              :disabled="disabled"
+              v-model="scope.row.fieldCode"
+            >
               <el-option
                 v-for="item in fieldOptions"
                 :key="item.id"
