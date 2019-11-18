@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-16 14:15:44
+ * @LastEditTime: 2019-11-18 15:49:59
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -25,13 +25,13 @@
       <el-table
         :class="[showSummary?'':'hide-summary']"
         :data="recalcRowKey(data[fkey])"
+        :expand-row-keys="expandRowKeys"
         :style="{height:showInFull?'calc(100% - 40px)':''}"
         :summary-method="showSummary?getSummaries:null"
         ref="table"
         row-key="_rowKey"
         show-summary
         size="mini"
-        :expand-row-keys="expandRowKeys"
       >
         <el-table-column
           :align="item.align"
@@ -112,9 +112,9 @@
             <template v-else-if="typeof item.slot!='undefined'">
               <slot
                 :formProp="getCurrentFormProp(row,item.prop)"
+                :info="getParentInfo(row)"
                 :item="item"
                 :name="item.slot"
-                :info="getParentInfo(row)"
                 :prop="item.prop"
                 :row="row"
               />
@@ -236,7 +236,7 @@ export default {
       showInFull: false,
       columns,
       fakeId: 1,
-      expandRowKeys:[]
+      expandRowKeys: []
     };
   },
   computed: {
@@ -271,45 +271,67 @@ export default {
         });
         Object.values(map).map(item => list.push(item));
       }
-      list.unshift(
-        { key: 'hideChildren', fixed: true, width: 1, className: 'hide-children' },
-        { label: '', fixed: true, key: 'expanded', width: 40, type:'expanded' },
-      );
+      if (
+        (this.sort && this.sort.includes('expanded')) ||
+        this.show.includes('expanded') ||
+        this.hide.includes('!expanded')
+      ) {
+        list.unshift(
+          {
+            key: 'hideChildren',
+            fixed: true,
+            width: 1,
+            className: 'hide-children'
+          },
+          {
+            label: '',
+            fixed: true,
+            key: 'expanded',
+            width: 40,
+            type: 'expanded'
+          }
+        );
+      }
       return list;
     }
   },
   mounted() {},
   methods: {
     getParentInfo(row) {
-      let top = this.data[this.fkey]
+      let top = this.data[this.fkey];
       let isChild = row._rowKey != row.commodityCode;
       let ks = row._rowKey.split('_');
-      isChild = ks.length>1;
+      isChild = ks.length > 1;
       let parentIndex = -1;
-      let parent = top.filter(
-        item => item.commodityCode == ks[0]
-      );
+      let parent = top.filter(item => item.commodityCode == ks[0]);
       let info = {
         isChild,
         parent: isChild ? parent[0] : null,
         parentArray: isChild ? parent[0].children : top,
         parentIndex: isChild ? top.indexOf(parent[0]) : null,
         index: isChild ? parent[0].children.indexOf(row) : top.indexOf(row)
-      }
+      };
       return info;
     },
     getCurrentFormProp(row, prop) {
       let info = this.getParentInfo(row);
       let key = info.isChild
-        ? `commodityList.${info.parentIndex}.children.${info.index}.${prop}`
-        : `commodityList.${info.index}.${prop}`;
+        ? `${this.fkey}.${info.parentIndex}.children.${info.index}.${prop}`
+        : `${this.fkey}.${info.index}.${prop}`;
       return key;
     },
     recalcRowKey(list, pk = '') {
       (list || []).map(item => {
-        this.$set(item,'_rowKey',String(item._rowKey || [pk, item.commodityCode||fakeId++].filter(a => a).join('_')))
+        this.$set(
+          item,
+          '_rowKey',
+          String(
+            item._rowKey ||
+              [pk, item.commodityCode || fakeId++].filter(a => a).join('_')
+          )
+        );
         if (pk) {
-          this.$set(item,'$parentCode',pk)
+          this.$set(item, '$parentCode', pk);
         }
         if (item.children) {
           this.recalcRowKey(item.children, item._rowKey);
@@ -317,13 +339,13 @@ export default {
       });
       return list || [];
     },
-    expand(row,isExpand) {
-      this.$nextTick(()=>{
-        isExpand = typeof isExpand=="boolean"?isExpand:!row.expanded;
+    expand(row, isExpand) {
+      this.$nextTick(() => {
+        isExpand = typeof isExpand == 'boolean' ? isExpand : !row.expanded;
         this.$set(row, 'expanded', isExpand);
         this.$refs.table.toggleRowExpansion(row, isExpand);
         // this.expandRowKeys = [row._rowKey]
-      })
+      });
     },
     getSummaries(param) {
       if (this.summaryMethod) return this.summaryMethod(param);
@@ -374,42 +396,13 @@ export default {
     },
     goodToBuyingInfo(good) {
       let target = {
-        alterationNumber: '',
-        alterationPrice: '',
-        apportionmentAmount: '',
-        busCode: '',
-        busType: '',
-        categoryCode: 'categoryCode',
-        className: 'className',
         commodityCode: 'commodityCode',
-        goodsName: 'goodsName',
-        commodityNumber: '',
-        configName: 'configName',
+        commodityId: 'id',
         costAmount: 'inventoryPrice',
-        discount: '',
-        discountSprice: '',
-        goodsPic: 'goodsPic',
         inventoryNumber: 'usableInventoryNum',
-        isAssembly: '',
-        isDirect: '',
-        isTeardown: '',
-        note: '',
-        parentCommodityCode: '',
-        pickingNumber: '',
-        preTaxAmount: '',
-        putawayType: '',
-        recentDiscountSprice: '',
-        reference: '',
-        salesPrice: '',
-        shipmentsNumber: '',
-        snCode: '',
-        specOne: 'specOne',
-        taxPrice: '',
-        taxRate: 'taxRate',
-        taxTotalAmount: '',
-        unit: ''
       };
-      let nGood = {};
+      let nGood = { ...good };
+      delete nGood.id;
       Object.keys(target).map(key => {
         nGood[key] = target[key] ? good[target[key]] : '';
       });
@@ -445,6 +438,9 @@ export default {
   /deep/ {
     .el-form-item {
       margin-bottom: 0;
+      .el-form-item__error {
+        position: relative;
+      }
     }
     .el-input__suffix {
       display: none;

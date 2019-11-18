@@ -2,22 +2,26 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-15 09:38:15
+ * @LastEditTime: 2019-11-18 16:49:58
  * @Description: 采购-换货单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView api="bizSystemService.getEmployeeList" busType="1" title="换货单">
+    <TableView :filterOptions="filterOptions" api="seePsiWmsService.wmsswaporderList" busType="1" ref="tableView" title="换货单">
       <template slot="button">
         <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
+        <span v-else-if="prop=='swapOrderCode'">
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+        </span>
+        <span v-else-if="prop=='swapState'">{{stateText[value]}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :visible.sync="showDetail" />
-    <Edit :visible.sync="showEdit" />
+    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
+    <Edit :visible.sync="showEdit" @reload="reload" v-if="showEdit" />
   </div>
 </template>
 <script>
@@ -48,26 +52,25 @@ export default {
     return {
       status: [],
       showDetail: false,
+      currentCode: '',
       showEdit: false,
-      tableHeader: [
-        { label: '采购入库单编号', prop: 'deptName', width: '180' },
-        { label: '请购/直发/备货单编号', prop: 'deptName', width: '180' },
-        { label: '订单来源', prop: 'deptName', width: '180' },
-        { label: '单据状态', prop: 'deptName', width: '180' },
-        { label: '供应商名称', prop: 'deptName', width: '180' },
-        { label: '销售预计到/发货时间', prop: 'deptName', width: '180' },
-        { label: '采购预计到/发货时间', prop: 'deptName', width: '180' },
-        { label: '总计数量', prop: 'deptName', width: '180' },
-        { label: '总计采购价', prop: 'deptName', width: '180' },
-        { label: '单据创建人', prop: 'deptName', width: '180' },
-        { label: '创建部门', prop: 'deptName', width: '180' },
-        { label: '创建时间', prop: 'createTime', width: '180' }
-      ]
+      stateText: {
+        '0': '新建',
+        '1': '审核中',
+        '2': '待换货',
+        '3': '部分换货',
+        '4': '完成换货',
+        '-1': '已驳回'
+      },
+      filterOptions: []
     };
   },
   methods: {
     logData(e) {
       console.log(e);
+    },
+    reload() {
+      this.$refs.tableView.reload(1);
     }
   }
 };

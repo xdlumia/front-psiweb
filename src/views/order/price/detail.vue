@@ -2,46 +2,86 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-16 17:46:56
+ * @LastEditTime: 2019-11-18 14:51:09
  * @Description: 采购调价单
 */
 <template>
-  <sideDetail :status="status" :visible="showDetailPage" @close="$emit('update:visible',false)" title="采购调价单" width="990px">
+  <sideDetail
+    :status="status"
+    :visible="showDetailPage"
+    @close="$emit('update:visible',false)"
+    title="采购调价单"
+    v-loading="loading"
+    width="990px"
+  >
     <template slot="button">
-      <el-button size="mini" type="primary">提交审核</el-button>
-      <el-button size="mini" type="primary">撤销审核</el-button>
-      <el-button size="mini" type="primary">通过</el-button>
-      <el-button size="mini" type="primary">驳回</el-button>
-      <el-button size="mini" type="primary">编辑</el-button>
-      <el-button size="mini" type="primary">删除</el-button>
+      <el-button
+        @click="$submission('seePsiPurchaseService.purchasestockorderSubmission',{ busCode:detail.stockCode },'提交审核')"
+        size="mini"
+        type="primary"
+      >提交审核</el-button>
+      <el-button
+        @click="$submission('seePsiPurchaseService.purchasestockorderUnsubmission',{ busCode:detail.stockCode },'撤销审核')"
+        size="mini"
+        type="danger"
+      >撤销审核</el-button>
+      <el-button @click="$submission('seePsiPurchaseService.purchasestockorderExamine',{ isAgree:0 },'通过')" size="mini" type="primary">通过</el-button>
+      <el-button
+        @click="$submission('seePsiPurchaseService.purchasestockorderExamine',{ isAgree:1 },'驳回',true)"
+        size="mini"
+        type="danger"
+      >驳回</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
+      <el-button @click="$submission('seePsiCommonService.commonadjustpriceLogicDelete',{ id:detail.id },'删除')" size="mini" type="danger">删除</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form>
-          <commodityInfo id="commodityInfo" />
-          <extrasInfo id="extrasInfo" />
+        <el-form :model="detail" v-if="detail&&visible">
+          <buying-goods-edit
+            :customColumns="[
+            { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140, },
+            { label:'库存成本(税前)',key:'inventoryPrice',prop:'inventoryPrice',width:140, },
+            { label:'调整金额',key:'adjustPriceMoney',prop:'adjustPriceMoney',width:120, format:(a,b)=>b.adjustPriceMoney||0 },
+            { label:'调整后库存成本(税前)',key:'repertoryCost',prop:'repertoryCost',width:140,
+              format:(a,b)=>b.repertoryCost||0
+            },
+            { label:'调整差异',key:'adjustPriceDifference	',prop:'adjustPriceDifference	',width:100,
+              format:(a,b)=>b.adjustPriceDifference||0
+            },
+            ]"
+            :data="detail"
+            :show="[
+              'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','configName','noteText','fullscreen'
+            ]"
+            :showSummary="false"
+            disabled
+            title="商品信息"
+          ></buying-goods-edit>
+          <extrasInfo :data="detail" disabled id="extrasInfo" />
         </el-form>
       </el-tab-pane>
     </el-tabs>
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
   </sideDetail>
 </template>
 <script>
 import VisibleMixin from '@/utils/visibleMixin';
+import Edit from './edit';
 
 export default {
   mixins: [VisibleMixin],
-  components: {},
-  props: {
+  components: {
+    Edit
   },
+  props: {},
   data() {
     return {
-      showPop: false
+      showEdit: false
     };
   },
-  watch: {
-  },
+  watch: {},
   methods: {
-    async getDetail(){
+    async getDetail() {
       if (this.code) {
         let {
           data
@@ -49,7 +89,14 @@ export default {
           null,
           this.code
         );
-        data.commodityList = data.commodityList || [];
+        let {
+          data: commodityList
+        } = await this.$api.seePsiCommonService.commonadjustpricedetailedList({
+          sellBillsId: data.id,
+          page: 1,
+          limit: 15
+        });
+        data.commodityList = commodityList || [];
         return data;
       } else if (this.rowData) return this.rowData;
     }

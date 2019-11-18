@@ -98,6 +98,9 @@ export default {
   /deep/ {
     .el-form-item {
       margin-bottom: 0;
+      .el-form-item__error {
+        position: relative;
+      }
     }
   }
   .expanded-icons {

@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-15 15:17:55
+ * @LastEditTime: 2019-11-18 10:46:35
  * @Description: 拆卸记录 已绑定 1
 */
 <template>
@@ -25,7 +25,7 @@
               api="seePsiWmsService.wmsflowrecordList"
               class="college-main"
               ref="companyTable"
-              style="height:500px;"
+              style="height:380px;"
             >
               <el-table-column label="SN码" min-width="100" prop="snCode" show-overflow-tooltip></el-table-column>
               <el-table-column label="机器号" min-width="100" prop="robotCode" show-overflow-tooltip></el-table-column>
@@ -65,11 +65,8 @@ export default {
     return {
       // 查询表单
       queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
+        businessCode:'',
+        commodityCode:'',
         page: 1,
         limit: 20
       }

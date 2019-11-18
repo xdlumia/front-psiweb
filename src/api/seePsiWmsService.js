@@ -3,12 +3,48 @@
 const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = false;
 /**
-* @date 2019-11-16
+* @date 2019-11-18
 * @host 39.99.132.95:9211
 */
 export default {
     __mockAddress: MOCK_ADDRESS,
 
+    /**
+     * @tag 业务单账期表
+     * @description 删除
+     */
+    businessshipmentfinanceDelete: {
+        url: '/businessshipmentfinance/delete',
+        methods: 'delete',
+        mock: isUseMock
+    },
+    /**
+     * @tag 业务单账期表
+     * @description 查看详细信息
+     */
+    businessshipmentfinanceInfo: {
+        url: '/businessshipmentfinance/info/{id}',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 业务单账期表
+     * @description 获取列表
+     */
+    businessshipmentfinanceList: {
+        url: '/businessshipmentfinance/list',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 业务单账期表
+     * @description 保存
+     */
+    businessshipmentfinanceSave: {
+        url: '/businessshipmentfinance/save',
+        methods: 'post',
+        mock: isUseMock
+    },
     /**
      * @tag 库房管理
      * @description 查看库房详细信息
@@ -172,71 +208,8 @@ export default {
         mock: isUseMock
     },
     /**
-     * @tag 库房组装商品清单
-     * @description 删除
-     */
-    wmsassemblecommodityDelete: {
-        url: '/wmsassemblecommodity/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
-     * @tag 库房组装商品清单
-     * @description 查看详细信息
-     */
-    wmsassemblecommodityInfo: {
-        url: '/wmsassemblecommodity/info/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
-     * @tag 库房组装商品清单
-     * @description 获取列表
-     */
-    wmsassemblecommodityList: {
-        url: '/wmsassemblecommodity/list',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
-     * @tag 库房组装商品清单
-     * @description 逻辑删除
-     */
-    wmsassemblecommodityLogicDelete: {
-        url: '/wmsassemblecommodity/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
-     * @tag 库房组装商品清单
-     * @description 保存
-     */
-    wmsassemblecommoditySave: {
-        url: '/wmsassemblecommodity/save',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
-     * @tag 库房组装商品清单
-     * @description 修改
-     */
-    wmsassemblecommodityUpdate: {
-        url: '/wmsassemblecommodity/update',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
      * @tag 库房组装单
-     * @description 删除
-     */
-    wmsassembleorderDelete: {
-        url: '/wmsassembleorder/delete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
-     * @tag 库房组装单
-     * @description 查看详细信息
+     * @description 查看组装单详细信息
      */
     wmsassembleorderInfo: {
         url: '/wmsassembleorder/info/{id}',
@@ -245,7 +218,7 @@ export default {
     },
     /**
      * @tag 库房组装单
-     * @description 获取列表
+     * @description 获取组装单列表
      */
     wmsassembleorderList: {
         url: '/wmsassembleorder/list',
@@ -254,16 +227,7 @@ export default {
     },
     /**
      * @tag 库房组装单
-     * @description 逻辑删除
-     */
-    wmsassembleorderLogicDelete: {
-        url: '/wmsassembleorder/logicDelete',
-        methods: 'delete',
-        mock: isUseMock
-    },
-    /**
-     * @tag 库房组装单
-     * @description 保存
+     * @description 保存组装单信息
      */
     wmsassembleorderSave: {
         url: '/wmsassembleorder/save',
@@ -272,7 +236,7 @@ export default {
     },
     /**
      * @tag 库房组装单
-     * @description 修改
+     * @description 修改组装单信息
      */
     wmsassembleorderUpdate: {
         url: '/wmsassembleorder/update',
@@ -641,6 +605,15 @@ export default {
     },
     /**
      * @tag 库房拆卸单
+     * @description 终止拆卸单信息
+     */
+    wmsdisassemblyorderTermination: {
+        url: '/wmsdisassemblyorder/termination/{id}',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房拆卸单
      * @description 修改拆卸单信息
      */
     wmsdisassemblyorderUpdate: {
@@ -659,6 +632,24 @@ export default {
     },
     /**
      * @tag 库房拆卸任务
+     * @description 继续拆卸任务
+     */
+    wmsdisassemblytaskContinueTask: {
+        url: '/wmsdisassemblytask/continueTask',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房拆卸任务
+     * @description 挂起拆卸任务
+     */
+    wmsdisassemblytaskHangTask: {
+        url: '/wmsdisassemblytask/hangTask',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房拆卸任务
      * @description 查看拆卸任务详细信息
      */
     wmsdisassemblytaskInfo: {
@@ -672,6 +663,33 @@ export default {
      */
     wmsdisassemblytaskList: {
         url: '/wmsdisassemblytask/list',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房拆卸任务
+     * @description 拆卸入库商品
+     */
+    wmsdisassemblytaskPutawayCommodity: {
+        url: '/wmsdisassemblytask/putawayCommodity',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房拆卸任务
+     * @description 根据任务编号查看拆卸任务详细信息
+     */
+    wmsdisassemblytaskQueryInfoByTaskCode: {
+        url: '/wmsdisassemblytask/queryInfoByTaskCode/{disassemblyTaskCode}',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房拆卸任务
+     * @description 确认并开始拆卸任务
+     */
+    wmsdisassemblytaskStart: {
+        url: '/wmsdisassemblytask/start/{id}',
         methods: 'get',
         mock: isUseMock
     },
@@ -956,11 +974,38 @@ export default {
     },
     /**
      * @tag 库房换货单
+     * @description 撤销审核
+     */
+    wmsswaporderCancel: {
+        url: '/wmsswaporder/cancel',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房换货单
      * @description 删除
      */
     wmsswaporderDelete: {
         url: '/wmsswaporder/delete',
         methods: 'delete',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房换货单
+     * @description 导出
+     */
+    wmsswaporderExport: {
+        url: '/wmsswaporder/export',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房换货单
+     * @description 查看详细信息根据CODE
+     */
+    wmsswaporderGetByCode: {
+        url: '/wmsswaporder/getByCode/{code}',
+        methods: 'get',
         mock: isUseMock
     },
     /**
@@ -992,10 +1037,37 @@ export default {
     },
     /**
      * @tag 库房换货单
+     * @description 审核通过
+     */
+    wmsswaporderPassApproval: {
+        url: '/wmsswaporder/passApproval',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房换货单
+     * @description 驳回
+     */
+    wmsswaporderReject: {
+        url: '/wmsswaporder/reject',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房换货单
      * @description 保存
      */
     wmsswaporderSave: {
         url: '/wmsswaporder/save',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房换货单
+     * @description 提交审核
+     */
+    wmsswaporderSubmitApproval: {
+        url: '/wmsswaporder/submitApproval',
         methods: 'post',
         mock: isUseMock
     },
