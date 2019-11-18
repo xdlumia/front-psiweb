@@ -8,29 +8,12 @@
 <template>
   <SideDetail
     :status="status"
-    :visible.sync="drawerData.tableVisible"
+    :visible.sync="visible"
     @close="$emit('update:visible',false)"
     title="组装单"
     width="990px"
   >
-    <!-- <template slot="button">
-      <el-button
-        type="primary"
-        size='mini'
-        @click="taskVisible = true"
-      >
-        生成拣货单和组装任务</el-button>
-      <el-button
-        type="primary"
-        size='mini'
-        :visible='addVisible'
-        @close='addVisible = false'
-      >终止</el-button>
-    </template> -->
-    <div
-      class="d-auto-y"
-      style="height:calc(100vh - 160px)"
-    >
+    <div>
       <div class="drawer-header">
         <el-button
           type="primary"
@@ -48,13 +31,15 @@
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
           <el-form>
-            <assembleNoedit />
-            <assembleInfo :disabled='true' />
+            <assembleNoedit :data='detailForm' />
+            <assembleInfo
+              :disabled='true'
+              :data='detailForm'
+            />
             <assemblyTask
               :visible='taskVisible'
               @close='taskVisible = false'
             />
-            <commodityInfo />
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="销售单">销售单</el-tab-pane>
@@ -72,23 +57,51 @@
 import assembleNoedit from '@/components/formComponents/assemble-noedit'
 import assembleInfo from '@/components/formComponents/assemble-info';
 import assemblyTask from './assembly-task';
-import commodityInfo from '@/components/formComponents/commodity-info';
 import SideDetail from '@/components/side-detail';
 export default {
-  props: ['drawerData'],
+  props: ['drawerData', 'visible'],
   data() {
     return {
       status: [{ label: '组装状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
-      taskVisible: false
+      taskVisible: false,
+      addVisible: false,
+      state: {
+        '-1': '终止',
+        '0': '未开始',
+        '1': '待执行',
+        '2': '部分完成',
+        '3': '已完成',
+      },
+      detailForm: {}
     };
   },
   components: {
     assembleNoedit,
     assembleInfo,
     assemblyTask,
-    commodityInfo,
     SideDetail
   },
+  mounted() {
+    this.wmsassembleorderInfo()
+  },
+  methods: {
+    //查看详情
+    wmsassembleorderInfo() {
+      this.$api.seePsiWmsService.wmsassembleorderInfo(null, this.drawerData.id)
+        .then(res => {
+          this.detailForm = res.data || {}
+          this.status[0].value = this.state[res.data.assembleOrderState]
+          this.status[1].value = res.data.createTime
+          this.status[2].value = res.data.creatorName
+          this.status[3].value = res.data.deptName
+          this.status[4].value = res.data.source
+          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
+        })
+        .finally(() => {
+
+        })
+    },
+  }
 }
 </script>
 <style lang='scss' scoped>

@@ -9,6 +9,7 @@
   <el-dialog
     :visible.sync="visible"
     title="挂起"
+    @close='close'
     v-dialogDrag
     width='40%'
   >
@@ -21,7 +22,7 @@
       class="demo-ruleForm"
     >
       <el-form-item
-        label="转移原因："
+        label="挂起原因："
         prop="desc"
       >
         <el-input
@@ -37,12 +38,12 @@
       class="dialog-footer"
     >
       <el-button
-        @click="$emit('close')"
+        @click="close"
         size="small"
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="$emit('close')"
+        @click="submit"
         size="small"
       >保 存</el-button>
     </span>
@@ -57,7 +58,7 @@ export default {
       type: Boolean,
       default: false
     },
-    form: {}
+    data: {}
   },
   watch: {
   },
@@ -79,7 +80,26 @@ export default {
   },
   mounted() { },
   methods: {
+    submit() {
+      this.$refs['ruleForm'].validate((valid) => {
+        if (valid) {
+          this.$api.seePsiWmsService.wmsdisassemblytaskHangTask({ hangCause: this.ruleForm.desc, id: this.data.id })
+            .then(res => {
+              this.$emit('reload')
+            })
+            .finally(() => {
 
+            })
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+
+    },
+    close() {
+      this.$emit('update:visible', false)
+    }
   }
 };
 </script>

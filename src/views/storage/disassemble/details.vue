@@ -14,13 +14,10 @@
     title="拆卸任务"
     width="990px"
   >
-    <div
-      class="d-auto-y"
-      style="height:calc(100vh - 160px)"
-    >
+    <div>
       <div class="drawer-header">
         <el-button
-          @click="orderStorageVisible=true"
+          @click="wmsdisassemblytaskStart"
           size="mini"
           type="primary"
         >确认收到并开始</el-button>
@@ -30,12 +27,12 @@
           type="primary"
         >拆卸</el-button>
         <el-button
-          @click="hangVisible=true"
+          @click="wmsdisassemblytaskHangTask"
           size="mini"
           type="primary"
         >挂起</el-button>
         <el-button
-          @click="orderStorageVisible=true"
+          @click="wmsdisassemblytaskContinueTask"
           size="mini"
           type="primary"
         >继续</el-button>
@@ -43,7 +40,7 @@
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
           <el-form>
-            <dismantlingMerchandise />
+            <dismantlingMerchandise :data="detailForm" />
             <form-card
               class="choose-man"
               title="人员分配"
@@ -64,22 +61,25 @@
         </el-tab-pane>
         <el-tab-pane label="拆卸单">拆卸单</el-tab-pane>
       </el-tabs>
-      <!-- <hangUp
-        :visible='hangVisible'
+      <hangUp
+        @reload='reload'
+        :visible.sync='hangVisible'
         @close='hangVisible = false'
+        :data="detailForm"
       />
       <disassembleGoodsChoose
-        :visible='disassembleVisible'
+        :visible.sync='disassembleVisible'
+        :data="detailForm"
         @close='disassembleVisible = false'
-      /> -->
+      />
     </div>
   </SideDetail>
 
 </template>
 <script>
 import dismantlingMerchandise from '@/components/formComponents/dismantling-merchandise'
-// import disassembleGoodsChoose from '@/components/formComponents/disassemble-goods-choose'
-// import hangUp from '@/components/formComponents/hang-up';
+import disassembleGoodsChoose from '@/components/formComponents/disassemble-goods-choose'
+import hangUp from '@/components/formComponents/hang-up';
 import SideDetail from '@/components/side-detail';
 export default {
   props: ['drawerData', 'visible'],
@@ -119,7 +119,6 @@ export default {
           this.status[2].value = res.data.creatorName
           this.status[3].value = res.data.deptName
           this.status[4].value = res.data.source
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 
@@ -127,6 +126,56 @@ export default {
     },
     close() {
       this.$emit('update:visible', false)
+    },
+    reload() {
+      this.$emit('reload')
+    },
+    //确认并开始拆卸任务
+    wmsdisassemblytaskStart() {
+      this.$confirm('确认收到并开始拆卸任务吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api.seePsiWmsService.wmsdisassemblytaskStart(null, this.drawerData.id)
+          .then(res => {
+            this.$emit('reload')
+          })
+          .finally(() => {
+
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      })
+    },
+    //挂起
+    wmsdisassemblytaskHangTask() {
+      this.hangVisible = true
+    },
+    //继续
+    wmsdisassemblytaskContinueTask() {
+      // this.$confirm('是否继续拆卸任务?', '提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(() => {
+      this.$api.seePsiWmsService.wmsdisassemblytaskContinueTask({ id: this.detailForm.id })
+        .then(res => {
+          this.$emit('reload')
+        })
+        .finally(() => {
+
+        })
+      // }).catch(() => {
+      //   this.$message({
+      //     type: 'info',
+      //     message: '已取消'
+      //   });
+      // })
+
     }
   },
 }
@@ -160,6 +209,7 @@ export default {
     position: relative;
     /deep/ {
       & > .el-tabs__header {
+        width: 100% !important;
         background-color: #f2f2f2;
         padding: 0 20px;
         margin-bottom: 0;

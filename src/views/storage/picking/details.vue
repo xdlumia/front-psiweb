@@ -123,6 +123,7 @@ export default {
     position: relative;
     /deep/ {
       & > .el-tabs__header {
+        width: 100% !important;
         background-color: #f2f2f2;
         padding: 0 20px;
         margin-bottom: 0;
