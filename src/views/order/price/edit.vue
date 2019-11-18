@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-16 17:08:22
+ * @LastEditTime: 2019-11-18 14:51:02
  * @Description: 采购调价单
 */
 <template>
@@ -20,12 +20,11 @@
       <d-tab-pane label="商品信息" name="commodityInfo" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
       <div>
-        <el-form :model="form" class="p10" v-if="form&&visible" ref="form">
+        <el-form :model="form" class="p10" ref="form" v-if="form&&visible">
           <buying-goods-edit
-            :data="form"
             :customColumns="[
-            { label:'采购价(平均值)',key:'costAmount',prop:'costAmount',width:140, },
-            { label:'库存成本(税前)',key:'inventoryNumber',prop:'inventoryNumber',width:140, },
+            { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140, },
+            { label:'库存成本(税前)',key:'inventoryPrice',prop:'inventoryPrice',width:140, },
             { label:'调整金额',key:'adjustPriceMoney',prop:'adjustPriceMoney',width:120,slot:'adjustPriceMoney' },
             { label:'调整后库存成本(税前)',key:'repertoryCost',prop:'repertoryCost',width:140,
               format:(a,b)=>calcRepertoryCost(b)
@@ -34,6 +33,7 @@
               format:(a,b)=>calcAdjustPriceDifference(b)
             },
             ]"
+            :data="form"
             :show="[
               'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','configName','noteText','!fullscreen'
             ]"
@@ -41,16 +41,16 @@
             title="商品信息"
           >
             <template slot="adjustPriceMoney" slot-scope="{row,info,formProp}">
-                <el-form-item
-                    :prop="formProp"
-                    :rules="[{required:true},{type:'price'},{validator:checkAdjustPrice.bind(this,row)}]"
-                    v-if="!info.isChild"
-                >
-                    <el-input size="mini" v-model="row.adjustPriceMoney"></el-input>
-                </el-form-item>
+              <el-form-item
+                :prop="formProp"
+                :rules="[{required:true},{type:'price'},{validator:checkAdjustPrice.bind(this,row)}]"
+                v-if="!info.isChild"
+              >
+                <el-input size="mini" v-model="row.adjustPriceMoney"></el-input>
+              </el-form-item>
             </template>
           </buying-goods-edit>
-          <extrasInfo id="extrasInfo" />
+          <extrasInfo :data="form" id="extrasInfo" />
         </el-form>
       </div>
     </d-tabs>
@@ -73,53 +73,65 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    console.log(this);
-  },
+  mounted() {},
   methods: {
     getDetail() {
-      console.log('get detail')
+      if (this.rowData) return this.rowData;
       return {
         commodityList: []
       };
     },
-    calcRepertoryCost(row){
-      return +Number((row.inventoryNumber+(+row.adjustPriceMoney))||0).toFixed(2)
+    calcRepertoryCost(row) {
+      return +Number(
+        (+row.inventoryPrice || 0) + (+row.adjustPriceMoney || 0)
+      ).toFixed(2);
     },
-    calcAdjustPriceDifference(row){
-      return +Number((row.usableInventoryNum*(+row.adjustPriceMoney))||0).toFixed(2);
+    calcAdjustPriceDifference(row) {
+      return +Number(
+        (+row.inventoryNum || 0) * (+row.adjustPriceMoney || 0)
+      ).toFixed(2);
     },
     async save() {
       console.log(this.form);
-      await this.$refs.form.validate()
-      let form = {...this.form}
-      form.commonAdjustPriceDetailedEntityList = form.commodityList.map(item=>{
-        form.adjustPriceDifference = form.adjustPriceDifference||0
-        form.adjustPriceDifference += this.calcAdjustPriceDifference(item)
-        return {
-          adjustPriceMoney:item.adjustPriceMoney,
-          adjustPriceDifference:this.calcAdjustPriceDifference(item),
-          commodityCode:item.commodityCode,
-          commodityId:item.id,
-          repertoryCost:this.calcRepertoryCost(item),
+      await this.$refs.form.validate();
+      let form = { ...this.form };
+      form.commonAdjustPriceDetailedEntityList = form.commodityList.map(
+        item => {
+          form.adjustPriceDifference = form.adjustPriceDifference || 0;
+          form.adjustPriceDifference += this.calcAdjustPriceDifference(item);
+          return {
+            adjustPriceMoney: item.adjustPriceMoney,
+            adjustPriceDifference: this.calcAdjustPriceDifference(item),
+            commodityCode: item.commodityCode,
+            commodityId: item.commodityId,
+            repertoryCost: this.calcRepertoryCost(item)
+          };
         }
-      })
-      form.adjustPriceDifference = +Number(form.adjustPriceDifference).toFixed(2)
-      form.adjustPriceType = 2
-      console.log(form)
+      );
+      form.adjustPriceDifference = +Number(form.adjustPriceDifference).toFixed(
+        2
+      );
+      form.adjustPriceType = 2;
+      delete form.commodityList;
+      form.source = this.from || '新建';
+      console.log(form);
       this.loading = true;
       try {
-        await this.$api.seePsiCommonService.commonadjustpriceSave(form)
-        this.setEdit()
-        this.close()
-      } catch (error) { }
+        if (this.isEdit) {
+          await this.$api.seePsiCommonService.commonadjustpriceUpdate(form);
+        } else {
+          await this.$api.seePsiCommonService.commonadjustpriceSave(form);
+        }
+        this.setEdit();
+        this.close();
+      } catch (error) {}
       this.loading = false;
     },
-    checkAdjustPrice(row,rule,value,cb){
-      if(this.calcRepertoryCost(row)>0){
-        cb()
-      }else{
-        cb(new Error('调整后金额不能为负'))
+    checkAdjustPrice(row, rule, value, cb) {
+      if (this.calcRepertoryCost(row) > 0) {
+        cb();
+      } else {
+        cb(new Error('调整后金额不能为负' + this.calcRepertoryCost(row)));
       }
     }
   }

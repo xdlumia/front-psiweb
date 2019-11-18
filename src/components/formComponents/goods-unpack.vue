@@ -9,9 +9,15 @@
   <div>
     <buying-goods-edit
       :customColumns="[
-        { label:'拆卸数量', fixed:true, key:'disassemblyNum', width:100, prop:'disassemblyNum',format:(a,row)=>`0/${row.disassemblyNum||0}` },
-        { label:'待分配', fixed:true, key:'waitTeardownNumber', width:100, prop:'teardownNumber',format:(a,row)=>`${row.teardownNumber||0}` },
-        { label:'机器号/SN码', fixed:true, key:'code', width:100, prop:'teardownNumber', click:(e)=>getTableVisible(e), format:()=> 1 },
+        { label:'拆卸数量', fixed:true, key:'disassemblyNum', width:100, prop:'disassemblyNum',
+          format:(a,row)=>`${row.accomplishDisassemblyNum||0}/${row.disassemblyNum||0}` 
+        },
+        { label:'待分配', fixed:true, key:'waitTeardownNumber', width:100, prop:'teardownNumber',
+          format:(a,row)=>`${(row.disassemblyNum||0)-(row.accomplishDisassemblyNum||0)}`
+        },
+        { label:'机器号/SN码', fixed:true, key:'code', width:100, prop:'accomplishDisassemblyNum', click:(e)=>getTableVisible(e),
+          format:(a)=>a||0,
+        },
         { label:'配件数量', key:'singleNum', width:100, prop:'singleNum', },
         { label:'采购单价', key:'purchaseUnivalence', width:100, prop:'purchaseUnivalence',format:(a,row)=>row.purchaseUnivalence||row.inventoryPrice },
       ]"
@@ -23,7 +29,15 @@
       :sort="['expanded','disassemblyNum','commodityCode','goodsName','singleNum','purchaseUnivalence','costAmountPrice','taxRate','categoryCode','className','specOne','configName',]"
       title="拆卸商品"
     ></buying-goods-edit>
-    <goods-unpack-record :commodityList="recCommodity" :visible.sync="showRec" v-if="showRec" />
+    <goods-unpack-record
+      :commodityList="recCommodity"
+      :params="{
+      commodityCode:recCommodity[0].commodityCode,
+      businessCode:data.disassemblyOrderCode
+    }"
+      :visible.sync="showRec"
+      v-if="showRec"
+    />
   </div>
 </template>
 <script>
@@ -50,16 +64,6 @@ export default {
   },
   data() {
     return {
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
       showRec: false,
       recCommodity: [],
       dialogVisible: false,
@@ -74,6 +78,8 @@ export default {
     //点击机器号和SN码
     getTableVisible(row) {
       this.showRec = true;
+      row = JSON.parse(JSON.stringify(row));
+      row.expanded = false;
       this.recCommodity = [row];
     },
     fullscreen() {

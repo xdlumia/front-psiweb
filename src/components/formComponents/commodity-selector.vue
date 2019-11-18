@@ -2,12 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-15 10:08:09
+ * @LastEditTime: 2019-11-18 16:55:38
  * @Description: 商品输入选框 字段已绑定 1
 */
 <template>
   <span class="d-inline d-relative">
     <el-select
+      :disabled="disabled"
       :loading="loading"
       :remote-method="search"
       @change="onSelect"
@@ -34,7 +35,7 @@
         </el-row>
       </el-option>
     </el-select>
-    <i @click="openDialog" class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"></i>
+    <i @click="openDialog" class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon" v-if="!disabled"></i>
     <commodity-choose
       :kinds="kinds"
       :multiple="multiple"
@@ -72,7 +73,8 @@ export default {
     multiple: {
       type: Boolean,
       default: true
-    }
+    },
+    disabled: Boolean
   },
   data() {
     return {
@@ -129,7 +131,8 @@ export default {
             page: 1,
             limit: 50,
             goodsName: words,
-            categoryCode: this.kinds && this.kinds.length ? this.kinds[0].value : ''
+            categoryCode:
+              this.kinds && this.kinds.length ? this.kinds[0].value : ''
           },
           this.params
         )
@@ -157,7 +160,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .select-icon {
-  z-index: 200;
+  z-index: 1;
   background-color: #fff;
   height: 26px;
   top: 1px;

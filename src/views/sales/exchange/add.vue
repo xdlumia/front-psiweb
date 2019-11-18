@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 10:18:10
+ * @LastEditTime: 2019-11-18 10:50:10
  * @Description: 生成销售换货单
 */
 <template>
@@ -38,7 +38,7 @@
       class="d-auto-y"
       style="height:calc(100vh - 110px)"
     >
-      <d-tabs :style="{maxHeight:'calc(100vh - 180px)'}">
+      <d-tabs :style="{maxHeight:'calc(100vh - 110px)'}">
         <d-tab-pane
           v-for="(val,key) of tabs"
           :key="key"
@@ -57,21 +57,20 @@
           :data="form"
         />
         <!-- 退换货商品 -->
-        <goods-exchange-edit
+        <goods-return-edit
           :options="rowData.quotationCodes || []"
           :data="form"
+          :params="{busType: 1, putawayType: 1,}"
           id="goodsChangeEdit"
         />
         <!-- 账期信息 -->
         <return-bill-info
           id="returnBillInfo"
-          disabled
           :data="form"
         />
         <!-- 其他费用 -->
         <other-fee
           id="otherFee"
-          disabled
           :data="form"
         />
 
@@ -116,9 +115,10 @@ export default {
         actualRefundAmount: '',//98765432109876.12,
         alterationCode: '',//退换货编号,
         apprpvalNode: '',//9,
-        attachList: '',//附件,
+        attachList: [],//附件,
         attachs: '',//附件,
-        busType: '',//9,
+        busType: 1,//0 退货 1换货,
+        exChangeCommodityList: [], // 临时数据 存放修改后的商品
         businessCommoditySaveVoList: [
           // {
           //   alterationNumber:'',//9,
@@ -153,12 +153,12 @@ export default {
         companySettlementId: '',//100000,
         deptTotalCode: '',//部门code,
         exchangeNumber: '',//9,
-        fieldList: '',//自定义字段,
+        fieldList: [],//自定义字段,
         fields: '',//自定义字段,
         isDelete: '',//9,
         note: '',//备注,
         payTime: '',//1572403069457,
-        quotationCode: '',//报价单编号,
+        quotationCode: (this.rowData.quotationCodes || [])[0] || '',//默认取报价单编号第一个,报价单编号,
         refundNumber: '',//9,
         salesNumber: '',//9,
         salesShipmentCode: '',//销售出库单编号,
@@ -205,7 +205,18 @@ export default {
     // 保存表单数据
     saveHandle() {
       this.$refs.form.validate(valid => {
-        if (valid) {
+        if (!this.form.shipmentFinanceSaveVoList.length) {
+          this.$message({
+            message: '请添加账期信息',
+            type: 'error',
+            showClose: true,
+          });
+          return
+        }
+        if (!valid) {
+          // 把退货和换货产品合并
+          this.form.businessCommoditySaveVoList = this.form.businessCommoditySaveVoList.concat(this.form.exChangeCommodityList)
+          this.form.businessCommoditySaveVoList.map(v => v.busCode = this.form.quotationCode)
           this.loading = true
           // rules 表单验证是否通过
           let api = 'salesexchangeUpdate' // 默认编辑更新

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 13:46:51
+ * @LastEditTime: 2019-11-18 11:14:41
  * @Description: 借入/借出商品编辑页面
 */  
 <template>
@@ -168,6 +168,9 @@ export default {
   /deep/ {
     .el-form-item {
       margin-bottom: 0;
+      .el-form-item__error {
+        position: relative;
+      }
     }
     .el-input__suffix {
       display: none;

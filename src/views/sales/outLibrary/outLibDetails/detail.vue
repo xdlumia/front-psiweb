@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 15:39:23
+ * @LastEditTime: 2019-11-18 12:04:21
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -23,7 +23,7 @@
       :data="data"
     />
     <!-- 报价单信息 -->
-    <quote-info :rowDatas="rowDatas" />
+    <quote-info :options="[]" />
 
     <!-- 收款滞纳金 -->
     <payment-late-sales

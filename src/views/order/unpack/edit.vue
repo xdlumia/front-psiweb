@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-16 16:19:10
+ * @LastEditTime: 2019-11-18 14:42:16
  * @Description: 拆卸单
 */
 <template>
@@ -45,8 +45,7 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     getDetail() {
       if (this.rowData) {
@@ -82,8 +81,20 @@ export default {
     async save() {
       if (!this.form.commodityList || !this.form.commodityList.length) {
         return this.$message({
-          content: '请选择带拆卸商品',
-          type: 'info'
+          message: '请选择带拆卸商品',
+          type: 'warning'
+        });
+      }
+      if (
+        this.form.commodityList.some(item => {
+          if (!item.children || !item.children.length) {
+            return true;
+          }
+        })
+      ) {
+        return this.$message({
+          message: '请添加整机拆卸配件',
+          type: 'warning'
         });
       }
       await this.$refs.form.validate();
@@ -94,8 +105,8 @@ export default {
           return this.getCommodityInfo(item);
         });
         form.commoditySaveVoList.reduce((data, item) => {
-          form.noDisassemblyNum = form.noDisassemblyNum || 0;
-          form.noDisassemblyNum += parseInt(item.disassemblyNum) || 0;
+          form.undistributedNum = form.undistributedNum || 0;
+          form.undistributedNum += parseInt(item.disassemblyNum) || 0;
           return form;
         }, form);
         delete form.commodityList;

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 18:49:45
+ * @LastEditTime: 2019-11-18 15:38:50
  * @Description: 销售出库单详情
 */
 <template>
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state=3 || 0].includes(item.label)"
+            v-if="currStatusType[detail.state=-1 || 0].includes(item.label)"
             size="small"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -70,6 +70,13 @@
       :params="{salesShipmentCode:rowData.shipmentCode}"
       :code="rowData.shipmentCode"
     />
+    <addContract
+      :visible.sync="addContractVisible"
+      :rowData="rowData"
+      type="addContract"
+      :params="{salesShipmentCode:rowData.shipmentCode}"
+      :code="rowData.shipmentCode"
+    />
     <exchangeAdd
       :visible.sync="exchangeAddVisible"
       :rowData="rowData"
@@ -88,6 +95,8 @@
 </template>
 <script>
 import add from './add' //销售出库单新增编辑
+import addContract from './add-contract' //合同新增
+
 import returnAdd from '../return/add' //退货单新增
 import exchangeAdd from '../exchange/add' //换货单新增
 
@@ -98,6 +107,7 @@ export default {
   components: {
     detail,
     add,
+    addContract,
     returnAdd,
     exchangeAdd
   },
@@ -119,7 +129,7 @@ export default {
         { label: '生成换货单', type: 'primary', authCode: '' },
         { label: '开票申请', type: 'primary', authCode: '' },
         { label: '编辑合同', type: 'primary', authCode: '' },
-        { label: '合同完善追加合同附件', type: 'primary', authCode: '' },
+        { label: '合同完善', type: 'primary', authCode: '' },
         { label: '审核采购时间', type: 'primary', authCode: '' },
         { label: '收回合同', type: 'primary', authCode: '' },
         { label: '追加合同附件', type: 'primary', authCode: '' },
@@ -127,15 +137,12 @@ export default {
       /**
        * 根据当前状态判断显示哪些按钮
        */
-      //头部状态数据
-      stateText: {},
-      currStatus: 1,
       currStatusType: {
         '-1': ['提交审核', '编辑', '删除', '生成合同'], // 新建
-        '0': ['撤销审核', '审核通过', '驳回', '合同完善追加合同附件'], //审核中
+        '0': ['撤销审核', '审核通过', '驳回', '合同完善', '追加合同附件'], //审核中
         '1': ['审核采购时间', '追加合同附件'], //请购处理
         '2': ['收回合同', '追加合同附件'], //合同收回
-        '3': ['终止', '生成退货单', '追加合同附件'], //已通过
+        '3': ['终止', '生成退货单', '生成换货单', '追加合同附件'], //已通过
         '4': ['生成退货单', '生成换货单', '开票申请', '追加合同附件'], //已完成
         '5': ['提交审核', '编辑', '删除', '编辑合同'], //已驳回
         '6': ['生成退货单'] //已终止
@@ -156,6 +163,7 @@ export default {
       activeName: 'detail',
       form: {},
       editVisible: false, // 销售出库单编辑
+      addContractVisible: false, // 销售出库单编辑
       returnAddVisible: false,
       exchangeAddVisible: false,
 
@@ -165,12 +173,7 @@ export default {
 
   },
   created() {
-    let statusList = this.$parent.$refs.table.statusList
-    statusList.forEach(item => {
-      if (item.name != '全部') {
-        this.stateText[item.state] = item.name
-      }
-    })
+
   },
   mounted() {
 
@@ -179,17 +182,17 @@ export default {
     buttonsClick(label) {
       let labelObj = {
         '编辑': 'editVisible',
-        '生成合同': 'editVisible',
-        '追加合同附件': 'editVisible',
+        '生成合同': 'addContractVisible',
+        '追加合同附件': 'addContractVisible',
         '生成退货单': 'returnAddVisible',
         '生成换货单': 'exchangeAddVisible',
       }
-      console.log(label);
 
       if (labelObj.hasOwnProperty(label)) {
         let visible = labelObj[label]
         this[visible] = true
       }
+
       // 需要二次确认操作
       else {
         let apiObj = {

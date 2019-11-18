@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 15:33:34
+ * @LastEditTime: 2019-11-18 10:02:57
  * @Description: 公司信息  传入 公司发票账户 和公司结算账户id 会自动查询其余信息
 */
 <template>
@@ -92,6 +92,7 @@
   </form-card>
 </template>
 <script>
+import { log } from 'util'
 let formItems = [
   // { label: '公司发票账户', prop: 'companyAccountId', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [] },
   // { label: '公司结算账户', prop: 'companySettlementId', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [] },
@@ -188,10 +189,10 @@ export default {
         this.companyInfo.invoiceTitle = invoiceSelected.corporationName
         this.companyInfo.taxpayersNum = invoiceSelected.taxpayersNum
         this.companyInfo.registerAddres = invoiceSelected.address
-        if (this.data.companySettlementId) {
+        if (this.data && this.data.companySettlementId) {
           // 获取公司结算账户当前项
           this.settlementItem = { id: this.data.companySettlementId }
-          let [settlementSelected] = this.settlementOptions.filter(item => item.id === this.data.companySettlementId) || [{}]
+          let [settlementSelected] = (this.settlementOptions || []).filter(item => item.id === this.data.companySettlementId) || [{}]
           settlementSelected = settlementSelected || {}
           // 这里的接口是公共的 .所以字段不对应
           this.companyInfo.accountBank = settlementSelected.accountBank

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 13:51:08
+ * @LastEditTime: 2019-11-18 16:36:39
  * @Description: 账单信息
 */
 <template>
@@ -41,7 +41,7 @@
           <el-checkbox :disabled="disabled" :false-label="1" :true-label="1" v-model="row.isBillFee"></el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column :label="type==0?'付款金额':'收款金额'" align="center" min-width="140" prop="payAmount" show-overflow-tooltip>
+      <el-table-column :label="typeName" align="center" min-width="140" prop="payAmount" show-overflow-tooltip>
         <template slot-scope="{row,$index}">
           <el-form-item
             :prop="`financeList.${$index}.payAmount`"
@@ -112,6 +112,21 @@ export default {
       billTotalAmount: 0
     };
   },
+  computed: {
+    typeName() {
+      // type==0?'付款金额':'收款金额'
+      let data = {
+        0: '付款金额',
+        1: '收款金额',
+        3: '收/付款金额'
+      };
+      if (String(this.type)) {
+        return data[this.type];
+      } else {
+        return '收/付款金额';
+      }
+    }
+  },
   mounted() {
     this.resetBillData();
   },
@@ -125,8 +140,12 @@ export default {
   },
   methods: {
     resetBillData() {
-      if (this.data && !this.data.financeList) {
+      if (
+        this.data &&
+        (!this.data.financeList || !this.data.financeList.length)
+      ) {
         this.data.financeList = [];
+        this.addBill();
       }
     },
     // 自定义账单金额数据
