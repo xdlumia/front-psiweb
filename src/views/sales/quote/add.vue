@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 15:23:40
+ * @LastEditTime: 2019-11-18 20:16:44
  * @Description: file content
 */
 <template>
@@ -46,7 +46,7 @@
         :model="form"
         label-position="top"
         class="d-auto-y"
-        style="height:calc(100vh - 110px)"
+        style="height:calc(100vh - 140px)"
       >
         <!--  选择客户 和 填写报价信息  有相同的操作.两边数据要实时更新 所以使用 v-if 切换到当前的页面重新查询数据 -->
         <!-- 选择客户  -->
@@ -84,6 +84,7 @@ import selectProduct from './add/select-product'
 import confirmInfo from './add/confirm-info'
 import quoteInfo from './add/quote-info'
 import VisibleMixin from '@/utils/visibleMixin';
+import { log } from 'util'
 export default {
   mixins: [VisibleMixin],
   components: {
@@ -102,6 +103,8 @@ export default {
       form: {
         KIND1Data: [], //临时存放第二步整机列表选中的数据
         KIND2Data: [], //临时存放第二步配件列表选中的数据
+        KIND1List: [], //临时存放第三步整机列表选中的数据 数组存放
+        KIND2List: {},//临时存放第三步配件列表选中的数据 对象存放
         id: {},
         apprpvalState: '', //审核状态
         attachList: [], //附件,
@@ -177,6 +180,20 @@ export default {
       if (index === 3) {
         // 确定配置信息的时候查询整机
         this.$refs.confirmInfo.commonquotationconfigdetailsListConfigByGoodName()
+      } else if (index === 4) {
+        // 最终以第三步存放的数据为准
+        let wholeList = this.form.KIND1List.reduce((prev, cur) => {
+          return prev.concat(cur.children)
+        }, [])
+        // 配件列表
+        let fixingsList = []
+        for (let key in this.form.KIND2List) {
+          fixingsList = fixingsList.concat(this.form.KIND2List[key])
+        }
+
+        // let
+        // 第4步整合商品信息
+        this.form.businessCommoditySaveVoList = [...wholeList, ...fixingsList]
       }
       // if (this.type != 'add') {
       //   this.$message.error({

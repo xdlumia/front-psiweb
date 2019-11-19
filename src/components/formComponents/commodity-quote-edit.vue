@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 10:26:05
+ * @LastEditTime: 2019-11-18 20:49:43
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -14,6 +14,7 @@
       <span>商品信息</span>
     </div>
     <el-table
+      default-expand-all
       show-summary
       sum-text='总计'
       border
@@ -21,20 +22,16 @@
       :data="data.businessCommoditySaveVoList"
       max-height="400"
       ref="elTable"
-      row-key="name"
+      row-key="id"
       size="mini"
     >
-      <!-- <el-table-column
-        class-name="hide-children"
-        min-width="1"
-        width="1"
-      ></el-table-column> -->
+      <el-table-column width="50">
+      </el-table-column>
       <el-table-column
         label="操作"
         min-width="80"
         prop="name"
       >
-        <!-- v-if='scope.row.noChildren' v-if='scope.row.commodityCode'-->
         <template slot-scope="scope">
           <span>
             <!-- <i
@@ -46,25 +43,6 @@
               @click="deleteInfo(scope)"
             ></i>
           </span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="40">
-        <template slot-scope="scope">
-          <div
-            class="expanded-icons d-text-gray"
-            v-if="scope.row.configName"
-          >
-            <span
-              @click="expand(scope.row)"
-              class="el-icon-plus d-pointer"
-              v-if="!scope.row.expanded"
-            ></span>
-            <span
-              @click="expand(scope.row)"
-              class="el-icon-minus d-pointer"
-              v-else
-            ></span>
-          </div>
         </template>
       </el-table-column>
       <el-table-column
@@ -156,7 +134,6 @@
         <template slot-scope="scope">
           <el-form-item
             class="mb0"
-            :prop="`businessCommoditySaveVoList.${scope.$index}.commodityNumber`"
             :rules="[{required:true},{type:'positiveNum'}]"
           >
             <el-input
@@ -181,7 +158,6 @@
         <template slot-scope="scope">
           <el-form-item
             class="mb0"
-            :prop="`businessCommoditySaveVoList.${scope.$index}.discount`"
             :rules="[{required:true},{type:'positiveNum'}]"
           >
             <el-input
@@ -200,7 +176,6 @@
         <template slot-scope="scope">
           <el-form-item
             class="mb0"
-            :prop="`businessCommoditySaveVoList.${scope.$index}.discountSprice`"
             :rules="[{required:true},{type:'price'}]"
           >
             <el-input
@@ -217,10 +192,7 @@
         min-width="110"
       >
         <template slot-scope="scope">
-          <el-form-item
-            class="mb0"
-            :prop="`businessCommoditySaveVoList.${scope.$index}.note`"
-          >
+          <el-form-item class="mb0">
             <el-input
               size="mini"
               v-model="scope.row.note"
@@ -330,8 +302,6 @@ export default {
     //选择商品
     commodityChoose(e, scope) {
       let [list] = e[0]
-      console.log(list);
-
       let type = e[1]
       this.data.businessCommoditySaveVoList[scope.$index].commodityCode = ''
       this.data.businessCommoditySaveVoList.forEach((item) => {
@@ -392,7 +362,8 @@ export default {
     // },
     //点击删除当前行
     deleteInfo(row) {
-      this.data.businessCommoditySaveVoList.splice(row.$index, 1)
+      console.log(row)
+      // this.data.businessCommoditySaveVoList.splice(row.$index, 1)
     },
     //关闭弹窗
     update() {

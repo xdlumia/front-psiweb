@@ -16,7 +16,7 @@
             type="textarea"
             :rows="2"
             placeholder="请输入内容"
-            v-model="textarea"
+            v-model="data.note"
           >
           </el-input>
         </el-col>
@@ -31,7 +31,8 @@ export default {
     disabled: {
       type: Boolean,
       default: false
-    }
+    },
+    data: {}
   },
   data() {
     return {

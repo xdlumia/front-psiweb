@@ -16,9 +16,16 @@
           class="ml10"
           v-if="(!disabled)&&!hide.includes('add')&&!show.includes(`!add`)"
         />
-        <span class="fr" v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')">
+        <span
+          class="fr"
+          v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')"
+        >
           <span>
-            <el-link :underline="false" @click="showInFull=true" type="primary">全屏显示</el-link>
+            <el-link
+              :underline="false"
+              @click="showInFull=true"
+              type="primary"
+            >全屏显示</el-link>
           </span>
         </span>
       </div>
@@ -49,7 +56,12 @@
               <div class="d-text-blue d-elip">{{row.commodityCode}}</div>
             </template>
             <template v-else-if="item.key=='goodsPic'">
-              <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
+              <el-image
+                :src="row.goodsPic"
+                class="d-center"
+                fit="fill"
+                style="width: 100px; height: 40px"
+              >
                 <span slot="error">暂无图片</span>
               </el-image>
             </template>
@@ -70,8 +82,16 @@
             <!-- 时间戳结束 -->
             <!-- 价格输入开始 -->
             <template v-else-if="item.type=='input'">
-              <el-form-item :prop="`${getCurrentFormProp(row,item.prop)}`" :rules="item.rules||[]" size="mini">
-                <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]" />
+              <el-form-item
+                :prop="`${getCurrentFormProp(row,item.prop)}`"
+                :rules="item.rules||[]"
+                size="mini"
+              >
+                <el-input
+                  :disabled="disabled"
+                  class="wfull"
+                  v-model="row[item.prop]"
+                />
               </el-form-item>
             </template>
             <!-- 价格输入结束 -->
@@ -88,16 +108,26 @@
                 }]:[])"
                 size="mini"
               >
-                <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]"></el-input>
+                <el-input
+                  :disabled="disabled"
+                  class="wfull"
+                  v-model="row[item.prop]"
+                ></el-input>
               </el-form-item>
             </template>
             <!-- 商品数量结束 -->
             <template v-else-if="item.key=='action'">
-              <i @click="deleteChoose(row)" class="el-icon-error d-pointer f20 d-text-red"></i>
+              <i
+                @click="deleteChoose(row)"
+                class="el-icon-error d-pointer f20 d-text-red"
+              ></i>
             </template>
             <!-- 选择开始 -->
             <template v-else-if="item.type=='selection'">
-              <el-form-item :prop="`${getCurrentFormProp(row,item.prop)}`" size="mini">
+              <el-form-item
+                :prop="`${getCurrentFormProp(row,item.prop)}`"
+                size="mini"
+              >
                 <el-checkbox
                   :disabled="disabled"
                   :false-label="0"
@@ -110,9 +140,20 @@
             <!-- 选择结束 -->
             <!-- 展开子项开始 -->
             <template v-else-if="item.type=='expanded'">
-              <div class="expanded-icons d-text-gray" v-if="row.children&&row.children.length">
-                <span @click="expand(row)" class="el-icon-plus d-pointer" v-if="!row.expanded"></span>
-                <span @click="expand(row)" class="el-icon-minus d-pointer" v-else></span>
+              <div
+                class="expanded-icons d-text-gray"
+                v-if="row.children&&row.children.length"
+              >
+                <span
+                  @click="expand(row)"
+                  class="el-icon-plus d-pointer"
+                  v-if="!row.expanded"
+                ></span>
+                <span
+                  @click="expand(row)"
+                  class="el-icon-minus d-pointer"
+                  v-else
+                ></span>
               </div>
             </template>
             <!-- 展开子项结束 -->
@@ -137,7 +178,10 @@
             </template>
             <!-- 其他结束 -->
           </template>
-          <template slot="header" v-if="item.type=='selection'">
+          <template
+            slot="header"
+            v-if="item.type=='selection'"
+          >
             <el-checkbox
               :disabled="disabled"
               :false-label="0"
@@ -149,7 +193,10 @@
         </el-table-column>
       </el-table>
     </form-card>
-    <FullscreenElement :element="$refs.table" :visible.sync="showInFull" />
+    <FullscreenElement
+      :element="$refs.table"
+      :visible.sync="showInFull"
+    />
   </div>
 </template>
 <script>
@@ -215,33 +262,33 @@ export default {
       { label: '商品图片', key: 'goodsPic', width: 100, prop: 'goodsPic' },
       { label: '商品名称', key: 'goodsName', width: 100, prop: 'goodsName' },
       { label: '库房', key: 'wsm', width: 100, prop: 'wsmName' },
-      { label: '商品类别', key: 'categoryCode', width: 80, prop: 'categoryCode',dictName:'PSI_SP_KIND' },
+      { label: '商品类别', key: 'categoryCode', width: 80, prop: 'categoryCode', dictName: 'PSI_SP_KIND' },
       { label: '商品分类', key: 'className', width: 80, prop: 'className', },
       { label: '规格', key: 'specOne', width: 80, prop: 'specOne', },
       { label: '配置', key: 'configName', width: 100, prop: 'configName', },
       { label: '备注', key: 'noteText', width: 120, prop: 'note', },
-      { label: '待采购数量', key: 'waitPurchaseNumber', width: 100, prop: 'waitPurchaseNumber',showOverflowTip:true,type:'number' },
-      { label: '销售单价', key: 'salesPrice', width: 100, prop: 'salesPrice',showOverflowTip:true,type:'number' },
-      { label: '采购成本价', key: 'costAmount', width: 100, prop: 'costAmount',showOverflowTip:true,type:'number' },
-      { label: '采购单价', key: 'purchasePrice', width: 100, prop: 'purchasePrice',type:'input',showOverflowTip:true,rules:[{required:true},{type:'price'}] },
-      { label: '商品数量', key: 'commodityNumber', width: 80, prop: 'commodityNumber',showOverflowTip:true,type:'inputinteger' },
-      { label: '单位', key: 'unit', width: 80, prop: 'unit',dictName:'SC_JLDW' },
-      { label: '退货商品数量', key: 'alterationNumber', width: 140, prop: 'alterationNumber',showOverflowTip:true,type:'inputinteger' },
-      { label: '退货数量', key: 'alterationNumberRate', width: 140, prop: 'alterationNumber',showOverflowTip:true, },
-      { label: '退货单价', key: 'alterationPrice', width: 80, prop: 'alterationPrice',type:'input',showOverflowTip:true,rules:[{required:true},{type:'price'}] },
-      { label: '税率', key: 'taxRate', width: 60, prop: 'taxRate', format:a=>a?`${a}%`:'-' },
-      { label: '含税总价', key: 'preTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip:true,
-        format:(a,{costAmount,taxRate,commodityNumber})=>+Number((costAmount*(1+(taxRate/100))*commodityNumber)||0).toFixed(2) 
+      { label: '待采购数量', key: 'waitPurchaseNumber', width: 100, prop: 'waitPurchaseNumber', showOverflowTip: true, type: 'number' },
+      { label: '销售单价', key: 'salesPrice', width: 100, prop: 'salesPrice', showOverflowTip: true, type: 'number' },
+      { label: '采购成本价', key: 'costAmount', width: 100, prop: 'costAmount', showOverflowTip: true, type: 'number' },
+      { label: '采购单价', key: 'purchasePrice', width: 100, prop: 'purchasePrice', type: 'input', showOverflowTip: true, rules: [{ required: true }, { type: 'price' }] },
+      { label: '商品数量', key: 'commodityNumber', width: 80, prop: 'commodityNumber', showOverflowTip: true, type: 'inputinteger' },
+      { label: '单位', key: 'unit', width: 80, prop: 'unit', dictName: 'SC_JLDW' },
+      { label: '退货商品数量', key: 'alterationNumber', width: 140, prop: 'alterationNumber', showOverflowTip: true, type: 'inputinteger' },
+      { label: '退货数量', key: 'alterationNumberRate', width: 140, prop: 'alterationNumber', showOverflowTip: true, },
+      { label: '退货单价', key: 'alterationPrice', width: 80, prop: 'alterationPrice', type: 'input', showOverflowTip: true, rules: [{ required: true }, { type: 'price' }] },
+      { label: '税率', key: 'taxRate', width: 60, prop: 'taxRate', format: a => a ? `${a}%` : '-' },
+      {        label: '含税总价', key: 'preTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+        format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + (taxRate / 100)) * commodityNumber) || 0).toFixed(2)
       },
-      { label: '含税总价', key: 'purchasePreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip:true,
-        format:(a,{costAmount,taxRate,commodityNumber})=>+Number((costAmount*(1+(taxRate/100))*commodityNumber)||0).toFixed(2) 
+      {        label: '含税总价', key: 'purchasePreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+        format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + (taxRate / 100)) * commodityNumber) || 0).toFixed(2)
       },
-      { label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount',showOverflowTip:true, 
-        format:(a,{alterationPrice,taxRate,alterationNumber})=>+Number((alterationPrice*(1+(taxRate/100))*alterationNumber)||0).toFixed(2) 
+      {        label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+        format: (a, { alterationPrice, taxRate, alterationNumber }) => +Number((alterationPrice * (1 + (taxRate / 100)) * alterationNumber) || 0).toFixed(2)
       },
-      { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber',type:'number',showOverflowTip:true, },
-      { label: '备注', key: 'note', width: 100, prop: 'note',type:'input',rules:[] },
-      { label: '是否组装', key: 'isAssembly', align:"center", width: 100, prop: 'isAssembly',type:'selection',selected:0 },
+      { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber', type: 'number', showOverflowTip: true, },
+      { label: '备注', key: 'note', width: 100, prop: 'note', type: 'input', rules: [] },
+      { label: '是否组装', key: 'isAssembly', align: "center", width: 100, prop: 'isAssembly', type: 'selection', selected: 0 },
       { label: '操作', key: 'action', width: 100, prop: 'action' },
     ];
     return {
@@ -307,7 +354,7 @@ export default {
       return list;
     }
   },
-  mounted() {},
+  mounted() { },
   methods: {
     getParentInfo(row) {
       let top = this.data[this.fkey];
@@ -339,7 +386,7 @@ export default {
           '_rowKey',
           String(
             item._rowKey ||
-              [pk, item.commodityCode || fakeId++].filter(a => a).join('_')
+            [pk, item.commodityCode || fakeId++].filter(a => a).join('_')
           )
         );
         if (pk) {
@@ -379,8 +426,8 @@ export default {
                 item =>
                   +Number(
                     item[this.priceKey] *
-                      (1 + item.taxRate / 100) *
-                      item.commodityNumber || 0
+                    (1 + item.taxRate / 100) *
+                    item.commodityNumber || 0
                   ).toFixed(2)
               )
               .reduce((sum, item) => sum + item, 0)

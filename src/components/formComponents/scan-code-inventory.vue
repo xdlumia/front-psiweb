@@ -26,7 +26,7 @@
           size="mini"
           style="width:200px;"
           class="ml10 mt5"
-          v-on:keyup.13.native="getCommodityBySnCode"
+          v-on:keyup..native="getCommodityBySnCode"
         ></el-input>
       </div>
       <el-table

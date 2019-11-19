@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-29 16:16:52
+ * @LastEditTime: 2019-10-29 16:16:52 
  * @Description: 拆卸商品
 */  
 <template>
@@ -24,47 +24,30 @@
     </div>
     <el-table
       border
-      :data="tableData"
+      :data="data.commodityList"
       max-height="400"
       ref="companyTable"
-      row-key="name"
+      row-key="id"
       size="mini"
+      :tree-props="{children: 'childrenCommodityList'}"
     >
       <el-table-column
-        class-name="hide-children"
         min-width="1"
-        width="1"
+        width="50"
       ></el-table-column>
-
-      <el-table-column min-width="40">
-        <template slot-scope="{row}">
-          <div
-            class="expanded-icons d-text-gray"
-            v-if="row.children&&row.children.length"
-          >
-            <span
-              @click="expand(row)"
-              class="el-icon-plus d-pointer"
-              v-if="!row.expanded"
-            ></span>
-            <span
-              @click="expand(row)"
-              class="el-icon-minus d-pointer"
-              v-else
-            ></span>
-          </div>
-        </template>
-      </el-table-column>
       <el-table-column
         label="操作"
         min-width="80"
         prop="name"
       >
-        <template slot-scope="">
+        <template
+          slot-scope="scope"
+          v-if='scope.row.childrenCommodityList !=null'
+        >
           <el-button
             size="mini"
             type="primary"
-            @click="disVisible = true"
+            @click="disassemble(scope)"
           >拆卸</el-button>
         </template>
       </el-table-column>
@@ -72,50 +55,59 @@
         label="拆卸数量"
         min-width="100"
         prop="name"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">{{scope.row.accomplishDisassemblyNum || 0}}/{{scope.row.disassemblyNum}}</template>
+      </el-table-column>
       <el-table-column
         label="机器号/SN码"
         min-width="100"
         prop="name"
       >
         <template slot-scope="scope">
-          <span class="d-text-blue">{{scope.row.name}}</span>
+          <span
+            class="d-text-blue"
+            @click="getTableVisible(scope.row)"
+          >{{scope.row.singleNum || 0}}</span>
         </template>
       </el-table-column>
       <el-table-column
         label="商品名称"
         min-width="110"
-        prop="name"
+        prop="goodsName"
       ></el-table-column>
       <el-table-column
-        prop="name"
+        prop="commodityCode"
         label="商品编号"
         min-width="140"
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <span class="d-text-blue">{{scope.row.name}}</span>
+          <span class="d-text-blue">{{scope.row.commodityCode}}</span>
         </template>
       </el-table-column>
       <el-table-column
         label="商品类别"
         min-width="100"
         prop="name"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         label="商品分类"
         min-width="100"
-        prop="name"
+        prop="className"
       ></el-table-column>
       <el-table-column
         label="商品规格"
         min-width="110"
-        prop="name"
+        prop="specOne"
       ></el-table-column>
       <el-table-column
         label="备注"
         min-width="120"
-        prop="name"
+        prop="note"
       ></el-table-column>
     </el-table>
     <FullscreenElement
@@ -123,74 +115,54 @@
       :visible.sync="showInFullscreen"
     />
     <disassDsassemble
+      :allData='data'
+      :data='visibleData'
       :visible.sync='disVisible'
       @close='disVisible = false'
     />
+    <goods-unpack-record
+      :commodityList="recCommodity"
+      :visible.sync="showRec"
+      v-if="showRec"
+    />
   </form-card>
+
 </template>
 <script>
 import FullscreenElement from '@/components/fullscreen-element';
 import disassDsassemble from './disass-disassemble';//拆卸
 
 export default {
+  props: ['data'],
   components: { FullscreenElement, disassDsassemble },
   data() {
     return {
-      tableData: [{ name: '110', children: [{ name: '1120' }], noChildren: true }, { name: '120', children: [], noChildren: true }],
       showInFullscreen: false,
-      cities: [{
-        value: 'Beijing',
-        label: '北京北京北京北京北京北京北京北京北京北京北京北京'
-      }, {
-        value: 'Shanghai',
-        label: '上海'
-      }, {
-        value: 'Nanjing',
-        label: '南京'
-      }, {
-        value: 'Chengdu',
-        label: '成都'
-      }, {
-        value: 'Shenzhen',
-        label: '深圳'
-      }, {
-        value: 'Guangzhou',
-        label: '广州'
-      }],
       state: '',
       value: '',
       visibleData: {
 
       },
+      recCommodity: [],
+      showRec: false,
       disVisible: false
     };
   },
   methods: {
-    expand(row) {
-      this.$set(row, 'expanded', !row.expanded);
-      this.$refs.elTable.toggleRowExpansion(row, row.expanded);
-    },
     fullscreen() {
       this.showInFullscreen = true;
     },
-    //点击新增一行
-    appand(row) {
-      // this.tableData.splice(row.$index + 1, 0, { name: '新的', children: [], noChildren: true })
-      this.tableData.push({ name: '新的', children: [], noChildren: true })
+    //点击机器号和SN码
+    getTableVisible(row) {
+      this.showRec = true;
+      this.recCommodity = [row];
     },
-    //点击删除当前行
-    deleteInfo(row) {
-      this.tableData.splice(row.$index, 1)
+    //点击拆卸
+    disassemble(scope) {
+      this.disVisible = true
+      this.visibleData = scope.row
+      console.log(scope.row, 'visibleDatavisibleDatavisibleDatavisibleDatavisibleDatavisibleDatavisibleDatavisibleData')
     },
-    //召唤弹窗
-    changeVisible() {
-      console.log(this.visible)
-      this.visible = true
-    },
-    //关闭弹窗
-    update() {
-      this.visible = false
-    }
   }
 };
 </script>

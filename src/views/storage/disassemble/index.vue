@@ -18,9 +18,8 @@
       title="拆卸任务"
     >
       <template slot-scope="{column,row,value}">
-        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span
-          v-else-if="column.columnFields=='disassemblyTaskCode'"
+          v-if="column.columnFields=='disassemblyTaskCode'"
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>
@@ -29,7 +28,7 @@
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='disassemblyTaskState'">{{value == 0 ? '未开始' : value == 1 ? '待拆卸' : value == 2 ? '部分小孩鞋' : value == 3 ? '完成拆卸' : '全部'}}</span>
+        <span v-else-if="column.columnFields=='disassemblyTaskState'">{{value == 0 ? '未开始' : value == 1 ? '待拆卸' : value == 2 ? '部分拆卸' : value == 3 ? '完成拆卸' : '全部'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
@@ -37,6 +36,7 @@
       :drawerData='drawerData'
       :visible.sync='tableVisible'
       v-if="tableVisible"
+      @reload='reload'
     />
   </div>
 </template> 
@@ -125,6 +125,9 @@ export default {
     handleClick() {
 
     },
+    reload() {
+      this.$refs.allTable.reload()
+    }
   }
 };
 </script>

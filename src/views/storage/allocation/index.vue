@@ -40,8 +40,8 @@
       @reload='reload'
       ref='details'
       :drawerData='drawerData'
-      @update='update'
-      v-if="drawerData.tableVisible"
+      :visible='tableVisible'
+      v-if="tableVisible"
     />
     <allocationAdd
       @reload='reload'
@@ -82,8 +82,8 @@ export default {
       },
       visible: false,
       componentActive: '',//当前的组件
+      tableVisible: false,//销售单右侧抽屉
       drawerData: {//弹框的相关数据
-        tableVisible: false,//销售单右侧抽屉
         title: '',
         component: 'Details'
       },
@@ -156,7 +156,7 @@ export default {
   methods: {
     //点击打开右侧边栏
     getTableVisible(data) {
-      this.drawerData.tableVisible = true
+      this.tableVisible = true
       this.drawerData.title = '调拨单-' + data.allocationOrderCode
       this.drawerData.code = data.allocationOrderCode
       // this.$refs.details.wmsallocationorderInfo()

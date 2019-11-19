@@ -36,10 +36,7 @@
         </div>
       </div>
     </div>
-    <div
-      class="d-auto-y"
-      style="height:calc(100vh - 130px)"
-    >
+    <div>
       <div class="drawer-header">
         <el-button
           @click="changeBackVisible"
@@ -116,8 +113,8 @@ export default {
     },
     init() {
       this.status[0].value = this.drawerData.createTime
-      this.status[1].value = this.drawerData.creatorName
-      this.status[2].value = this.drawerData.creatorName
+      // this.status[1].value = this.drawerData.creatorName
+      // this.status[2].value = this.drawerData.creatorName
     }
   }
 }
@@ -151,6 +148,7 @@ export default {
     position: relative;
     /deep/ {
       & > .el-tabs__header {
+        width: 100% !important;
         background-color: #f2f2f2;
         padding: 0 20px;
         margin-bottom: 0;

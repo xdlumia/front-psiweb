@@ -1,0 +1,311 @@
+/*
+ * @Author: 徐贺
+ * @Date: 2019-10-28 17:05:01
+ * @LastEditors: 徐贺
+ * @LastEditTime: 2019-10-29 16:16:52
+ * @Description: 商品信息 可编辑
+*/  
+<template>
+  <form-card
+    class="borrow-goods-info"
+    title="商品信息"
+  >
+    <div slot="title">
+      <span>商品信息</span>
+    </div>
+    <el-table
+      border
+      :data="tableData"
+      max-height="400"
+      ref="elTable"
+      row-key="name"
+      size="mini"
+    >
+      <el-table-column
+        label="操作"
+        min-width="50"
+        prop="name"
+      >
+        <template
+          slot-scope="scope"
+          v-if='scope.row.commodityCode'
+        >
+          <span>
+            <i
+              class='el-icon-remove f18 d-text-qgray ml5 d-pointer'
+              @click="deleteInfo(scope)"
+            ></i>
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="40">
+        <template slot-scope="scope">
+          <div
+            class="expanded-icons d-text-gray"
+            v-if="scope.row.configName"
+          >
+            <span
+              @click="expand(scope.row)"
+              class="el-icon-plus d-pointer"
+              v-if="!scope.row.expanded"
+            ></span>
+            <span
+              @click="expand(scope.row)"
+              class="el-icon-minus d-pointer"
+              v-else
+            ></span>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="商品编号"
+        min-width="150"
+      >
+        <template
+          slot-scope="scope"
+          class="d-relative"
+        >
+          <!-- 报溢的话 需要选择库房以后再选 商品, 要传过去库房id, 商品是跟库库房来的 报损不需要 -->
+          <!--             v-if="addForm.wmsId"
+            :sn="addForm.type == 2 ? true : false"
+            :params="addForm.type == 2 ? {wmsId:addForm.wmsId} : {wmsId:''}" -->
+          <commoditySelector
+            @choose='commodityChoose(arguments,scope)'
+            type="code"
+            v-model="scope.row.commodityCode"
+            :codes='codes'
+          />
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="商品名称"
+        min-width="150"
+      >
+        <template
+          slot-scope="scope"
+          class="d-relative"
+        >
+          <commoditySelector
+            ref='commdity'
+            @choose='commodityChoose(arguments,scope)'
+            v-model="scope.row.goodsName"
+            :codes='codes'
+          />
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="商品配置"
+        min-width="150"
+      >
+        <template
+          slot-scope="scope"
+          class="d-relative"
+        >
+          <el-select
+            v-model="scope.row.configName"
+            placeholder="请选择"
+            size="mini"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="组装数量"
+        min-width="150"
+        prop="inventoryPrice"
+      >
+        <template
+          slot-scope="scope"
+          class="d-relative"
+        >
+          <el-input
+            size="mini"
+            v-model="scope.row.goodsName"
+            placeholder="请输入"
+          ></el-input>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="商品图片"
+        min-width="120"
+        show-overflow-tooltip
+      >
+        <template slot-scope="scope">
+          <el-image
+            style="width: 100px; height: 40px"
+            :src="scope.row.goodsPic"
+            fit="fill"
+          ></el-image>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="商品类别"
+        min-width="110"
+        prop="categoryCode"
+      >
+        <template slot-scope="scope">
+          <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="商品分类"
+        min-width="110"
+        prop="className"
+      >
+      </el-table-column>
+      <el-table-column
+        label="商品规格"
+        min-width="110"
+        prop="specOne"
+      ></el-table-column>
+    </el-table>
+    <!-- <commodityChoose
+      @update=update
+      :visibleData='visibleData'
+      :visible='visible'
+    />
+    <reportingLossesCode
+      @sumitSn='sumitSn'
+      :visible.sync='codeVisible'
+      v-if="codeVisible"
+      :commodityForm='commodityForm'
+      :addForm='addForm'
+      :type='addForm.type'
+    /> -->
+  </form-card>
+</template>
+<script>
+import commodityChoose from '@/components/formComponents/commodity-choose'
+import reportingLossesCode from '@/components/formComponents/reporting-losses-code'
+import commoditySelector from '@/components/formComponents/commodity-selector';
+export default {
+  props: ['addForm'],
+  components: { commodityChoose, reportingLossesCode, commoditySelector },
+  data() {
+    return {
+      tableData: [{}],
+      commodityList: [],
+      showInFullscreen: false,
+      state: '',
+      codes: [],
+      options: [{
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }],
+      value: '',
+      ceIndex: '',
+      visibleData: {
+
+      },
+      codeVisible: false,
+      visible: false,
+      commodityForm: {}//点击的当前行的商品信息
+    };
+  },
+  methods: {
+    //选择商品
+    commodityChoose(e, scope) {
+      let list = e[0]
+      let type = e[1]
+      this.tableData.forEach((item) => {
+        if (item.commodityCode) {
+          this.codes.push(item.commodityCode)
+        }
+      })
+      list.forEach((item) => {
+        if (!this.codes.includes(item.commodityCode) && scope.row.commodityCode && type == 'select') {//区分非选择状态下的选择商品信息
+          this.$set(this.tableData, scope.$index, item)
+        } else if (!this.codes.includes(item.commodityCode)) {
+          this.tableData.unshift(item)
+        }
+      })
+      this.codes = []
+    },
+    expand(row) {
+      this.$set(row, 'expanded', !row.expanded);
+      this.$refs.elTable.toggleRowExpansion(row, row.expanded);
+    },
+    fullscreen() {
+      this.showInFullscreen = true;
+    },
+    //点击删除当前行
+    deleteInfo(row) {
+      this.tableData.splice(row.$index, 1)
+    },
+    //关闭弹窗
+    update() {
+      this.visible = false
+    },
+    sumitSn(data) {
+      this.$set(this.tableData[this.ceIndex], 'commodityInfoList', data)
+      this.tableData.forEach((item) => {
+        if (item.commodityCode) {
+          this.addForm.commodityList.push(item)
+        }
+      })
+    }
+  }
+};
+</script>
+<style lang="scss" scoped>
+.expanded-icons {
+  > span {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    border: 1px solid #999;
+    text-align: center;
+  }
+}
+.my-autocomplete {
+  li {
+    line-height: normal;
+    padding: 7px;
+
+    .name {
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .addr {
+      font-size: 12px;
+      color: #b4b4b4;
+    }
+
+    .highlighted .addr {
+      color: #ddd;
+    }
+  }
+}
+/deep/.el-table_2_column_13 {
+  padding: 0px;
+  padding-top: 5px;
+}
+/deep/.el-input__suffix {
+  display: none !important;
+}
+</style>
+<style>
+.borrow-goods-info .el-autocomplete-suggestion {
+  width: 400px !important;
+}
+</style>

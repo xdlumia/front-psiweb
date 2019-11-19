@@ -14,10 +14,7 @@
     :title="drawerData.type == 1 ? '报溢单-'+ drawerData.reportingLossesCode : '报损单-' + drawerData.reportingLossesCode"
     width="990px"
   >
-    <div
-      class="d-auto-y"
-      style="height:calc(100vh - 130px)"
-    >
+    <div>
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
           <el-form>
@@ -109,6 +106,7 @@ export default {
     position: relative;
     /deep/ {
       & > .el-tabs__header {
+        width: 100% !important;
         background-color: #f2f2f2;
         padding: 0 20px;
         margin-bottom: 0;

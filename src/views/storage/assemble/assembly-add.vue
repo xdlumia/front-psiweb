@@ -9,6 +9,7 @@
   <el-dialog
     width='80%'
     :visible.sync="visible"
+    @close="close"
     title="新增组装单"
     v-dialogDrag
   >
@@ -23,8 +24,14 @@
           :model="form"
           class="p10"
         >
-          <commodityInfoEdit ref="commodityInfoEdit" />
-          <assembleInfo ref="assembleInfo" />
+          <commodityInfoAssemble
+            :addForm='form'
+            ref="commodityInfoEdit"
+          />
+          <assembleInfo
+            ref="assembleInfo"
+            :data='form'
+          />
         </el-form>
 
       </el-main>
@@ -34,24 +41,24 @@
       class="dialog-footer"
     >
       <el-button
-        @click="$emit('close')"
+        @click="close"
         size="small"
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="$emit('close')"
+        @click="submit"
         size="small"
       >保 存</el-button>
     </span>
   </el-dialog>
 </template>
 <script>
-import commodityInfoEdit from '@/components/formComponents/commodity-info-edit';
+import commodityInfoAssemble from './commodity-info-assemble';
 import assembleInfo from '@/components/formComponents/assemble-info';
 
 export default {
   components: {
-    commodityInfoEdit,
+    commodityInfoAssemble,
     assembleInfo
   },
   props: {
@@ -59,7 +66,6 @@ export default {
       type: Boolean,
       default: true
     },
-    form: {}
   },
   computed: {
     maxHeight() {
@@ -68,11 +74,29 @@ export default {
   },
   data() {
     return {
-      activeName: ''
+      activeName: '',
+      form: {
+        note: '',
+        commodityList: []
+      }
     };
   },
   mounted() { },
   methods: {
+    close() {
+      this.$emit('update:visible', false)
+    },
+    //保存
+    submit() {
+      // this.$api.seePsiWmsService.wmsassembleorderSave()
+      //   .then(res => {
+      //     if (res.data) {
+      //       this.$emit('reload')
+      //     }
+      //   })
+      //   .finally(() => {
+      //   })
+    }
   }
 };
 </script>
