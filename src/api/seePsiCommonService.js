@@ -691,12 +691,6 @@ export default {
     'mock': false
   },
 
-  // 查询报价配置单对应的商品信息
-  commonquotationconfigInfoGood: {
-    'url': '/commonquotationconfig/infoGood/{quotationId}',
-    'mock': false
-  },
-
   // 获取列表
   commonquotationconfigList: {
     'url': '/commonquotationconfig/list',

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-19 18:03:31
+ * @LastEditTime: 2019-11-19 18:06:09
  * @Description: 自定义信息 1
 */
 <template>
@@ -27,12 +27,12 @@
             :prop="`fieldList.${scope.$index}.fieldCode`"
           >
 
-            <el-input
+            <!-- <el-input
               size="mini"
               :disabled="disabled"
               v-model.trim="scope.row.fieldCode"
-            />
-            <!-- <el-select
+            /> -->
+            <el-select
               size="mini"
               :disabled="disabled"
               v-model="scope.row.fieldCode"
@@ -44,7 +44,7 @@
                 :value="item.fieldCode"
               >
               </el-option>
-            </el-select> -->
+            </el-select>
           </el-form-item>
         </template>
       </el-table-column>
@@ -121,7 +121,7 @@ export default {
   methods: {
 
     queryFieldsByForm() {
-      this.$api.seeBaseinfoService.formfieldsQueryFieldsByForm(null, 1)
+      this.$api.seeBaseinfoService.formfieldsQueryFieldsByForm(null, 27)
         .then(res => {
           this.fieldOptions = res.data || []
         })

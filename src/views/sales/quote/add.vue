@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-19 17:55:24
+ * @LastEditTime: 2019-11-19 18:16:04
  * @Description: file content
 */
 <template>
@@ -167,7 +167,8 @@ export default {
   computed: {
   },
   watch: {
-    steps(index) {
+    async steps(index) {
+      console.log(index)
       // 点击第二步的时候判断有没有选择客户
       // if (index == 2 && !this.form.clientId) {
       //   this.$message.error({
@@ -194,8 +195,13 @@ export default {
         })
         wholeListNotChoose = this.$$util.jsonFlatten(wholeListNotChoose)
         let quotationIds = this.$$util.jsonFlatten(wholeList).map(v => v.quotationId)
-
-
+        let params = {
+          ids: quotationIds,
+          page: 1,
+          limit: 999
+        }
+        let { wholeListData } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
+        wholeListData = wholeListData || []
         // 配件列表
         let fixingsList = []
         for (let key in this.form.KIND2List) {
@@ -206,7 +212,9 @@ export default {
 
         // let
         // 第4步整合商品信息
-        this.form.businessCommoditySaveVoList = [...wholeList, ...fixingsList]
+        this.form.businessCommoditySaveVoList = [...wholeListData, ...fixingsList]
+        console.log(this.form.businessCommoditySaveVoList);
+
       }
       // if (this.type != 'add') {
       //   this.$message.error({
