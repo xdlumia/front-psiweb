@@ -70,8 +70,10 @@
             :sn="addForm.type == 2 ? true : false"
             :params="addForm.type == 2 ? {wmsId:addForm.wmsId} : {wmsId:''}" -->
           <commoditySelector
+            @response='response'
             @choose='commodityChoose(arguments,scope)'
             type="code"
+            :params={isConfig:1}
             v-model="scope.row.commodityCode"
             :codes='codes'
           />
@@ -86,7 +88,9 @@
           class="d-relative"
         >
           <commoditySelector
+            @response='response'
             ref='commdity'
+            :params={isConfig:1}
             @choose='commodityChoose(arguments,scope)'
             v-model="scope.row.goodsName"
             :codes='codes'
@@ -103,14 +107,16 @@
         >
           <el-select
             v-model="scope.row.configName"
+            @change="changeCommodity($event,scope)"
             placeholder="请选择"
+            value-key='configId'
             size="mini"
           >
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="item in configList"
+              :key="item.configId"
+              :label="item.configName"
+              :value="item.configId"
             >
             </el-option>
           </el-select>
@@ -119,7 +125,7 @@
       <el-table-column
         label="组装数量"
         min-width="150"
-        prop="inventoryPrice"
+        prop="assembleNum"
       >
         <template
           slot-scope="scope"
@@ -127,7 +133,7 @@
         >
           <el-input
             size="mini"
-            v-model="scope.row.goodsName"
+            v-model="scope.row.assembleNum"
             placeholder="请输入"
           ></el-input>
         </template>
@@ -194,29 +200,15 @@ export default {
       commodityList: [],
       showInFullscreen: false,
       state: '',
+      infoForm: {},
       codes: [],
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
       value: '',
       ceIndex: '',
       visibleData: {
 
       },
       codeVisible: false,
+      configList: [],
       visible: false,
       commodityForm: {}//点击的当前行的商品信息
     };
@@ -226,6 +218,7 @@ export default {
     commodityChoose(e, scope) {
       let list = e[0]
       let type = e[1]
+      // this.infoForm = list
       this.tableData.forEach((item) => {
         if (item.commodityCode) {
           this.codes.push(item.commodityCode)
@@ -240,6 +233,18 @@ export default {
       })
       this.codes = []
     },
+    //商品加载成功以后,拿到所有数据,用以选择配置
+    response(data) {
+      this.configList = data
+    },
+    //配置下拉框改变的时候
+    changeCommodity(e, scope) {
+      let list = this.configList.filter((item) => {
+        return item.configId == e
+      })
+      this.commodityChoose([list, 'select'], scope)
+      scope.row.configName = ''
+    },
     expand(row) {
       this.$set(row, 'expanded', !row.expanded);
       this.$refs.elTable.toggleRowExpansion(row, row.expanded);
@@ -250,10 +255,6 @@ export default {
     //点击删除当前行
     deleteInfo(row) {
       this.tableData.splice(row.$index, 1)
-    },
-    //关闭弹窗
-    update() {
-      this.visible = false
     },
     sumitSn(data) {
       this.$set(this.tableData[this.ceIndex], 'commodityInfoList', data)

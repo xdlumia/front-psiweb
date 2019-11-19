@@ -9,6 +9,7 @@
   <div>
     <el-dialog
       :visible.sync="visible"
+      @close='close'
       title="组装-DHYFBHBAFVDI"
       v-dialogDrag
     >
@@ -21,49 +22,59 @@
           >
             <el-table
               border
-              :data="tableData"
+              :data="[data]"
               max-height="400"
               size="mini"
             >
               <el-table-column
                 label="未装数量"
                 min-width="70"
-                prop="name"
+                prop="accomplishNum"
               ></el-table-column>
               <el-table-column
                 label="商品编号"
                 min-width="110"
-                prop="name"
+                prop="commodityCode"
+                show-overflow-tooltip
               ></el-table-column>
               <el-table-column
+                prop="categoryCode"
+                min-width="100"
                 label="商品类别"
-                min-width="110"
-                prop="name"
+                show-overflow-tooltip
+              >
+                <template slot-scope="scope">
+                  <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="className"
+                min-width="100"
+                label="商品分类"
+                show-overflow-tooltip
+              ></el-table-column>
+
+              <el-table-column
+                prop="configName"
+                min-width="100"
+                label="商品配置"
+                show-overflow-tooltip
               ></el-table-column>
               <el-table-column
-                label="商品分类"
-                min-width="110"
-                prop="name"
+                prop="specOne"
+                min-width="140"
+                label="商品规格"
+                show-overflow-tooltip
               ></el-table-column>
               <el-table-column
                 label="商品名称"
                 min-width="110"
-                prop="name"
-              ></el-table-column>
-              <el-table-column
-                label="商品配置"
-                min-width="110"
-                prop="name"
-              ></el-table-column>
-              <el-table-column
-                label="商品规格"
-                min-width="110"
-                prop="name"
+                prop="goodsName"
               ></el-table-column>
               <el-table-column
                 label="备注"
                 min-width="120"
-                prop="name"
+                prop="note"
               ></el-table-column>
             </el-table>
 
@@ -73,29 +84,28 @@
                 size="mini"
                 style="width:200px;"
                 class="ml10 mt5"
-                v-model="data"
+                v-model="snCode"
               ></el-input>
               <span class="fr d-text-black mr10 mt5">
                 <span>本次成功扫码</span>
-                <span class="b d-text-red f16">3</span>
+                <span class="b d-text-red f16"> 3 </span>
                 <span>件，历史扫码</span>
-                <span class="b d-text-green f16">5</span>
+                <span class="b d-text-green f16"> 5 </span>
                 <span>件，还需扫码</span>
-                <span class="b d-text-blue f16">127</span>
+                <span class="b d-text-blue f16"> 127 </span>
                 <span>件</span>
               </span>
             </div>
           </form-card>
-          <d-table
-            api="seePumaidongService.collegeManagerList"
-            :params="queryForm"
+          <el-table
+            :data='tableData'
+            size='mini'
+            border
             ref="companyTable"
             class="college-main mt15"
-            style="height:300px"
-            :tree-props="{children: 'id', hasChildren: 'id'}"
+            style="max-height:300px"
           >
             <el-table-column
-              fixed
               min-width="50"
               label="操作"
               show-overflow-tooltip
@@ -108,14 +118,12 @@
               </template>
             </el-table-column>
             <el-table-column
-              fixed
               prop="cityName"
               min-width="80"
               label="编号"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
-              fixed
               prop="title"
               label="SN码"
               min-width="160"
@@ -126,7 +134,6 @@
               </template>
             </el-table-column>
             <el-table-column
-              fixed
               prop="title"
               label="机器号"
               min-width="160"
@@ -137,14 +144,6 @@
               </template>
             </el-table-column>
             <el-table-column
-              fixed
-              prop="cityName"
-              min-width="100"
-              label="自定义项"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              fixed
               prop="cityName"
               min-width="100"
               label="拣货库房"
@@ -182,7 +181,7 @@
               label="配置"
               show-overflow-tooltip
             ></el-table-column>
-          </d-table>
+          </el-table>
         </el-main>
       </el-container>
       <span
@@ -191,11 +190,11 @@
       >
         <el-button
           type="primary"
-          @click="$emit('close')"
+          @click="close"
           size="small"
         >确 定</el-button>
         <el-button
-          @click="$emit('close')"
+          @click="close"
           size="small"
         >取 消</el-button>
       </span>
@@ -208,11 +207,12 @@ export default {
     visible: {
       type: Boolean,
       default: false
-    }
+    },
+    data: {}
   },
   data() {
     return {
-      data: '',
+      snCode: '',
       tableData: [{ name: '写的假的' }],
       queryForm: {
         title: '', // 标题
@@ -224,6 +224,11 @@ export default {
         limit: 20
       },
     };
+  },
+  methods: {
+    close() {
+      this.$emit('update:visible', false)
+    }
   }
 };
 </script>

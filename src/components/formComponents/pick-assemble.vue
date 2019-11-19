@@ -8,96 +8,109 @@
 <template>
   <div>
     <form-card title='组装商品'>
-      <d-table
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+      <el-table
+        border
+        size='mini'
+        :data="data.commodityList"
         ref="companyTable"
-        class="college-main"
-        style="height:calc(100vh - 240px)"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
+        row-key="commodityCode"
+        style="max-height:300px"
+        :tree-props="{children: 'childrenCommodityList'}"
       >
         <el-table-column
           fixed
-          prop="cityName"
-          min-width="90"
-          label="待分配"
-          show-overflow-tooltip
+          min-width="50"
         ></el-table-column>
         <el-table-column
-          fixed
-          prop="title"
-          label="本次分配数量"
-          min-width="120"
+          min-width="100"
+          label="待分配"
           show-overflow-tooltip
         >
-          <template slot-scope="">
+          <template
+            slot-scope="scope"
+            v-if="scope.row.childrenCommodityList"
+          >
+            <span>{{scope.row.accomplishNum || 0}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="title"
+          label="本次分配数量"
+          min-width="150"
+          show-overflow-tooltip
+        >
+          <template
+            slot-scope="scope"
+            v-if="scope.row.childrenCommodityList"
+          >
             <el-input
+              class="wfull"
               size='mini'
-              v-model="value"
+              v-model="scope.row.allocationNum"
               placeholder="请输入"
             ></el-input>
           </template>
         </el-table-column>
 
         <el-table-column
-          prop="title"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.id}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
         </el-table-column>
 
         <el-table-column
-          fixed
-          prop="cityName"
+          prop="categoryCode"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
-          fixed
-          prop="cityName"
+          prop="className"
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
         ></el-table-column>
-
         <el-table-column
-          fixed
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
-
         <el-table-column
-          prop="cityName"
+          prop="configName"
           min-width="100"
           label="商品配置"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="specOne"
           min-width="140"
           label="商品规格"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="note"
           min-width="120"
           label="备注"
           show-overflow-tooltip
         ></el-table-column>
 
-      </d-table>
+      </el-table>
     </form-card>
   </div>
 </template>
 <script>
 export default {
+  props: ['data'],
   data() {
     return {
       // 查询表单

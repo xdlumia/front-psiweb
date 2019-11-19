@@ -18,22 +18,19 @@
     >
       <template slot-scope="{column,row,value}">
         <span
-          v-if="column.columnFields=='disassemblyTaskCode'"
+          v-if="column.columnFields=='assembleTaskCode'"
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>
-        <span
-          v-else-if="column.columnFields=='disassemblyOrderCode'"
-          class="d-text-blue"
-          @click="getTableVisible(row)"
-        >{{value}}</span>
-        <span v-else-if="column.columnFields=='disassemblyTaskState'">{{value == 0 ? '未开始' : value == 1 ? '待拆卸' : value == 2 ? '部分小孩鞋' : value == 3 ? '完成拆卸' : '全部'}}</span>
+        <span v-else-if="column.columnFields=='assembleOrderState'">{{state[value]}}</span>
+        <span v-else-if="column.columnFields=='pickingState'">{{pickingState[value]}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
       :drawerData='drawerData'
-      :visibleData='tableVisible'
+      :visible.sync='tableVisible'
+      v-if="tableVisible"
     />
   </div>
 </template>
@@ -51,6 +48,19 @@ export default {
   data() {
     return {
       // 查询表单
+      state: {
+        '-1': '终止',
+        0: '未开始',
+        1: '待组装',
+        2: '部分组装',
+        3: '完成组装'
+      },
+      pickingState: {
+        '-1': '终止',
+        0: '待拣货',
+        1: '部分拣货',
+        2: '完成拣货'
+      },
       queryForm: {
         page: 1,
         limit: 20

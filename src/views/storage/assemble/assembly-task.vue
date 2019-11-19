@@ -9,6 +9,7 @@
   <el-dialog
     :visible.sync="visible"
     title="生成拣货单和组装任务"
+    @close='close'
     v-dialogDrag
   >
     <el-container>
@@ -22,8 +23,15 @@
           :model="form"
           class="p10"
         >
-          <pickAssemble ref="pickAssemble" />
-          <chooseAssembly ref="chooseAssembly" />
+          <pickAssemble
+            ref="pickAssemble"
+            :data='data'
+          />
+          <chooseAssembly
+            ref="chooseAssembly"
+            :data='data'
+            :form='form'
+          />
         </el-form>
 
       </el-main>
@@ -33,12 +41,12 @@
       class="dialog-footer"
     >
       <el-button
-        @click="$emit('close')"
+        @click="close"
         size="small"
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="$emit('close')"
+        @click="submit"
         size="small"
       >保 存</el-button>
     </span>
@@ -58,7 +66,7 @@ export default {
       type: Boolean,
       default: false
     },
-    form: {}
+    data: {}
   },
   computed: {
     maxHeight() {
@@ -67,11 +75,35 @@ export default {
   },
   data() {
     return {
-      activeName: ''
+      activeName: '',
+      form: {
+        note: '',
+        assemblePerson: '',
+        pickingPerson: '',
+        assembleOrderCode: '',
+      }
     };
   },
   mounted() { },
   methods: {
+    close() {
+      this.$emit('update:visible', false)
+    },
+    submit() {
+      this.$api.seePsiWmsService.wmsassembletaskSave({
+        assembleCommoditySaveVoList: this.data.commodityList,
+        assembleOrderCode: this.data.assembleOrderCode,
+        note: this.form.note,
+        assemblePerson: this.form.assemblePerson,
+        pickingPerson: this.form.assemblePerson
+      })
+        .then(res => {
+          this.$emit('reload')
+          this.close()
+        })
+        .finally(() => {
+        })
+    }
   }
 };
 </script>

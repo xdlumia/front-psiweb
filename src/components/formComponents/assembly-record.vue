@@ -9,89 +9,96 @@
   <div>
     <el-dialog
       :visible.sync="visible"
+      @close='close'
       title="组装记录"
       v-dialogDrag
     >
       <el-container>
         <el-main style="padding:0;max-height:500px;">
           <form-card title='组装信息'>
-            <d-table
-              api="seePumaidongService.collegeManagerList"
-              :params="queryForm"
+            <el-table
+              border
+              :data="[data]"
+              size='mini'
               ref="companyTable"
               class="college-main"
-              style="height:calc(100vh - 340px)"
-              :tree-props="{children: 'id', hasChildren: 'id'}"
+              style="max-height:300px"
             >
               <el-table-column
-                prop="cityName"
                 min-width="100"
                 label="数量"
                 show-overflow-tooltip
-              ></el-table-column>
+              >
+                <template slot-scope="scope">
+                  <span>{{scope.row.accomplishNum || 0}}/{{scope.row.allocationNum || 0}}</span>
+                </template>
+              </el-table-column>
 
               <el-table-column
-                prop="title"
+                prop="commodityCode"
                 label="商品编号"
                 min-width="140"
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">
-                  <span class="d-text-blue">{{scope.row.id}}</span>
+                  <span class="d-text-blue">{{scope.row.commodityCode}}</span>
                 </template>
               </el-table-column>
 
               <el-table-column
-                prop="cityName"
+                prop="categoryCode"
                 min-width="100"
                 label="商品类别"
                 show-overflow-tooltip
-              ></el-table-column>
+              >
+                <template slot-scope="scope">
+                  <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+                </template>
+              </el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="className"
                 min-width="100"
                 label="商品分类"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="goodsName"
                 min-width="100"
                 label="商品名称"
                 show-overflow-tooltip
               ></el-table-column>
 
               <el-table-column
-                prop="cityName"
+                prop="configName"
                 min-width="100"
                 label="商品配置"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="specOne"
                 min-width="140"
                 label="商品规格"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="note"
                 min-width="100"
                 label="备注"
                 show-overflow-tooltip
               ></el-table-column>
-            </d-table>
+            </el-table>
           </form-card>
 
           <form-card title='机器号/SN记录'>
             <d-table
-              api="seePumaidongService.collegeManagerList"
-              :params="queryForm"
+              api="seePsiWmsService.wmsflowrecordList"
+              :params="{commodityCode:data.commodityCode,businessCode:drawerData.assembleOrderCode,page:1,limit:15}"
               ref="companyTable"
               class="college-main"
               style="height:calc(100vh - 340px)"
-              :tree-props="{children: 'id', hasChildren: 'id'}"
             >
               <el-table-column
-                prop="cityName"
+                type='index'
                 min-width="80"
                 label="编号"
                 show-overflow-tooltip
@@ -109,44 +116,45 @@
               </el-table-column>
 
               <el-table-column
-                prop="cityName"
+                prop="robotCode"
                 min-width="100"
                 label="机器号"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="wmsName"
                 min-width="100"
                 label="库房"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="operator"
                 min-width="100"
                 label="操作人"
                 show-overflow-tooltip
               ></el-table-column>
 
               <el-table-column
-                prop="cityName"
                 min-width="100"
                 label="操作时间"
                 show-overflow-tooltip
-              ></el-table-column>
+              >
+                <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
+              </el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="commodityCode"
                 min-width="100"
                 label="商品编号"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="goodsName"
                 min-width="100"
                 label="商品名称"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
-                prop="cityName"
+                prop="configName"
                 min-width="100"
                 label="配置"
                 show-overflow-tooltip
@@ -160,7 +168,7 @@
         class="dialog-footer"
       >
         <el-button
-          @click="$emit('close')"
+          @click="close"
           size="small"
         >关 闭</el-button>
       </span>
@@ -173,11 +181,15 @@ export default {
     visible: {
       type: Boolean,
       defaults: false
-    }
+    },
+    data: {
+      type: Object,
+      default: () => ({})
+    },
+    drawerData: {}
   },
   data() {
     return {
-      data: '',
       tableData: Array(12)
         .fill('')
         .map(() => ({ name: '' })),
@@ -192,6 +204,11 @@ export default {
         limit: 20
       },
     };
+  },
+  methods: {
+    close() {
+      this.$emit('update:visible', false)
+    }
   }
 };
 </script>

@@ -11,11 +11,11 @@
       <el-row>
         <el-col :span="20">
           <div class="d-text-black">组装人</div>
-          <div class="d-text-qgray mt5 mb20">太上老君</div>
+          <div class="d-text-qgray mt5 mb20">{{data.assemblePersonName}}</div>
         </el-col>
         <el-col :span="20">
           <div class="d-text-black">备注</div>
-          <div class="d-text-qgray mt5">备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注</div>
+          <div class="d-text-qgray mt5">{{data.note}}</div>
         </el-col>
 
       </el-row>
@@ -24,18 +24,9 @@
 </template>
 <script>
 export default {
+  props: ['data'],
   data() {
     return {
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
     }
   },
   components: {
