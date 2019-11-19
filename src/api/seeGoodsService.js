@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-31 15:09:35
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 15:54:52
+ * @LastEditTime: 2019-11-19 16:42:02
  * @Description: description
  */
 /**
@@ -75,6 +75,10 @@ export default {
   },
   deleteGood(params) {
     return Api.del(baseURL.seeGoodsService + '/goods/jxc/delete', params)
+  },
+  // 根据名字精确匹配无配置的商品
+  getGoodsByNameForJXC(params) {
+    return Api.get(baseURL.seeGoodsService + '/goods/jxc/getGoodsByNameForJXC', params)
   },
   getGoodsDetailV2(params) {
     return Api.get(baseURL.seeGoodsService + apiURL.getGoodsDetailV2, params)

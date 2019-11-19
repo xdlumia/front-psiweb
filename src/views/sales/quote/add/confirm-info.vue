@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 19:54:49
+ * @LastEditTime: 2019-11-19 16:46:48
  * @Description: 确定配置信息
 */
 <template>
@@ -70,18 +70,17 @@
       :key="KIND2Length+index"
       :title="`${KIND2Length+index+1}商品名称:${item.configGoodName}`"
     >
-      <el-button
+      <!-- <el-button
         slot="title"
         size="mini"
         v-if="item.disabled"
         @click="resetConfig(item,index)"
-      >重置</el-button>
+      >重置</el-button> -->
       <el-button
         slot="title"
         type="primary"
         v-if="!item.disabled"
         size="mini"
-        :disabled="item.disabled"
         @click="chooseNotConfig(item,index)"
       >不选择此配置</el-button>
       <div slot="body">
@@ -138,15 +137,13 @@
           >
           </el-table-column>
           <el-table-column
-            v-if="!item.disabled"
             label="操作"
             min-width="120"
           >
             <template slot-scope="scope">
               <el-checkbox
                 @change="checkboxChange(scope.row,index)"
-                :checked="scope.row.disabled || scope.row.checked"
-                :disabled="scope.row.disabled"
+                :checked="scope.row.checked"
                 :label="scope.row.commodityCode"
               >{{&nbsp;}}</el-checkbox>
             </template>
@@ -172,7 +169,7 @@ export default {
   data() {
     return {
       loading: false,
-      wholeCacheList: [], //存放根据nama查出来的整机配置信息
+      wholeCacheList: [] // 存放根据nama查出来的整机配置信息
     }
   },
   created() {
@@ -185,7 +182,7 @@ export default {
       return Object.keys(this.KIND2List).length
     },
     KIND2List() {
-      let newJson = {}
+      const newJson = {}
       this.data.KIND2Data.forEach(item => {
         // 把分类名称当做key  如果没有当前key 创建当前key 并赋值为空数组
         if (!newJson.hasOwnProperty(item.name)) {
@@ -198,31 +195,58 @@ export default {
       })
       this.data.KIND2List = newJson
       return newJson
-    },
+    }
   },
   methods: {
-    resetConfig(item, index) {
-      let deepCopy = JSON.parse(JSON.stringify(this.wholeCacheList[index]))
-      this.$set(this.data.KIND1List, index, deepCopy)
-    },
+    // resetConfig(item, index) {
+    //   const deepCopy = JSON.parse(JSON.stringify(this.wholeCacheList[index]))
+    //   this.$set(this.data.KIND1List, index, deepCopy)
+    // },
     // 不选择此配置
-    chooseNotConfig(item, index) {
+    async chooseNotConfig(item, index) {
+      console.log(item)
+      let { data } = await this.$api.seeGoodsService.getGoodsByNameForJXC({ name: item.configGoodName })
+      console.log((data))
       item.disabled = true
       this.$set(this.data.KIND1List, index, item)
     },
+    // 选中项目
     checkboxChange(row, index) {
       row.checked = !row.checked
-      let deepCopy = JSON.parse(JSON.stringify(this.wholeCacheList[index]))
-      if (row.checked) {
-        let quotationId = row.quotationId
-        let flattenData = this.$$util.jsonFlatten(deepCopy.children)
-        let filterData = flattenData.filter(v => v.quotationId == quotationId)
-        row.children = this.$$util.formatChildren(filterData, 'className')
+      // 扁平化数据
+      const flattenData = this.$$util.jsonFlatten(this.data.KIND1List[index].children)
+      // 获取选中数据的code
+      let checkedCods = flattenData.filter(v => v.checked).map(v => v.commodityCode)
+      if (checkedCods.length) {
+        // 获取交际quotationIds
+        let quotationIds = this.idsContract(flattenData, checkedCods)
+        // 根据quotationIds 过滤数据
+        let filterData = flattenData.filter(v => quotationIds.includes(v.quotationId))
+        let framtData = this.$$util.formatChildren(filterData, 'className')
+        this.$set(this.data.KIND1List[index], 'children', framtData)
       } else {
-        row = deepCopy
+        row = JSON.parse(JSON.stringify(this.wholeCacheList[index]))
+      }
+    },
+    // 查出交际的ids
+    idsContract(array, choose) {
+      let tempids = [];
+      for (let j = 0; j < choose.length; j++) {
+        let ids = [];
+        for (let i = 0; i < array.length; i++) {
+          if (array[i].commodityCode == choose[j]) {
+            ids.push(array[i].quotationId)
+          }
+        }
+        if (tempids.length) {
+          tempids = [].concat(tempids, ids).filter(item => tempids.includes(item) && ids.includes(item))
+        } else {
+          tempids = ids
+        }
       }
 
-      this.$set(this.data.KIND1List, index, row)
+      tempids = tempids.filter((item, i) => tempids.indexOf(item) == i)
+      return tempids;
     },
     // 格式化列表数据
     filterKIND1List(data) {
@@ -231,7 +255,7 @@ export default {
        * 名称:newJson
        * 数据格式:{key:[]}
        */
-      let newJson = {}
+      const newJson = {}
       data.forEach(item => {
         // 把分类名称当做key  如果没有当前key 创建当前key 并赋值为空数组
         if (!newJson.hasOwnProperty(item.configGoodName)) {
@@ -243,13 +267,13 @@ export default {
         }
       })
       // let newArr = []
-      for (let key in newJson) {
-        let childrenData = newJson[key]
+      for (const key in newJson) {
+        const childrenData = newJson[key]
         // $$util.formatChildren 相同类型的数据格式化成children格式
         this.data.KIND1List.push({
           configGoodName: key,
           /**
-           *  childrenData 数组数据 
+           *  childrenData 数组数据
            * className 根据 className格式化成children数据
            */
           children: this.$$util.formatChildren(childrenData, 'className')
@@ -258,29 +282,29 @@ export default {
       // 清空整机选择
       // 第一层的chilrder是必选并且不能修改的类型
       // 并且默认选中
-      this.data.KIND1List.forEach(item => {
-        item.children.forEach(sub => {
-          sub.disabled = true
-        })
-      })
+      // this.data.KIND1List.forEach(item => {
+      //   item.children.forEach(sub => {
+      //     sub.disabled = true
+      //   })
+      // })
       // 缓存列表 方便重置
       this.wholeCacheList = JSON.parse(JSON.stringify(this.data.KIND1List))
     },
     // 根据名称获取整机信息
     commonquotationconfigdetailsListConfigByGoodName() {
-      let params = {
+      const params = {
         // doodsName 如果查传的是'' 查的是全部 所以没有值得时候传 ' '
         goodsName: this.data.KIND1Data.map(v => v.name),
         page: 1,
-        limit: 100,
+        limit: 100
       }
       this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(params)
         .then(res => {
           // 给整机数据换成新数据
-          let data = res.data || []
+          const data = res.data || []
           this.filterKIND1List(data)
         })
-    },
+    }
 
   }
 }

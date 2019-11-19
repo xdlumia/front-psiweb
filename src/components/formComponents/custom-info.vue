@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 17:20:09
+ * @LastEditTime: 2019-11-19 09:46:03
  * @Description: 自定义信息 1
 */
 <template>
@@ -21,23 +21,25 @@
       >
         <template slot-scope="scope">
           <!-- :prop="`fieldList.${scope.$index}.fieldCode`" -->
-          <!-- <el-form-item
+          <el-form-item
             class="mb0"
             :rules="{required:true}"
-          > -->
-          <el-select
-            :disabled="disabled"
-            v-model="scope.row.fieldCode"
+            :prop="`fieldList.${scope.$index}.fieldCode`"
           >
-            <el-option
-              v-for="item in fieldOptions"
-              :key="item.id"
-              :label="item.fieldName"
-              :value="item.fieldCode"
+            <el-select
+              size="mini"
+              :disabled="disabled"
+              v-model="scope.row.fieldCode"
             >
-            </el-option>
-          </el-select>
-          <!-- </el-form-item> -->
+              <el-option
+                v-for="item in fieldOptions"
+                :key="item.id"
+                :label="item.fieldName"
+                :value="item.fieldCode"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column
@@ -48,16 +50,18 @@
       >
         <!-- :prop="`fieldList.${scope.$index}.fieldVal`" -->
         <template slot-scope="scope">
-          <!-- <el-form-item
+
+          <el-form-item
             class="mb0"
             :rules="{required:true}"
-          > -->
-          <el-input
-            size="mini"
-            :disabled="disabled"
-            v-model.trim="scope.row.fieldVal"
-          />
-          <!-- </el-form-item> -->
+            :prop="`fieldList.${scope.$index}.fieldVal`"
+          >
+            <el-input
+              size="mini"
+              :disabled="disabled"
+              v-model.trim="scope.row.fieldVal"
+            />
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column

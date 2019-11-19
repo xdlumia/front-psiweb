@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 12:04:21
+ * @LastEditTime: 2019-11-19 14:24:05
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -56,7 +56,7 @@ export default {
     data: {
       default: () => ({}),
       type: Object
-    },
+    }
   },
   components: {
     quoteInfo

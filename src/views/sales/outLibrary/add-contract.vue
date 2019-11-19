@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 16:07:46
+ * @LastEditTime: 2019-11-19 14:23:35
  * @Description: 生成合同
 */
 <template>
@@ -80,7 +80,7 @@
           <billInfo
             disabled
             id="billInfo"
-            :data="detail"
+            :data="form"
           />
           <!-- 自定义信息 -->
           <customInfo
@@ -92,7 +92,7 @@
           <extrasInfo
             disabled
             id="extrasInfo"
-            :data="detail"
+            :data="form"
           />
 
         </d-tabs>
@@ -125,16 +125,21 @@ export default {
         quoteInfo: '报价单信息',
         billInfo: '账期信息',
         customInfo: '自定义信息',
-        extrasInfo: '备注信息',
+        extrasInfo: '备注信息'
       },
       // 新增orEdit框内容
       form: {
-        templateId: '', //模板id
+        shipmentFinanceSaveVoList: [],
+        attachList: [], // 示例：附件,
+        fieldList: [], // 示例：自定义字段,
+        shipmentCode: '', // 销售出库单编号,
+        templateId: '', // 100000,
+        templateName: '' // 100000
       },
       // 模板信息
       templateData: {},
       previewVisible: false,
-      templateOptions: [], //合同模板
+      templateOptions: [] // 合同模板
     }
   },
   created() {
@@ -148,6 +153,7 @@ export default {
 
   },
   methods: {
+    // 获取合同模板
     getTemplateList(params) {
       this.$api.seeBaseinfoService.templateList(null, params).then(res => {
         if (res.code == 200) {
@@ -155,9 +161,10 @@ export default {
         }
       });
     },
+
     async getDetail() {
       if (this.code) {
-        let { data } = await this.$api.seePsiSaleService.salesshipmentGetInfoByCode({ shipmentCode: this.code })
+        const { data } = await this.$api.seePsiSaleService.salesshipmentGetInfoByCode({ shipmentCode: this.code })
         return data;
       }
     },
@@ -180,7 +187,7 @@ export default {
             api = 'salesshipmentInsertContract'
             // 编辑保存
           }
-          let params = Object.assign(this.form, this.params)
+          const params = Object.assign(this.form, this.params)
           this.$api.seePsiSaleService[api](params)
             .then(res => {
               this.close()
