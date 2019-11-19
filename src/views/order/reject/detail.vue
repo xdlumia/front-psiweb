@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 14:48:50
+ * @LastEditTime: 2019-11-19 15:55:36
  * @Description: 采购退货单
 */
 <template>
@@ -75,8 +75,11 @@
           <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="请购单">请购单</el-tab-pane>
-      <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
+      <el-tab-pane label="采购入库单">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <OrderStorage :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
       <el-tab-pane label="采购单">采购单</el-tab-pane>
       <el-tab-pane label="应收账单">应收账单</el-tab-pane>
     </el-tabs>

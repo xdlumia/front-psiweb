@@ -2,12 +2,19 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 18:02:44
+ * @LastEditTime: 2019-11-19 16:04:59
  * @Description: 采购-供应商
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :filterOptions="filterOptions" api="seePsiCommonService.commonsupplierinfoPagelist" busType="42" ref="tableView" title="供应商">
+    <TableView
+      :filterOptions="filterOptions"
+      :params="params"
+      api="seePsiCommonService.commonsupplierinfoPagelist"
+      busType="42"
+      ref="tableView"
+      title="供应商"
+    >
       <template slot="button">
         <el-button @click="showCat=true" size="mini" type="primary">商品供应分类表</el-button>
         <el-button @click="showEdit=true" size="mini" type="primary">新增供应商</el-button>
@@ -108,6 +115,13 @@ export default {
         .filter(a => a);
     },
     async delProductRange(row, item) {
+      await this.$confirm(`是否删除？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        closeOnClickModal: false,
+        type: 'warning',
+        center: true
+      });
       let leftList = this.getProductRangeList(row.productRange)
         .filter(a => a != item)
         .join(',');

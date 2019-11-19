@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 14:54:07
+ * @LastEditTime: 2019-11-19 15:52:10
  * @Description: 采购入库单
 */
 <template>
@@ -92,14 +92,31 @@
           <extrasInfo :data="detail" disabled id="extrasInfo" />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="请购单"></el-tab-pane>
-      <el-tab-pane label="直发单">直发单</el-tab-pane>
+      <el-tab-pane label="请购单" name="purchaseApplyCode" v-if="detail&&detail.source=='请购单'">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <OrderBuying :button="false" :params="{page:1,limit:15,purchaseApplyCode:detail.joinCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="直发单" name="directCode" v-if="detail&&detail.source=='直发单'">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <OrderDirect :button="false" :params="{page:1,limit:15,directCode:detail.joinCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="备货单" name="stockCode" v-if="detail&&detail.source=='备货单'">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <OrderPrepare :button="false" :params="{page:1,limit:15,stockCode:detail.joinCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
       <el-tab-pane label="采购单">采购单</el-tab-pane>
-      <el-tab-pane label="采购退货单">采购退货单</el-tab-pane>
+      <el-tab-pane label="采购退货单">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <OrderReject :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
       <el-tab-pane label="应付账单">应付账单</el-tab-pane>
       <el-tab-pane label="发票记录">发票记录</el-tab-pane>
     </el-tabs>
-    <orderReject
+    <OrderRejectEdit
       :params="{
       putinCode:detail.putinCode,
       companyAccountId:detail.companyAccountId,
@@ -115,7 +132,7 @@
   </sideDetail>
 </template>
 <script>
-import OrderReject from '../reject/edit'; // 采购退货单
+import OrderRejectEdit from '../reject/edit'; // 采购退货单
 import Edit from './edit'; // 采购入库单编辑
 import OrderContract from '@/views/contract/order/edit'; // 采购合同
 import VisibleMixin from '@/utils/visibleMixin';
@@ -123,7 +140,7 @@ import VisibleMixin from '@/utils/visibleMixin';
 export default {
   mixins: [VisibleMixin],
   components: {
-    OrderReject,
+    OrderRejectEdit,
     OrderContract,
     Edit
   },

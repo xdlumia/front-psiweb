@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 18:01:55
+ * @LastEditTime: 2019-11-19 15:53:03
  * @Description: 采购-请购单
 */
 <template>
@@ -29,9 +29,8 @@
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <OrderBuyingDetail :code="currentCode" :visible.sync="showDetail" @reload="reload" />
-    <OrderBuyingDetailRec :visible.sync="orderBuyingDetailRecVisible" @reload="reload" />
-    <Edit :visible="showEdit" />
+    <OrderBuyingDetail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
+    <OrderBuyingDetailRec :visible.sync="orderBuyingDetailRecVisible" @reload="reload" v-if="orderBuyingDetailRecVisible" />
   </div>
 </template>
 <script>
@@ -40,7 +39,6 @@ import OrderBuyingDetail from './detail';
 import OrderStorage from '../storage/edit';
 import OrderBuyingDetailRec from './detailRec';
 import AddBorrowIn from '@/views/order/borrow/addIn';
-import Edit from './edit';
 /**
  * 采购-请购单
  */
@@ -51,7 +49,6 @@ export default {
     OrderBuyingDetailRec,
     OrderStorage,
     AddBorrowIn,
-    Edit
   },
   props: {
     // 是否显示按钮

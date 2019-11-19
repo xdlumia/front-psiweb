@@ -9,6 +9,7 @@
   <div class="buying-requisition-page wfull hfull">
     <TableView
       :filterOptions="filterOptions"
+      :params="params"
       api="seePsiWmsService.wmsswaporderList"
       busType="1"
       exportApi="seePsiWmsService.wmsswaporderExport"

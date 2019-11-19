@@ -2,13 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 18:01:22
+ * @LastEditTime: 2019-11-19 15:45:28
  * @Description: 采购-采购退货单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
       :filterOptions="filterOptions"
+      :params="params"
       api="seePsiPurchaseService.purchasealterationList"
       busType="31"
       exportApi="seePsiPurchaseService.purchasealterationExport"

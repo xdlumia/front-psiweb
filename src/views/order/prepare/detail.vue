@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 14:36:16
+ * @LastEditTime: 2019-11-19 15:37:23
  * @Description: 备货单详情
 */
 <template>
@@ -86,7 +86,11 @@
           <extrasInfo :data="detail" disabled />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
+      <el-tab-pane label="采购入库单">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:code}" />
+        </FullscreenWrap>
+      </el-tab-pane>
     </el-tabs>
     <addOrderStorage :joinCode="code" :visible.sync="showAddOrderStorage" from="备货单" />
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="reload" type="edit" v-if="showEdit&&detail" />

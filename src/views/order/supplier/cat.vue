@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 18:01:29
+ * @LastEditTime: 2019-11-19 16:05:32
  * @Description: 商品供应分类表
 */
 <template>
@@ -21,7 +21,7 @@
       >
         <template slot-scope="{column,row,value,prop}">
           <span v-if="prop=='code'">
-            <el-link class="f12" :underline="false" @click="showDetail=true,currentCode=value" type="primary">{{value}}</el-link>
+            <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
           </span>
           <span v-else-if="prop=='createTime'">{{value|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
           <span v-else-if="prop=='state'">
@@ -118,6 +118,13 @@ export default {
         .filter(a => a);
     },
     async delProductRange(row, item) {
+      await this.$confirm(`是否删除？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        closeOnClickModal: false,
+        type: 'warning',
+        center: true
+      });
       let leftList = this.getProductRangeList(row.productRange)
         .filter(a => a != item)
         .join(',');

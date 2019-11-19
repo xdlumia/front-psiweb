@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 18:34:28
+ * @LastEditTime: 2019-11-19 15:38:05
  * @Description: 直发单详情
 */
 <template>
@@ -29,7 +29,11 @@
           <extrasInfo :data="detail" disabled></extrasInfo>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
+      <el-tab-pane label="采购入库单">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:code}" />
+        </FullscreenWrap>
+      </el-tab-pane>
     </el-tabs>
     <addOrderStorage :visible.sync="showAddOrderStorage" from="直发单" :joinCode="code"/>
     <editDirect :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" />
