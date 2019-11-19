@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 14:38:09
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-19 14:25:48
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -96,6 +96,9 @@
             @change="reload()"
           />
         </slot>
+      </template>
+      <template slot="top-filter">
+        <slot name="top-filter" />
       </template>
     </table-top>
 

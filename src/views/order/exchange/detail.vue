@@ -2,24 +2,57 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 10:24:55
+ * @LastEditTime: 2019-11-19 14:16:36
  * @Description: 换货单
 */
 <template>
   <sideDetail :status="status" :visible="showDetailPage" @close="close" title="换货单" v-loading="loading" width="990px">
     <template slot="button">
-      <el-button size="mini" type="primary">提交审核</el-button>
-      <el-button size="mini" type="primary">撤销审核</el-button>
-      <el-button size="mini" type="primary">通过</el-button>
-      <el-button size="mini" type="primary">驳回</el-button>
+      <el-button
+        @click="$submission('seePsiWmsService.wmsswaporderSubmitApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'提交审核')"
+        size="mini"
+        type="primary"
+      >提交审核</el-button>
+      <el-button
+        @click="$submission('seePsiWmsService.wmsswaporderCancel',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'撤销审核')"
+        size="mini"
+        type="danger"
+      >撤销审核</el-button>
+      <el-button
+        @click="$submission('seePsiWmsService.wmsswaporderPassApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'通过')"
+        size="mini"
+        type="primary"
+      >通过</el-button>
+      <el-button
+        @click="$submission('seePsiWmsService.wmsswaporderReject',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'驳回',true)"
+        size="mini"
+        type="danger"
+      >驳回</el-button>
       <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
-      <el-button size="mini" type="primary">删除</el-button>
-      <el-button size="mini" type="primary">撤回</el-button>
-      <el-button @click="showExchangeGoods=true" size="mini" type="primary">换货扫码</el-button>
+      <el-button
+        @click="$submission('seePsiWmsService.wmsswaporderDelete',{
+          id:detail.id
+        },'删除')"
+        size="mini"
+        type="danger"
+      >删除</el-button>
+      <!-- <el-button @click="showExchangeGoods=true" size="mini" type="primary">换货扫码</el-button> -->
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form :model="detail" size="mini">
+        <el-form :model="detail" size="mini" v-if="detail&&showDetailPage" ref="form">
           <exchange-info :data="detail" disabled id="exchangeInfo" />
           <buying-exchange-goods :data="detail" disabled exchangeType="in" id="inGoods" />
           <buying-exchange-goods :data="detail" disabled exchangeType="out" id="outGoods" />
@@ -48,8 +81,30 @@ export default {
   data() {
     return {
       showEdit: false,
-      showExchangeGoods: false
+      showExchangeGoods: false,
+      stateText: {
+        '0': '新建',
+        '1': '审核中',
+        '2': '待换货',
+        '3': '部分换货',
+        '4': '完成换货',
+        '-1': '已驳回'
+      }
     };
+  },
+  computed: {
+    status() {
+      if (!this.detail) return [];
+      else {
+        return [
+          { label: '状态', value: this.stateText[this.detail.swapState] },
+          { label: '单据创建人', value: this.detail.creatorName },
+          { label: '创建部门', value: this.detail.deptName },
+          { label: '创建时间', value: this.detail.createTime, isTime: true },
+          { label: '来源', value: this.detail.source }
+        ];
+      }
+    }
   },
   mounted() {},
   watch: {},

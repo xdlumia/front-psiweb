@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 14:30:36
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-19 14:25:15
  * @Description: 表格头部 
  */
 <template>
@@ -15,6 +15,7 @@
             class="b f16 d-nowrap"
             style="margin-right:30px; color:#333;"
           >{{title}}</div>
+          <slot name="top-filter"></slot>
           <div
             v-if="this.$parent.$parent.button"
             class="f12 d-text-qgray d-auto-x"
