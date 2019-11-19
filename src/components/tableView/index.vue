@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 14:25:48
+ * @LastEditTime: 2019-11-19 17:14:24
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -277,8 +277,8 @@ export default {
       }
     },
     formatState(row, fields) {
-      if (fields.match('Time')) {
-        return this.$options.filters.timeToStr(row[fields], 'YYYY-MM-DD hh:mm:ss')
+      if (fields.match(/(Time|Date)/)) {
+        return this.$options.filters.timeToStr(row[fields], 'YYYY-MM-DD HH:mm:ss')
       }
       else if (fields == 'state' || fields == 'approvalState') {
         return this.statusText[row[fields]]

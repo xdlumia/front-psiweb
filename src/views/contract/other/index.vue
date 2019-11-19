@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 15:46:22
+ * @LastEditTime: 2019-11-19 17:14:03
  * @Description: 其他合同
 */
 <template>
@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       status: [],
-      showDetail: true,
+      showDetail: false,
       showEdit: false,
       filterOptions: [
         { label: '合同编号', prop: 'contractCode', default: true },

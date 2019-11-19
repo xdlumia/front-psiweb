@@ -3,7 +3,7 @@
 const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = false;
 /**
-* @date 2019-11-14
+* @date 2019-11-19
 * @host 39.99.132.95:9205
 */
 export default {
@@ -101,20 +101,20 @@ export default {
     },
     /**
      * @tag 采购退货单
+     * @description 撤销审核
+     */
+    purchasealterationCancel: {
+        url: '/purchasealteration/cancel',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购退货单
      * @description 删除
      */
     purchasealterationDelete: {
         url: '/purchasealteration/delete',
         methods: 'delete',
-        mock: isUseMock
-    },
-    /**
-     * @tag 采购退货单
-     * @description 审核
-     */
-    purchasealterationExamine: {
-        url: '/purchasealteration/examine',
-        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -164,11 +164,29 @@ export default {
     },
     /**
      * @tag 采购退货单
+     * @description 审核通过
+     */
+    purchasealterationPassApproval: {
+        url: '/purchasealteration/passApproval',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购退货单
      * @description 打印
      */
     purchasealterationPrint: {
         url: '/purchasealteration/print',
         methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购退货单
+     * @description 驳回
+     */
+    purchasealterationReject: {
+        url: '/purchasealteration/reject',
+        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -193,17 +211,8 @@ export default {
      * @tag 采购退货单
      * @description 提交审核
      */
-    purchasealterationSubmission: {
-        url: '/purchasealteration/submission',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
-     * @tag 采购退货单
-     * @description 撤销审核
-     */
-    purchasealterationUnsubmission: {
-        url: '/purchasealteration/unsubmission',
+    purchasealterationSubmitApproval: {
+        url: '/purchasealteration/submitApproval',
         methods: 'post',
         mock: isUseMock
     },
@@ -434,6 +443,15 @@ export default {
     },
     /**
      * @tag 采购入库单
+     * @description 撤销审核
+     */
+    purchaseputinCancel: {
+        url: '/purchaseputin/cancel',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购入库单
      * @description 生成合同
      */
     purchaseputinCreateCntract: {
@@ -448,15 +466,6 @@ export default {
     purchaseputinDelete: {
         url: '/purchaseputin/delete',
         methods: 'delete',
-        mock: isUseMock
-    },
-    /**
-     * @tag 采购入库单
-     * @description 审核
-     */
-    purchaseputinExamine: {
-        url: '/purchaseputin/examine',
-        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -506,11 +515,29 @@ export default {
     },
     /**
      * @tag 采购入库单
+     * @description 审核通过
+     */
+    purchaseputinPassApproval: {
+        url: '/purchaseputin/passApproval',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购入库单
      * @description 打印
      */
     purchaseputinPrint: {
         url: '/purchaseputin/print',
         methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购入库单
+     * @description 驳回
+     */
+    purchaseputinReject: {
+        url: '/purchaseputin/reject',
+        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -535,17 +562,8 @@ export default {
      * @tag 采购入库单
      * @description 提交审核
      */
-    purchaseputinSubmission: {
-        url: '/purchaseputin/submission',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
-     * @tag 采购入库单
-     * @description 撤销审核
-     */
-    purchaseputinUnsubmission: {
-        url: '/purchaseputin/unsubmission',
+    purchaseputinSubmitApproval: {
+        url: '/purchaseputin/submitApproval',
         methods: 'post',
         mock: isUseMock
     },
@@ -560,20 +578,20 @@ export default {
     },
     /**
      * @tag 备货单
+     * @description 撤销审核
+     */
+    purchasestockorderCancel: {
+        url: '/purchasestockorder/cancel',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 备货单
      * @description 删除
      */
     purchasestockorderDelete: {
         url: '/purchasestockorder/delete',
         methods: 'delete',
-        mock: isUseMock
-    },
-    /**
-     * @tag 备货单
-     * @description 审核
-     */
-    purchasestockorderExamine: {
-        url: '/purchasestockorder/examine',
-        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -623,11 +641,29 @@ export default {
     },
     /**
      * @tag 备货单
+     * @description 审核通过
+     */
+    purchasestockorderPassApproval: {
+        url: '/purchasestockorder/passApproval',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 备货单
      * @description 打印
      */
     purchasestockorderPrint: {
         url: '/purchasestockorder/print',
         methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 备货单
+     * @description 驳回
+     */
+    purchasestockorderReject: {
+        url: '/purchasestockorder/reject',
+        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -643,17 +679,8 @@ export default {
      * @tag 备货单
      * @description 提交审核
      */
-    purchasestockorderSubmission: {
-        url: '/purchasestockorder/submission',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
-     * @tag 备货单
-     * @description 撤销审核
-     */
-    purchasestockorderUnsubmission: {
-        url: '/purchasestockorder/unsubmission',
+    purchasestockorderSubmitApproval: {
+        url: '/purchasestockorder/submitApproval',
         methods: 'post',
         mock: isUseMock
     },

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-16 15:50:44
+ * @LastEditTime: 2019-11-19 16:52:02
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -65,6 +65,30 @@ export default {
     }
   },
   methods: {
+    async $reload(){
+      this.loading = true;
+      try {
+        let data = await this.getDetail();
+        if (data) {
+          data = JSON.parse(JSON.stringify(data))
+          this.detail = data || {}
+          // this.rowData = data || {}
+          if (this.form && this.type == 'edit') {
+            for (let key in this.form) {
+              if (this.form[key] instanceof Array) {
+                this.form[key] = data[key] || []
+              } else {
+                this.form[key] = data[key]
+              }
+            }
+          } else {
+            this.form = data;
+          }
+        }
+        if(this.afterDetailInit) this.afterDetailInit()
+      } catch (error) { }
+      this.loading = false;
+    },
     // 检查可见状态
     checkVisible() { },
     async $checkVisible() {
@@ -82,24 +106,7 @@ export default {
               this.form.id = ''
             })
           } else {
-            let data = await this.getDetail();
-            if (data) {
-              data = JSON.parse(JSON.stringify(data))
-              this.detail = data || {}
-              // this.rowData = data || {}
-              if (this.form && this.type == 'edit') {
-                for (let key in this.form) {
-                  if (this.form[key] instanceof Array) {
-                    this.form[key] = data[key] || []
-                  } else {
-                    this.form[key] = data[key]
-                  }
-                }
-              } else {
-                this.form = data;
-              }
-            }
-            if(this.afterDetailInit) this.afterDetailInit()
+            this.$reload()
           }
         } catch (error) {
           console.error(error)
@@ -151,6 +158,7 @@ export default {
         })
       }
       let fn = api.split('.').reduce((api, item) => api[item], this.$api)
+      if(!fn) console.error(`接口不存在 ${api}`)
       if (data instanceof Array && data[0] == null) {
         await fn(data[0], data[1])
       } else {
@@ -160,7 +168,7 @@ export default {
       if (title === '删除') {
         this.close()
       } else {
-        this.getDetail()
+        this.$reload()
       }
     }
   }
