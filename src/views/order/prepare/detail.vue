@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 15:37:23
+ * @LastEditTime: 2019-11-19 16:50:10
  * @Description: 备货单详情
 */
 <template>
@@ -136,8 +136,8 @@ export default {
     },
     reload() {
       console.log('detail reload');
-      this.getDetail();
       this.setEdit();
+      this.$reload();
     }
   }
 };

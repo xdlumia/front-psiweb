@@ -2,12 +2,12 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 15:46:11
+ * @LastEditTime: 2019-11-19 16:10:15
  * @Description: 销售合同
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :filterOptions="filterOptions" :params="params" api="bizSystemService.getEmployeeList" title="销售合同">
+    <TableView :filterOptions="filterOptions" :params="params" api="seePsiContractService.contractsalesList" title="销售合同" busType="25">
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
         <span v-else>{{value}}</span>

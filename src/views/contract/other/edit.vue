@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 15:45:50
+ * @LastEditTime: 2019-11-19 16:13:24
  * @Description: 其他合同
 */
 <template>
@@ -60,14 +60,7 @@ export default {
       activeName: '',
       form: {
         // 附件 示例：附件
-        attachList: [
-          {
-            // 附件名称 身份证明
-            fileName: '',
-            // 附件地址 http://
-            fileUrl: ''
-          }
-        ],
+        attachList: [],
         // 合同开始时间 1572346561998
         beginDate: '',
         // 公司编码code 示例：公司编码code
@@ -81,14 +74,7 @@ export default {
         // 合同结束时间 1572346561998
         endDate: '',
         // 自定义字段 示例：自定义字段
-        fieldList: [
-          {
-            // 字段码 fieldVal
-            fieldCode: '',
-            // 字段值 张三
-            fieldVal: ''
-          }
-        ],
+        fieldList: [],
         // 备注信息 示例：备注信息
         note: '',
         // 甲方 示例：甲方
