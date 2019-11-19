@@ -8,70 +8,72 @@
 <template>
   <div>
     <table-view
-      busType="17"
+      busType="61"
       ref="table"
       :filter="true"
       :moreButton="true"
       :column="true"
-      title="销售退货单"
-      api="seePsiSaleService.salesreturnedList"
-      exportApi="seePsiSaleService.salesreturnedExport"
+      title="发票本"
+      api="seePsiFinanceService.finvoicedatumList"
+      exportApi="seePsiFinanceService.salesreturnedExport"
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
     >
-
+      <template slot="top-filter">
+        <el-row style="width:430px" type="flex" justify="space-between"
+align="center">
+          <el-col :span="4">
+            <span style="line-height:28px;">发票账户：</span>
+          </el-col>
+          <el-col :span="20">
+            <el-select size="mini" v-model="queryForm.companyId">
+              <el-option value label="全部"></el-option>
+              <el-option
+                v-for="(item, index) in accountList"
+                :key="index"
+                :value="item.id"
+                :label="`${item.corporationName}(${item.commonCorporationAccountEntities[0] ? item.commonCorporationAccountEntities[0].account : ''})`"
+              ></el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+      </template>
+      <template v-slot:button>
+        <el-button size="mini" type="primary" @click="editId = null,visible = true">发票录入</el-button>
+      </template>
       <template slot-scope="{column,row,value}">
-        <!-- 销售换货单编号 -->
-        <span
-          class="d-text-blue d-pointer"
-          v-if="column.columnFields=='alterationCode'"
-          @click="eventHandle('returnVisible',row)"
-        > {{value}}</span>
-        <!-- 销售出库单编号 -->
-        <span
-          class="d-text-blue d-pointer"
-          v-else-if="column.columnFields=='salesShipmentCode'"
-          @click="eventHandle('outLibVisible',row)"
-        > {{value}}</span>
-        <!-- 状态 -->
-        <span v-else-if="column.columnFields=='state'">{{value}}</span>
-        <!-- 创建时间 -->
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-if="column.columnFields=='invoiceSum'">{{value | dictionary('PSI_GSSZ_FPZDXE')}}</span>
+        <span v-else-if="column.columnFields=='coding'">{{row.startCoding}}~{{row.endCoding}}</span>
+
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <!-- 销售退货单详情 -->
-    <returnDetails
-      v-if="returnVisible"
-      :visible.sync="returnVisible"
-      :rowData="rowData"
-      :code="rowData.alterationCode"
-      @reload="this.$refs.table.reload()"
-    />
-    <!-- 销售出库单详情 -->
-    <outLibDetails
-      v-if="outLibVisible"
-      :visible.sync="outLibVisible"
-      :rowData="rowData"
-      :code="rowData.salesShipmentCode"
-      @reload="this.$refs.table.reload()"
-    />
+    <add :visible.sync="visible" ref="addQuotation" v-if="visible"
+@refresh="$refs.table.reload"></add>
   </div>
 </template>
+
 <script>
-import returnDetails from './details' //销售退货单详情
-let filterOptions = [
-  // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
-  { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
-  // { label: '商机阶段', prop: 'state', default: true, type: 'select', options: [] },
-  // { label: '跟进时间起止', prop: 'CreateTime', default: true, type: 'daterange' },
-  // { label: '维护人', prop: 'creator', default: true, type: 'employee' }
+import invoiceMixin from '../invoice-mixins'
+import add from './add'
+const filterOptions = [
+  { label: '发票额度', prop: 'invoiceSum', default: true, type: 'dict',
+    dictName: 'PSI_GSSZ_FPZDXE' },
+  { label: '增票数量', prop: 'IncreaseNumber', default: true, type: 'numberrange' },
+  { label: '创建时间', prop: 'CreateTime', default: true, type: 'daterange' },
+  { label: '创建人', prop: 'creator', default: true, type: 'employee' },
+  { label: '发票代码', prop: 'invoiceCoding', default: true },
+  { label: '起始发票号码', prop: 'StartCoding', default: true, type: 'numberrange' },
+  { label: '结束发票号码', prop: 'EndCoding', default: true, type: 'numberrange' },
+  { label: '已用数量', prop: 'UseNumber', default: true, type: 'numberrange' },
+  { label: '作废数量', prop: 'FailureNumber', default: true, type: 'numberrange' }
 ]
 
 export default {
-  name: 'return',
+  mixins: [invoiceMixin],
+  name: 'Return',
   components: {
-    returnDetails,
+    add
   },
   props: {
     // 是否显示按钮
@@ -85,47 +87,42 @@ export default {
       default: () => {
         return {}
       }
-    },
+    }
   },
   data() {
     return {
+      visible: false,
       loading: false,
       // 查询表单
       queryForm: {
-        // status: "",
-        busType: 17,
         page: 1,
-        limit: 20
-      },
-      // 列表状态
-      stateText: {
-        '-1': '新建',
-        '0': '审核中',
-        '1': '待完成',
-        '2': '部分完成',
-        '3': '已完成',
-        '4': '已驳回',
+        limit: 20,
+        companyId: ''
       },
       // 筛选数据
       filterOptions: filterOptions,
       // 当前行数据
-      rowData: {},
-      returnVisible: false,
-      outLibVisible: false,
+      rowData: {}
     };
   },
   computed: {
 
   },
   watch: {
+    'queryForm.companyId': {
+      handler(newValue) {
+        console.log(newValue)
+        // this.$refs.table.reload();
+      }
+    }
   },
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
       this[type] = true
-      this.rowData = row ? row : {}
+      this.rowData = row || {}
       return
-    },
+    }
   }
 };
 </script>

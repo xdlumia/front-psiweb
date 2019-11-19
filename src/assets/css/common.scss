@@ -51,3 +51,11 @@
 .is-justify-space-between {
   flex-wrap: wrap;
 }
+
+.el-table__fixed{
+  pointer-events: none;
+  .el-table__fixed-header-wrapper,
+  .el-table__fixed-body-wrapper{
+    pointer-events: all;
+  }
+}

@@ -2,12 +2,20 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 16:49:58
+ * @LastEditTime: 2019-11-19 16:56:40
  * @Description: 采购-换货单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :filterOptions="filterOptions" api="seePsiWmsService.wmsswaporderList" busType="1" ref="tableView" title="换货单">
+    <TableView
+      :filterOptions="filterOptions"
+      :params="params"
+      api="seePsiWmsService.wmsswaporderList"
+      busType="1"
+      exportApi="seePsiWmsService.wmsswaporderExport"
+      ref="tableView"
+      title="换货单"
+    >
       <template slot="button">
         <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
       </template>
@@ -62,7 +70,18 @@ export default {
         '4': '完成换货',
         '-1': '已驳回'
       },
-      filterOptions: []
+      // prettier-ignore
+      filterOptions: [
+        { label: '换货单编号', prop: 'swapOrderCode',default:true, },
+        { label: '换货方', prop: 'barterThirdparty',default:true, },
+        { label: '换入数量', prop: 'SwapInNum', type: 'numberRange', int: true,default:true, },
+        { label: '换入金额', prop: 'SwapInMoney', type: 'numberRange',default:true, },
+        { label: '换出数量', prop: 'SwapOutNum', type: 'numberRange', int: true,default:true, },
+        { label: '换出金额', prop: 'SwapOutMoney', type: 'numberRange',default:true, },
+        { label: '创建人', prop: 'creator', type: 'employee',default:true, },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
+        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' },
+      ]
     };
   },
   methods: {

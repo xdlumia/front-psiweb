@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 15:49:59
+ * @LastEditTime: 2019-11-19 10:14:02
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -69,10 +69,17 @@
             <template v-else-if="item.dictName">
               <span>{{row[item.prop] | dictionary(item.dictName)}}</span>
             </template>
+            <!-- 字典结束 -->
+            <!-- 数字类型，默认0 开始 -->
             <template v-else-if="item.type=='number'">
               <span>{{row[item.prop]||0}}</span>
             </template>
-            <!-- 字典结束 -->
+            <!-- 数字类型，默认0 结束 -->
+            <!-- 时间戳开始 -->
+            <template v-else-if="item.type=='timestamp'">
+              <span>{{row[item.prop]|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
+            </template>
+            <!-- 时间戳结束 -->
             <!-- 价格输入开始 -->
             <template v-else-if="item.type=='input'">
               <el-form-item
@@ -150,6 +157,7 @@
               </div>
             </template>
             <!-- 展开子项结束 -->
+            <!-- 自定义slot开始 -->
             <template v-else-if="typeof item.slot!='undefined'">
               <slot
                 :formProp="getCurrentFormProp(row,item.prop)"
@@ -160,12 +168,15 @@
                 :row="row"
               />
             </template>
+            <!-- 自定义slot结束 -->
+            <!-- 其他开始 -->
             <template v-else>
               <span
                 :class="[item.click?'d-text-blue d-pointer':'']"
                 @click="item.click?item.click(row,item):''"
-              >{{item.format?item.format(row[item.prop],row):row[item.prop]}}</span>
+              >{{item.format?item.format(row[item.prop],row,getParentInfo(row)):row[item.prop]}}</span>
             </template>
+            <!-- 其他结束 -->
           </template>
           <template
             slot="header"
@@ -243,6 +254,7 @@ export default {
     // type = input         可输入input框，可定义rules进行校验
     // type = inputinteger  正整数输入框，可定义每一行数据的 `max${item.prop}` 值为其最大值进行校验，必填
     // type = selection     可选列表
+    // type = timestamp     可选列表
     // dictName             如有该值表明是业务字典
     // format               定义format函数，会传值进去并显示返回数据 Function(value,row)
     let columns = [

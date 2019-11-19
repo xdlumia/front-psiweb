@@ -2,13 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 10:34:05
+ * @LastEditTime: 2019-11-19 15:45:51
  * @Description: 采购-直发单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
       :filterOptions="filterOptions"
+      :params="params"
       api="seePsiPurchaseService.purchasedirectList"
       busType="28"
       exportApi="seePsiPurchaseService.purchasedirectExport"

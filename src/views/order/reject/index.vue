@@ -2,13 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 18:01:22
+ * @LastEditTime: 2019-11-19 17:19:22
  * @Description: 采购-采购退货单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
       :filterOptions="filterOptions"
+      :params="params"
       api="seePsiPurchaseService.purchasealterationList"
       busType="31"
       exportApi="seePsiPurchaseService.purchasealterationExport"
@@ -20,23 +21,26 @@
           <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else-if="prop=='putinCode'">
-          <el-link :underline="false" class="f12" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="showPutinDetail=true,currentPutinCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" />
+    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
+    <OrderStorageDetail :code="currentPutinCode" :visible.sync="showPutinDetail" @reload="reload" v-if="showPutinDetail" />
   </div>
 </template>
 <script>
 import TableView from '@/components/tableView';
 
 import Detail from './detail'; // 采购退货单详情
+import OrderStorageDetail from '../storage/detail'; // 采购入库单详情
 
 export default {
   components: {
     TableView,
-    Detail
+    Detail,
+    OrderStorageDetail
   },
   props: {
     // 是否显示按钮
@@ -55,6 +59,8 @@ export default {
       status: [],
       showDetail: false,
       currentCode: '',
+      showPutinDetail: false,
+      currentPutinCode: '',
       stateText: {
         '0': '新建',
         '1': '审核中',

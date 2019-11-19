@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 18:30:07
+ * @LastEditTime: 2019-11-19 15:22:22
  * @Description: 采购单详情
 */
 <template>
@@ -35,21 +35,25 @@
               </el-col>
             </el-row>
           </form-card>
-          <buying-goods-edit :data="detail" disabled :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','waitPurchaseNumber','inventoryNumber'
-          ]"/>
+          <buying-goods-edit
+            :data="detail"
+            :show="[
+              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','waitPurchaseNumber','inventoryNumber'
+            ]"
+            disabled
+          />
           <customInfo :data="detail" disabled />
           <extrasInfo :data="detail" disabled />
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="采购入库单">
-        <FullscreenWrap>
-          <OrderStorage />
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:code}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="报价单">
-        <FullscreenWrap>
-          <salesQuote />
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <salesQuote :button="false" :params="{page:1,limit:15,quotationCode:detail.quotationCode}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>

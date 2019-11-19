@@ -2,14 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 18:04:31
+ * @LastEditTime: 2019-11-19 15:45:42
  * @Description: 采购-付款单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :headers="tableHeader" api="bizSystemService.getEmployeeList" title="付款单">
-      <template slot="button"> 
-        <el-button size="mini" type="primary" @click="payMultiApply=true">批量付款申请</el-button>
+    <TableView :headers="tableHeader" :params="params" api="bizSystemService.getEmployeeList" title="付款单">
+      <template slot="button">
+        <el-button @click="payMultiApply=true" size="mini" type="primary">批量付款申请</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>

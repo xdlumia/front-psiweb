@@ -2,13 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 18:02:18
+ * @LastEditTime: 2019-11-19 16:33:50
  * @Description: 采购-采购入库单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
       :filterOptions="filterOptions"
+      :params="params"
       api="seePsiPurchaseService.purchaseputinList"
       busType="30"
       exportApi="seePsiPurchaseService.purchaseputinExport"
@@ -20,23 +21,32 @@
           <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else-if="prop=='joinCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="openJoin(row)" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" />
+    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
+    <OrderBuyingDetail :code="joinCode" :visible.sync="joinDetail.buying" @reload="reload" v-if="joinDetail.buying" />
+    <OrderDirectDetail :code="joinCode" :visible.sync="joinDetail.direct" @reload="reload" v-if="joinDetail.direct" />
+    <OrderPrepareDetail :code="joinCode" :visible.sync="joinDetail.prepare" @reload="reload" v-if="joinDetail.prepare" />
   </div>
 </template>
 <script>
 import TableView from '@/components/tableView';
 
 import Detail from './detail'; // 采购入库单详情
+import OrderBuyingDetail from '../buying/detail'; // 请购单详情
+import OrderDirectDetail from '../direct/detail'; // 直发单详情
+import OrderPrepareDetail from '../prepare/detail'; // 备货单详情
 
 export default {
   components: {
     TableView,
-    Detail
+    Detail,
+    OrderBuyingDetail,
+    OrderDirectDetail,
+    OrderPrepareDetail
   },
   props: {
     // 是否显示按钮
@@ -55,6 +65,12 @@ export default {
       status: [],
       showDetail: false,
       currentCode: '',
+      joinCode: '',
+      joinDetail: {
+        buying: false,
+        direct: false,
+        prepare: false
+      },
       stateText: {
         '0': '新建',
         '1': '审核中',
@@ -88,6 +104,16 @@ export default {
     },
     reload() {
       this.$refs.tableView.reload();
+    },
+    openJoin(row) {
+      this.joinCode = row.joinCode;
+      if (row.source == '请购单') {
+        this.joinDetail.buying = true;
+      } else if (row.source == '直发单') {
+        this.joinDetail.direct = true;
+      } else if (row.source == '备货单') {
+        this.joinDetail.prepare = true;
+      }
     }
   }
 };

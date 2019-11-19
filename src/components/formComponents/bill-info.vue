@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 16:14:49
+ * @LastEditTime: 2019-11-19 18:54:48
  * @Description: 账期信息
  */
 <template>
@@ -46,20 +46,20 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <el-form-item
+          <!-- <el-form-item
             :rules="[{required:true}]"
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.payTime`"
-          >
-            <el-date-picker
-              :disabled="disabled"
-              size="mini"
-              value-format="timestamp"
-              v-model="scope.row.payTime"
-              type="date"
-              placeholder="选择日期"
-            />
+          > -->
+          <el-date-picker
+            :disabled="disabled"
+            size="mini"
+            value-format="timestamp"
+            v-model="scope.row.payTime"
+            type="date"
+            placeholder="选择日期"
+          />
 
-          </el-form-item>
+          <!-- </el-form-item> -->
         </template>
       </el-table-column>
       <el-table-column
@@ -68,17 +68,17 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <el-form-item
+          <!-- <el-form-item
             :rules="[{required:true}]"
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.isBillFee`"
-          >
-            <el-switch
-              :disabled="disabled"
-              :active-value="1"
-              :inactive-value="0"
-              v-model="scope.row.isBillFee"
-            />
-          </el-form-item>
+          > -->
+          <el-switch
+            :disabled="disabled"
+            :active-value="1"
+            :inactive-value="0"
+            v-model="scope.row.isBillFee"
+          />
+          <!-- </el-form-item> -->
         </template>
       </el-table-column>
       <el-table-column
@@ -110,7 +110,6 @@
   </form-card>
 </template>
 <script>
-import { log } from 'util';
 export default {
   props: {
     data: {

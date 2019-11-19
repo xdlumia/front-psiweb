@@ -92,13 +92,6 @@ export default {
   /* =============账单end=========== */
 
   /* =============账单调整表start=========== */
-  // 审核
-  fbilladjustApproval: {
-    'url': '/fbilladjust/approval',
-    'mock': false,
-    'methods': 'post'
-  },
-
   // 撤销审核
   fbilladjustCancel: {
     'url': '/fbilladjust/cancel',
@@ -223,9 +216,16 @@ export default {
   /* =============借款单end=========== */
 
   /* =============费用单start=========== */
-  // 审核
-  fcostApproval: {
-    'url': '/fcost/approval',
+  // 复核通过
+  fcostAuditApproval: {
+    'url': '/fcost/auditApproval',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 撤销审核
+  fcostCancel: {
+    'url': '/fcost/cancel',
     'mock': false,
     'methods': 'post'
   },
@@ -244,6 +244,12 @@ export default {
     'methods': 'post'
   },
 
+  // 根据code查询详情
+  fcostGetInfoByCode: {
+    'url': '/fcost/getInfoByCode',
+    'mock': false
+  },
+
   // 查看详细信息
   fcostInfo: {
     'url': '/fcost/info/{id}',
@@ -256,9 +262,30 @@ export default {
     'mock': false
   },
 
+  // 审核通过
+  fcostPassApproval: {
+    'url': '/fcost/passApproval',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 驳回
+  fcostReject: {
+    'url': '/fcost/reject',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 保存
   fcostSave: {
     'url': '/fcost/save',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 账单调整申请
+  fcostSubmitApproval: {
+    'url': '/fcost/submitApproval',
     'mock': false,
     'methods': 'post'
   },
@@ -723,6 +750,13 @@ export default {
     'methods': 'post'
   },
 
+  // 删除流水匹配
+  paymentbillDelRoutedMatching: {
+    'url': '/paymentbill/delRoutedMatching',
+    'mock': false,
+    'methods': 'delete'
+  },
+
   // 删除
   paymentbillDelete: {
     'url': '/paymentbill/delete',
@@ -773,13 +807,6 @@ export default {
     'url': '/paymentbill/routedMatching',
     'mock': false,
     'methods': 'post'
-  },
-
-  // 删除流水匹配
-  paymentbillRoutedMatching: {
-    'url': '/paymentbill/routedMatching',
-    'mock': false,
-    'methods': 'delete'
   },
 
   // 保存
@@ -896,6 +923,13 @@ export default {
     'methods': 'post'
   },
 
+  // 删除流水匹配
+  revenuebillDelRoutedMatching: {
+    'url': '/revenuebill/delRoutedMatching',
+    'mock': false,
+    'methods': 'delete'
+  },
+
   // 删除
   revenuebillDelete: {
     'url': '/revenuebill/delete',
@@ -946,13 +980,6 @@ export default {
     'url': '/revenuebill/routedMatching',
     'mock': false,
     'methods': 'post'
-  },
-
-  // 删除流水匹配
-  revenuebillRoutedMatching: {
-    'url': '/revenuebill/routedMatching',
-    'mock': false,
-    'methods': 'delete'
   },
 
   // 保存
@@ -1063,6 +1090,13 @@ export default {
     'methods': 'post'
   },
 
+  // 删除流水匹配
+  todaybillDelRoutedMatching: {
+    'url': '/todaybill/delRoutedMatching',
+    'mock': false,
+    'methods': 'delete'
+  },
+
   // 删除
   todaybillDelete: {
     'url': '/todaybill/delete',
@@ -1113,13 +1147,6 @@ export default {
     'url': '/todaybill/routedMatching',
     'mock': false,
     'methods': 'post'
-  },
-
-  // 删除流水匹配
-  todaybillRoutedMatching: {
-    'url': '/todaybill/routedMatching',
-    'mock': false,
-    'methods': 'delete'
   },
 
   // 保存

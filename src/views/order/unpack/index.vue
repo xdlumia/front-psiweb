@@ -2,13 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 14:38:46
+ * @LastEditTime: 2019-11-19 15:46:48
  * @Description: 采购-拆卸单
 */
 <template>
   <div class="buying-requisition-page wfull hfull" v-loading="loading">
     <TableView
       :filterOptions="filterOptions"
+      :params="params"
       @response="onTableData"
       api="seePsiWmsService.wmsdisassemblyorderList"
       busType="11"

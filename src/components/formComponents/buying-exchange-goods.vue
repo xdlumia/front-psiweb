@@ -2,31 +2,22 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 17:01:18
+ * @LastEditTime: 2019-11-19 14:57:11
  * @Description: 换货单换货商品 已绑定字段 1
 */  
 <template>
   <buying-goods-edit
-    :customColumns="[
-        { label:'商品编号', key:'commodityCodes', width:140, prop:'commodityCode',slot:'commodityCode' },
-        { label:'商品名称', key:'goodsNames', width:140, prop:'goodsName',slot:'goodsName' },
-        { label:'含税总金额', key:'preTaxAmount', width:140, prop:'preTaxAmount',
-          format:(a,b)=>getPreTaxAmount(b) 
-        },
-    ].concat(exchangeType=='in'?[
-        { label:'换入数量', key:'swapInNum', width:140, prop:'swapInNum',slot:'swapInNum'},
-        { label:'换入金额', key:'swapInMoney', width:140, prop:'swapInMoney',slot:'swapInMoney'},
-    ]:[
-        { label:'换出数量', key:'swapOutNum', width:140, prop:'swapOutNum',slot:'swapOutNum'},
-        { label:'换出金额', key:'swapOutMoney', width:140, prop:'swapOutMoney',slot:'swapOutMoney'},
-    ],disabled?[]:[{ label:'操作', key:'actions', width:120, prop:'actions',slot:'actions' },])"
+    :customColumns="customColumns"
     :data="data"
     :disabled="disabled"
     :fkey="fkey"
     :show="[
-        'categoryCode','className','specOne','configName','noteText','costAmountPrice','taxRate','!add','unit',
-      ]"
-    :sort="['actions','commodityCodes','goodsNames','swapInNum','swapInMoney','swapOutNum','swapOutMoney','taxRate','preTaxAmount']"
+      'categoryCode','className','specOne','configName','noteText','costAmountPrice','taxRate','!add','unit',
+    ]"
+    :sort="[].concat(
+      disabled?['snCodes','swapInNum','swapOutNum','swapInWmsNames','swapOutWmsNames']:[],
+      ['actions','commodityCodes','goodsNames','swapInNum','swapInMoney','swapOutNum','swapOutMoney','taxRate','preTaxAmount']
+    )"
     :summaryMethod="getSummaries"
     :title="exchangeType=='in'?'换入商品':'换出商品'"
     class="borrow-goods"
@@ -123,6 +114,44 @@ export default {
       return this.exchangeType == 'in'
         ? 'putinCommodityList'
         : 'putoutCommodityList';
+    },
+    // prettier-ignore
+    customColumns(){
+      let cols = [
+          { label:'含税总金额', key:'preTaxAmount', width:140, prop:'preTaxAmount',
+            format:(a,b)=>this.getPreTaxAmount(b) 
+          },
+      ]
+      if(this.disabled){
+        cols=cols.concat([
+          { label:'商品编号', key:'commodityCodes', width:140, prop:'commodityCode',showOverflowTip:true },
+          { label:'商品名称', key:'goodsNames', width:140, prop:'goodsName',showOverflowTip:true },
+          { label:'SN码/机器号', key:'snCodes',fixed:true, width:140, prop:'goodsName',
+            format:(a,b)=>(this.exchangeType=='in'?b.swapInAccomplishNum:b.swapOutAccomplishNum)||0,
+            click:()=>{}
+          },
+        ],this.exchangeType=='in'?[
+            { label:'换入数量', key:'swapInNum',fixed:true, width:140, prop:'swapInNum', },
+            { label:'换入金额', key:'swapInMoney', width:140, prop:'swapInMoney', },
+            { label:'换入库房', key:'swapInWmsNames',fixed:true, width:140, prop:'swapInWmsNames', },
+        ]:[
+            { label:'换出数量', key:'swapOutNum',fixed:true, width:140, prop:'swapOutNum', },
+            { label:'换出金额', key:'swapOutMoney', width:140, prop:'swapOutMoney', },
+            { label:'换出库房', key:'swapOutWmsNames',fixed:true, width:140, prop:'swapOutWmsNames', },
+        ],)
+      }else{
+        cols=cols.concat([
+          { label:'商品编号', key:'commodityCodes', width:140, prop:'commodityCode',slot:'commodityCode' },
+          { label:'商品名称', key:'goodsNames', width:140, prop:'goodsName',slot:'goodsName' },
+        ],this.exchangeType=='in'?[
+            { label:'换入数量', key:'swapInNum', width:140, prop:'swapInNum',slot:'swapInNum'},
+            { label:'换入金额', key:'swapInMoney', width:140, prop:'swapInMoney',slot:'swapInMoney'},
+        ]:[
+            { label:'换出数量', key:'swapOutNum', width:140, prop:'swapOutNum',slot:'swapOutNum'},
+            { label:'换出金额', key:'swapOutMoney', width:140, prop:'swapOutMoney',slot:'swapOutMoney'},
+        ], [{ label:'操作', key:'actions', width:120, prop:'actions',slot:'actions' }])
+      }
+      return cols;
     }
   },
   methods: {

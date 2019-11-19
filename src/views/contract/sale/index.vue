@@ -2,12 +2,12 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 18:04:06
+ * @LastEditTime: 2019-11-19 16:10:15
  * @Description: 销售合同
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :filterOptions="filterOptions" :headers="tableHeader" api="bizSystemService.getEmployeeList" title="销售合同">
+    <TableView :filterOptions="filterOptions" :params="params" api="seePsiContractService.contractsalesList" title="销售合同" busType="25">
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
         <span v-else>{{value}}</span>
@@ -42,20 +42,6 @@ export default {
     return {
       status: [],
       showDetail: false,
-      tableHeader: [
-        { label: '采购入库单编号', prop: 'deptName', width: '180' },
-        { label: '请购/直发/备货单编号', prop: 'deptName', width: '180' },
-        { label: '订单来源', prop: 'deptName', width: '180' },
-        { label: '单据状态', prop: 'deptName', width: '180' },
-        { label: '供应商名称', prop: 'deptName', width: '180' },
-        { label: '销售预计到/发货时间', prop: 'deptName', width: '180' },
-        { label: '采购预计到/发货时间', prop: 'deptName', width: '180' },
-        { label: '总计数量', prop: 'deptName', width: '180' },
-        { label: '总计采购价', prop: 'deptName', width: '180' },
-        { label: '单据创建人', prop: 'deptName', width: '180' },
-        { label: '创建部门', prop: 'deptName', width: '180' },
-        { label: '创建时间', prop: 'createTime', width: '180' }
-      ],
       filterOptions: [
         { label: '合同编号', prop: 'contractCode', default: true },
         { label: '甲方', prop: 'partyA', default: true },

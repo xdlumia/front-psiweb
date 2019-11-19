@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 14:51:09
+ * @LastEditTime: 2019-11-19 14:46:27
  * @Description: 采购调价单
 */
 <template>
@@ -16,18 +16,38 @@
   >
     <template slot="button">
       <el-button
-        @click="$submission('seePsiPurchaseService.purchasestockorderSubmission',{ busCode:detail.stockCode },'提交审核')"
+        @click="$submission('seePsiCommonService.commonadjustpriceSubmitApproval',{
+          adjustPriceType: 2,
+          taskCode:detail.taskNode,
+          id:detail.id,
+        },'提交审核')"
         size="mini"
         type="primary"
       >提交审核</el-button>
       <el-button
-        @click="$submission('seePsiPurchaseService.purchasestockorderUnsubmission',{ busCode:detail.stockCode },'撤销审核')"
+        @click="$submission('seePsiCommonService.commonadjustpriceCancel',{
+          adjustPriceType: 2,
+          taskCode:detail.taskNode,
+          id:detail.id,
+        },'撤销审核')"
         size="mini"
         type="danger"
       >撤销审核</el-button>
-      <el-button @click="$submission('seePsiPurchaseService.purchasestockorderExamine',{ isAgree:0 },'通过')" size="mini" type="primary">通过</el-button>
       <el-button
-        @click="$submission('seePsiPurchaseService.purchasestockorderExamine',{ isAgree:1 },'驳回',true)"
+        @click="$submission('seePsiCommonService.commonadjustpricePassApproval',{
+          adjustPriceType: 2,
+          taskCode:detail.taskNode,
+          id:detail.id,
+        },'通过')"
+        size="mini"
+        type="primary"
+      >通过</el-button>
+      <el-button
+        @click="$submission('seePsiCommonService.commonadjustpriceReject',{
+          adjustPriceType: 2,
+          taskCode:detail.taskNode,
+          id:detail.id,
+        },'驳回',true)"
         size="mini"
         type="danger"
       >驳回</el-button>
