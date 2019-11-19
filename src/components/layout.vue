@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-31 18:55:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-14 11:19:27
+ * @LastEditTime: 2019-11-19 11:36:37
  * @Description: description
  -->
 /*
@@ -75,6 +75,7 @@ class="backlog">待办事项</el-button>
                           class="pr10 pl10"
                           v-for="(chunkSubmenu, key) in chunk(submenu.children, WRAP_LENGTH)"
                           :key="key"
+                          style="flex:1"
                           :style="{'border-right': submenuKey >= menu.children.length - 1 ? 'none' : '1px dashed #ccc'}"
                         >
                           <el-menu-item
