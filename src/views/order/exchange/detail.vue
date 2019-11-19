@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 16:59:46
+ * @LastEditTime: 2019-11-19 10:24:55
  * @Description: 换货单
 */
 <template>
@@ -15,7 +15,7 @@
       <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
       <el-button size="mini" type="primary">删除</el-button>
       <el-button size="mini" type="primary">撤回</el-button>
-      <el-button size="mini" type="primary">换货扫码</el-button>
+      <el-button @click="showExchangeGoods=true" size="mini" type="primary">换货扫码</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
@@ -32,6 +32,7 @@
       <el-tab-pane label="发票管理">发票管理</el-tab-pane>
     </el-tabs>
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
+    <exchange-sweepcode :rowData="getExchangeGoods()" :visible.sync="showExchangeGoods" v-if="showExchangeGoods" />
   </sideDetail>
 </template>
 <script>
@@ -46,7 +47,8 @@ export default {
   props: {},
   data() {
     return {
-      showEdit: false
+      showEdit: false,
+      showExchangeGoods: false
     };
   },
   mounted() {},
@@ -58,8 +60,25 @@ export default {
           null,
           this.code
         );
+        []
+          .concat(data.putinCommodityList, data.putoutCommodityList)
+          .map(item => {
+            item.commodityCode =
+              item.swapOutCommodityCode || item.swapInCommodityCode;
+          });
         return data;
       } else if (this.rowData) return this.rowData;
+    },
+    getExchangeGoods() {
+      return {
+        businessCode: this.detail.swapOrderCode,
+        inCommodityList: this.detail.putinCommodityList.map(item => ({
+          ...item
+        })),
+        outCommodityList: this.detail.putoutCommodityList.map(item => ({
+          ...item
+        }))
+      };
     }
   }
 };
