@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 10:36:39
+ * @LastEditTime: 2019-11-19 14:36:16
  * @Description: 备货单详情
 */
 <template>
@@ -16,23 +16,45 @@
   >
     <template slot="button">
       <el-button
-        @click="$submission('seePsiPurchaseService.purchasestockorderSubmission',{ busCode:detail.stockCode },'提交审核')"
+        @click="$submission('seePsiPurchaseService.purchasestockorderSubmitApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'提交审核')"
         size="mini"
         type="primary"
       >提交审核</el-button>
       <el-button
-        @click="$submission('seePsiPurchaseService.purchasestockorderUnsubmission',{ busCode:detail.stockCode },'撤销审核')"
+        @click="$submission('seePsiPurchaseService.purchasestockorderCancel',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'撤销审核')"
         size="mini"
         type="danger"
       >撤销审核</el-button>
-      <el-button @click="$submission('seePsiPurchaseService.purchasestockorderExamine',{ isAgree:0 },'通过')" size="mini" type="primary">通过</el-button>
       <el-button
-        @click="$submission('seePsiPurchaseService.purchasestockorderExamine',{ isAgree:1 },'驳回',true)"
+        @click="$submission('seePsiPurchaseService.purchasestockorderPassApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'通过')"
+        size="mini"
+        type="primary"
+      >通过</el-button>
+      <el-button
+        @click="$submission('seePsiPurchaseService.purchasestockorderReject',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'驳回',true)"
         size="mini"
         type="danger"
       >驳回</el-button>
       <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
-      <el-button @click="del" size="mini" type="danger">删除</el-button>
+      <el-button
+        @click="$submission('seePsiPurchaseService.purchasestockorderDelete',{
+          id:detail.id
+        },'删除')"
+        size="mini"
+        type="danger"
+      >删除</el-button>
       <el-button @click="showAddOrderStorage=true" size="mini" type="primary">采购</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
@@ -53,9 +75,13 @@
               </el-col>
             </el-row>
           </form-card>
-          <buyingGoodsEdit :data="detail" :show="[
+          <buyingGoodsEdit
+            :data="detail"
+            :show="[
             'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','waitPurchaseNumber','costAmount','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
-          ]" disabled />
+          ]"
+            disabled
+          />
           <customInfo :data="detail" disabled />
           <extrasInfo :data="detail" disabled />
         </el-form>
@@ -108,19 +134,6 @@ export default {
       console.log('detail reload');
       this.getDetail();
       this.setEdit();
-    },
-    async del() {
-      await this.$confirm('是否确定删除该备货单？');
-      this.loading = true;
-      try {
-        await this.$api.seePsiPurchaseService.purchasestockorderLogicDelete({
-          id: this.detail.id
-        });
-        console.log('删除备货单');
-        this.setEdit();
-        this.close();
-      } catch (error) {}
-      this.loading = false;
     }
   }
 };

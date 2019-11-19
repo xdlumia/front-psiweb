@@ -2,25 +2,41 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 15:05:01
+ * @LastEditTime: 2019-11-19 14:48:50
  * @Description: 采购退货单
 */
 <template>
   <sideDetail :status="status" :visible.sync="showDetailPage" @close="$emit('update:visible',false)" title="采购退货单" width="990px">
     <template slot="button">
       <el-button
-        @click="$submission('seePsiPurchaseService.purchasealterationSubmission',{ busCode:detail.stockCode },'提交审核')"
+        @click="$submission('seePsiPurchaseService.purchasealterationSubmitApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'提交审核')"
         size="mini"
         type="primary"
       >提交审核</el-button>
       <el-button
-        @click="$submission('seePsiPurchaseService.purchasealterationUnsubmission',{ busCode:detail.stockCode },'撤销审核')"
+        @click="$submission('seePsiPurchaseService.purchasealterationCancel',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'撤销审核')"
         size="mini"
         type="danger"
       >撤销审核</el-button>
-      <el-button @click="$submission('seePsiPurchaseService.purchasealterationExamine',{ isAgree:0 },'通过')" size="mini" type="primary">通过</el-button>
       <el-button
-        @click="$submission('seePsiPurchaseService.purchasealterationExamine',{ isAgree:1 },'驳回',true)"
+        @click="$submission('seePsiPurchaseService.purchasealterationPassApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'通过')"
+        size="mini"
+        type="primary"
+      >通过</el-button>
+      <el-button
+        @click="$submission('seePsiPurchaseService.purchasealterationReject',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'驳回',true)"
         size="mini"
         type="danger"
       >驳回</el-button>

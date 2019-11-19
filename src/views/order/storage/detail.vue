@@ -2,28 +2,61 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 18:40:05
+ * @LastEditTime: 2019-11-19 14:54:07
  * @Description: 采购入库单
 */
 <template>
   <sideDetail :status="status" :title="`采购入库单 ${detail?detail.putinCode:''}`" :visible.sync="showDetailPage" @close="close" width="990px">
     <template slot="button">
       <el-button
-        @click="$submission('seePsiPurchaseService.purchaseputinSubmission',{ busCode:detail.stockCode },'提交审核')"
+        @click="$submission('seePsiPurchaseService.purchaseputinSubmitApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'提交审核')"
         size="mini"
         type="primary"
       >提交审核</el-button>
       <el-button
-        @click="$submission('seePsiPurchaseService.purchaseputinUnsubmission',{ busCode:detail.stockCode },'撤销审核')"
+        @click="$submission('seePsiPurchaseService.purchaseputinCancel',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'撤销审核')"
         size="mini"
         type="danger"
       >撤销审核</el-button>
-      <el-button @click="$submission('seePsiPurchaseService.purchaseputinExamine',{ isAgree:0 },'通过')" size="mini" type="primary">通过</el-button>
-      <el-button @click="$submission('seePsiPurchaseService.purchaseputinExamine',{ isAgree:1 },'驳回',true)" size="mini" type="danger">驳回</el-button>
+      <el-button
+        @click="$submission('seePsiPurchaseService.purchaseputinPassApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'通过')"
+        size="mini"
+        type="primary"
+      >通过</el-button>
+      <el-button
+        @click="$submission('seePsiPurchaseService.purchaseputinReject',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'驳回',true)"
+        size="mini"
+        type="danger"
+      >驳回</el-button>
       <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
-      <el-button @click="del" size="mini" type="primary">删除</el-button>
+      <el-button
+        @click="$submission('seePsiPurchaseService.purchaseputinLogicDelete',{
+          id:detail.id,
+        },'删除')"
+        size="mini"
+        type="primary"
+      >删除</el-button>
       <el-button @click="showReject=true" size="mini" type="primary">退货</el-button>
-      <el-button size="mini" type="primary">终止</el-button>
+      <el-button
+        @click="$submission('seePsiPurchaseService.purchaseputinShutdown',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'终止')"
+        size="mini"
+        type="danger"
+      >终止</el-button>
       <el-button size="mini" type="primary">收票申请</el-button>
       <el-button @click="showOrderContract=true" size="mini" type="primary">生成合同</el-button>
     </template>
@@ -123,19 +156,6 @@ export default {
       } else if (this.rowData) {
         return this.rowData;
       }
-    },
-    async del() {
-      await this.$confirm('是否确定删除该采购入库单？');
-      this.loading = true;
-      try {
-        await this.$api.seePsiPurchaseService.purchaseputinLogicDelete({
-          id: this.detail.id
-        });
-        console.log('删除采购入库单');
-        this.setEdit();
-        this.close();
-      } catch (error) {}
-      this.loading = false;
     }
   }
 };
