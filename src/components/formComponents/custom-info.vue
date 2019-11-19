@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-19 09:46:03
+ * @LastEditTime: 2019-11-19 18:03:31
  * @Description: 自定义信息 1
 */
 <template>
@@ -26,7 +26,13 @@
             :rules="{required:true}"
             :prop="`fieldList.${scope.$index}.fieldCode`"
           >
-            <el-select
+
+            <el-input
+              size="mini"
+              :disabled="disabled"
+              v-model.trim="scope.row.fieldCode"
+            />
+            <!-- <el-select
               size="mini"
               :disabled="disabled"
               v-model="scope.row.fieldCode"
@@ -38,7 +44,7 @@
                 :value="item.fieldCode"
               >
               </el-option>
-            </el-select>
+            </el-select> -->
           </el-form-item>
         </template>
       </el-table-column>

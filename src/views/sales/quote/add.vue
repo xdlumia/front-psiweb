@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 20:16:44
+ * @LastEditTime: 2019-11-19 17:55:24
  * @Description: file content
 */
 <template>
@@ -181,14 +181,27 @@ export default {
         // 确定配置信息的时候查询整机
         this.$refs.confirmInfo.commonquotationconfigdetailsListConfigByGoodName()
       } else if (index === 4) {
-        // 最终以第三步存放的数据为准
-        let wholeList = this.form.KIND1List.reduce((prev, cur) => {
-          return prev.concat(cur.children)
-        }, [])
+        // 不挑选此配置整机数据
+        let wholeListNotChoose = []
+        // 整机数据
+        let wholeList = []
+        this.form.KIND1List.forEach(item => {
+          if (item.disabled) {
+            wholeListNotChoose = wholeListNotChoose.concat(item.children)
+          } else {
+            wholeList = wholeList.concat(item.children)
+          }
+        })
+        wholeListNotChoose = this.$$util.jsonFlatten(wholeListNotChoose)
+        let quotationIds = this.$$util.jsonFlatten(wholeList).map(v => v.quotationId)
+
+
         // 配件列表
         let fixingsList = []
         for (let key in this.form.KIND2List) {
-          fixingsList = fixingsList.concat(this.form.KIND2List[key])
+          // 扁平化数据
+          const flattenData = this.$$util.jsonFlatten(this.form.KIND2List[key])
+          fixingsList = fixingsList.concat(flattenData)
         }
 
         // let
