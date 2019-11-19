@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 16:45:11
+ * @LastEditTime: 2019-11-18 17:35:12
  * @Description: 换货信息 已绑定字段 1
  */
 <template>
@@ -97,7 +97,7 @@ export default {
         exclude:'serviceFilter' },
       { label: '运单编号', prop: 'waybillCode', type: 'input', },
       { label: '运费金额', prop: 'logisticsFees', type: 'input', rules: [{ type: 'price' }], },
-      { label: '备注', prop: 'note', type: 'textarea',span:24 },
+      // { label: '备注', prop: 'note', type: 'textarea',span:24 },
     ];
     return {
       options: [],
