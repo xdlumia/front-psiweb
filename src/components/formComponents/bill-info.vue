@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-19 09:48:33
+ * @LastEditTime: 2019-11-19 18:54:48
  * @Description: 账期信息
  */
 <template>
@@ -110,7 +110,6 @@
   </form-card>
 </template>
 <script>
-import { log } from 'util';
 export default {
   props: {
     data: {

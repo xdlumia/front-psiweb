@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 16:52:02
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-19 18:53:20
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -65,7 +65,7 @@ export default {
     }
   },
   methods: {
-    async $reload(){
+    async $reload() {
       this.loading = true;
       try {
         let data = await this.getDetail();
@@ -82,10 +82,10 @@ export default {
               }
             }
           } else {
-            this.form = data;
+            // this.form = data;
           }
         }
-        if(this.afterDetailInit) this.afterDetailInit()
+        if (this.afterDetailInit) this.afterDetailInit()
       } catch (error) { }
       this.loading = false;
     },
@@ -158,7 +158,7 @@ export default {
         })
       }
       let fn = api.split('.').reduce((api, item) => api[item], this.$api)
-      if(!fn) console.error(`接口不存在 ${api}`)
+      if (!fn) console.error(`接口不存在 ${api}`)
       if (data instanceof Array && data[0] == null) {
         await fn(data[0], data[1])
       } else {
