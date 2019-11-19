@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:29
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 14:36:24
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-11-19 18:19:39
  * @Description: ip配置文件
  */
 // let model = 'build' // dev 为开发环境 build 为测试环境  product 为生产环境
@@ -34,9 +34,11 @@ const baseURL = {
   seeBaseinfoService: apisUrl + 'see-baseinfo-service', // 基础服务
   seePsiCommonService: apisUrl + 'see-psi-common-service',
   // seePsiCommonService: 'http://10.168.1.130:9201',
+  seePsiFinanceService: 'http://10.168.1.230:9215',
   seeExternService: apisUrl + 'see-extern-service', // 9024 see-extern-service
   seeGoodsService: apisUrl + 'see-goods-service', // 物品服务
   seePsiWmsService: apisUrl + 'see-psi-wms-service' // 物品服务
+  // seePsiFinanceService: apisUrl + 'see-psi-finance-service' // 物品服务
 }
 window.g = {
   ApiUrl: baseURL
