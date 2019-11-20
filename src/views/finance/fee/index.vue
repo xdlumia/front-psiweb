@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 10:59:47
- * @Description: 财务-费用单
+ * @LastEditTime: 2019-11-18 09:05:08
+ * @Description: 销售-销售退货单
  */
 <template>
   <div>
@@ -15,59 +15,99 @@
       :column="true"
       title="费用单"
       api="seePsiFinanceService.fcostList"
-      exportApi="seePsiFinanceService.fcostExport"
+      exportApi="seePsiFinanceService.salesreturnedExport"
       :params="Object.assign(queryForm,params)"
-      @selection-change="selectionChange"
       :filterOptions="filterOptions"
     >
+      <template slot="top-filter">
+        <el-row
+          style="width:300px;flex:0 0 300px;"
+          type="flex"
+          justify="space-between"
+          align="center"
+        >
+          <el-col :span="6">
+            <span style="line-height:28px;">结算账户：</span>
+          </el-col>
+          <el-col :span="18">
+            <el-select size="mini" v-model="queryForm.companySettlementId">
+              <el-option value label="全部"></el-option>
+              <el-option
+                v-for="(item, index) in settlementAccount"
+                :key="index"
+                :value="item.id"
+                :label="`${item.corporationName}${item.accountType}(${item.account})`"
+              ></el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+      </template>
       <template v-slot:button>
         <el-button
-          type="primary"
           size="mini"
-          @click="eventHandle('addVisible')"
+          type="primary"
+          @click="editId = null,visible = true"
+          v-if="button"
         >新增费用单</el-button>
       </template>
-      <template v-slot:filter>
-        <filters
-          ref="filters"
-          @submit-filter="$refs.table.reload(1)"
-          :form="queryForm"
-        />
-      </template>
-      <!-- 自定义按钮功能 -->
-
-      <template v-slot:moreButton>自定义更多按钮</template>
       <template slot-scope="{column,row,value}">
-        <span
-          class="d-text-blue"
-          @click="eventHandle('detailVisible',row)"
-        > 费用单编号</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <el-button
+          type="text"
+          v-if="column.columnFields=='costCode'"
+          @click="detail(row)"
+          style="padding:0"
+        >{{row.costCode}}</el-button>
+        <span v-else-if="column.columnFields=='state'">{{stateText[row.state]}}</span>
+        <span v-else-if="column.columnFields=='settleStatus'">{{billText[row.settleStatus]}}</span>
+        <span v-else-if="column.columnFields=='feeTypeCode'">{{value | dictionary('ZD_DY_LX')}}</span>
+        <span v-else-if="column.columnFields=='feeDetailCode'">{{value | dictionary('ZD_DY_LX')}}</span>
+        <span v-else-if="column.columnFields=='coding'">{{row.startCoding}}~{{row.endCoding}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-
-    <!-- 费用分摊详情 -->
+    <add :visible.sync="visible" ref="addQuotation" v-if="visible"
+@refresh="$refs.table.reload"></add>
     <detail
-      :visible.sync="detailVisible"
+      @refresh="$refs.table.reload(queryForm.page)"
+      v-if="showDetail"
       :rowData="rowData"
-      @reload="this.$refs.table.reload()"
-    />
-    <!-- 新增账单调整-->
-    <add
-      type="add"
-      :visible.sync="addVisible"
-      :rowData="rowData"
-      @reload="this.$refs.table.reload()"
-    />
+      :code="code"
+      :visible.sync="showDetail"
+    ></detail>
   </div>
 </template>
+
 <script>
-import add from './add' // 新增账单调整
-import detail from './details' //客户详情
+import invoiceMixin from '../invoice-mixins'
+import add from './add'
+import detail from './detail'
+
+const filterOptions = [
+  { label: '账单状态',
+    prop: 'settleStatus',
+    type: 'select',
+    default: true,
+    options: [
+      { label: '未结清', value: 0 },
+      { label: '部分结清', value: 1 },
+      { label: '已结清', value: 2 },
+      { label: '已关闭', value: 3 }
+    ]
+  },
+  //   dictName: 'PSI_GSSZ_FPZDXE' },
+  // { label: '费用类型', prop: 'feeTypeCode', default: true, type: 'dict', dictName: 'ZD_DY_LX' },
+  { label: '费用单编号', prop: 'costCode', default: true },
+  { label: '创建人', prop: 'creator', default: true, type: 'employee' },
+  // { label: '发票代码', prop: 'invoiceCoding', default: true },
+  { label: '金额', prop: 'Amount', default: true, type: 'numberrange' },
+  // { label: '结束发票号码', prop: 'EndCoding', default: true, type: 'numberrange' },
+  { label: '创建时间', prop: 'CreateTime', default: true, type: 'daterange' }
+  // { label: '作废数量', prop: 'FailureNumber', default: true, type: 'numberrange' }
+]
 
 export default {
-  name: 'return',
+  mixins: [invoiceMixin],
+  name: 'Return',
   components: {
     add,
     detail
@@ -84,46 +124,71 @@ export default {
       default: () => {
         return {}
       }
-    },
+    }
   },
   data() {
     return {
+      showDetail: false,
+      visible: false,
       loading: false,
       // 查询表单
       queryForm: {
-        title: "", // 标题
-        city: "", // 城市
-        pushTime: "",
-        messageType: "",
-        status: "",
         page: 1,
-        limit: 20
+        limit: 20,
+        companySettlementId: ''
       },
+      // 筛选数据
+      filterOptions: filterOptions,
+      // 当前行数据
       rowData: {},
-      addVisible: false,
-      detailVisible: false,
-      // 筛选框数据
-      filterOptions: [
-        { label: '排序', prop: 'sort', default: true, type: 'sort', options: [{ label: '最新跟进', value: '1' }, { label: '最新录入', value: '' }], },
-        { label: '商户编号、商户名称/简称', prop: 'title', default: true, type: 'text' },
-        { label: '联系人、联系人电话', prop: 'city', default: true, type: 'text' },
-        { label: '商机阶段', prop: 'pushTime', default: true, type: 'select', },
-        { label: '跟进时间起止', prop: 'status', default: true, type: 'daterange' },
-        { label: '维护人', prop: 'messageType', default: true, type: 'employee', },
-      ]
+      stateText: {
+        '-1': '新建',
+        '0': '审核中',
+        '1': '待复核',
+        '2': '已通过',
+        '3': '已驳回',
+        '4': '部分分摊',
+        '5': '已分摊'
+      },
+      billText: {
+        '0': '未结清',
+        '1': '部分结清',
+        '2': '已结清',
+        '3': '已关闭'
+      }
     };
   },
+  computed: {
+    settlementAccount() {
+      return [].concat(...this.accountList.map(item => {
+        return [].concat(...((item.commonCorporationAccountEntities || []).map(sub => {
+          sub.accountType = this.$options.filters.dictionary(sub.accountType, 'PSI_GSSZ_ZHLX')
+          return Object.assign(sub, { corporationName: item.corporationName })
+        })))
+      }))
+    }
+  },
+  watch: {
+    'queryForm.companySettlementId': {
+      handler(newValue) {
+        this.$refs.table.reload();
+      }
+    }
+  },
+  mounted() {
+  },
   methods: {
+    detail(row) {
+      this.rowData = row
+      this.code = row.costCode
+      this.showDetail = true
+    },
     // 按钮功能操作
     eventHandle(type, row) {
       this[type] = true
-      this.rowData = row
+      this.rowData = row || {}
       return
-    },
-    // 多选 别的地方调用组件的时候回用到这里
-    selectionChange(val) {
-      this.$emit('selection-change', val)
-    },
+    }
   }
 };
 </script>
