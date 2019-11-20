@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 18:06:32
+ * @LastEditTime: 2019-11-20 09:54:15
  * @Description: 采购退货扫码
 */
 <template>
@@ -49,11 +49,16 @@ export default {
         return this.close();
       }
       this.loading = true;
+      let form = {
+        ...this.form,
+        businessType: 31
+      };
+      delete form.commodityList;
       try {
         let {
           data
         } = await this.$api.seePsiWmsService.wmsinventorydetailBatchShipment(
-          this.form
+          form
         );
         this.setEdit();
         this.close();

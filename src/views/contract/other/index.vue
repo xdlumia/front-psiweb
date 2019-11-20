@@ -2,22 +2,32 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 17:14:03
+ * @LastEditTime: 2019-11-20 11:17:27
  * @Description: 其他合同
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :filterOptions="filterOptions" :params="params" api="seePsiContractService.contractList" busType="23" title="其他合同">
+    <TableView
+      :filterOptions="filterOptions"
+      :params="params"
+      api="seePsiContractService.contractList"
+      busType="23"
+      ref="tableView"
+      title="其他合同"
+    >
       <template slot="button">
         <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
+        <span v-else-if="prop=='contractCode'">
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+        </span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :visible.sync="showDetail" />
-    <Edit :visible.sync="showEdit" />
+    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
+    <Edit :code="currentCode" :visible.sync="showEdit" @reload="reload" v-if="showEdit" />
   </div>
 </template>
 <script>
@@ -49,35 +59,15 @@ export default {
       status: [],
       showDetail: false,
       showEdit: false,
+      currentCode: '',
+      // prettier-ignore
       filterOptions: [
         { label: '合同编号', prop: 'contractCode', default: true },
-        { label: '销售出库单编号', prop: 'shipmentCode', default: true },
-        { label: '客户名称', prop: 'clientName', default: true },
-        {
-          label: '总计数量',
-          prop: 'TotalNum',
-          type: 'numberRange',
-          default: true,
-          int: true
-        },
-        {
-          label: '总计销售',
-          prop: 'TotalAmount',
-          type: 'numberRange',
-          default: true
-        },
-        {
-          label: '预计发货时间',
-          prop: 'SalesTime',
-          type: 'dateRange',
-          default: true
-        },
-        {
-          label: '合同创建人',
-          prop: 'creator',
-          type: 'employee',
-          default: true
-        },
+        { label: '甲方', prop: 'partyA', default: true },
+        { label: '乙方', prop: 'partyB', default: true },
+        { label: '合同开始时间', prop: 'BeginDate', type: 'dateRange', default: true },
+        { label: '合同结束时间', prop: 'EndDate', type: 'dateRange', default: true },
+        { label: '合同创建人', prop: 'creator', type: 'employee', default: true },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
       ]
@@ -86,6 +76,9 @@ export default {
   methods: {
     logData(e) {
       console.log(e);
+    },
+    reload() {
+      this.$refs.tableView.reload(1);
     }
   }
 };
