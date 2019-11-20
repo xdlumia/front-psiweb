@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 19:18:16
+ * @LastEditTime: 2019-11-20 19:25:52
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -38,6 +38,7 @@
     <!-- 自定义信息 -->
     <custom-info
       disabled
+      busType="17"
       :data="data"
     />
     <!-- 备注信息 -->

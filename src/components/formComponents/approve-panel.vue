@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 18:57:36
+ * @LastEditTime: 2019-11-20 19:30:57
  * @Description: 审核信息
 */
 <template>
@@ -42,7 +42,7 @@ let busType = {
   '40': 'psi_purchase_adjust_pric_01',//采购调价单
   '31': 'psi_purchase_alteration_01',//待审批采购退货单
   '30': 'psi_purchase_putin_01',//待审批采购入库单
-  '9999': 'TTZD-001',//账单调整单
+  '56': 'TTZD-001',//账单调整单
   '9998': 'psi_purchase_stock_01',//换货单
 }
 export default {

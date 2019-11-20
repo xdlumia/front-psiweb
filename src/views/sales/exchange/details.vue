@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 18:48:46
+ * @LastEditTime: 2019-11-20 19:26:54
  * @Description: 销售换货单详情
 */
 <template>
@@ -137,11 +137,9 @@ export default {
         else if (label == '退货扫码') { this.outLibAddVisible = true }
       } else {
         let params = {
-          busCode: this.code,//业务编号,
-          busType: 17,//业务类型,
+          apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
-          isAgree: 1,//是否同意,
-          taskCode: '',//当前功能权限码"        
+          processType: 'XSHHD-001',
         }
         let apiObj = {
           '提交审核': {

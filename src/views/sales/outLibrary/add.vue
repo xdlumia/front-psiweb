@@ -69,6 +69,7 @@
         />
         <!-- 自定义信息 -->
         <customInfo
+          busType="16"
           id="customInfo"
           :data="form"
         />
