@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 15:54:08
+ * @LastEditTime: 2019-11-20 17:31:42
  * @Description: 账单调整详情
 */
 <template>
@@ -65,7 +65,9 @@
     </side-detail>
     <!-- 客户编辑 -->
     <add
+      v-if="showEdit"
       :visible.sync="editVisible"
+      @reload="setEdit(),getDetail()"
       :rowData="rowData"
       type="edit"
       :params="{salesShipmentCode:rowData.shipmentCode}"
@@ -76,7 +78,7 @@
 <script>
 
 import detail from './details/detail' //详情
-import add from './add' //详情
+import add from '@/views/order/price/edit.vue' //新增
 import VisibleMixin from '@/utils/visibleMixin';
 import { log } from 'util';
 
