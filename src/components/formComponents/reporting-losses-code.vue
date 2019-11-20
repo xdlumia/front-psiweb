@@ -250,9 +250,10 @@ export default {
       let params = {
         snCode: this.snCode,
         wmsId: this.addForm.wmsId,
-        putawayCommodityList: this.tableData,
+        putawayCommodityList: this.tableData,//入库 字段不同
         commodityCode: this.commodityForm.commodityCode,
         categoryCode: this.commodityForm.categoryCode,
+        commodityList: this.tableData,//出库 字段不同
       }
       this.$api.seePsiWmsService[api](params)
         .then(res => {

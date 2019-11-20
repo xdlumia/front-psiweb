@@ -95,6 +95,7 @@ export default {
   data() {
     return {
       activeName: '',
+      button: true,
       addform: {
         wmsId: '',//库房id
         blitemPerson: '',//盘点人
@@ -113,25 +114,42 @@ export default {
     close() {
       this.$emit('update:visible', false)
     },
+    returnList(arr) {
+      let list = []
+      arr.forEach((item) => {
+        if (Object.keys(item).length > 0) {
+          list.push(item)
+        }
+      })
+      return list
+    },
     //点一下保存
     submit() {
-      if (this.addform.type == 2) {
-        let tableData = this.$refs.inventory.tableData
-        tableData.forEach((item) => {
-          if (item.goodsCode) {
-            this.addform.commodityCodeList.push(item)
-          }
-        })
-      } else {
-        this.addform.commodityCodeList = []
-      }
-      this.$api.seePsiWmsService.wmsblitemSave(this.addform)
-        .then(res => {
-          this.close()
-        })
-        .finally(() => {
+      this.$confirm('该库房暂未锁定,锁定后才可以进行盘点(抽盘只锁定抽盘商品库存)', '提示', {
+        confirmButtonText: '一键锁定',
+        cancelButtonText: '暂不盘点',
+        type: 'warning'
+      }).then(() => {
+        if (this.addform.type == 2) {
+          this.addform.commodityCodeList = this.returnList(this.$refs.inventory.tableData)
+        } else {
+          this.addform.commodityCodeList = []
+        }
+        this.$api.seePsiWmsService.wmsblitemSave(this.addform)
+          .then(res => {
+            this.$emit('reload')
+            this.close()
+          })
+          .finally(() => {
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      })
 
-        })
+
 
     }
   }

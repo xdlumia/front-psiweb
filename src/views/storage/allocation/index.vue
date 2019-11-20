@@ -67,16 +67,6 @@ export default {
     return {
       // 查询表单
       queryForm: {
-        allocationOrderCode: '',//调拨单编号
-        allocationOrderState: '',//调拨状态 （1-待调拨 2-部分调拨 3-完成调拨 4-终止）
-        allocationType: '',//调拨类型 （1-内调 2-外调）
-        putawayWmsName: '',//调入库房id 
-        shipmentWmsNames: '',//调出库房名称(可能多个)
-        num: '',//'调拨数量'
-        deptId: '',//部门id
-        companyCode: '',//公司code
-        minTime: '',//开始时间
-        maxTime: '',//结束时间
         page: 1,
         limit: 20
       },

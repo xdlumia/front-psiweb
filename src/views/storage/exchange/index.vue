@@ -9,23 +9,28 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
-      :headers="tableHeader"
+      busType="2"
+      :filterOptions='filterOptions'
       :selection='false'
-      api="bizSystemService.getEmployeeList"
+      ref='allTable'
+      api="seePsiWmsService.wmsswaptaskList"
       title="换货任务"
     >
       <template slot-scope="{column,row,value}">
         <span
+          v-if="column.columnFields=='swapTaskCode'"
           class="d-text-blue"
           @click="getTableVisible(row)"
-        >点击111</span>
-        <span v-if="column.prop=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        >{{value}}</span>
+        <span v-else-if="column.columnFields=='swapState'">{{state[value]}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
       :drawerData='drawerData'
-      @update='update'
+      :visible.sync='tableVisible'
+      @reload='reload'
+      v-if="tableVisible"
     />
   </div>
 </template>
@@ -44,47 +49,90 @@ export default {
     return {
       // 查询表单
       queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
         page: 1,
         limit: 20
       },
-      componentActive: '',//当前的组件
-      drawerData: {//弹框的相关数据
-        tableVisible: false,//销售单右侧抽屉
-        title: '',
-        component: 'Details'
+      state: {
+        2: '待换货',
+        3: '部分换货',
+        4: '完成换货'
       },
-      activeName: '',
-      tableHeader: [
-        { label: '换货任务编号', prop: 'deptName', width: '140' },
-        { label: '换货方', prop: 'deptName', width: '100' },
-        { label: '换货状态', prop: 'deptName', width: '100' },
-        { label: '换入数量', prop: 'createTime', width: '100' },
-        { label: '换出数量', prop: 'createTime', width: '100' },
-        { label: '换入金额', prop: 'createTime', width: '100' },
-        { label: '换出金额', prop: 'createTime', width: '100' },
-        { label: '创建时间', prop: 'createTime', width: '140' },
-        { label: '单据创建人', prop: 'createTime', width: '100' },
-        { label: '创建部门', prop: 'createTime', width: '100' }
-      ]
+      button: true,
+      tableVisible: false,//销售单右侧抽屉
+      drawerData: {//弹框的相关数据
+      },
+      filterOptions: [
+        { label: '换货任务编号', prop: 'swapTaskCode', default: true },
+        { label: '换货方', prop: 'barterThirdparty', default: true },
+        {
+          label: '换货状态',
+          prop: 'swapState',
+          type: 'select',
+          options: [
+            { label: '待组装', value: '1' },
+            { label: '部分组装', value: '2' },
+            { label: '完成组装', value: '3' },
+            { label: '未开始', value: '0' },
+            { label: '终止', value: '-1' },
+          ],
+          default: true
+        },
+        {
+          label: '换入数量',
+          prop: 'SwapInNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '换出数量',
+          prop: 'SwapOutNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '换入金额',
+          prop: 'SwapInMoney',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '换出金额',
+          prop: 'SwapOutMoney',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '创建时间',
+          prop: 'CreateTime',
+          type: 'daterange',
+          default: true
+        },
+        {
+          label: '单据创建人',
+          prop: 'creator',
+          type: 'employee',
+          default: true
+        },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
+      ],
     };
   },
   methods: {
     //点击打开右侧边栏
     getTableVisible(data) {
-      this.drawerData.tableVisible = true
-      this.drawerData.title = '换货任务' + data.id
+      this.tableVisible = true
+      this.drawerData = data
     },
     //tab换组件
     handleClick() {
 
     },
-    update() {
-      this.drawerData.tableVisible = false
+    reload() {
+      this.$refs.allTable.reload()
     }
   }
 };

@@ -22,7 +22,7 @@
       </div>
       <el-table
         ref="companyTable"
-        :data="tableData"
+        :data="data.commodityCodeList"
         border
         size="mini"
         class="college-main"
@@ -54,60 +54,67 @@
         </el-table-column>
 
         <el-table-column
-          prop="name"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="name"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.id}}</span>
-          </template>
+
         </el-table-column>
 
         <el-table-column
-          prop="name"
+          prop="categoryCode"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="name"
+          prop="className"
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="name"
+          prop="configName"
           min-width="100"
           label="商品配置"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="name"
+          prop="specOne"
           min-width="140"
           label="商品规格"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="name"
+          prop="unit"
           min-width="80"
           label="单位"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+          </template>
+        </el-table-column>
 
       </el-table>
       <scanCodeInventory
         :visible.sync='codeVisible'
+        v-if="codeVisible"
         :commodityForm='commodityForm'
-        :addform='addform'
+        :data='data'
         @sumitSn='sumitSn'
       />
       <FullscreenElement
@@ -122,7 +129,7 @@ import FullscreenElement from '@/components/fullscreen-element';
 import scanCodeInventory from './scan-code-inventory';
 
 export default {
-  props: ['addform'],
+  props: ['data'],
   data() {
     return {
       // 查询表单
