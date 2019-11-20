@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 18:27:50
+ * @LastEditTime: 2019-11-20 18:29:05
  * @Description: 销售-账单调整单
  */
 <template>
@@ -61,6 +61,7 @@
     />
     <!-- 新增分摊-->
     <add
+      type="add"
       :visible.sync="addVisible"
       :rowData="rowData"
       @reload="$refs.table.reload()"

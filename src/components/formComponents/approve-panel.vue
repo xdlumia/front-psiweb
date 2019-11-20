@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 18:26:35
+ * @LastEditTime: 2019-11-20 18:57:36
  * @Description: 审核信息
 */
 <template>
@@ -31,36 +31,27 @@
 import ApproveCard from './approve-card';
 
 let busType = {
-  '销售报价单': { //销售报价单
-    typeArray: '',
-    processType: 'BJD-001',
-  },
-  '销售出库单': { //销售出库单
-    typeArray: '',
-    processType: 'XSCKD-001',
-  },
-  '付款单': { //付款单
-    typeArray: '',
-    processType: 'FKD-001',
-  },
-  '销售退货单': { //销售退货单
-    typeArray: '',
-    processType: 'XSTHD-001',
-  },
-  '销售换货单': { //销售换货单
-    typeArray: '',
-    processType: 'XSHHD-001',
-  },
-  '分摊单': { //分摊单
-    typeArray: '',
-    processType: 'FT-001',
-  }
+  '15': 'BJD-001',//销售报价单
+  '16': 'XSCKD-001', //销售出库单
+  '50': 'FKD-001',//付款单
+  '17': 'XSTHD-001',//销售退货单
+  '18': 'XSHHD-001',//销售换货单
+  '19': 'FT-001',//分摊单
+  '39': 'psi_adjustPrice_1003 ',//销售调价单
+  '29': 'psi_purchase_stock_01',//备货单
+  '40': 'psi_purchase_adjust_pric_01',//采购调价单
+  '31': 'psi_purchase_alteration_01',//待审批采购退货单
+  '30': 'psi_purchase_putin_01',//待审批采购入库单
+  '9999': 'TTZD-001',//账单调整单
+  '9998': 'psi_purchase_stock_01',//换货单
 }
 export default {
   props: {
+    apprpvalNode: [Number, String],
     // 业务类型
     busType: {
-      required: false
+      required: false,
+      default: 'BJD-001'
     },
 
   },
@@ -76,7 +67,7 @@ export default {
           taskCode: '',// 任务节点码
           taskStatus: '',// 任务节状态
           approvalName: '', //审核人 add
-          operatTime: '', //审核时间 add
+          createTime: '', //审核时间 add
           type: '',// 任务类型
         }
       ], //当前流程节点
@@ -91,9 +82,8 @@ export default {
     // 查询当前项共有多少节点
     queryProcessDefinitionSubTask() {
       let params = {
-        // typeArray: [type: '']
+        typeArray: [busType[this.busType]]
       }
-
       this.$api.seeWorkflowService.processdefinitionQueryProcessDefinitionSubTask(params)
         .then(res => {
           this.progressData = res.data || []
@@ -104,7 +94,7 @@ export default {
 
 
       let params = {
-        processType: this.processType || 'BJD-001',
+        processType: busType[this.busType],
         businessId: this.$parent.rowData.id //一般详情都会传rowData 当前行操作数据 里面有id
       }
       this.$api.seeWorkflowService.processtaskQueryProcessHistoryEntity(params)
