@@ -1,16 +1,9 @@
-/*
- * @Author: 赵伦
- * @Date: 2019-11-01 14:07:48
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 14:08:13
- * @Description: file content
- */
 // const MOCK_ADDRESS = '/mock/5db95c6dbc54fc3da273ee8c/39.99.132.95:9218'; // pc端用
 // const MOCK_ADDRESS = 'http://10.168.1.145:7300/mock/5db95c6dbc54fc3da273ee8c/39.99.132.95:9218'; // 小程序用
 const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = false;
 /**
-* @date 2019-11-01
+* @date 2019-11-20
 * @host 39.99.132.95:9218
 */
 export default {
@@ -31,6 +24,24 @@ export default {
      */
     contractExport: {
         url: '/contract/export',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 其他合同
+     * @description 合同生成
+     */
+    contractGenerate: {
+        url: '/contract/generate',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 其他合同
+     * @description 查看详细信息
+     */
+    contractGetByCode: {
+        url: '/contract/getByCode/{code}',
         methods: 'get',
         mock: isUseMock
     },
@@ -50,6 +61,15 @@ export default {
     contractList: {
         url: '/contract/list',
         methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 其他合同
+     * @description 合同预览
+     */
+    contractPreview: {
+        url: '/contract/preview',
+        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -99,6 +119,24 @@ export default {
     },
     /**
      * @tag 采购合同
+     * @description 合同生成
+     */
+    contractpurchaseGenerate: {
+        url: '/contractpurchase/generate',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购合同
+     * @description 查看详细信息
+     */
+    contractpurchaseGetByCode: {
+        url: '/contractpurchase/getByCode/{code}',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购合同
      * @description 查看详细信息
      */
     contractpurchaseInfo: {
@@ -113,6 +151,15 @@ export default {
     contractpurchaseList: {
         url: '/contractpurchase/list',
         methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购合同
+     * @description 合同预览
+     */
+    contractpurchasePreview: {
+        url: '/contractpurchase/preview',
+        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -162,6 +209,33 @@ export default {
     },
     /**
      * @tag 销售合同
+     * @description 合同生成
+     */
+    contractsalesGenerate: {
+        url: '/contractsales/generate',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 销售合同
+     * @description 查看详细信息
+     */
+    contractsalesGetByCode: {
+        url: '/contractsales/getByCode/{code}',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 销售合同
+     * @description 根据销售出库单编号查看详细信息
+     */
+    contractsalesGetByShipmentCode: {
+        url: '/contractsales/getByShipmentCode/{code}',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 销售合同
      * @description 查看详细信息
      */
     contractsalesInfo: {
@@ -176,6 +250,15 @@ export default {
     contractsalesList: {
         url: '/contractsales/list',
         methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 销售合同
+     * @description 合同预览
+     */
+    contractsalesPreview: {
+        url: '/contractsales/preview',
+        methods: 'post',
         mock: isUseMock
     },
     /**
