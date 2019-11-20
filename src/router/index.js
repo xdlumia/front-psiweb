@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-12 16:28:43
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-20 10:59:19
  * @Description: 路由文件
  */
 import Vue from 'vue'
@@ -31,7 +31,6 @@ import financeRoute from '@/views/finance/route.js'
 // 库房路由
 import storageRoute from '@/views/storage/route.js'
 
-// TODO 使用这种方式报错 谁懂看一下?
 // 解决方案 .eslintrc.js 添加 parserOptions:{parser: 'babel-eslint'}
 // https://github.com/vuejs/eslint-plugin-vue/issues/204
 // const college = () => import('@/views/contents/college') // 店长服务
