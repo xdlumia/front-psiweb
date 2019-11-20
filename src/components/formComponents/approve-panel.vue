@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 17:16:55
+ * @LastEditTime: 2019-11-20 18:26:35
  * @Description: 审核信息
 */
 <template>
@@ -30,11 +30,39 @@
 <script>
 import ApproveCard from './approve-card';
 
+let busType = {
+  '销售报价单': { //销售报价单
+    typeArray: '',
+    processType: 'BJD-001',
+  },
+  '销售出库单': { //销售出库单
+    typeArray: '',
+    processType: 'XSCKD-001',
+  },
+  '付款单': { //付款单
+    typeArray: '',
+    processType: 'FKD-001',
+  },
+  '销售退货单': { //销售退货单
+    typeArray: '',
+    processType: 'XSTHD-001',
+  },
+  '销售换货单': { //销售换货单
+    typeArray: '',
+    processType: 'XSHHD-001',
+  },
+  '分摊单': { //分摊单
+    typeArray: '',
+    processType: 'FT-001',
+  }
+}
 export default {
   props: {
-    processType: String,
-    //查询都有什么节点
-    type: String,
+    // 业务类型
+    busType: {
+      required: false
+    },
+
   },
   components: {
     ApproveCard
@@ -46,7 +74,7 @@ export default {
         {
           taskName: '',//任务节点名称
           taskCode: '',// 任务节点码
-          taskStatus: '',// 任务节点名称
+          taskStatus: '',// 任务节状态
           approvalName: '', //审核人 add
           operatTime: '', //审核时间 add
           type: '',// 任务类型
@@ -57,12 +85,13 @@ export default {
   },
   async created() {
     await this.queryProcessDefinitionSubTask()
+    this.processtaskQueryProcessHistoryEntity()
   },
   methods: {
     // 查询当前项共有多少节点
     queryProcessDefinitionSubTask() {
       let params = {
-        typeArray: ['psi_adjustPrice_1003']
+        // typeArray: [type: '']
       }
 
       this.$api.seeWorkflowService.processdefinitionQueryProcessDefinitionSubTask(params)
@@ -72,13 +101,7 @@ export default {
     },
     // 查询历史操作
     processtaskQueryProcessHistoryEntity() {
-      /** processType说明
-       * BJD-001 报价单
-       * XSCKD-001 销售出库单
-       * FKD-001 付款单
-       * XSTHD-001 销售退货单
-       * XSHHD-001 销售换货单
-       */
+
 
       let params = {
         processType: this.processType || 'BJD-001',

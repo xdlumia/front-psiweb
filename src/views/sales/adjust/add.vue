@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 18:02:37
+ * @LastEditTime: 2019-11-20 18:25:58
  * @Description: 客户管理-账单调整单
 */
 <template>
@@ -12,6 +12,7 @@
     width="920px"
     :status="status"
     v-dialogDrag
+    @close="close"
     v-loading="loading"
   >
     <!-- 确定按钮 -->
