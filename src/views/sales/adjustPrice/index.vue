@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 16:04:44
+ * @LastEditTime: 2019-11-20 17:27:54
  * @Description: 销售-账单调价单
  */
 <template>
@@ -56,11 +56,13 @@
   </div>
 </template>
 <script>
-import add from './add' // 新增账单调价
+// import add from './add' // 新增账单调价
+
+import add from '@/views/order/price/edit.vue' //新增
 import detail from './details' //详情
 
 export default {
-  name: 'return',
+  name: 'addjustPrice',
   components: {
     add,
     detail
