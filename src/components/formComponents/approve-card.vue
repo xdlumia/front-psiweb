@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-10-28 11:07:07
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-20 17:15:57
  * @Description: 审核小卡片
 */
 <template>
@@ -11,15 +11,27 @@
       <!-- el-icon-error 驳回
       el-icon-success 审核通过-->
       <!-- wait / process / finish / error / success -->
-      <el-step :key="i" :status="getStatus(item,i)" :title="item.name" v-for="(item,i) of progress">
-        <span :class="getIcons(item,i)" class="f24" slot="icon"></span>
+      <el-step
+        :key="i"
+        :status="getStatus(item,i)"
+        :title="item.taskName"
+        v-for="(item,i) of progress"
+      >
+        <span
+          :class="getIcons(item,i)"
+          class="f24"
+          slot="icon"
+        ></span>
         <div slot="description">
           <div>{{item.approvalName}}</div>
           <div>{{item.operatTime | timeToStr('YYYY-MM-DD hh:mm:ss')}}</div>
         </div>
       </el-step>
     </el-steps>
-    <div class="d-text-gray" v-if="isReject">审核 驳回原因：价格不符</div>
+    <div
+      class="d-text-gray"
+      v-if="isReject"
+    >审核 驳回原因：价格不符</div>
   </div>
 </template>
 <script>
@@ -30,27 +42,27 @@ export default {
       default: () => [
         {
           approved: true,
-          name: '提交审核',
+          taskName: '提交审核',
           operatTime: +new Date(),
           approvalName: '小胖'
         },
         {
           approved: true,
           rejected: false,
-          name: '财务审核',
+          taskName: '财务审核',
           operatTime: +new Date(),
           approvalName: '小胖'
         },
         {
           approved: false,
           rejected: true,
-          name: '审核驳回',
+          taskName: '审核驳回',
           operatTime: +new Date(),
           approvalName: '小胖'
         },
         {
           approved: false,
-          name: '完成',
+          taskName: '完成',
           operatTime: +new Date(),
           approvalName: '小胖'
         },
