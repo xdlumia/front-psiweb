@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 11:36:00
+ * @LastEditTime: 2019-11-20 14:49:43
  * @Description: 报价单详情
 */
 <template>
@@ -80,6 +80,7 @@
     <buyingAdd
       :visible.sync="buyingAddVisible"
       :code="rowData.quotationCode"
+      :params="{quotationCode:rowData.quotationCode}"
       type="add"
       :rowData="rowData"
     />
@@ -89,7 +90,7 @@
 import detail from './quoteDetails/detail' //详情
 import add from './add' //编辑
 import outLibAdd from '../outLibrary/add' //生成出库单
-import buyingAdd from '@/views/order/buying/edit' //生成请购单
+import buyingAdd from './add-buying' //生成请购单
 // import record from '@/components/formComponents/record' //操作记录
 import VisibleMixin from '@/utils/visibleMixin';
 export default {

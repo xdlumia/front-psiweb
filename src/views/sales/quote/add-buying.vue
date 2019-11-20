@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 09:08:37
+ * @LastEditTime: 2019-11-20 15:03:21
  * @Description: 请购单
 */
 <template>
@@ -26,9 +26,7 @@
         >取消</el-button>
       </span>
     </div>
-    <d-tabs :style="{
-      maxHeight:maxHeight+'px'
-    }">
+    <d-tabs :style="{maxHeight:'calc(100vh - 130px)'}">
       <d-tab-pane
         label="发货信息"
         name="arrivalInfo"
@@ -74,14 +72,10 @@
               </el-col>
             </el-row>
           </form-card>
-          <buyingGoodsEdit
+          <goods-buying-quote
             :data="form"
-            disabled
-            :show="[
-              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','salesPrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
-            ]"
+            :params="{busCode:rowData.quotationCode,busType:1,putawayType:1}"
             id="commodityInfo"
-            priceKey="salesPrice"
           />
           <customInfo
             :data="form"
@@ -104,43 +98,40 @@ export default {
   components: {},
   props: {},
   computed: {
-    maxHeight() {
-      return window.innerHeight - 130;
-    }
   },
   data() {
-    return {};
+    return {
+      form: {
+        attachList: [], //
+        fieldList: [],
+        note: '',// "备注信息",
+        personInChargeId: '', //单据执行人id
+        purchaseApplyCode: '', //请购单编号",
+        purchaseArrivalTime: '', //采购预计到货时间
+        purchaseBorrow: '', //采购借入（0,采购 1.借入
+        quotationCode: '',  //"示例：报价单",
+        saleArrivalTime: '', // 销售要求到货时间
+        source: '',  //来源"
+      }
+    };
   },
   mounted() { },
   methods: {
-    getDetail() {
-      let form = Object.assign(
-        {
-          quotationCode: '', // 报价单
-          saleArrivalTime: '', // 销售要求到货时间
-          commodityList: []
-        },
-        this.params
-      );
-      return;
-    },
-    async save() {
-      console.log(this.form);
-      if (!this.form.commodityList || !this.form.commodityList.length) {
-        return this.$message({ message: '无商品信息', type: 'warning' });
-      } else {
-        this.form.commodityList.map(
-          item => (item.waitPurchaseNumber = item.commodityNumber)
-        );
-      }
-      await this.$refs.form.validate();
-      this.loading = true;
-      try {
-        await this.$api.seePsiPurchaseService.purchaseapplyorderSave(this.form);
-        this.setEdit();
-        this.close();
-      } catch (error) { }
-      this.loading = false;
+    save() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.loading = true;
+          let params = Object.assign(this.form, this.params);
+          this.$api.seePsiSaleService.salesquotationInsertPurchaseApplyOrder(params)
+            .then(res => {
+              this.setEdit();
+              this.close();
+            })
+            .finally(() => {
+              this.loading = false
+            })
+        }
+      })
     }
   }
 };
