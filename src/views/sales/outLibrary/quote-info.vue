@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 16:35:20
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-20 17:58:17
  * @Description: 报价单信息 编辑查看时使用
 */
 <template>
@@ -65,7 +65,8 @@
 import quoteDetail from '../quote/quoteDetails/detail'
 import { log } from 'util'
 export default {
-  props: ['options','quotationMap'],
+  //options 其实就是 quotationids
+  props: ['options', 'quotationMap'],
   components: {
     quoteDetail
   },
@@ -93,7 +94,7 @@ export default {
   },
   methods: {
     async getDetail() {
-      if(this.quotationMap[this.activeName]){
+      if (this.quotationMap && this.quotationMap[this.activeName]) {
         this.detail = this.quotationMap[this.activeName]
         return;
       }

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 15:50:32
+ * @LastEditTime: 2019-11-20 17:47:53
  * @Description: 账单调整详情
 */
 <template>
@@ -24,7 +24,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.apprpvalState+'' || -1].includes(item.label)"
+            v-if="currStatusType[detail.apprpvalState || 0].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>

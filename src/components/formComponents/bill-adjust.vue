@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 10:53:38
+ * @LastEditTime: 2019-11-20 17:50:24
  * @Description: 账单调整
  */
 <template>
@@ -11,7 +11,7 @@
       <el-row :gutter="10">
         <el-col :span="12">
           <el-form-item
-            :rules="[{required:true,message:'必填项'}]"
+            :rules="[{required:true,message:'必填项',trigger: 'blur'}]"
             label="应收账单"
             prop="fbillId"
           >
@@ -30,7 +30,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :rules="[{required:true},{type:'price'}]"
+            :rules="[{required:true,trigger: 'blur'},{type:'price',}]"
             label="账单金额"
             prop="adjustBeforAmount"
           >
@@ -45,7 +45,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :rules="[{required:true},{type:'price'}]"
+            :rules="[{required:true,trigger: 'blur'},{type:'price'}]"
             label="调整金额（正数增加金额，负数减少金额）"
             prop="adjustAmount"
           >
@@ -60,7 +60,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :rules="[{required:true},{type:'price'}]"
+            :rules="[{required:true,trigger: 'blur'},{type:'price'}]"
             label="调整后金额"
             prop="adjustAfterAmount"
           >
