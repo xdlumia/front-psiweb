@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 17:47:53
+ * @LastEditTime: 2019-11-20 18:02:11
  * @Description: 账单调整详情
 */
 <template>
@@ -51,13 +51,12 @@
       </el-form>
     </side-detail>
     <!-- 客户编辑 -->
-    <!-- <add
-      :visible.sync="addVisible"
+    <add
+      :visible.sync="editVisible"
       :rowData="rowData"
       type="edit"
-      :params="{salesShipmentCode:rowData.shipmentCode}"
-      :code="rowData.shipmentCode"
-    /> -->
+      :code="rowData.adjustCode"
+    />
   </div>
 </template>
 <script>

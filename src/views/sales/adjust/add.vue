@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 11:41:48
+ * @LastEditTime: 2019-11-20 18:02:37
  * @Description: 客户管理-账单调整单
 */
 <template>
@@ -95,6 +95,12 @@ export default {
 
   },
   methods: {
+    async getDetail() {
+      if (this.code) {
+        let { data } = await this.$api.seePsiFinanceService.fbilladjustGetInfoByCode({ code: this.code })
+        return data;
+      }
+    },
     // 保存表单数据
     saveHandle(formName) {
       this.$refs.form.validate(valid => {
