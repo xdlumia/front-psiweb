@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 11:57:39
+ * @LastEditTime: 2019-11-20 17:32:46
  * @Description: 编辑直发单
 */
 <template>
@@ -25,7 +25,7 @@
         <el-form :model="form" class="p10">
           <deliverInfo :data="form" id="deliverInfo"></deliverInfo>
           <commodityInfo :data="form" id="commodityInfo"></commodityInfo>
-          <customInfo :data="form" id="customInfo"></customInfo>
+          <customInfo :data="form" id="customInfo" busType="28"></customInfo>
           <extrasInfo :data="form" id="extrasInfo"></extrasInfo>
         </el-form>
       </div>

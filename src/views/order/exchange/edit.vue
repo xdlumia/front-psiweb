@@ -29,7 +29,7 @@
           <buying-exchange-goods :data="form" @totalAmountChange="onInMoneyChange" exchangeType="in" id="inGoods" />
           <buying-exchange-goods :data="form" @totalAmountChange="onOutMoneyChange" exchangeType="out" id="outGoods" />
           <orderStorageBill :data="form" :hide="['isBillFee']" :max="Math.abs(money.in-money.out)" :type="3" id="billInfo" />
-          <customInfo :data="form" id="customInfo"></customInfo>
+          <customInfo :data="form" id="customInfo" busType="1"></customInfo>
           <extrasInfo :data="form" id="extrasInfo"></extrasInfo>
         </el-form>
       </div>

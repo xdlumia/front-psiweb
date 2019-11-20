@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 11:57:11
+ * @LastEditTime: 2019-11-20 17:33:40
  * @Description: 新增备货单
 */
 <template>
@@ -39,7 +39,7 @@
           ]"
             id="commodityInfo"
           />
-          <customInfo :data="form" id="customInfo" />
+          <customInfo :data="form" id="customInfo"  busType="29"/>
           <extrasInfo :data="form" id="extrasInfo" />
         </el-form>
       </div>
