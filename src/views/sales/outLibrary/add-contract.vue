@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-19 19:16:49
+ * @LastEditTime: 2019-11-20 10:47:59
  * @Description: 生成合同
 */
 <template>
@@ -46,6 +46,7 @@
         </div>
       </div>
       <div
+        v-loading="loading"
         class="d-auto-y"
         style="height:calc(100vh - 110px)"
       >
