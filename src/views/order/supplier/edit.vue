@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 11:35:33
+ * @LastEditTime: 2019-11-20 11:56:24
  * @Description: 新增供应商
 */
 <template>
@@ -54,6 +54,7 @@ export default {
       loading: false,
       showChoose: true,
       activeName: '',
+      alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
       form: {
         // 开户账号 示例：开户账号
         account: '',

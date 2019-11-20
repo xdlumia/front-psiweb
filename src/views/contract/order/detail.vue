@@ -2,55 +2,95 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 15:47:18
+ * @LastEditTime: 2019-11-20 15:37:50
  * @Description: 采购合同
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showPop" @close="$emit('update:visible',false)" title="采购合同" width="990px">
+  <sideDetail :status="status" :visible="showDetailPage" @close="close" title="采购合同" v-loading="loading" width="990px">
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form>
-          <supplierInfo id="supplierInfo" />
-          <companyInfo id="companyInfo" />
-          <arrivalInfo id="arrivalInfo" />
-          <commodityInfo id="commodityInfo" />
-          <paymentLate id="paymentLate" />
-          <billInfo id="billInfo" />
-          <contract-extras id="customInfo"></contract-extras>
-          <extrasInfo id="extrasInfo" />
+        <el-form :model="detail" class="p10" ref="form" size="mini" v-if="detail&&showDetailPage&&!loading">
+          <supplierInfo :data="detail" :defaultData="detail.supplierInfo" disabled />
+          <companyInfo :data="detail" :defaultData="getCompanyInfo()" disabled />
+          <arrivalInfo :data="detail" disabled v-if="detail.source!='直发单'" />
+          <buyingDeliverInfo :data="detail" :defaultClientData="detail.shipmentsLogistics" disabled ref="deliverInfo" v-else />
+          <buying-goods-edit
+            :data="detail"
+            :show="[
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
+          ]"
+            disabled
+            priceKey="purchasePrice"
+          />
+          <buyingPaymentLate :data="detail" disabled />
+          <order-storage-bill :data="detail" disabled />
+        </el-form>
+        <el-form :model="detail" class="p10" ref="form" size="mini" v-if="detail&&showDetailPage&&!loading">
+          <contract-extras :data="detail" type="2" />
+          <extrasInfo :data="detail" disabled />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
+      <el-tab-pane label="采购入库单">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <OrderStorage :button="false" :params="{page:1,limit:15,putinCode:detail.purchasePutinCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
     </el-tabs>
   </sideDetail>
 </template>
 <script>
+import VisibleMixin from '@/utils/visibleMixin';
+
 export default {
+  mixins: [VisibleMixin],
   components: {},
-  props: {
-    visible: Boolean
-  },
+  props: {},
   data() {
     return {
-      showPop: false,
-      status: [
-        { label: '合同创建人', value: '张收纳' },
-        { label: '创建部门', value: '销售部' },
-        { label: '创建时间', value: +new Date(), isTime: true },
-      ]
+      // status: [
+      //   { label: '合同创建人', value: '张收纳' },
+      //   { label: '创建部门', value: '销售部' },
+      //   { label: '创建时间', value: +new Date(), isTime: true },
+      // ]
     };
   },
-  mounted() {
-    this.checkVisible();
-  },
-  watch: {
-    visible() {
-      this.checkVisible();
+  computed: {
+    status() {
+      if (!this.detail) return [];
+      else {
+        return [
+          { label: '创建人', value: this.detail.creatorName },
+          { label: '创建部门', value: this.detail.deptName },
+          { label: '创建时间', value: this.detail.createTime, isTime: true }
+        ];
+      }
     }
   },
+  mounted() {},
+  watch: {},
   methods: {
-    checkVisible() {
-      this.showPop = this.visible;
+    async getDetail() {
+      if (this.code) {
+        let {
+          data
+        } = await this.$api.seePsiContractService.contractpurchaseGetByCode(
+          null,
+          this.code
+        );
+        data.companyAccountId = data.corporation.id;
+        data.companySettlementId = data.corporationAccount.id;
+        data.logistics = data.shipmentsLogistics;
+        data.supplierId = data.supplierInfo.id;
+        return data;
+      } else if (this.rowData) {
+        return this.rowData;
+      }
+    },
+    getCompanyInfo() {
+      return {
+        ...this.detail.corporation,
+        commonCorporationAccountEntities: [this.detail.corporationAccount]
+      };
     }
   }
 };
