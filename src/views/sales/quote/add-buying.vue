@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 15:03:21
+ * @LastEditTime: 2019-11-20 15:08:41
  * @Description: 请购单
 */
 <template>
@@ -26,7 +26,7 @@
         >取消</el-button>
       </span>
     </div>
-    <d-tabs :style="{maxHeight:'calc(100vh - 130px)'}">
+    <d-tabs :style="{maxHeight:'calc(100vh - 110px)'}">
       <d-tab-pane
         label="发货信息"
         name="arrivalInfo"
