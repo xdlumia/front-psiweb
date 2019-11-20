@@ -33,6 +33,7 @@
             slot-scope="scope"
             v-if="scope.row.childrenCommodityList"
           >
+            <!-- :disabled='scope.row.currAccomplishNum > 0 ? false : true' -->
             <el-button
               type="primary"
               size="mini"
@@ -137,6 +138,8 @@
       :visible.sync='assemblyVisible'
       v-if="assemblyVisible"
       :data="rowData"
+      :detailForm="data"
+      @reload='reload'
     />
     <assemblyRecord
       :data='dialogData'
@@ -172,6 +175,9 @@ export default {
       console.log(row, 'rowrowrow')
       this.rowData = row
       this.assemblyVisible = true
+    },
+    reload() {
+      this.$emit('reload')
     }
   },
   components: {

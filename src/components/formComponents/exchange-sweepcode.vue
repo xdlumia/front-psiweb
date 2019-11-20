@@ -1,265 +1,478 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 10:38:23
- * @Description: 换货扫码公共组件 已绑定字段 1
+ * @LastEditors: 徐贺
+ * @LastEditTime: 2019-10-26 18:17:56
+ * @Description: 换货任务 换货扫码公共弹窗 
 */
 <template>
-  <el-dialog :title="title||'换货扫码'" :visible.sync="showEditPage" @close="close" v-dialogDrag v-if="visible">
-    <div :style="{
-      maxHeight:maxHeight+'px'
-    }" class="d-auto-y" v-if="form">
-      <form-card class="borrow-goods-info" title="换入库房">
-        <el-form label-position="top" label-width="100px" ref="queryForm" size="small">
-          <el-form-item :error="wmsError" label="换入库房" prop="name">
-            <el-select @change="wmsError=''" placeholder="请选择" style="width:30%" v-model="currentWMS">
-              <el-option :key="item.id" :label="item.name" :value="item.id" v-for="item of wmsList"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-form>
-      </form-card>
-      <!-- 换入库商品 -->
-      <form-card
-        :key="item.commodityList"
-        :title="index == 1 ? '换入库商品' : ''"
-        class="borrow-goods-info mt10"
-        v-for="(item,index) of form.inCommodityList"
+  <el-dialog
+    v-if='visible'
+    :visible.sync="visible"
+    @close='close'
+    :title="'换货扫码-'+data.swapOrderCode"
+    v-dialogDrag
+  >
+    <form-card
+      class="borrow-goods-info"
+      title="库房"
+    >
+      <el-form
+        label-position='top'
+        size='mini'
+        ref="queryForm"
+        label-width="100px"
       >
-        <buying-goods-edit
-          :customColumns="[
-              { label:'数量', key:'inNumber', width:140, prop:'commodityCode', format:()=>'0/0' },
-          ]"
-          :data="{commodityList:[item]}"
-          :show="[
-            'commodityCode','goodsName','categoryCode','className','specOne','configName','noteText','!add','!formTitle'
-          ]"
-          :showSummary="false"
-          :sort="['inNumber','commodityCode','goodsName',]"
-        ></buying-goods-edit>
-
-        <div class="mt10 mb10">
-          <span class="b mt5">机器号/扫SN码</span>
-          <el-input @keypress.13.native="checkIn(index)" class="ml10 mt5" size="mini" style="width:200px;" v-model="inSNInput[index]"></el-input>
-          <span class="fr d-text-black mr10 mt5">
-            <span>本次成功扫码</span>
-            <span class="b d-text-red f16">3</span>
-            <span>件，历史扫码</span>
-            <span class="b d-text-green f16">5</span>
-            <span>件，还需扫码</span>
-            <span class="b d-text-blue f16">127</span>
-            <span>件</span>
-          </span>
-        </div>
-      </form-card>
-
-      <!-- 换出库商品 -->
-      <form-card class="borrow-goods-info mt10" title="换出库商品">
-        <buying-goods-edit
-          :customColumns="[
-              { label:'数量', key:'outNumber', width:140, prop:'commodityCode', format:()=>'0/0' },
-          ]"
-          :data="{commodityList:form.outCommodityList}"
-          :show="[
-            'commodityCode','goodsName','categoryCode','className','specOne','configName','noteText','!add','!formTitle'
-          ]"
-          :showSummary="false"
-          :sort="['outNumber','commodityCode','goodsName']"
-        ></buying-goods-edit>
-
-        <div class="mt10 mb10">
-          <span class="b mt5">机器号/扫SN码</span>
-          <el-input @keypress.13.native="checkOut(outSNInput)" class="ml10 mt5" size="mini" style="width:200px;" v-model="outSNInput"></el-input>
-          <span class="fr d-text-black mr10 mt5">
-            <span>本次成功扫码</span>
-            <span class="b d-text-red f16">3</span>
-            <span>件，历史扫码</span>
-            <span class="b d-text-green f16">5</span>
-            <span>件，还需扫码</span>
-            <span class="b d-text-blue f16">127</span>
-            <span>件</span>
-          </span>
-        </div>
-      </form-card>
-
-      <!-- 机器号/SN码 -->
-      <form-card title="机器号/SN码">
-        <buying-goods-edit
-          :customColumns="[
-              { label:'操作', key:'actions', width:140, prop:'commodityCode',slot:'actions' },
-              { label:'编号', key:'index', width:140, prop:'index', format:(a,b,c)=>c.index+1 },
-              { label:'操作', key:'operate', width:140, prop:'operate', format:(a,b,c)=>b.exchangeType=='in'?'待入库':'待出库' },
-              { label:'SN码', key:'snCode', width:140, prop:'snCode', },
-              { label:'机器码', key:'robotCode', width:140, prop:'robotCode', },
-              { label:'库房', key:'wmsName', width:140, prop:'wmsName', },
-              { label:'换货人', key:'operator', width:140, prop:'operator',format:()=>currentUser },
-              { label:'换入/换出时间', key:'createTime', width:140, prop:'createTime',type:'timestamp' },
-          ]"
-          :data="{commodityList:snList}"
-          :show="[
-            'commodityCode','goodsName','categoryCode','className','specOne','configName','noteText','!add','!formTitle'
-          ]"
-          :showSummary="false"
-          :sort="['actions','index','operate','snCode','robotCode','wmsName','exchangeUser','time','commodityCode','goodsName','preTaxAmount']"
+        <el-form-item
+          style="width:30%"
+          label="库房"
+          prop="name"
         >
-          <template slot="actions" slot-scope="{info}">
-            <span @click="remove(info.index)" class="el-icon-circle-close f18 d-pointer d-text-red"></span>
+          <el-select
+            style="width:30%"
+            class="wfull"
+            v-model="wmsId"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in usableList"
+              :key="item.id "
+              :label="item.name"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+    </form-card>
+
+    <form-card
+      class="borrow-goods-info mb20"
+      :title="index == 0 ? '换入库商品' : ''"
+      v-for="(item,index) of data.putinCommodityList"
+      :key="index"
+    >
+      <el-table
+        class="m20"
+        border
+        :data="[item]"
+        max-height="400"
+        size="mini"
+      >
+        <el-table-column
+          label="数量"
+          min-width="100"
+          prop="name"
+        >
+          <template slot-scope="scope">{{(scope.row.swapInAccomplishNum || 0)+(scope.row.nowNum || 0)}}/{{scope.row.swapInNum || 0}}</template>
+        </el-table-column>
+        <el-table-column
+          prop="commodityCode"
+          label="商品编号"
+          min-width="140"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
-        </buying-goods-edit>
-      </form-card>
-    </div>
-    <span class="dialog-footer" slot="footer">
-      <el-button @click="close" size="small">关 闭</el-button>
-      <el-button @click="save" size="small" type="primary">保 存</el-button>
+        </el-table-column>
+        <el-table-column
+          label="商品类别"
+          min-width="110"
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="商品分类"
+          min-width="110"
+          prop="className"
+        ></el-table-column>
+        <el-table-column
+          label="商品名称"
+          min-width="110"
+          prop="goodsName"
+        ></el-table-column>
+        <el-table-column
+          label="商品配置"
+          min-width="110"
+          prop="configName"
+        ></el-table-column>
+        <el-table-column
+          label="商品规格"
+          min-width="110"
+          prop="specOne"
+        ></el-table-column>
+        <el-table-column
+          label="单位"
+          min-width="120"
+          prop="unit"
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <div class="mt10 mb10">
+        <span class="b mt5">机器号</span>
+        <el-input
+          v-on:keyup.13.native="getCommodityBySnCode(item)"
+          size="mini"
+          style="width:200px;"
+          class="ml10 mt5"
+          v-model="item.snCode"
+        ></el-input>
+        <span class="fr d-text-black mr10 mt5">
+          <span>本次成功扫码 </span>
+          <span class="b d-text-red f16">{{item.nowNum || 0}}</span>
+          <span> 件，历史扫码 </span>
+          <span class="b d-text-green f16">{{item.swapInAccomplishNum || 0}}</span>
+          <span> 件，还需扫码 </span>
+          <span class="b d-text-blue f16">{{(item.swapInNum - (item.swapInAccomplishNum || 0) - (item.nowNum || 0)) || 0}}</span>
+          <span> 件</span>
+        </span>
+      </div>
+    </form-card>
+
+    <form-card
+      class="borrow-goods-info"
+      title="换出库商品"
+    >
+      <el-table
+        border
+        :data="data.putoutCommodityList"
+        max-height="400"
+        size="mini"
+      >
+        <el-table-column
+          label="数量"
+          min-width="100"
+        >
+          <template slot-scope="scope">{{scope.row.swapOutAccomplishNum || 0}}/{{scope.row.swapOutNum || 0}}</template>
+        </el-table-column>
+        <el-table-column
+          prop="commodityCode"
+          label="商品编号"
+          min-width="140"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="商品类别"
+          min-width="110"
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="商品分类"
+          min-width="110"
+          prop="className"
+        ></el-table-column>
+        <el-table-column
+          label="商品名称"
+          min-width="110"
+          prop="goodsName"
+        ></el-table-column>
+        <el-table-column
+          label="商品配置"
+          min-width="110"
+          prop="configName"
+        ></el-table-column>
+        <el-table-column
+          label="商品规格"
+          min-width="110"
+          prop="specOne"
+        ></el-table-column>
+        <el-table-column
+          label="单位"
+          min-width="120"
+          prop="unit"
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="mt10 mb10">
+        <span class="b mt5">机器号</span>
+        <el-input
+          v-on:keyup.13.native="shipmentCommodityCheck"
+          size="mini"
+          style="width:200px;"
+          class="ml10 mt5"
+          v-model="snCode"
+        ></el-input>
+        <!-- <span class="fr d-text-black mr10 mt5">
+          <span>本次成功扫码 </span>
+          <span class="b d-text-red f16">{{data.nowNum || 0}}</span>
+          <span> 件，历史扫码 </span>
+          <span class="b d-text-green f16">{{data.swapOutAccomplishNum || 0}}</span>
+          <span> 件，还需扫码 </span>
+          <span class="b d-text-blue f16">{{(data.swapOutNum - (data.swapOutAccomplishNum || 0) - (data.nowNum || 0)) || 0}}</span>
+          <span> 件</span>
+        </span> -->
+      </div>
+    </form-card>
+
+    <!-- 机器号/SN码 -->
+    <form-card title='机器号/SN码'>
+      <el-table
+        border
+        :data='tableData'
+        size='mini'
+        class="college-main"
+        style="min-height:200px"
+      >
+        <el-table-column
+          min-width="50"
+          label="操作"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <i
+              @click='deleteDis(scope)'
+              class="el-icon-error d-pointer"
+              style="font-size:20px;color:#F5222D"
+            ></i>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="commodityCode"
+          min-width="80"
+          label="编号"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          min-width="100"
+          label="状态"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">{{scope.row.operation == 1 ? '换出' : '换入'}}</template>
+        </el-table-column>
+        <el-table-column
+          prop="snCode"
+          label="SN码"
+          min-width="160"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.snCode}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="robotCode"
+          label="机器号"
+          min-width="160"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.robotCode}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="wmsName"
+          min-width="100"
+          label="库房"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="operator"
+          min-width="100"
+          label="换货人"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="createTime"
+          label="换入/换出时间"
+          min-width="140"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
+        </el-table-column>
+        <el-table-column
+          prop="commodityCode"
+          min-width="100"
+          label="商品编号"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          label="商品分类"
+          min-width="110"
+          prop="className"
+        ></el-table-column>
+        <el-table-column
+          prop="configName"
+          min-width="100"
+          label="配置"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="goodsName"
+          min-width="100"
+          label="商品名称"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          label="商品规格"
+          min-width="110"
+          prop="specOne"
+        ></el-table-column>
+      </el-table>
+    </form-card>
+    <span
+      slot="footer"
+      class="dialog-footer"
+    >
+      <el-button
+        @click="close"
+        size="small"
+      >关 闭</el-button>
+      <el-button
+        type="primary"
+        @click="submit"
+        size="small"
+      >保 存</el-button>
     </span>
   </el-dialog>
 </template>
 <script>
-import VisibleMixin from '@/utils/visibleMixin';
 
 export default {
-  mixins: [VisibleMixin],
-  components: {},
+  components: {
+  },
   props: {
-    title: String
+    visible: {
+      type: Boolean,
+      default: false
+    },
+    dialogData: {
+      type: Object,
+    },
+    data: {},
+    allData: {}
   },
   computed: {
     maxHeight() {
-      return window.innerHeight - 156;
-    },
-    currentUser() {
-      return (this.$local.fetch('userInfo') || {}).userName;
+      return window.innerHeight - 130;
     }
   },
   data() {
     return {
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
-      currentWMS: '',
-      wmsError: '',
-      wmsList: [],
-      snList: [],
-      inSNInput: [],
-      outSNInput: ''
+      queryForm: {},
+      snCode: '',
+      tableData: [],
+      value: '',
+      usableList: [],
+      wmsId: ''
     };
   },
   mounted() {
-    this.getWMSList();
+    this.commonwmsmanagerUsableList()
   },
   methods: {
-    getDetail() {
-      if (this.rowData) return this.rowData;
+    close() {
+      this.$emit('update:visible', false)
     },
-    async getWMSList() {
-      let {
-        data
-      } = await this.$api.seePsiWmsService.commonwmsmanagerUsableList();
-      this.wmsList = data;
-    },
-    async checkOut(sn) {
-      let {
-        data
-      } = await this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck(
-        {
-          snCode: sn,
-          commodityList: []
-        }
-      );
-      this.outSNInput = '';
-      this.snList.unshift(
-        this.findExtrasInfo(this.form.outCommodityList, {
-          ...data,
-          exchangeType: 'out',
-          createTime: +new Date()
+    //请求可用库房
+    commonwmsmanagerUsableList() {
+      this.$api.seePsiWmsService.commonwmsmanagerUsableList()
+        .then(res => {
+          this.usableList = res.data || []
         })
-      );
-      console.log(data);
-    },
-    async checkIn(index) {
-      if (!this.currentWMS) {
-        this.wmsError = '请先选择入库库房';
-        return this.$message({
-          message: '请先选择入库库房',
-          type: 'warning'
-        });
-      } else {
-        this.wmsError = '';
-      }
-      let sn = this.inSNInput[index];
-      let good = this.form.inCommodityList[index];
-      let {
-        data
-      } = await this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck(
-        {
-          snCode: sn,
-          categoryCode: good.categoryCode,
-          commodityCode: good.commodityCode,
-          wmsId: this.currentWMS,
-          putawayCommodityList: []
-        }
-      );
-      this.inSNInput[index] = '';
-      this.snList.unshift(
-        this.findExtrasInfo(this.form.inCommodityList, {
-          ...data,
-          exchangeType: 'in',
-          createTime: +new Date()
+        .finally(() => {
         })
-      );
-      console.log(data);
     },
-    findExtrasInfo(list, data) {
-      let [a] = list.filter(item => item.commodityCode == data.commodityCode);
-      if (a) {
-        ['categoryCode', 'className', 'specOne', 'configName', 'noteText'].map(
-          key => {
-            data[key] = a[key];
+    //下边的input  出库
+    shipmentCommodityCheck() {
+      this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData, })
+        .then(res => {
+          if (res.data) {
+            this.data.putoutCommodityList.forEach((item) => {
+              if (item.swapOutNum - item.swapOutAccomplishNum > 0) {
+                if (item.commodityCode == res.data.commodityCode) {
+                  item.swapOutAccomplishNum ? item.swapOutAccomplishNum++ : item.swapOutAccomplishNum = 1
+                  this.tableData.push(res.data)
+                }
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: '当前商品待出库数量已为0!'
+                })
+              }
+            })
           }
-        );
-      }
-      return data;
+        })
+        .finally(() => {
+        })
     },
-    remove(i) {
-      this.snList.splice(i, 1);
-    },
-    async save() {
-      console.log(this.snList);
-      if (this.snList.length) {
-        let { ins, outs } = this.snList.reduce(
-          (data, item) => {
-            if (item.exchangeType == 'in') {
-              data.ins.push(item);
-            } else {
-              data.outs.push(item);
-            }
-            return data;
-          },
-          { ins: [], outs: [] }
-        );
-        Promise.all([
-          ins.length
-            ? this.$api.seePsiWmsService.wmsinventorydetailBatchPutaway({
-                businessCode: this.form.businessCode,
-                putawayCommodityList: ins
-              })
-            : Promise.resolve(),
-          outs.length
-            ? this.$api.seePsiWmsService.wmsinventorydetailBatchShipment({
-                businessCode: this.form.businessCode,
-                putawayCommodityList: outs
-              })
-            : Promise.resolve()
-        ]);
+    //点击删除
+    deleteDis(scope) {
+      this.tableData.splice(scope.$index, 1)
+      if (scope.row.operation == 1) {
+        this.data.putoutCommodityList.forEach((item, index) => {
+          if (item.commodityCode == scope.row.commodityCode) {
+            item.swapOutAccomplishNum--
+          }
+        })
       } else {
-        this.close();
+        this.data.putinCommodityList.forEach((item, index) => {
+          if (item.commodityCode == scope.row.commodityCode) {
+            item.swapInAccomplishNum--
+          }
+        })
       }
+    },
+    //上边的,入库
+    getCommodityBySnCode(item) {
+      if (this.wmsId) {
+        if ((item.swapInNum - (item.swapInAccomplishNum || 0) - (item.nowNum || 0)) != 0) {
+          // if ((item.singleNum || 0) * (this.data.accomplishDisassemblyNum || 0 + this.data.nowNum) > ((item.accomplishDisassemblyNum || 0) + (item.nowNum || 0))) {
+          this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: item.snCode, commodityCode: item.commodityCode, putawayCommodityList: this.tableData, categoryCode: item.categoryCode, wmsId: this.wmsId })
+            .then(res => {
+              if (res.data) {
+                this.tableData.push(res.data)
+                item.nowNum ? item.nowNum++ : item.nowNum = 1
+                item.snCode = ''
+              }
+            })
+            .finally(() => {
+            })
+          // } else {
+          //   this.$message({
+          //     type: 'error',
+          //     message: '出库量不够用!'
+          //   })
+          // }
+        } else {
+          this.$message({
+            type: 'error',
+            message: '当前商品待入库数量已为0!'
+          })
+        }
+      } else {
+        this.$message({
+          type: 'error',
+          message: '请先选择入库库房!'
+        })
+      }
+    },
+    //保存按钮
+    submit() {
+      console.log(this.allData, 'this.allDatathis.allData')
+      this.$api.seePsiWmsService.wmsswaptaskSwapCommodity({ businessCode: this.allData.swapOrderCode, businessCodeList: [this.allData.swapTaskCode], putawayCommodityList: this.tableData })
+        .then(res => {
+          this.$emit('reload')
+          this.close()
+        })
+        .finally(() => {
+        })
     }
   }
 };

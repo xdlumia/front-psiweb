@@ -15,6 +15,37 @@
     >
       <el-container>
         <el-main style="padding:0;max-height:600px;">
+          <form-card
+            class="borrow-goods-info"
+            title="库房"
+          >
+            <el-form
+              label-position='top'
+              size='mini'
+              label-width="100px"
+            >
+              <el-form-item
+                style="width:30%"
+                label="库房"
+                prop="name"
+              >
+                <el-select
+                  style="width:30%"
+                  class="wfull"
+                  v-model="wmsId"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in usableList"
+                    :key="item.id "
+                    :label="item.name"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+          </form-card>
           <!-- 商品列表 -->
           <form-card
             class="borrow-goods-info"
@@ -30,7 +61,11 @@
                 label="未装数量"
                 min-width="70"
                 prop="accomplishNum"
-              ></el-table-column>
+              >
+                <template slot-scope="scope">
+                  <span>{{(scope.row.allocationNum || 0) - (scope.row.accomplishNum || 0)}}</span>
+                </template>
+              </el-table-column>
               <el-table-column
                 label="商品编号"
                 min-width="110"
@@ -85,14 +120,15 @@
                 style="width:200px;"
                 class="ml10 mt5"
                 v-model="snCode"
+                v-on:keyup.13.native="getCommodityBySnCode()"
               ></el-input>
               <span class="fr d-text-black mr10 mt5">
                 <span>本次成功扫码</span>
-                <span class="b d-text-red f16"> 3 </span>
+                <span class="b d-text-red f16"> {{tableData.length}} </span>
                 <span>件，历史扫码</span>
-                <span class="b d-text-green f16"> 5 </span>
+                <span class="b d-text-green f16"> {{data.accomplishNum}} </span>
                 <span>件，还需扫码</span>
-                <span class="b d-text-blue f16"> 127 </span>
+                <span class="b d-text-blue f16"> {{(data.allocationNum || 0) - (data.accomplishNum || 0) - tableData.length}} </span>
                 <span>件</span>
               </span>
             </div>
@@ -110,47 +146,47 @@
               label="操作"
               show-overflow-tooltip
             >
-              <template slot-scope="">
+              <template slot-scope="scope">
                 <i
+                  @click="assDelete(scope)"
                   class="el-icon-error d-pointer"
                   style="font-size:20px;color:#F5222D"
                 ></i>
               </template>
             </el-table-column>
             <el-table-column
-              prop="cityName"
+              type="index"
               min-width="80"
               label="编号"
-              show-overflow-tooltip
             ></el-table-column>
             <el-table-column
-              prop="title"
+              prop="snCode"
               label="SN码"
               min-width="160"
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span>{{scope.row.id}}</span>
+                <span>{{scope.row.snCode}}</span>
               </template>
             </el-table-column>
             <el-table-column
-              prop="title"
+              prop="robotCode"
               label="机器号"
               min-width="160"
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span>{{scope.row.id}}</span>
+                <span>{{scope.row.robotCode}}</span>
               </template>
             </el-table-column>
             <el-table-column
-              prop="cityName"
+              prop="wmsName"
               min-width="100"
               label="拣货库房"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
-              prop="cityName"
+              prop="operator"
               min-width="100"
               label="拣货人"
               show-overflow-tooltip
@@ -164,19 +200,19 @@
               <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
             </el-table-column>
             <el-table-column
-              prop="cityName"
+              prop="commodityCode"
               min-width="100"
               label="商品编号"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
-              prop="cityName"
+              prop="goodsName"
               min-width="100"
               label="商品名称"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
-              prop="cityName"
+              prop="configName"
               min-width="100"
               label="配置"
               show-overflow-tooltip
@@ -190,7 +226,7 @@
       >
         <el-button
           type="primary"
-          @click="close"
+          @click="submit"
           size="small"
         >确 定</el-button>
         <el-button
@@ -208,26 +244,79 @@ export default {
       type: Boolean,
       default: false
     },
-    data: {}
+    data: {},
+    detailForm: {}
   },
   data() {
     return {
       snCode: '',
-      tableData: [{ name: '写的假的' }],
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
+      tableData: [],
+      usableList: [],
+      wmsId: ''
     };
+  },
+  mounted() {
+    this.commonwmsmanagerUsableList()
   },
   methods: {
     close() {
       this.$emit('update:visible', false)
+    },
+    //请求可用库房
+    commonwmsmanagerUsableList() {
+      this.$api.seePsiWmsService.commonwmsmanagerUsableList()
+        .then(res => {
+          this.usableList = res.data || []
+        })
+        .finally(() => {
+        })
+    },
+    //点击删除某项
+    assDelete(scope) {
+      this.tableData.splice(scope.$index, 1)
+    },
+    //回车事件,入库
+    getCommodityBySnCode() {
+      if (this.wmsId) {
+        if (((this.data.allocationNum || 0) - (this.data.accomplishNum || 0) - this.tableData.length) > 0) {
+          if (this.tableData.length < this.data.currAccomplishNum) {
+            this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: this.snCode, commodityCode: this.data.commodityCode, putawayCommodityList: this.tableData, categoryCode: this.data.categoryCode, wmsId: this.wmsId })
+              .then(res => {
+                if (res.data) {
+                  this.tableData.push(res.data)
+                  this.snCode = ''
+                }
+              })
+              .finally(() => {
+              })
+          } else {
+            this.$message({
+              type: 'error',
+              message: '配件不够用啦!'
+            })
+          }
+        } else {
+          this.$message({
+            type: 'error',
+            message: '当前商品待入库数量已为0!'
+          })
+        }
+      } else {
+        this.$message({
+          type: 'error',
+          message: '请先选择入库库房!'
+        })
+      }
+    },
+    //保存
+    submit() {
+      this.$api.seePsiWmsService.wmsassembletaskPutawayCommodity({ businessCode: this.detailForm.assembleTaskCode, businessId: this.detailForm.id, putawayCommodityList: this.tableData })
+        .then(res => {
+          this.close()
+          this.$emit('reload')
+        })
+        .finally(() => {
+        })
     }
   }
 };

@@ -196,8 +196,10 @@
       </span>
     </div>
     <commodityChoose
+      v-if="dialogData.putawayWmsId"
       :visible.sync='chooseVisible'
       @choose='commodityChoose'
+      :params='{wmsId:dialogData.putawayWmsId}'
       sn
     />
   </div>
