@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 17:38:31
+ * @LastEditTime: 2019-11-20 17:44:45
  * @Description: 账单调整详情
 */
 <template>
@@ -65,7 +65,7 @@
     </side-detail>
     <!-- 客户编辑 -->
     <add
-      v-if="showEdit"
+      v-if="editVisible"
       :visible.sync="editVisible"
       @reload="setEdit(),getDetail()"
       :rowData="rowData"
