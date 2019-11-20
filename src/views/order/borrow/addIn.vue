@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 11:05:45
+ * @LastEditTime: 2019-11-20 11:58:50
  * @Description: 新增借入单
 */
 <template>
@@ -79,12 +79,13 @@ export default {
         source: '',
         // 运单号 示例：运单号
         waybillCode: '',
-        id:''
-      }
+        id: ''
+      },
+      alwaysDropAndCopyForm: true // 在getDetail返回数据后，重新覆盖form
     };
   },
   mounted() {
-    console.log("borrow add in",this)
+    console.log('borrow add in', this);
   },
   methods: {
     getDetail() {

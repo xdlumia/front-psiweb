@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-15 08:49:24
+ * @LastEditTime: 2019-11-20 17:34:29
  * @Description: 采购入库单
 */
 <template>
@@ -53,7 +53,7 @@
           />
           <buyingPaymentLate :data="form" id="paymentLate" />
           <order-storage-bill :data="form" :max="goodsTotalSum" id="billInfo" />
-          <customInfo :data="form" id="customInfo" />
+          <customInfo :data="form" id="customInfo" busType="30"/>
           <extrasInfo :data="form" id="extrasInfo" />
         </el-form>
       </div>
@@ -83,6 +83,7 @@ export default {
       activeName: '',
       goodsTotalPrice: [0, 0],
       goodsTotalSum: 0,
+      alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
       form: {
         // 流程审批状态（0 未审核 1审核中 2 完成 3 驳回） 0
         approvalState: '',

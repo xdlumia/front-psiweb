@@ -19,7 +19,7 @@
       <template v-slot:button>
         <div class='fl mr10 mt5'>
           <span class="d-text-black">自动分配：</span>
-          <el-switch v-model="value">
+          <el-switch v-model="isSelfMotion">
           </el-switch>
         </div>
         <el-button
@@ -34,6 +34,15 @@
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>
+        <span v-else-if="column.columnFields=='operation'">
+          <span class="elTableDragDefault el-icon-rank f20 ml10"></span>
+          <el-button
+            class="ml15"
+            size="mini"
+            type="primary"
+            @click="roof(column)"
+          >置顶</el-button>
+        </span>
         <span v-else-if="column.columnFields=='assembleOrderState'">{{value == 0 ? '未开始' : value == 1 ? '待执行' : value == 2 ? '部分完成' : value == 3 ? '已完成' : '终止'}}</span>
         <span v-else-if="column.columnFields=='pickingState'">{{value == 0 ? '待拣货' : value == 1 ? '部分拣货' : value == 2 ? '完成拣货' : '终止'}}</span>
         <span v-else>{{value}}</span>
@@ -47,6 +56,7 @@
       @reload='reload'
     />
     <assemblyAdd
+      :isSelfMotion='isSelfMotion'
       :visible.sync='addVisible'
       v-if="addVisible"
       @reload='reload'
@@ -69,10 +79,10 @@ export default {
   data() {
     return {
       // 查询表单
-      value: '',
+      isSelfMotion: true,
       tableVisible: false,//销售单右侧抽屉
-      drawerData: {//弹框的相关数据
-      },
+      drawerData: {},//弹框的相关数据
+      button: true,
       addVisible: false,//新增弹窗
       activeName: '',
       filterOptions: [
@@ -146,6 +156,10 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.$refs.allTable.$refs.table.rowDrop();
+    this.$refs.allTable.$refs.table.$on('dragEnd', this.onDrag);
+  },
   methods: {
     //点击打开右侧边栏
     getTableVisible(data) {
@@ -154,7 +168,31 @@ export default {
     },
     reload() {
       this.$refs.allTable.reload()
-    }
+    },
+    //置顶
+    roof(column) {
+      console.log(column, 'roof(column)roof(column)roof(column)')
+    },
+    //拖拽
+    async onDrag(list) {
+      let changed = list.filter((item, i) => {
+        let isChanged = item.$index != i;
+        item.$index = i;
+        return isChanged;
+      });
+      let [a, b] = changed;
+      this.loading = true;
+      try {
+        if (a.sequence && b.sequence) {
+          await this.$api.seePsiWmsService.wmsdisassemblyorderUpdatesSquence([
+            { id: a.id, sequence: b.sequence },
+            { id: b.id, sequence: a.sequence }
+          ]);
+        }
+        this.reload();
+      } catch (e) { }
+      this.loading = false;
+    },
   }
 };
 </script>

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 15:38:50
+ * @LastEditTime: 2019-11-20 19:23:13
  * @Description: 销售出库单详情
 */
 <template>
@@ -32,8 +32,8 @@
       </div>
       <el-form
         ref="form"
-        :model="form"
         size="mini"
+        v-loading="loading"
         label-position="top"
       >
         <el-tabs
@@ -59,9 +59,9 @@
           style="height:calc(100vh - 200px)"
           :is="activeName"
         ></components>
-
       </el-form>
     </side-detail>
+
     <!-- 编辑 -->
     <add
       :visible.sync="editVisible"
@@ -70,10 +70,19 @@
       :params="{salesShipmentCode:rowData.shipmentCode}"
       :code="rowData.shipmentCode"
     />
+    <!-- 生成合同 -->
     <addContract
       :visible.sync="addContractVisible"
       :rowData="rowData"
       type="addContract"
+      :params="{salesShipmentCode:rowData.shipmentCode}"
+      :code="rowData.shipmentCode"
+    />
+    <!-- 追加合同 -->
+    <addContract
+      :visible.sync="editContractVisible"
+      :rowData="rowData"
+      type="editContract"
       :params="{salesShipmentCode:rowData.shipmentCode}"
       :code="rowData.shipmentCode"
     />
@@ -163,7 +172,8 @@ export default {
       activeName: 'detail',
       form: {},
       editVisible: false, // 销售出库单编辑
-      addContractVisible: false, // 销售出库单编辑
+      addContractVisible: false, // 生成合同
+      editContractVisible: false, // 追加合同
       returnAddVisible: false,
       exchangeAddVisible: false,
 
@@ -183,7 +193,7 @@ export default {
       let labelObj = {
         '编辑': 'editVisible',
         '生成合同': 'addContractVisible',
-        '追加合同附件': 'addContractVisible',
+        '追加合同附件': 'editContractVisible',
         '生成退货单': 'returnAddVisible',
         '生成换货单': 'exchangeAddVisible',
       }
@@ -195,6 +205,11 @@ export default {
 
       // 需要二次确认操作
       else {
+        let params = {
+          apprpvalNode: this.detail.apprpvalNode,
+          id: this.detail.id,
+          processType: 'XSCKD-001',
+        }
         let apiObj = {
           '提交审核': {
             api: 'seePsiSaleService.salesshipmentApproval',

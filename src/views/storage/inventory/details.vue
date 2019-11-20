@@ -39,7 +39,7 @@
               :disabled='true'
               :addform='detailForm'
             />
-            <goodsInventory :addform='detailForm' />
+            <goodsInventory :data='detailForm' />
           </el-form>
         </el-tab-pane>
       </el-tabs>
@@ -57,7 +57,7 @@ export default {
   props: ['drawerData', 'visible'],
   data() {
     return {
-      status: [{ label: '盘点状态', value: '2019-9-21 10:04:38' }, { label: '创建时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '盘点状态', value: '2019-9-21 10:04:38' }, { label: '创建时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       backVisible: false,
       reportingVisible: false,
       isComponents: '',
@@ -84,7 +84,7 @@ export default {
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = this.drawerData.blitemState == 1 ? '进行中' : '盘点完成'
-          this.status[1].value = this.drawerData.creatorName
+          this.status[1].value = this.drawerData.createTime
           this.status[2].value = this.drawerData.creator
           this.status[3].value = this.drawerData.deptName
           this.status[4].value = this.drawerData.source

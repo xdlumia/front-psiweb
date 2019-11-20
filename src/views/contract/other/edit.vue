@@ -2,19 +2,19 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 16:13:24
+ * @LastEditTime: 2019-11-20 15:16:33
  * @Description: 其他合同
 */
 <template>
-  <el-dialog :visible="visible" @close="close" v-dialogDrag>
+  <el-dialog :visible="visible" @close="close" v-dialogDrag v-loading="loading">
     <div slot="title">
       <span>其他合同</span>
       <span class="fr mr20">
-        <el-select class="mr10" size="mini" v-model="tmp">
-          <el-option value>选择合同模板</el-option>
+        <el-select class="mr10" size="mini" v-model="form.templateId">
+          <el-option :key="item.id" :label="item.name" :value="item.id" v-for="item of tmpList">{{item.name}}</el-option>
         </el-select>
-        <el-button size="mini" type="primary">预览</el-button>
-        <el-button @click="save" size="mini" type="primary">生成</el-button>
+        <el-button @click="preview" size="mini" type="primary">预览</el-button>
+        <el-button @click="save" size="mini" type="primary">保存</el-button>
         <el-button @click="close" size="mini">取消</el-button>
       </span>
     </div>
@@ -28,21 +28,28 @@
       <d-tab-pane label="补充信息" name="desc" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
       <div>
-        <el-form :model="form" class="p10" ref="form">
+        <el-form :model="form" class="p10" ref="form" size="mini" v-if="form&&showEditPage">
           <contract-title :data="form" id="titleInfo"></contract-title>
           <contract-signer :data="form" id="firstClass" name="甲方" type="A"></contract-signer>
           <contract-signer :data="form" id="secondClass" name="乙方" type="B"></contract-signer>
           <contract-expire :data="form" id="expire"></contract-expire>
-          <contract-extras :data="form" id="desc"></contract-extras>
+          <contract-extras :data="form" :templateList.sync="tmpList" id="desc" type="3"></contract-extras>
           <extrasInfo :data="form" id="extrasInfo" />
         </el-form>
       </div>
     </d-tabs>
+    <contractPreview :templateData="templateData" :visible.sync="showContractPreview" />
   </el-dialog>
 </template>
 <script>
+import VisibleMixin from '@/utils/visibleMixin';
+import contractPreview from '@/views/asistant/templateManage/contract-preview.vue';
+
 export default {
-  components: {},
+  mixins: [VisibleMixin],
+  components: {
+    contractPreview
+  },
   props: {
     visible: {
       type: Boolean,
@@ -57,6 +64,12 @@ export default {
   data() {
     return {
       tmp: '',
+      tmpList: [],
+      showContractPreview: false,
+      templateData: {
+        name: '',
+        context: ''
+      },
       activeName: '',
       form: {
         // 附件 示例：附件
@@ -110,18 +123,53 @@ export default {
       }
     };
   },
-  mounted() {},
+  mounted() {
+    // prettier-ignore
+    this.form = {"attachList":[],"beginDate":1574179200000,"companyCode":"","contractCode":"010","contractName":"合同名称","deptTotalCode":"","endDate":1574179200000,"fieldList":[{"fieldCode":"userField__ziDingYiYi","fieldName":"自定义一","fieldVal":"自定义内容"}],"note":"合同备注一下","partyA":"甲方爸爸","partyADate":1574179200000,"partyAId":"100861111111111111","partyALinkman":"甲方爸爸","partyAPhone":"10086111","partyASign":"甲方爸爸","partyB":"乙方儿子","partyBDate":1574179200000,"partyBId":"100861111111111111","partyBLinkman":"乙方儿子","partyBPhone":"10086111","partyBSign":"乙方儿子","source":"","state":"","templateId":15}
+  },
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
     },
-    close() {
-      this.$emit('update:visible', false);
+    async preview() {
+      if (!this.form.templateId) {
+        return this.$message({
+          message: '请选择合同模板',
+          type: 'warning',
+          showClose: true
+        });
+      }
+      await this.$refs.form.validate();
+      this.loading = true;
+      try {
+        let { data } = await this.$api.seePsiContractService.contractPreview(
+          this.form
+        );
+        this.showContractPreview = true;
+        this.templateData.name = this.form.contractName || '其他合同';
+        this.templateData.context = data;
+      } catch (error) {
+        console.log(error);
+      }
+      this.loading = false;
     },
-    save() {
-      console.log(this);
-      console.log(this.$refs.form.validate());
+    async save() {
       console.log({ ...this.form });
+      if (!this.form.templateId) {
+        return this.$message({
+          message: '请选择合同模板',
+          type: 'warning',
+          showClose: true
+        });
+      }
+      await this.$refs.form.validate();
+      this.loading = true;
+      try {
+        await this.$api.seePsiContractService.contractSave(this.form);
+        this.setEdit();
+        this.close();
+      } catch (error) {}
+      this.loading = false;
     }
   }
 };

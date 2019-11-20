@@ -1,26 +1,47 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 14:51:02
- * @Description: 采购调价单
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-20 18:24:50
+ * @Description: 销售和采购调价单
 */
 <template>
-  <el-dialog :visible="showEditPage" @close="close" v-dialogDrag v-loading="loading">
+  <el-dialog
+    :visible="showEditPage"
+    @close="close"
+    v-dialogDrag
+    v-loading="loading"
+  >
     <div slot="title">
-      <span>采购调价单{{from?`(${from})`:''}}</span>
+      <span>调价单{{from?`(${from})`:''}}</span>
       <span class="fr mr20">
-        <el-button @click="save" size="mini" type="primary">保存</el-button>
-        <el-button @click="close" size="mini">关闭</el-button>
+        <el-button
+          @click="save"
+          size="mini"
+          type="primary"
+        >保存</el-button>
+        <el-button
+          @click="close"
+          size="mini"
+        >关闭</el-button>
       </span>
     </div>
-    <d-tabs :style="{
-      maxHeight:maxHeight+'px'
-    }">
-      <d-tab-pane label="商品信息" name="commodityInfo" />
-      <d-tab-pane label="备注信息" name="extrasInfo" />
+    <d-tabs :style="{maxHeight:'calc(100vh - 110px)'}">
+      <d-tab-pane
+        label="商品信息"
+        name="commodityInfo"
+      />
+      <d-tab-pane
+        label="备注信息"
+        name="extrasInfo"
+      />
       <div>
-        <el-form :model="form" class="p10" ref="form" v-if="form&&visible">
+        <el-form
+          :model="form"
+          class="p10"
+          ref="form"
+          v-if="form&&visible"
+        >
           <buying-goods-edit
             :customColumns="[
             { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140, },
@@ -40,17 +61,26 @@
             :showSummary="false"
             title="商品信息"
           >
-            <template slot="adjustPriceMoney" slot-scope="{row,info,formProp}">
+            <template
+              slot="adjustPriceMoney"
+              slot-scope="{row,info,formProp}"
+            >
               <el-form-item
                 :prop="formProp"
                 :rules="[{required:true},{type:'price'},{validator:checkAdjustPrice.bind(this,row)}]"
                 v-if="!info.isChild"
               >
-                <el-input size="mini" v-model="row.adjustPriceMoney"></el-input>
+                <el-input
+                  size="mini"
+                  v-model="row.adjustPriceMoney"
+                ></el-input>
               </el-form-item>
             </template>
           </buying-goods-edit>
-          <extrasInfo :data="form" id="extrasInfo" />
+          <extrasInfo
+            :data="form"
+            id="extrasInfo"
+          />
         </el-form>
       </div>
     </d-tabs>
@@ -66,14 +96,17 @@ export default {
     from: String // 来源
   },
   computed: {
-    maxHeight() {
-      return window.innerHeight - 130;
-    }
+    // 使用calc属性
+    // maxHeight() {
+    //   return window.innerHeight - 130;
+    // }
   },
   data() {
-    return {};
+    return {
+      alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
+    };
   },
-  mounted() {},
+  mounted() { },
   methods: {
     getDetail() {
       if (this.rowData) return this.rowData;
@@ -124,7 +157,7 @@ export default {
         }
         this.setEdit();
         this.close();
-      } catch (error) {}
+      } catch (error) { }
       this.loading = false;
     },
     checkAdjustPrice(row, rule, value, cb) {

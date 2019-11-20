@@ -58,7 +58,7 @@
           >
             <el-input
               :disabled='disabled'
-              :value="employeeName"
+              :value="addform.wmsName"
               size="mini"
             ></el-input>
           </employees-chosen>

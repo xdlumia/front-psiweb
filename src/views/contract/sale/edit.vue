@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 15:47:09
+ * @LastEditTime: 2019-11-20 11:55:52
  * @Description: 销售合同
 */
 <template>
@@ -66,7 +66,8 @@ export default {
     return {
       tmp: '',
       activeName: '',
-      randomStr: +new Date() + '-' + Math.random()
+      randomStr: +new Date() + '-' + Math.random(),
+      alwaysDropAndCopyForm:true,// 在getDetail返回数据后，重新覆盖form
     };
   },
   mounted() {},

@@ -2,14 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 16:56:53
+ * @LastEditTime: 2019-11-20 17:11:35
  * @Description: 采购入库单的发货信息 1
 */
 <template>
   <form-card title="发货信息">
     <el-row :gutter="10">
       <el-row :gutter="10">
-        <el-col :key="index" :span="item.span || 8" v-for="(item,index) of formItems">
+        <el-col :key="index" :span="item.span || 8" v-for="(item,index) of formItems" v-if="!hide.includes(item.prop)">
           <el-form-item :label="item.label" :prop="'logistics.'+item.prop" :rules="item.rules">
             <el-input
               :disabled="disabled"
@@ -81,7 +81,8 @@ export default {
       default: () => {
         return [];
       }
-    }
+    },
+    defaultClientData:Object
   },
   data() {
     return {
@@ -116,6 +117,7 @@ export default {
       }
     },
     async setClientExtrasInfo() {
+      if(this.defaultClientData)return
       // 如果当前列表里有当前id 数据name可以正常显示
       let index = this.clientOptions.findIndex(
         item => this.data.clientId == item.id

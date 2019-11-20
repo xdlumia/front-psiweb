@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 16:04:44
- * @Description: 销售-账单调价单
+ * @LastEditTime: 2019-11-20 18:29:16
+ * @Description: 销售-销售调价单
  */
 <template>
   <div>
@@ -13,7 +13,7 @@
       :filter="true"
       :moreButton="true"
       :column="true"
-      title="账单调价单"
+      title="销售调价单"
       api="seePsiCommonService.commonadjustpriceList"
       exportApi="seePsiCommonService.commonadjustpriceExport"
       :params="Object.assign(queryForm,params)"
@@ -49,18 +49,19 @@
     />
     <!-- 新增账单调整-->
     <add
-      type="add"
       :visible.sync="addVisible"
       @reload="$refs.table.reload()"
     />
   </div>
 </template>
 <script>
-import add from './add' // 新增账单调价
+// import add from './add' // 新增账单调价
+
+import add from '@/views/order/price/edit.vue' //新增
 import detail from './details' //详情
 
 export default {
-  name: 'return',
+  name: 'addjustPrice',
   components: {
     add,
     detail

@@ -66,6 +66,10 @@ export default {
       type: Boolean,
       default: true
     },
+    isSelfMotion: {
+      type: Boolean,
+      default: true
+    }
   },
   computed: {
     maxHeight() {
@@ -88,14 +92,20 @@ export default {
     },
     //保存
     submit() {
-      // this.$api.seePsiWmsService.wmsassembleorderSave()
-      //   .then(res => {
-      //     if (res.data) {
-      //       this.$emit('reload')
-      //     }
-      //   })
-      //   .finally(() => {
-      //   })
+      if (this.$refs.commodityInfoEdit.tableData.length < 1) {
+        this.$message({
+          type: 'error',
+          message: '请至少选择一个商品!'
+        })
+      } else {
+        this.$api.seePsiWmsService.wmsassembleorderSave({ assembleCommoditySaveVoList: this.$refs.commodityInfoEdit.tableData, isSelfMotion: this.isSelfMotion, note: this.form.note, source: '新增' })
+          .then(res => {
+            this.$emit('reload')
+            this.close()
+          })
+          .finally(() => {
+          })
+      }
     }
   }
 };

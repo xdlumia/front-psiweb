@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 09:24:28
+ * @LastEditTime: 2019-11-20 14:35:43
  * @Description: 供应商信息 已绑定 1
 */
 <template>
@@ -85,7 +85,8 @@ export default {
     disabled: {
       type: Boolean,
       default: false
-    }
+    },
+    defaultData: Object
   },
   data() {
     return {
@@ -107,6 +108,7 @@ export default {
   methods: {
     async setExtrasInfo() {
       if (!this.data || !this.data.supplierId) return this.getSuppliers(' ');
+      if (this.defaultData) this.suppliers = [this.defaultData];
       let [supplier] = this.suppliers.filter(
         item => item.id == this.data.supplierId
       );

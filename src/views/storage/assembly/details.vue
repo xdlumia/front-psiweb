@@ -9,53 +9,33 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="drawerData.tableVisible"
-    @close="$emit('update:visible',false)"
+    :visible.sync="visible"
+    @close="close"
     title="组装任务"
     width="990px"
   >
-    <!-- <template slot="button">
-      <el-button
-        @click="orderStorageVisible=true"
-        size="mini"
-        type="primary"
-      >确认收到并开始</el-button>
-      <el-button
-        @click="transferVisible=true"
-        size="mini"
-        type="primary"
-      >转移</el-button>
-      <el-button
-        @click="hangVisible=true"
-        size="mini"
-        type="primary"
-      >挂起</el-button>
-      <el-button
-        @click="goodsVisible=true"
-        size="mini"
-        type="primary"
-      >组装</el-button>
-    </template> -->
-    <div
-      class="d-auto-y"
-      style="height:calc(100vh - 160px)"
-    >
+    <div>
       <div class="drawer-header">
         <el-button
-          @click="orderStorageVisible=true"
+          @click="wmsassembletaskStart"
           size="mini"
           type="primary"
         >确认收到并开始</el-button>
         <el-button
-          @click="transferVisible=true"
+          @click="wmsassembletaskTransferTask"
           size="mini"
           type="primary"
         >转移</el-button>
         <el-button
-          @click="hangVisible=true"
+          @click="wmsdisassemblytaskHangTask"
           size="mini"
           type="primary"
         >挂起</el-button>
+        <el-button
+          @click="wmsassembletaskContinueTask"
+          size="mini"
+          type="primary"
+        >继续</el-button>
         <el-button
           @click="goodsVisible=true"
           size="mini"
@@ -65,11 +45,15 @@
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
           <el-form>
-            <goodsAssemble />
-            <assemblyInfo />
+            <goodsAssemble
+              :data='detailForm'
+              :drawerData='drawerData'
+              @reload="reload"
+            />
+            <assemblyInfo :data='detailForm' />
             <assembledGoodsChoose
-              :visible='goodsVisible'
-              @close="goodsVisible = false"
+              :visible.sync='goodsVisible'
+              :data='detailForm'
             />
           </el-form>
         </el-tab-pane>
@@ -77,32 +61,42 @@
       </el-tabs>
     </div>
     <transfer
-      :visible=transferVisible
-      @update='update'
+      :visible.sync='transferVisible'
+      :data="detailForm"
+      @reload="reload"
     />
     <hangUp
-      :visible=hangVisible
-      @close='hangVisible = false'
+      :visible.sync='hangVisible'
+      :data="detailForm"
+      @reload="reload"
     />
   </SideDetail>
 
 </template>
-<script>
+<script> 
 import goodsAssemble from '@/components/formComponents/goods-assemble'
 import assemblyInfo from '@/components/formComponents/assembly-info';
 import transfer from '@/components/formComponents/transfer';
-import hangUp from '@/components/formComponents/hang-up';
+import hangUp from './hang-up';
 import assembledGoodsChoose from '@/components/formComponents/assembled-goods-choose';
 import SideDetail from '@/components/side-detail';
 
 export default {
-  props: ['drawerData'],
+  props: ['drawerData', 'visible'],
   data() {
     return {
       status: [{ label: '组装状态', value: '待组装' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       transferVisible: false,//转移
       hangVisible: false,//挂起
-      goodsVisible: true,//组装
+      goodsVisible: false,//组装
+      state: {
+        '-1': '终止',
+        0: '未开始',
+        1: '待组装',
+        2: '部分组装',
+        3: '完成组装'
+      },
+      detailForm: {}
     };
   },
   components: {
@@ -113,10 +107,83 @@ export default {
     transfer,
     hangUp,
   },
+  mounted() {
+    this.wmsassembleorderInfo()
+  },
   methods: {
-    update() {
-      this.transferVisible = false;
-      this.hangVisible = false
+    //查看详情
+    wmsassembleorderInfo() {
+      this.$api.seePsiWmsService.wmsassembletaskInfo(null, this.drawerData.id)
+        .then(res => {
+          this.detailForm = res.data || {}
+          this.status[0].value = this.state[res.data.assembleOrderState]
+          this.status[1].value = res.data.createTime
+          this.status[2].value = res.data.creatorName
+          this.status[3].value = res.data.deptName
+          this.status[4].value = res.data.source
+          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
+        })
+        .finally(() => {
+
+        })
+    },
+    reload() {
+      this.wmsassembleorderInfo()
+      this.$emit('reload')
+    },
+    close() {
+      this.$emit('update:visible', false)
+    },
+    //确认并开始组装任务
+    wmsassembletaskStart() {
+      this.$confirm('确认收到并开始组装任务吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api.seePsiWmsService.wmsassembletaskStart(null, this.drawerData.id)
+          .then(res => {
+            this.$emit('reload')
+          })
+          .finally(() => {
+
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      })
+    },
+    //挂起
+    wmsdisassemblytaskHangTask() {
+      this.hangVisible = true
+    },
+    //转移
+    wmsassembletaskTransferTask() {
+      this.transferVisible = true
+    },
+    //继续
+    wmsassembletaskContinueTask() {
+      this.$confirm('是否继续组装任务?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api.seePsiWmsService.wmsassembletaskContinueTask({ id: this.detailForm.id })
+          .then(res => {
+            this.$emit('reload')
+          })
+          .finally(() => {
+
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      })
+
     }
   }
 }

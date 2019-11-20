@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 17:24:13
+ * @LastEditTime: 2019-11-20 11:57:21
  * @Description: 换货单
 */
 <template>
@@ -29,7 +29,7 @@
           <buying-exchange-goods :data="form" @totalAmountChange="onInMoneyChange" exchangeType="in" id="inGoods" />
           <buying-exchange-goods :data="form" @totalAmountChange="onOutMoneyChange" exchangeType="out" id="outGoods" />
           <orderStorageBill :data="form" :hide="['isBillFee']" :max="Math.abs(money.in-money.out)" :type="3" id="billInfo" />
-          <customInfo :data="form" id="customInfo"></customInfo>
+          <customInfo :data="form" id="customInfo" busType="1"></customInfo>
           <extrasInfo :data="form" id="extrasInfo"></extrasInfo>
         </el-form>
       </div>
@@ -55,7 +55,8 @@ export default {
       money: {
         in: 0,
         out: 0
-      }
+      },
+      alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
     };
   },
   mounted() {},

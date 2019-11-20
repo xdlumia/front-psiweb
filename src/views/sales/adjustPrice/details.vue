@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 15:54:08
+ * @LastEditTime: 2019-11-20 19:29:31
  * @Description: 账单调整详情
 */
 <template>
@@ -65,7 +65,9 @@
     </side-detail>
     <!-- 客户编辑 -->
     <add
+      v-if="editVisible"
       :visible.sync="editVisible"
+      @reload="setEdit(),getDetail()"
       :rowData="rowData"
       type="edit"
       :params="{salesShipmentCode:rowData.shipmentCode}"
@@ -76,7 +78,7 @@
 <script>
 
 import detail from './details/detail' //详情
-import add from './add' //详情
+import add from '@/views/order/price/edit.vue' //新增
 import VisibleMixin from '@/utils/visibleMixin';
 import { log } from 'util';
 
@@ -91,21 +93,21 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '账单调整申请', type: 'primary', authCode: '' },
+        { label: '提交审核', type: 'primary', authCode: '' },
         { label: '撤销审核', type: 'primary', authCode: '' },
         { label: '通过', type: 'primary', authCode: '' },
-        { label: '驳回', type: 'primary', authCode: '' },
+        { label: '驳回', type: 'danger', authCode: '' },
         { label: '编辑', type: '', authCode: '' },
+        { label: '删除', type: 'danger', authCode: '' },
       ],
       /**
        * 根据当前状态判断显示哪些按钮
        */
 
       currStatusType: {
-        '-1': ['账单调整申请'], // 新建
+        '-1': ['提交审核', '编辑', '删除'], //  // 新建
         '0': ['撤销审核', '通过', '驳回'], // 审核中
         '1': [], // 已通过
-        '2': ['账单调整申请', '编辑'], // 已驳回
       },
       // tab操作栏
       tabs: {
@@ -131,33 +133,33 @@ export default {
         if (label == '编辑') { this.editVisible = true }
       } else {
         let params = {
-          apprpvalNode: this.detail.apprpvalNode || 'XSHHD-001',
+          apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
-          processType: 'XSTHD-001',//报价单的权限吗
+          processType: 'psi_adjustPrice_1003',
         }
         let apiObj = {
           '提交审核': {
-            api: 'seePsiCommonService.fbilladjustSubmitApproval',
+            api: 'seePsiCommonService.commonadjustpriceSubmitApproval',
             data: { ...params },
             needNote: null
           },
-          '审核通过': {
-            api: 'seePsiCommonService.fbilladjustPassApproval',
+          '通过': {
+            api: 'seePsiCommonService.commonadjustpricePassApproval',
             data: { ...params, ...{} },
             needNote: null
           },
           '撤销审核': {
-            api: 'seePsiCommonService.fbilladjustCancel',
+            api: 'seePsiCommonService.commonadjustpriceCancel',
             data: { ...params, ...{} },
             needNote: null
           },
           '驳回': {
-            api: 'seePsiCommonService.fbilladjustReject',
+            api: 'seePsiCommonService.commonadjustpriceReject',
             data: { ...params, ...{} },
             needNote: null
           },
           '删除': {
-            api: 'seePsiCommonService.fbilladjustLogicDelete',
+            api: 'seePsiCommonService.commonadjustpriceLogicDelete',
             data: { ...params, ...{} },
             needNote: null
           }

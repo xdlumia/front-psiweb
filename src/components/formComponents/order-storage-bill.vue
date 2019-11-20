@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 16:36:39
+ * @LastEditTime: 2019-11-20 16:31:43
  * @Description: 账单信息
 */
 <template>
@@ -56,7 +56,7 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="60">
+      <el-table-column label="操作" min-width="60" v-if="!disabled">
         <template slot-scope="{$index}">
           <el-link :underline="false" @click="remove($index)" class="el-icon-remove f20"></el-link>
         </template>

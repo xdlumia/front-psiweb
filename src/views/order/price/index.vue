@@ -16,18 +16,34 @@
       title="采购调价单"
     >
       <template slot="button">
-        <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
+        <el-button
+          @click="showEdit=true"
+          size="mini"
+          type="primary"
+        >新增</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
         <span v-else-if="prop=='code'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link
+            :underline="false"
+            @click="showDetail=true,currentCode=value"
+            class="f12"
+            type="primary"
+          >{{value}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" />
-    <Edit :visible.sync="showEdit" @reload="reload" />
+    <Detail
+      :code="currentCode"
+      :visible.sync="showDetail"
+      @reload="reload"
+    />
+    <Edit
+      :visible.sync="showEdit"
+      @reload="reload"
+    />
   </div>
 </template>
 <script>

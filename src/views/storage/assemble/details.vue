@@ -25,20 +25,25 @@
           type="primary"
           size='mini'
           :visible='addVisible'
-          @close='addVisible = false'
+          @click='addVisible = false'
         >终止</el-button>
       </div>
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
           <el-form>
-            <assembleNoedit :data='detailForm' />
+            <assembleNoedit
+              :data='detailForm'
+              :drawerData='drawerData'
+            />
             <assembleInfo
               :disabled='true'
               :data='detailForm'
             />
             <assemblyTask
-              :visible='taskVisible'
-              @close='taskVisible = false'
+              :visible.sync='taskVisible'
+              v-if="taskVisible"
+              :data='detailForm'
+              @reload='reload'
             />
           </el-form>
         </el-tab-pane>
@@ -101,6 +106,9 @@ export default {
 
         })
     },
+    reload() {
+      this.$emit('reload')
+    }
   }
 }
 </script>

@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 10:54:32
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-20 16:27:05
  * @Description: 客户信息 1  //传入 data:{clientId:'1'} 会自动查询详情
  */
 <template>
@@ -74,7 +74,8 @@ export default {
       default: () => {
         return []
       }
-    }
+    },
+    defaultData:Object
   },
   data() {
     return {
@@ -84,8 +85,7 @@ export default {
       formItems: formItems.filter(item => !this.hide.includes(item.prop)),
     }
   },
-  created() {
-
+  mounted() {
   },
   watch: {
     'data.clientId': {
@@ -119,6 +119,10 @@ export default {
     },
     // 获取客户详情信息
     commonclientinfoInfo(id) {
+      if(this.defaultData) {
+        this.clientOptions = [this.defaultData]
+        return this.clientInfo=this.defaultData 
+      }
       this.loading = true
       this.$api.seePsiCommonService.commonclientinfoInfo(null, id)
         .then(res => {

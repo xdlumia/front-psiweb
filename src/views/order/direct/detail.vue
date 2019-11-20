@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 15:38:05
+ * @LastEditTime: 2019-11-20 17:32:34
  * @Description: 直发单详情
 */
 <template>
@@ -25,7 +25,7 @@
           <buying-goods-edit :data="detail" disabled fkey="commodityEntityList" :show="[
             'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','waitPurchaseNumber','inventoryNumber'
           ]"/>
-          <customInfo :data="detail" disabled></customInfo>
+          <customInfo :data="detail" disabled busType="28"></customInfo>
           <extrasInfo :data="detail" disabled></extrasInfo>
         </el-form>
       </el-tab-pane>

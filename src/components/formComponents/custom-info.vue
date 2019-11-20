@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-19 18:06:09
+ * @LastEditTime: 2019-11-20 16:00:34
  * @Description: 自定义信息 1
 */
 <template>
@@ -99,6 +99,7 @@
 <script>
 export default {
   props: {
+    busType: [String, Number],
     data: {
       type: Object,
       default: () => {
@@ -116,12 +117,21 @@ export default {
     }
   },
   created() {
-    this.queryFieldsByForm()
+    let formCode = this.busType || 27
+    if (!this.busType) {
+      this.$message({
+        message: '你当前页面调用的自定义信息组件没有传busType参数.不过没关系我帮你默认设置为27了',
+        type: 'error',
+        showClose: true,
+      });
+
+    }
+    this.queryFieldsByForm(formCode)
   },
   methods: {
 
-    queryFieldsByForm() {
-      this.$api.seeBaseinfoService.formfieldsQueryFieldsByForm(null, 27)
+    queryFieldsByForm(formCode) {
+      this.$api.seeBaseinfoService.formfieldsQueryFieldsByForm(null, formCode)
         .then(res => {
           this.fieldOptions = res.data || []
         })

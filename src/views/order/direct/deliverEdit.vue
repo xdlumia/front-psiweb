@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 15:23:46
+ * @LastEditTime: 2019-11-20 11:57:33
  * @Description: 直发单发货
 */
 <template>
@@ -40,7 +40,8 @@ export default {
         directCode: '',
         // 是否完成 0全部为空 1部分为空 2全部不为空
         flag: ''
-      }
+      },
+      alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
     };
   },
   mounted() {},

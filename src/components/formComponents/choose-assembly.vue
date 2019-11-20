@@ -6,40 +6,74 @@
  * @Description: 生成拣货单和组装任务 人员分配 1
 */
 <template>
-  <form-card class="choose-man" title="人员分配">
+  <form-card
+    class="choose-man"
+    title="人员分配"
+  >
     <div>
-      <el-row>
-        <el-col :span="10">
+      <el-row :gutter="20">
+        <el-col :span="12">
           <el-form-item
-            :rules="[ 
-              {required:true,message:'必填项'}
+            :rules="[  
+              {required:true,message:'必填项',trigger: 'input',}
           ]"
-            label="选择拆卸人"
-            prop="disassemblyPerson"
+            label="选择拣货人"
+            prop="pickingPerson"
             size="mini"
-            v-if="!hide.includes('chooseTeardown')"
           >
-            <employees-chosen :closeOnSelect="false" :multiple="false" @input="choose" class="d-inline" style="width:100%">
-              <el-input :disabled="disabled" :value="employeeName" size="mini"></el-input>
+            <employees-chosen
+              :closeOnSelect="false"
+              :multiple="false"
+              @input="chooseChai"
+              class="d-inline"
+              style="width:100%"
+            >
+              <el-input
+                :disabled="disabled"
+                :value="employeeName"
+                size="mini"
+              ></el-input>
             </employees-chosen>
           </el-form-item>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item
             :rules="[ 
-              {required:true,message:'必填项'}
+              {required:true,message:'必填项',trigger: 'input',}
           ]"
             label="选择组装人"
-            prop
             size="mini"
-            v-if="!hide.includes('chooseContact')"
-          ></el-form-item>
+          >
+            <employees-chosen
+              :closeOnSelect="false"
+              :multiple="false"
+              @input="chooseAssemble"
+              class="d-inline"
+              style="width:100%"
+            >
+              <el-input
+                :disabled="disabled"
+                :value="employeeAssembleName"
+                size="mini"
+              ></el-input>
+            </employees-chosen>
+          </el-form-item>
         </el-col>
       </el-row>
     </div>
     <div>
-      <el-form-item label="备注" size="mini">
-        <el-input :rows="3" maxlength="300" placeholder="备注" show-word-limit type="textarea" v-model="data.note" />
+      <el-form-item
+        label="备注"
+        size="mini"
+      >
+        <el-input
+          :rows="3"
+          maxlength="300"
+          placeholder="备注"
+          show-word-limit
+          type="textarea"
+          v-model="form.note"
+        />
       </el-form-item>
     </div>
   </form-card>
@@ -58,32 +92,30 @@ export default {
       type: Array,
       default: () => []
     },
-    disabled: Boolean
+    disabled: Boolean,
+    form: {}
   },
   data() {
     return {
       options: [],
       employeeName: '',
-      addform: {},
+      employeeAssembleName: '',
       dialogData: {
         visible: false
       }
     };
   },
   methods: {
-    //选择人员
-    choose(value) {
+    //选择拣货人员
+    chooseChai(value) {
       console.log(value);
-      // value = {
-      //   deptName: '进销存开发',
-      //   employeeName: '王晓冬',
-      //   id: '1',
-      //   positionName: '',
-      //   userId: '791'
-      // };
-      this.$set(this.data,'disassemblyPerson',value.userId)
       this.employeeName = value.employeeName;
-      this.addform.blitemPerson = value.userId;
+      this.form.pickingPerson = value.userId;
+    },
+    //选择组装人员
+    chooseAssemble(value) {
+      this.employeeAssembleName = value.employeeName;
+      this.form.assemblePerson = value.userId;
     }
   }
 };

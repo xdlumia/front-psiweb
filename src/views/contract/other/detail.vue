@@ -2,52 +2,60 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 15:54:58
+ * @LastEditTime: 2019-11-20 11:20:03
  * @Description: 其他合同
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showPop" @close="$emit('update:visible',false)" title="其他合同" width="990px">
+  <sideDetail :status="status" :visible="showDetailPage" @close="close" title="其他合同" v-loading="loading" width="990px">
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form :disabled="true">
-          <contract-title id="titleInfo"></contract-title>
-          <contract-signer id="firstClass" name="甲方"></contract-signer>
-          <contract-signer id="secondClass" name="乙方"></contract-signer>
-          <contract-expire id="expire"></contract-expire>
-          <contract-extras id="desc"></contract-extras>
-          <extrasInfo id="extrasInfo" />
+        <el-form :model="detail" class="p10" ref="form" size="mini" v-if="detail&&showDetailPage&&!loading">
+          <contract-title :data="detail" disabled id="titleInfo" />
+          <contract-signer :data="detail" disabled id="firstClass" name="甲方" type="A" />
+          <contract-signer :data="detail" disabled id="secondClass" name="乙方" type="B" />
+          <contract-expire :data="detail" disabled id="expire" />
+          <contract-extras :data="detail" disabled id="desc" />
+          <extrasInfo :data="detail" disabled id="extrasInfo" />
         </el-form>
       </el-tab-pane>
     </el-tabs>
   </sideDetail>
 </template>
 <script>
+import VisibleMixin from '@/utils/visibleMixin';
+
 export default {
+  mixins: [VisibleMixin],
   components: {},
-  props: {
-    visible: Boolean
-  },
+  props: {},
   data() {
-    return {
-      showPop: false,
-      status: [
-        { label: '合同创建人', value: '张收纳' },
-        { label: '创建部门', value: '销售部' },
-        { label: '创建时间', value: +new Date(), isTime: true }
-      ]
-    };
+    return {};
   },
-  mounted() {
-    this.checkVisible();
-  },
-  watch: {
-    visible() {
-      this.checkVisible();
+  computed: {
+    status() {
+      if (!this.detail) return [];
+      else {
+        return [
+          { label: '创建人', value: this.detail.creatorName },
+          { label: '创建部门', value: this.detail.deptName },
+          { label: '创建时间', value: this.detail.createTime, isTime: true }
+        ];
+      }
     }
   },
+  mounted() {},
+  watch: {},
   methods: {
-    checkVisible() {
-      this.showPop = this.visible;
+    async getDetail() {
+      if (this.code) {
+        let { data } = await this.$api.seePsiContractService.contractGetByCode(
+          null,
+          this.code
+        );
+        return data;
+      } else if (this.rowData) {
+        return this.rowData;
+      }
     }
   }
 };

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-19 18:16:04
+ * @LastEditTime: 2019-11-19 18:23:18
  * @Description: file content
 */
 <template>
@@ -159,7 +159,11 @@ export default {
     }
   },
   created() {
-
+    if (this.type == 'add') {
+      this.steps = 1
+    } else {
+      this.steps = 4
+    }
   },
   mounted() {
     // this.initForm()
@@ -168,16 +172,7 @@ export default {
   },
   watch: {
     async steps(index) {
-      console.log(index)
-      // 点击第二步的时候判断有没有选择客户
-      // if (index == 2 && !this.form.clientId) {
-      //   this.$message.error({
-      //     showClose: true,
-      //     message: '请先选择客户'
-      //   })
-      //   this.steps = 1
-      //   return
-      // }
+
       if (index === 3) {
         // 确定配置信息的时候查询整机
         this.$refs.confirmInfo.commonquotationconfigdetailsListConfigByGoodName()
@@ -200,8 +195,8 @@ export default {
           page: 1,
           limit: 999
         }
-        let { wholeListData } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
-        wholeListData = wholeListData || []
+        let { data } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
+        let wholeListData = data || []
         // 配件列表
         let fixingsList = []
         for (let key in this.form.KIND2List) {
@@ -213,16 +208,14 @@ export default {
         // let
         // 第4步整合商品信息
         this.form.businessCommoditySaveVoList = [...wholeListData, ...fixingsList]
-        console.log(this.form.businessCommoditySaveVoList);
-
       }
-      // if (this.type != 'add') {
-      //   this.$message.error({
-      //     showClose: true,
-      //     message: '编辑和复制的时候只能操作当前步骤'
-      //   })
-      //   this.steps = 4
-      // }
+      else if (this.type != 'add') {
+        this.$message.error({
+          showClose: true,
+          message: '编辑和复制的时候只能操作当前步骤'
+        })
+        this.steps = 4
+      }
     },
   },
   methods: {
