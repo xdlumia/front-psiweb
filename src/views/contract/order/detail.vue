@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 15:37:50
+ * @LastEditTime: 2019-11-20 16:47:13
  * @Description: 采购合同
 */
 <template>
@@ -23,7 +23,7 @@
             priceKey="purchasePrice"
           />
           <buyingPaymentLate :data="detail" disabled />
-          <order-storage-bill :data="detail" disabled />
+          <order-storage-bill :data="detail" :hide="['isBillFee']" disabled />
         </el-form>
         <el-form :model="detail" class="p10" ref="form" size="mini" v-if="detail&&showDetailPage&&!loading">
           <contract-extras :data="detail" type="2" />
@@ -78,7 +78,9 @@ export default {
           this.code
         );
         data.companyAccountId = data.corporation.id;
-        data.companySettlementId = data.corporationAccount.id;
+        if (data.corporationAccount) {
+          data.companySettlementId = data.corporationAccount.id;
+        }
         data.logistics = data.shipmentsLogistics;
         data.supplierId = data.supplierInfo.id;
         return data;
@@ -89,7 +91,9 @@ export default {
     getCompanyInfo() {
       return {
         ...this.detail.corporation,
-        commonCorporationAccountEntities: [this.detail.corporationAccount]
+        commonCorporationAccountEntities: this.detail.corporationAccount
+          ? [this.detail.corporationAccount]
+          : []
       };
     }
   }
