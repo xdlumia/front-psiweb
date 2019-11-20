@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 11:18:48
+ * @LastEditTime: 2019-11-20 12:08:30
  * @Description: 合同模板--补充信息，自定义内容
 */
 <template>
@@ -30,6 +30,7 @@ export default {
       type: Object,
       default: () => ({})
     },
+    type: String,
     options: [],
     form: {
       type: Object,
@@ -90,7 +91,9 @@ export default {
     async getContractTmpList() {
       // 1 销售 2 采购 3 其他
       try {
-        let { data } = await this.$api.seeContractService.getTemplateList(3);
+        let { data } = await this.$api.seeContractService.getTemplateList(
+          this.type || 1
+        );
         this.tmpList = (data || []).map(item => {
           return {
             id: item.id,

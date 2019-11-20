@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-15 08:48:15
+ * @LastEditTime: 2019-11-20 11:56:55
  * @Description: 采购退货单
 */
 <template>
@@ -61,7 +61,8 @@ export default {
   },
   data() {
     return {
-      rejectAmount: 0
+      rejectAmount: 0,
+      alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
     };
   },
   mounted() {},

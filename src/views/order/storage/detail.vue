@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 15:52:10
+ * @LastEditTime: 2019-11-20 15:27:45
  * @Description: 采购入库单
 */
 <template>
@@ -58,7 +58,7 @@
         type="danger"
       >终止</el-button>
       <el-button size="mini" type="primary">收票申请</el-button>
-      <el-button @click="showOrderContract=true" size="mini" type="primary">生成合同</el-button>
+      <el-button @click="generateContract" size="mini" type="primary">生成合同</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
@@ -66,7 +66,7 @@
           <supplierInfo :data="detail" disabled id="supplierInfo" />
           <companyInfo :data="detail" disabled id="companyInfo" />
           <arrivalInfo :data="detail" disabled id="arrivalInfo" v-if="detail.source!='直发单'" />
-          <buyingDeliverInfo :data="detail" id="deliverInfo" ref="deliverInfo" v-else />
+          <buyingDeliverInfo :data="detail" disabled id="deliverInfo" ref="deliverInfo" v-else />
           <buying-goods-edit
             :data="detail"
             :show="[
@@ -127,8 +127,8 @@
       :visible.sync="showReject"
       v-if="detail"
     />
-    <orderContract :visible.sync="showOrderContract" />
-    <Edit :rowData="detail" :visible.sync="showEdit" type="edit" v-if="showEdit" />
+    <orderContract :rowData="orderContractData" :visible.sync="showOrderContract" v-if="showOrderContract" />
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
   </sideDetail>
 </template>
 <script>
@@ -149,6 +149,7 @@ export default {
       showEdit: false,
       showReject: false,
       showOrderContract: false,
+      orderContractData: null,
       stateText: {
         '0': '新建',
         '1': '审核中',
@@ -173,6 +174,60 @@ export default {
       } else if (this.rowData) {
         return this.rowData;
       }
+    },
+    async generateContract() {
+      // 生成采购合同，整理数据结构
+      let contract = JSON.parse(JSON.stringify(this.detail));
+      if (contract.supplierId) {
+        let {
+          data
+        } = await this.$api.seePsiCommonService.commonsupplierinfoInfo(
+          null,
+          contract.supplierId
+        );
+        contract.supplierInfo = data;
+        contract.supplierName = data.supplierName;
+      }
+      contract.shipmentsLogistics = contract.logistics;
+      delete contract.logistics;
+      if (contract.companyAccountId && contract.companySettlementId) {
+        let {
+          data
+        } = await this.$api.seeBaseinfoService.commoncorporationSelectForJxc();
+        data.some(item => {
+          if (item.id == contract.companyAccountId) {
+            // 处理合同中的公司字段
+            contract.corporation = item;
+            contract.corporation.invoiceTitle = item.corporationName;
+            contract.corporation.taxpayersNum = item.taxpayersNum;
+            contract.corporation.registerAddres = item.address;
+            // 处理合同中的公司账号字段
+            (item.commonCorporationAccountEntities || []).some(item => {
+              if (item.id == contract.companySettlementId) {
+                contract.corporationAccount = item;
+                contract.corporationAccount.accountBank = item.accountBank;
+                contract.corporationAccount.bankAccount = item.account;
+                return true;
+              }
+            });
+            delete contract.corporation.commonCorporationAccountEntities;
+            return true;
+          }
+        });
+      }
+      contract.commodityList = [].concat(
+        contract.commodityList || [],
+        contract.additionalCommodityList || []
+      );
+      delete contract.additionalCommodityList;
+      contract.totalAmount = contract.putinAmount;
+      contract.totalNum = contract.putinNum;
+      contract.purchasePutinCode = contract.putinCode;
+      delete contract.id;
+      delete contract.state;
+      console.log(contract);
+      this.orderContractData = contract;
+      this.showOrderContract = true;
     }
   }
 };

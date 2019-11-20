@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-15 08:49:24
+ * @LastEditTime: 2019-11-20 11:56:37
  * @Description: 采购入库单
 */
 <template>
@@ -83,6 +83,7 @@ export default {
       activeName: '',
       goodsTotalPrice: [0, 0],
       goodsTotalSum: 0,
+      alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
       form: {
         // 流程审批状态（0 未审核 1审核中 2 完成 3 驳回） 0
         approvalState: '',

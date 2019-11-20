@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 09:08:14
+ * @LastEditTime: 2019-11-20 11:35:21
  * @Description: 到货信息 已绑定字段 1
  */
 <template>
@@ -50,6 +50,7 @@
             />
           </el-select>
           <el-select
+            :disabled="disabled"
             :loading="serviceLoading"
             :remote-method="getServiceProvider"
             class="wfull"

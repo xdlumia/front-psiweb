@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 10:57:23
+ * @LastEditTime: 2019-11-20 15:16:33
  * @Description: 其他合同
 */
 <template>
@@ -10,7 +10,7 @@
     <div slot="title">
       <span>其他合同</span>
       <span class="fr mr20">
-        <el-select @change="onTemplateChange" class="mr10" size="mini" v-model="form.templateId">
+        <el-select class="mr10" size="mini" v-model="form.templateId">
           <el-option :key="item.id" :label="item.name" :value="item.id" v-for="item of tmpList">{{item.name}}</el-option>
         </el-select>
         <el-button @click="preview" size="mini" type="primary">预览</el-button>
@@ -33,7 +33,7 @@
           <contract-signer :data="form" id="firstClass" name="甲方" type="A"></contract-signer>
           <contract-signer :data="form" id="secondClass" name="乙方" type="B"></contract-signer>
           <contract-expire :data="form" id="expire"></contract-expire>
-          <contract-extras :data="form" :templateList.sync="tmpList" id="desc"></contract-extras>
+          <contract-extras :data="form" :templateList.sync="tmpList" id="desc" type="3"></contract-extras>
           <extrasInfo :data="form" id="extrasInfo" />
         </el-form>
       </div>
@@ -132,6 +132,13 @@ export default {
       this.activeName = '';
     },
     async preview() {
+      if (!this.form.templateId) {
+        return this.$message({
+          message: '请选择合同模板',
+          type: 'warning',
+          showClose: true
+        });
+      }
       await this.$refs.form.validate();
       this.loading = true;
       try {
@@ -148,6 +155,13 @@ export default {
     },
     async save() {
       console.log({ ...this.form });
+      if (!this.form.templateId) {
+        return this.$message({
+          message: '请选择合同模板',
+          type: 'warning',
+          showClose: true
+        });
+      }
       await this.$refs.form.validate();
       this.loading = true;
       try {
@@ -156,8 +170,7 @@ export default {
         this.close();
       } catch (error) {}
       this.loading = false;
-    },
-    onTemplateChange() {}
+    }
   }
 };
 </script>

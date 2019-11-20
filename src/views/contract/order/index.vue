@@ -2,29 +2,45 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 16:11:32
+ * @LastEditTime: 2019-11-20 15:36:05
  * @Description: 采购合同
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :filterOptions="filterOptions" :params="params" api="seePsiContractService.contractpurchaseList" title="采购合同" busType="24">
+    <TableView
+      :filterOptions="filterOptions"
+      :params="params"
+      api="seePsiContractService.contractpurchaseList"
+      busType="24"
+      ref="tableView"
+      title="采购合同"
+    >
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
+        <span v-else-if="prop=='contractCode'">
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+        </span>
+        <span v-else-if="prop=='purchasePutinCode'">
+          <el-link :underline="false" @click="showPutinDetail=true,currentPutinCode=value" class="f12" type="primary">{{value}}</el-link>
+        </span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :visible.sync="showDetail" />
+    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
+    <OrderStorageDetail :code="currentPutinCode" :visible.sync="showPutinDetail" @reload="reload" v-if="showPutinDetail" />
   </div>
 </template>
 <script>
 import TableView from '@/components/tableView';
 
 import Detail from './detail'; // 采购合同详情
+import OrderStorageDetail from '../../order/storage/detail'; // 采购入库单详情
 
 export default {
   components: {
     TableView,
-    Detail
+    Detail,
+    OrderStorageDetail
   },
   props: {
     // 是否显示按钮
@@ -42,6 +58,9 @@ export default {
     return {
       status: [],
       showDetail: false,
+      showPutinDetail: false,
+      currentCode: '',
+      currentPutinCode: '',
       filterOptions: [
         { label: '合同编号', prop: 'contractCode', default: true },
         { label: '采购入库编号', prop: 'purchasePutinCode', default: true },
@@ -79,6 +98,9 @@ export default {
   methods: {
     logData(e) {
       console.log(e);
+    },
+    reload() {
+      this.$refs.tableView.reload(1);
     }
   }
 };

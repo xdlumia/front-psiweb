@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 10:41:48
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-20 15:21:29
  * @Description: 公司信息  传入 公司发票账户 和公司结算账户id 会自动查询其余信息
 */
 <template>
@@ -116,7 +116,8 @@ export default {
       default: () => {
         return []
       }
-    }
+    },
+    defaultData: Object
   },
   data() {
     return {
@@ -130,8 +131,13 @@ export default {
       formItems: formItems.filter(item => !this.hide.includes(item.prop)),
     }
   },
-  created() {
-    this.commoncorporationSelectForJxc()
+  mounted() {
+    if(this.defaultData){
+       this.invoiceOptions = [this.defaultData]
+       this.settlementOptions = this.defaultData.commonCorporationAccountEntities
+    } else{
+      this.commoncorporationSelectForJxc()
+    }
   },
   watch: {
     'data.companyAccountId': {

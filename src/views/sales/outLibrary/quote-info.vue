@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 11:18:58
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-20 16:35:20
  * @Description: 报价单信息 编辑查看时使用
 */
 <template>
@@ -65,7 +65,7 @@
 import quoteDetail from '../quote/quoteDetails/detail'
 import { log } from 'util'
 export default {
-  props: ['options'],
+  props: ['options','quotationMap'],
   components: {
     quoteDetail
   },
@@ -93,6 +93,10 @@ export default {
   },
   methods: {
     async getDetail() {
+      if(this.quotationMap[this.activeName]){
+        this.detail = this.quotationMap[this.activeName]
+        return;
+      }
       let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.activeName })
       this.detail = data || {}
     },

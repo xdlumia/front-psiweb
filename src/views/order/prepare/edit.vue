@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 18:44:46
+ * @LastEditTime: 2019-11-20 11:57:11
  * @Description: 新增备货单
 */
 <template>
@@ -76,7 +76,8 @@ export default {
         source: '新建',
         // 请购单编号 示例：请购单编号
         stockCode: ''
-      }
+      },
+      alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
     };
   },
   mounted() {},
