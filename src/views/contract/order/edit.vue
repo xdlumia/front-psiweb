@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 15:16:26
+ * @LastEditTime: 2019-11-20 16:56:24
  * @Description: 采购合同
 */
 <template>
@@ -35,7 +35,7 @@
             :data="form"
             :defaultData="{
               ...form.corporation,
-              commonCorporationAccountEntities:[form.corporationAccount]
+              commonCorporationAccountEntities:form.corporationAccount?[form.corporationAccount]:[]
             }"
             disabled
             id="companyInfo"
@@ -52,11 +52,11 @@
           <buying-goods-edit
             :data="form"
             :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
           ]"
             disabled
             id="commodityInfo"
-            priceKey="purchasePrice"
+            priceKey="costAmount"
           />
           <buyingPaymentLate :data="form" disabled id="paymentLate" />
           <order-storage-bill :data="form" disabled id="billInfo" />

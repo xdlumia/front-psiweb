@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 16:47:13
+ * @LastEditTime: 2019-11-20 17:23:32
  * @Description: 采购合同
 */
 <template>
@@ -12,15 +12,15 @@
         <el-form :model="detail" class="p10" ref="form" size="mini" v-if="detail&&showDetailPage&&!loading">
           <supplierInfo :data="detail" :defaultData="detail.supplierInfo" disabled />
           <companyInfo :data="detail" :defaultData="getCompanyInfo()" disabled />
-          <arrivalInfo :data="detail" disabled v-if="detail.source!='直发单'" />
-          <buyingDeliverInfo :data="detail" :defaultClientData="detail.shipmentsLogistics" disabled ref="deliverInfo" v-else />
+          <arrivalInfo :data="detail" disabled v-if="detail.source!='直发单'" :hide="['saleTime']" />
+          <buyingDeliverInfo :data="detail" :defaultClientData="detail.shipmentsLogistics" disabled ref="deliverInfo" v-else :hide="['saleTime']" />
           <buying-goods-edit
             :data="detail"
             :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
           ]"
             disabled
-            priceKey="purchasePrice"
+            priceKey="costAmount"
           />
           <buyingPaymentLate :data="detail" disabled />
           <order-storage-bill :data="detail" :hide="['isBillFee']" disabled />
@@ -82,6 +82,12 @@ export default {
           data.companySettlementId = data.corporationAccount.id;
         }
         data.logistics = data.shipmentsLogistics;
+        if (data.shipmentsLogistics.purchaseTime) {
+          data.purchaseTime = data.shipmentsLogistics.purchaseTime;
+        }
+        if (data.shipmentsLogistics.saleTime) {
+          data.saleTime = data.shipmentsLogistics.saleTime;
+        }
         data.supplierId = data.supplierInfo.id;
         return data;
       } else if (this.rowData) {

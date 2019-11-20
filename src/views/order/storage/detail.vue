@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 15:27:45
+ * @LastEditTime: 2019-11-20 17:29:16
  * @Description: 采购入库单
 */
 <template>
@@ -189,6 +189,12 @@ export default {
         contract.supplierName = data.supplierName;
       }
       contract.shipmentsLogistics = contract.logistics;
+      if (contract.purchaseTime) {
+        contract.shipmentsLogistics.purchaseTime = contract.purchaseTime;
+      }
+      if (contract.saleTime) {
+        contract.shipmentsLogistics.saleTime = contract.saleTime;
+      }
       delete contract.logistics;
       if (contract.companyAccountId && contract.companySettlementId) {
         let {
@@ -215,10 +221,15 @@ export default {
           }
         });
       }
-      contract.commodityList = [].concat(
-        contract.commodityList || [],
-        contract.additionalCommodityList || []
-      );
+      contract.commodityList = []
+        .concat(
+          contract.commodityList || [],
+          contract.additionalCommodityList || []
+        )
+        .map(item => {
+          item.costAmount = item.purchasePrice;
+          return item;
+        });
       delete contract.additionalCommodityList;
       contract.totalAmount = contract.putinAmount;
       contract.totalNum = contract.putinNum;
