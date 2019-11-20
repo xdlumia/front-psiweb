@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 16:50:10
+ * @LastEditTime: 2019-11-20 17:33:32
  * @Description: 备货单详情
 */
 <template>
@@ -82,7 +82,7 @@
           ]"
             disabled
           />
-          <customInfo :data="detail" disabled />
+          <customInfo :data="detail" disabled  busType="29"/>
           <extrasInfo :data="detail" disabled />
         </el-form>
       </el-tab-pane>

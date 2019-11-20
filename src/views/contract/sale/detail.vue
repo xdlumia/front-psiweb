@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 16:48:05
+ * @LastEditTime: 2019-11-20 17:35:54
  * @Description: 销售合同
 */
 <template>
@@ -21,7 +21,8 @@
         </el-form>
         <el-form :model="detail" label-position="top" ref="form" size="small" v-if="visible&&detail&&!loading">
           <!-- 自定义信息 -->
-          <customInfo :data="detail" disabled />
+          <!-- <customInfo :data="detail" disabled busType="28"/> -->
+          <contract-extras :data="detail" id="customInfo" type="1" />
           <!-- 备注信息 -->
           <extrasInfo :data="detail" disabled />
         </el-form>

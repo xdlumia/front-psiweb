@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:29:16
+ * @LastEditTime: 2019-11-20 17:34:18
  * @Description: 采购入库单
 */
 <template>
@@ -88,7 +88,7 @@
           />
           <buyingPaymentLate :data="detail" disabled id="paymentLate" />
           <order-storage-bill :data="detail" disabled id="billInfo" />
-          <customInfo :data="detail" disabled id="customInfo" />
+          <customInfo :data="detail" disabled id="customInfo" busType="30"/>
           <extrasInfo :data="detail" disabled id="extrasInfo" />
         </el-form>
       </el-tab-pane>

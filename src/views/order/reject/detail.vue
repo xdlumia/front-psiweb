@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 15:55:36
+ * @LastEditTime: 2019-11-20 17:33:54
  * @Description: 采购退货单
 */
 <template>
@@ -71,7 +71,7 @@
             id="commodityInfo"
           />
           <orderStorageBill :data="detail" :hide="['isBillFee']" :type="1" disabled id="billInfo" />
-          <customInfo :data="detail" disabled id="customInfo"></customInfo>
+          <customInfo :data="detail" disabled id="customInfo" busType="31"></customInfo>
           <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
         </el-form>
       </el-tab-pane>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 14:16:36
+ * @LastEditTime: 2019-11-20 17:33:06
  * @Description: 换货单
 */
 <template>
@@ -57,7 +57,7 @@
           <buying-exchange-goods :data="detail" disabled exchangeType="in" id="inGoods" />
           <buying-exchange-goods :data="detail" disabled exchangeType="out" id="outGoods" />
           <orderStorageBill :data="detail" :hide="['isBillFee']" :type="3" disabled id="billInfo" />
-          <customInfo :data="detail" disabled id="customInfo"></customInfo>
+          <customInfo :data="detail" disabled id="customInfo" busType="1"></customInfo>
           <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
         </el-form>
       </el-tab-pane>
