@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 15:08:26
+ * @LastEditTime: 2019-11-20 16:00:34
  * @Description: 自定义信息 1
 */
 <template>
@@ -117,7 +117,6 @@ export default {
     }
   },
   created() {
-    console.log(this);
     let formCode = this.busType || 27
     if (!this.busType) {
       this.$message({

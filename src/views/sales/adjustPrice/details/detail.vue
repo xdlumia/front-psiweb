@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 14:46:53
+ * @LastEditTime: 2019-11-20 17:20:01
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -13,7 +13,10 @@
       :data="data"
     />
 
-    <goods-return :data="data"></goods-return>
+    <goods-buying-quote
+      :params="{busCode:data.quotationCode,busType:1,putawayType:1}"
+      :data="data"
+    />
     <!-- 备注信息 -->
     <extrasInfo
       disabled
