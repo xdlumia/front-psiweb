@@ -21,13 +21,26 @@
       class="demo-ruleForm"
     >
       <el-form-item
-        :rules="[ 
-        {required:true,message:'必填项'}
-    ]"
+        :rules="[  
+              {required:true,message:'必填项',trigger: 'input',}
+          ]"
         label="选择组装人"
-        prop
+        prop="pickingPerson"
         size="mini"
       >
+        <employees-chosen
+          :closeOnSelect="false"
+          :multiple="false"
+          @input="chooseChai"
+          class="d-inline"
+          style="width:100%"
+        >
+          <el-input
+            style="width:50%"
+            :value="employeeName"
+            size="mini"
+          ></el-input>
+        </employees-chosen>
       </el-form-item>
       <el-form-item
         label="转移原因："
@@ -35,9 +48,9 @@
       >
         <el-input
           type="textarea"
-          v-model="ruleForm.desc"
+          v-model="ruleForm.hangUpNote"
           max='300'
-          placeholder="请输入最少五个字符"
+          placeholder="请输入"
         ></el-input>
       </el-form-item>
     </el-form>
@@ -46,12 +59,12 @@
       class="dialog-footer"
     >
       <el-button
-        @click="$emit('update')"
+        @click="close"
         size="small"
       >关 闭</el-button>
       <el-button
         type="primary"
-        @click="$emit('update')"
+        @click="submit"
         size="small"
       >保 存</el-button>
     </span>
@@ -66,7 +79,7 @@ export default {
       type: Boolean,
       default: false
     },
-    form: {}
+    data: {}
   },
   watch: {
   },
@@ -75,15 +88,16 @@ export default {
   data() {
     return {
       ruleForm: {
-        name: '',
-        desc: ''
+        assemblePerson: '',
+        assembleTaskCode: '',
+        hangUpNote: ''
       },
+      employeeName: '',
       rules: {
-        name: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        assemblePerson: [
+          { required: true, message: '请选择转移对象', trigger: 'blur' },
         ],
-        desc: [
+        hangUpNote: [
           { required: true, message: '请填写转移原因', trigger: 'blur' },
           { min: 5, max: 300, message: '长度在 5 到 300 个字符', trigger: 'blur' }
         ],
@@ -92,7 +106,24 @@ export default {
   },
   mounted() { },
   methods: {
-
+    close() {
+      this.$emit('update:visible', false)
+    },
+    //选择组装人
+    chooseChai(value) {
+      this.employeeName = value.employeeName;
+      this.ruleForm.assemblePerson = value.userId;
+    },
+    submit() {
+      this.ruleForm.id = this.data.id
+      this.$api.seePsiWmsService.wmsassembletaskTransferTask(this.ruleForm)
+        .then(res => {
+          this.$emit('reload')
+          this.close()
+        })
+        .finally(() => {
+        })
+    }
   }
 };
 </script>

@@ -20,127 +20,153 @@
           </span>
         </span>
       </div>
-      <d-table
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+      <el-table
+        :data="data.commodityList"
         ref="companyTable"
+        row-key="commodityCode"
         class="college-main"
-        style="height:calc(100vh - 340px)"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
+        style="max-height:300px"
+        :tree-props="{children: 'childrenCommodityList'}"
       >
         <el-table-column
           fixed
-          prop="cityName"
-          min-width="100"
-          label="组装数量"
-          show-overflow-tooltip
+          min-width="50"
         ></el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
+          min-width="100"
+          label="组装数量"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.accomplishNum || 0}}/{{scope.row.allocationNum || 0}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          fixed
+          prop="pickingNum"
           min-width="100"
           label="拣货数量"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
+          prop="usableNum"
           min-width="100"
           label="可用数量"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
-          min-width="100"
+          prop="accomplishNum"
+          min-width="130"
           label="机器号/SN码"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span
+              @click="changeRecord(scope)"
+              class="d-text-blue"
+            >{{scope.row.accomplishNum}}</span>
+          </template>
+        </el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="title"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.id}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
         </el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="categoryCode"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="className"
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="configName"
           min-width="100"
           label="商品配置"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="specOne"
           min-width="140"
           label="商品规格"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="note"
           min-width="120"
           label="备注"
           show-overflow-tooltip
         ></el-table-column>
 
-      </d-table>
+      </el-table>
       <FullscreenElement
         :element="$refs.companyTable"
         :visible.sync="showInFullscreen"
+      />
+      <assemblyRecord
+        :data='dialogData'
+        :drawerData='drawerData'
+        :visible.sync='dialogVisible'
+        v-if="dialogVisible"
       />
     </form-card>
   </div>
 </template>
 <script>
 import FullscreenElement from '@/components/fullscreen-element';
+import assemblyRecord from './assembly-record'
+
 export default {
+  props: ['data', 'drawerData'],
   data() {
     return {
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
+      tableData: [{ cityName: 1 }],
       dialogVisible: false,
+      dialogData: {},
       showInFullscreen: false
     }
   },
   methods: {
     fullscreen() {
       this.showInFullscreen = true;
+    },
+    //点击SN码
+    changeRecord(scope) {
+      console.log(scope.row)
+      this.dialogVisible = true;
+      this.dialogData = scope.row
     }
   },
   components: {
-    FullscreenElement
+    FullscreenElement,
+    assemblyRecord
   },
 }
 </script>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-19 09:46:03
+ * @LastEditTime: 2019-11-19 18:37:24
  * @Description: 自定义信息 1
 */
 <template>
@@ -26,6 +26,12 @@
             :rules="{required:true}"
             :prop="`fieldList.${scope.$index}.fieldCode`"
           >
+
+            <!-- <el-input
+              size="mini"
+              :disabled="disabled"
+              v-model.trim="scope.row.fieldCode"
+            /> -->
             <el-select
               size="mini"
               :disabled="disabled"
@@ -92,6 +98,7 @@
 </template>
 <script>
 export default {
+  busType: [String, Number],
   props: {
     data: {
       type: Object,
@@ -115,7 +122,7 @@ export default {
   methods: {
 
     queryFieldsByForm() {
-      this.$api.seeBaseinfoService.formfieldsQueryFieldsByForm(null, 1)
+      this.$api.seeBaseinfoService.formfieldsQueryFieldsByForm(null, 27)
         .then(res => {
           this.fieldOptions = res.data || []
         })

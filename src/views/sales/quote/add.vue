@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 20:16:44
+ * @LastEditTime: 2019-11-19 18:23:18
  * @Description: file content
 */
 <template>
@@ -159,7 +159,11 @@ export default {
     }
   },
   created() {
-
+    if (this.type == 'add') {
+      this.steps = 1
+    } else {
+      this.steps = 4
+    }
   },
   mounted() {
     // this.initForm()
@@ -167,41 +171,51 @@ export default {
   computed: {
   },
   watch: {
-    steps(index) {
-      // 点击第二步的时候判断有没有选择客户
-      // if (index == 2 && !this.form.clientId) {
-      //   this.$message.error({
-      //     showClose: true,
-      //     message: '请先选择客户'
-      //   })
-      //   this.steps = 1
-      //   return
-      // }
+    async steps(index) {
+
       if (index === 3) {
         // 确定配置信息的时候查询整机
         this.$refs.confirmInfo.commonquotationconfigdetailsListConfigByGoodName()
       } else if (index === 4) {
-        // 最终以第三步存放的数据为准
-        let wholeList = this.form.KIND1List.reduce((prev, cur) => {
-          return prev.concat(cur.children)
-        }, [])
+        // 不挑选此配置整机数据
+        let wholeListNotChoose = []
+        // 整机数据
+        let wholeList = []
+        this.form.KIND1List.forEach(item => {
+          if (item.disabled) {
+            wholeListNotChoose = wholeListNotChoose.concat(item.children)
+          } else {
+            wholeList = wholeList.concat(item.children)
+          }
+        })
+        wholeListNotChoose = this.$$util.jsonFlatten(wholeListNotChoose)
+        let quotationIds = this.$$util.jsonFlatten(wholeList).map(v => v.quotationId)
+        let params = {
+          ids: quotationIds,
+          page: 1,
+          limit: 999
+        }
+        let { data } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
+        let wholeListData = data || []
         // 配件列表
         let fixingsList = []
         for (let key in this.form.KIND2List) {
-          fixingsList = fixingsList.concat(this.form.KIND2List[key])
+          // 扁平化数据
+          const flattenData = this.$$util.jsonFlatten(this.form.KIND2List[key])
+          fixingsList = fixingsList.concat(flattenData)
         }
 
         // let
         // 第4步整合商品信息
-        this.form.businessCommoditySaveVoList = [...wholeList, ...fixingsList]
+        this.form.businessCommoditySaveVoList = [...wholeListData, ...fixingsList]
       }
-      // if (this.type != 'add') {
-      //   this.$message.error({
-      //     showClose: true,
-      //     message: '编辑和复制的时候只能操作当前步骤'
-      //   })
-      //   this.steps = 4
-      // }
+      else if (this.type != 'add') {
+        this.$message.error({
+          showClose: true,
+          message: '编辑和复制的时候只能操作当前步骤'
+        })
+        this.steps = 4
+      }
     },
   },
   methods: {

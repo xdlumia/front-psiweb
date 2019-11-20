@@ -148,8 +148,15 @@
       <el-table-column
         label="含税成本金额"
         min-width="100"
-        prop="name"
-      ></el-table-column>
+        prop="taxInclusiveTotalCostPrice"
+      >
+        <template
+          slot-scope="scope"
+          v-if="scope.row.commodityCode"
+        >
+          <span>{{scope.row.commodityInfoList ? ((Number(scope.row.taxRate) * 0.01 + 1) * Number(scope.row.commodityInfoList.length) * Number(scope.row.inventoryPrice)).toFixed(2) : 0}}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         label="商品图片"
         min-width="120"
@@ -167,7 +174,11 @@
         label="商品类别"
         min-width="110"
         prop="categoryCode"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         label="商品分类"
         min-width="110"
@@ -187,7 +198,11 @@
         label="单位"
         min-width="120"
         prop="unit"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+        </template>
+      </el-table-column>
     </el-table>
     <commodityChoose
       @update=update
@@ -272,20 +287,21 @@ export default {
             }
           }, 0);
         }
-        if (column.property == 'taxRate') {
+        console.log(column, 'columncolumncolumncolumncolumncolumncolumn')
+        if (column.property == 'taxInclusiveTotalCostPrice') {
           const values = data.map((item) => {
             if (item.commodityInfoList && item.commodityInfoList.length > 0) {
               return (Number(item.taxRate) * 0.01 + 1) * Number(item.commodityInfoList.length) * Number(item.inventoryPrice)
             }
           });
-          sums[index] = values.reduce((prev, curr) => {
+          sums[index] = (values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
               return prev + curr;
             } else {
               return prev;
             }
-          }, 0);
+          }, 0)).toFixed(2);
         }
       })
       this.addForm.totalCostPrice = sums[sums.length - 2] || 0

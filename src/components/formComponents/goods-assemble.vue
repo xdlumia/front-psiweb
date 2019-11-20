@@ -8,14 +8,20 @@
 <template>
   <div>
     <form-card title='组装商品'>
-      <d-table
-        api="seePumaidongService.collegeManagerList"
-        :params="queryForm"
+      <el-table
+        :data="data.commodityList"
+        border
+        size="mini"
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
+        style="max-height:340px"
+        row-key="commodityCode"
+        :tree-props="{children: 'childrenCommodityList'}"
       >
+        <el-table-column
+          fixed
+          min-width="50"
+        ></el-table-column>
         <el-table-column
           fixed
           prop="title"
@@ -23,11 +29,14 @@
           min-width="120"
           show-overflow-tooltip
         >
-          <template slot-scope="">
+          <template
+            slot-scope="scope"
+            v-if="scope.row.childrenCommodityList"
+          >
             <el-button
               type="primary"
               size="mini"
-              @click='assemblyVisible = true'
+              @click='changeAssemblyVisible(scope.row)'
             >组装</el-button>
           </template>
         </el-table-column>
@@ -37,104 +46,137 @@
           min-width="100"
           label="组装数量"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.accomplishNum || 0}}/{{scope.row.allocationNum || 0}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
+          prop="usableNum"
           min-width="100"
           label="可用数量"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
-          prop="cityName"
+          prop="accomplishNum"
           min-width="100"
           label="机器号/SN码"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span
+              class="d-text-blue"
+              @click="changeRecord(scope)"
+            >{{scope.row.accomplishNum}}</span>
+          </template>
+        </el-table-column>
 
         <el-table-column
           fixed
-          prop="cityName"
+          prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="title"
+          prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.id}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
           </template>
         </el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="categoryCode"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="className"
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
-          prop="cityName"
+          prop="configName"
           min-width="100"
           label="商品配置"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
+          prop="specOne"
           min-width="140"
           label="商品规格"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="cityName"
           min-width="80"
           label="单位"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+          </template>
+        </el-table-column>
 
-      </d-table>
+      </el-table>
     </form-card>
     <commodityAssemblyEdit
-      :visible='assemblyVisible'
-      @close="assemblyVisible = false"
+      :visible.sync='assemblyVisible'
+      v-if="assemblyVisible"
+      :data="rowData"
+    />
+    <assemblyRecord
+      :data='dialogData'
+      :drawerData='drawerData'
+      :visible.sync='dialogVisible'
+      v-if="dialogVisible"
     />
   </div>
 </template>
 <script>
 import commodityAssemblyEdit from './commodity-assembly-edit'
+import assemblyRecord from './assembly-record'
 export default {
+  props: ['data', 'drawerData'],
   data() {
     return {
-      // 查询表单
-      queryForm: {
-        title: '', // 标题
-        city: '', // 城市
-        pushTime: '',
-        messageType: '',
-        status: '',
-        page: 1,
-        limit: 20
-      },
       dialogVisible: false,
+      dialogData: {},
+      rowData: {},
       assemblyVisible: false,//组装弹窗
+      tableData: [{ cityName: '假的' }]
     }
   },
   methods: {
+    //点击SN码
+    changeRecord(scope) {
+      console.log(scope.row)
+      this.dialogVisible = true;
+      this.dialogData = scope.row
+    },
+    //点击组装
+    changeAssemblyVisible(row) {
+      console.log(row, 'rowrowrow')
+      this.rowData = row
+      this.assemblyVisible = true
+    }
   },
   components: {
-    commodityAssemblyEdit
+    commodityAssemblyEdit,
+    assemblyRecord
   },
 }
 </script>

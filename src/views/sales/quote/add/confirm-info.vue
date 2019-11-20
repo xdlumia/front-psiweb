@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-19 16:46:48
+ * @LastEditTime: 2019-11-19 17:26:02
  * @Description: 确定配置信息
 */
 <template>
@@ -44,7 +44,8 @@
             prop="name"
             label="商品名称"
             min-width="80"
-          />
+          >
+          </el-table-column>
           <el-table-column
             label="商品类别"
             min-width="70"
@@ -112,7 +113,8 @@
             prop="goodsName"
             label="商品名称"
             min-width="80"
-          />
+          >
+          </el-table-column>
           <el-table-column
             label="商品类别"
             min-width="70"
@@ -139,6 +141,7 @@
           <el-table-column
             label="操作"
             min-width="120"
+            v-if="!item.disabled"
           >
             <template slot-scope="scope">
               <el-checkbox
@@ -204,10 +207,20 @@ export default {
     // },
     // 不选择此配置
     async chooseNotConfig(item, index) {
-      console.log(item)
-      let { data } = await this.$api.seeGoodsService.getGoodsByNameForJXC({ name: item.configGoodName })
-      console.log((data))
+      let params = {
+        categoryCode: 'PSI_SP_KIND-1',
+        name: item.configGoodName
+      }
+      let { data } = await this.$api.seeGoodsService.getGoodsByNameForJXC(params)
       item.disabled = true
+
+
+      item.children = (data || []).map(item => {
+        item.goodsName = item.name
+        item.commodityCode = item.goodsCode
+        item.quotationIds = item.configId
+        return item
+      })
       this.$set(this.data.KIND1List, index, item)
     },
     // 选中项目

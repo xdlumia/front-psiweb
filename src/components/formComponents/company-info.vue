@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 10:02:57
+ * @LastEditTime: 2019-11-20 10:41:48
  * @Description: 公司信息  传入 公司发票账户 和公司结算账户id 会自动查询其余信息
 */
 <template>
@@ -11,7 +11,7 @@
     <el-row :gutter="10">
       <el-col :span="8">
         <el-form-item
-          :rules="{ required: true, }"
+          :rules="{ required: true,trigger: 'blur' }"
           label="公司发票账户"
           prop="companyAccountId"
         >
@@ -33,7 +33,7 @@
       </el-col>
       <el-col :span="8">
         <el-form-item
-          :rules="{ required: true, }"
+          :rules="{ required: true, trigger: 'blur'}"
           label="公司结算账户"
           prop="companySettlementId"
         >
