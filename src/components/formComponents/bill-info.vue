@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-19 18:54:48
+ * @LastEditTime: 2019-11-20 11:46:50
  * @Description: 账期信息
  */
 <template>
@@ -27,12 +27,25 @@
     </el-form-item>
     <el-table
       size="mini"
-      :data="data.shipmentFinanceEntityList || []"
+      :data="data.shipmentFinanceSaveVoList || []"
       show-summary
       :summary-method="getSummaries"
       ref="table"
-      style="max-height:200px"
+      max-height="300px"
     >
+      <el-table-column
+        label="操作"
+        width="60"
+        show-overflow-tooltip
+      >
+        <template slot-scope="scope">
+          <i
+            type="text"
+            @click="delBill(scope.$index)"
+            class="d-text-blue f18 el-icon-remove-outline"
+          ></i>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="paymenDays"
         label="账期"
@@ -46,20 +59,21 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <!-- <el-form-item
+          <el-form-item
+            class="mb0"
             :rules="[{required:true}]"
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.payTime`"
-          > -->
-          <el-date-picker
-            :disabled="disabled"
-            size="mini"
-            value-format="timestamp"
-            v-model="scope.row.payTime"
-            type="date"
-            placeholder="选择日期"
-          />
+          >
+            <el-date-picker
+              :disabled="disabled"
+              size="mini"
+              value-format="timestamp"
+              v-model="scope.row.payTime"
+              type="date"
+              placeholder="选择日期"
+            />
 
-          <!-- </el-form-item> -->
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column
@@ -68,26 +82,28 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <!-- <el-form-item
+          <el-form-item
+            class="mb0"
             :rules="[{required:true}]"
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.isBillFee`"
-          > -->
-          <el-switch
-            :disabled="disabled"
-            :active-value="1"
-            :inactive-value="0"
-            v-model="scope.row.isBillFee"
-          />
-          <!-- </el-form-item> -->
+          >
+            <el-switch
+              :disabled="disabled"
+              :active-value="1"
+              :inactive-value="0"
+              v-model="scope.row.isBillFee"
+            />
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column
         min-width="130"
-        label="付款金额"
+        label="付款金额(元)"
         show-overflow-tooltip
       >
         <template slot-scope="scope">
           <el-form-item
+            class="mb0"
             :rules="[{required:true},{type:'price'}]"
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.payAmount`"
           >
@@ -130,6 +146,14 @@ export default {
     }
   },
   methods: {
+    delBill(index) {
+      this.data.shipmentFinanceSaveVoList.splice(index, 1)
+      // 重新修改账期名称
+      this.data.shipmentFinanceSaveVoList.map((item, index) => {
+        item.paymenDays = `第${index + 1}期`
+        return item
+      })
+    },
     addBill() {
       let paymenDays = (this.data.shipmentFinanceSaveVoList || []).length + 1
       this.data.shipmentFinanceSaveVoList.push({
@@ -149,7 +173,7 @@ export default {
       columns.forEach((col, index) => {
         if (index == 0) {
           sums[index] = '总价'
-        } else if (index == 3) {
+        } else if (index == 4) {
           const values = data.map(item => Number(item.payAmount || 0));
           sums[index] = values.reduce((sum, curr) => {
             const val = Number(curr)

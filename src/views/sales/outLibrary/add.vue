@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 11:53:45
- * @Description: 编辑出库单
+ * @LastEditTime: 2019-11-20 11:31:56
+ * @Description: 生成销售出库单出库单
 */
 <template>
   <el-dialog
@@ -104,6 +104,7 @@ export default {
       },
       // 新增orEdit框内容
       form: {
+        id: '1',
         companyAccountId: '',
         companySettlementId: '',
         apprpvalNode: '', // 审核节点,
@@ -120,17 +121,17 @@ export default {
         salesExpectedShipmentsTime: '', // 销售预计发货时间
         salesRequireArrivalTime: '', // 销售要求到货时间,
         shipmentFinanceSaveVoList: [ //账期集合
-          // {
-          //   busCode:'', // 业务编号",
-          //   busType:'', // 9,
-          //   feeDetailCode:'', // 费用明细",
-          //   feeTypeCode:'', // 费用类型",
-          //   isBillFee:'', // 是否直接生成应收付,
-          //   payAmount:'', // 付款金额
-          //   payTime:'', // 付款时间
-          //   paymenDays:'', // 账期",
-          //   paymentType:'', // 9
-          // }
+          {
+            busCode: '', // 业务编号",
+            busType: '', // 9,
+            feeDetailCode: '', // 费用明细",
+            feeTypeCode: '', // 费用类型",
+            isBillFee: '', // 是否直接生成应收付,
+            payAmount: '', // 付款金额
+            payTime: '', // 付款时间
+            paymenDays: '第1期', // 账期",
+            paymentType: '', // 9
+          }
         ],
         source: '', // 来源",
         state: '', // 9,
@@ -147,15 +148,28 @@ export default {
   },
   computed: {
     quoteCodes() {
-      // 判断rowData 是多行数据还是单行数据
-      if (this.rowData instanceof Array) {
+
+      // 如果是编辑 详情数据里会带多个quotationCodes
+      if (this.type == 'edit') {
+        return this.detail.quotationCodes
+      }
+      // 如果是合并 那操作的是出库单的数据 rowData 一定是多个数据.
+      else if (this.type == 'merge') {
         return this.rowData.map(item => item.quotationCode)
-      } else {
+      }
+      //  如果是新增 那操作的是出库单的数据 是一条数据
+      else if (this.type == 'add') {
         return [this.rowData].map(item => item.quotationCode)
       }
     },
   },
   methods: {
+    async getDetail() {
+      if (this.code) {
+        let { data } = await this.$api.seePsiSaleService.salesshipmentGetInfoByCode({ shipmentCode: this.code })
+        return data;
+      }
+    },
 
     // 保存表单数据
     saveHandle() {
@@ -163,12 +177,11 @@ export default {
         if (valid) {
           this.loading = true
 
-          if (this.rowData instanceof Array) {
+          if (this.type == 'merge') {
             this.form.quotationIds = this.rowData.map(item => item.id)
-          } else {
+          } else if (this.type == 'add') {
             this.form.quotationIds = [this.rowData].map(item => item.id)
           }
-
           // rules 表单验证是否通过
           let api = 'salesshipmentUpdate' // 默认编辑更新
           // 新增保存

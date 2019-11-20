@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 10:49:08
+ * @LastEditTime: 2019-11-20 10:51:46
  * @Description: 销售出库单详情
 */
 <template>
@@ -59,9 +59,9 @@
           style="height:calc(100vh - 200px)"
           :is="activeName"
         ></components>
-
       </el-form>
     </side-detail>
+
     <!-- 编辑 -->
     <add
       :visible.sync="editVisible"

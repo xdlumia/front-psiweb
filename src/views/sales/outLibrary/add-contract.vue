@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 10:47:59
+ * @LastEditTime: 2019-11-20 14:31:46
  * @Description: 生成合同
 */
 <template>
@@ -51,7 +51,7 @@
         style="height:calc(100vh - 110px)"
       >
 
-        <d-tabs :style="{maxHeight:'calc(100vh - 180px)'}">
+        <d-tabs :style="{maxHeight:'calc(100vh - 130px)'}">
           <d-tab-pane
             v-for="(val,key) of tabs"
             :key="key"
@@ -191,7 +191,6 @@ export default {
     },
     // 保存表单数据
     saveHandle() {
-      console.log(this.type);
 
       this.$refs.form.validate(valid => {
         if (valid) {

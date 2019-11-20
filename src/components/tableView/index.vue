@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 17:14:24
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-20 11:56:15
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -113,7 +113,7 @@
     <!-- </template> -->
     <d-table
       class="d-table"
-      :autoInit="!!headers.length"
+      :autoInit="false"
       @response="tabelRes"
       @selection-change="selectionChange"
       :params="params"

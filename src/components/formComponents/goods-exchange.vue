@@ -174,10 +174,6 @@ export default {
     };
   },
   methods: {
-    //点击机器号和SN码
-    getTableVisible() {
-      this.dialogVisible = true;
-    },
     fullscreen() {
       this.showInFullscreen = true;
     }

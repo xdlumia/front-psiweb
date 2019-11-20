@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 10:13:54
+ * @LastEditTime: 2019-11-20 11:09:07
  * @Description: 销售-报价单
  */
 <template>
@@ -82,7 +82,7 @@
     <!-- 合并生成出库单 所以rowData是多行数据 -->
     <outLibAdd
       :visible.sync="mergeVisible"
-      type="add"
+      type="merge"
       :rowData="selectionData"
       @reload="$refs.table.reload()"
     />
