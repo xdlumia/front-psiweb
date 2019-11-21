@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 14:25:15
+ * @LastEditTime: 2019-11-21 15:08:46
  * @Description: 表格头部 
  */
 <template>
@@ -139,11 +139,11 @@
           :key="index"
           class="table-sta-item"
         >
-          <p class="d-nowrap d-text-gray f13 mb5">需要付(11笔)</p>
+          <p class="d-nowrap d-text-gray f13 mb5">{{item.name||'未命名'}}({{item.count}}笔)</p>
           <p
             class="f24"
             style="color:#333"
-          >{{item.id | milliFormat}}</p>
+          >{{(item.amount||0) | milliFormat}}</p>
         </div>
       </div>
     </div>

@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 11:56:15
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-21 15:06:13
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -244,7 +244,7 @@ export default {
         }
       })
       // 获取统计列表数据(财务独有)
-      this.staList = this.$refs.table.response.staList || []
+      this.staList = this.$refs.table.response.staList || this.$refs.table.response.busStatisticData || []
       this.$emit('response', res)
     },
     // 统计点击筛选

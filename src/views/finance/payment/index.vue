@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 09:31:31
+ * @LastEditTime: 2019-11-21 11:40:03
  * @Description: 付款单
 */
 <template>
@@ -16,31 +16,37 @@
       exportApi="seePsiFinanceService.paybillExport"
       ref="tableView"
       title="付款单"
+      v-loading="loading"
     >
       <template slot="button">
-        <el-button @click="multiPay" size="mini" type="primary">批量付款申请</el-button>
+        <!-- 15.勾选付款单后，展示批量付款申请。新建、已驳回状态可点击批量提交付款申请。如勾选中包含了其他状态，则只提交新建、已驳回的即可。批量付款申请，不需弹出付款申请确认。 -->
+        <el-button @click="multiPay" size="mini" title="新建、已驳回的付款单可批量申请" type="primary">批量付款申请</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
-        <span v-if="prop=='purchaseApplyCode'">
+        <span v-if="prop=='billCode'">
           <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else-if="['feeDetailCode','feeTypeCode'].includes(prop)">
           <span>{{value|dictionary('ZD_DY_LX')}}</span>
         </span>
-        <span v-else-if="prop=='quotationCode'">
-          <el-link :underline="false" @click="showQuotationDetail=true,currentQuotationCode=value" class="f12" type="primary">{{value}}</el-link>
-        </span>
         <span v-else>{{value}}</span>
       </template>
     </tableView>
+    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
+    <Apply :visible.sync="showApply" @reload="reload" v-if="showApply" />
   </div>
 </template>
 <script>
+import Detail from './detail';
+import Apply from './apply';
 /**
  * 采购-请购单
  */
 export default {
-  components: {},
+  components: {
+    Detail,
+    Apply
+  },
   props: {
     // 是否显示按钮
     button: {
@@ -56,25 +62,14 @@ export default {
   data() {
     return {
       status: [],
-      showEdit: false,
+      loading: false,
+      showApply: false,
       showDetail: false,
-      addBorrowInVisible: false,
-      orderBuyingDetailRecVisible: false,
       currentCode: '',
-      showQuotationDetail: false, // 打开报价单详情
-      currentQuotationCode: '', // 报价单编号
-      stateText: {
-        // 单据状态0待完成 1部分完成 2完成3终止
-        0: '待完成',
-        1: '部分完成',
-        2: '完成',
-        3: '终止'
-      },
       // prettier-ignore
       filterOptions: [
         { label: '筛选类型', prop: 'searchType', default: true },
         { label: '账单编号', prop: 'billCode' },
-        { label: '账单类型（0收款/1付款）', prop: 'billType' },
         { label: '结清状态', prop: 'settleStatus' },
         { label: '逾期状态', prop: 'overSate' },
         { label: '对方名称', prop: 'accountName' },
@@ -105,8 +100,29 @@ export default {
     reload() {
       this.$refs.tableView.reload();
     },
-    multiPay() {
+    async multiPay() {
       console.log(this.$refs.tableView.selectionRow);
+      let multi = this.$refs.tableView.selectionRow.filter(item =>
+        [-1, 3].includes(item.state)
+      );
+      if (multi.length) {
+        await this.$confirm(`是否批量提交付款申请？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          closeOnClickModal: false,
+          type: 'warning',
+          center: true
+        });
+        this.loading = true;
+        try {
+          await this.$api.seePsiFinanceService.paybillBatchPaymentApply({
+            apprpvalNode: this.form.apprpvalNode,
+            ids: multi.map(item => item.id),
+            processType: 'psi_finance_pay_bill_01'
+          });
+        } catch (error) {}
+        this.loading = false;
+      }
     }
   }
 };

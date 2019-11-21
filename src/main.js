@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 15:09:08
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-21 16:21:28
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -60,6 +60,13 @@ ElementUI.Input.props.showWordLimit.default = true
 // ElementUI.TableColumn.props.showOverflowTooltip.default = true
 
 Vue.prototype.$store = store;
+Vue.mixin({
+  methods:{
+    $getApi(path){
+      return path.split('.').reduce((data,path)=>data[path],this.$api)
+    }
+  }
+})
 // Vue.use(seeWebCustomerService)
 Vue.use(citys)
 Vue.use(systemStoreConfig)
