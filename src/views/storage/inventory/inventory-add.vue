@@ -97,6 +97,7 @@ export default {
       activeName: '',
       button: true,
       addform: {
+        creatorName: '',
         wmsName: '',
         wmsId: '',//库房id
         blitemPerson: '',//盘点人

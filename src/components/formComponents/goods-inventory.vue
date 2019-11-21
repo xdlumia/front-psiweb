@@ -160,12 +160,8 @@ export default {
     },
     //扫码成功以后的保存
     sumitSn(data) {
-      this.$set(this.tableData[this.ceIndex], 'commodityInfoList', data)
-      this.tableData.forEach((item) => {
-        if (item.commodityCode) {
-          this.addForm.commodityList.push(item)
-        }
-      })
+      this.$set(this.data.commodityCodeList[this.ceIndex], 'commodityInfoList', data)
+      console.log(this.data.commodityCodeList, 'this.data.commodityCodeListthis.data.commodityCodeListthis.data.commodityCodeListthis.data.commodityCodeList')
     }
   },
   components: {

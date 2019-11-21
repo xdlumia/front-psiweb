@@ -11,23 +11,32 @@
     :status="status"
     :visible.sync="visible"
     @close="close"
-    :title="'盘点单'+drawerData.blitemCode"
+    :title="'盘点单-'+drawerData.blitemCode"
     width="990px"
   >
     <div>
       <div class="drawer-header">
         <el-button
-          @click="backVisible=true,isComponents = 'scanInCode',dialogData.title = '调入扫码'"
+          v-if="detailForm.blitemState == 1"
+          @click="clickFinish"
           size="mini"
           type="primary"
         >完成盘点</el-button>
         <el-button
-          @click="reportingVisible=true"
+          v-if="detailForm.blitemState == 1"
+          @click="fStop"
+          size="mini"
+          type="primary"
+        >终止</el-button>
+        <el-button
+          v-if="detailForm.result == 3 || detailForm.result == 2"
+          @click="changeReportingVisible(2)"
           size="mini"
           type="primary"
         >生成报损单</el-button>
         <el-button
-          @click="reportingVisible=true"
+          v-if="detailForm.result == 3 || detailForm.result == 1"
+          @click="changeReportingVisible(1)"
           size="mini"
           type="primary"
         >生成报溢单</el-button>
@@ -39,12 +48,21 @@
               :disabled='true'
               :addform='detailForm'
             />
-            <goodsInventory :data='detailForm' />
+            <goodsInventory
+              :data='detailForm'
+              ref='goodsInventory'
+            />
           </el-form>
         </el-tab-pane>
       </el-tabs>
     </div>
-    <reportingGenerate :visible.sync='reportingVisible' />
+    <reportingGenerate
+      :visible.sync='reportingVisible'
+      :data='detailForm'
+      @reload='reload'
+      v-if='reportingVisible'
+      :type='type'
+    />
   </SideDetail>
 
 </template>
@@ -61,6 +79,7 @@ export default {
       backVisible: false,
       reportingVisible: false,
       isComponents: '',
+      type: 0,
       dialogData: {
         title: ''
       },
@@ -94,8 +113,74 @@ export default {
 
         })
     },
+    changeReportingVisible(type) {
+      this.type = type
+      this.reportingVisible = true
+    },
     close() {
       this.$emit('update:visible', false)
+    },
+    reload() {
+      this.$emit('reload')
+      this.close()
+    },
+    //终止
+    fStop() {
+      this.$confirm('确定终止当前盘点单吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api.seePsiWmsService.wmsblitemUpdateState({ id: this.detailForm.id })
+          .then(res => {
+            this.$emit('reload')
+            this.wmsreportinglossesInfo()
+          })
+          .finally(() => {
+
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      });
+    },
+    //完成盘点
+    clickFinish() {
+      let isCan = this.detailForm.commodityCodeList.every((item) => {
+        return item.commodityInfoList && item.commodityInfoList.length > 0
+      })
+      if (isCan) {
+        this.$confirm('确定完成盘点吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let params = {
+            blitemId: this.detailForm.id,
+            commodityList: this.detailForm.commodityCodeList
+          }
+          this.$api.seePsiWmsService.wmsblitemStart(params)
+            .then(res => {
+              this.$emit('reload')
+              this.wmsreportinglossesInfo()
+            })
+            .finally(() => {
+
+            })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });
+        });
+      } else {
+        this.$message({
+          type: 'error',
+          message: '请扫码添加完毕所有盘点商品！'
+        })
+      }
     },
   }
 }
