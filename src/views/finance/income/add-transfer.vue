@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 16:45:52
- * @Description: 新增收入流水
+ * @LastEditTime: 2019-11-21 17:02:59
+ * @Description: 新增转账单
 */
 <template>
   <el-dialog
@@ -15,7 +15,7 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{type=='add'?'新增收入流水':`编辑:${code}`}}</span>
+      <span>新增转账单</span>
       <div class="fr mr30">
         <el-button
           type="primary"
@@ -36,15 +36,8 @@
       class="d-auto-y"
       style="height:calc(100vh - 110px)"
     >
-      <!-- 单据信息 -->
-      <receipt-info
-        :span="12"
-        :hide="['incomeRecordCode']"
-        :data="form"
-      />
-
-      <!-- 备注信息 其他信息-->
-      <extras-info :data="form" />
+      <!-- 转账单表单 -->
+      <transferForm :data="form" />
     </el-form>
   </el-dialog>
 </template>
@@ -52,6 +45,7 @@
 // 填写报价信息
 
 import VisibleMixin from '@/utils/visibleMixin';
+import transferForm from './add-transfer-form'
 export default {
   prop: {
     incomeType: {
@@ -61,30 +55,21 @@ export default {
   },
   mixins: [VisibleMixin],
   components: {
-
+    transferForm
   },
   data() {
     return {
       loading: false,
       // 新增orEdit框内容
       form: {
-        accountPhone: '',// 联系方式",
-        accountDate: '', ///收款日期
-        attachList: [],// 附件",
-        companySettlementId: '', //公司结算账户id
-        fbiiCode: '',// 账单编号
-        feeType: '',// 费用类型",
-        id: '',// ,
-        incomeAmount: '',// 流水金额
-        incomeRecordCode: '',// 流水编号",
-        incomeType: 0,//收支类型    
-        matchState: '',//匹配状态
-        matchedAmount: '',// 已匹配金额
-        note: '',// 备注",
-        oppositeAccount: '',// 对方帐号",
-        payMethod: '',// 付款方式",
-        serialNumber: '',// 流水凭证号",
-        unmatchAmount: '',// 5432109876.12
+        amount: '',// 金额
+        companytleSetmentId: '', //转出结算账户id
+        companySettlementInfo: '', //转出结算账户信息
+        oppositeAccount: '',// 转出帐号
+        intOppositeAccount: '',//转入帐号
+        intoCompanySettlementId: '',//转入结算账户信息
+        intoCompanySettlementInfo: '',// "100000",
+
       }
     }
   },
@@ -105,10 +90,10 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true
-          let api = 'revenuerecordSave' //默认收入流水
+          let api = 'revenuerecordInsertTransfer' //默认收入流水
           // 如果是支出流水
           if (this.incomeType == 1) {
-            api = 'payrecordSave'
+            api = 'payrecordInsertTransfer'
           }
           this.$api.seePsiFinanceService[api](this.form)
             .then(res => {

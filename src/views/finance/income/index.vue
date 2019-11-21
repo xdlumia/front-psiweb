@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 10:57:03
+ * @LastEditTime: 2019-11-21 16:09:00
  * @Description: 销售-收入流水
  */
 <template>
@@ -28,6 +28,7 @@
         >新增支出流水</el-button>
         <el-button
           size="mini"
+          @click="addTransferVisible = true"
           icon="el-icon-plus"
         >新增转账单</el-button>
       </template>
@@ -50,16 +51,18 @@
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <add
-      :visible.sync="addVisible"
-      type="add"
-      @reload="this.$refs.table.reload()"
-    />
+
     <!-- 新增 -->
     <add
       :visible.sync="addVisible"
       type="add"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
+    />
+    <!-- 新增转账单 -->
+    <addTransfer
+      :visible.sync="addTransferVisible"
+      type="add"
+      @reload="$refs.table.reload()"
     />
     <!-- 详情 -->
     <detail
@@ -67,13 +70,14 @@
       :visible.sync="detailVisible"
       :rowData="rowData"
       :code="rowData.incomeRecordCode"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
   </div>
 </template>
 <script>
 import detail from './details' //详情
 import add from './add' //新增
+import addTransfer from './add-transfer' //新增转账单
 let filterOptions = [
   // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
   // { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
@@ -86,7 +90,8 @@ export default {
   name: 'return',
   components: {
     detail,
-    add
+    add,
+    addTransfer
   },
   props: {
     // 是否显示按钮
@@ -115,6 +120,7 @@ export default {
       // 当前行数据
       rowData: {},
       detailVisible: false,
+      addTransferVisible: false,
       addVisible: false,
     };
   },
