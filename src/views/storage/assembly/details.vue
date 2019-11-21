@@ -48,6 +48,7 @@
             <goodsAssemble
               :data='detailForm'
               :drawerData='drawerData'
+              @reload="reload"
             />
             <assemblyInfo :data='detailForm' />
             <assembledGoodsChoose
@@ -72,7 +73,7 @@
   </SideDetail>
 
 </template>
-<script>
+<script> 
 import goodsAssemble from '@/components/formComponents/goods-assemble'
 import assemblyInfo from '@/components/formComponents/assembly-info';
 import transfer from '@/components/formComponents/transfer';

@@ -61,6 +61,7 @@ export default {
         1: '部分拣货',
         2: '完成拣货'
       },
+      button: true,
       queryForm: {
         page: 1,
         limit: 20

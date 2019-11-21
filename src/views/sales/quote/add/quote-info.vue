@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 09:49:04
+ * @LastEditTime: 2019-11-20 19:24:47
  * @Description: 填写报价单详情
 */
 <template>
@@ -47,6 +47,7 @@
       />
       <!-- 自定义信息 -->
       <customInfo
+        busType="15"
         :data="data"
         id="customInfo"
       />

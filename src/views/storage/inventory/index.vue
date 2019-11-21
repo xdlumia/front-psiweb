@@ -13,6 +13,7 @@
       :filterOptions='filterOptions'
       :params="queryForm"
       :selection='false'
+      ref='allTable'
       api="seePsiWmsService.wmsblitemList"
       title="盘点单"
     >
@@ -40,7 +41,10 @@
       @update='update'
       v-if="tableVisible"
     />
-    <inventoryAdd :visible.sync='visible' />
+    <inventoryAdd
+      :visible.sync='visible'
+      @reload='reload'
+    />
   </div>
 </template>
 <script>
@@ -167,7 +171,6 @@ export default {
   methods: {
     //点击打开右侧边栏
     getTableVisible(data) {
-      console.log(data, 'rowrow')
       this.tableVisible = true
       this.drawerData = data
     },
@@ -175,8 +178,8 @@ export default {
     handleClick() {
 
     },
-    update() {
-      this.tableVisible = false
+    reload() {
+      this.$refs.allTable.reload()
     }
   }
 };

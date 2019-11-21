@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 18:52:44
+ * @LastEditTime: 2019-11-20 19:25:30
  * @Description: 销售出库单详情
 */
 <template>
@@ -143,9 +143,9 @@ export default {
         else if (label == '退货扫码') { this.outLibAddVisible = true }
       } else {
         let params = {
-          apprpvalNode: this.detail.apprpvalNode || 'XSHHD-001',
+          apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
-          processType: 'XSTHD-001',//报价单的权限吗
+          processType: 'XSTHD-001',
         }
         let apiObj = {
           '提交审核': {

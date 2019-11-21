@@ -25,7 +25,7 @@ export default {
       loading: false,// 加载中
       stateText: {},
       closeTimer: null,
-      alwaysDropAndCopyForm:false,
+      alwaysDropAndCopyForm: false,
     }
   },
   watch: {
@@ -73,8 +73,8 @@ export default {
         if (data) {
           data = JSON.parse(JSON.stringify(data))
           this.detail = data || {}
-          if(this.alwaysDropAndCopyForm) this.form = data;
-          else{
+          if (this.alwaysDropAndCopyForm) this.form = data;
+          else {
             // this.rowData = data || {}
             if (this.form && this.type == 'edit') {
               for (let key in this.form) {

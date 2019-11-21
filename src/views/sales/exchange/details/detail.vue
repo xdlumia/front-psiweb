@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 18:28:55
+ * @LastEditTime: 2019-11-20 19:27:32
  * @Description: 销售换货单详情-详情
 */
 <template>
@@ -44,6 +44,7 @@
     />
     <!-- 自定义信息 -->
     <custom-info
+      busType="18"
       disabled
       :data="data"
     />

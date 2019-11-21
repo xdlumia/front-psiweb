@@ -26,7 +26,7 @@
           size="mini"
           style="width:200px;"
           class="ml10 mt5"
-          v-on:keyup..native="getCommodityBySnCode"
+          v-on:keyup.native="getCommodityBySnCode"
         ></el-input>
       </div>
       <el-table
@@ -203,7 +203,7 @@ export default {
       default: false
     },
     commodityForm: {},//当前行商品信息
-    addForm: {},//用来取当前选择的库房信息
+    data: {},//用来取当前选择的库房信息
   },
   computed: {
     maxHeight() {
@@ -236,7 +236,7 @@ export default {
     getCommodityBySnCode() {
       let params = {
         snCode: this.snCode,
-        // wmsId: this.addForm.wmsId,
+        // wmsId: this.data.wmsId,
         putawayCommodityList: this.tableData,
         commodityCode: this.commodityForm.commodityCode,
         categoryCode: this.commodityForm.categoryCode,

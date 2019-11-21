@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 17:29:53
+ * @LastEditTime: 2019-11-20 18:24:50
  * @Description: 销售和采购调价单
 */
 <template>
@@ -26,9 +26,7 @@
         >关闭</el-button>
       </span>
     </div>
-    <d-tabs :style="{
-      maxHeight:maxHeight+'px'
-    }">
+    <d-tabs :style="{maxHeight:'calc(100vh - 110px)'}">
       <d-tab-pane
         label="商品信息"
         name="commodityInfo"
@@ -98,9 +96,10 @@ export default {
     from: String // 来源
   },
   computed: {
-    maxHeight() {
-      return window.innerHeight - 130;
-    }
+    // 使用calc属性
+    // maxHeight() {
+    //   return window.innerHeight - 130;
+    // }
   },
   data() {
     return {
