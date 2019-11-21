@@ -138,11 +138,11 @@
           :key="index"
           class="table-sta-item"
         >
-          <p class="d-nowrap d-text-gray f13 mb5">需要付(11笔)</p>
+          <p class="d-nowrap d-text-gray f13 mb5">{{item.name||'未命名'}}({{item.count}}笔)</p>
           <p
             class="f24"
             style="color:#333"
-          >{{item.amount | milliFormat}}</p>
+          >{{(item.amount||0) | milliFormat}}</p>
         </div>
       </div>
     </div>
