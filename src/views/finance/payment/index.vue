@@ -1,78 +1,42 @@
 /*
- * @Author: web.王晓冬
- * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 09:04:59
- * @Description: 销售-销售退货单
- */
+ * @Author: 赵伦
+ * @Date: 2019-10-25 13:37:41
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-20 18:21:13
+ * @Description: 付款单
+*/
 <template>
-  <div>
-    <table-view
-      busType="17"
-      ref="table"
-      :filter="true"
-      :moreButton="true"
-      :column="true"
-      title="销售退货单"
-      api="seePsiSaleService.salesreturnedList"
-      exportApi="seePsiSaleService.salesreturnedExport"
-      :params="Object.assign(queryForm,params)"
+  <div class="buying-requisition-page wfull hfull">
+    <tableView
       :filterOptions="filterOptions"
+      :params="params"
+      :selection="true"
+      api="seePsiFinanceService.paybillList"
+      busType="50"
+      exportApi="seePsiFinanceService.paybillExport"
+      title="付款单"
     >
-
-      <template slot-scope="{column,row,value}">
-        <!-- 销售换货单编号 -->
-        <span
-          class="d-text-blue d-pointer"
-          v-if="column.columnFields=='alterationCode'"
-          @click="eventHandle('returnVisible',row)"
-        > {{value}}</span>
-        <!-- 销售出库单编号 -->
-        <span
-          class="d-text-blue d-pointer"
-          v-else-if="column.columnFields=='salesShipmentCode'"
-          @click="eventHandle('outLibVisible',row)"
-        > {{value}}</span>
-        <!-- 状态 -->
-        <span v-else-if="column.columnFields=='state'">{{value}}</span>
-        <!-- 创建时间 -->
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+      <template slot="button">
+        <el-button @click="orderBuyingDetailRecVisible=true" size="mini" type="primary">批量付款申请</el-button>
+      </template>
+      <template slot-scope="{column,row,value,prop}">
+        <span v-if="prop=='purchaseApplyCode'">
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+        </span>
+        <span v-else-if="prop=='quotationCode'">
+          <el-link :underline="false" @click="showQuotationDetail=true,currentQuotationCode=value" class="f12" type="primary">{{value}}</el-link>
+        </span>
         <span v-else>{{value}}</span>
       </template>
-    </table-view>
-    <!-- 销售退货单详情 -->
-    <returnDetails
-      v-if="returnVisible"
-      :visible.sync="returnVisible"
-      :rowData="rowData"
-      :code="rowData.alterationCode"
-      @reload="this.$refs.table.reload()"
-    />
-    <!-- 销售出库单详情 -->
-    <outLibDetails
-      v-if="outLibVisible"
-      :visible.sync="outLibVisible"
-      :rowData="rowData"
-      :code="rowData.salesShipmentCode"
-      @reload="this.$refs.table.reload()"
-    />
+    </tableView>
   </div>
 </template>
 <script>
-import returnDetails from './details' //销售退货单详情
-let filterOptions = [
-  // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
-  { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
-  // { label: '商机阶段', prop: 'state', default: true, type: 'select', options: [] },
-  // { label: '跟进时间起止', prop: 'CreateTime', default: true, type: 'daterange' },
-  // { label: '维护人', prop: 'creator', default: true, type: 'employee' }
-]
-
+/**
+ * 采购-请购单
+ */
 export default {
-  name: 'return',
-  components: {
-    returnDetails,
-  },
+  components: {},
   props: {
     // 是否显示按钮
     button: {
@@ -82,50 +46,73 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => {
-        return {}
-      }
-    },
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   data() {
     return {
-      loading: false,
-      // 查询表单
-      queryForm: {
-        // status: "",
-        busType: 17,
-        page: 1,
-        limit: 20
-      },
-      // 列表状态
+      status: [],
+      showEdit: false,
+      showDetail: false,
+      addBorrowInVisible: false,
+      orderBuyingDetailRecVisible: false,
+      currentCode: '',
+      showQuotationDetail: false, // 打开报价单详情
+      currentQuotationCode: '', // 报价单编号
       stateText: {
-        '-1': '新建',
-        '0': '审核中',
-        '1': '待完成',
-        '2': '部分完成',
-        '3': '已完成',
-        '4': '已驳回',
+        // 单据状态0待完成 1部分完成 2完成3终止
+        0: '待完成',
+        1: '部分完成',
+        2: '完成',
+        3: '终止'
       },
-      // 筛选数据
-      filterOptions: filterOptions,
-      // 当前行数据
-      rowData: {},
-      returnVisible: false,
-      outLibVisible: false,
+      filterOptions: [
+        { label: '筛选类型', prop: 'searchType' },
+        { label: '账单编号', prop: 'billCode' },
+        { label: '账单类型（0收款/1付款）', prop: 'billType' },
+        { label: '结清状态', prop: 'settleStatus' },
+        { label: '逾期状态', prop: 'overSate' },
+        { label: '对方名称', prop: 'accountName' },
+        { label: '费用类型', prop: 'feeTypeCode' },
+        { label: '费用详情', prop: 'feeDetailCode' },
+        {
+          label: '最小预付/收金额',
+          prop: 'PredictAmount',
+          type: 'numberRange'
+        },
+        { label: '最小应付/收金额', prop: 'Amount', type: 'numberRange' },
+        { label: '最小实收/付金额', prop: 'FactAmount', type: 'numberRange' },
+        {
+          label: '最小应收/付日期',
+          prop: 'PayEndDate',
+          type: 'numberRange',
+          int: true
+        },
+        { label: '公司结算账户id', prop: 'companySettlementId' },
+        { label: '客户id', prop: 'clientId' },
+        { label: '客户类型(供应商/客户)', prop: 'clientType' },
+        { label: '来源', prop: 'source' },
+        { label: '业务编号', prop: 'busCode' },
+        { label: '业务单据状态', prop: 'busState' },
+        { label: '部门code', prop: 'deptTotalCode', type: 'dept' },
+        { label: '起始创建时间', prop: 'CreateTime', type: 'dateRange' },
+        { label: '创建人', prop: 'creator', type: 'employee' },
+        { label: '状态', prop: 'state' }
+      ]
     };
   },
-  computed: {
-
-  },
-  watch: {
-  },
+  mounted() {},
   methods: {
-    // 按钮功能操作
-    eventHandle(type, row) {
-      this[type] = true
-      this.rowData = row ? row : {}
-      return
+    logData(e) {
+      console.log(e);
     },
+    reload() {
+      this.$refs.tableView.reload();
+    }
   }
 };
 </script>
+<style lang="scss" scoped>
+.buying-requisition-page {
+}
+</style>

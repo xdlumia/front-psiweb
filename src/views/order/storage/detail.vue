@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:34:18
+ * @LastEditTime: 2019-11-20 17:42:29
  * @Description: 采购入库单
 */
 <template>
-  <sideDetail :status="status" :title="`采购入库单 ${detail?detail.putinCode:''}`" :visible.sync="showDetailPage" @close="close" width="990px">
+  <sideDetail :status="status" :title="`采购入库单 ${detail?detail.putinCode:''}`" :visible.sync="showDetailPage" @close="close" width="990px" v-loading="loading">
     <template slot="button">
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinSubmitApproval',{
