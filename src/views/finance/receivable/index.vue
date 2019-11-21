@@ -1,12 +1,17 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-04 13:36:20
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 17:27:53
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-21 19:03:44
  * @Description: 应收账单
 */
 <template>
-  <FinanceTodayPayable :button="button" :pageConfig="pageConfig" :params="params" />
+  <FinanceTodayPayable
+    :button="button"
+    @selection-change="selectionChange"
+    :pageConfig="pageConfig"
+    :params="params"
+  />
 </template>
 <script>
 export default {
@@ -39,6 +44,11 @@ export default {
         show: ['paybillLog']
       }
     };
+  },
+  methods: {
+    selectionChange(val) {
+      this.$emit("selection-change", val);
+    }
   }
 };
 </script>

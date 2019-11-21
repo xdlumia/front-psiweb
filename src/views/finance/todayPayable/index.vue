@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 17:27:35
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-21 19:02:59
  * @Description: 今日应付账单
 */
 <template>
@@ -13,17 +13,27 @@
       :exportApi="pageConfig.api.export"
       :filterOptions="filterOptions"
       :params="params"
+      :selectable="selectable"
       :selection="true"
+      @selection-change="handleSelectionChange"
       :title="pageConfig.title"
       ref="tableView"
       v-loading="loading"
     >
       <template slot="top-filter">
-        <bill-account-selector @change="reload" v-model="params.companySettlementId" />
+        <bill-account-selector
+          @change="reload"
+          v-model="params.companySettlementId"
+        />
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='billCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link
+            :underline="false"
+            @click="showDetail=true,currentCode=value"
+            class="f12"
+            type="primary"
+          >{{value}}</el-link>
         </span>
         <span v-else-if="['feeDetailCode','feeTypeCode'].includes(prop)">
           <span>{{value|dictionary('ZD_DY_LX')}}</span>
@@ -31,7 +41,13 @@
         <span v-else>{{value}}</span>
       </template>
     </tableView>
-    <Detail :code="currentCode" :pageConfig="pageConfig" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
+    <Detail
+      :code="currentCode"
+      :pageConfig="pageConfig"
+      :visible.sync="showDetail"
+      @reload="reload"
+      v-if="showDetail"
+    />
   </div>
 </template>
 <script>
@@ -57,21 +73,21 @@ export default {
     filterOptions: {
       type: Array,
       // prettier-ignore
-      default:()=>[ 
-        { label: '账单编号', prop: 'billCode',default:true },
-        { label: '结清状态', prop: 'settleStatus',default:true },
-        { label: '逾期状态', prop: 'overSate',default:true },
-        { label: '对方名称', prop: 'accountName',default:true }, 
-        { label: '费用详情', prop: 'feeDetailCode',default:true },
-        { label: '预付/收金额', prop: 'PredictAmount', type: 'numberRange',default:true },
-        { label: '应付/收金额', prop: 'Amount', type: 'numberRange',default:true },
-        { label: '实收/付金额', prop: 'FactAmount', type: 'numberRange',default:true },
-        { label: '应收/付日期', prop: 'PayEndDate', type: 'numberRange', int: true ,default:true}, 
+      default: () => [
+        { label: '账单编号', prop: 'billCode', default: true },
+        { label: '结清状态', prop: 'settleStatus', default: true },
+        { label: '逾期状态', prop: 'overSate', default: true },
+        { label: '对方名称', prop: 'accountName', default: true },
+        { label: '费用详情', prop: 'feeDetailCode', default: true },
+        { label: '预付/收金额', prop: 'PredictAmount', type: 'numberRange', default: true },
+        { label: '应付/收金额', prop: 'Amount', type: 'numberRange', default: true },
+        { label: '实收/付金额', prop: 'FactAmount', type: 'numberRange', default: true },
+        { label: '应收/付日期', prop: 'PayEndDate', type: 'numberRange', int: true, default: true },
         { label: '客户', prop: 'clientId' },
         { label: '关联单据编号', prop: 'busCode' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange' },
-        { label: '创建人', prop: 'creator', type: 'employee' }, 
+        { label: '创建人', prop: 'creator', type: 'employee' },
       ]
     },
     pageConfig: {
@@ -92,16 +108,31 @@ export default {
       })
     }
   },
-  mounted() {},
+  mounted() { },
   data() {
     return {
       status: [],
       loading: false,
       showDetail: false,
-      currentCode: ''
+      currentCode: '',
+      multipleSelection: [],
     };
   },
   methods: {
+    // 多选
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+      this.$emit("selection-change", val);
+    },
+    // 选中一个的时候禁用
+    selectable(row, index) {
+      if (this.multipleSelection.length > 0) {
+        return this.multipleSelection.every(
+          item => item.id === row.id
+        );
+      }
+      return true;
+    },
     reload() {
       this.$refs.tableView.reload();
     }

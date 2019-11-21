@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 17:54:47
+ * @LastEditTime: 2019-11-21 19:00:07
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -123,6 +123,7 @@
     >
       <el-table-column
         v-if="selection"
+        :selectable="selectable"
         :fixed="true"
         width="50"
         type="selection"
@@ -198,6 +199,7 @@ export default {
     },
     // 筛选配置
     filterOptions: Array,
+    selectable: Function,
     // 自定义头
     // headers: {
     //   type: Array,

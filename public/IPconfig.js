@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:29
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 15:57:23
+ * @LastEditTime: 2019-11-21 19:33:40
  * @Description: ip配置文件
  */
 let apiUrl = '/apis/'
@@ -28,8 +28,8 @@ const baseURL = {
   seeExternService: apiUrl + 'see-extern-service', // 9024 see-extern-service
   seeGoodsService: apiUrl + 'see-goods-service', // 
   seePsiWmsService: apiUrl + 'see-psi-wms-service',
-  seePsiFinanceService: 'http://10.168.1.230:9215'  //欢欢本地
-  // seePsiFinanceService: apiUrl + 'see-psi-finance-service' // 财务
+  // seePsiFinanceService: 'http://10.168.1.230:9215'  //欢欢本地
+  seePsiFinanceService: apiUrl + 'see-psi-finance-service' // 财务
 }
 window.g = {
   ApiUrl: baseURL
