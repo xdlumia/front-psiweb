@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 11:03:19
+ * @LastEditTime: 2019-11-21 18:21:08
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -45,7 +45,7 @@
         <!-- 备注信息 其他信息-->
         <extras-info
           disabled
-          :data="form"
+          :data="detail"
         />
 
       </el-form>
@@ -76,17 +76,17 @@ export default {
         { label: '收款单匹配', type: 'primary', authCode: '' },
         { label: '删除', type: 'danger', authCode: '' },
       ],
-      editVisible: false,
+      receivableVisible: false,
       /**
        * 根据当前状态判断显示哪些按钮
        */
       // currStatus: 3, // 当前数据状态
       currStatusType: {
-        '-1': ['删除', '收款单匹配'], // 未匹配
-        '0': [], // 已匹配
-        '1': ['收款单匹配'], // 部分匹配
-        '2': ['删除', '收款单匹配'], //未匹配
-        '3': ['删除'], //未匹配借
+        '0': ['删除', '收款单匹配'], // 未匹配
+        '1': [], // 已匹配
+        '2': ['收款单匹配'], // 部分匹配
+        '3': ['删除', '收款单匹配'], //未匹配
+        '4': ['删除'], //未匹配借
       },
     }
   },
@@ -109,7 +109,7 @@ export default {
     },
     buttonsClick(label) {
       if (label == '收款单匹配') {
-        this.editVisible = true
+        this.receivableVisible = true
       } else {
         let params = {
           id: this.detail.id,
@@ -117,7 +117,7 @@ export default {
         }
         let apiObj = {
           '删除': {
-            api: 'seePsiSaleService.salesreturnedLogicDelete',
+            api: 'seePsiFinanceService.salesreturnedLogicDelete',
             data: params,
             needNote: null
           }

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 17:02:59
+ * @LastEditTime: 2019-11-21 17:43:50
  * @Description: 新增转账单
 */
 <template>
@@ -34,7 +34,7 @@
       :model="form"
       label-position="top"
       class="d-auto-y"
-      style="height:calc(100vh - 110px)"
+      style="max-height:calc(100vh - 110px)"
     >
       <!-- 转账单表单 -->
       <transferForm :data="form" />
