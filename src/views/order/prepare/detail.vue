@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:33:32
+ * @LastEditTime: 2019-11-21 09:19:58
  * @Description: 备货单详情
 */
 <template>
@@ -59,7 +59,7 @@
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form size="mini" v-if="detail&&form">
+        <el-form size="mini" v-if="detail&&showDetailPage">
           <form-card id="arrivalInfo" title="到货信息">
             <el-row :gutter="10">
               <el-col :span="8">
@@ -68,7 +68,7 @@
                     :placeholder="`请选择采购预计到货时间`"
                     class="wfull"
                     disabled
-                    v-model="form.purchaseArrivalTime"
+                    v-model="detail.purchaseArrivalTime"
                     value-format="timestamp"
                   />
                 </el-form-item>

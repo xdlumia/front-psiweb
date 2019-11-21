@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-31 18:55:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-19 11:36:37
+ * @LastEditTime: 2019-11-20 20:47:52
  * @Description: description
  -->
 /*
@@ -81,7 +81,8 @@ class="backlog">待办事项</el-button>
                           <el-menu-item
                             v-for="(childMenu,childMenuKey) of chunkSubmenu"
                             :key="childMenuKey"
-                            :index="childMenu.url+''"
+                            :index="handleMenuUrl(childMenu.url)"
+                            @click="buttonClick(childMenu.url)"
                           >{{childMenu.name}}</el-menu-item>
                         </div>
                       </div>
@@ -124,6 +125,7 @@ class="backlog">待办事项</el-button>
         </el-main>
       </el-container>
     </div>
+    <add-fee :visible.sync="addFeeVisible" v-if="addFeeVisible"></add-fee>
   </d-layout>
 </template>
 
@@ -131,12 +133,14 @@ class="backlog">待办事项</el-button>
 // 菜单分割长度配置
 const WRAP_LENGTH = 5
 import chunk from '@/utils/chunk'
+import addFee from '@/views/finance/fee/add'
 
 export default {
   name: 'App',
-  components: {},
+  components: { addFee },
   data() {
     return {
+      addFeeVisible: false,
       avatarUrl: require('@/assets/img/adminimg.png'),
       isLockkScreen: false,
       loading: false,
@@ -268,6 +272,16 @@ export default {
     }
   },
   methods: {
+    handleMenuUrl(url) {
+      if (url === '/finance/addFee') {
+        return ''
+      }
+      return url
+    },
+    buttonClick(url) {
+      console.log(url)
+      this.addFeeVisible = url === '/finance/addFee'
+    },
     handleSelect() { },
     // 退出登录
     logout() {

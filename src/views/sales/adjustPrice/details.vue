@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 17:44:45
+ * @LastEditTime: 2019-11-20 19:29:31
  * @Description: 账单调整详情
 */
 <template>
@@ -133,9 +133,9 @@ export default {
         if (label == '编辑') { this.editVisible = true }
       } else {
         let params = {
-          apprpvalNode: this.detail.apprpvalNode || 'XSHHD-001',
+          apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
-          processType: 'XSTHD-001',//报价单的权限吗
+          processType: 'psi_adjustPrice_1003',
         }
         let apiObj = {
           '提交审核': {

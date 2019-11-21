@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 14:49:43
+ * @LastEditTime: 2019-11-20 19:23:24
  * @Description: 报价单详情
 */
 <template>
@@ -165,6 +165,11 @@ export default {
         else if (label == '生成请购单') { this.buyingAddVisible = true }
         // this.$emit('buttonClick', label, this.drawerData.data)
       } else {
+        let params = {
+          apprpvalNode: this.detail.apprpvalNode,
+          id: this.detail.id,
+          processType: 'BJD-001',//报价单的权限吗
+        }
         let apiObj = {
           '提交审核': {
             api: 'seePsiSaleService.salesquotationApproval',

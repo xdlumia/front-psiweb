@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 10:51:46
+ * @LastEditTime: 2019-11-20 19:23:13
  * @Description: 销售出库单详情
 */
 <template>
@@ -205,6 +205,11 @@ export default {
 
       // 需要二次确认操作
       else {
+        let params = {
+          apprpvalNode: this.detail.apprpvalNode,
+          id: this.detail.id,
+          processType: 'XSCKD-001',
+        }
         let apiObj = {
           '提交审核': {
             api: 'seePsiSaleService.salesshipmentApproval',
