@@ -24,7 +24,7 @@
       </div>
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
-          <el-form>
+          <el-form size="mini">
             <goodsExported :detailForm='detailForm' />
             <deliverInfo
               :data='detailForm.salesQuotationEntity'
@@ -125,6 +125,7 @@ export default {
     position: relative;
     /deep/ {
       & > .el-tabs__header {
+        width: 100% !important;
         background-color: #f2f2f2;
         padding: 0 20px;
         margin-bottom: 0;

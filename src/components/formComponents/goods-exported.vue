@@ -25,7 +25,7 @@
         :params="{busCode:detailForm.salesSheetCode,busType:5}"
         ref="companyTable"
         class="college-main"
-        style="min-height:250px"
+        style="max-height:300px"
         :tree-props="{children: 'id', hasChildren: 'id'}"
       >
         <el-table-column

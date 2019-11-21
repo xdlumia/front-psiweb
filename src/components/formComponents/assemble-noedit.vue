@@ -21,6 +21,8 @@
         </span>
       </div>
       <el-table
+        size="mini"
+        border
         :data="data.commodityList"
         ref="companyTable"
         row-key="commodityCode"
