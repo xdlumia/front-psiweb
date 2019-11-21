@@ -21,7 +21,7 @@
       row-key="name"
       size="mini"
     >
-      <!-- <el-table-column
+      <!-- <el-table-column  
         class-name="hide-children"
         min-width="1"
         width="1"
@@ -76,6 +76,7 @@
           class="d-relative"
         >
           <commoditySelector
+            :params='{wmsId:addform.wmsId}'
             @choose='commodityChoose(arguments,scope)'
             type="code"
             v-model="scope.row.commodityCode"
@@ -92,6 +93,7 @@
           class="d-relative"
         >
           <commoditySelector
+            :params='{wmsId:addform.wmsId}'
             @choose='commodityChoose(arguments,scope)'
             v-model="scope.row.goodsName"
             :codes='codes'
@@ -148,7 +150,7 @@
 import commodityChoose from './commodity-choose'
 import commoditySelector from '@/components/formComponents/commodity-selector';
 export default {
-  props: ['addForm'],
+  props: ['addform'],
   components: { commodityChoose, commoditySelector },
   data() {
     return {
