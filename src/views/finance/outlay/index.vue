@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 18:06:07
+ * @LastEditTime: 2019-11-21 18:18:26
  * @Description: 销售-支出流水
  */
 <template>
@@ -54,7 +54,9 @@
           class="d-text-blue d-pointer"
           v-if="column.columnFields=='incomeRecordCode'"
           @click="eventHandle('detailVisible',row)"
-        > 11{{value}}</span>
+        > {{value}}</span>
+        <!-- 匹配状态 -->
+        <span v-else-if="column.columnFields=='matchState'"> {{stateText[value]}}</span>
 
         <span v-else>{{value}}</span>
       </template>
@@ -121,6 +123,11 @@ export default {
   },
   data() {
     return {
+      stateText: {
+        '0': '未匹配',
+        '1': '部分匹配',
+        '2': '已匹配',
+      },
       loading: false,
       // 查询表单
       queryForm: {

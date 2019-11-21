@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 18:04:54
+ * @LastEditTime: 2019-11-21 18:19:18
  * @Description: 销售-收入流水
  */
 <template>
@@ -68,8 +68,9 @@
           v-if="column.columnFields=='incomeRecordCode'"
           @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
-        <!-- 状态 -->
-        <span v-else-if="column.columnFields=='state'">{{value}}</span>
+        <!-- 匹配状态 -->
+        <span v-else-if="column.columnFields=='matchState'"> {{stateText[value]}}</span>
+
         <!-- 创建时间 -->
         <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
@@ -137,6 +138,11 @@ export default {
   },
   data() {
     return {
+      stateText: {
+        '0': '未匹配',
+        '1': '部分匹配',
+        '2': '已匹配',
+      },
       loading: false,
       // 查询表单
       queryForm: {
