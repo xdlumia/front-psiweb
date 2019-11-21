@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 15:25:32
+ * @LastEditTime: 2019-11-21 16:00:36
  * @Description: 付款 新增流水 单据信息
 */
 <template>
@@ -32,6 +32,7 @@
             </el-input>
             <!-- 对方账号 -->
             <el-autocomplete
+              class="wfull"
               v-if="item.type =='autocomplete'"
               :disabled='disabled'
               v-model="data[item.prop]"
@@ -45,7 +46,7 @@
                 @click="addAccountVisible = true"
               ></el-button>
             </el-autocomplete>
-            <!-- 对方账号 -->
+            <!-- 结算账号 -->
             <el-select
               class="wfull"
               v-else-if="item.type =='select' && item.prop == 'companySettlementId'"
@@ -153,14 +154,14 @@ export default {
 
   },
   methods: {
+    // 选择对方账号
     choose(item) {
-      // bankAccount  bankAccount  bankAccount
       let [row] = item
-      console.log(row);
-
+      this.data.oppositeAccount = row.bankAccount
     },
-    querySearchAsync() {
-
+    querySearchAsync(query, cb) {
+      // { value: "balel"}
+      cb([])
     },
   }
 
