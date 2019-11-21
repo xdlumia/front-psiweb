@@ -2,26 +2,49 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-01 15:55:04
+ * @LastEditTime: 2019-11-21 17:54:18
  * @Description: 付款单
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showPop" @close="$emit('update:visible',false)" title="付款单" width="990px">
+  <sideDetail :status="status" :visible="showDetailPage" @close="close" title="付款单" v-loading="loading" width="990px">
     <template slot="button">
-      <el-button size="mini" type="primary" @click="showApply=true">付款申请</el-button>
-      <el-button size="mini" type="primary">通过</el-button>
-      <el-button size="mini" type="primary">驳回</el-button>
-      <el-button size="mini" type="primary">复核通过</el-button>
-      <el-button size="mini" type="primary">付款</el-button>
+      <el-button @click="showApply=true" size="mini" type="primary">付款申请</el-button>
+      <el-button
+        @click="$submission('seePsiFinanceService.paybillPassApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+          processType: 'psi_finance_pay_bill_01'
+        },'通过')"
+        size="mini"
+        type="primary"
+      >通过</el-button>
+      <el-button
+        @click="$submission('seePsiFinanceService.paybillReject',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+          processType: 'psi_finance_pay_bill_01'
+        },'驳回',true)"
+        size="mini"
+        type="danger"
+      >驳回</el-button>
+      <el-button
+        @click="$submission('seePsiFinanceService.paybillAuditApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+          processType: 'psi_finance_pay_bill_01'
+        },'复核通过')"
+        size="mini"
+        type="primary"
+      >复核通过</el-button>
+      <el-button @click="showAddIncoming=true,addIncoming()" size="mini" type="primary">付款</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form>
-          <approve-panel></approve-panel>
-          <paybill-detail></paybill-detail>
-          <receiver-info></receiver-info>
-          <payment-log></payment-log>
-          <extras-info></extras-info>
+        <el-form size="mini" v-if="detail&&showDetailPage">
+          <!-- <approve-panel></approve-panel> -->
+          <paybill-detail :data="detail" :hide="['billType','lateFeeAmount']" disabled />
+          <payer-info :data="detail" disabled />
+          <extras-info :data="detail" @change="saveExtras" can-modify disabled />
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="采购单">采购单</el-tab-pane>
@@ -30,43 +53,81 @@
       <el-tab-pane label="销售退货单">销售退货单</el-tab-pane>
       <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
     </el-tabs>
-    <Apply :visible.sync="showApply" />
+    <Apply :rowData="detail" :visible.sync="showApply" @reload="setEdit(),$reload()" v-if="showApply" />
+    <AddIncoming :incomeType="1" :visible.sync="showAddIncoming" code ref="addIncoming" v-if="showAddIncoming" />
   </sideDetail>
 </template>
 <script>
 import Apply from './apply'; // 付款单
+import AddIncoming from '@/views/finance/income/add'; // 新增流水
+import VisibleMixin from '@/utils/visibleMixin';
 
 export default {
+  mixins: [VisibleMixin],
   components: {
-    Apply
+    Apply,
+    AddIncoming
   },
-  props: {
-    visible: Boolean
-  },
+  props: {},
   data() {
     return {
-      showPop: false,
       showApply: false,
-      status: [
-        { label: '状态', value: '新建' },
-        { label: '单据创建人', value: '张收纳' },
-        { label: '创建部门', value: '销售部' },
-        { label: '创建时间', value: +new Date(), isTime: true },
-        { label: '来源', value: '新建' }
-      ]
+      showAddIncoming: false
     };
   },
-  mounted() {
-    this.checkVisible();
-  },
-  watch: {
-    visible() {
-      this.checkVisible();
-    }
-  },
+  mounted() {},
+  watch: {},
   methods: {
-    checkVisible() {
-      this.showPop = this.visible;
+    async getDetail() {
+      if (this.code) {
+        let {
+          data
+        } = await this.$api.seePsiFinanceService.paybillGetInfoByCode({
+          code: this.code
+        });
+        return data;
+      } else if (this.rowData) {
+        return this.rowData;
+      }
+    },
+    async saveExtras({ attachList, note }) {
+      this.loading = true;
+      try {
+        await this.$api.seePsiFinanceService.paybillUpdate({
+          id: this.detail.id,
+          billCode: this.detail.billCode,
+          attachList,
+          note
+        });
+        this.setEdit();
+      } catch (error) {}
+      this.loading = false;
+    },
+    addIncoming() {
+      this.$nextTick(() => {
+        Object.assign(this.$refs.addIncoming.form, {
+          incomeAmount: this.detail.amount,
+          accountDate: +new Date(),
+          oppositeAccount: this.detail.accountName,
+          accountPhone: this.detail.linkmanPhone
+        });
+        this.$refs.addIncoming.saveHandle = () => this.saveIncoming();
+      });
+    },
+    async saveIncoming() {
+      this.loading = true;
+      try {
+        await this.$refs.addIncoming.$refs.form.validate();
+        await this.$api.seePsiFinanceService.paybillPay(
+          Object.assign(
+            {
+              fbiiCode: this.detail.billCode
+            },
+            this.$refs.addIncoming.form
+          )
+        );
+      } catch (error) {}
+      this.loading = false;
     }
   }
 };

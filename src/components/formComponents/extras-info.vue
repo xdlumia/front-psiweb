@@ -2,74 +2,47 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-13 10:49:42
+ * @LastEditTime: 2019-11-21 10:18:11
  * @Description: 备注信息 字段已绑定 1 
 */
 <template>
   <form-card title="备注信息">
     <div slot="title">
       <span>备注信息</span>
-      <span
-        class="fr"
-        v-if="isEdit"
-      >
-        <el-link
-          :underline="false"
-          type="primary"
-          v-if="isEdit"
-        >编辑</el-link>
+      <span class="fr" v-if="canModify">
+        <el-link :underline="false" @click="startEdit" type="primary" v-if="!isEdit">编辑</el-link>
         <span v-else>
-          <el-link
-            :underline="false"
-            class="mr10"
-            type="primary"
-          >保存</el-link>
-          <el-link
-            :underline="false"
-            type="primary"
-          >取消</el-link>
+          <el-link :underline="false" @click="save" class="mr10" type="primary">保存</el-link>
+          <el-link :underline="false" @click="cancel" type="primary">取消</el-link>
         </span>
       </span>
     </div>
     <el-row>
-      <el-col
-        :span="24"
-        class
-      >
-        <el-form-item
-          label="备注"
-          size="mini"
-          prop="note"
-        >
+      <el-col :span="24" class>
+        <el-form-item label="备注" prop="note" size="mini">
           <!-- <div
             class="d-text-gray mt10 d-elip wfull"
             v-if="!canEditable"
-          >{{data.note}}</div> -->
+          >{{data.note}}</div>-->
           <el-input
+            :disabled="!canEditable"
             :rows="3"
             maxlength="300"
             placeholder="请输入备注信息"
             show-word-limit
             type="textarea"
-            :disabled="disabled"
             v-model="data.note"
           />
         </el-form-item>
       </el-col>
-      <el-col
-        :span="24"
-        v-if="needUpload"
-      >
-        <el-form-item
-          label="上传附件:"
-          prop="attachList"
-        >
+      <el-col :span="24" v-if="needUpload">
+        <el-form-item label="上传附件:" prop="attachList">
           <!-- <div
             class="d-text-gray mt10 d-elip wfull"
             v-if="!canEditable"
-          >上传附件</div> -->
+          >上传附件</div>-->
           <upload-file
-            :disabled="disabled"
+            :disabled="!canEditable"
             :limit="{
             type:['doc','pdf','xls','ppt','docx','xlsx','pptx','zip','rar'],
           }"
@@ -78,15 +51,8 @@
           >
             <div class="al">
               <!-- 产品刘晨辉说，附件最多上传10个 -->
-              <el-button
-                size="mini"
-                type="primary"
-                v-if="!disabled && (data.attachList || []).length<10"
-              >点击上传</el-button>
-              <div
-                :key="item.url"
-                v-for="(item,i) of data.attachList || []"
-              >
+              <el-button size="mini" type="primary" v-if="canEditable && (data.attachList || []).length<10">点击上传</el-button>
+              <div :key="item.url" v-for="(item,i) of data.attachList || []">
                 <span class="el-icon-document"></span>
                 <span
                   @click="openFile(item)"
@@ -94,11 +60,7 @@
                   style="vertical-align:top;"
                 >{{item.fileName}}</span>
                 <span>
-                  <el-link
-                    v-if="!disabled"
-                    @click.stop="delFile(i)"
-                    type="info"
-                  >
+                  <el-link @click.stop="delFile(i)" type="info" v-if="canEditable">
                     <i class="el-icon-circle-close"></i>
                   </el-link>
                 </span>
@@ -155,6 +117,7 @@ export default {
   data() {
     return {
       isEdit: false,
+      preData: null
       // fileList: []
     };
   },
@@ -167,13 +130,13 @@ export default {
     // this.init();
   },
   computed: {
-    // canEditable() {
-    //   if (this.canModify) {
-    //     return this.edit;
-    //   } else {
-    //     return !this.disabled;
-    //   }
-    // }
+    canEditable() {
+      if (this.canModify) {
+        return this.isEdit;
+      } else {
+        return !this.disabled;
+      }
+    }
   },
   methods: {
     // init() {
@@ -185,7 +148,7 @@ export default {
     //   }
     // },
     uploadFile({ name, url, oldName }) {
-      if(!this.data.attachList) this.$set(this.data,'attachList',[])
+      if (!this.data.attachList) this.$set(this.data, 'attachList', []);
       this.data.attachList = this.data.attachList || [];
       this.data.attachList.push({
         fileName: oldName,
@@ -197,7 +160,23 @@ export default {
       // this.fileList.splice(i, 1);
     },
     openFile(item) {
-      window.open(item.fileUrl, '_blank')
+      window.open(item.fileUrl, '_blank');
+    },
+    cancel() {
+      this.data.attachList = this.preData.attachList;
+      this.data.note = this.preData.note;
+      this.isEdit = false;
+    },
+    save() {
+      this.$emit('change', {
+        attachList: this.data.attachList,
+        note: this.data.note
+      });
+      this.isEdit = false;
+    },
+    startEdit() {
+      this.isEdit = true;
+      this.preData = JSON.parse(JSON.stringify(this.data));
     }
   }
 };

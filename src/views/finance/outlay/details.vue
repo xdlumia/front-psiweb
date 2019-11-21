@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 10:36:01
+ * @LastEditTime: 2019-11-21 18:12:50
  * @Description: 财务-支出流水详情
 */
 <template>
@@ -44,37 +44,29 @@
         />
 
         <!-- 其他费用 -->
-        <other-fee
+        <extras-info
           disabled
           :data="detail"
         />
 
       </el-form>
     </side-detail>
-    <!-- 退货单新增/编辑 -->
-    <add
-      :visible.sync="editVisible"
-      :code="code"
-      type="edit"
-      :rowData="rowData"
-    />
+
   </div>
 </template>
 <script>
-import add from './add' // 新增退货单
 import VisibleMixin from '@/utils/visibleMixin';
 import { log } from 'util';
 export default {
   mixins: [VisibleMixin],
   components: {
-    add
+
   },
   data() {
     return {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '收款单匹配', type: 'primary', authCode: '' },
         { label: '删除', type: 'danger', authCode: '' },
       ],
       editVisible: false,
@@ -83,11 +75,10 @@ export default {
        */
       // currStatus: 3, // 当前数据状态
       currStatusType: {
-        '-1': ['删除', '收款单匹配'], // 未匹配
-        '0': [], // 已匹配
-        '1': ['收款单匹配'], // 部分匹配
-        '2': ['删除', '收款单匹配'], //未匹配
-        '3': ['删除'], //未匹配借
+        '0': ['删除'], // 未匹配
+        '1': [], // 已匹配
+        '2': ['部分匹配'], // 部分匹配
+        '3': [], //未匹配
       },
     }
   },
@@ -104,33 +95,25 @@ export default {
   methods: {
     async getDetail() {
       if (this.code) {
-        let { data } = await this.$api.seePsiFinanceService.revenuerecordGetInfoByCode({ code: this.code })
+        let { data } = await this.$api.seePsiFinanceService.payrecordGetInfoByCode({ code: this.code })
         return data;
       }
     },
     buttonsClick(label) {
-      if (label == '收款单匹配') {
-        this.editVisible = true
-      } else {
-        let params = {
-          id: this.detail.id,
-          processType: 'XSTHD-001',//报价单的权限吗
+      let apiObj = {
+        '删除': {
+          api: 'seePsiFinanceService.payrecordDelete',
+          data: { id: this.detail.id },
+          needNote: null
         }
-        let apiObj = {
-          '删除': {
-            api: 'seePsiSaleService.salesreturnedLogicDelete',
-            data: params,
-            needNote: null
-          }
-        }
-        // 公共方法 mixin 引进来的
-        this.$submission(
-          apiObj[label].api,
-          apiObj[label].data,
-          label,
-          apiObj[label].needNote)
       }
-    },
+      // 公共方法 mixin 引进来的
+      this.$submission(
+        apiObj[label].api,
+        apiObj[label].data,
+        label,
+        apiObj[label].needNote)
+    }
   },
   beforeDestroy() {
   }

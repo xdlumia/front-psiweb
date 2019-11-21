@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 10:57:03
+ * @LastEditTime: 2019-11-21 18:19:18
  * @Description: 销售-收入流水
  */
 <template>
@@ -19,15 +19,45 @@
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
     >
+      <template slot="top-filter">
+        <el-row
+          style="width:300px;flex:0 0 300px;"
+          type="flex"
+          justify="space-between"
+          align="center"
+        >
+          <el-col :span="6">
+            <span style="line-height:28px;">结算账户：</span>
+          </el-col>
+          <el-col :span="18">
+            <el-select
+              size="mini"
+              v-model="queryForm.companySettlementId"
+            >
+              <el-option
+                value
+                label="全部"
+              ></el-option>
+              <el-option
+                v-for="(item, index) in settlementAccount"
+                :key="index"
+                :value="item.id"
+                :label="`${item.corporationName}${item.accountType}(${item.account})`"
+              ></el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+      </template>
       <template slot="button">
         <el-button
           type="primary"
           size="mini"
           icon="el-icon-plus"
           @click="addVisible = true"
-        >新增支出流水</el-button>
+        >新增收入流水</el-button>
         <el-button
           size="mini"
+          @click="addTransferVisible = true"
           icon="el-icon-plus"
         >新增转账单</el-button>
       </template>
@@ -38,28 +68,28 @@
           v-if="column.columnFields=='incomeRecordCode'"
           @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
-        <span
-          class="d-text-blue d-pointer"
-          v-else-if="column.columnFields=='salesShipmentCode'"
-          @click="eventHandle('outLibVisible',row)"
-        > {{value}}</span>
-        <!-- 状态 -->
-        <span v-else-if="column.columnFields=='state'">{{value}}</span>
+        <!-- 匹配状态 -->
+        <span v-else-if="column.columnFields=='matchState'"> {{stateText[value]}}</span>
+
         <!-- 创建时间 -->
         <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <add
-      :visible.sync="addVisible"
-      type="add"
-      @reload="this.$refs.table.reload()"
-    />
+
     <!-- 新增 -->
     <add
       :visible.sync="addVisible"
+      :incomeType="0"
       type="add"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
+    />
+    <!-- 新增转账单 -->
+    <addTransfer
+      :incomeType="0"
+      :visible.sync="addTransferVisible"
+      type="add"
+      @reload="$refs.table.reload()"
     />
     <!-- 详情 -->
     <detail
@@ -67,13 +97,15 @@
       :visible.sync="detailVisible"
       :rowData="rowData"
       :code="rowData.incomeRecordCode"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
   </div>
 </template>
 <script>
 import detail from './details' //详情
 import add from './add' //新增
+import addTransfer from './add-transfer' //新增转账单
+import invoiceMixin from '../invoice-mixins'
 let filterOptions = [
   // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
   // { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
@@ -83,10 +115,12 @@ let filterOptions = [
 ]
 
 export default {
-  name: 'return',
+  name: 'financeIncome',
+  mixins: [invoiceMixin],
   components: {
     detail,
-    add
+    add,
+    addTransfer
   },
   props: {
     // 是否显示按钮
@@ -104,6 +138,11 @@ export default {
   },
   data() {
     return {
+      stateText: {
+        '0': '未匹配',
+        '1': '部分匹配',
+        '2': '已匹配',
+      },
       loading: false,
       // 查询表单
       queryForm: {
@@ -115,13 +154,26 @@ export default {
       // 当前行数据
       rowData: {},
       detailVisible: false,
+      addTransferVisible: false,
       addVisible: false,
     };
   },
   computed: {
-
+    settlementAccount() {
+      return [].concat(...this.accountList.map(item => {
+        return [].concat(...((item.commonCorporationAccountEntities || []).map(sub => {
+          sub.accountType = this.$options.filters.dictionary(sub.accountType, 'PSI_GSSZ_ZHLX')
+          return Object.assign(sub, { corporationName: item.corporationName })
+        })))
+      }))
+    }
   },
   watch: {
+    'queryForm.companySettlementId': {
+      handler(newValue) {
+        this.$refs.table.reload();
+      }
+    }
   },
   methods: {
     // 按钮功能操作

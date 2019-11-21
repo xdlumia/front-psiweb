@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:29
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-21 18:56:18
+ * @LastEditTime: 2019-11-21 19:15:33
  * @Description: ip配置文件
  */
 const apiUrl = '/apis/'

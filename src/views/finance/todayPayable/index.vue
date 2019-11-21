@@ -1,79 +1,47 @@
 /*
- * @Author: web.王晓冬
- * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 09:02:36
- * @Description: 销售-销售退货单
- */
+ * @Author: 赵伦
+ * @Date: 2019-10-25 13:37:41
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-21 18:01:58
+ * @Description: 今日应付账单
+*/
 <template>
-  <div>
-    <table-view
-      busType="17"
-      ref="table"
-      :filter="true"
-      :moreButton="true"
-      :column="true"
-      title="销售退货单"
-      api="seePsiSaleService.salesreturnedList"
-      exportApi="seePsiSaleService.salesreturnedExport"
-      :params="Object.assign(queryForm,params)"
+  <div class="buying-requisition-page wfull hfull">
+    <tableView
+      :api="pageConfig.api.list"
+      :busType="pageConfig.busType"
+      :exportApi="pageConfig.api.export"
       :filterOptions="filterOptions"
+      :params="params"
+      :selection="true"
+      :title="pageConfig.title"
+      ref="tableView"
+      v-loading="loading"
     >
-
-      <template slot-scope="{column,row,value}">
-        <!-- 销售换货单编号 -->
-        <span
-          class="d-text-blue d-pointer"
-          v-if="column.columnFields=='alterationCode'"
-          @click="eventHandle('returnVisible',row)"
-        > {{value}}</span>
-        <!-- 销售出库单编号 -->
-        <span
-          class="d-text-blue d-pointer"
-          v-else-if="column.columnFields=='salesShipmentCode'"
-          @click="eventHandle('outLibVisible',row)"
-        > {{value}}</span>
-        <!-- 状态 -->
-        <span v-else-if="column.columnFields=='state'">{{value}}</span>
-        <!-- 创建时间 -->
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+      <template slot="top-filter">
+        <bill-account-selector @change="reload" v-model="params.companySettlementId" />
+      </template>
+      <template slot-scope="{column,row,value,prop}">
+        <span v-if="prop=='billCode'">
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+        </span>
+        <span v-else-if="['feeDetailCode','feeTypeCode'].includes(prop)">
+          <span>{{value|dictionary('ZD_DY_LX')}}</span>
+        </span>
         <span v-else>{{value}}</span>
       </template>
-    </table-view>
-    <!-- 销售退货单详情 -->
-    <returnDetails
-      v-if="returnVisible"
-      :visible.sync="returnVisible"
-      :rowData="rowData"
-      :code="rowData.alterationCode"
-      @reload="this.$refs.table.reload()"
-    />
-    <!-- 销售出库单详情 -->
-    <!-- <outLibDetails
-      v-if="outLibVisible"
-      :visible.sync="outLibVisible"
-      :rowData="rowData"
-      :code="rowData.salesShipmentCode"
-      @reload="this.$refs.table.reload()"
-    /> -->
+    </tableView>
+    <Detail :code="currentCode" :pageConfig="pageConfig" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
   </div>
 </template>
 <script>
-import returnDetails from './details' //销售退货单详情
-
-let filterOptions = [
-  // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
-  { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
-  // { label: '商机阶段', prop: 'state', default: true, type: 'select', options: [] },
-  // { label: '跟进时间起止', prop: 'CreateTime', default: true, type: 'daterange' },
-  // { label: '维护人', prop: 'creator', default: true, type: 'employee' }
-]
-
+import Detail from './detail';
+/**
+ * 今日应付账单
+ */
 export default {
-  name: 'return',
   components: {
-    returnDetails,
-
+    Detail
   },
   props: {
     // 是否显示按钮
@@ -84,50 +52,65 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => {
-        return {}
-      }
+      default: () => ({ page: 1, limit: 15 })
     },
+    filterOptions: {
+      type: Array,
+      // prettier-ignore
+      default:()=>[ 
+        { label: '账单编号', prop: 'billCode',default:true },
+        { label: '结清状态', prop: 'settleStatus',default:true },
+        { label: '逾期状态', prop: 'overSate',default:true },
+        { label: '对方名称', prop: 'accountName',default:true }, 
+        { label: '费用详情', prop: 'feeDetailCode',default:true },
+        { label: '预付/收金额', prop: 'PredictAmount', type: 'numberRange',default:true },
+        { label: '应付/收金额', prop: 'Amount', type: 'numberRange',default:true },
+        { label: '实收/付金额', prop: 'FactAmount', type: 'numberRange',default:true },
+        { label: '应收/付日期', prop: 'PayEndDate', type: 'numberRange', int: true ,default:true}, 
+        { label: '客户', prop: 'clientId' },
+        { label: '关联单据编号', prop: 'busCode' },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
+        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' },
+        { label: '创建人', prop: 'creator', type: 'employee' }, 
+      ]
+    },
+    pageConfig: {
+      type: Object,
+      default: () => ({
+        title: '今日应付账单',
+        busType: '51',
+        type: 0,
+        api: {
+          list: 'seePsiFinanceService.todaybillList',
+          export: 'seePsiFinanceService.todaybillExport',
+          detail: 'seePsiFinanceService.todaybillGetInfoByCode',
+          update: 'seePsiFinanceService.paybillUpdate',
+          lateFee: 'seePsiFinanceService.todaybillChargeLateFee',
+          delIncoming: 'seePsiFinanceService.todaybillDelRoutedMatching',
+          addIncoming: 'seePsiFinanceService.todaybillInsertRoutedMatching',
+          matchIncoming: 'seePsiFinanceService.todaybillRoutedMatching'
+        },
+        show: []
+      })
+    }
   },
+  mounted() {},
   data() {
     return {
+      status: [],
       loading: false,
-      // 查询表单
-      queryForm: {
-        // status: "",
-        busType: 17,
-        page: 1,
-        limit: 20
-      },
-      // 列表状态
-      stateText: {
-        '-1': '新建',
-        '0': '审核中',
-        '1': '待完成',
-        '2': '部分完成',
-        '3': '已完成',
-        '4': '已驳回',
-      },
-      // 筛选数据
-      filterOptions: filterOptions,
-      // 当前行数据
-      rowData: {},
-      returnVisible: false,
-      outLibVisible: false,
+      showDetail: false,
+      currentCode: ''
     };
   },
-  computed: {
-
-  },
-  watch: {
-  },
   methods: {
-    // 按钮功能操作
-    eventHandle(type, row) {
-      this[type] = true
-      this.rowData = row ? row : {}
-      return
-    },
+    reload() {
+      this.$refs.tableView.reload();
+    }
   }
 };
 </script>
+<style lang="scss" scoped>
+.buying-requisition-page {
+}
+</style>

@@ -1,11 +1,5 @@
-// const MOCK_ADDRESS = '/mock/5dc23e61bc54fc3da273f404/39.99.132.95:9215'; // pc端用
-// const MOCK_ADDRESS = 'http://10.168.1.145:7300/mock/5dc23e61bc54fc3da273f404/39.99.132.95:9215'; // 小程序用
-const MOCK_ADDRESS = ''; // 禁用easymock
-const isUseMock = true;
-/**
-* @date 2019-11-20
-* @host 39.99.132.95:9215
-*/
+const MOCK_ADDRESS = '/mock/5dce08cfbc54fc3da273f529/see-psi-finance-service'
+const isUseMock = false
 export default {
   __mockAddress: MOCK_ADDRESS,
 
