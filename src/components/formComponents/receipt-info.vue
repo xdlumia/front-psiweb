@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 16:00:36
+ * @LastEditTime: 2019-11-21 17:51:13
  * @Description: 付款 新增流水 单据信息
 */
 <template>
@@ -127,12 +127,12 @@ export default {
       addAccountVisible: false, //添加账单
       // 遍历表单
       items: [
-        { label: '流水号', prop: 'incomeRecordCode', type: 'input', rules: [{ required: true }], },
-        { label: '收支状态', prop: 'incomeType', type: 'select', rules: [{ required: true }], options: [{ content: '收款', code: 0 }, { content: '付款', code: 1 }], },
-        { label: '发生金额', prop: 'incomeAmount', type: 'input', rules: [{ required: true }, { type: 'price' }], },
-        { label: '收款日期', prop: 'accountDate', type: 'date', rules: [{ required: true }] },
-        { label: '结算账户', prop: 'companySettlementId', type: 'select', rules: [{ required: true }] },
-        { label: '对方账号', prop: 'oppositeAccount', type: 'autocomplete', rules: [{ required: true }], },
+        { label: '流水号', prop: 'incomeRecordCode', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
+        { label: '收支状态', prop: 'incomeType', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [{ content: '收款', code: 0 }, { content: '付款', code: 1 }], },
+        { label: '发生金额', prop: 'incomeAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'price' }], },
+        { label: '收款日期', prop: 'accountDate', type: 'date', rules: [{ required: true, trigger: 'blur' }] },
+        { label: '结算账户', prop: 'companySettlementId', type: 'select', rules: [{ required: true, trigger: 'blur' }] },
+        { label: '对方账号', prop: 'oppositeAccount', type: 'autocomplete', rules: [{ required: true, trigger: 'blur' }], },
         { label: '流水单凭号', prop: 'serialNumber', type: 'input', rules: [{ required: false }], },
         { label: '联系方式', prop: 'accountPhone', type: 'input', rules: [{ required: false }], }
       ],

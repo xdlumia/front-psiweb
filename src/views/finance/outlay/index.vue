@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 10:38:52
+ * @LastEditTime: 2019-11-21 17:46:54
  * @Description: 销售-支出流水
  */
 <template>
@@ -31,11 +31,19 @@
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <!-- x新增 -->
+    <!-- 新增 -->
     <add
       :visible.sync="addVisible"
+      :incomeType="0"
       type="add"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
+    />
+    <!-- 新增转账单 -->
+    <addTransfer
+      :incomeType="0"
+      :visible.sync="addTransferVisible"
+      type="add"
+      @reload="$refs.table.reload()"
     />
     <!-- 详情 -->
     <detail
@@ -48,8 +56,9 @@
   </div>
 </template>
 <script>
-import add from './add' //详情
-import detail from './details' //新增
+import add from '../income/add' //新增 支出流水
+import addTransfer from '../income/add-transfer' //新增 流水账单
+import detail from './details' //详情
 let filterOptions = [
   // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
   // { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
@@ -61,7 +70,9 @@ let filterOptions = [
 export default {
   name: 'return',
   components: {
-    detail
+    detail,
+    add,
+    addTransfer
 
   },
   props: {

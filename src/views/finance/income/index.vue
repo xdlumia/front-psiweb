@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 16:09:00
+ * @LastEditTime: 2019-11-21 17:44:21
  * @Description: 销售-收入流水
  */
 <template>
@@ -25,7 +25,7 @@
           size="mini"
           icon="el-icon-plus"
           @click="addVisible = true"
-        >新增支出流水</el-button>
+        >新增收入流水</el-button>
         <el-button
           size="mini"
           @click="addTransferVisible = true"
@@ -55,11 +55,13 @@
     <!-- 新增 -->
     <add
       :visible.sync="addVisible"
+      :incomeType="0"
       type="add"
       @reload="$refs.table.reload()"
     />
     <!-- 新增转账单 -->
     <addTransfer
+      :incomeType="0"
       :visible.sync="addTransferVisible"
       type="add"
       @reload="$refs.table.reload()"

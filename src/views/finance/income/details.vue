@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 11:03:19
+ * @LastEditTime: 2019-11-21 17:49:32
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -45,7 +45,7 @@
         <!-- 备注信息 其他信息-->
         <extras-info
           disabled
-          :data="form"
+          :data="detail"
         />
 
       </el-form>

@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 14:25:15
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-21 17:55:22
  * @Description: 表格头部 
  */
 <template>
@@ -135,7 +135,6 @@
       >
         <div
           v-for="(item,index) of staData"
-          v-if="index<6"
           :key="index"
           class="table-sta-item"
         >
@@ -143,7 +142,7 @@
           <p
             class="f24"
             style="color:#333"
-          >{{item.id | milliFormat}}</p>
+          >{{item.amount | milliFormat}}</p>
         </div>
       </div>
     </div>

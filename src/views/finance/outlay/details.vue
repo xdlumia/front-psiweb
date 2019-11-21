@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 10:36:01
+ * @LastEditTime: 2019-11-21 17:47:02
  * @Description: 财务-支出流水详情
 */
 <template>
@@ -51,23 +51,16 @@
 
       </el-form>
     </side-detail>
-    <!-- 退货单新增/编辑 -->
-    <add
-      :visible.sync="editVisible"
-      :code="code"
-      type="edit"
-      :rowData="rowData"
-    />
+
   </div>
 </template>
 <script>
-import add from './add' // 新增退货单
 import VisibleMixin from '@/utils/visibleMixin';
 import { log } from 'util';
 export default {
   mixins: [VisibleMixin],
   components: {
-    add
+
   },
   data() {
     return {
