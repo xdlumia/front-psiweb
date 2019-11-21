@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 18:58:45
+ * @LastEditTime: 2019-11-21 10:13:37
  * @Description: 销售-收入流水
  */
 <template>
@@ -21,13 +21,12 @@
     >
 
       <template slot-scope="{column,row,value}">
-        <!-- 销售换货单编号 -->
+        <!-- 流水编号 -->
         <span
           class="d-text-blue d-pointer"
-          v-if="column.columnFields=='alterationCode'"
+          v-if="column.columnFields=='incomeRecordCode'"
           @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
-        <!-- 销售出库单编号 -->
         <span
           class="d-text-blue d-pointer"
           v-else-if="column.columnFields=='salesShipmentCode'"
@@ -45,7 +44,7 @@
       v-if="detailVisible"
       :visible.sync="detailVisible"
       :rowData="rowData"
-      :code="rowData.alterationCode"
+      :code="rowData.incomeRecordCode"
       @reload="this.$refs.table.reload()"
     />
   </div>
@@ -85,8 +84,6 @@ export default {
       loading: false,
       // 查询表单
       queryForm: {
-        // status: "",
-        busType: 17,
         page: 1,
         limit: 20
       },
