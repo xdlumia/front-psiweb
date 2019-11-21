@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 20:06:12
+ * @LastEditTime: 2019-11-21 20:10:07
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -49,22 +49,17 @@
         />
       </el-form>
     </side-detail>
-    <!-- 账单匹配 -->
-    <receivableMatch
-      :rowData="rowData"
-      :visible.sync="receivableVisible"
-      @reload="$emit('reload')"
-    ></receivableMatch>
+
   </div>
 </template>
 <script>
 import VisibleMixin from '@/utils/visibleMixin';
-import receivableMatch from './receivable-match'; //账单匹配
+
 import { log } from 'util';
 export default {
   mixins: [VisibleMixin],
   components: {
-    receivableMatch
+
   },
   data() {
     return {
