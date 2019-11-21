@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-04 13:36:20
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 17:28:11
+ * @LastEditTime: 2019-11-21 18:02:50
  * @Description: 应付账单
 */
 <template>
@@ -34,7 +34,9 @@ export default {
           detail: 'seePsiFinanceService.paymentbillGetInfoByCode',
           update: 'seePsiFinanceService.paymentbillUpdate',
           lateFee: 'seePsiFinanceService.paymentbillChargeLateFee',
-          delIncoming: 'seePsiFinanceService.paymentbillDelRoutedMatching'
+          delIncoming: 'seePsiFinanceService.paymentbillDelRoutedMatching',
+          addIncoming: 'seePsiFinanceService.paymentbillInsertRoutedMatching',
+          matchIncoming: 'seePsiFinanceService.paymentbillRoutedMatching'
         },
         show: []
       }

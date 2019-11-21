@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 19:02:59
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-21 18:01:58
  * @Description: 今日应付账单
 */
 <template>
@@ -102,7 +102,9 @@ export default {
           detail: 'seePsiFinanceService.todaybillGetInfoByCode',
           update: 'seePsiFinanceService.paybillUpdate',
           lateFee: 'seePsiFinanceService.todaybillChargeLateFee',
-          delIncoming: 'seePsiFinanceService.todaybillDelRoutedMatching'
+          delIncoming: 'seePsiFinanceService.todaybillDelRoutedMatching',
+          addIncoming: 'seePsiFinanceService.todaybillInsertRoutedMatching',
+          matchIncoming: 'seePsiFinanceService.todaybillRoutedMatching'
         },
         show: []
       })

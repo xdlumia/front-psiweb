@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 17:29:40
+ * @LastEditTime: 2019-11-21 18:05:18
  * @Description: 今日应付账单
 */
 <template>
@@ -16,7 +16,14 @@
           <!-- <approve-panel></approve-panel> -->
           <paybill-detail :data="detail" disabled />
           <payer-info :data="detail" disabled />
-          <payment-log :api="pageConfig.api.delIncoming" :billId="detail.id" :data="detail" />
+          <payment-log
+            :addApi="pageConfig.api.addIncoming"
+            :api="pageConfig.api.delIncoming"
+            :billCode="detail.billCode"
+            :billId="detail.id"
+            :data="detail"
+            :matchApi="pageConfig.api.matchIncoming"
+          />
           <invoice-log :busCode="detail.busCode" :type="pageConfig.type" />
           <paybill-log :billId="detail.id" v-if="pageConfig.show.includes('paybillLog')" />
           <extras-info :data="detail" @change="saveExtras" can-modify disabled />
