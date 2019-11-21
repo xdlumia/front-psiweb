@@ -2,13 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 10:20:02
- * @Description: 销售出库单详情
-*/
+ * @LastEditTime: 2019-11-21 11:03:19
+ * @Description: 财务-收入流水详情
 <template>
   <div>
     <side-detail
-      title="销售退货单"
+      :title="`流水编号:${code}`"
       :visible.sync="showDetailPage"
       width="920px"
       :status="status"
@@ -43,10 +42,10 @@
           :data="detail"
         />
 
-        <!-- 其他费用 -->
-        <other-fee
+        <!-- 备注信息 其他信息-->
+        <extras-info
           disabled
-          :data="detail"
+          :data="form"
         />
 
       </el-form>
@@ -109,39 +108,17 @@ export default {
       }
     },
     buttonsClick(label) {
-      if (label == '编辑' || label == '退货扫码') {
-        if (label == '编辑') { this.editVisible = true }
-        else if (label == '退货扫码') { this.outLibAddVisible = true }
+      if (label == '收款单匹配') {
+        this.editVisible = true
       } else {
         let params = {
-          apprpvalNode: this.detail.apprpvalNode || 'XSHHD-001',
           id: this.detail.id,
           processType: 'XSTHD-001',//报价单的权限吗
         }
         let apiObj = {
-          '提交审核': {
-            api: 'seePsiSaleService.salesreturnedSubmitApproval',
-            data: { ...params },
-            needNote: null
-          },
-          '审核通过': {
-            api: 'seePsiSaleService.salesreturnedPassApproval',
-            data: { ...params, ...{} },
-            needNote: null
-          },
-          '撤销审核': {
-            api: 'seePsiSaleService.salesreturnedCancel',
-            data: { ...params, ...{} },
-            needNote: null
-          },
-          '驳回': {
-            api: 'seePsiSaleService.salesreturnedReject',
-            data: { ...params, ...{} },
-            needNote: null
-          },
           '删除': {
             api: 'seePsiSaleService.salesreturnedLogicDelete',
-            data: { ...params, ...{} },
+            data: params,
             needNote: null
           }
         }

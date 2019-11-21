@@ -2,67 +2,57 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 10:07:33
- * @Description: 财务-支出流水
+ * @LastEditTime: 2019-11-21 10:38:52
+ * @Description: 销售-支出流水
  */
 <template>
   <div>
     <table-view
-      busType="55"
+      busType="54"
       ref="table"
       :filter="true"
       :moreButton="true"
       :column="true"
       title="支出流水"
-      api="seePsiSaleService.salesreturnedList"
-      exportApi="seePsiSaleService.salesreturnedExport"
+      api="seePsiFinanceService.payrecordList"
+      exportApi="seePsiSaleService.payrecordExport"
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
     >
 
       <template slot-scope="{column,row,value}">
-        <!-- 销售换货单编号 -->
+        <!-- 流水编号 -->
         <span
           class="d-text-blue d-pointer"
-          v-if="column.columnFields=='alterationCode'"
-          @click="eventHandle('returnVisible',row)"
+          v-if="column.columnFields=='payrecordCode'"
+          @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
-        <!-- 销售出库单编号 -->
-        <span
-          class="d-text-blue d-pointer"
-          v-else-if="column.columnFields=='salesShipmentCode'"
-          @click="eventHandle('outLibVisible',row)"
-        > {{value}}</span>
-        <!-- 状态 -->
-        <span v-else-if="column.columnFields=='state'">{{value}}</span>
-        <!-- 创建时间 -->
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <!-- 销售退货单详情 -->
-    <returnDetails
-      v-if="returnVisible"
-      :visible.sync="returnVisible"
-      :rowData="rowData"
-      :code="rowData.alterationCode"
+    <!-- x新增 -->
+    <add
+      :visible.sync="addVisible"
+      type="add"
       @reload="this.$refs.table.reload()"
     />
-    <!-- 销售出库单详情 -->
-    <outLibDetails
-      v-if="outLibVisible"
-      :visible.sync="outLibVisible"
+    <!-- 详情 -->
+    <detail
+      v-if="detailVisible"
+      :visible.sync="detailVisible"
       :rowData="rowData"
-      :code="rowData.salesShipmentCode"
+      :code="rowData.payrecordCode"
       @reload="this.$refs.table.reload()"
     />
   </div>
 </template>
 <script>
-import returnDetails from './details' //销售退货单详情
+import add from './add' //详情
+import detail from './details' //新增
 let filterOptions = [
   // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
-  { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
+  // { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
   // { label: '商机阶段', prop: 'state', default: true, type: 'select', options: [] },
   // { label: '跟进时间起止', prop: 'CreateTime', default: true, type: 'daterange' },
   // { label: '维护人', prop: 'creator', default: true, type: 'employee' }
@@ -71,7 +61,7 @@ let filterOptions = [
 export default {
   name: 'return',
   components: {
-    returnDetails,
+    detail
 
   },
   props: {
@@ -93,26 +83,15 @@ export default {
       loading: false,
       // 查询表单
       queryForm: {
-        // status: "",
-        busType: 17,
         page: 1,
         limit: 20
-      },
-      // 列表状态
-      stateText: {
-        '-1': '新建',
-        '0': '审核中',
-        '1': '待完成',
-        '2': '部分完成',
-        '3': '已完成',
-        '4': '已驳回',
       },
       // 筛选数据
       filterOptions: filterOptions,
       // 当前行数据
       rowData: {},
-      returnVisible: false,
-      outLibVisible: false,
+      addVisible: false,
+      detailVisible: false,
     };
   },
   computed: {

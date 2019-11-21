@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 10:02:45
+ * @LastEditTime: 2019-11-21 12:03:17
  * @Description: 销售出库单详情
 */
 <template>
@@ -223,6 +223,11 @@ export default {
           },
           '驳回': {
             api: 'seePsiSaleService.salesshipmentApproval',
+            data: { busCode: this.detail.shipmentCode },
+            needNote: null
+          },
+          '合同完善': {
+            api: 'seePsiSaleService.passContractApproval',
             data: { busCode: this.detail.shipmentCode },
             needNote: null
           },

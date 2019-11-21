@@ -1,44 +1,35 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:29
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-20 20:51:07
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-21 10:53:16
  * @Description: ip配置文件
  */
-// let model = 'build' // dev 为开发环境 build 为测试环境  product 为生产环境
-const apisUrl = '/apis/'
-// apis = 'http://10.168.1.130:7011/'
-// const apis = 'http://10.168.1.145:7011/'
-// apis = 'http://39.105.103.188:7011/'
+let apiUrl = '/apis/'
+// 这里必须定义为apiUrl
+// apiUrl = 'http://10.168.1.230:7011/'
 
-// if (model === 'dev') {
-//   apis = 'http://10.168.1.145:7011'
-// } else if (model === 'build') {
-// apis = 'http://39.99.132.95:8080:7011'
-// } else if (model === 'product') {
-//   apis = 'http://gy.fangmaidong.com:7011/'
-// }
 
 // 以后新项目不用在此引入api
 const baseURL = {
-  systemService: apisUrl + 'system-service', // 角色，员工，部门
-  seeContractService: apisUrl + 'see-baseinfo-service', // 合同服务韩延峰
+  systemService: apiUrl + 'system-service', // 角色，员工，部门
+  seeContractService: apiUrl + 'see-baseinfo-service', // 合同服务韩延峰
 
-  //   companyInitService: apisUrl + 'company-init-service',
-  //   resourceService: apisUrl + 'resource-service', // 9013
-  // //   bizSystemService: apisUrl + 'biz-system-service', // 角色 ，员工，部门8011
-  //   seeBaseHouseService: apisUrl + 'see-base-house-service', // 楼盘配置
-  //   seeDataDictionaryService: apisUrl + 'see-data-dictionary-service', // 字典服务
-  // seeHouseConfigService: apisUrl + 'see-house-config-service',
-  seeHouseConfigService: apisUrl + 'see-baseinfo-service', // 在这个项目里 seeHouseConfigService 的公共部分都转移到 see-baseinfo-service服务里
-  seeBaseinfoService: apisUrl + 'see-baseinfo-service', // 基础服务
-  seePsiCommonService: apisUrl + 'see-psi-common-service',
+  //   companyInitService: apiUrl + 'company-init-service',
+  //   resourceService: apiUrl + 'resource-service', // 9013
+  // //   bizSystemService: apiUrl + 'biz-system-service', // 角色 ，员工，部门8011
+  //   seeBaseHouseService: apiUrl + 'see-base-house-service', // 楼盘配置
+  //   seeDataDictionaryService: apiUrl + 'see-data-dictionary-service', // 字典服务
+  // seeHouseConfigService: apiUrl + 'see-house-config-service',
+  seeHouseConfigService: apiUrl + 'see-baseinfo-service', // 在这个项目里 seeHouseConfigService 的公共部分都转移到 see-baseinfo-service服务里
+  seeBaseinfoService: apiUrl + 'see-baseinfo-service', // 基础服务
+  seePsiCommonService: apiUrl + 'see-psi-common-service',
   // seePsiCommonService: 'http://10.168.1.130:9201',
-  seeExternService: apisUrl + 'see-extern-service', // 9024 see-extern-service
-  seeGoodsService: apisUrl + 'see-goods-service', // 物品服务
-  seePsiWmsService: apisUrl + 'see-psi-wms-service', // 物品服务
-  // seePsiFinanceService: 'http://10.168.1.230:9215'
-  seePsiFinanceService: apisUrl + 'see-psi-finance-service' // 物品服务
+  seeExternService: apiUrl + 'see-extern-service', // 9024 see-extern-service
+  seeGoodsService: apiUrl + 'see-goods-service', // 
+  seePsiWmsService: apiUrl + 'see-psi-wms-service',
+  // seePsiFinanceService: 'http://10.168.1.230:9215'  //欢欢本地
+  seePsiFinanceService: apiUrl + 'see-psi-finance-service' // 财务
 }
 window.g = {
   ApiUrl: baseURL

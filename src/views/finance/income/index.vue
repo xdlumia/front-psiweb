@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 10:13:37
+ * @LastEditTime: 2019-11-21 10:57:03
  * @Description: 销售-收入流水
  */
 <template>
@@ -19,7 +19,18 @@
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
     >
-
+      <template slot="button">
+        <el-button
+          type="primary"
+          size="mini"
+          icon="el-icon-plus"
+          @click="addVisible = true"
+        >新增支出流水</el-button>
+        <el-button
+          size="mini"
+          icon="el-icon-plus"
+        >新增转账单</el-button>
+      </template>
       <template slot-scope="{column,row,value}">
         <!-- 流水编号 -->
         <span
@@ -39,7 +50,18 @@
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <!-- 销售退货单详情 -->
+    <add
+      :visible.sync="addVisible"
+      type="add"
+      @reload="this.$refs.table.reload()"
+    />
+    <!-- 新增 -->
+    <add
+      :visible.sync="addVisible"
+      type="add"
+      @reload="this.$refs.table.reload()"
+    />
+    <!-- 详情 -->
     <detail
       v-if="detailVisible"
       :visible.sync="detailVisible"
@@ -50,7 +72,8 @@
   </div>
 </template>
 <script>
-import detail from './details' //销售退货单详情
+import detail from './details' //详情
+import add from './add' //新增
 let filterOptions = [
   // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
   // { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
@@ -62,8 +85,8 @@ let filterOptions = [
 export default {
   name: 'return',
   components: {
-    detail
-
+    detail,
+    add
   },
   props: {
     // 是否显示按钮
@@ -92,7 +115,7 @@ export default {
       // 当前行数据
       rowData: {},
       detailVisible: false,
-      outLibVisible: false,
+      addVisible: false,
     };
   },
   computed: {
