@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 18:52:44
+ * @LastEditTime: 2019-11-21 10:20:02
  * @Description: 销售出库单详情
 */
 <template>
@@ -37,29 +37,17 @@
         size="mini"
         label-position="top"
       >
-        <el-tabs
-          v-model="activeName"
-          type="card"
-        >
-          <el-tab-pane
-            v-for="(item,index) of tabs"
-            :key="index"
-            :label="item.label"
-            :name="item.comp"
-          >
-            <components
-              ref="detail"
-              :code="code"
-              :rowData="rowData"
-              :data="detail || {}"
-              class="d-auto-y"
-              :params="item.params"
-              :button="false"
-              style="height:calc(100vh - 200px)"
-              :is="activeName"
-            />
-          </el-tab-pane>
-        </el-tabs>
+        <!-- 单据信息 -->
+        <receipt-info
+          disabled
+          :data="detail"
+        />
+
+        <!-- 其他费用 -->
+        <other-fee
+          disabled
+          :data="detail"
+        />
 
       </el-form>
     </side-detail>
@@ -73,14 +61,12 @@
   </div>
 </template>
 <script>
-import detail from './details/detail' //详情
 import add from './add' // 新增退货单
 import VisibleMixin from '@/utils/visibleMixin';
 import { log } from 'util';
 export default {
   mixins: [VisibleMixin],
   components: {
-    detail,
     add
   },
   data() {
@@ -88,13 +74,8 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '提交审核', type: 'primary', authCode: '' },
-        { label: '撤销审核', type: '', authCode: '' },
-        { label: '审核通过', type: 'primary', authCode: '' },
-        { label: '编辑', type: 'primary', authCode: '' },
+        { label: '收款单匹配', type: 'primary', authCode: '' },
         { label: '删除', type: 'danger', authCode: '' },
-        { label: '驳回', authCode: '' },
-        { label: '退货扫码', type: 'primary', authCode: '' }
       ],
       editVisible: false,
       /**
@@ -102,22 +83,12 @@ export default {
        */
       // currStatus: 3, // 当前数据状态
       currStatusType: {
-        '-1': ['提交审核', '编辑', '删除'], // 新建
-        '0': ['撤销审核', '审核通过', '驳回'], // 审核中
-        '1': ['退货扫码'], // 待完成
-        '2': ['退货扫码'], //部分完成
-        '3': [], //已完成
-        '4': ['提交审核', '编辑', '删除'], //已驳回
+        '-1': ['删除', '收款单匹配'], // 未匹配
+        '0': [], // 已匹配
+        '1': ['收款单匹配'], // 部分匹配
+        '2': ['删除', '收款单匹配'], //未匹配
+        '3': ['删除'], //未匹配借
       },
-
-
-      // tabs 切换操作栏
-      tabs: [
-        { label: '详情', comp: 'detail' },
-        { label: '销售出库单', comp: 'salesOutLibrary', params: { shipmentCode: this.rowData.shipmentCode } },
-      ],
-      activeName: 'detail',
-      form: {},
     }
   },
 
@@ -133,7 +104,7 @@ export default {
   methods: {
     async getDetail() {
       if (this.code) {
-        let { data } = await this.$api.seePsiSaleService.salesreturnedGetInfoByCode({ code: this.code })
+        let { data } = await this.$api.seePsiFinanceService.revenuerecordGetInfoByCode({ code: this.code })
         return data;
       }
     },

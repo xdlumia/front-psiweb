@@ -2,18 +2,18 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 09:04:27
- * @Description: 销售-销售退货单
+ * @LastEditTime: 2019-11-21 10:07:33
+ * @Description: 财务-支出流水
  */
 <template>
   <div>
     <table-view
-      busType="17"
+      busType="55"
       ref="table"
       :filter="true"
       :moreButton="true"
       :column="true"
-      title="销售退货单"
+      title="支出流水"
       api="seePsiSaleService.salesreturnedList"
       exportApi="seePsiSaleService.salesreturnedExport"
       :params="Object.assign(queryForm,params)"
