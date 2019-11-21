@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 19:45:32
+ * @LastEditTime: 2019-11-21 20:06:12
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -37,7 +37,7 @@
         label-position="top"
       >
         <!-- 单据信息 -->
-        <receipt-info
+        <receipt-borrow-info
           disabled
           :data="detail"
         />
@@ -71,7 +71,7 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '收款单匹配', type: 'primary', authCode: '' },
+        { label: '还款', type: 'primary', authCode: '' },
         { label: '删除', type: 'danger', authCode: '' },
       ],
       // 收款单匹配
@@ -99,22 +99,18 @@ export default {
   methods: {
     async getDetail() {
       if (this.code) {
-        let { data } = await this.$api.seePsiFinanceService.revenuerecordGetInfoByCode({ code: this.code })
+        let { data } = await this.$api.seePsiFinanceService.fborrowingGetInfoByCode({ code: this.code })
         return data;
       }
     },
     buttonsClick(label) {
-      if (label == '收款单匹配') {
+      if (label == '还款') {
         this.receivableVisible = true
       } else {
-        let params = {
-          id: this.detail.id,
-          processType: 'XSTHD-001',//报价单的权限吗
-        }
         let apiObj = {
           '删除': {
-            api: 'seePsiFinanceService.revenuerecordDelete',
-            data: params,
+            api: 'seePsiFinanceService.fborrowingDelete',
+            data: { id: this.detail.id },
             needNote: null
           }
         }
