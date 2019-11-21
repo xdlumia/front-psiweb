@@ -43,6 +43,7 @@
     />
     <inventoryAdd
       :visible.sync='visible'
+      v-if="visible"
       @reload='reload'
     />
   </div>

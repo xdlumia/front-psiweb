@@ -97,6 +97,7 @@ export default {
       activeName: '',
       button: true,
       addform: {
+        wmsName: '',
         wmsId: '',//库房id
         blitemPerson: '',//盘点人
         type: 1,//盘点类型  1 全盘  2抽盘

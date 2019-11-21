@@ -476,6 +476,13 @@ export default {
   /* =============库房组装任务转移记录end=========== */
 
   /* =============库房盘点单start=========== */
+  // 库房商品盘点
+  wmsblitemBlitemCommodityCheck: {
+    'url': '/wmsblitem/blitemCommodityCheck',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 删除
   wmsblitemDelete: {
     'url': '/wmsblitem/delete',
@@ -523,6 +530,13 @@ export default {
     'methods': 'post'
   },
 
+  // 库房商品盘点
+  wmsblitemStart: {
+    'url': '/wmsblitem/start',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 修改
   wmsblitemUpdate: {
     'url': '/wmsblitem/update',
@@ -530,7 +544,7 @@ export default {
     'methods': 'post'
   },
 
-  // 修改盘点单状态信息
+  // 终止盘点单状态信息
   wmsblitemUpdateState: {
     'url': '/wmsblitem/updateState',
     'mock': false,

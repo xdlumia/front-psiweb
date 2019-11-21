@@ -157,7 +157,7 @@ export default {
     },
     //选择人员
     choose(value) {
-      this.employeeName = value.employeeName
+      this.addform.wmsName = value.employeeName
       this.addform.blitemPerson = value.userId
     },
   }

@@ -10,7 +10,7 @@
   <SideDetail
     :status="status"
     :visible.sync="visible"
-    @close="$emit('update:visible',false)"
+    @close="close"
     :title="'盘点单'+drawerData.blitemCode"
     width="990px"
   >
@@ -93,7 +93,10 @@ export default {
         .finally(() => {
 
         })
-    }
+    },
+    close() {
+      this.$emit('update:visible', false)
+    },
   }
 }
 </script>
