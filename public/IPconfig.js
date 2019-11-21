@@ -1,11 +1,11 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:29
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 10:53:16
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-11-21 18:56:18
  * @Description: ip配置文件
  */
-let apiUrl = '/apis/'
+const apiUrl = '/apis/'
 // 这里必须定义为apiUrl
 // apiUrl = 'http://10.168.1.230:7011/'
 
@@ -26,9 +26,9 @@ const baseURL = {
   seePsiCommonService: apiUrl + 'see-psi-common-service',
   // seePsiCommonService: 'http://10.168.1.130:9201',
   seeExternService: apiUrl + 'see-extern-service', // 9024 see-extern-service
-  seeGoodsService: apiUrl + 'see-goods-service', // 
+  seeGoodsService: apiUrl + 'see-goods-service', //
   seePsiWmsService: apiUrl + 'see-psi-wms-service',
-  // seePsiFinanceService: 'http://10.168.1.230:9215'  //欢欢本地
+  // seePsiFinanceService: 'http://10.168.1.230:9215' // 欢欢本地
   seePsiFinanceService: apiUrl + 'see-psi-finance-service' // 财务
 }
 window.g = {
