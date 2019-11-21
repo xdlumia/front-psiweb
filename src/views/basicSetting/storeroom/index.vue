@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-15 10:49:11
+ * @LastEditTime: 2019-11-21 19:18:57
  * @Description: 库房管理
  -->
 <template>
@@ -38,6 +38,7 @@
           <el-button
             type="text"
             v-if="scope.row.state"
+            :disabled="scope.row.state !== 1"
             @click="commonwmsmanagerUpdateState(scope.row.id, 0)"
             style="padding:0"
           >停用</el-button>
