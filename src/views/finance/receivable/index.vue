@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-04 13:36:20
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 17:27:53
+ * @LastEditTime: 2019-11-21 18:03:13
  * @Description: 应收账单
 */
 <template>
@@ -19,7 +19,7 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => ({ page: 1, limit: 15, })
+      default: () => ({ page: 1, limit: 15 })
     }
   },
   data() {
@@ -34,7 +34,9 @@ export default {
           detail: 'seePsiFinanceService.revenuebillGetInfoByCode',
           update: 'seePsiFinanceService.revenuebillUpdate',
           lateFee: 'seePsiFinanceService.revenuebillChargeLateFee',
-          delIncoming: 'seePsiFinanceService.revenuebillDelRoutedMatching'
+          delIncoming: 'seePsiFinanceService.revenuebillDelRoutedMatching',
+          addIncoming: 'seePsiFinanceService.revenuebillInsertRoutedMatching',
+          matchIncoming: 'seePsiFinanceService.revenuebillRoutedMatching'
         },
         show: ['paybillLog']
       }
