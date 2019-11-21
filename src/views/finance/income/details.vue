@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 17:49:32
+ * @LastEditTime: 2019-11-21 18:10:51
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -117,7 +117,7 @@ export default {
         }
         let apiObj = {
           '删除': {
-            api: 'seePsiSaleService.salesreturnedLogicDelete',
+            api: 'seePsiFinanceService.salesreturnedLogicDelete',
             data: params,
             needNote: null
           }
