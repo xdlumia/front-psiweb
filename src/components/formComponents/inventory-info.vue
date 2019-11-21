@@ -58,7 +58,7 @@
           >
             <el-input
               :disabled='disabled'
-              :value="addform.wmsName"
+              :value="addform.creatorName"
               size="mini"
             ></el-input>
           </employees-chosen>
@@ -157,7 +157,7 @@ export default {
     },
     //选择人员
     choose(value) {
-      this.addform.wmsName = value.employeeName
+      this.addform.creatorName = value.employeeName
       this.addform.blitemPerson = value.userId
     },
   }

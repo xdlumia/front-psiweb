@@ -30,15 +30,15 @@
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='blitemState'">{{value == 1 ? '进行中' : '盘点完成'}}</span>
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-else-if="column.columnFields=='blitemState'">{{value == 1 ? '进行中' :value == 2? '盘点完成' : value == -1? '已终止' : '-'}}</span>
+        <span v-else-if="column.columnFields=='result'">{{value == 1 ? '盘盈' : value == 2 ? '盘亏' : value == 3 ? '有盈亏' : value == 4 ? '吻合' : '-'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
       :drawerData='drawerData'
       :visible.sync='tableVisible'
-      @update='update'
+      @reload='reload'
       v-if="tableVisible"
     />
     <inventoryAdd
@@ -83,21 +83,22 @@ export default {
         limit: 20
       },
       visible: false,
+      usableList: [],
       tableVisible: false,
       componentActive: '',//当前的组件
       drawerData: {//弹框的相关数据
-        tableVisible: false,//销售单右侧抽屉
         title: '',
         component: 'Details'
       },
       activeName: '',
       filterOptions: [
-        { label: '盘点单编号', prop: 'allocationOrderCode', default: true },
+        { label: '盘点单编号', prop: 'blitemCode', default: true },
         {
           label: '盘点状态',
-          prop: 'allocationOrderState',
+          prop: 'state',
           type: 'select',
           options: [
+            { label: '终止', value: '-1' },
             { label: '进行中', value: '1' },
             { label: '盘点完成', value: '2' }
           ],
@@ -108,14 +109,16 @@ export default {
           prop: 'result',
           type: 'select',
           options: [
-            { label: '内调', value: '1' },
-            { label: '外调', value: '2' }
+            { label: '盘盈', value: '1' },
+            { label: '盘亏', value: '2' },
+            { label: '有盈亏', value: '3' },
+            { label: '吻合', value: '4' },
           ],
           default: true
         },
         {
           label: '盘点库房',
-          prop: 'wmsId',
+          prop: 'wmsName',
           type: 'select',
           options: [
             { label: '内调', value: '1' },
@@ -126,26 +129,26 @@ export default {
         {
           label: '盘盈数量',
           prop: 'inventorySurplusNum',
-          type: 'employee',
+          type: 'numberRange',
           default: true
         },
         {
           label: '盘盈金额(成本)',
-          prop: 'inventorySurplusSum',
-          type: 'employee',
+          prop: 'InventorySurplusSum',
+          type: 'numberRange',
           dictName: 'FM_FANGYUAN_MJ',
           default: true
         },
         {
           label: '盘亏数量',
-          prop: 'inventoryLossesNum',
-          type: 'employee',
+          prop: 'InventoryLossesNum',
+          type: 'numberRange',
           default: true
         },
         {
           label: '盘亏金额(成本)',
-          prop: 'inventoryLossesSum',
-          type: 'employee',
+          prop: 'InventoryLossesSum',
+          type: 'numberRange',
           default: true
         },
         {
@@ -169,7 +172,25 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.commonwmsmanagerUsableList()
+  },
   methods: {
+    //请求可用库房
+    commonwmsmanagerUsableList() {
+      this.$api.seePsiWmsService.commonwmsmanagerUsableList()
+        .then(res => {
+          this.usableList = res.data || []
+          this.usableList.forEach((item) => {
+            item.label = item.name
+            item.value = item.id
+          })
+          this.filterOptions[3].options = this.usableList
+        })
+        .finally(() => {
+
+        })
+    },
     //点击打开右侧边栏
     getTableVisible(data) {
       this.tableVisible = true
