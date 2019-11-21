@@ -64,9 +64,7 @@ export default {
     from: String // 来源
   },
   computed: {
-    maxHeight() {
-      return window.innerHeight - 130;
-    }
+    
   },
   data() {
     return {

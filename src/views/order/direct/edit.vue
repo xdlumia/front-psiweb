@@ -14,9 +14,7 @@
         <el-button @click="close" size="mini">取消</el-button>
       </span>
     </div>
-    <d-tabs :style="{
-      maxHeight:maxHeight+'px'
-    }">
+    <d-tabs style="max-height:calc(100vh - 130px)">
       <d-tab-pane label="发货信息" name="deliverInfo" />
       <d-tab-pane label="商品信息" name="commodityInfo" />
       <d-tab-pane label="自定义信息" name="customInfo" />
@@ -40,9 +38,7 @@ export default {
   components: {},
   props: {},
   computed: {
-    maxHeight() {
-      return window.innerHeight - 130;
-    }
+    
   },
   data() {
     return {

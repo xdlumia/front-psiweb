@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 11:58:50
+ * @LastEditTime: 2019-11-21 09:38:36
  * @Description: 新增借入单
 */
 <template>
@@ -14,9 +14,7 @@
         <el-button @click="close" size="mini">关闭</el-button>
       </span>
     </div>
-    <d-tabs :style="{
-      maxHeight:maxHeight+'px'
-    }" v-if="form&&visible">
+    <d-tabs style="max-height:calc(100vh - 130px)" v-if="form&&visible">
       <d-tab-pane :label="form.borrowLoanType==1?'借出信息':'借入信息'" name="borrowIn" />
       <d-tab-pane :label="form.borrowLoanType==1?'借出商品':'借入商品'" name="borrowGoods" />
       <div>
@@ -40,9 +38,7 @@ export default {
     from: String
   },
   computed: {
-    maxHeight() {
-      return window.innerHeight - 130;
-    }
+    
   },
   data() {
     return {

@@ -14,9 +14,7 @@
         <el-button @click="close" size="mini">关闭</el-button>
       </span>
     </div>
-    <d-tabs :style="{
-      maxHeight:maxHeight+'px'
-    }">
+    <d-tabs style="max-height:calc(100vh - 130px)">
       <d-tab-pane label="供应商信息" name="supplierInfo" />
       <d-tab-pane label="公司信息" name="companyInfo" />
       <d-tab-pane label="到货信息" name="arrivalInfo" v-if="form.source!='直发单'" />
@@ -74,9 +72,7 @@ export default {
     from: String // 来源
   },
   computed: {
-    maxHeight() {
-      return window.innerHeight - 130;
-    }
+    
   },
   data() {
     return {

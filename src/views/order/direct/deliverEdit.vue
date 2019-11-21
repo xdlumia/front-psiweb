@@ -10,9 +10,7 @@
     <div slot="title">
       <span>直发单发货</span>
     </div>
-    <el-form :style="{
-      maxHeight:maxHeight+'px'
-    }" ref="form" v-model="form">
+    <el-form style="max-height:calc(100vh - 130px)" ref="form" v-model="form">
       <deliverGoods :data="form" id="deliverGoods"></deliverGoods>
     </el-form>
     <div class="ac" slot="footer">

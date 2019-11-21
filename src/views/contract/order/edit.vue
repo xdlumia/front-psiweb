@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 16:56:24
+ * @LastEditTime: 2019-11-21 09:38:24
  * @Description: 采购合同
 */
 <template>
@@ -18,9 +18,7 @@
         <el-button @click="close" size="mini">取消</el-button>
       </span>
     </div>
-    <d-tabs :style="{
-      maxHeight:maxHeight+'px'
-    }">
+    <d-tabs style="max-height:calc(100vh - 130px)">
       <d-tab-pane label="供应商信息" name="supplierInfo" />
       <d-tab-pane label="公司信息" name="companyInfo" />
       <d-tab-pane label="到货信息" name="arrivalInfo" />
@@ -83,9 +81,7 @@ export default {
     from: String // 来源
   },
   computed: {
-    maxHeight() {
-      return window.innerHeight - 130;
-    }
+    
   },
   data() {
     return {
