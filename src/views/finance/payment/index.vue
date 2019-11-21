@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 18:21:13
+ * @LastEditTime: 2019-11-21 09:09:11
  * @Description: 付款单
 */
 <template>
@@ -22,6 +22,12 @@
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='purchaseApplyCode'">
           <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+        </span>
+        <span v-else-if="prop=='feeDetailCode'">
+          <span>{{value|dictionary('ZD_DY_LX')}}</span>
+        </span>
+        <span v-else-if="prop=='feeTypeCode'">
+          <span>{{value|dictionary('ZD_DY_LX')}}</span>
         </span>
         <span v-else-if="prop=='quotationCode'">
           <el-link :underline="false" @click="showQuotationDetail=true,currentQuotationCode=value" class="f12" type="primary">{{value}}</el-link>
