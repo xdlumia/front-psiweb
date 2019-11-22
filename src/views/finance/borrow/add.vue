@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 10:03:26
+ * @LastEditTime: 2019-11-22 15:05:42
  * @Description: 新增借款
 */
 <template>
@@ -13,6 +13,7 @@
     v-dialogDrag
     v-loading="loading"
   >
+
     <!-- 确定按钮 -->
     <div slot="title">
       <span>新增借款</span>
@@ -54,10 +55,6 @@
 import VisibleMixin from '@/utils/visibleMixin';
 export default {
   prop: {
-    incomeType: {
-      type: Number,
-      default: 0, //来源 0收入流水  1支出流水
-    }
   },
   mixins: [VisibleMixin],
   components: {
@@ -72,6 +69,7 @@ export default {
         borrowTime: '',
         borrowingAmount: '', //  借款金额
         companySettlementId: '', //  结算账户id
+        companySettlementInfo: '',
         employeeId: '', //  100000,
         note: '', //  "示例：备注",
         returnDate: '', //  预计归还日期

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 11:30:45
+ * @LastEditTime: 2019-11-22 15:08:56
  * @Description: 借款单 单据信息
 */
 <template>
@@ -46,8 +46,9 @@
             <!-- 结算账号 -->
             <el-select
               class="wfull"
+              @change="companyChange"
               v-else-if="item.type =='select' && item.prop == 'companySettlementId'"
-              :disabled="disabled || item.prop== 'incomeType'"
+              :disabled="disabled"
               v-model="data[item.prop]"
               :placeholder="`请输入${item.label}`"
             >
@@ -143,6 +144,11 @@ export default {
 
   },
   methods: {
+    companyChange(val) {
+      let item = this.settlementAccount.find(v => v.id == val)
+      this.data.companySettlementInfo = `${item.corporationName}${item.accountType}(${item.account})`
+
+    },
     // 选择对方账号
     chooseEmployees(item) {
       this.data.borrower = item.employeeName

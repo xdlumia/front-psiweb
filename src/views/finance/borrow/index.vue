@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 20:06:34
+ * @LastEditTime: 2019-11-22 15:05:18
  * @Description: 销售-借款单
  */
 <template>
@@ -75,7 +75,6 @@
     <!-- 新增 -->
     <add
       :visible.sync="addVisible"
-      :incomeType="0"
       type="add"
       @reload="$refs.table.reload()"
     />
