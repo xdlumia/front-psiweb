@@ -2,31 +2,33 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 16:16:22
+ * @LastEditTime: 2019-11-22 17:21:21
  * @Description: 借款单 - 还款记录
 */
 <template>
-  <div>
-    <form-card title="还款记录">
-      <d-table
-        size="small"
-        api="seePsiFinanceService.frepaymentrecordList"
-        style="height:350px"
+  <form-card title="还款记录">
+    <d-table
+      size="small"
+      api="seePsiFinanceService.frepaymentrecordList"
+      :params="queryForm"
+      v-if="queryForm.borrowingCode"
+      style="max-height:350px"
+    >
+      <el-table-column
+        v-for="(col,index) of tableCol"
+        :key="index"
+        showOverflowTooltip
+        :prop="col.prop"
+        :label="col.label"
+        :min-width="col.width"
       >
-        <el-table-column
-          v-for="(col,index) of tableCol"
-          :key="index"
-          showOverflowTooltip
-          :prop="col.prop"
-          :label="col.label"
-          :min-width="col.width"
-        >
-        </el-table-column>
-
-      </d-table>
-
-    </form-card>
-  </div>
+        <template slot-scope="scope">
+          <span v-if="col.prop == 'repaymentDate'">{{scope.row[col.prop] | timeToStr}}</span>
+          <span v-else>{{scope.row[col.prop]}}</span>
+        </template>
+      </el-table-column>
+    </d-table>
+  </form-card>
 </template>
 <script>
 
@@ -46,20 +48,22 @@ export default {
       type: Array,
       default: () => []
     },
-    span: {
-      type: Number,
-      default: 8
-    }
   },
 
   data() {
     return {
       tableCol: [
-        { label: '还款金额', prop: 'repaymentAmount', width: '120', },
+        { label: '还款金额(元)', prop: 'repaymentAmount', width: '120', },
         { label: '还款日期', prop: 'repaymentDate', width: '120', },
-        { label: '结算账户', prop: 'companySettlementInfo', width: '120', },
+        { label: '结算账户', prop: 'companySettlementInfo', width: '160', },
         { label: '流水凭证号', prop: 'serialNumber', width: '120', },
-      ]
+        { label: '录入人', prop: 'creator', width: '120', },
+      ],
+      queryForm: {
+        limit: 20,
+        page: 1,
+        borrowingCode: this.data.borrowingCode, //借款单编号
+      }
     };
   },
   watch: {
