@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 18:14:55
+ * @LastEditTime: 2019-11-22 17:38:08
  * @Description: 服务商
  -->
 <template>
@@ -29,9 +29,6 @@
           style="padding:0"
         >{{scope.row.code}}</el-button>
         <span v-else-if="column.columnFields=='state'">{{scope.row.state ? '停用' : '启用'}}</span>
-        <span
-          v-else-if="column.columnFields=='createTime'"
-        >{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
       <el-table-column label="www"></el-table-column>
