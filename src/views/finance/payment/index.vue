@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 11:40:03
+ * @LastEditTime: 2019-11-22 17:37:20
  * @Description: 付款单
 */
 <template>
@@ -29,16 +29,38 @@
         <span v-else-if="['feeDetailCode','feeTypeCode'].includes(prop)">
           <span>{{value|dictionary('ZD_DY_LX')}}</span>
         </span>
+        <span v-else-if="prop=='overSate'">
+          <span>{{overText[value||0]}}</span>
+        </span>
+        <span v-else-if="prop=='settleStatus'">
+          <span>{{settleText[value]}}</span>
+        </span>
+        <span v-else-if="prop=='busState'">
+          <!-- 关联单据状态 -->
+          <span>{{busInfo[row.busType]?busInfo[row.busType].stateText[value]:''}}</span>
+        </span>
+        <span v-else-if="prop=='busCode'">
+          <!-- 关联单据编号 -->
+          <el-link :underline="false" @click="openBusPage(row)" class="f12" type="primary">{{value}}</el-link>
+        </span>
         <span v-else>{{value}}</span>
       </template>
     </tableView>
     <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
     <Apply :visible.sync="showApply" @reload="reload" v-if="showApply" />
+    <component
+      :code="currentBusCode"
+      :is="busInfo[currentBusType].detailPage"
+      :visible.sync="showBusDetail"
+      @reload="reload"
+      v-if="showBusDetail"
+    />
   </div>
 </template>
 <script>
 import Detail from './detail';
 import Apply from './apply';
+import BusMixin from './busMixin';
 /**
  * 采购-请购单
  */
@@ -47,6 +69,7 @@ export default {
     Detail,
     Apply
   },
+  mixins: [BusMixin],
   props: {
     // 是否显示按钮
     button: {
@@ -68,35 +91,44 @@ export default {
       currentCode: '',
       // prettier-ignore
       filterOptions: [
-        { label: '筛选类型', prop: 'searchType', default: true },
-        { label: '账单编号', prop: 'billCode' },
-        { label: '结清状态', prop: 'settleStatus' },
-        { label: '逾期状态', prop: 'overSate' },
-        { label: '对方名称', prop: 'accountName' },
-        { label: '费用类型', prop: 'feeTypeCode' },
-        { label: '费用详情', prop: 'feeDetailCode' },
-        { label: '最小预付/收金额', prop: 'PredictAmount', type: 'numberRange' },
-        { label: '最小应付/收金额', prop: 'Amount', type: 'numberRange' },
-        { label: '最小实收/付金额', prop: 'FactAmount', type: 'numberRange' },
-        { label: '最小应收/付日期', prop: 'PayEndDate', type: 'numberRange', int: true },
-        { label: '公司结算账户id', prop: 'companySettlementId' },
-        { label: '客户id', prop: 'clientId' },
-        { label: '客户类型(供应商/客户)', prop: 'clientType' },
-        { label: '来源', prop: 'source' },
-        { label: '业务编号', prop: 'busCode' },
-        { label: '业务单据状态', prop: 'busState' },
-        { label: '部门code', prop: 'deptTotalCode', type: 'dept' },
-        { label: '起始创建时间', prop: 'CreateTime', type: 'dateRange' },
+        { label: '账单编号', prop: 'billCode', default: true },
+        { label: '结清状态', prop: 'settleStatus', default: true },
+        { label: '逾期状态', prop: 'overSate', default: true },
+        { label: '对方名称', prop: 'accountName', default: true },
+        { label: '费用详情', prop: 'feeDetailCode', default: true },
+        { label: '预付/收金额', prop: 'PredictAmount', type: 'numberRange', default: true },
+        { label: '应付/收金额', prop: 'Amount', type: 'numberRange', default: true },
+        { label: '实收/付金额', prop: 'FactAmount', type: 'numberRange', default: true },
+        { label: '应收/付日期', prop: 'PayEndDate', type: 'numberRange', int: true, default: true },
+        { label: '客户', prop: 'clientId' },
+        { label: '关联单据编号', prop: 'busCode' },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
+        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' },
         { label: '创建人', prop: 'creator', type: 'employee' },
-        { label: '状态', prop: 'state' }
-      ]
+      ],
+      stateText: {
+        '0': '审核中',
+        '1': '待复核',
+        '2': '已通过',
+        '3': '已驳回',
+        '4': '已完成',
+        '5': '终止',
+        '-1': '新建'
+      },
+      settleText: {
+        0: '未结清',
+        1: '部分结清',
+        2: '已结清',
+        3: '已关闭'
+      },
+      overText: {
+        0: '未逾期',
+        1: '已逾期'
+      }
     };
   },
   mounted() {},
   methods: {
-    logData(e) {
-      console.log(e);
-    },
     reload() {
       this.$refs.tableView.reload();
     },
@@ -122,6 +154,12 @@ export default {
           });
         } catch (error) {}
         this.loading = false;
+      } else {
+        this.$message({
+          message: '只有新建、已驳回的付款单可批量申请',
+          type: 'warning',
+          showClose: true
+        });
       }
     }
   }

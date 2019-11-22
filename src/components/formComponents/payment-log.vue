@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-22 09:30:44
+ * @LastEditTime: 2019-11-22 18:42:17
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -17,18 +17,43 @@
     <el-table :data="recList" size="mini" v-loading="loading">
       <el-table-column label="流水号" min-width="80" prop="fbillId" show-overflow-tooltip></el-table-column>
       <el-table-column label="对方名称" min-width="80" prop="oppositeAccount" show-overflow-tooltip></el-table-column>
-      <el-table-column label="提交时间" min-width="80" prop="createTime" show-overflow-tooltip></el-table-column>
+      <el-table-column label="提交时间" min-width="100" prop="createTime" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span>{{row.createTime|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="收支状态" min-width="80" prop="incomeType" show-overflow-tooltip></el-table-column>
       <el-table-column label="流水金额" min-width="80" prop="incomeAmount" show-overflow-tooltip></el-table-column>
       <el-table-column label="该账单匹配金额" min-width="80" prop="matchAmount" show-overflow-tooltip></el-table-column>
       <el-table-column label="操作" min-width="80" prop="matchAmount" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <el-button @click="del(row)" type="danger">删除</el-button>
+          <el-button @click="del(row)" size="mini" type="danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <Add :visible.sync="showAdd" code ref="addIncoming" v-if="showAdd" />
-    <chooseIncoming :visible.sync="showChooseIncoming" @change="chooseIncoming" code ref="chooseIncoming" v-if="showChooseIncoming" />
+    <chooseIncoming
+      :params="{
+        page: 1,
+        limit: 15,
+        matchState: '',
+        incomeType: type
+      }"
+      :visible.sync="showChooseIncoming"
+      @change="chooseIncoming"
+      code
+      ref="chooseIncoming"
+      v-if="showChooseIncoming"
+    />
+    <payment-match
+      :bill="{
+      billAmount:billAmount,
+      unmatch:unmatchData
+    }"
+      :visible.sync="showMatchDialog"
+      @change="submitMatch"
+      v-if="showMatchDialog"
+    />
   </form-card>
 </template>
 <script>
@@ -52,14 +77,20 @@ export default {
     matchApi: {
       type: String,
       required: true
-    }
+    },
+    params: Object,
+    billAmount: Number,
+    type: [Number, String]
   },
   data() {
     return {
       recList: [],
       loading: false,
       showAdd: false,
-      showChooseIncoming: false
+      showChooseIncoming: false,
+      showMatchDialog: false,
+      unmatchData: 0,
+      matchIncomingId: ''
     };
   },
   watch: {
@@ -122,14 +153,24 @@ export default {
       this.loading = false;
     },
     async chooseIncoming(data) {
+      this.unmatchData = data.unmatchAmount;
+      this.showChooseIncoming = false;
+      this.matchIncomingId = data.id;
+      this.$nextTick(() => (this.showMatchDialog = true));
+    },
+    async submitMatch(e) {
+      console.log(e);
       this.loading = true;
       try {
         await this.$getApi(this.matchApi)({
           fbillId: this.billId,
-          incomeRecordId: data.id,
-          matchAmount: ''
+          incomeRecordId: this.matchIncomingId,
+          matchAmount: e
         });
-      } catch (error) {}
+        this.showMatchDialog = false;
+      } catch (error) {
+        console.error(error);
+      }
       this.loading = false;
     }
   }

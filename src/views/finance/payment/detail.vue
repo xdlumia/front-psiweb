@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 17:54:18
+ * @LastEditTime: 2019-11-22 16:26:03
  * @Description: 付款单
 */
 <template>
@@ -72,8 +72,41 @@ export default {
   data() {
     return {
       showApply: false,
-      showAddIncoming: false
+      showAddIncoming: false,
+      stateText: {
+        '0': '审核中',
+        '1': '待复核',
+        '2': '已通过',
+        '3': '已驳回',
+        '4': '已完成',
+        '5': '终止',
+        '-1': '新建'
+      },
+      settleText: {
+        0: '未结清',
+        1: '部分结清',
+        2: '已结清',
+        3: '已关闭'
+      },
+      overText: {
+        0: '未逾期',
+        1: '已逾期'
+      }
     };
+  },
+  computed: {
+    status() {
+      if (!this.detail) return [];
+      else {
+        return [
+          { label: '账单状态', value: this.stateText[this.detail.state] },
+          { label: '逾期状态', value: this.overText[this.detail.overSate||0] },
+          { label: '总应付金额', value: this.detail.billTotalAmount },
+          { label: '实付金额', value: this.detail.factAmount },
+          { label: '付款方', value: this.detail.accountName }
+        ];
+      }
+    }
   },
   mounted() {},
   watch: {},
