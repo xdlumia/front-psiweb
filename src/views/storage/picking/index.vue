@@ -14,6 +14,7 @@
       :filterOptions='filterOptions'
       :params="queryForm"
       :selection='false'
+      exportApi="seePsiWmsService.wmspickingorderExport"
       api="seePsiWmsService.wmspickingorderList"
       title="拣货单"
     >

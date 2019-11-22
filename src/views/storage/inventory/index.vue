@@ -15,6 +15,7 @@
       :selection='false'
       ref='allTable'
       api="seePsiWmsService.wmsblitemList"
+      exportApi="seePsiWmsService.wmsblitemExport"
       title="盘点单"
     >
       <template v-slot:button>

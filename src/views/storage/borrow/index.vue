@@ -17,6 +17,7 @@
       ref='table'
       :selection='false'
       api="seePsiWmsService.wmsborrowloantaskList"
+      exportApi="seePsiWmsService.wmsborrowloantaskExport"
       title="借入借出任务"
     >
       <template slot-scope="{column,row,value}">

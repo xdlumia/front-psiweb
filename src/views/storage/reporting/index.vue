@@ -15,6 +15,7 @@
       :params="queryForm"
       ref="allTable"
       :selection='false'
+      exportApi="seePsiWmsService.wmsreportinglossesExport"
       api="seePsiWmsService.wmsreportinglossesList"
       title="报溢报损单"
     >
@@ -31,7 +32,6 @@
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else-if="column.columnFields=='type'">{{value == 1 ? '报溢' : '报损'}}</span>
         <span v-else>{{value}}</span>
       </template>

@@ -13,6 +13,7 @@
       :filterOptions='filterOptions'
       :selection='false'
       ref='allTable'
+      exportApi="seePsiWmsService.wmsassembleorderExport"
       api="seePsiWmsService.wmsassembleorderList"
       title="组装单"
     >

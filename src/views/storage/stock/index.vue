@@ -16,6 +16,7 @@
       :selection='false'
       ref='allTable'
       api="seePsiWmsService.wmsinventoryList"
+      exportApi="seePsiWmsService.commonwmsmanagerExport"
       :params="queryForm"
       title="库存查询"
     >
@@ -63,7 +64,7 @@
         class="choose-aside fl"
         style="height: calc(100% - 40px);"
       >
-        <el-button 
+        <el-button
           type="text"
           class="ml10"
           @click="clickAll"

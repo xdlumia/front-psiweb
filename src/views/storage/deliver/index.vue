@@ -14,12 +14,12 @@
       :params="queryForm"
       :selection='false'
       api="seePsiWmsService.wmsshipmentsorderList"
+      exportApi="seePsiWmsService.wmsshipmentsorderExport"
       title="发货单"
     >
       <template slot-scope="{column,row,value}">
-        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span
-          v-else-if="column.columnFields=='shipmentCode'"
+          v-if="column.columnFields=='shipmentCode'"
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>

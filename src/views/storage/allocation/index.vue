@@ -13,6 +13,7 @@
       :filterOptions='filterOptions'
       :selection='false'
       ref='allTable'
+      exportApi="seePsiWmsService.wmsallocationorderExport"
       api="seePsiWmsService.wmsallocationorderList"
       :params="queryForm"
       title="调拨单"
@@ -25,9 +26,8 @@
         >新增</el-button>
       </template>
       <template slot-scope="{column,row,value}">
-        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span
-          v-else-if="column.columnFields=='allocationOrderCode'"
+          v-if="column.columnFields=='allocationOrderCode'"
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>

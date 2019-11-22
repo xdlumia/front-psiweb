@@ -29,7 +29,6 @@
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else-if="column.columnFields=='putinState'">{{value == 0 ? '待入库' : value == 1 ? '部分完成' : value == 2 ? '完成入库' : value == 3 ? '终止' : '全部'}}</span>
         <span v-else>{{value}}</span>
       </template>

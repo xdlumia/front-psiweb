@@ -14,6 +14,7 @@
       :selection='false'
       ref='allTable'
       api="seePsiWmsService.wmsswaptaskList"
+      exportApi="seePsiWmsService.wmsswaptaskExport"
       title="换货任务"
     >
       <template slot-scope="{column,row,value}">

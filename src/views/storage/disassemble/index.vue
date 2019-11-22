@@ -14,6 +14,7 @@
       :selection='false'
       ref='allTable'
       api="seePsiWmsService.wmsdisassemblytaskList"
+      exportApi="seePsiWmsService.wmsdisassemblytaskExport"
       :params="queryForm"
       title="拆卸任务"
     >

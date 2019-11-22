@@ -13,6 +13,7 @@
       :selection='false'
       ref='allTable'
       api="seePsiWmsService.wmsassembletaskList"
+      exportApi="seePsiWmsService.wmsassembletaskExport"
       :params="queryForm"
       title="组装任务"
     >
