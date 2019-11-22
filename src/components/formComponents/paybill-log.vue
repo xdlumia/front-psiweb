@@ -2,8 +2,8 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 17:04:27
- * @Description: 账单调整记录
+ * @LastEditTime: 2019-11-22 09:30:57
+ * @Description: 账单调整记录 已绑定 1
 */
 <template>
   <form-card title="账单调整记录">

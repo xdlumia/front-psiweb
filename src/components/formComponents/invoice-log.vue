@@ -2,8 +2,8 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 17:29:10
- * @Description: 开票/收票 记录
+ * @LastEditTime: 2019-11-22 09:31:29
+ * @Description: 开票/收票 记录 已绑定 1
 */
 <template>
   <form-card :title="`${type==0?'收票':'开票'}记录`">

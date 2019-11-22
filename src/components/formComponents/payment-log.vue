@@ -2,8 +2,8 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 18:34:45
- * @Description: 收支流水
+ * @LastEditTime: 2019-11-22 09:30:44
+ * @Description: 收支流水 已绑定 1
 */
 <template>
   <form-card title="收支流水">
