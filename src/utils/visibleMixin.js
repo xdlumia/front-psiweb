@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 16:04:48
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-22 15:58:10
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -161,13 +161,17 @@ export default {
           center: true
         })
       }
-      let fn = api.split('.').reduce((api, item) => api[item], this.$api)
-      if (!fn) console.error(`接口不存在 ${api}`)
-      if (data instanceof Array && data[0] == null) {
-        await fn(data[0], data[1])
-      } else {
-        await fn(data)
-      }
+      this.loading = true
+      try {
+        let fn = api.split('.').reduce((api, item) => api[item], this.$api)
+        if (!fn) console.error(`接口不存在 ${api}`)
+        if (data instanceof Array && data[0] == null) {
+          await fn(data[0], data[1])
+        } else {
+          await fn(data)
+        }
+      } catch (error) { }
+      this.loading = false
       this.setEdit()
       if (title === '删除') {
         this.close()

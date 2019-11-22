@@ -32,7 +32,7 @@
                   <el-option
                     v-for="(item, index) in quoteList"
                     :key="index"
-                    :value="item.id"
+                    :value="item.invoiceCoding"
                     :label="item.invoiceCoding"
                   ></el-option>
                 </el-select>

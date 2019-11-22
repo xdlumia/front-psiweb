@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 16:07:21
+ * @LastEditTime: 2019-11-22 17:41:00
  * @Description: 其他费用
  */
 <template>
@@ -73,8 +73,8 @@
 <script>
 let formItems = [
   // 客户名称编辑的时候使用clientId显示的时候使用clientName
-  // TODO 费用类型 费用明细 字典值还没有随便取的
-  { label: '费用类型', prop: 'feeTypeCode', type: 'select', dicName: 'PSI_GSSZ_ZHLX', rules: [{ required: true, trigger: 'blur' }], },
+  // TODO 费用明细 字典值还没有随便取的
+  { label: '费用类型', prop: 'feeTypeCode', type: 'select', dicName: 'ZD_DY_LX', rules: [{ required: true, trigger: 'blur' }], },
   { label: '费用明细', prop: 'feeDetailCode', type: 'select', dicName: 'PSI_GSSZ_ZHLX', rules: [{ required: true, trigger: 'blur' }], },
   { label: '金额', prop: 'payAmount', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
   { label: '付款时间', prop: 'payTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },

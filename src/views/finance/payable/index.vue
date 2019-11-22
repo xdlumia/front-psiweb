@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-04 13:36:20
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 18:02:50
+ * @LastEditTime: 2019-11-22 16:36:35
  * @Description: 应付账单
 */
 <template>
@@ -27,7 +27,7 @@ export default {
       pageConfig: {
         title: '应付账单',
         busType: '52',
-        type: 0,
+        type: 1,
         api: {
           list: 'seePsiFinanceService.paymentbillList',
           export: 'seePsiFinanceService.paymentbillExport',

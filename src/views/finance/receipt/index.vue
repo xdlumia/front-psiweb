@@ -2,20 +2,20 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 20:08:42
+ * @LastEditTime: 2019-11-22 16:58:06
  * @Description: 销售-待收票
  */
 <template>
   <div>
     <table-view
-      busType="57"
+      busType="58"
       ref="table"
       :filter="true"
       :moreButton="true"
       :column="true"
       title="待收票"
-      api="seePsiFinanceService.fborrowingList"
-      exportApi="seePsiSaleService.fborrowingExport"
+      api="seePsiFinanceService.finvoicereceivableList"
+      exportApi="seePsiSaleService.finvoicereceivableExport"
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
     >
@@ -27,65 +27,52 @@
           align="center"
         >
           <el-col :span="6">
-            <span style="line-height:28px;">结算账户：</span>
+            <span style="line-height:28px;">发票账户：</span>
           </el-col>
           <el-col :span="18">
             <el-select
               size="mini"
-              v-model="queryForm.companySettlementId"
+              v-model="queryForm.invoiceCode"
             >
               <el-option
                 value
                 label="全部"
               ></el-option>
               <el-option
-                v-for="(item, index) in settlementAccount"
+                v-for="(item, index) in accountList"
                 :key="index"
-                :value="item.id"
-                :label="`${item.corporationName}${item.accountType}(${item.account})`"
+                :value="item.invoiceSum"
+                :label="`${item.corporationName}(${item.invoiceSum})`"
               ></el-option>
             </el-select>
           </el-col>
         </el-row>
       </template>
-      <template slot="button">
-        <el-button
-          type="primary"
-          size="mini"
-          icon="el-icon-plus"
-          @click="addVisible = true"
-        >新增借款</el-button>
-      </template>
+
       <template slot-scope="{column,row,value}">
-        <!-- 借款编号 -->
+        <!-- 发票号码 -->
         <span
           class="d-text-blue d-pointer"
-          v-if="column.columnFields=='borrowingCode'"
+          v-if="column.columnFields=='invoiceCode'"
           @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
-        <!-- 匹配状态 -->
-        <span v-else-if="column.columnFields=='matchState'"> {{stateText[value]}}</span>
-
-        <!-- 创建时间 -->
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <!-- 关联单据号 -->
+        <span
+          class="d-text-blue"
+          v-else-if="column.columnFields=='busCode'"
+        > {{value}}</span>
+        <!-- 发票类型 -->
+        <span v-else-if="column.columnFields=='invoiceTypeCode'">{{value|dictionary('CW_FP_LX')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-
-    <!-- 新增 -->
-    <add
-      :visible.sync="addVisible"
-      :incomeType="0"
-      type="add"
-      @reload="$refs.table.reload()"
-    />
 
     <!-- 详情 -->
     <detail
       v-if="detailVisible"
       :visible.sync="detailVisible"
       :rowData="rowData"
-      :code="rowData.borrowingCode"
+      :code="rowData.invoiceCode"
       @reload="$refs.table.reload()"
     />
   </div>
@@ -134,29 +121,22 @@ export default {
       // 查询表单
       queryForm: {
         page: 1,
-        limit: 20
+        limit: 20,
+        dataType: 0, //票据类型(0收票，1开票)
+        // invoiceCode: ''
       },
       // 筛选数据
       filterOptions: filterOptions,
       // 当前行数据
       rowData: {},
       detailVisible: false,
-      addTransferVisible: false,
-      addVisible: false,
     };
   },
   computed: {
-    settlementAccount() {
-      return [].concat(...this.accountList.map(item => {
-        return [].concat(...((item.commonCorporationAccountEntities || []).map(sub => {
-          sub.accountType = this.$options.filters.dictionary(sub.accountType, 'PSI_GSSZ_ZHLX')
-          return Object.assign(sub, { corporationName: item.corporationName })
-        })))
-      }))
-    }
+
   },
   watch: {
-    'queryForm.companySettlementId': {
+    'queryForm.invoiceCode': {
       handler(newValue) {
         this.$refs.table.reload();
       }

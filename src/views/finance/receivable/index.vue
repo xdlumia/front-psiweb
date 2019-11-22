@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-04 13:36:20
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 19:39:42
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-22 16:30:59
  * @Description: 应收账单
 */
 <template>
@@ -32,7 +32,7 @@ export default {
       pageConfig: {
         title: '应收账单',
         busType: '53',
-        type: 1,
+        type: 0,
         api: {
           list: 'seePsiFinanceService.revenuebillList',
           export: 'seePsiFinanceService.revenuebillExport',

@@ -32,9 +32,6 @@
         <span
           v-else-if="column.columnFields=='begTime'"
         >{{scope.row.begTime|timeToStr('YYYY-MM-DD hh:mm:ss')}}-{{scope.row.endTime|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
-        <span
-          v-else-if="column.columnFields=='createTime'"
-        >{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
       <el-table-column label="www"></el-table-column>

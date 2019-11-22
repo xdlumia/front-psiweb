@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 15:23:11
- * @Description: 新增借款
+ * @LastEditTime: 2019-11-22 15:52:08
+ * @Description: 新增还款
 */
 <template>
   <el-dialog
@@ -13,10 +13,9 @@
     v-dialogDrag
     v-loading="loading"
   >
-
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>新增借款</span>
+      <span>新增还款</span>
       <div class="fr mr30">
         <el-button
           type="primary"
@@ -35,14 +34,21 @@
       :model="form"
       label-position="top"
       class="d-auto-y"
-      style="max-height:calc(100vh - 110px)"
+      style="height:calc(100vh - 110px)"
     >
       <!-- 单据信息 -->
-      <receipt-borrow-info
+      <receipt-refund-info
         :span="12"
         :hide="['borrowingCode']"
         :data="form"
       />
+      <div
+        class="ar mt10 f14"
+        style="color:#333"
+      >
+        <span class="mr20"> 借款金额:{{rowData.borrowingAmount |  milliFormat}}</span>
+        已还金额:<span :class="form.repaymentAmount>rowData.borrowingAmount?'d-text-red':''"> {{form.repaymentAmount |  milliFormat}}</span>
+      </div>
     </el-form>
   </el-dialog>
 </template>
@@ -52,6 +58,10 @@
 import VisibleMixin from '@/utils/visibleMixin';
 export default {
   prop: {
+    incomeType: {
+      type: Number,
+      default: 0, //来源 0收入流水  1支出流水
+    }
   },
   mixins: [VisibleMixin],
   components: {
@@ -62,15 +72,12 @@ export default {
       loading: false,
       // 新增orEdit框内容
       form: {
-        borrower: '', //  "示例：借款人",
-        borrowTime: '',
-        borrowingAmount: '', //  借款金额
-        companySettlementId: '', //  结算账户id
-        companySettlementInfo: '',
-        employeeId: '', //  100000,
-        note: '', //  "示例：备注",
-        returnDate: '', //  预计归还日期
-        serialNumber: '', //  "示例：流水凭证号",
+        companySettlementId: '',//  结算账户id
+        companySettlementInfo: '',// 示例：结算账户信息",
+        repaymentAmount: '',//  还款金额
+        repaymentDate: '',//  还款日期
+        serialNumber: '',// 示例：流水凭证号"
+        note: '',
       }
     }
   },
@@ -91,12 +98,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true
-          let api = 'fborrowingUpdate'
-
-          if (this.type == 'add') {
-            api = 'fborrowingSave'
-          }
-          this.$api.seePsiFinanceService[api](this.form)
+          this.$api.seePsiFinanceService.frepaymentrecordSave(this.form)
             .then(res => {
               this.setEdit()
               this.close()

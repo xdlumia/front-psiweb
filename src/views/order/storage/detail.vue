@@ -2,11 +2,18 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:42:29
+ * @LastEditTime: 2019-11-22 15:34:23
  * @Description: 采购入库单
 */
 <template>
-  <sideDetail :status="status" :title="`采购入库单 ${detail?detail.putinCode:''}`" :visible.sync="showDetailPage" @close="close" width="990px" v-loading="loading">
+  <sideDetail
+    :status="status"
+    :title="`采购入库单 ${detail?detail.putinCode:''}`"
+    :visible.sync="showDetailPage"
+    @close="close"
+    v-loading="loading"
+    width="990px"
+  >
     <template slot="button">
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinSubmitApproval',{
@@ -57,7 +64,7 @@
         size="mini"
         type="danger"
       >终止</el-button>
-      <el-button size="mini" type="primary">收票申请</el-button>
+      <el-button @click="collectInvoiceApply" size="mini" type="primary">收票申请</el-button>
       <el-button @click="generateContract" size="mini" type="primary">生成合同</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
@@ -88,7 +95,7 @@
           />
           <buyingPaymentLate :data="detail" disabled id="paymentLate" />
           <order-storage-bill :data="detail" disabled id="billInfo" />
-          <customInfo :data="detail" disabled id="customInfo" busType="30"/>
+          <customInfo :data="detail" busType="30" disabled id="customInfo" />
           <extrasInfo :data="detail" disabled id="extrasInfo" />
         </el-form>
       </el-tab-pane>
@@ -129,6 +136,7 @@
     />
     <orderContract :rowData="orderContractData" :visible.sync="showOrderContract" v-if="showOrderContract" />
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
+    <CollectInvoiceDialog :rowData="collectInvoiceData" :visible.sync="showCollectInvoice" v-if="showCollectInvoice" />
   </sideDetail>
 </template>
 <script>
@@ -136,13 +144,15 @@ import OrderRejectEdit from '../reject/edit'; // 采购退货单
 import Edit from './edit'; // 采购入库单编辑
 import OrderContract from '@/views/contract/order/edit'; // 采购合同
 import VisibleMixin from '@/utils/visibleMixin';
+import CollectInvoiceDialog from '@/views/finance/receipt/collect-invoice';
 
 export default {
   mixins: [VisibleMixin],
   components: {
     OrderRejectEdit,
     OrderContract,
-    Edit
+    Edit,
+    CollectInvoiceDialog
   },
   data() {
     return {
@@ -157,7 +167,9 @@ export default {
         '4': '已完成',
         '5': '已驳回',
         '6': '已终止'
-      }
+      },
+      collectInvoiceData: null,
+      showCollectInvoice: false
     };
   },
   methods: {
@@ -239,6 +251,32 @@ export default {
       console.log(contract);
       this.orderContractData = contract;
       this.showOrderContract = true;
+    },
+    collectInvoiceApply() {
+      // 收集
+      this.collectInvoiceData = {
+        type: 0,
+        busCode: this.detail.putinCode,
+        busType: 30,
+        purchaseId: this.detail.companySettlementId,
+        marketId: this.detail.supplierId,
+        invoiceDetailList: []
+          .concat(
+            this.detail.commodityList || [],
+            this.detail.additionalCommodityList || []
+          )
+          .map(item => {
+            return {
+              articleName: item.goodsName,
+              commodityCode: item.commodityCode,
+              isOrder: 1,
+              type: 0,
+              taxRate: item.taxRate,
+              price: item.purchasePrice
+            };
+          })
+      };
+      this.showCollectInvoice = true;
     }
   }
 };
