@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 15:31:49
+ * @LastEditTime: 2019-11-22 15:47:04
  * @Description: 详情
 <template>
   <div>
@@ -46,6 +46,7 @@
     <!-- 还款 -->
     <addRefund
       :rowData="rowData"
+      type="add"
       :visible.sync="receivableVisible"
       @reload="$emit('reload')"
     ></addRefund>

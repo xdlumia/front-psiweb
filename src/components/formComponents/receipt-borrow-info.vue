@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 15:24:36
+ * @LastEditTime: 2019-11-22 15:45:50
  * @Description: 借款单 单据信息
 */
 <template>
@@ -145,7 +145,6 @@ export default {
     companyChange(val) {
       let item = this.settlementAccount.find(v => v.id == val)
       this.data.companySettlementInfo = `${item.corporationName}${item.accountType}(${item.account})`
-
     },
     // 选择对方账号
     chooseEmployees(item) {
