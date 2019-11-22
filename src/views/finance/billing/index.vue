@@ -53,7 +53,7 @@
           v-if="column.columnFields=='invoiceCode'"
           @click="detail(row)"
           style="padding:0"
-        >{{row.invoiceCode}}</el-button>
+        >{{row.invoiceCode || '未确定发票号码'}}</el-button>
         <el-button
           type="text"
           v-else-if="column.columnFields=='busCode'"
@@ -61,7 +61,9 @@
           style="padding:0"
         >{{row.busCode}}</el-button>
         <span v-else-if="column.columnFields=='state'">{{stateText[row.state]}}</span>
-        <span v-else-if="column.columnFields=='invoiceTyepCode'">{{row.invoiceTyepCode | dictionary('CW_FP_LX')}}</span>
+        <span
+          v-else-if="column.columnFields=='invoiceTyepCode'"
+        >{{row.invoiceTyepCode | dictionary('CW_FP_LX')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
@@ -82,6 +84,8 @@ import detail from './detail'
 import cancellation from './cancellation'
 
 const filterOptions = [
+  { label: '发票类型', prop: 'invoiceTyepCode', default: true, type: 'dict',
+    dictName: 'CW_FP_LX' },
   // { label: '账单状态',
   //   prop: 'settleStatus',
   //   type: 'select',
@@ -93,10 +97,14 @@ const filterOptions = [
   //     { label: '已关闭', value: 3 }
   //   ]
   // },
-  // { label: '费用单编号', prop: 'costCode', default: true },
+  { label: '发票号码', prop: 'invoiceCode', default: true },
+  { label: '商品合计金额', prop: 'CommodityTotalAmount', default: true, type: 'numberrange' },
+  { label: '税价合计金额', prop: 'TaxTotalAmount', default: true, type: 'numberrange' },
+  { label: '合计税金', prop: 'AccountTotalAmount', default: true, type: 'numberrange' },
+  { label: '票据金额', prop: 'InvoiceAmount', default: true, type: 'numberrange' },
   // { label: '创建人', prop: 'creator', default: true, type: 'employee' },
   // { label: '金额', prop: 'Amount', default: true, type: 'numberrange' },
-  // { label: '创建时间', prop: 'CreateTime', default: true, type: 'daterange' }
+  { label: '开票日期', prop: 'InvoiceDate', default: true, type: 'daterange' }
 ]
 
 export default {
@@ -130,7 +138,7 @@ export default {
       queryForm: {
         page: 1,
         limit: 20,
-        companySettlementId: ''
+        companyId: ''
       },
       // 筛选数据
       filterOptions: filterOptions,
@@ -157,7 +165,7 @@ export default {
   computed: {
   },
   watch: {
-    'queryForm.companySettlementId': {
+    'queryForm.companyId': {
       handler(newValue) {
         this.$refs.table.reload();
       }
@@ -191,7 +199,6 @@ export default {
           message: '已取消'
         })
       })
-
     },
     selectionChange(val) {
       console.log(val)

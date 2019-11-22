@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 10:59:19
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-11-22 16:43:26
  * @Description: 路由文件
  */
 import Vue from 'vue'
@@ -40,6 +40,9 @@ const Home = () => import('@/views/home')
 
 // 待办事项
 const todo = () => import('@/views/todoList')
+
+// 报表
+import report from '@/views/report/route'
 
 //  辅助管理
 import assistant from '@/views/asistant/route'
@@ -92,7 +95,8 @@ const router = new Router({
       ...ContractRoute, // 合同模块路由配置
       ...storageRoute, // 库房模块路由配置
       ...financeRoute, // 财务模块路由配置
-      ...basicSetting // 基础配置
+      ...basicSetting, // 基础配置
+      ...report // 报表
     ]
   },
   // 404

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 19:00:07
+ * @LastEditTime: 2019-11-22 17:35:36
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -221,6 +221,8 @@ export default {
     };
   },
   created() {
+    console.log(this.$parent.button);
+
   },
   mounted() {
 
@@ -228,7 +230,18 @@ export default {
   computed: {
     // 判断当前表格的高度
     tableHeader() {
-      return this.$parent.button && this.staList.length ? 'calc(100% - 110px)' : this.height
+      // 如果首页有操作按钮 并且有统计
+      if (this.$parent.button && this.staList.length) {
+        return 'calc(100% - 110px)'
+      }
+      // 如果没有按钮 那一定也没有统计
+      else if (!this.$parent.button) {
+        return 'calc(100vh - 240px)'
+      }
+      // 否则就是默认高度
+      else {
+        return this.height
+      }
     },
   },
   methods: {

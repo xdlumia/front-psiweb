@@ -63,8 +63,8 @@ const filterOptions = [
   { label: '创建时间', prop: 'CreateTime', default: true, type: 'daterange' },
   { label: '创建人', prop: 'creator', default: true, type: 'employee' },
   { label: '发票代码', prop: 'invoiceCoding', default: true },
-  { label: '起始发票号码', prop: 'StartCoding', default: true, type: 'numberrange' },
-  { label: '结束发票号码', prop: 'EndCoding', default: true, type: 'numberrange' },
+  // { label: '起始发票号码', prop: 'StartCoding', default: true, type: 'numberrange' },
+  // { label: '结束发票号码', prop: 'EndCoding', default: true, type: 'numberrange' },
   { label: '已用数量', prop: 'UseNumber', default: true, type: 'numberrange' },
   { label: '作废数量', prop: 'FailureNumber', default: true, type: 'numberrange' }
 ]

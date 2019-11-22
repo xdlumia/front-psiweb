@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 11:40:52
+ * @LastEditTime: 2019-11-22 15:52:08
  * @Description: 新增还款
 */
 <template>
@@ -42,8 +42,12 @@
         :hide="['borrowingCode']"
         :data="form"
       />
-      <div>
-        <span> 借款金额:{{rowData.borrowingAmount |  milliFormat}}</span><span> 已还金额:{{rowData.repaymentAmount |  milliFormat}}</span>
+      <div
+        class="ar mt10 f14"
+        style="color:#333"
+      >
+        <span class="mr20"> 借款金额:{{rowData.borrowingAmount |  milliFormat}}</span>
+        已还金额:<span :class="form.repaymentAmount>rowData.borrowingAmount?'d-text-red':''"> {{form.repaymentAmount |  milliFormat}}</span>
       </div>
     </el-form>
   </el-dialog>
@@ -73,6 +77,7 @@ export default {
         repaymentAmount: '',//  还款金额
         repaymentDate: '',//  还款日期
         serialNumber: '',// 示例：流水凭证号"
+        note: '',
       }
     }
   },
@@ -93,12 +98,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true
-          let api = 'fborrowingUpdate'
-
-          if (this.type == 'add') {
-            api = 'fborrowingSave'
-          }
-          this.$api.seePsiFinanceService[api](this.form)
+          this.$api.seePsiFinanceService.frepaymentrecordSave(this.form)
             .then(res => {
               this.setEdit()
               this.close()
