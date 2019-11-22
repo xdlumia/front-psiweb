@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 11:20:31
+ * @LastEditTime: 2019-11-22 15:31:49
  * @Description: 详情
 <template>
   <div>
@@ -41,12 +41,6 @@
           disabled
           :data="detail"
         />
-
-        <!-- 备注信息 其他信息-->
-        <extras-info
-          disabled
-          :data="detail"
-        />
       </el-form>
     </side-detail>
     <!-- 还款 -->
@@ -78,11 +72,8 @@ export default {
       receivableVisible: false,
       // 状态功能按钮
       currStatusType: {
-        '0': ['删除', '收款单匹配'], // 未匹配
-        '1': [], // 已匹配
-        '2': ['收款单匹配'], // 部分匹配
-        '3': ['删除', '收款单匹配'], //未匹配
-        '4': ['删除'], //未匹配借
+        '0': ['删除', '还款'], // 未还清
+        '1': ['删除'], // 已还清
       },
     }
   },

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 15:08:56
+ * @LastEditTime: 2019-11-22 15:24:36
  * @Description: 借款单 单据信息
 */
 <template>
@@ -10,7 +10,7 @@
     <form-card title="单据信息">
       <el-row :gutter="10">
         <el-col
-          :span="span || 8"
+          :span="item.span || 12"
           v-for="(item,index) of formItems"
           :key="index"
         >
@@ -33,9 +33,10 @@
               ></el-input>
             </employees-chosen>
             <el-input
-              v-else-if="item.type =='input'"
+              v-else-if="item.type =='input' || item.type =='textarea'"
               :disabled='disabled'
               v-model="data[item.prop]"
+              :type="item.type"
               :placeholder="`请输入${item.label}`"
             >
               <template
@@ -107,10 +108,6 @@ export default {
     hide: {
       type: Array,
       default: () => []
-    },
-    span: {
-      type: Number,
-      default: 8
     }
   },
 
@@ -125,6 +122,7 @@ export default {
         { label: '借款日期', prop: 'borrowTime', type: 'date', rules: [{ required: true, trigger: 'blur' }] },
         { label: '流水单凭号', prop: 'serialNumber', type: 'input', rules: [{ required: false }], },
         { label: '预计还款日期', prop: 'returnDate', type: 'date', rules: [{ required: false, trigger: 'blur' }] },
+        { label: '备注', prop: 'note', span: 24, type: 'textarea', rules: [{ required: false, trigger: 'blur' }] },
       ],
       options: []
     };
