@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 19:47:40
+ * @LastEditTime: 2019-11-22 17:08:39
  * @Description: 销售-支出流水
  */
 <template>
@@ -33,33 +33,7 @@
         >新增转账单</el-button>
       </template>
       <template slot="top-filter">
-        <el-row
-          style="width:300px;flex:0 0 300px;"
-          type="flex"
-          justify="space-between"
-          align="center"
-        >
-          <el-col :span="6">
-            <span style="line-height:28px;">结算账户：</span>
-          </el-col>
-          <el-col :span="18">
-            <el-select
-              size="mini"
-              v-model="queryForm.companySettlementId"
-            >
-              <el-option
-                value
-                label="全部"
-              ></el-option>
-              <el-option
-                v-for="(item, index) in settlementAccount"
-                :key="index"
-                :value="item.id"
-                :label="`${item.corporationName}${item.accountType}(${item.account})`"
-              ></el-option>
-            </el-select>
-          </el-col>
-        </el-row>
+        <bill-account-selector v-model="queryForm.companySettlementId" />
       </template>
       <template slot-scope="{column,row,value}">
         <!-- 流水编号 -->
@@ -102,7 +76,6 @@
 import add from '../income/add' //新增 支出流水
 import addTransfer from '../income/add-transfer' //新增 流水账单
 import detail from './details' //详情
-import invoiceMixin from '../invoice-mixins'
 let filterOptions = [
   // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
   // { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
@@ -113,7 +86,6 @@ let filterOptions = [
 
 export default {
   name: 'financeOutlay',
-  mixins: [invoiceMixin],
   components: {
     detail,
     add,
@@ -157,14 +129,7 @@ export default {
     };
   },
   computed: {
-    settlementAccount() {
-      return [].concat(...this.accountList.map(item => {
-        return [].concat(...((item.commonCorporationAccountEntities || []).map(sub => {
-          sub.accountType = this.$options.filters.dictionary(sub.accountType, 'PSI_GSSZ_ZHLX')
-          return Object.assign(sub, { corporationName: item.corporationName })
-        })))
-      }))
-    }
+
   },
   watch: {
     'queryForm.companySettlementId': {

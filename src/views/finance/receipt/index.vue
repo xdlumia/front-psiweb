@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 16:27:02
+ * @LastEditTime: 2019-11-22 16:58:06
  * @Description: 销售-待收票
  */
 <template>
@@ -48,44 +48,31 @@
           </el-col>
         </el-row>
       </template>
-      <template slot="button">
-        <el-button
-          type="primary"
-          size="mini"
-          icon="el-icon-plus"
-          @click="addVisible = true"
-        >新增借款</el-button>
-      </template>
+
       <template slot-scope="{column,row,value}">
-        <!-- 借款编号 -->
+        <!-- 发票号码 -->
         <span
           class="d-text-blue d-pointer"
-          v-if="column.columnFields=='borrowingCode'"
+          v-if="column.columnFields=='invoiceCode'"
           @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
-        <!-- 匹配状态 -->
-        <span v-else-if="column.columnFields=='matchState'"> {{stateText[value]}}</span>
-
-        <!-- 创建时间 -->
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <!-- 关联单据号 -->
+        <span
+          class="d-text-blue"
+          v-else-if="column.columnFields=='busCode'"
+        > {{value}}</span>
+        <!-- 发票类型 -->
+        <span v-else-if="column.columnFields=='invoiceTypeCode'">{{value|dictionary('CW_FP_LX')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-
-    <!-- 新增 -->
-    <add
-      :visible.sync="addVisible"
-      :incomeType="0"
-      type="add"
-      @reload="$refs.table.reload()"
-    />
 
     <!-- 详情 -->
     <detail
       v-if="detailVisible"
       :visible.sync="detailVisible"
       :rowData="rowData"
-      :code="rowData.borrowingCode"
+      :code="rowData.invoiceCode"
       @reload="$refs.table.reload()"
     />
   </div>

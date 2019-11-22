@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 16:35:04
+ * @LastEditTime: 2019-11-22 17:02:18
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -98,6 +98,9 @@ export default {
       // tab操作栏
       tabs: {
         detail: '详情',
+        financePayable: '应付账单',
+        orderStorage: '采购入库单',
+        financeFee: '费用单',
       },
       activeName: 'detail',
       editVisible: false,
@@ -116,7 +119,10 @@ export default {
   methods: {
     async getDetail() {
       if (this.code) {
-        let { data } = await this.$api.seePsiFinanceService.finvoicereceivableGetInfoByCode({ code: this.code })
+        console.log(data);
+        let { data } = await this.$api.seePsiFinanceService.finvoicereceivableInfo(null, this.rowData.id)
+
+
         return data;
       }
     },
@@ -124,12 +130,37 @@ export default {
       if (label == '编辑') {
         this.editVisible = true
       } else {
+        let params = {
+          apprpvalNode: this.detail.apprpvalNode,
+          id: this.detail.id,
+        }
         let apiObj = {
+          '提交审核': {
+            api: 'seePsiFinanceService.finvoicereceivableSubmitApproval',
+            data: { ...params },
+            needNote: null
+          },
+          '撤销审核': {
+            api: 'seePsiFinanceService.finvoicereceivableCancel',
+            data: { ...params },
+            needNote: null
+          },
+          '通过': {
+            api: 'seePsiFinanceService.finvoicereceivablPassApproval',
+            data: { busCode: this.detail.shipmentCode },
+            needNote: null
+          },
+          '驳回': {
+            api: 'seePsiFinanceService.finvoicereceivableReject',
+            data: { busCode: this.detail.shipmentCode },
+            needNote: null
+          },
           '删除': {
             api: 'seePsiFinanceService.finvoicereceivableDelete',
-            data: { id: this.detail.id },
+            data: ({ id: this.detail.id }),
             needNote: null
-          }
+          },
+
         }
         // 公共方法 mixin 引进来的
         this.$submission(
