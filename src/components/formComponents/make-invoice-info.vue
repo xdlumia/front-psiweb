@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-22 09:38:51
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-22 15:23:53
+ * @LastEditTime: 2019-11-22 15:33:05
  * @Description: 收票申请 发票信息 已绑定 1
 */ 
 <template>
@@ -56,7 +56,7 @@ export default {
     return {
       // prettier-ignore
       items: [
-        { label: '发票类型', prop: 'invoiceTyepCode', type: 'select', rules: [{ required: true , trigger: 'blur' }], dicName:'CW_FP_LX' }, 
+        { label: '发票类型', prop: 'invoiceTypeCode', type: 'select', rules: [{ required: true , trigger: 'blur' }], dicName:'CW_FP_LX' }, 
         { label: '收票时间', prop: 'invoiceDate', type: 'date', rules: [{ required: true , trigger: 'blur' }] }, 
         { label: '发票代码', prop: 'invoiceCoding', type: 'input', rules: [{ required: true , trigger: 'blur' }] }, 
         { label: '发票号码', prop: 'invoiceCode', type: 'input', rules: [{ required: true , trigger: 'blur' }] }, 

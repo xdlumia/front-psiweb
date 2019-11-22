@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-22 15:22:32
+ * @LastEditTime: 2019-11-22 15:31:29
  * @Description: 收票申请
 */
 <template>
-  <el-dialog :fullscreen="true" :visible="visible" @close="close" v-dialogDrag v-loading="loading" width="1000">
+  <el-dialog :visible="visible" @close="close" v-dialogDrag v-loading="loading" width="1000">
     <div slot="title">
       <span>收票申请</span>
       <span class="fr mr20">
@@ -87,6 +87,7 @@ export default {
         });
       }
       await this.$refs.form.validate();
+      this.form.type = 0;
       this.loading = true;
       this.form.accountTotalAmount = 0; //合计税金
       this.form.commodityTotalAmount = 0; //商品合计金额
