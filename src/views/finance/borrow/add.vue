@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 20:05:27
+ * @LastEditTime: 2019-11-22 10:03:26
  * @Description: 新增借款
 */
 <template>
@@ -68,20 +68,14 @@ export default {
       loading: false,
       // 新增orEdit框内容
       form: {
-        alreadyAmount: '', //  已还金额
-        arrearsAmount: '', //  未还金额
         borrower: '', //  "示例：借款人",
         borrowTime: '',
         borrowingAmount: '', //  借款金额
-        borrowingCode: '', //  "示例：借款单编号",
-        companyCode: '', //  "示例：公司编码code",
         companySettlementId: '', //  结算账户id
         employeeId: '', //  100000,
         note: '', //  "示例：备注",
         returnDate: '', //  预计归还日期
         serialNumber: '', //  "示例：流水凭证号",
-        settleDate: '', //  还清日期
-        state: '', //  9
       }
     }
   },

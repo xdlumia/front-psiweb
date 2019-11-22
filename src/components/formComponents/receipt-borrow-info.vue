@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 20:04:01
+ * @LastEditTime: 2019-11-22 10:03:34
  * @Description: 借款单 单据信息
 */
 <template>
@@ -19,8 +19,21 @@
             :label="item.label"
             :prop="item.prop"
           >
+            <employees-chosen
+              v-if="item.type =='employess'"
+              :multiple="false"
+              :closeOnSelect="false"
+              @input="chooseEmployees"
+              style="width:100%"
+              class="d-inline"
+            >
+              <el-input
+                :disabled='disabled'
+                v-model="data.borrower"
+              ></el-input>
+            </employees-chosen>
             <el-input
-              v-if="item.type =='input'"
+              v-else-if="item.type =='input'"
               :disabled='disabled'
               v-model="data[item.prop]"
               :placeholder="`请输入${item.label}`"
@@ -81,19 +94,13 @@
       </el-row>
 
     </form-card>
-    <otherNameList
-      :visible.sync="addAccountVisible"
-      @choose="choose"
-      v-if="addAccountVisible"
-    />
   </div>
 </template>
 <script>
 import invoiceMixin from '@/views/finance/invoice-mixins.js'
-import otherNameList from '@/views/finance/fee/components/other-name-list.vue'
 export default {
   mixins: [invoiceMixin],
-  components: { otherNameList },
+  components: {},
   props: {
     data: {
       type: Object,
@@ -119,7 +126,7 @@ export default {
       // 遍历表单
       items: [
         { label: '借款单编号', prop: 'borrowingCode', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
-        { label: '借款人', prop: 'borrower', type: 'input', rules: [{ required: true, trigger: 'blur' }], options: [{ content: '收款', code: 0 }, { content: '付款', code: 1 }], },
+        { label: '借款人', prop: 'borrower', type: 'employess', rules: [{ required: true, trigger: 'blur' }], options: [{ content: '收款', code: 0 }, { content: '付款', code: 1 }], },
         { label: '借款金额', prop: 'borrowingAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'price' }], },
         { label: '结算账户', prop: 'companySettlementId', type: 'select', rules: [{ required: true, trigger: 'blur' }] },
         { label: '借款日期', prop: 'borrowTime', type: 'date', rules: [{ required: true, trigger: 'blur' }] },
@@ -145,9 +152,8 @@ export default {
   },
   methods: {
     // 选择对方账号
-    choose(item) {
-      let [row] = item
-      this.data.oppositeAccount = row.bankAccount
+    chooseEmployees(item) {
+      this.data.borrower = item.employeeName
     },
   }
 
