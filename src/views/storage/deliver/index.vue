@@ -49,6 +49,18 @@ export default {
     SideStatusbar,
     TableView
   },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
+  },
   data() {
     return {
       // 查询表单
@@ -56,7 +68,6 @@ export default {
         page: 1,
         limit: 20
       },
-      button: true,
       tableVisible: false,//销售单右侧抽屉
       componentActive: '',//当前的组件
       drawerData: {//弹框的相关数据

@@ -57,7 +57,7 @@
             />
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="组装任务">组装任务</el-tab-pane>
+        <el-tab-pane label="组装单">组装单</el-tab-pane>
       </el-tabs>
     </div>
     <transfer

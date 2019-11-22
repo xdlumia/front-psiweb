@@ -37,7 +37,12 @@
             />
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="拣货单">拣货单</el-tab-pane>
+        <el-tab-pane label="拣货单">
+          <storagePicking
+            :button="false"
+            class="mt15"
+          ></storagePicking>
+        </el-tab-pane>
         <el-tab-pane label="组装任务">组装任务</el-tab-pane>
         <el-tab-pane label="发货单">发货单</el-tab-pane>
         <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
