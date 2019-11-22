@@ -2,20 +2,20 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 20:08:42
+ * @LastEditTime: 2019-11-22 16:27:02
  * @Description: 销售-待收票
  */
 <template>
   <div>
     <table-view
-      busType="57"
+      busType="58"
       ref="table"
       :filter="true"
       :moreButton="true"
       :column="true"
       title="待收票"
-      api="seePsiFinanceService.fborrowingList"
-      exportApi="seePsiSaleService.fborrowingExport"
+      api="seePsiFinanceService.finvoicereceivableList"
+      exportApi="seePsiSaleService.finvoicereceivableExport"
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
     >
@@ -27,22 +27,22 @@
           align="center"
         >
           <el-col :span="6">
-            <span style="line-height:28px;">结算账户：</span>
+            <span style="line-height:28px;">发票账户：</span>
           </el-col>
           <el-col :span="18">
             <el-select
               size="mini"
-              v-model="queryForm.companySettlementId"
+              v-model="queryForm.invoiceCode"
             >
               <el-option
                 value
                 label="全部"
               ></el-option>
               <el-option
-                v-for="(item, index) in settlementAccount"
+                v-for="(item, index) in accountList"
                 :key="index"
-                :value="item.id"
-                :label="`${item.corporationName}${item.accountType}(${item.account})`"
+                :value="item.invoiceSum"
+                :label="`${item.corporationName}(${item.invoiceSum})`"
               ></el-option>
             </el-select>
           </el-col>
@@ -134,29 +134,22 @@ export default {
       // 查询表单
       queryForm: {
         page: 1,
-        limit: 20
+        limit: 20,
+        dataType: 0, //票据类型(0收票，1开票)
+        // invoiceCode: ''
       },
       // 筛选数据
       filterOptions: filterOptions,
       // 当前行数据
       rowData: {},
       detailVisible: false,
-      addTransferVisible: false,
-      addVisible: false,
     };
   },
   computed: {
-    settlementAccount() {
-      return [].concat(...this.accountList.map(item => {
-        return [].concat(...((item.commonCorporationAccountEntities || []).map(sub => {
-          sub.accountType = this.$options.filters.dictionary(sub.accountType, 'PSI_GSSZ_ZHLX')
-          return Object.assign(sub, { corporationName: item.corporationName })
-        })))
-      }))
-    }
+
   },
   watch: {
-    'queryForm.companySettlementId': {
+    'queryForm.invoiceCode': {
       handler(newValue) {
         this.$refs.table.reload();
       }

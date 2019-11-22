@@ -15,7 +15,12 @@
     v-loading="loading"
   >
     <template slot="button">
-      <el-button size="mini" v-if="buttonState == -1" type="primary" @click="showEdit = true">编辑</el-button>
+      <el-button
+        size="mini"
+        v-if="buttonState == -1"
+        type="primary"
+        @click="showEdit = true"
+      >编辑</el-button>
       <el-button
         size="mini"
         v-if="buttonState == -1"
@@ -61,9 +66,15 @@
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form disabled size="mini">
+        <el-form
+          disabled
+          size="mini"
+        >
           <approve-panel :data="detailForm"></approve-panel>
-          <extras-info :data="detailForm" id="extrasInfo" />
+          <extras-info
+            :data="detailForm"
+            id="extrasInfo"
+          />
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="应收账单">应收账单</el-tab-pane>
@@ -72,7 +83,7 @@
     </el-tabs>
     <add
       :visible.sync="showEdit"
-      ref="add"
+      ref="edit"
       v-if="showEdit"
       @refresh="refresh"
       :detailForm="detailForm"
@@ -107,7 +118,7 @@ export default {
       default: null
     }
   },
-  data () {
+  data() {
     return {
       showEdit: false,
       loading: false,
@@ -122,30 +133,30 @@ export default {
       ]
     }
   },
-  mounted () {
+  mounted() {
     this.checkVisible();
     this.detailForm = Object.assign(this.detailForm, this.rowData)
     this.finvoicebillingInfo()
   },
   computed: {
-    buttonState () {
+    buttonState() {
       return this.detailForm.state
     }
   },
   watch: {
-    visible () {
+    visible() {
       this.checkVisible();
     }
   },
   methods: {
-    refresh () {
+    refresh() {
       this.finvoicebillingInfo()
       this.$emit('refresh')
     },
-    checkVisible () {
+    checkVisible() {
       this.showPop = this.visible;
     },
-    finvoicebillingInfo () {
+    finvoicebillingInfo() {
       this.loading = true
       this.$api.seePsiFinanceService.finvoicebillingInfo(null, this.code).then(res => {
         this.detailForm = res.data
@@ -154,7 +165,7 @@ export default {
         this.loading = false
       })
     },
-    fcostAuditApproval (id) {
+    fcostAuditApproval(id) {
       this.$confirm(`是否复核通过`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -170,7 +181,7 @@ export default {
         })
       })
     },
-    finvoicebillingReject (id) {
+    finvoicebillingReject(id) {
       this.$confirm(`是否驳回`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -186,7 +197,7 @@ export default {
         })
       })
     },
-    finvoicebillingPassApproval (id) {
+    finvoicebillingPassApproval(id) {
       this.$confirm(`是否审核通过`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -202,7 +213,7 @@ export default {
         })
       })
     },
-    finvoicebillingCancel (id) {
+    finvoicebillingCancel(id) {
       this.$confirm(`是否提交审核`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -218,7 +229,7 @@ export default {
         })
       })
     },
-    finvoicebillingSubmitApproval (id) {
+    finvoicebillingSubmitApproval(id) {
       this.$confirm(`是否提交审核`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -234,7 +245,7 @@ export default {
         })
       })
     },
-    fcostDelete (id) {
+    fcostDelete(id) {
       this.$confirm(`是否删除`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -251,7 +262,7 @@ export default {
         })
       })
     },
-    commonquotationconfigUpdate (id, state) {
+    commonquotationconfigUpdate(id, state) {
       this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
