@@ -138,7 +138,7 @@ export default {
       queryForm: {
         page: 1,
         limit: 20,
-        companySettlementId: ''
+        companyId: ''
       },
       // 筛选数据
       filterOptions: filterOptions,
@@ -165,7 +165,7 @@ export default {
   computed: {
   },
   watch: {
-    'queryForm.companySettlementId': {
+    'queryForm.companyId': {
       handler(newValue) {
         this.$refs.table.reload();
       }
