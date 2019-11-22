@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-21 18:59:33
+ * @LastEditTime: 2019-11-22 16:27:54
  * @Description: description
  -->
 <template>
@@ -10,7 +10,7 @@
     :status="status"
     :visible.sync="showPop"
     @close="$emit('update:visible',false)"
-    :title="'费用单编号' + rowData.invoiceCode"
+    :title="'发票号码：' + rowData.invoiceCode"
     width="990px"
     v-loading="loading"
   >
@@ -20,7 +20,7 @@
         size="mini"
         v-if="buttonState == -1"
         type="danger"
-        @click="fcostDelete(rowData.id)"
+        @click="finvoicebillingDelete(rowData.id)"
       >删除</el-button>
       <el-button
         size="mini"
@@ -46,17 +46,12 @@
         type="primary"
         @click="finvoicebillingCancel(rowData.id)"
       >撤销审核</el-button>
-      <el-button
-        size="mini"
-        v-if="buttonState == 2"
-        type="primary"
-        @click="fcostAuditApproval(rowData.id)"
-      >开票</el-button>
+      <el-button size="mini" v-if="buttonState == 2" type="primary" @click="showBilling = true">开票</el-button>
       <el-button
         size="mini"
         v-if="buttonState == 3"
         type="danger"
-        @click="finvoicebillingReject(rowData.id)"
+        @click="finvoicebillingDilution(rowData.id)"
       >发票冲红</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
@@ -70,17 +65,25 @@
       <el-tab-pane label="应付账单">应付账单</el-tab-pane>
       <el-tab-pane label="费用分摊单">费用分摊单</el-tab-pane>
     </el-tabs>
-    <add
+    <!-- <add
       :visible.sync="showEdit"
       ref="add"
       v-if="showEdit"
       @refresh="refresh"
       :detailForm="detailForm"
-    ></add>
+    ></add>-->
+    <billing
+      :visible.sync="showBilling"
+      ref="add"
+      v-if="showBilling"
+      @refresh="refresh"
+      :detailForm="detailForm"
+    ></billing>
   </sideDetail>
 </template>
 
 <script>
+import billing from './billing'
 const stateText = {
   '-1': '新建',
   '0': '审核中',
@@ -93,6 +96,7 @@ const stateText = {
 
 export default {
   components: {
+    billing
   },
   props: {
     visible: Boolean,
@@ -109,6 +113,7 @@ export default {
   },
   data () {
     return {
+      showBilling: false,
       showEdit: false,
       loading: false,
       showPop: false,
@@ -203,7 +208,7 @@ export default {
       })
     },
     finvoicebillingCancel (id) {
-      this.$confirm(`是否提交审核`, '提示', {
+      this.$confirm(`是否撤销审核`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -234,13 +239,13 @@ export default {
         })
       })
     },
-    fcostDelete (id) {
+    finvoicebillingDelete (id) {
       this.$confirm(`是否删除`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.fcostDelete({ id }).then(res => {
+        this.$api.seePsiFinanceService.finvoicebillingDelete({ id }).then(res => {
           this.$emit('update:visible', false)
           this.$emit('refresh')
         })
@@ -251,15 +256,16 @@ export default {
         })
       })
     },
-    commonquotationconfigUpdate (id, state) {
-      this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
+    finvoicebillingDilution () {
+      this.$confirm(`是否进行发票冲红`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.commonquotationconfigUpdate({ id, state }).then(res => {
-          this.finvoicebillingInfo()
-          this.$emit('refresh')
+        const ids = [this.detailForm.id]
+        const incomeCodeList = [this.detailForm.invoiceCode]
+        this.$api.seePsiFinanceService.finvoicebillingDilution({ ids, incomeCodeList }).then(res => {
+          this.refresh()
         })
       }).catch(() => {
         this.$message({

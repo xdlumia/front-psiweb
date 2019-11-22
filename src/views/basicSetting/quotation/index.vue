@@ -29,9 +29,6 @@
           style="padding:0"
         >{{scope.row.code}}</el-button>
         <span v-else-if="column.columnFields=='state'">{{scope.row.state ? '停用' : '启用'}}</span>
-        <span
-          v-else-if="column.columnFields=='createTime'"
-        >{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
       <el-table-column label="www"></el-table-column>

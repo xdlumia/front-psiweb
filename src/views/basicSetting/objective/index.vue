@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-08 15:28:05
+ * @LastEditTime: 2019-11-22 17:38:16
  * @Description: 目标管理
  -->
 <template>
@@ -32,9 +32,6 @@
         <span
           v-else-if="column.columnFields=='begTime'"
         >{{scope.row.begTime|timeToStr('YYYY-MM-DD hh:mm:ss')}}-{{scope.row.endTime|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
-        <span
-          v-else-if="column.columnFields=='createTime'"
-        >{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
       <el-table-column label="www"></el-table-column>
