@@ -2,12 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 15:47:04
+ * @LastEditTime: 2019-11-22 16:06:25
  * @Description: 详情
 <template>
   <div>
     <side-detail
-      :title="`流水编号:${code}`"
+      :title="`借款单编号:${code}`"
       :visible.sync="showDetailPage"
       width="920px"
       :status="status"
@@ -35,12 +35,16 @@
         :model="form"
         size="mini"
         label-position="top"
+        class="d-auto-y"
+        style="height:calc(100vh - 150px)"
       >
         <!-- 单据信息 -->
         <receipt-borrow-info
           disabled
           :data="detail"
         />
+        <!-- 还款记录 -->
+        <repayment-history :data="detail" />
       </el-form>
     </side-detail>
     <!-- 还款 -->
