@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 20:06:12
- * @Description: 财务-收入流水详情
+ * @LastEditTime: 2019-11-22 11:20:31
+ * @Description: 详情
 <template>
   <div>
     <side-detail
@@ -49,22 +49,22 @@
         />
       </el-form>
     </side-detail>
-    <!-- 账单匹配 -->
-    <receivableMatch
+    <!-- 还款 -->
+    <addRefund
       :rowData="rowData"
       :visible.sync="receivableVisible"
       @reload="$emit('reload')"
-    ></receivableMatch>
+    ></addRefund>
   </div>
 </template>
 <script>
 import VisibleMixin from '@/utils/visibleMixin';
-import receivableMatch from './receivable-match'; //账单匹配
+import addRefund from './add-refund'; //还款
 import { log } from 'util';
 export default {
   mixins: [VisibleMixin],
   components: {
-    receivableMatch
+    addRefund
   },
   data() {
     return {

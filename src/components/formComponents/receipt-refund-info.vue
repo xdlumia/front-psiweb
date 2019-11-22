@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 11:30:45
- * @Description: 借款单 单据信息
+ * @LastEditTime: 2019-11-22 11:32:44
+ * @Description: 借款单 - 还款 单据信息
 */
 <template>
   <div>
@@ -19,35 +19,23 @@
             :label="item.label"
             :prop="item.prop"
           >
-            <employees-chosen
-              v-if="item.type =='employess'"
-              :multiple="false"
-              :closeOnSelect="false"
-              @input="chooseEmployees"
-              style="width:100%"
-              class="d-inline"
-            >
-              <el-input
-                :disabled='disabled'
-                v-model="data.borrower"
-              ></el-input>
-            </employees-chosen>
             <el-input
-              v-else-if="item.type =='input'"
+              v-if="item.type =='input' || item.type =='textarea'"
               :disabled='disabled'
+              :type="item.type"
               v-model="data[item.prop]"
               :placeholder="`请输入${item.label}`"
             >
               <template
-                v-if="item.prop == 'borrowingAmount'"
+                v-if="item.prop == 'repaymentAmount'"
                 slot="append"
               >元</template>
             </el-input>
             <!-- 结算账号 -->
             <el-select
               class="wfull"
-              v-else-if="item.type =='select' && item.prop == 'companySettlementId'"
-              :disabled="disabled || item.prop== 'incomeType'"
+              v-else-if="item.type =='select'"
+              :disabled="disabled"
               v-model="data[item.prop]"
               :placeholder="`请输入${item.label}`"
             >
@@ -115,18 +103,25 @@ export default {
 
   data() {
     return {
+      borrowerVisible: false, //添加账单
       // 遍历表单
       items: [
-        { label: '借款单编号', prop: 'borrowingCode', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
-        { label: '借款人', prop: 'borrower', type: 'employess', rules: [{ required: true, trigger: 'blur' }], options: [{ content: '收款', code: 0 }, { content: '付款', code: 1 }], },
-        { label: '借款金额', prop: 'borrowingAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'price' }], },
+        { label: '还款金额', prop: 'repaymentAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'price' }], },
         { label: '结算账户', prop: 'companySettlementId', type: 'select', rules: [{ required: true, trigger: 'blur' }] },
-        { label: '借款日期', prop: 'borrowTime', type: 'date', rules: [{ required: true, trigger: 'blur' }] },
-        { label: '流水单凭号', prop: 'serialNumber', type: 'input', rules: [{ required: false }], },
-        { label: '预计还款日期', prop: 'returnDate', type: 'date', rules: [{ required: false, trigger: 'blur' }] },
+        { label: '流水凭证号', prop: 'serialNumber', type: 'input', rules: [{ required: false }], },
+        { label: '还款日期', prop: 'borrowTime', type: 'date', rules: [{ required: false, trigger: 'blur' }] },
+        { label: '备注', prop: 'note', type: 'textarea', span: 24, rules: [{ required: false, trigger: 'blur' }] },
       ],
       options: []
     };
+  },
+  watch: {
+    'data.companySettlementId': {
+      handler(val) {
+        console.log(val)
+      },
+      deep: true
+    }
   },
   computed: {
     formItems() {
@@ -146,7 +141,6 @@ export default {
     // 选择对方账号
     chooseEmployees(item) {
       this.data.borrower = item.employeeName
-      this.data.employeeId = item.id
     },
   }
 
