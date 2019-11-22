@@ -49,8 +49,30 @@
             <!-- <exchangeCommodityNoedit /> -->
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="账单管理">账单管理</el-tab-pane>
-        <el-tab-pane label="发票管理">发票管理</el-tab-pane>
+        <el-tab-pane label="应收账单">
+          <financeReceivable
+            :button="false"
+            :params="{page:1,limit:15,swapTaskCode:detailForm.swapTaskCode}"
+          ></financeReceivable>
+        </el-tab-pane>
+        <el-tab-pane label="应付账单">
+          <financePayable
+            :button="false"
+            :params="{page:1,limit:15,swapTaskCode:detailForm.swapTaskCode}"
+          ></financePayable>
+        </el-tab-pane>
+        <el-tab-pane label="待开票">
+          <financeBilling
+            :button="false"
+            :params="{page:1,limit:15,swapTaskCode:detailForm.swapTaskCode}"
+          ></financeBilling>
+        </el-tab-pane>
+        <el-tab-pane label="待收票">
+          <financeReceipt
+            :button="false"
+            :params="{page:1,limit:15,swapTaskCode:detailForm.swapTaskCode}"
+          ></financeReceipt>
+        </el-tab-pane>
       </el-tabs>
       <exchangeSweepcode
         :visible.sync="exchangeVisible"
@@ -70,7 +92,7 @@ import exchangeInfo from '@/components/formComponents/exchange-info';
 import exchangeSweepcode from '@/components/formComponents/exchange-sweepcode';
 import SideDetail from '@/components/side-detail';
 export default {
-  props: ['drawerData', 'visible'],
+  props: ['drawerData', 'visible', 'code'],
   data() {
     return {
       status: [{ label: '换货状态', value: '2019-9-21 10:04:38' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],

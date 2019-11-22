@@ -14,7 +14,7 @@
       ref='allTable'
       api="seePsiWmsService.wmsassembletaskList"
       exportApi="seePsiWmsService.wmsassembletaskExport"
-      :params="queryForm"
+      :params="params"
       title="组装任务"
     >
       <template slot-scope="{column,row,value}">
@@ -23,15 +23,27 @@
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>
+        <span
+          v-if="column.columnFields=='assembleOrderCode'"
+          class="d-text-blue"
+          @click="getassembleVisible(row)"
+        >{{value}}</span>
         <span v-else-if="column.columnFields=='assembleOrderState'">{{state[value]}}</span>
         <span v-else-if="column.columnFields=='pickingState'">{{pickingState[value]}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
-      :drawerData='drawerData'
+      :code="drawerData.assembleTaskCode"
+      :data='drawerData'
       :visible.sync='tableVisible'
       v-if="tableVisible"
+    />
+    <assembleDetails
+      :code="drawerData.assembleOrderCode"
+      :data='rowData'
+      :visible.sync='assembleVisible'
+      v-if="assembleVisible"
     />
   </div>
 </template>
@@ -40,11 +52,13 @@
  * 采购-请购单
  */
 import TableView from '@/components/tableView';
+import assembleDetails from '@/views/storage/assemble/details.vue';
 import Details from './details.vue'
 export default {
   components: {
     Details,
-    TableView
+    TableView,
+    assembleDetails
   },
   props: {
     // 是否显示按钮
@@ -145,6 +159,8 @@ export default {
         },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
+      assembleVisible: false,
+      rowData: {}
     };
   },
   methods: {
@@ -153,6 +169,11 @@ export default {
       this.tableVisible = true
       this.drawerData = data
     },
+    //打开组装单详情
+    getassembleVisible(row) {
+      this.assembleVisible = true
+      this.rowData = row
+    }
   }
 };
 </script>

@@ -15,7 +15,7 @@
       ref='allTable'
       api="seePsiWmsService.wmsdisassemblytaskList"
       exportApi="seePsiWmsService.wmsdisassemblytaskExport"
-      :params="queryForm"
+      :params="params"
       title="拆卸任务"
     >
       <template slot-scope="{column,row,value}">
@@ -27,17 +27,23 @@
         <span
           v-else-if="column.columnFields=='disassemblyOrderCode'"
           class="d-text-blue"
-          @click="getTableVisible(row)"
+          @click="getdisassemblyVisible(row)"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='disassemblyTaskState'">{{value == 0 ? '未开始' : value == 1 ? '待拆卸' : value == 2 ? '部分拆卸' : value == 3 ? '完成拆卸' : '全部'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
+      :code="drawerData.disassemblyTaskCode"
       :drawerData='drawerData'
       :visible.sync='tableVisible'
       v-if="tableVisible"
       @reload='reload'
+    />
+    <unpackDetails
+      :code="rowData.disassemblyOrderCode"
+      :visible.sync="disassemblyVisible"
+      v-if="disassemblyVisible"
     />
   </div>
 </template> 
@@ -46,11 +52,13 @@
  * 采购-请购单
  */
 import TableView from '@/components/tableView';
+import unpackDetails from '@/views/order/unpack/detail.vue';
 import Details from './details.vue'
 export default {
   components: {
     Details,
-    TableView
+    TableView,
+    unpackDetails
   },
   props: {
     // 是否显示按钮
@@ -125,6 +133,8 @@ export default {
         },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
+      disassemblyVisible: false,
+      rowData: {}
     };
   },
   methods: {
@@ -132,6 +142,11 @@ export default {
     getTableVisible(data) {
       this.tableVisible = true
       this.drawerData = data
+    },
+    //拆卸单
+    getdisassemblyVisible(row) {
+      this.disassemblyVisible = true
+      this.rowData = row
     },
     //tab换组件
     handleClick() {

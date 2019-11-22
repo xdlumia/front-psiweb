@@ -12,7 +12,7 @@
       ref='table'
       busType="8"
       :filterOptions='filterOptions'
-      :params="queryForm"
+      :params="params"
       :selection='false'
       exportApi="seePsiWmsService.wmspickingorderExport"
       api="seePsiWmsService.wmspickingorderList"
@@ -20,13 +20,19 @@
     >
       <template slot-scope="{column,row,value}">
         <span
-          v-if="column.columnFields=='assembleTaskCode' || column.columnFields=='shipmentCode'"
-          class="d-text-blue"
-        >{{value}}</span>
-        <span
-          v-else-if="column.columnFields=='pickingOrderCode'"
+          v-if="column.columnFields=='pickingOrderCode'"
           class="d-text-blue"
           @click="getTableVisible(row)"
+        >{{value}}</span>
+        <span
+          v-else-if="column.columnFields=='assembleTaskCode'"
+          class="d-text-blue"
+          @click="getVisible(row)"
+        >{{value}}</span>
+        <span
+          v-else-if="column.columnFields=='shipmentCode'"
+          class="d-text-blue"
+          @click="getshipVisible(row)"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='state'">{{value == -1 ? '终止' : value == 0 ? '待拣货' : value == 1 ? '部分拣货' : '完成拣货'}}</span>
         <span v-else>{{value}}</span>
@@ -35,7 +41,22 @@
     <Details
       :drawerData='drawerData'
       v-if='tableVisible'
+      :code="drawerData.pickingOrderCode"
       :visible.sync='tableVisible'
+      @reload='reload'
+    />
+    <assemblyDetails
+      :data='drawerData'
+      :code="drawerData.assembleTaskCode"
+      :visible.sync='assembleVisible'
+      v-if="assembleVisible"
+      @reload='reload'
+    />
+    <shipDetails
+      :code="drawerData.shipmentCode"
+      :data='shipData'
+      :visible.sync='shipVisible'
+      v-if="shipVisible"
       @reload='reload'
     />
   </div>
@@ -46,11 +67,15 @@
  */
 import TableView from '@/components/tableView';
 import Details from './details.vue'
+import assemblyDetails from '@/views/storage/assembly/details.vue';
+import shipDetails from '@/views/storage/sales/details.vue';
 import SideStatusbar from '@/components/formComponents/side-statusbar';
 export default {
   components: {
     Details,
     SideStatusbar,
+    assemblyDetails,
+    shipDetails,
     TableView
   },
   props: {
@@ -74,6 +99,8 @@ export default {
       },
       componentActive: '',//当前的组件
       tableVisible: false,//销售单右侧抽屉
+      assembleVisible: false,//组装任务
+      rowData: {},
       drawerData: {//弹框的相关数据
         title: '',
         component: 'Details',
@@ -134,6 +161,8 @@ export default {
         },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
+      shipVisible: false,//销售单
+      shipData: {},//销售单详情
     };
   },
   methods: {
@@ -142,6 +171,15 @@ export default {
       this.tableVisible = true
       this.drawerData = data
       console.log(this.drawerData, 'this.drawerDatathis.drawerDatathis.drawerDatathis.drawerDatathis.drawerDatathis.drawerData')
+    },
+    //打开组装任务详情
+    getVisible(data) {
+      this.assembleVisible = true
+      this.rowData = data
+    },
+    getshipVisible(data) {
+      this.shipVisible = true
+      this.shipData = data
     },
     reload() {
       this.$refs.table.reload()

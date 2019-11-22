@@ -59,7 +59,12 @@
             </form-card>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="拆卸单">拆卸单</el-tab-pane>
+        <el-tab-pane label="拆卸单">
+          <orderUnpack
+            :button="false"
+            :params="{page:1,limit:15,disassemblyTaskCode:detailForm.disassemblyTaskCode}"
+          ></orderUnpack>
+        </el-tab-pane>
       </el-tabs>
       <hangUp
         @reload='reload'
@@ -82,7 +87,7 @@ import disassembleGoodsChoose from '@/components/formComponents/disassemble-good
 import hangUp from '@/components/formComponents/hang-up';
 import SideDetail from '@/components/side-detail';
 export default {
-  props: ['drawerData', 'visible'],
+  props: ['drawerData', 'visible', 'code'],
   data() {
     return {
       status: [{ label: '拆卸状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
@@ -111,7 +116,7 @@ export default {
   methods: {
     //查看拆卸任务详情
     wmsallocationorderInfo() {
-      this.$api.seePsiWmsService.wmsdisassemblytaskInfo(null, this.drawerData.id)
+      this.$api.seePsiWmsService.wmsdisassemblytaskQueryInfoByTaskCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = this.state[res.data.disassemblyTaskState]

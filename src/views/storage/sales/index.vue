@@ -11,8 +11,9 @@
     <TableView
       busType="20"
       :filterOptions='filterOptions'
-      :params="queryForm"
+      :params="params"
       :selection='false'
+      ref='table'
       exportApi="seePsiSaleService.salessheetExport"
       api="seePsiSaleService.salessheetList"
       title="销售单"
@@ -23,16 +24,28 @@
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='allocationOrderState'">{{value == 1 ? '待调拨' : value == 2 ? '部分调拨' : value == 3 ? '完成调拨' : '终止'}}</span>
-        <span v-else-if="column.columnFields=='allocationType'">{{value == 1 ? '内调' : '外调'}}</span>
+        <span
+          v-else-if="column.columnFields=='shipmentCode'"
+          class="d-text-blue"
+          @click="getDetailVisible(row)"
+        >{{value}}</span>
+        <span v-else-if="column.columnFields=='pickingState'">{{value == 0 ? '待拣货' : value == 1 ? '部分拣货' : value == 2 ? '完成拣货' : value == -1 ? '终止' : ''}}</span>
+        <span v-else-if="column.columnFields=='assemblyState'">{{value == 0 ? '未开始' : value == 1 ? '待组装':value == 2 ? '部分组装':value == 3 ? '完后组装':value == -1 ? '终止':''}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
-      :drawerData='drawerData'
-      @update='update'
+      :data='drawerData'
+      :code="drawerData.salesSheetCode"
       :visible.sync='tableVisible'
       v-if="tableVisible"
+    />
+    <outLibDetails
+      :visible.sync="outLibVisible"
+      :rowData="rowData"
+      v-if="outLibVisible"
+      :code="rowData.shipmentCode"
+      @reload="$refs.table.reload()"
     />
   </div>
 </template>
@@ -42,10 +55,12 @@
  */
 import TableView from '@/components/tableView';
 import Details from './details.vue'
+import outLibDetails from '@/views/sales/outLibrary/outLib-details'
 export default {
   components: {
     Details,
-    TableView
+    TableView,
+    outLibDetails
   },
   props: {
     // 是否显示按钮
@@ -66,6 +81,8 @@ export default {
         page: 1,
         limit: 20
       },
+      rowData: {},
+      outLibVisible: false,//销售出库单详情
       tableVisible: false,//销售单右侧抽屉
       componentActive: '',//当前的组件
       drawerData: {//弹框的相关数据
@@ -170,12 +187,14 @@ export default {
       this.tableVisible = true
       this.drawerData = data
     },
+    //打开销售出库单详情
+    getDetailVisible(data) {
+      this.outLibVisible = true
+      this.rowData = data
+    },
     //tab换组件
     handleClick() {
 
-    },
-    update() {
-      this.tableVisible = false
     }
   }
 };

@@ -17,7 +17,7 @@
       ref='allTable'
       api="seePsiWmsService.wmsinventoryList"
       exportApi="seePsiWmsService.commonwmsmanagerExport"
-      :params="queryForm"
+      :params="params"
       title="库存查询"
     >
       <template v-slot:button>

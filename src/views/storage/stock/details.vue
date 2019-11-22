@@ -68,7 +68,10 @@
           label="供应商"
           name='2'
         >
-          供应商
+          <orderSupplier
+            :button="false"
+            :params="{page:1,limit:15,commodityCode:detailForm.commodityCode}"
+          ></orderSupplier>
         </el-tab-pane>
       </el-tabs>
     </div>

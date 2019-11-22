@@ -12,7 +12,7 @@
       busType="3"
       @reload='reload'
       :filterOptions='filterOptions'
-      :params="queryForm"
+      :params="params"
       ref="allTable"
       :selection='false'
       exportApi="seePsiWmsService.wmsreportinglossesExport"

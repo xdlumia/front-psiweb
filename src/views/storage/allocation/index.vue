@@ -15,7 +15,7 @@
       ref='allTable'
       exportApi="seePsiWmsService.wmsallocationorderExport"
       api="seePsiWmsService.wmsallocationorderList"
-      :params="queryForm"
+      :params="params"
       title="调拨单"
     >
       <template v-slot:button>

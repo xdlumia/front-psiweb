@@ -1110,12 +1110,6 @@ export default {
     'methods': 'post'
   },
 
-  // 根据SN码或机器号查询商品
-  wmsinventorydetailGetCommodityBySnCode: {
-    'url': '/wmsinventorydetail/getCommodityBySnCode',
-    'mock': false
-  },
-
   // 查看详细信息
   wmsinventorydetailInfo: {
     'url': '/wmsinventorydetail/info/{id}',

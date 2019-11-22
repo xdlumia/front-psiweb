@@ -33,7 +33,7 @@
           <el-form>
             <assembleNoedit
               :data='detailForm'
-              :drawerData='drawerData'
+              :drawerData='data'
             />
             <assembleInfo
               :disabled='true'
@@ -47,13 +47,24 @@
             />
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="销售单">销售单</el-tab-pane>
-        <el-tab-pane label="拣货单">拣货单</el-tab-pane>
-        <el-tab-pane label="组装任务">组装任务</el-tab-pane>
-        <el-tab-pane label="发货单">发货单</el-tab-pane>
-        <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
-        <el-tab-pane label="借入单">借入单</el-tab-pane>
-        <el-tab-pane label="应收账单">应收账单</el-tab-pane>
+        <el-tab-pane label="拣货单">
+          <storagePicking
+            :button="false"
+            :params="{page:1,limit:15,assembleOrderCode:detailForm.assembleOrderCode}"
+          ></storagePicking>
+        </el-tab-pane>
+        <el-tab-pane label="组装任务">
+          <storageAssembly
+            :button="false"
+            :params="{page:1,limit:15,assembleOrderCode:detailForm.assembleOrderCode}"
+          ></storageAssembly>
+        </el-tab-pane>
+        <el-tab-pane label="销售单">
+          <storageSales
+            :button="false"
+            :params="{page:1,limit:15,assembleOrderCode:detailForm.assembleOrderCode}"
+          ></storageSales>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </SideDetail>
@@ -64,7 +75,7 @@ import assembleInfo from '@/components/formComponents/assemble-info';
 import assemblyTask from './assembly-task';
 import SideDetail from '@/components/side-detail';
 export default {
-  props: ['drawerData', 'visible'],
+  props: ['data', 'visible', 'code'],
   data() {
     return {
       status: [{ label: '组装状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
@@ -92,7 +103,7 @@ export default {
   methods: {
     //查看详情
     wmsassembleorderInfo() {
-      this.$api.seePsiWmsService.wmsassembleorderInfo(null, this.drawerData.id)
+      this.$api.seePsiWmsService.wmsassembleorderGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = this.state[res.data.assembleOrderState]

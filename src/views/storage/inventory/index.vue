@@ -11,7 +11,7 @@
     <TableView
       busType="0"
       :filterOptions='filterOptions'
-      :params="queryForm"
+      :params="params"
       :selection='false'
       ref='allTable'
       api="seePsiWmsService.wmsblitemList"

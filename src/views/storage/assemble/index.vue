@@ -13,6 +13,7 @@
       :filterOptions='filterOptions'
       :selection='false'
       ref='allTable'
+      :params="params"
       exportApi="seePsiWmsService.wmsassembleorderExport"
       api="seePsiWmsService.wmsassembleorderList"
       title="组装单"
@@ -51,8 +52,9 @@
 
     </TableView>
     <Details
-      :drawerData='drawerData'
+      :data='drawerData'
       :visible.sync='tableVisible'
+      :code="drawerData.assembleOrderCode"
       v-if="tableVisible"
       @reload='reload'
     />
@@ -65,7 +67,7 @@
   </div>
 </template>
 <script>
-/**
+/** 
  * 采购-请购单
  */
 import TableView from '@/components/tableView';

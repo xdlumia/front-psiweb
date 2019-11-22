@@ -79,7 +79,12 @@
             <lendScanCode :visible='lendCodeVisible' /> -->
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="借入借出单">借入借出单</el-tab-pane>
+        <el-tab-pane label="借入借出单">
+          <orderBorrow
+            :button="false"
+            :params="{page:1,limit:15,borrowLoanTaskCode:detailForm.borrowLoanTaskCode}"
+          ></orderBorrow>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </SideDetail>

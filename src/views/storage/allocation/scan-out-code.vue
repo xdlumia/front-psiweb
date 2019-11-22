@@ -282,7 +282,7 @@ export default {
     //扫SN码
     shipmentCommodityCheck(snCode) {
       console.log(this.dialogData, 'dialogDatadialogData')
-      this.$api.seePsiWmsService.wmsallocationorderShipmentCommodityCheck({ allocationOrderId: this.dialogData.id, snCode: snCode, facilitatorId: this.dialogData.facilitatorId })
+      this.$api.seePsiWmsService.wmsallocationorderShipmentCommodityCheck({ businessId: this.dialogData.id, snCode: snCode, commodityList: this.downTableData })
         .then(res => {
           if (res.data) {
             let arr = this.downTableData.filter((item) => {

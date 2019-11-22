@@ -13,7 +13,7 @@
     <TableView
       busType="4"
       :filterOptions='filterOptions'
-      :params="queryForm"
+      :params="params"
       ref='table'
       :selection='false'
       api="seePsiWmsService.wmsborrowloantaskList"
@@ -22,11 +22,12 @@
     >
       <template slot-scope="{column,row,value}">
         <span
-          v-if="column.columnFields=='putinCode'"
+          v-if="column.columnFields=='salesShipmentCode'"
           class="d-text-blue"
+          @click="getdisassemblyVisible(row)"
         >{{value}}</span>
         <span
-          v-if="column.columnFields=='borrowLoanTaskCode'"
+          v-else-if="column.columnFields=='borrowLoanTaskCode'"
           class="d-text-blue"
           @click="getTableVisible(row)"
         >{{value}}</span>
@@ -36,10 +37,19 @@
       </template>
     </TableView>
     <Details
+      :code='drawerData.borrowLoanTaskCode'
       @reload='reload'
       :drawerData='drawerData'
       :visible.sync='tableVisible'
       v-if="tableVisible"
+    />
+    <!-- 出库单详情 -->
+    <outLibDetails
+      :visible.sync="disassemblyVisible"
+      :rowData="rowData"
+      v-if="disassemblyVisible"
+      :code="rowData.salesShipmentCode"
+      @reload="$refs.table.reload()"
     />
   </div>
 </template>
@@ -48,11 +58,13 @@
  * 采购-请购单
  */
 import TableView from '@/components/tableView';
+import outLibDetails from '@/views/sales/outLibrary/outLib-details';
 import Details from './details.vue'
 export default {
   components: {
     Details,
-    TableView
+    TableView,
+    outLibDetails
   },
   props: {
     // 是否显示按钮
@@ -161,6 +173,8 @@ export default {
         },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
+      disassemblyVisible: false,
+      rowData: {}
     };
   },
   methods: {
@@ -169,6 +183,11 @@ export default {
       this.tableVisible = true
       this.drawerData = data
       console.log(this.drawerData, 'this.drawerDatathis.drawerDatathis.drawerDatathis.drawerData')
+    },
+    //销售出库单
+    getdisassemblyVisible(row) {
+      this.disassemblyVisible = true
+      this.rowData = row
     },
     //tab换组件
     handleClick() {

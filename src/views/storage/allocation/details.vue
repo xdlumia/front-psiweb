@@ -36,7 +36,7 @@
         <el-tab-pane label="详情">
           <el-form>
             <allocationInfo
-              :disabled='true'
+              :disabled='true' 
               :form='detailForm'
             />
             <goodsAllocation :form='detailForm' />

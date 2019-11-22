@@ -23,7 +23,12 @@
             <pickingLogisticsEditable :data='detailForm' />
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="销售单">销售单</el-tab-pane>
+        <el-tab-pane label="销售单">
+          <storageSales
+            :button="false"
+            :params="{page:1,limit:15,shipmentsOrderCode:detailForm.shipmentsOrderCode}"
+          ></storageSales>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </SideDetail>
@@ -33,7 +38,7 @@ import pickingDeliverEditable from '@/components/formComponents/picking-deliver-
 import pickingLogisticsEditable from '@/components/formComponents/picking-logistics-editable';
 import SideDetail from '@/components/side-detail';
 export default {
-  props: ['drawerData', 'visible'],
+  props: ['drawerData', 'visible', 'code'],
   data() {
     return {
       status: [{ label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],

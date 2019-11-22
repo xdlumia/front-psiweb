@@ -12,7 +12,7 @@
       busType="32"
       :filter="true"
       :filterOptions='filterOptions'
-      :params="queryForm"
+      :params="params"
       :selection='false'
       exportApi="seePsiPurchaseService.purchaseExport"
       ref='allTable'
@@ -23,6 +23,7 @@
         <span
           v-if="column.columnFields=='putinCode'"
           class="d-text-blue"
+          @click="getputinVisible(row)"
         >{{value}}</span>
         <span
           v-if="column.columnFields=='purchaseCode'"
@@ -34,10 +35,17 @@
       </template>
     </TableView>
     <Details
+      :code="drawerData.purchaseCode"
       :drawerData='drawerData'
       @reload='reload'
       v-if="tableVisible"
       :visible.sync='tableVisible'
+    />
+    <storageDetails
+      :code="rowData.putinCode"
+      :visible.sync="assembleVisible"
+      @reload="reload"
+      v-if="assembleVisible"
     />
   </div>
 </template>
@@ -46,11 +54,13 @@
  * 采购-请购单
  */
 import TableView from '@/components/tableView';
+import storageDetails from '@/views/order/storage/detail.vue';
 import Details from './details.vue'
 export default {
   components: {
     Details,
-    TableView
+    TableView,
+    storageDetails
   },
   props: {
     // 是否显示按钮
@@ -153,7 +163,9 @@ export default {
           default: true
         },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true }
-      ]
+      ],
+      assembleVisible: false,
+      rowData: {}
     };
   },
   methods: {
@@ -171,6 +183,11 @@ export default {
     },
     reload() {
       this.$refs.allTable.reload()
+    },
+    //点击采购入库单编号
+    getputinVisible(row) {
+      this.assembleVisible = true
+      this.rowData = row
     }
   }
 };

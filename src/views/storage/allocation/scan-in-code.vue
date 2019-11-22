@@ -248,23 +248,22 @@ export default {
     },
     //扫SN码
     shipmentCommodityCheck(item, index) {
-      console.log(item, this.dialogData, 'dialogDatadialogDatadialogDatadialogDatadialogDatadialogDatadialogDatadialogData')
-      this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ putawayCommodityList: this.downTableData, snCode: item.snCode, categoryCode: item.categoryCode, commodityCode: item.commodityCode, wmsId: this.dialogData.putawayWmsId })
+      this.$api.seePsiWmsService.wmsallocationorderPutawayCommodityCheck({ businessId: this.dialogData.id, putawayCommodityList: this.downTableData, snCode: item.snCode, categoryCode: item.categoryCode, commodityCode: item.commodityCode, wmsId: this.dialogData.putawayWmsId })
         .then(res => {
-          // if (res.data) {
-          //   let arr = this.downTableData.filter((item) => {
-          //     return item.id == res.data.id
-          //   })
-          //   if (arr.length == 0) {
-          //     this.doSth(res.data)
-          //   } else {
-          //     this.$message({
-          //       type: 'info',
-          //       message: '扫过喽'
-          //     })
-          //   }
-          // }
-          // this.snCode = ''
+          if (res.data) {
+            let arr = this.downTableData.filter((item) => {
+              return item.id == res.data.id
+            })
+            // if (arr.length == 0) {
+            this.doSth(res.data)
+            // } else {
+            //   this.$message({
+            //     type: 'info',
+            //     message: '扫过喽'
+            //   })
+            // }
+          }
+          item.snCode = ''
         })
         .finally(() => {
 
@@ -299,12 +298,12 @@ export default {
     //调入扫码保存
     wmsallocationorderBatchSsave() {
       if (this.downTableData.length > 0) {
-        this.$api.seePsiWmsService.wmsallocationorderBatchSsave({ list: this.downTableData, businessCode: this.dialogData.allocationOrderCode })
-          .then(res => {
-            this.close()
-          })
-          .finally(() => {
-          })
+        // this.$api.seePsiWmsService.wmsallocationorderBatchSsave({ list: this.downTableData, businessCode: this.dialogData.allocationOrderCode })
+        //   .then(res => {
+        //     this.close()
+        //   })
+        //   .finally(() => {
+        //   })
       } else {
         this.$message({
           type: 'info',

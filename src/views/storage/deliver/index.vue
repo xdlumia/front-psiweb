@@ -11,7 +11,7 @@
     <TableView
       busType="7"
       :filterOptions='filterOptions'
-      :params="queryForm"
+      :params="params"
       :selection='false'
       api="seePsiWmsService.wmsshipmentsorderList"
       exportApi="seePsiWmsService.wmsshipmentsorderExport"
@@ -19,9 +19,9 @@
     >
       <template slot-scope="{column,row,value}">
         <span
-          v-if="column.columnFields=='shipmentCode'"
+          v-if="column.columnFields=='salesShipmentCode'"
           class="d-text-blue"
-          @click="getTableVisible(row)"
+          @click="getDetailVisible(row)"
         >{{value}}</span>
         <span
           v-else-if="column.columnFields=='shipmentsOrderCode'"
@@ -32,21 +32,31 @@
       </template>
     </TableView>
     <Details
+      :code="drawerData.shipmentsOrderCode"
       :visible.sync='tableVisible'
       :drawerData='drawerData'
       @update='update'
       v-if="tableVisible"
+    />
+    <outLibDetails
+      :visible.sync="outLibVisible"
+      :rowData="rowData"
+      v-if="outLibVisible"
+      :code="rowData.salesShipmentCode"
+      @reload="$refs.table.reload()"
     />
   </div>
 </template>
 <script>
 import TableView from '@/components/tableView';
 import Details from './details.vue'
+import outLibDetails from '@/views/sales/outLibrary/outLib-details'
 import SideStatusbar from '@/components/formComponents/side-statusbar';
 export default {
   components: {
     Details,
     SideStatusbar,
+    outLibDetails,
     TableView
   },
   props: {
@@ -95,6 +105,8 @@ export default {
         },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
+      rowData: {},
+      outLibVisible: false,//销售出库单详情
     };
   },
   methods: {
@@ -105,7 +117,12 @@ export default {
     },
     update() {
       this.tableVisible = false
-    }
+    },
+    //打开销售出库单详情
+    getDetailVisible(data) {
+      this.outLibVisible = true
+      this.rowData = data
+    },
   }
 };
 </script>

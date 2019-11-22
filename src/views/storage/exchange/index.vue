@@ -13,6 +13,7 @@
       :filterOptions='filterOptions'
       :selection='false'
       ref='allTable'
+      :params='params'
       api="seePsiWmsService.wmsswaptaskList"
       exportApi="seePsiWmsService.wmsswaptaskExport"
       title="换货任务"
@@ -28,6 +29,7 @@
       </template>
     </TableView>
     <Details
+      :code='drawerData.swapTaskCode'
       :drawerData='drawerData'
       :visible.sync='tableVisible'
       @reload='reload'

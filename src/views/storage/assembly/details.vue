@@ -47,7 +47,7 @@
           <el-form>
             <goodsAssemble
               :data='detailForm'
-              :drawerData='drawerData'
+              :drawerData='data'
               @reload="reload"
             />
             <assemblyInfo :data='detailForm' />
@@ -57,7 +57,12 @@
             />
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="组装单">组装单</el-tab-pane>
+        <el-tab-pane label="组装单">
+          <storageAssemble
+            :button="false"
+            :params="{page:1,limit:15,assembleTaskCode:detailForm.assembleTaskCode}"
+          ></storageAssemble>
+        </el-tab-pane>
       </el-tabs>
     </div>
     <transfer
@@ -82,7 +87,7 @@ import assembledGoodsChoose from '@/components/formComponents/assembled-goods-ch
 import SideDetail from '@/components/side-detail';
 
 export default {
-  props: ['drawerData', 'visible'],
+  props: ['data', 'visible', 'code'],
   data() {
     return {
       status: [{ label: '组装状态', value: '待组装' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
@@ -113,7 +118,7 @@ export default {
   methods: {
     //查看详情
     wmsassembleorderInfo() {
-      this.$api.seePsiWmsService.wmsassembletaskInfo(null, this.drawerData.id)
+      this.$api.seePsiWmsService.wmsassembletaskInfo(null, this.data.id)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = this.state[res.data.assembleOrderState]
@@ -141,7 +146,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiWmsService.wmsassembletaskStart(null, this.drawerData.id)
+        this.$api.seePsiWmsService.wmsassembletaskStart(null, this.data.id)
           .then(res => {
             this.$emit('reload')
           })
