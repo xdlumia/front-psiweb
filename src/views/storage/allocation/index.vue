@@ -40,7 +40,7 @@
       @reload='reload'
       ref='details'
       :drawerData='drawerData'
-      :visible='tableVisible'
+      :visible.sync='tableVisible'
       v-if="tableVisible"
     />
     <allocationAdd

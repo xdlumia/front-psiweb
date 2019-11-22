@@ -26,7 +26,7 @@
           size="mini"
           style="width:200px;"
           class="ml10 mt5"
-          v-on:keyup.native="getCommodityBySnCode"
+          v-on:keyup.13.native="getCommodityBySnCode"
         ></el-input>
       </div>
       <el-table
@@ -57,7 +57,11 @@
           label="商品类别"
           min-width="110"
           prop="categoryCode"
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           label="商品分类"
           min-width="110"
@@ -82,7 +86,11 @@
           label="单位"
           min-width="80"
           prop="unit"
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+          </template>
+        </el-table-column>
       </el-table>
 
     </form-card>
@@ -228,7 +236,7 @@ export default {
     close() {
       this.$emit('update:visible', false)
     },
-    //删除某一项
+    //删除某一项 
     deleteSth(scope) {
       this.tableData.splice(scope.$index, 1)
     },
@@ -236,14 +244,16 @@ export default {
     getCommodityBySnCode() {
       let params = {
         snCode: this.snCode,
-        // wmsId: this.data.wmsId,
+        wmsId: this.data.wmsId,
         putawayCommodityList: this.tableData,
         commodityCode: this.commodityForm.commodityCode,
         categoryCode: this.commodityForm.categoryCode,
+        // blitemId: this.data.id,//盘点单id
       }
-      this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck(params)
+      this.$api.seePsiWmsService.wmsblitemBlitemCommodityCheck(params)
         .then(res => {
           res.data ? this.tableData.push(res.data) : ''
+
         })
         .finally(() => {
 

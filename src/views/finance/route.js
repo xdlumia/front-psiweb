@@ -2,7 +2,7 @@
  * @author: 王晓冬
  * @Date: 2019-10-28 10:29:53
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 11:00:21
+ * @LastEditTime: 2019-11-21 19:42:58
  * @Description: 销售模块路由
  */
 
@@ -15,6 +15,7 @@ let routeObj = {
   income: '收入流水',
   invoice: '发票库',
   outlay: '支出流水',
+  borrow: '借款单',
   payment: '付款单',
   payable: '应付账单',
   quote: '发票管理',

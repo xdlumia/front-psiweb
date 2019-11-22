@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 18:18:26
+ * @LastEditTime: 2019-11-21 19:47:40
  * @Description: 销售-支出流水
  */
 <template>
@@ -19,6 +19,19 @@
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
     >
+      <template slot="button">
+        <el-button
+          type="primary"
+          size="mini"
+          icon="el-icon-plus"
+          @click="addVisible = true"
+        >新增支出流水</el-button>
+        <el-button
+          size="mini"
+          @click="addTransferVisible = true"
+          icon="el-icon-plus"
+        >新增转账单</el-button>
+      </template>
       <template slot="top-filter">
         <el-row
           style="width:300px;flex:0 0 300px;"

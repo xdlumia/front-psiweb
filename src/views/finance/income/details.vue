@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 18:21:08
+ * @LastEditTime: 2019-11-21 19:45:32
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -47,26 +47,24 @@
           disabled
           :data="detail"
         />
-
       </el-form>
     </side-detail>
-    <!-- 退货单新增/编辑 -->
-    <add
-      :visible.sync="editVisible"
-      :code="code"
-      type="edit"
+    <!-- 账单匹配 -->
+    <receivableMatch
       :rowData="rowData"
-    />
+      :visible.sync="receivableVisible"
+      @reload="$emit('reload')"
+    ></receivableMatch>
   </div>
 </template>
 <script>
-import add from './add' // 新增退货单
 import VisibleMixin from '@/utils/visibleMixin';
+import receivableMatch from './receivable-match'; //账单匹配
 import { log } from 'util';
 export default {
   mixins: [VisibleMixin],
   components: {
-    add
+    receivableMatch
   },
   data() {
     return {
@@ -76,11 +74,9 @@ export default {
         { label: '收款单匹配', type: 'primary', authCode: '' },
         { label: '删除', type: 'danger', authCode: '' },
       ],
+      // 收款单匹配
       receivableVisible: false,
-      /**
-       * 根据当前状态判断显示哪些按钮
-       */
-      // currStatus: 3, // 当前数据状态
+      // 状态功能按钮
       currStatusType: {
         '0': ['删除', '收款单匹配'], // 未匹配
         '1': [], // 已匹配
@@ -117,7 +113,7 @@ export default {
         }
         let apiObj = {
           '删除': {
-            api: 'seePsiFinanceService.salesreturnedLogicDelete',
+            api: 'seePsiFinanceService.revenuerecordDelete',
             data: params,
             needNote: null
           }
