@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 20:10:07
+ * @LastEditTime: 2019-11-22 17:02:18
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -36,17 +36,31 @@
         size="mini"
         label-position="top"
       >
-        <!-- 单据信息 -->
-        <receipt-borrow-info
-          disabled
-          :data="detail"
-        />
+        <el-tabs
+          v-model="activeName"
+          type="card"
+        >
+          <el-tab-pane
+            v-for="(val,key) of tabs"
+            :key="key"
+            :label="val"
+            :name="key"
+          >
+          </el-tab-pane>
+        </el-tabs>
 
-        <!-- 备注信息 其他信息-->
-        <extras-info
-          disabled
-          :data="detail"
-        />
+        <components
+          ref="detail"
+          :code="code"
+          :rowData="rowData"
+          :data="detail || {}"
+          class="d-auto-y"
+          :params="{}"
+          :button="false"
+          style="height:calc(100vh - 200px)"
+          :is="activeName"
+        ></components>
+
       </el-form>
     </side-detail>
 
@@ -54,31 +68,42 @@
 </template>
 <script>
 import VisibleMixin from '@/utils/visibleMixin';
-
+import detail from './details/detail' //详情
 import { log } from 'util';
 export default {
   mixins: [VisibleMixin],
   components: {
-
+    detail
   },
   data() {
     return {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '还款', type: 'primary', authCode: '' },
+        { label: '提交审核', type: 'primary', authCode: '' },
+        { label: '撤销审核', type: '', authCode: '' },
+        { label: '编辑', type: 'primary', authCode: '' },
+        { label: '通过', type: 'primary', authCode: '' },
+        { label: '驳回', type: 'primary', authCode: '' },
         { label: '删除', type: 'danger', authCode: '' },
       ],
-      // 收款单匹配
-      receivableVisible: false,
       // 状态功能按钮
       currStatusType: {
-        '0': ['删除', '收款单匹配'], // 未匹配
-        '1': [], // 已匹配
-        '2': ['收款单匹配'], // 部分匹配
-        '3': ['删除', '收款单匹配'], //未匹配
-        '4': ['删除'], //未匹配借
+        '0': ['提交审核', '删除', '编辑'], // 新建
+        '1': ['撤销审核', '通过', '驳回'], // 审核中
+        '2': [], // 已收票
+        '3': ['提交审核', '删除', '编辑'], //已驳回
+        '4': [], //已收票
       },
+      // tab操作栏
+      tabs: {
+        detail: '详情',
+        financePayable: '应付账单',
+        orderStorage: '采购入库单',
+        financeFee: '费用单',
+      },
+      activeName: 'detail',
+      editVisible: false,
     }
   },
 
@@ -94,20 +119,48 @@ export default {
   methods: {
     async getDetail() {
       if (this.code) {
-        let { data } = await this.$api.seePsiFinanceService.fborrowingGetInfoByCode({ code: this.code })
+        console.log(data);
+        let { data } = await this.$api.seePsiFinanceService.finvoicereceivableInfo(null, this.rowData.id)
+
+
         return data;
       }
     },
     buttonsClick(label) {
-      if (label == '还款') {
-        this.receivableVisible = true
+      if (label == '编辑') {
+        this.editVisible = true
       } else {
+        let params = {
+          apprpvalNode: this.detail.apprpvalNode,
+          id: this.detail.id,
+        }
         let apiObj = {
-          '删除': {
-            api: 'seePsiFinanceService.fborrowingDelete',
-            data: { id: this.detail.id },
+          '提交审核': {
+            api: 'seePsiFinanceService.finvoicereceivableSubmitApproval',
+            data: { ...params },
             needNote: null
-          }
+          },
+          '撤销审核': {
+            api: 'seePsiFinanceService.finvoicereceivableCancel',
+            data: { ...params },
+            needNote: null
+          },
+          '通过': {
+            api: 'seePsiFinanceService.finvoicereceivablPassApproval',
+            data: { busCode: this.detail.shipmentCode },
+            needNote: null
+          },
+          '驳回': {
+            api: 'seePsiFinanceService.finvoicereceivableReject',
+            data: { busCode: this.detail.shipmentCode },
+            needNote: null
+          },
+          '删除': {
+            api: 'seePsiFinanceService.finvoicereceivableDelete',
+            data: ({ id: this.detail.id }),
+            needNote: null
+          },
+
         }
         // 公共方法 mixin 引进来的
         this.$submission(

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 11:32:44
+ * @LastEditTime: 2019-11-22 15:52:45
  * @Description: 借款单 - 还款 单据信息
 */
 <template>
@@ -10,7 +10,7 @@
     <form-card title="单据信息">
       <el-row :gutter="10">
         <el-col
-          :span="span || 8"
+          :span="item.span || 12"
           v-for="(item,index) of formItems"
           :key="index"
         >
@@ -109,7 +109,7 @@ export default {
         { label: '还款金额', prop: 'repaymentAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'price' }], },
         { label: '结算账户', prop: 'companySettlementId', type: 'select', rules: [{ required: true, trigger: 'blur' }] },
         { label: '流水凭证号', prop: 'serialNumber', type: 'input', rules: [{ required: false }], },
-        { label: '还款日期', prop: 'borrowTime', type: 'date', rules: [{ required: false, trigger: 'blur' }] },
+        { label: '还款日期', prop: 'repaymentDate', type: 'date', rules: [{ required: false, trigger: 'blur' }] },
         { label: '备注', prop: 'note', type: 'textarea', span: 24, rules: [{ required: false, trigger: 'blur' }] },
       ],
       options: []
@@ -118,7 +118,9 @@ export default {
   watch: {
     'data.companySettlementId': {
       handler(val) {
-        console.log(val)
+        let item = this.settlementAccount.find(v => v.id == val)
+        this.data.companySettlementInfo = `${item.corporationName}${item.accountType}(${item.account})`
+
       },
       deep: true
     }

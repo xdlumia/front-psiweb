@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 15:05:42
+ * @LastEditTime: 2019-11-22 15:23:11
  * @Description: 新增借款
 */
 <template>
@@ -35,7 +35,7 @@
       :model="form"
       label-position="top"
       class="d-auto-y"
-      style="height:calc(100vh - 110px)"
+      style="max-height:calc(100vh - 110px)"
     >
       <!-- 单据信息 -->
       <receipt-borrow-info
@@ -43,9 +43,6 @@
         :hide="['borrowingCode']"
         :data="form"
       />
-
-      <!-- 备注信息 其他信息-->
-      <extras-info :data="form" />
     </el-form>
   </el-dialog>
 </template>
