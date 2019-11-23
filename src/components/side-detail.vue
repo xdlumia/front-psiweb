@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 15:39:09
+ * @LastEditTime: 2019-11-23 17:04:43
  * @Description: 侧边详情弹框
 */
 <template>
@@ -34,7 +34,8 @@ export default {
 
   data() {
     return {
-      showPop: false
+      showPop: false,
+      hasButton: false
     };
   },
   mounted() {
@@ -45,16 +46,16 @@ export default {
       this.showPop = this.visible;
     }
   },
-  computed: {
-    hasButton() {
-      return this.$slots.button && this.$slots.button.length;
-    }
+  computed: { 
   },
   methods: {
     close() {
       this.$emit('close');
       this.$emit('update:visible', false);
     }
+  },
+  updated(){
+    this.hasButton = this.$slots.button && this.$slots.button.length;
   }
 };
 </script>

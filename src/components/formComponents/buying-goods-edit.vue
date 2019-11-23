@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 14:24:53
+ * @LastEditTime: 2019-11-23 17:24:36
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -46,7 +46,7 @@
         >
           <template slot-scope="{row}">
             <template v-if="item.key=='commodityCode'">
-              <div class="d-text-blue d-elip d-pointer" @click="openCommodityDetail(row.commodityCode)">{{row.commodityCode}}</div>
+              <div @click="openCommodityDetail(row.commodityCode)" class="d-text-blue d-elip d-pointer">{{row.commodityCode}}</div>
             </template>
             <template v-else-if="item.key=='goodsPic'">
               <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
@@ -82,8 +82,7 @@
                 :rules="[{required:true},{type:'positiveNum'}].concat(Number(row[
                   `max${item.prop}`
                 ])>0?[{
-                  min:1,
-                  max:row[`max${item.prop}`],
+                  validator:checkInputIntegerNumber.bind(this,row,item.prop),
                   message:`可输入区间 [1-${row[`max${item.prop}`]}]`
                 }]:[])"
                 size="mini"
@@ -260,6 +259,7 @@ export default {
     };
   },
   computed: {
+    // 筛选自定义列
     useColumns() {
       let list = [];
       if (this.hide.length) {
@@ -317,10 +317,22 @@ export default {
   },
   mounted() {},
   methods: {
+    // 校验正整数区间 默认row中 `max${prop}` 的值为上限
+    checkInputIntegerNumber(row, prop, rule, value, cb) {
+      let num = Number(value) || 0;
+      let max = Number(row[`max${prop}`]) || 0;
+      if (max > 0) {
+        if (num > 0 && num <= max) {
+          cb();
+        } else cb(new Error(`可输入区间 [1-${max}]`));
+      } else cb();
+    },
+    // 打开商品详情
     openCommodityDetail(code) {
       this.showCommodityDetail = true;
       this.currentCommodityCode = code;
     },
+    // 获取父级信息
     getParentInfo(row) {
       let top = this.data[this.fkey];
       let isChild = row._rowKey != row.commodityCode;
@@ -337,6 +349,7 @@ export default {
       };
       return info;
     },
+    // 生成表单属性路径
     getCurrentFormProp(row, prop) {
       let info = this.getParentInfo(row);
       let key = info.isChild
@@ -344,6 +357,7 @@ export default {
         : `${this.fkey}.${info.index}.${prop}`;
       return key;
     },
+    // 生成树列表需要的rowkey
     recalcRowKey(list, pk = '') {
       (list || []).map(item => {
         this.$set(
@@ -363,6 +377,7 @@ export default {
       });
       return list || [];
     },
+    // 展开树
     expand(row, isExpand) {
       this.$nextTick(() => {
         isExpand = typeof isExpand == 'boolean' ? isExpand : !row.expanded;
@@ -371,6 +386,7 @@ export default {
         // this.expandRowKeys = [row._rowKey]
       });
     },
+    // 统计算法
     getSummaries(param) {
       if (this.summaryMethod) return this.summaryMethod(param);
       let { columns, data } = param;
@@ -404,12 +420,14 @@ export default {
       });
       return sums;
     },
+    // 选择商品
     choose(e) {
       this.data[this.fkey] = this.data[this.fkey] || [];
       this.data[this.fkey] = this.data[this.fkey].concat(
         e.map(this.goodToBuyingInfo)
       );
     },
+    // 删除某个商品
     deleteChoose(row) {
       let { parent, index, isChild } = this.getParentInfo(row);
       if (isChild) {
@@ -418,6 +436,7 @@ export default {
         this.data[this.fkey].splice(index, 1);
       }
     },
+    // 商品转换字段 可能不需要了吧
     goodToBuyingInfo(good) {
       let target = {
         commodityCode: 'commodityCode',
@@ -432,9 +451,11 @@ export default {
       });
       return nGood;
     },
+    // 头部选择
     headerSelect({ prop }, select) {
       this.data[this.fkey].map(item => (item[prop] = select));
     },
+    // 某一行选择
     columnSelect(item, select) {
       let { prop } = item;
       let first = 0;

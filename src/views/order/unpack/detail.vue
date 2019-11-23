@@ -2,16 +2,38 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 11:55:21
+ * @LastEditTime: 2019-11-23 18:10:08
  * @Description: 拆卸单
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showDetailPage" @close="close" title="拆卸单" width="990px">
+  <sideDetail :status="status" :visible.sync="showDetailPage" @close="close" title="拆卸单" v-loading="loading" width="990px">
     <template slot="button">
-      <el-button size="mini" type="primary">提交审核</el-button>
+      <el-button
+        @click="$submission('seePsiWmsService.wmsdisassemblyorderSubmitApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'提交审核')"
+        size="mini"
+        type="primary"
+      >提交审核</el-button>
+      <el-button
+        @click="$submission('seePsiWmsService.wmsdisassemblyorderPassApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'通过')"
+        size="mini"
+        type="primary"
+      >通过</el-button>
+      <el-button
+        @click="$submission('seePsiWmsService.wmsdisassemblyorderReject',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'驳回',true)"
+        size="mini"
+        type="danger"
+      >驳回</el-button>
+      <el-button @click="$submission('seePsiWmsService.wmsdisassemblyorderTermination',[null,detail.id],'终止')" size="mini" type="danger">终止</el-button>
       <el-button @click="showTask=true" size="mini" type="primary">生成拆卸任务</el-button>
-      <el-button size="mini" type="primary">通过</el-button>
-      <el-button size="mini" type="danger">驳回</el-button>
       <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsdisassemblyorderLogicDelete',{
@@ -20,7 +42,6 @@
         size="mini"
         type="danger"
       >删除</el-button>
-      <el-button size="mini" type="danger">终止</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
@@ -34,9 +55,9 @@
     </el-tabs>
     <Task
       :rowData="{
-          disassemblyOrderCode:detail.disassemblyOrderCode,
-          commodityList:detail.commodityList
-        }"
+        disassemblyOrderCode:detail.disassemblyOrderCode,
+        commodityList:detail.commodityList
+      }"
       :visible.sync="showTask"
       @reload="setEdit(),getDetail()"
       source="拆卸单"
@@ -90,7 +111,7 @@ export default {
       if (this.code) {
         let {
           data
-        } = await this.$api.seePsiWmsService.wmsdisassemblyorderQueryInfoByOrderCode(
+        } = await this.$api.seePsiWmsService.wmsdisassemblyorderGetByCode(
           null,
           this.code
         );

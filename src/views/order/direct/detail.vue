@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:32:34
+ * @LastEditTime: 2019-11-23 17:29:52
  * @Description: 直发单详情
 */
 <template>
@@ -22,10 +22,15 @@
             ]"
             disabled
           ></deliverInfo>
-          <buying-goods-edit :data="detail" disabled fkey="commodityEntityList" :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','waitPurchaseNumber','inventoryNumber'
-          ]"/>
-          <customInfo :data="detail" disabled busType="28"></customInfo>
+          <buying-goods-edit
+            :data="detail"
+            :show="[
+              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','waitPurchaseNumber','inventoryNumber'
+            ]"
+            disabled
+            fkey="commodityEntityList"
+          />
+          <customInfo :data="detail" busType="28" disabled></customInfo>
           <extrasInfo :data="detail" disabled></extrasInfo>
         </el-form>
       </el-tab-pane>
@@ -35,7 +40,7 @@
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <addOrderStorage :visible.sync="showAddOrderStorage" from="直发单" :joinCode="code"/>
+    <addOrderStorage :joinCode="code" :visible.sync="showAddOrderStorage" from="直发单" />
     <editDirect :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" />
     <deliverEdit :code="code" :visible.sync="showDeliverGoods" @reload="setEdit(),getDetail()" />
   </sideDetail>

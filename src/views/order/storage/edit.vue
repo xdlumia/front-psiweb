@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:34:29
+ * @LastEditTime: 2019-11-23 17:12:39
  * @Description: 采购入库单
 */
 <template>
@@ -51,7 +51,7 @@
           />
           <buyingPaymentLate :data="form" id="paymentLate" />
           <order-storage-bill :data="form" :max="goodsTotalSum" id="billInfo" />
-          <customInfo :data="form" id="customInfo" busType="30"/>
+          <customInfo :data="form" busType="30" id="customInfo" />
           <extrasInfo :data="form" id="extrasInfo" />
         </el-form>
       </div>
@@ -71,9 +71,7 @@ export default {
     joinCode: String,
     from: String // 来源
   },
-  computed: {
-    
-  },
+  computed: {},
   data() {
     return {
       activeName: '',
@@ -135,9 +133,7 @@ export default {
       }
     };
   },
-  mounted() {
-    console.log(this);
-  },
+  mounted() {},
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
@@ -181,7 +177,13 @@ export default {
           null,
           this.joinCode
         );
-        commodityList = data.commodityList || data.commodityEntityList;
+        commodityList = (data.commodityList || data.commodityEntityList)
+          .filter(item => item.waitPurchaseNumber)
+          .map(item => {
+            item.purchasePrice = item.costAmount;
+            item.maxcommodityNumber = item.commodityNumber;
+            return item;
+          });
       } catch (error) {}
       console.log(commodityList);
       return {

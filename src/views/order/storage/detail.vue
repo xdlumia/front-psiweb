@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 16:06:59
+ * @LastEditTime: 2019-11-23 17:00:56
  * @Description: 采购入库单
 */
 <template>
@@ -22,6 +22,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
+        v-if="detail&&[0,5].includes(detail.state)"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinCancel',{
@@ -30,6 +31,7 @@
         },'撤销审核')"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.state)"
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinPassApproval',{
@@ -39,6 +41,7 @@
         },'通过')"
         size="mini"
         type="primary"
+        v-if="detail&&[1].includes(detail.state)"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinReject',{
@@ -47,16 +50,18 @@
         },'驳回',true)"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.state)"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0,5].includes(detail.state)">编辑</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinLogicDelete',{
           id:detail.id,
         },'删除')"
         size="mini"
         type="primary"
+        v-if="detail&&[0,5].includes(detail.state)"
       >删除</el-button>
-      <el-button @click="showReject=true" size="mini" type="primary">退货</el-button>
+      <el-button @click="showReject=true" size="mini" type="primary" v-if="detail&&[3,4].includes(detail.state)">退货</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinShutdown',{
           apprpvalNode:detail.apprpvalNode,
@@ -64,9 +69,10 @@
         },'终止')"
         size="mini"
         type="danger"
+        v-if="detail&&[3].includes(detail.state)"
       >终止</el-button>
-      <el-button @click="collectInvoiceApply" size="mini" type="primary">收票申请</el-button>
-      <el-button @click="generateContract" size="mini" type="primary">生成合同</el-button>
+      <el-button @click="collectInvoiceApply" size="mini" type="primary" v-if="detail&&[3,4].includes(detail.state)">收票申请</el-button>
+      <el-button @click="generateContract" size="mini" type="primary" v-if="detail&&[3].includes(detail.state)">生成合同</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">

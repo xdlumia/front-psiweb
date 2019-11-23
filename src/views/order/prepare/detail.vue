@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 16:02:19
+ * @LastEditTime: 2019-11-23 17:25:45
  * @Description: 备货单详情
 */
 <template>
@@ -15,6 +15,7 @@
     width="990px"
   >
     <template slot="button">
+      <span></span>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasestockorderSubmitApproval',{
           apprpvalNode:detail.apprpvalNode,
@@ -22,6 +23,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
+        v-if="detail&&[0,5].includes(detail.state)"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasestockorderCancel',{
@@ -30,6 +32,7 @@
         },'撤销审核')"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.state)"
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasestockorderPassApproval',{
@@ -38,6 +41,7 @@
         },'通过')"
         size="mini"
         type="primary"
+        v-if="detail&&[1].includes(detail.state)"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasestockorderReject',{
@@ -46,16 +50,23 @@
         },'驳回',true)"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.state)"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0,5].includes(detail.state)">编辑</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasestockorderDelete',{
           id:detail.id
         },'删除')"
         size="mini"
         type="danger"
+        v-if="detail&&[0,5].includes(detail.state)"
       >删除</el-button>
-      <el-button @click="showAddOrderStorage=true" size="mini" type="primary" v-if="waitBuyingNumber>0">采购</el-button>
+      <el-button
+        @click="showAddOrderStorage=true"
+        size="mini"
+        type="primary"
+        v-if="waitBuyingNumber>0&&detail&&[3].includes(detail.state)"
+      >采购</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">

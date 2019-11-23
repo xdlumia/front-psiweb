@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 11:25:11
+ * @LastEditTime: 2019-11-23 17:40:44
  * @Description: 借入借出详情
 */
 <template>
@@ -95,7 +95,7 @@ export default {
       if (this.code) {
         let {
           data
-        } = await this.$api.seePsiWmsService.wmsborrowloanorderQueryInfoByOrderCode(
+        } = await this.$api.seePsiWmsService.wmsborrowloanorderGetByCode(
           null,
           this.code
         );
