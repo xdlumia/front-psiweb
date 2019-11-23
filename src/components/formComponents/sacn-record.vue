@@ -87,9 +87,56 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <span>{{scope.row.categoryCode|timeToStr}}</span>
+          <span>{{scope.row.createdTime|timeToStr}}</span>
         </template>
       </el-table-column>
+      <el-table-column
+        fixed
+        prop="commodityCode"
+        label="商品编号"
+        min-width="160"
+        show-overflow-tooltip
+      >
+        <template slot-scope="scope">
+          <span>{{scope.row.commodityCode}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        fixed
+        prop="categoryCode"
+        min-width="100"
+        label="商品类别"
+        show-overflow-tooltip
+      >
+        <template slot-scope="scope">
+          <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="className"
+        min-width="100"
+        label="商品分类"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        prop="goodsName"
+        label="商品名称"
+        min-width="140"
+        show-overflow-tooltip
+      >
+      </el-table-column>
+      <el-table-column
+        prop="configName"
+        min-width="100"
+        label="配置"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        prop="specOne"
+        min-width="100"
+        label="商品规格"
+        show-overflow-tooltip
+      ></el-table-column>
     </el-table>
 
   </form-card>
