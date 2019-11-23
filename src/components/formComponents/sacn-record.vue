@@ -1,37 +1,37 @@
 <template>
-  <!-- 退入库商品 -->
+  <!-- 扫描记录 -->
   <form-card
-    title='退入库商品'
+    title='扫描记录'
     class='wfull'
   >
     <el-table
       border
       size='mini'
       :data='[rowData]'
-      ref="companyTable"
+      ref="table"
       class="college-main mt15"
       style="max-height:300px"
     >
       <el-table-column
         fixed
         min-width="80"
-        label="入库数量"
+        label="操作"
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <span>{{scope.row.putinNumber || 0}}/{{scope.row.commodityNumber}}</span>
+          <i
+            class="el-icon-delete-solid d-text-red"
+            @click="delRecord(scope)"
+          ></i>
         </template>
       </el-table-column>
       <el-table-column
         fixed
         prop="commodityCode"
-        label="商品编号"
+        label="编号"
         min-width="160"
         show-overflow-tooltip
       >
-        <template slot-scope="scope">
-          <span>{{scope.row.commodityCode}}</span>
-        </template>
       </el-table-column>
       <el-table-column
         fixed
@@ -47,12 +47,12 @@
       <el-table-column
         prop="className"
         min-width="100"
-        label="商品分类"
+        label="状态"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
         prop="goodsName"
-        label="商品名称"
+        label="SN码"
         min-width="140"
         show-overflow-tooltip
       >
@@ -61,45 +61,37 @@
       <el-table-column
         prop="configName"
         min-width="100"
-        label="商品配置"
+        label="机器码"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
         prop="specOne"
         min-width="100"
-        label="商品规格"
+        label="入库库房"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
         prop="unit"
         min-width="100"
-        label="单位"
+        label="入库人"
         show-overflow-tooltip
       >
         <template slot-scope="scope">
           <span>{{scope.row.categoryCode|dictionary('SC_JLDW')}}</span>
         </template>
       </el-table-column>
+      <el-table-column
+        prop="unit"
+        min-width="100"
+        label="入库时间"
+        show-overflow-tooltip
+      >
+        <template slot-scope="scope">
+          <span>{{scope.row.categoryCode|timeToStr}}</span>
+        </template>
+      </el-table-column>
     </el-table>
-    <div class="mt10 mb10">
-      <span class="b mt5">机器号/SN码</span>
-      <el-input
-        v-on:keyup.13.native="shipmentCommodityCheck"
-        size="mini"
-        v-model="snCode"
-        style="width:200px;"
-        class="ml10 mt5"
-      ></el-input>
-      <span class="fr d-text-black mr10 mt5">
-        <span>本次成功扫码 </span>
-        <span class="b d-text-red f16">{{tableData.length}}</span>
-        <span> 件，历史扫码 </span>
-        <span class="b d-text-green f16">{{rowData.putinNumber || 0}}</span>
-        <span> 件，还需扫码 </span>
-        <span class="b d-text-blue f16">{{rowData.commodityNumber - (rowData.putinNumber || 0) - tableData.length}}</span>
-        <span> 件</span>
-      </span>
-    </div>
+
   </form-card>
 </template>
 <script>
@@ -158,7 +150,7 @@ export default {
       }
     },
     //删除某条
-    deletePurchase(scope) {
+    delRecord(scope) {
       this.tableData.splice(scope.$index, 1)
     },
   }

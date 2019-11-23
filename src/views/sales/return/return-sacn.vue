@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-23 17:59:05
+ * @LastEditTime: 2019-11-23 18:06:56
  * @Description: 退货扫码
 */
 
@@ -36,6 +36,10 @@
     >
       <!-- 库房列表 -->
       <warehouse-list :data="form" />
+      <!-- 退入库商品 -->
+      <goods-in-warehousing />
+      <!-- 扫描记录 -->
+      <sacn-record />
     </el-form>
   </el-dialog>
 </template> 
