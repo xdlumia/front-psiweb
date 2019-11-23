@@ -2,22 +2,15 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 16:42:18
+ * @LastEditTime: 2019-11-23 15:39:09
  * @Description: 侧边详情弹框
 */
 <template>
-  <el-drawer
-    :title="title"
-    destroy-on-close
-    :visible.sync="showPop"
-    :size="width"
-    @close="close"
-    class="side-page"
-  >
+  <el-drawer :size="width" :title="title" :visible.sync="showPop" @close="close" class="side-page" destroy-on-close>
     <span>
       <slot name="title"></slot>
     </span>
-    <sideStatusbar style="margin:-10px -15px 10px" :status="status" />
+    <sideStatusbar :status="status" style="margin:-10px -15px 10px" />
     <span class="drawer-header" v-if="hasButton">
       <slot name="button" />
     </span>
@@ -25,12 +18,15 @@
   </el-drawer>
 </template>
 <script>
-
 export default {
-  components: {
-  },
+  components: {},
   props: {
-    status: { type: Array, default: () => { return [] } },
+    status: {
+      type: Array,
+      default: () => {
+        return [];
+      }
+    },
     title: String,
     visible: Boolean,
     width: String
@@ -47,7 +43,7 @@ export default {
   watch: {
     visible() {
       this.showPop = this.visible;
-    },
+    }
   },
   computed: {
     hasButton() {
