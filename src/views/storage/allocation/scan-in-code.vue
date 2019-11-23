@@ -298,12 +298,13 @@ export default {
     //调入扫码保存
     wmsallocationorderBatchSsave() {
       if (this.downTableData.length > 0) {
-        // this.$api.seePsiWmsService.wmsallocationorderBatchSsave({ list: this.downTableData, businessCode: this.dialogData.allocationOrderCode })
-        //   .then(res => {
-        //     this.close()
-        //   })
-        //   .finally(() => {
-        //   })
+        this.$api.seePsiWmsService.wmsallocationorderBatchSsave({ putawayCommodityList: this.downTableData, businessCode: this.dialogData.allocationOrderCode, businessId: this.dialogData.id, })
+          .then(res => {
+            this.close()
+            this.$reload()
+          })
+          .finally(() => {
+          })
       } else {
         this.$message({
           type: 'info',

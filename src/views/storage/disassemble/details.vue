@@ -116,7 +116,7 @@ export default {
   methods: {
     //查看拆卸任务详情
     wmsallocationorderInfo() {
-      this.$api.seePsiWmsService.wmsdisassemblytaskQueryInfoByTaskCode(null, this.code)
+      this.$api.seePsiWmsService.wmsdisassemblytaskGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = this.state[res.data.disassemblyTaskState]

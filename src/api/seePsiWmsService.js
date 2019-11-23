@@ -372,6 +372,12 @@ export default {
     'methods': 'post'
   },
 
+  // 查看组装任务详细信息根据CODE
+  wmsassembletaskGetByCode: {
+    'url': '/wmsassembletask/getByCode/{code}',
+    'mock': false
+  },
+
   // 挂起组装任务
   wmsassembletaskHangTask: {
     'url': '/wmsassembletask/hangTask',
@@ -476,7 +482,7 @@ export default {
   /* =============库房组装任务转移记录end=========== */
 
   /* =============库房盘点单start=========== */
-  // 库房商品盘点
+  // 商品盘点验证
   wmsblitemBlitemCommodityCheck: {
     'url': '/wmsblitem/blitemCommodityCheck',
     'mock': false,
@@ -651,6 +657,12 @@ export default {
     'methods': 'post'
   },
 
+  // 根据编号查看借入借出单详细信息
+  wmsborrowloanorderGetByCode: {
+    'url': '/wmsborrowloanorder/getByCode/{code}',
+    'mock': false
+  },
+
   // 获取借入借出单编号对应的商品信息
   wmsborrowloanorderGetCommodityByBorrowLoanCode: {
     'url': '/wmsborrowloanorder/getCommodityByBorrowLoanCode',
@@ -754,6 +766,12 @@ export default {
     'url': '/wmsborrowloantask/export',
     'mock': false,
     'methods': 'post'
+  },
+
+  // 查看借入借任务详细信息根据CODE
+  wmsborrowloantaskGetByCode: {
+    'url': '/wmsborrowloantask/getByCode/{code}',
+    'mock': false
   },
 
   // 查看详细信息
@@ -868,6 +886,12 @@ export default {
     'methods': 'post'
   },
 
+  // 根据编号查看拆卸单详细信息
+  wmsdisassemblyorderGetByCode: {
+    'url': '/wmsdisassemblyorder/getByCode/{code}',
+    'mock': false
+  },
+
   // 查看拆卸单详细信息
   wmsdisassemblyorderInfo: {
     'url': '/wmsdisassemblyorder/info/{id}',
@@ -941,6 +965,12 @@ export default {
     'url': '/wmsdisassemblytask/export',
     'mock': false,
     'methods': 'post'
+  },
+
+  // 根据任务编号查看拆卸任务详细信息
+  wmsdisassemblytaskGetByCode: {
+    'url': '/wmsdisassemblytask/getByCode/{code}',
+    'mock': false
   },
 
   // 挂起拆卸任务
@@ -1110,6 +1140,12 @@ export default {
     'methods': 'post'
   },
 
+  // 根据SN码或机器号查询商品
+  wmsinventorydetailGetCommodityBySnCode: {
+    'url': '/wmsinventorydetail/getCommodityBySnCode',
+    'mock': false
+  },
+
   // 查看详细信息
   wmsinventorydetailInfo: {
     'url': '/wmsinventorydetail/info/{id}',
@@ -1229,6 +1265,12 @@ export default {
     'methods': 'post'
   },
 
+  // 查看拣货单详细信息根据CODE
+  wmspickingorderGetByCode: {
+    'url': '/wmspickingorder/getByCode/{code}',
+    'mock': false
+  },
+
   // 查看拣货单详细信息
   wmspickingorderInfo: {
     'url': '/wmspickingorder/info/{id}',
@@ -1283,6 +1325,12 @@ export default {
     'url': '/wmsreportinglosses/export',
     'mock': false,
     'methods': 'post'
+  },
+
+  // 查看报溢报损单详细信息根据CODE
+  wmsreportinglossesGetByCode: {
+    'url': '/wmsreportinglosses/getByCode/{code}',
+    'mock': false
   },
 
   // 查看报溢报损单详细信息
@@ -1369,6 +1417,12 @@ export default {
     'methods': 'post'
   },
 
+  // 查看发货单详细信息根据CODE
+  wmsshipmentsorderGetByCode: {
+    'url': '/wmsshipmentsorder/getByCode/{code}',
+    'mock': false
+  },
+
   // 查看库房发货单详细信息
   wmsshipmentsorderInfo: {
     'url': '/wmsshipmentsorder/info/{id}',
@@ -1439,7 +1493,7 @@ export default {
     'methods': 'post'
   },
 
-  // 删除
+  // 删除换货单信息
   wmsswaporderDelete: {
     'url': '/wmsswaporder/delete',
     'mock': false,
@@ -1453,60 +1507,60 @@ export default {
     'methods': 'post'
   },
 
-  // 查看详细信息根据CODE
+  // 查看换货单详细信息根据CODE
   wmsswaporderGetByCode: {
     'url': '/wmsswaporder/getByCode/{code}',
     'mock': false
   },
 
-  // 查看详细信息
+  // 查看换货单详细信息
   wmsswaporderInfo: {
     'url': '/wmsswaporder/info/{id}',
     'mock': false
   },
 
-  // 获取列表
+  // 获取换货单列表
   wmsswaporderList: {
     'url': '/wmsswaporder/list',
     'mock': false
   },
 
-  // 逻辑删除
+  // 逻辑删除换货单信息
   wmsswaporderLogicDelete: {
     'url': '/wmsswaporder/logicDelete',
     'mock': false,
     'methods': 'delete'
   },
 
-  // 审核通过
+  // 换货单审核通过
   wmsswaporderPassApproval: {
     'url': '/wmsswaporder/passApproval',
     'mock': false,
     'methods': 'post'
   },
 
-  // 驳回
+  // 换货单审核驳回
   wmsswaporderReject: {
     'url': '/wmsswaporder/reject',
     'mock': false,
     'methods': 'post'
   },
 
-  // 保存
+  // 保存换货单信息
   wmsswaporderSave: {
     'url': '/wmsswaporder/save',
     'mock': false,
     'methods': 'post'
   },
 
-  // 提交审核
+  // 换货单提交审核
   wmsswaporderSubmitApproval: {
     'url': '/wmsswaporder/submitApproval',
     'mock': false,
     'methods': 'post'
   },
 
-  // 修改
+  // 修改换货单信息
   wmsswaporderUpdate: {
     'url': '/wmsswaporder/update',
     'mock': false,
@@ -1527,6 +1581,12 @@ export default {
     'url': '/wmsswaptask/export',
     'mock': false,
     'methods': 'post'
+  },
+
+  // 查看换货任务详细信息根据CODE
+  wmsswaptaskGetByCode: {
+    'url': '/wmsswaptask/getByCode/{code}',
+    'mock': false
   },
 
   // 查看详细信息

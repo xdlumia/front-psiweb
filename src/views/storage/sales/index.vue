@@ -31,6 +31,7 @@
         >{{value}}</span>
         <span v-else-if="column.columnFields=='pickingState'">{{value == 0 ? '待拣货' : value == 1 ? '部分拣货' : value == 2 ? '完成拣货' : value == -1 ? '终止' : ''}}</span>
         <span v-else-if="column.columnFields=='assemblyState'">{{value == 0 ? '未开始' : value == 1 ? '待组装':value == 2 ? '部分组装':value == 3 ? '完后组装':value == -1 ? '终止':''}}</span>
+        <span v-else-if="column.columnFields=='deliverState'">{{value == 0 ? '待发货' : value == 1 ? '完成发货' : value == 2 ? '终止' : ''}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>

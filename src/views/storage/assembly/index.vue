@@ -24,7 +24,7 @@
           @click="getTableVisible(row)"
         >{{value}}</span>
         <span
-          v-if="column.columnFields=='assembleOrderCode'"
+          v-else-if="column.columnFields=='assembleOrderCode'"
           class="d-text-blue"
           @click="getassembleVisible(row)"
         >{{value}}</span>

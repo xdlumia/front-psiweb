@@ -118,7 +118,7 @@ export default {
   methods: {
     //查看详情
     wmsassembleorderInfo() {
-      this.$api.seePsiWmsService.wmsassembletaskInfo(null, this.data.id)
+      this.$api.seePsiWmsService.wmsassembletaskGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = this.state[res.data.assembleOrderState]

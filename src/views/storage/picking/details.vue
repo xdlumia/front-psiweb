@@ -73,7 +73,7 @@ export default {
   methods: {
     //查看拣货单详情 
     wmspickingorderInfo() {
-      this.$api.seePsiWmsService.wmspickingorderInfo(null, this.drawerData.id)
+      this.$api.seePsiWmsService.wmspickingorderGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = this.detailForm.state == 2 ? '完成拣货' : this.detailForm.state == 1 ? '部分拣货' : this.detailForm.state == 0 ? '待拣货' : '终止'

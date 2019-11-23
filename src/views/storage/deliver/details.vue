@@ -56,7 +56,7 @@ export default {
   methods: {
     //查看调拨单详情
     wmsallocationorderInfo() {
-      this.$api.seePsiWmsService.wmsshipmentsorderInfo(null, this.drawerData.id)
+      this.$api.seePsiWmsService.wmsshipmentsorderGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = res.data.createTime

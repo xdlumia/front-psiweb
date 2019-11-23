@@ -8,8 +8,16 @@
 <template>
   <form-card title="换货信息">
     <el-row :gutter="10">
-      <el-col :key="index" :span="item.span || 8" v-for="(item,index) of formItems">
-        <el-form-item :label="item.label" :prop="`${item.prop}`" :rules="item.rules">
+      <el-col
+        :key="index"
+        :span="item.span || 8"
+        v-for="(item,index) of formItems"
+      >
+        <el-form-item
+          :label="item.label"
+          :prop="`${item.prop}`"
+          :rules="item.rules"
+        >
           <el-input
             :disabled="disabled"
             :placeholder="`请输入${item.label}`"
@@ -51,7 +59,12 @@
             v-else-if="item.type=='serviceProvider'"
             v-model="data[item.prop]"
           >
-            <el-option :key="item.code" :label="item.serviceName" :value="item.id" v-for="item in serviceOptions" />
+            <el-option
+              :key="item.code"
+              :label="item.serviceName"
+              :value="item.id"
+              v-for="item in serviceOptions"
+            />
           </el-select>
           <el-date-picker
             :disabled="disabled"
@@ -91,10 +104,10 @@ export default {
       { label: '换货方', prop: 'barterThirdparty', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
       { label: '换货方联系人', prop: 'contacts', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
       { label: '换货方联系人电话', prop: 'contactsPhone', type: 'input', rules: [{ required: true, }, { type: 'phone' }], },
-      { label: '换货方地址', prop: 'address', type: 'input', rules: [{ required: true, }],},
+      { label: '换货方地址', prop: 'address', type: 'input', rules: [{ required: true, }], },
       { label: '服务商名称', prop: 'serviceProviderId', type: 'serviceProvider', },
-      { label: '服务类型', prop: 'serveType', type: 'select', dictName:'PSI_FWS_FWLX',
-        exclude:'serviceFilter' },
+      {        label: '服务类型', prop: 'serveType', type: 'select', dictName: 'PSI_FWS_FWLX',
+        exclude: 'serviceFilter'      },
       { label: '运单编号', prop: 'waybillCode', type: 'input', },
       { label: '运费金额', prop: 'logisticsFees', type: 'input', rules: [{ type: 'price' }], },
       // { label: '备注', prop: 'note', type: 'textarea',span:24 },
