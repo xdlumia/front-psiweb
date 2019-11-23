@@ -21,12 +21,12 @@
       <template slot-scope="{column,row,value}">
         <span
           v-if="column.columnFields=='salesSheetCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
         <span
           v-else-if="column.columnFields=='shipmentCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getDetailVisible(row)"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='pickingState'">{{value == 0 ? '待拣货' : value == 1 ? '部分拣货' : value == 2 ? '完成拣货' : value == -1 ? '终止' : ''}}</span>

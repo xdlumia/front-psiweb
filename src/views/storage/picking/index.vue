@@ -21,20 +21,20 @@
       <template slot-scope="{column,row,value}">
         <span
           v-if="column.columnFields=='pickingOrderCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
         <span
           v-else-if="column.columnFields=='assembleTaskCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getVisible(row)"
         >{{value}}</span>
         <span
           v-else-if="column.columnFields=='shipmentCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getshipVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='state'">{{value == -1 ? '终止' : value == 0 ? '待拣货' : value == 1 ? '部分拣货' : '完成拣货'}}</span>
+        <span v-else-if="column.columnFields=='state'">{{value == 0 ? '待拣货' : value == 1 ? '部分拣货' : value == 2 ? '完成拣货' : value == -1 ? '终止' : ''}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
@@ -84,6 +84,7 @@ export default {
       type: Boolean,
       default: true
     },
+
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
@@ -96,6 +97,12 @@ export default {
       queryForm: {
         page: 1,
         limit: 20
+      },
+      statea: {
+        0: '待拣货',
+        1: '部分拣货',
+        2: '完成拣货',
+        '-1': '终止',
       },
       componentActive: '',//当前的组件
       tableVisible: false,//销售单右侧抽屉

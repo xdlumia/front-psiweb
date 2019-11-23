@@ -48,7 +48,11 @@
           min-width="100"
           label="可用库存"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.usableNum || 0}}</span>
+          </template>
+        </el-table-column>
 
         <el-table-column
           prop="commodityCode"

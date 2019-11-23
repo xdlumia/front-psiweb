@@ -70,7 +70,7 @@
         >
           <orderSupplier
             :button="false"
-            :params="{page:1,limit:15,commodityCode:detailForm.commodityCode}"
+            :params="{page:1,limit:15,commodityCode:drawerData.commodityCode}"
           ></orderSupplier>
         </el-tab-pane>
       </el-tabs>
@@ -123,51 +123,6 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-.side-page {
-  .header-btns {
-    position: absolute;
-    right: 40px;
-    top: 12px;
-  }
-  /deep/ {
-    > .popup-main {
-      > .popup-head {
-        font-weight: bold;
-        font-size: 18px;
-        > .d-inline > .popup-close {
-          position: absolute;
-          right: 10px;
-          top: 16px;
-        }
-      }
-      > .popup-body {
-        padding: 0;
-        overflow: hidden;
-      }
-    }
-  }
-  .tabs-view {
-    width: 100% !important;
-    position: relative;
-    /deep/ {
-      & > .el-tabs__header {
-        width: 100% !important;
-        background-color: #f2f2f2;
-        padding: 0 20px;
-        margin-bottom: 0;
-        > .el-tabs__nav-wrap::after {
-          background-color: #f2f2f2;
-        }
-      }
-      & > .el-tabs__content {
-        height: calc(100% - 40px);
-        overflow: hidden;
-        overflow-y: auto;
-        padding: 0 20px;
-      }
-    }
-  }
-}
 /deep/.el-dialog__footer {
   text-align: center;
 }

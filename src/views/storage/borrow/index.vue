@@ -23,12 +23,12 @@
       <template slot-scope="{column,row,value}">
         <span
           v-if="column.columnFields=='salesShipmentCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getdisassemblyVisible(row)"
         >{{value}}</span>
         <span
           v-else-if="column.columnFields=='borrowLoanTaskCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='borrowLoanType'">{{value == 0 ? '借入' : '借出'}}</span>

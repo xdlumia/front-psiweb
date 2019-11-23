@@ -52,7 +52,7 @@
         </span>
         <span v-else-if="column.columnFields=='commodityCode'">
           <span
-            class="d-text-blue"
+            class="d-text-blue d-pointer"
             @click="changeTableVisible(row)"
           >{{value}}</span>
         </span>
