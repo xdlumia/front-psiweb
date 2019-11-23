@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 15:57:43
+ * @LastEditTime: 2019-11-23 11:15:58
  * @Description: 销售-客户管理
  */
 <template>
@@ -15,7 +15,7 @@
       :column="true"
       title="客户管理"
       api="seePsiCommonService.commonclientinfoPagelist"
-      exportApi="seePsiCommonService.commonclientinfoPagelist"
+      exportApi="seePsiCommonService.commonclientinfoExport"
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
     >

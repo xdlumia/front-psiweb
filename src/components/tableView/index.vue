@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 17:35:36
+ * @LastEditTime: 2019-11-23 11:52:11
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -59,7 +59,7 @@
   <div
     class="main-content"
     v-loading="loading"
-    element-loading-text="正在初始化"
+    element-loading-text="正在导出"
   >
     <table-top
       @staHandle="staHandle"
@@ -272,17 +272,22 @@ export default {
       // 导出操作
       if (type == "export") {
         this.loading = true;
-        let server = this.exportApi.split('.')[0]
-        let url = this.exportApi.split('.')[1]
         let params = {}
         if (this.selectionRow.length) {
           params = { ids: this.selectionRow.map(item => item.id) }
         } else {
           params = this.params
         }
-        this.$api[server][url](params)
+        // 格式化导出接口
+        let apiFn = this.exportApi.split('.').reduce((api, item) => api[item], this.$api)
+        apiFn(params)
           .then(res => {
-            console.log("导出成功");
+            if (res.data) {
+              window.open(res.data)
+              console.log("导出成功");
+            } else {
+              console.error("导出失败");
+            }
           })
           .finally(() => {
             //关闭loading
@@ -291,6 +296,7 @@ export default {
 
       }
     },
+    // 格式化状态和时间
     formatState(row, fields) {
       if (fields.match(/(Time|Date)/)) {
         return this.$options.filters.timeToStr(row[fields], 'YYYY-MM-DD HH:mm:ss')
