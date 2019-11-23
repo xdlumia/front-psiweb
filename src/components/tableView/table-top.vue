@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 17:55:22
+ * @LastEditTime: 2019-11-23 11:00:47
  * @Description: 表格头部 
  */
 <template>
@@ -171,7 +171,7 @@
         >暂无数据</p>
         <draggable v-model="tableColList">
           <el-button
-            class="col-button mb5"
+            class="col-button mb10"
             size="mini"
             @click="item.isDisplay = !item.isDisplay"
             :type="item.isDisplay?'':'primary'"
@@ -366,6 +366,7 @@ export default {
   }
 }
 .col-button.el-button {
+  width: 142px;
   margin-left: 0px;
   margin-right: 10px;
 }
