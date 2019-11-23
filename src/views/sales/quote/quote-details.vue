@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-23 12:47:22
+ * @LastEditTime: 2019-11-23 16:12:05
  * @Description: 报价单详情
 */
 <template>
@@ -91,8 +91,8 @@ import detail from './quoteDetails/detail' //详情
 import add from './add' //编辑
 import outLibAdd from '../outLibrary/add' //生成出库单
 import buyingAdd from './add-buying' //生成请购单
-// import record from '@/components/formComponents/record' //操作记录
 import VisibleMixin from '@/utils/visibleMixin';
+
 export default {
   mixins: [VisibleMixin],
   components: {
@@ -137,7 +137,7 @@ export default {
         detail: '详情',
         salesOutLibrary: '销售出库单',
         orderBuying: '请购单',
-        record: '操作记录',
+        operationRecord: '操作记录',
       },
       activeName: 'detail',
     }

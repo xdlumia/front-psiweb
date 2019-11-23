@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-30 11:42:16
+ * @LastEditTime: 2019-11-23 16:13:57
  * @Description: 操作记录
 */
 <template>
@@ -36,9 +36,9 @@ export default {
 
   },
   props: {
-    data: {
-      type: Array
-    }
+    // data: {
+    //   type: Array
+    // }
   },
   beforeDestroy() {
   }
