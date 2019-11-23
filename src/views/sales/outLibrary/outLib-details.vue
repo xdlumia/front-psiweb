@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-23 12:47:29
+ * @LastEditTime: 2019-11-23 16:28:21
  * @Description: 销售出库单详情
 */
 <template>
@@ -202,7 +202,7 @@ export default {
   },
   methods: {
     buttonsClick(label) {
-      // 操作功能
+      // 需要弹出操作功能
       let labelObj = {
         '编辑': 'editVisible',
         '生成合同': 'addContractVisible',
@@ -211,12 +211,11 @@ export default {
         '生成换货单': 'exchangeAddVisible',
         '开票申请': 'collectInvoiceVisible',
       }
-
+      // 需要弹出操作的功能
       if (labelObj.hasOwnProperty(label)) {
         let visible = labelObj[label]
         this[visible] = true
       }
-
       // 需要二次确认操作
       else {
         let params = {
@@ -224,35 +223,36 @@ export default {
           id: this.detail.id,
           processType: 'XSCKD-001',
         }
+        // 使用 ...params是为了 方便增加或者删除参加{ ...params,...{} }
         let apiObj = {
           '提交审核': {
-            api: 'seePsiSaleService.salesshipmentApproval',
-            data: { isAgree: 1, busCode: this.detail.shipmentCode },
+            api: 'seePsiSaleService.salesshipmentSubmitApproval',
+            data: { ...params },
             needNote: null
           },
           '撤销审核': {
-            api: 'seePsiSaleService.salesshipmentApproval',
-            data: { isAgree: 0, busCode: this.detail.shipmentCode },
+            api: 'seePsiSaleService.salesshipmentCancel',
+            data: params,
             needNote: null
           },
           '驳回': {
-            api: 'seePsiSaleService.salesshipmentApproval',
-            data: { busCode: this.detail.shipmentCode },
+            api: 'seePsiSaleService.salesshipmentReject',
+            data: params,
             needNote: null
           },
           '合同完善': {
-            api: 'seePsiSaleService.passContractApproval',
-            data: { busCode: this.detail.shipmentCode },
+            api: 'seePsiSaleService.salesshipmentPassContractApproval',
+            data: params,
             needNote: null
           },
           '删除': {
             api: 'seePsiSaleService.salesshipmentLogicDelete',
-            data: ({ id: this.detail.id }),
+            data: params,
             needNote: null
           },
           '终止': {
             api: 'seePsiSaleService.salesshipmentPause',
-            data: { busCode: this.detail.shipmentCode },
+            data: { shipmentCode: this.detail.shipmentCode },
             needNote: null
           }
         }

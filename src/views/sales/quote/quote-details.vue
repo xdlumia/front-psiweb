@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-23 16:12:05
+ * @LastEditTime: 2019-11-23 16:30:27
  * @Description: 报价单详情
 */
 <template>
@@ -72,14 +72,12 @@
     <!-- 生成销售出库单 -->
     <outLibAdd
       :visible.sync="outLibAddVisible"
-      :code="rowData.quotationCode"
       type="add"
       :rowData="rowData"
     />
     <!-- 生成请购单 -->
     <buyingAdd
       :visible.sync="buyingAddVisible"
-      :code="rowData.quotationCode"
       :params="{quotationCode:rowData.quotationCode}"
       type="add"
       :rowData="rowData"
@@ -100,7 +98,6 @@ export default {
     add,
     outLibAdd,
     buyingAdd,
-    // record
   },
   data() {
     return {
@@ -127,7 +124,6 @@ export default {
         '1': ['生成销售出库单', '生成请购单', '终止'],// 已通过
         '2': ['提交审核', '编辑', '删除'], //已驳回
         '3': [], //完成
-        // '4': [] //终止 //没有终止
       },
       editVisible: false, //销售单编辑
       outLibAddVisible: false, //生成销售出库单
@@ -159,30 +155,32 @@ export default {
       }
     },
     buttonsClick(label) {
+      // 需要弹出操作功能
       if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
         if (label == '编辑') { this.editVisible = true }
         else if (label == '生成销售出库单') { this.outLibAddVisible = true }
         else if (label == '生成请购单') { this.buyingAddVisible = true }
-        // this.$emit('buttonClick', label, this.drawerData.data)
       } else {
+        // 接口参数
         let params = {
           apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
           processType: 'BJD-001',//报价单的权限吗
         }
+        // 操作接口
         let apiObj = {
           '提交审核': {
-            api: 'seePsiSaleService.salesquotationApproval',
-            data: { isAgree: 1, busCode: this.detail.quotationCode },
+            api: 'seePsiSaleService.salesquotationSubmitApproval',
+            data: { ...params, ...{} },
             needNote: null
           },
           '撤销审核': {
-            api: 'seePsiSaleService.salesquotationApproval',
+            api: 'seePsiSaleService.salesquotationCancel',
             data: { isAgree: 0, busCode: this.detail.quotationCode },
             needNote: null
           },
           '驳回': {
-            api: 'seePsiSaleService.salesquotationApproval',
+            api: 'seePsiSaleService.salesquotationReject',
             data: { busCode: this.detail.quotationCode },
             needNote: null
           },
