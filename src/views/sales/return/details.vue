@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-23 16:40:02
+ * @LastEditTime: 2019-11-23 16:48:06
  * @Description: 销售出库单详情
 */
 <template>
@@ -69,6 +69,13 @@
       :code="code"
       type="edit"
       :rowData="rowData"
+    />
+    <purchase-warehousing
+      :visible.sync='scanVisible'
+      :rowData='dialogData'
+      :drawerData='drawerData'
+      v-if="scanVisible"
+      @reload='reload'
     />
   </div>
 </template>
