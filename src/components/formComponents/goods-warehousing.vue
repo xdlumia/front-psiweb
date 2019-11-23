@@ -141,7 +141,7 @@
     </form-card>
     <purchaseWarehousing
       :visible.sync='wareVisible'
-      :dialogData='dialogData'
+      :rowData='dialogData'
       :drawerData='drawerData'
       v-if="wareVisible"
       @reload='reload'
@@ -181,7 +181,7 @@ export default {
       this.wareDisabledVisible = true
       this.dialogData = scope.row
     },
-    //点击SN码一栏
+    //点击入库
     changeWareVisible(scope) {
       this.wareVisible = true
       this.dialogData = scope.row

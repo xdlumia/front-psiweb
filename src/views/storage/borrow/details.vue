@@ -100,7 +100,7 @@ import borrowScanCode from './borrow-scan-code';//借入扫码
 import lendScanCode from './lend-scan-code';//借出扫码
 
 export default {
-  props: ['drawerData', 'visible'],
+  props: ['drawerData', 'visible', 'code'],
   data() {
     return {
       status: [{ label: '借入/借出状态', value: '待归还/待返还' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
@@ -151,7 +151,7 @@ export default {
     },
     //查看调拨单详情
     wmsallocationorderInfo() {
-      this.$api.seePsiWmsService.wmsborrowloanorderQueryInfoByOrderCode(null, this.drawerData.borrowLoanOrderCode)
+      this.$api.seePsiWmsService.wmsborrowloantaskGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = this.state[res.data.borrowLoanState] || '全部'

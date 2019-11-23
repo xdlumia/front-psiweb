@@ -213,11 +213,6 @@ export default {
   },
   mounted() {
     console.log(this.dictionaryOptions('PSI_FWS_FWLX'))
-    setTimeout(() => {
-      if (this.form.facilitatorId) {
-        this.facilitatorNameChange(this.form.facilitatorId)
-      }
-    }, 500)
   },
   methods: {
     //请求可用库房
@@ -235,6 +230,9 @@ export default {
       this.$api.seePsiCommonService.commonserviceproviderList({ page: 1, limit: 1000 })
         .then(res => {
           this.providerList = res.data
+          if (this.form.facilitatorId) {
+            this.facilitatorNameChange(this.form.facilitatorId)
+          }
         })
         .finally(() => {
 

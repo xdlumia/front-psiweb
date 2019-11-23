@@ -109,7 +109,7 @@ export default {
       this.$api.seePsiSaleService.salessheetGetInfoByCode({ code: this.code })
         .then(res => {
           this.detailForm = res.data || {}
-          this.status[0].value = this.detailForm.assemblyState
+          this.status[0].value = this.detailForm.deliverState == 0 ? '待发货' : this.detailForm.deliverState == 1 ? '完成发货' : this.detailForm.deliverState == 2 ? '终止' : ''
           this.status[1].value = this.detailForm.createTime
           this.status[2].value = this.detailForm.creator
           this.status[3].value = this.detailForm.deptName
