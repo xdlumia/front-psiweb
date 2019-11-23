@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 18:10:08
+ * @LastEditTime: 2019-11-23 18:32:19
  * @Description: 拆卸单
 */
 <template>
@@ -51,7 +51,6 @@
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="拆卸任务">拆卸任务</el-tab-pane>
-      <el-tab-pane label="采购单">采购单</el-tab-pane>
     </el-tabs>
     <Task
       :rowData="{

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 15:46:48
+ * @LastEditTime: 2019-11-23 18:32:37
  * @Description: 采购-拆卸单
 */
 <template>
@@ -15,6 +15,7 @@
       busType="11"
       ref="tableView"
       title="拆卸单"
+      exportApi="seePsiWmsService.wmsdisassemblyorderExport"
     >
       <template slot="button">
         <span>自动分配：</span>

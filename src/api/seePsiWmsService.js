@@ -470,6 +470,15 @@ export default {
     },
     /**
      * @tag 库房借入借出单
+     * @description 撤销审核
+     */
+    wmsborrowloanorderCancel: {
+        url: '/wmsborrowloanorder/cancel',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房借入借出单
      * @description 导出
      */
     wmsborrowloanorderExport: {
@@ -524,29 +533,20 @@ export default {
     },
     /**
      * @tag 库房借入借出单
-     * @description 通过借入借出单审核
+     * @description 借入借出单审核通过
      */
-    wmsborrowloanorderPassAudit: {
-        url: '/wmsborrowloanorder/passAudit/{id}',
-        methods: 'get',
+    wmsborrowloanorderPassApproval: {
+        url: '/wmsborrowloanorder/passApproval',
+        methods: 'post',
         mock: isUseMock
     },
     /**
      * @tag 库房借入借出单
-     * @description 驳回借入借出单审核
+     * @description 借入借出单审核驳回
      */
-    wmsborrowloanorderRejectAudit: {
-        url: '/wmsborrowloanorder/rejectAudit/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
-     * @tag 库房借入借出单
-     * @description 撤销借入借出单审核
-     */
-    wmsborrowloanorderRevocationAudit: {
-        url: '/wmsborrowloanorder/revocationAudit/{id}',
-        methods: 'get',
+    wmsborrowloanorderReject: {
+        url: '/wmsborrowloanorder/reject',
+        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -560,20 +560,11 @@ export default {
     },
     /**
      * @tag 库房借入借出单
-     * @description 提交借入借出单审核
+     * @description 借入借出单提交审核
      */
-    wmsborrowloanorderSubmitAudit: {
-        url: '/wmsborrowloanorder/submitAudit/{id}',
-        methods: 'get',
-        mock: isUseMock
-    },
-    /**
-     * @tag 库房借入借出单
-     * @description 终止借入借出单信息
-     */
-    wmsborrowloanorderTerminationOrder: {
-        url: '/wmsborrowloanorder/terminationOrder/{id}',
-        methods: 'get',
+    wmsborrowloanorderSubmitApproval: {
+        url: '/wmsborrowloanorder/submitApproval',
+        methods: 'post',
         mock: isUseMock
     },
     /**

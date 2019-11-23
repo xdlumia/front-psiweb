@@ -2,25 +2,41 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 17:40:44
+ * @LastEditTime: 2019-11-23 18:57:31
  * @Description: 借入借出详情
 */
 <template>
   <sideDetail :status="status" :visible.sync="showDetailPage" @close="$emit('update:visible',false)" title="借入借出单" width="990px">
     <template slot="button" v-if="detail">
       <el-button
-        @click="$submission('seePsiWmsService.wmsborrowloanorderSubmitAudit',[null,detail.id],'提交审核')"
+        @click="$submission('seePsiWmsService.wmsborrowloanorderSubmitApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'提交审核')"
         size="mini"
         type="primary"
       >提交审核</el-button>
       <el-button
-        @click="$submission('seePsiWmsService.wmsborrowloanorderRevocationAudit',[null,detail.id],'撤销审核')"
+        @click="$submission('seePsiWmsService.wmsborrowloanorderCancel',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'撤销审核')"
         size="mini"
         type="danger"
       >撤销审核</el-button>
-      <el-button @click="$submission('seePsiWmsService.wmsborrowloanorderPassAudit',[null,detail.id],'通过')" size="mini" type="primary">通过</el-button>
       <el-button
-        @click="$submission('seePsiWmsService.wmsborrowloanorderRejectAudit',[null,detail.id],'驳回',true)"
+        @click="$submission('seePsiWmsService.wmsborrowloanorderPassApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'通过')"
+        size="mini"
+        type="primary"
+      >通过</el-button>
+      <el-button
+        @click="$submission('seePsiWmsService.wmsborrowloanorderReject',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'驳回',true)"
         size="mini"
         type="danger"
       >驳回</el-button>
