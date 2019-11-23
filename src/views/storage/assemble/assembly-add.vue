@@ -90,15 +90,25 @@ export default {
     close() {
       this.$emit('update:visible', false)
     },
+    returnList(arr) {
+      let list = []
+      arr.forEach((item) => {
+        if (Object.keys(item).length > 0) {
+          list.push(item)
+        }
+      })
+      return list
+    },
     //保存
     submit() {
-      if (this.$refs.commodityInfoEdit.tableData.length < 1) {
+      let list = this.returnList(this.$refs.commodityInfoEdit.tableData)
+      if (list.length < 1) {
         this.$message({
           type: 'error',
           message: '请至少选择一个商品!'
         })
       } else {
-        this.$api.seePsiWmsService.wmsassembleorderSave({ assembleCommoditySaveVoList: this.$refs.commodityInfoEdit.tableData, isSelfMotion: this.isSelfMotion, note: this.form.note, source: '新增' })
+        this.$api.seePsiWmsService.wmsassembleorderSave({ assembleCommoditySaveVoList: list, isSelfMotion: this.isSelfMotion, note: this.form.note, source: '新增' })
           .then(res => {
             this.$emit('reload')
             this.close()

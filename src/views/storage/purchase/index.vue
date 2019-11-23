@@ -22,12 +22,12 @@
       <template slot-scope="{column,row,value}">
         <span
           v-if="column.columnFields=='putinCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getputinVisible(row)"
         >{{value}}</span>
         <span
           v-if="column.columnFields=='purchaseCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='putinState'">{{value == 0 ? '待入库' : value == 1 ? '部分完成' : value == 2 ? '完成入库' : value == 3 ? '终止' : '全部'}}</span>

@@ -21,12 +21,12 @@
       <template slot-scope="{column,row,value}">
         <span
           v-if="column.columnFields=='disassemblyTaskCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
         <span
           v-else-if="column.columnFields=='disassemblyOrderCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getdisassemblyVisible(row)"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='disassemblyTaskState'">{{value == 0 ? '未开始' : value == 1 ? '待拆卸' : value == 2 ? '部分拆卸' : value == 3 ? '完成拆卸' : '全部'}}</span>

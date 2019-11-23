@@ -125,7 +125,7 @@
       <el-table-column
         label="组装数量"
         min-width="150"
-        prop="assembleNum"
+        prop="allocationNum"
       >
         <template
           slot-scope="scope"
@@ -133,7 +133,7 @@
         >
           <el-input
             size="mini"
-            v-model="scope.row.assembleNum"
+            v-model="scope.row.allocationNum"
             placeholder="请输入"
           ></el-input>
         </template>

@@ -29,7 +29,7 @@
         <el-table-column
           fixed
           prop="title"
-          label="调拨数量"
+          label="调入数量"
           min-width="120"
           show-overflow-tooltip
         >
@@ -55,11 +55,38 @@
 
         <el-table-column
           fixed
+          prop="title"
+          label="调出数量"
+          min-width="120"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.accomplishNum || '0'}}/{{scope.row.total}}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          fixed
+          prop="total"
+          min-width="100"
+          label="机器号/SN码"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span
+              @click="getOutGoodsRecord(scope)"
+              class="d-text-blue"
+            >{{scope.row.total}}</span>
+          </template>
+        </el-table-column>
+
+        <!-- <el-table-column
+          fixed
           prop="shipmentWmsNames"
           min-width="100"
           label="调出库房"
           show-overflow-tooltip
-        ></el-table-column>
+        ></el-table-column> -->
 
         <el-table-column
           prop="commodityCode"
@@ -77,7 +104,11 @@
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="className"
           min-width="100"
@@ -107,7 +138,11 @@
           min-width="80"
           label="单位"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.unit|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
 
       </el-table>
       <FullscreenElement

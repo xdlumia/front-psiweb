@@ -29,7 +29,7 @@
       <template slot-scope="{column,row,value}">
         <span
           v-if="column.columnFields=='reportingLossesCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='type'">{{value == 1 ? '报溢' : '报损'}}</span>

@@ -21,7 +21,7 @@
         <span class='mr10 mt5'>入库仓库</span>
         <el-select
           v-model="wmsId"
-          :disabled="dialogData.type == 'disable'"
+          :disabled="rowData.type == 'disable'"
           size='small'
           placeholder="请选择"
         >
@@ -43,7 +43,7 @@
       <el-table
         border
         size='mini'
-        :data='[dialogData]'
+        :data='[rowData]'
         ref="companyTable"
         class="college-main mt15"
         style="max-height:300px"
@@ -130,9 +130,9 @@
           <span>本次成功扫码 </span>
           <span class="b d-text-red f16">{{tableData.length}}</span>
           <span> 件，历史扫码 </span>
-          <span class="b d-text-green f16">{{dialogData.putinNumber || 0}}</span>
+          <span class="b d-text-green f16">{{rowData.putinNumber || 0}}</span>
           <span> 件，还需扫码 </span>
-          <span class="b d-text-blue f16">{{dialogData.commodityNumber - (dialogData.putinNumber || 0) - tableData.length}}</span>
+          <span class="b d-text-blue f16">{{rowData.commodityNumber - (rowData.putinNumber || 0) - tableData.length}}</span>
           <span> 件</span>
         </span>
       </div>
@@ -255,7 +255,7 @@ export default {
       type: Boolean,
       default: false
     },
-    dialogData: {
+    rowData: {
       type: Object,
     },
     form: {},
@@ -282,8 +282,8 @@ export default {
     //回车机器号和SN码
     shipmentCommodityCheck() {
       if (this.wmsId) {
-        if ((this.dialogData.commodityNumber - (this.dialogData.putinNumber || 0) - this.tableData.length) != 0) {
-          this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: this.snCode, commodityCode: this.dialogData.commodityCode, putawayCommodityList: this.tableData, categoryCode: this.dialogData.categoryCode, wmsId: this.wmsId })
+        if ((this.rowData.commodityNumber - (this.rowData.putinNumber || 0) - this.tableData.length) != 0) {
+          this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: this.snCode, commodityCode: this.rowData.commodityCode, putawayCommodityList: this.tableData, categoryCode: this.rowData.categoryCode, wmsId: this.wmsId })
             .then(res => {
               if (res.data) {
                 this.tableData.push(res.data)

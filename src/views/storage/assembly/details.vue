@@ -118,7 +118,7 @@ export default {
   methods: {
     //查看详情
     wmsassembleorderInfo() {
-      this.$api.seePsiWmsService.wmsassembletaskInfo(null, this.data.id)
+      this.$api.seePsiWmsService.wmsassembletaskGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = this.state[res.data.assembleOrderState]
@@ -194,47 +194,4 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-.side-page {
-  .header-btns {
-    position: absolute;
-    right: 40px;
-    top: 12px;
-  }
-  /deep/ {
-    > .popup-main {
-      > .popup-head {
-        font-weight: bold;
-        font-size: 18px;
-        > .d-inline > .popup-close {
-          position: absolute;
-          right: 10px;
-          top: 16px;
-        }
-      }
-      > .popup-body {
-        padding: 0;
-        overflow: hidden;
-      }
-    }
-  }
-  .tabs-view {
-    position: relative;
-    /deep/ {
-      & > .el-tabs__header {
-        background-color: #f2f2f2;
-        padding: 0 20px;
-        margin-bottom: 0;
-        > .el-tabs__nav-wrap::after {
-          background-color: #f2f2f2;
-        }
-      }
-      & > .el-tabs__content {
-        height: calc(100% - 40px);
-        overflow: hidden;
-        overflow-y: auto;
-        padding: 0 20px;
-      }
-    }
-  }
-}
 </style>
