@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-23 16:48:06
+ * @LastEditTime: 2019-11-23 17:08:08
  * @Description: 销售出库单详情
 */
 <template>
@@ -70,25 +70,27 @@
       type="edit"
       :rowData="rowData"
     />
-    <purchase-warehousing
+    <!-- 退货扫码 -->
+    <return-sacn
       :visible.sync='scanVisible'
-      :rowData='dialogData'
-      :drawerData='drawerData'
-      v-if="scanVisible"
-      @reload='reload'
+      :code="code"
+      :rowData='rowData'
+      @reload='$refs.table.reload()'
     />
   </div>
 </template>
 <script>
 import detail from './details/detail' //详情
 import add from './add' // 新增退货单
+import returnSacn from './return-sacn' // 退货扫码
 import VisibleMixin from '@/utils/visibleMixin';
 import { log } from 'util';
 export default {
   mixins: [VisibleMixin],
   components: {
     detail,
-    add
+    add,
+    returnSacn
   },
   data() {
     return {
