@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 19:30:57
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-23 15:41:23
  * @Description: 审核信息
 */
 <template>
@@ -15,11 +15,11 @@
         type="primary"
       >{{showHis?'返回':'历史记录'}}</el-link>
     </div>
-    <div v-if="!showHis">
+    <div class="progress-list" v-if="!showHis">
       <ApproveCard :progress="progressData" />
     </div>
     <div
-      class
+      class="progress-list"
       v-else
     >
       <ApproveCard />
@@ -53,6 +53,7 @@ export default {
       required: false,
       default: 'BJD-001'
     },
+    id:[Number,String]
 
   },
   components: {
@@ -74,7 +75,7 @@ export default {
       hisData: [],// 历史审核数据
     };
   },
-  async created() {
+  async mounted() {
     await this.queryProcessDefinitionSubTask()
     this.processtaskQueryProcessHistoryEntity()
   },
@@ -95,7 +96,7 @@ export default {
 
       let params = {
         processType: busType[this.busType],
-        businessId: this.$parent.rowData.id //一般详情都会传rowData 当前行操作数据 里面有id
+        businessId: this.id || this.$parent.rowData.id //一般详情都会传rowData 当前行操作数据 里面有id
       }
       this.$api.seeWorkflowService.processtaskQueryProcessHistoryEntity(params)
         .then(res => {
