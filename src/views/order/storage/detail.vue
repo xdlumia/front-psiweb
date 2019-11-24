@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-24 21:19:22
+ * @LastEditTime: 2019-11-24 22:17:34
  * @Description: 采购入库单
 */
 <template>
@@ -127,7 +127,11 @@
           <OrderReject :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane label="应付账单">应付账单</el-tab-pane>
+      <el-tab-pane label="应付账单">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <FinancePayable :button="false" :params="{page:1,limit:15,busCode:detail.putinCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
       <el-tab-pane label="发票记录">发票记录</el-tab-pane>
     </el-tabs>
     <OrderRejectEdit

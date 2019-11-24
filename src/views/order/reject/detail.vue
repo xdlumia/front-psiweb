@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-24 21:26:15
+ * @LastEditTime: 2019-11-24 22:16:38
  * @Description: 采购退货单
 */
 <template>
@@ -85,8 +85,16 @@
           <OrderStorage :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane label="采购单">采购单</el-tab-pane>
-      <el-tab-pane label="应收账单">应收账单</el-tab-pane>
+      <el-tab-pane label="采购单">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <StoragePurchase :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="应收账单">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <FinanceReceivable :button="false" :params="{page:1,limit:15,busCode:detail.putinCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
     </el-tabs>
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" />
     <scanGoods

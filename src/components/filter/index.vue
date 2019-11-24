@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:31:09
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 17:58:14
+ * @LastEditTime: 2019-11-24 22:04:32
  * @Description: 通用过滤组件
 */
 <template>
@@ -94,10 +94,12 @@ export default {
     return {
       addMoreFilter: false,
       usedFilter: {},
-      inited: false
+      inited: false,
+      defaultParams:{}
     };
   },
   mounted() {
+    this.defaultParams=JSON.parse(JSON.stringify(this.form))||{}
     this.init();
   },
   computed: {
@@ -107,10 +109,10 @@ export default {
         let choose = this.usedFilter[item.prop];
         if (!choose) {
           if (item.type && item.type.match(/range$/i)) {
-            this.$set(this.form, 'min' + item.prop, '');
-            this.$set(this.form, 'max' + item.prop, '');
+            this.$set(this.form, 'min' + item.prop, this.defaultParams['min' + item.prop]||'');
+            this.$set(this.form, 'max' + item.prop, this.defaultParams['max' + item.prop]||'');
           } else {
-            this.$set(this.form, item.prop, '');
+            this.$set(this.form, item.prop, this.defaultParams[item.prop]||'');
           }
         } else {
           if (item.type && item.type.match(/range$/i)) {

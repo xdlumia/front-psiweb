@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-24 21:41:01
+ * @LastEditTime: 2019-11-24 21:56:49
  * @Description: 借入借出详情
 */
 <template>
@@ -61,7 +61,11 @@
           <borrow-goods :data="detail" disabled />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="销售单">销售单</el-tab-pane>
+      <el-tab-pane label="销售出库单" v-if="showDetailPage&&!loading&&detail&&detail.salesShipmentCode">
+        <FullscreenWrap>
+          <SalesOutLibrary :button="false" :params="{page:1,limit:15,shipmentCode:detail.salesShipmentCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
     </el-tabs>
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
   </sideDetail>
