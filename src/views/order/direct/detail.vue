@@ -2,14 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 17:29:52
+ * @LastEditTime: 2019-11-24 21:22:42
  * @Description: 直发单详情
 */
 <template>
   <sideDetail :status="status" :visible.sync="showDetailPage" @close="close" title="直发单" v-loading="loading" width="990px">
     <template slot="button">
-      <el-button @click="showDeliverGoods=true" size="mini" type="primary">发货</el-button>
-      <el-button @click="showAddOrderStorage=true" size="mini" type="primary">采购</el-button>
+      <el-button @click="showDeliverGoods=true" size="mini" type="primary" v-if="detail&&[0,1].includes(detail.state)">发货</el-button>
+      <el-button @click="showAddOrderStorage=true" size="mini" type="primary" v-if="detail&&[0,1].includes(detail.state)">采购</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">

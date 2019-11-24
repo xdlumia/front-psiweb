@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 18:32:19
+ * @LastEditTime: 2019-11-24 21:32:34
  * @Description: 拆卸单
 */
 <template>
@@ -15,6 +15,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
+        v-if="detail&&[0].includes(detail.disassemblyOrderState)"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsdisassemblyorderPassApproval',{
@@ -23,6 +24,7 @@
         },'通过')"
         size="mini"
         type="primary"
+        v-if="detail&&[1].includes(detail.disassemblyOrderState)"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsdisassemblyorderReject',{
@@ -31,16 +33,23 @@
         },'驳回',true)"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.disassemblyOrderState)"
       >驳回</el-button>
-      <el-button @click="$submission('seePsiWmsService.wmsdisassemblyorderTermination',[null,detail.id],'终止')" size="mini" type="danger">终止</el-button>
-      <el-button @click="showTask=true" size="mini" type="primary">生成拆卸任务</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
+      <el-button
+        @click="$submission('seePsiWmsService.wmsdisassemblyorderTermination',[null,detail.id],'终止')"
+        size="mini"
+        type="danger"
+        v-if="detail&&[2].includes(detail.disassemblyOrderState)"
+      >终止</el-button>
+      <el-button @click="showTask=true" size="mini" type="primary" v-if="detail&&[2].includes(detail.disassemblyOrderState)">生成拆卸任务</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0].includes(detail.disassemblyOrderState)">编辑</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsdisassemblyorderLogicDelete',{
           id:detail.id
         },'删除')"
         size="mini"
         type="danger"
+        v-if="detail&&[0].includes(detail.disassemblyOrderState)"
       >删除</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">

@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 18:57:31
+ * @LastEditTime: 2019-11-24 21:41:01
  * @Description: 借入借出详情
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showDetailPage" @close="$emit('update:visible',false)" title="借入借出单" width="990px">
+  <sideDetail :status="status" :visible.sync="showDetailPage" @close="close" title="借入借出单" v-loading="loading" width="990px">
     <template slot="button" v-if="detail">
       <el-button
         @click="$submission('seePsiWmsService.wmsborrowloanorderSubmitApproval',{
@@ -15,6 +15,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
+        v-if="detail&&[0,-1].includes(detail.borrowLoanState)"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsborrowloanorderCancel',{
@@ -23,6 +24,7 @@
         },'撤销审核')"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.borrowLoanState)"
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsborrowloanorderPassApproval',{
@@ -31,6 +33,7 @@
         },'通过')"
         size="mini"
         type="primary"
+        v-if="detail&&[1].includes(detail.borrowLoanState)"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsborrowloanorderReject',{
@@ -39,14 +42,16 @@
         },'驳回',true)"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.borrowLoanState)"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0,-1].includes(detail.borrowLoanState)">编辑</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsborrowloanorderLogicDelete',{
         id:detail.id
       },'删除')"
         size="mini"
-        type="primary"
+        type="danger"
+        v-if="detail&&[0,-1].includes(detail.borrowLoanState)"
       >删除</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">

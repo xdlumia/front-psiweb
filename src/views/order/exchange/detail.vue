@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:33:06
+ * @LastEditTime: 2019-11-24 21:43:09
  * @Description: 换货单
 */
 <template>
@@ -15,6 +15,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
+        v-if="detail&&[0,-1].includes(detail.swapState)"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsswaporderCancel',{
@@ -23,6 +24,7 @@
         },'撤销审核')"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.swapState)"
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsswaporderPassApproval',{
@@ -31,6 +33,7 @@
         },'通过')"
         size="mini"
         type="primary"
+        v-if="detail&&[1].includes(detail.swapState)"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsswaporderReject',{
@@ -39,25 +42,27 @@
         },'驳回',true)"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.swapState)"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0,-1].includes(detail.swapState)">编辑</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsswaporderDelete',{
           id:detail.id
         },'删除')"
         size="mini"
         type="danger"
+        v-if="detail&&[0,-1].includes(detail.swapState)"
       >删除</el-button>
       <!-- <el-button @click="showExchangeGoods=true" size="mini" type="primary">换货扫码</el-button> -->
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form :model="detail" size="mini" v-if="detail&&showDetailPage" ref="form">
+        <el-form :model="detail" ref="form" size="mini" v-if="detail&&showDetailPage">
           <exchange-info :data="detail" disabled id="exchangeInfo" />
           <buying-exchange-goods :data="detail" disabled exchangeType="in" id="inGoods" />
           <buying-exchange-goods :data="detail" disabled exchangeType="out" id="outGoods" />
           <orderStorageBill :data="detail" :hide="['isBillFee']" :type="3" disabled id="billInfo" />
-          <customInfo :data="detail" disabled id="customInfo" busType="1"></customInfo>
+          <customInfo :data="detail" busType="1" disabled id="customInfo"></customInfo>
           <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
         </el-form>
       </el-tab-pane>

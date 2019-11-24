@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 14:46:27
+ * @LastEditTime: 2019-11-24 21:37:43
  * @Description: 采购调价单
 */
 <template>
@@ -23,6 +23,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
+        v-if="detail&&[0].includes(detail.approvalState)"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpriceCancel',{
@@ -32,6 +33,7 @@
         },'撤销审核')"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.approvalState)"
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpricePassApproval',{
@@ -41,6 +43,7 @@
         },'通过')"
         size="mini"
         type="primary"
+        v-if="detail&&[1].includes(detail.approvalState)"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpriceReject',{
@@ -50,9 +53,15 @@
         },'驳回',true)"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.approvalState)"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
-      <el-button @click="$submission('seePsiCommonService.commonadjustpriceLogicDelete',{ id:detail.id },'删除')" size="mini" type="danger">删除</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0].includes(detail.approvalState)">编辑</el-button>
+      <el-button
+        @click="$submission('seePsiCommonService.commonadjustpriceLogicDelete',{ id:detail.id },'删除')"
+        size="mini"
+        type="danger"
+        v-if="detail&&[0].includes(detail.approvalState)"
+      >删除</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
@@ -96,7 +105,12 @@ export default {
   props: {},
   data() {
     return {
-      showEdit: false
+      showEdit: false,
+      stateText: {
+        '0': '新建',
+        '1': '审核中',
+        '2': '通过'
+      }
     };
   },
   watch: {},

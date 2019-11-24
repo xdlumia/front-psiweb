@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-22 16:26:03
+ * @LastEditTime: 2019-11-24 21:49:34
  * @Description: 付款单
 */
 <template>
   <sideDetail :status="status" :visible="showDetailPage" @close="close" title="付款单" v-loading="loading" width="990px">
     <template slot="button">
-      <el-button @click="showApply=true" size="mini" type="primary">付款申请</el-button>
+      <el-button @click="showApply=true" size="mini" type="primary" v-if="detail&&[-1,3].includes(detail.state)">付款申请</el-button>
       <el-button
         @click="$submission('seePsiFinanceService.paybillPassApproval',{
           apprpvalNode:detail.apprpvalNode,
@@ -17,6 +17,7 @@
         },'通过')"
         size="mini"
         type="primary"
+        v-if="detail&&[0].includes(detail.state)"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiFinanceService.paybillReject',{
@@ -26,6 +27,7 @@
         },'驳回',true)"
         size="mini"
         type="danger"
+        v-if="detail&&[0,1].includes(detail.state)"
       >驳回</el-button>
       <el-button
         @click="$submission('seePsiFinanceService.paybillAuditApproval',{
@@ -35,8 +37,9 @@
         },'复核通过')"
         size="mini"
         type="primary"
+        v-if="detail&&[1].includes(detail.state)"
       >复核通过</el-button>
-      <el-button @click="showAddIncoming=true,addIncoming()" size="mini" type="primary">付款</el-button>
+      <el-button @click="showAddIncoming=true,addIncoming()" size="mini" type="primary" v-if="detail&&[2].includes(detail.state)">付款</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
@@ -47,11 +50,15 @@
           <extras-info :data="detail" @change="saveExtras" can-modify disabled />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="采购单">采购单</el-tab-pane>
-      <el-tab-pane label="换货单">换货单</el-tab-pane>
-      <el-tab-pane label="费用单">费用单</el-tab-pane>
-      <el-tab-pane label="销售退货单">销售退货单</el-tab-pane>
-      <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
+      <el-tab-pane :label="busInfo[detail.busType].title" v-if="detail.busCode&&busInfo[detail.busType]">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <component
+            :button="false"
+            :is="busInfo[detail.busType].listPage"
+            :params="{page:1,limit:15,[busInfo[detail.busType].codeFilterKey]:detail.busCode}"
+          />
+        </FullscreenWrap>
+      </el-tab-pane>
     </el-tabs>
     <Apply :rowData="detail" :visible.sync="showApply" @reload="setEdit(),$reload()" v-if="showApply" />
     <AddIncoming :incomeType="1" :visible.sync="showAddIncoming" code ref="addIncoming" v-if="showAddIncoming" />
@@ -61,9 +68,10 @@
 import Apply from './apply'; // 付款单
 import AddIncoming from '@/views/finance/income/add'; // 新增流水
 import VisibleMixin from '@/utils/visibleMixin';
+import BusMixin from './busMixin';
 
 export default {
-  mixins: [VisibleMixin],
+  mixins: [VisibleMixin, BusMixin],
   components: {
     Apply,
     AddIncoming
@@ -100,7 +108,10 @@ export default {
       else {
         return [
           { label: '账单状态', value: this.stateText[this.detail.state] },
-          { label: '逾期状态', value: this.overText[this.detail.overSate||0] },
+          {
+            label: '逾期状态',
+            value: this.overText[this.detail.overSate || 0]
+          },
           { label: '总应付金额', value: this.detail.billTotalAmount },
           { label: '实付金额', value: this.detail.factAmount },
           { label: '付款方', value: this.detail.accountName }

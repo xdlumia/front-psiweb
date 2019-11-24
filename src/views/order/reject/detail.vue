@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:33:54
+ * @LastEditTime: 2019-11-24 21:26:15
  * @Description: 采购退货单
 */
 <template>
@@ -15,6 +15,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
+        v-if="detail&&[0,5].includes(detail.state)"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasealterationCancel',{
@@ -23,6 +24,7 @@
         },'撤销审核')"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.state)"
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasealterationPassApproval',{
@@ -31,6 +33,7 @@
         },'通过')"
         size="mini"
         type="primary"
+        v-if="detail&&[1].includes(detail.state)"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasealterationReject',{
@@ -39,14 +42,16 @@
         },'驳回',true)"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.state)"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0,5].includes(detail.state)">编辑</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasealterationLogicDelete',{ id:detail.id },'删除')"
         size="mini"
         type="primary"
+        v-if="detail&&[0,5].includes(detail.state)"
       >删除</el-button>
-      <el-button @click="showScanGoods=true" size="mini" type="primary">退货扫码</el-button>
+      <el-button @click="showScanGoods=true" size="mini" type="primary" v-if="detail&&[2,3].includes(detail.state)">退货扫码</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
@@ -71,7 +76,7 @@
             id="commodityInfo"
           />
           <orderStorageBill :data="detail" :hide="['isBillFee']" :type="1" disabled id="billInfo" />
-          <customInfo :data="detail" disabled id="customInfo" busType="31"></customInfo>
+          <customInfo :data="detail" busType="31" disabled id="customInfo"></customInfo>
           <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
         </el-form>
       </el-tab-pane>

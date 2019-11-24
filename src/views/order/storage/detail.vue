@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 17:00:56
+ * @LastEditTime: 2019-11-24 21:19:22
  * @Description: 采购入库单
 */
 <template>
@@ -58,7 +58,7 @@
           id:detail.id,
         },'删除')"
         size="mini"
-        type="primary"
+        type="danger"
         v-if="detail&&[0,5].includes(detail.state)"
       >删除</el-button>
       <el-button @click="showReject=true" size="mini" type="primary" v-if="detail&&[3,4].includes(detail.state)">退货</el-button>

@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 14:48:30
+ * @LastEditTime: 2019-11-23 19:31:33
  * @Description: 新增借入单
 */
 <template>
-  <el-dialog :visible="visible" @close="close" v-dialogDrag v-loading="loading" width="900px">
+  <el-dialog :visible="showEditPage" @close="close" v-dialogDrag v-loading="loading" width="900px">
     <div slot="title">
       <span>{{isEdit?'编辑':'新增'}}借入/出单</span>
       <span class="fr mr20">

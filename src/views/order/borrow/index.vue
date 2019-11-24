@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 17:39:40
+ * @LastEditTime: 2019-11-23 19:28:58
  * @Description: 采购-借入借出单
 */
 <template>
@@ -32,7 +32,7 @@
       </template>
     </TableView>
     <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
-    <AddIn :visible.sync="showEdit" @reload="reload" type="add" />
+    <AddIn :visible.sync="showEdit" @reload="reload" type="add" v-if="showEdit" />
   </div>
 </template>
 <script>
