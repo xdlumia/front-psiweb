@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 17:40:31
+ * @LastEditTime: 2019-11-25 17:57:29
  * @Description: 退货扫码
 */
 
@@ -37,7 +37,7 @@
       <!-- 库房列表 -->
       <warehouse-list :data="form" />
       <!-- 退入库商品 -->
-      <goods-in-warehousing :data="form/>
+      <goods-in-warehousing :data="form" />
       <!-- 扫描记录 -->
       <sacn-record />
     </el-form>
@@ -53,8 +53,30 @@ export default {
   data() {
     return {
       form: {
-        wmsId: '',
-      },
+        //单据出入库商品数量变更集合
+        alterationCommodityVoList: [
+          // {
+          //   alterationCode: '',//"示例：退换货单code",
+          //   alterationNumber: '',//9,
+          //   commodityCode: '',//"示例：商品编号",
+          //   putawayType: '',// 入库1
+          // }
+        ],
+        businessCode: '',//关联业务编号
+        businessCodeList: '',//关联业务code List
+        businessId: '',//0,
+        businessType: '',//0,
+        putawayCommodityList: [
+          // {
+          //   commodityCode: '',//"示例：商品编号",
+          //   operation: '',//0,
+          //   robotCode: '',//"示例：机器码",
+          //   snCode: '',//"示例：商品SN码",
+          //   wmsCommodityId: '',//100000,
+          //   wmsId: '',//100000
+          // }
+        ]
+      }
     }
   },
   methods: {
