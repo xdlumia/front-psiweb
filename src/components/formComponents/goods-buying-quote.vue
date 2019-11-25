@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 18:37:59
+ * @LastEditTime: 2019-11-25 18:42:26
  * @Description: 生成请购单商品信息
 */
 <template>
@@ -128,7 +128,7 @@ export default {
       default: () => ({})
     },
     title: {
-      default: '退货商品信息',
+      default: '商品信息',
       type: String
     },
     disabled: {
