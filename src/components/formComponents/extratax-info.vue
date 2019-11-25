@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 14:51:23
+ * @LastEditTime: 2019-11-25 19:19:22
  * @Description: 附加发票 字段对应 但是公式还没计算
 */
 <template>
@@ -31,7 +31,7 @@
           <el-input
             placeholder="请输入"
             :disabled="disabled"
-            @input="taxRateChange"
+            @input="preTaxAmountChange"
             v-model="data.taxRate"
           >
             <template slot="append">%</template>
@@ -74,28 +74,26 @@ export default {
     };
   },
   methods: {
-    // 税前金额变化
+    // 税前金额变化 和 税率变化 的计算方法一样
     preTaxAmountChange(val) {
-      console.log(val);
+      let preTaxAmount = this.data.preTaxAmount || 0   ///税前金额
+      let taxRate = (this.data.taxRate || 100) / 100  ///税率
+      let taxAmount = this.data.taxAmount || 0 //税后金额
+      // 税后金额  公式:税前金额 * 税率
+      this.data.taxAmount = (preTaxAmount * (1 - taxRate)).toFixed(2)
     },
-    // 税率变化
-    taxRateChange(val) { },
-    // 税后金额变化
+    // 税后金额变化 计算税率
     taxAmountChange(val) {
-      console.log(val);
+      let preTaxAmount = this.data.preTaxAmount || 0   ///税前金额
+      let taxRate = (this.data.taxRate || 100) / 100  ///税率
+      let taxAmount = this.data.taxAmount || 0 //税后金额
+      // 税率  公式:preTaxAmount * (1-税率)
+
+      this.data.taxRate = ((preTaxAmount - taxAmount) / preTaxAmount).toFixed(4) * 100
     }
   },
   computed: {
     // 税率
-    taxRate: {
-      get(val) {
-        console.log(val)
-        return this.data.taxRate * 100
-      },
-      set() {
-        this.data.taxRate / 100
-      },
-    },
 
   },
 };
