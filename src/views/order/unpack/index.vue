@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-24 22:39:16
+ * @LastEditTime: 2019-11-25 15:05:16
  * @Description: 采购-拆卸单
 */
 <template>
@@ -13,19 +13,20 @@
       @response="onTableData"
       api="seePsiWmsService.wmsdisassemblyorderList"
       busType="11"
+      exportApi="seePsiWmsService.wmsdisassemblyorderExport"
       ref="tableView"
       title="拆卸单"
-      exportApi="seePsiWmsService.wmsdisassemblyorderExport"
     >
       <template slot="button">
-        <span>自动分配：</span>
-        <el-switch class="mr10" v-model="switchValue"></el-switch>
+        <!-- <span>自动分配：</span>
+        <el-switch class="mr10" v-model="switchValue"></el-switch> -->
         <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
         <span v-else-if="prop=='operation'">
           <span class="elTableDragDefault el-icon-rank f20" v-if="row.sequence>0"></span>
+          <el-button class="ml10" @click="setTop(row)" size="mini" type="primary" v-if="row.sequence>0">置顶</el-button>
         </span>
         <span v-else-if="prop=='disassemblyOrderState'">{{stateText[value]}}</span>
         <span v-else-if="prop=='disassemblyOrderCode'">
@@ -102,8 +103,25 @@ export default {
         item.$index = i;
       });
     },
-    logData(e) {
-      console.log(e);
+    async setTop(row) {
+      await this.$confirm(`是否确认置顶`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        closeOnClickModal: false,
+        type: 'warning',
+        center: true
+      });
+      this.loading = true;
+      try {
+        await this.$api.seePsiWmsService.wmsdisassemblyorderTopSquence(
+          null,
+          row.id
+        );
+        this.reload();
+      } catch (error) {
+        console.error(error);
+      }
+      this.loading = false;
     },
     async onDrag(list) {
       let changed = list.filter((item, i) => {

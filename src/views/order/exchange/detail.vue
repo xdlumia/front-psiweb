@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-24 22:17:05
+ * @LastEditTime: 2019-11-25 14:46:53
  * @Description: 换货单
 */
 <template>
@@ -72,9 +72,9 @@
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="发票管理">
-        <!-- <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
-          <FinanceReceivable :button="false" :params="{page:1,limit:15,busCode:detail.swapOrderCode}" />
-        </FullscreenWrap> -->
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <FinanceBilling :button="false" :params="{page:1,limit:15,busCode:detail.swapOrderCode}" />
+        </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />

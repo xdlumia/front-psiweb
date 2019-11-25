@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-24 22:35:03
+ * @LastEditTime: 2019-11-25 15:38:02
  * @Description: 供应商编号
 */
 <template>
@@ -19,7 +19,7 @@
       <el-button @click="changeState(1)" size="mini" type="danger" v-else>停用</el-button>
       <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
     </template>
-    <el-tabs class="wfull hfull tabs-view">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
         <el-form v-if="detail" :model="detail">
           <form-card title="往来账款">
@@ -39,39 +39,39 @@
           <extras-info :data="detail" disabled></extras-info>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="可供商品">
-        <el-form class="supplier-goods" v-if="detail">
+      <el-tab-pane label="可供商品" name="supplierGoods">
+        <el-form class="supplier-goods" v-if="detail&&tabStatus.supplierGoods">
           <supplier-goods :supplierId="detail.id" show-cat />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="采购入库单">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="采购入库单" name="putin">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.putin">
           <OrderStorage :button="false" :params="{page:1,limit:15,supplierId:detail.id}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane label="采购合同">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="采购合同" name="orderContract">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.orderContract">
           <ContractOrder :button="false" :params="{page:1,limit:15,supplierId:detail.id}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane label="采购单">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="采购单" name="purchaseOrder">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.purchaseOrder">
           <StoragePurchase :button="false" :params="{page:1,limit:15,supplierId:detail.id}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane label="采购退货单">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="采购退货单" name="reject">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.reject">
           <OrderReject :button="false" :params="{page:1,limit:15,supplierId:detail.id}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane label="应付账单">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="应付账单" name="payable">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.payable">
           <FinancePayable :button="false" :params="{page:1,limit:15,clientId:detail.id,clientType:1}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane label="发票记录">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
-          <FinanceReceipt :button="false" :params="{page:1,limit:15,clientId:detail.id,clientType:1}" />
+      <el-tab-pane label="发票记录" name="invoice">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.invoice">
+          <FinanceReceipt :button="false" :params="{page:1,limit:15,marketId:detail.id}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>

@@ -3,7 +3,7 @@
 const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = false;
 /**
-* @date 2019-11-23
+* @date 2019-11-25
 * @host 39.99.132.95:9211
 */
 export default {
@@ -277,6 +277,24 @@ export default {
     wmsassembleorderSave: {
         url: '/wmsassembleorder/save',
         methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房组装单
+     * @description 终止组装单信息
+     */
+    wmsassembleorderTermination: {
+        url: '/wmsassembleorder/termination/{id}',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房组装单
+     * @description 置顶组装单信息
+     */
+    wmsassembleorderTopSquence: {
+        url: '/wmsassembleorder/topSquence/{id}',
+        methods: 'get',
         mock: isUseMock
     },
     /**
@@ -744,6 +762,15 @@ export default {
      */
     wmsdisassemblyorderTermination: {
         url: '/wmsdisassemblyorder/termination/{id}',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 库房拆卸单
+     * @description 置顶拆卸单信息
+     */
+    wmsdisassemblyorderTopSquence: {
+        url: '/wmsdisassemblyorder/topSquence/{id}',
         methods: 'get',
         mock: isUseMock
     },

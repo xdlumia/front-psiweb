@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:23:32
+ * @LastEditTime: 2019-11-25 14:28:01
  * @Description: 采购合同
 */
 <template>
@@ -12,8 +12,8 @@
         <el-form :model="detail" class="p10" ref="form" size="mini" v-if="detail&&showDetailPage&&!loading">
           <supplierInfo :data="detail" :defaultData="detail.supplierInfo" disabled />
           <companyInfo :data="detail" :defaultData="getCompanyInfo()" disabled />
-          <arrivalInfo :data="detail" disabled v-if="detail.source!='直发单'" :hide="['saleTime']" />
-          <buyingDeliverInfo :data="detail" :defaultClientData="detail.shipmentsLogistics" disabled ref="deliverInfo" v-else :hide="['saleTime']" />
+          <arrivalInfo :data="detail" :hide="['saleTime']" disabled />
+          <!-- <buyingDeliverInfo :data="detail" :defaultClientData="detail.shipmentsLogistics" disabled ref="deliverInfo" v-else :hide="['saleTime']" /> -->
           <buying-goods-edit
             :data="detail"
             :show="[

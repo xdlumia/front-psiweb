@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 16:43:37
+ * @LastEditTime: 2019-11-25 15:00:30
  * @Description: 销售合同
 */
 <template>
@@ -54,29 +54,15 @@ export default {
       currentCode: '',
       showOutlibDetail: false,
       currentOutlibCode: '',
+      // prettier-ignore
       filterOptions: [
         { label: '合同编号', prop: 'contractCode', default: true },
-        { label: '甲方', prop: 'partyA', default: true },
-        { label: '乙方', prop: 'partyB', default: true },
-        {
-          label: '合同开始时间',
-          prop: 'BeginDate',
-          type: 'dateRange',
-          default: true,
-          int: true
-        },
-        {
-          label: '合同结束时间',
-          prop: 'EndDate',
-          type: 'dateRange',
-          default: true
-        },
-        {
-          label: '合同创建人',
-          prop: 'creator',
-          type: 'employee',
-          default: true
-        },
+        { label: '销售出库单编号', prop: 'shipmentCode', default: true },
+        { label: '客户名称', prop: 'clientName', default: true },
+        { label: '数量', prop: 'TotalNum', type: 'numberRange', int: true, default: true },
+        { label: '销售总价', prop: 'TotalAmount', type: 'numberRange', default: true },
+        { label: '预计发货时间', prop: 'SalesTime', type: 'dateRange', default: true },
+        { label: '创建人', prop: 'creator', type: 'employee' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
       ]

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-24 22:37:23
+ * @LastEditTime: 2019-11-25 15:40:02
  * @Description: 拆卸单
 */
 <template>
@@ -52,15 +52,15 @@
         v-if="detail&&[0].includes(detail.disassemblyOrderState)"
       >删除</el-button>
     </template>
-    <el-tabs class="wfull hfull tabs-view">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
         <el-form :model="detail" v-if="showDetailPage">
           <goodsUnpack :data="detail" disabled id="goodsUnpack" />
           <extrasInfo :data="detail" :needUpload="false" disabled id="extrasInfo" />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="拆卸任务">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="拆卸任务" name="unpack">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.unpack">
           <StorageDisassemble :button="false" :params="{page:1,limit:15,disassemblyOrderCode:detail.disassemblyOrderCode}" />
         </FullscreenWrap>
       </el-tab-pane>
@@ -107,15 +107,15 @@ export default {
     status() {
       // prettier-ignore
       if (!this.detail) return [];
-            else {
-                return [
-                    { label: '状态', value: this.stateText[this.detail.disassemblyOrderState] },
-                    { label: '单据创建人', value: this.detail.creatorName },
-                    { label: '创建部门', value: this.detail.deptName },
-                    { label: '创建时间', value: this.detail.createTime, isTime: true },
-                    { label: '来源', value: this.detail.source }
-                ];
-            }
+      else {
+          return [
+              { label: '状态', value: this.stateText[this.detail.disassemblyOrderState] },
+              { label: '单据创建人', value: this.detail.creatorName },
+              { label: '创建部门', value: this.detail.deptName },
+              { label: '创建时间', value: this.detail.createTime, isTime: true },
+              { label: '来源', value: this.detail.source }
+          ];
+      }
     }
   },
   methods: {
