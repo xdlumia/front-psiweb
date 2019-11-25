@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-23 11:13:08
+ * @LastEditTime: 2019-11-25 10:24:25
  * @Description: 自定义信息 1
 */
 <template>
@@ -20,18 +20,11 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <!-- :prop="`fieldList.${scope.$index}.fieldCode`" -->
           <el-form-item
             class="mb0"
             :rules="{required:true}"
             :prop="`fieldList.${scope.$index}.fieldCode`"
           >
-
-            <!-- <el-input
-              size="mini"
-              :disabled="disabled"
-              v-model.trim="scope.row.fieldCode"
-            /> -->
             <el-select
               size="mini"
               :disabled="disabled"
@@ -98,6 +91,7 @@
 </template>
 <script>
 export default {
+  name: 'custom-info',
   props: {
     busType: [String, Number],
     data: {
@@ -120,7 +114,7 @@ export default {
     let formCode = this.busType || 27
     if (!this.busType) {
       this.$message({
-        message: '你当前页面调用的自定义信息组件没有传busType参数.不过没关系我帮你默认设置为27了',
+        message: '你当前页面调用的自定义信息组件没有传busType参数',
         type: 'error',
         showClose: true,
       });

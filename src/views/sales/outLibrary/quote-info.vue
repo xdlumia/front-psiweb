@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 17:58:17
+ * @LastEditTime: 2019-11-25 10:23:46
  * @Description: 报价单信息 编辑查看时使用
 */
 <template>
@@ -50,6 +50,7 @@
         <!-- 自定义信息 -->
         <customInfo
           :data="detail"
+          busType="16"
           disabled
         />
         <!-- 备注信息 -->
