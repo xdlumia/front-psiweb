@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-13 11:06:00
+ * @LastEditTime: 2019-11-25 10:08:23
  * @Description: 商品管理
  -->
 <template>
@@ -59,7 +59,8 @@
                 >复制新增</el-button>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="商品编号" min-width="160" show-overflow-tooltip>
+            <el-table-column align="center" label="商品编号" min-width="160"
+show-overflow-tooltip>
               <template slot-scope="scope">
                 <span
                   @click="showDetailDialog(scope.row)"
@@ -161,7 +162,8 @@
       </div>
     </div>
 
-    <el-dialog :visible.sync="visible" title v-dialogDrag :show-close="false" width="1000px">
+    <el-dialog :visible.sync="visible" title v-dialogDrag
+:show-close="false" width="1000px">
       <div slot="title" style="display:flex;">
         <h3 style="flex:1;text-align:center;">新增商品</h3>
         <div>
@@ -169,13 +171,13 @@
           <el-button size="mini" @click="visible=false">关闭</el-button>
         </div>
       </div>
-      <add-good @refresh="refresh" v-if="visible" ref="addGood" :code="copycode" :copy="copy"></add-good>
+      <add-good @refresh="refresh" v-if="visible" ref="addGood"
+:code="copycode" :copy="copy"></add-good>
     </el-dialog>
     <detail
       @refresh="showDetail=false,getGoodsList()"
       @reload="getGoodsList"
       v-if="showDetail"
-      :rowData="rowData"
       :code="code"
       :visible.sync="showDetail"
     ></detail>
