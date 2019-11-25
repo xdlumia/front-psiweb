@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 17:32:24
+ * @LastEditTime: 2019-11-25 17:41:22
  * @Description: 报价单详情
 */
 <template>
@@ -175,7 +175,7 @@ export default {
             needNote: null
           },
           '审核通过': {
-            api: 'seePsiSaleService.salesquotationApproval',
+            api: 'seePsiSaleService.salesquotationPassApproval',
             data: { ...params, ...{} },
             needNote: null
           },
