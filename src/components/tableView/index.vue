@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 17:16:38
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-25 17:37:42
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -275,6 +275,15 @@ export default {
     moreHandle(type) {
       // 导出操作
       if (type == "export") {
+        if (!this.exportApi) {
+          this.$message({
+            message: '当前页面的当初接口没有配!参数:exportApi',
+            type: 'error',
+            showClose: true,
+          });
+          return
+        }
+
         this.loading = true;
         let params = {}
         if (this.selectionRow.length) {
