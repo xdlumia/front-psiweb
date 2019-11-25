@@ -13,7 +13,7 @@
       :filter="true"
       :filterOptions='filterOptions'
       :params="params"
-      :selection='false'
+      selection
       exportApi="seePsiPurchaseService.purchaseExport"
       ref='allTable'
       api="seePsiPurchaseService.purchaseList"

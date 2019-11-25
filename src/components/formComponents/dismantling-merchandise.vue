@@ -67,7 +67,7 @@
           <span
             class="d-text-blue"
             @click="getTableVisible(scope.row)"
-          >{{scope.row.singleNum || 0}}</span>
+          >{{scope.row.accomplishDisassemblyNum || 0}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -121,7 +121,9 @@
       @close='disVisible = false'
     />
     <goods-unpack-record
+      :params='{businessCode:data.disassemblyTaskCode,commodityCode:recCommodity[0].commodityCode}'
       :commodityList="recCommodity"
+      :data='data'
       :visible.sync="showRec"
       v-if="showRec"
     />

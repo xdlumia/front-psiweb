@@ -12,7 +12,7 @@
       busType="20"
       :filterOptions='filterOptions'
       :params="params"
-      :selection='false'
+      selection
       ref='table'
       exportApi="seePsiSaleService.salessheetExport"
       api="seePsiSaleService.salessheetList"

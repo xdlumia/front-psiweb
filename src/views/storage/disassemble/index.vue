@@ -11,7 +11,7 @@
     <TableView
       busType="12"
       :filterOptions='filterOptions'
-      :selection='false'
+      selection
       ref='allTable'
       api="seePsiWmsService.wmsdisassemblytaskList"
       exportApi="seePsiWmsService.wmsdisassemblytaskExport"

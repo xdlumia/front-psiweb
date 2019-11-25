@@ -21,6 +21,7 @@
           size="mini"
         >
           <el-select
+            @change='changeRecord()'
             v-model="addform.wmsId"
             :disabled='disabled'
             placeholder="请选择"
@@ -149,7 +150,6 @@ export default {
       this.$api.seePsiWmsService.commonwmsmanagerUsableList()
         .then(res => {
           this.usableList = res.data || []
-          console.log(this.usableList, 'this.usableListthis.usableList')
         })
         .finally(() => {
 
@@ -160,6 +160,12 @@ export default {
       this.addform.creatorName = value.employeeName
       this.addform.blitemPerson = value.userId
     },
+    //库房改变
+    changeRecord() {
+      if (addform.wmsId) {
+        this.$root.$emit('loadSearch')
+      }
+    }
   }
 };
 </script>

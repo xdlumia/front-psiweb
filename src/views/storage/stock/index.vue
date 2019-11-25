@@ -13,7 +13,7 @@
       style="height:calc(100vh - 150px)"
       busType="48"
       :filterOptions='filterOptions'
-      :selection='false'
+      selection
       ref='allTable'
       api="seePsiWmsService.wmsinventoryList"
       exportApi="seePsiWmsService.commonwmsmanagerExport"

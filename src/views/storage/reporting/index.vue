@@ -14,7 +14,7 @@
       :filterOptions='filterOptions'
       :params="params"
       ref="allTable"
-      :selection='false'
+      selection
       exportApi="seePsiWmsService.wmsreportinglossesExport"
       api="seePsiWmsService.wmsreportinglossesList"
       title="报溢报损单"

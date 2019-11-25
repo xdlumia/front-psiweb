@@ -38,7 +38,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column min-width="40">
+      <!-- <el-table-column min-width="40">
         <template slot-scope="scope">
           <div
             class="expanded-icons d-text-gray"
@@ -56,7 +56,7 @@
             ></span>
           </div>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         label="商品编号"
         min-width="150"
@@ -75,7 +75,6 @@
             type="code"
             :params={isConfig:1}
             v-model="scope.row.commodityCode"
-            :codes='codes'
           />
         </template>
       </el-table-column>
@@ -93,7 +92,6 @@
             :params={isConfig:1}
             @choose='commodityChoose(arguments,scope)'
             v-model="scope.row.goodsName"
-            :codes='codes'
           />
         </template>
       </el-table-column>
@@ -218,17 +216,21 @@ export default {
     commodityChoose(e, scope) {
       let list = e[0]
       let type = e[1]
+      this.codes = []
+
       // this.infoForm = list
       this.tableData.forEach((item) => {
         if (item.commodityCode) {
           this.codes.push(item.commodityCode)
         }
       })
-      list.forEach((item) => {
+      list.forEach((item, index) => {
         if (!this.codes.includes(item.commodityCode) && scope.row.commodityCode && type == 'select') {//区分非选择状态下的选择商品信息
           this.$set(this.tableData, scope.$index, item)
         } else if (!this.codes.includes(item.commodityCode)) {
           this.tableData.unshift(item)
+        } else if (this.codes.includes(item.commodityCode)) {
+          this.tableData.splice(scope.$index, 1)
         }
       })
       this.codes = []

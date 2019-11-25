@@ -11,7 +11,7 @@
     <TableView
       busType="9"
       :filterOptions='filterOptions'
-      :selection='false'
+      selection
       ref='allTable'
       :params="params"
       exportApi="seePsiWmsService.wmsassembleorderExport"
@@ -42,7 +42,7 @@
             class="ml15"
             size="mini"
             type="primary"
-            @click="roof(column)"
+            @click="roof(row)"
           >置顶</el-button>
         </span>
         <span v-else-if="column.columnFields=='assembleOrderState'">{{value == 0 ? '未开始' : value == 1 ? '待执行' : value == 2 ? '部分完成' : value == 3 ? '已完成' : '终止'}}</span>
@@ -184,8 +184,25 @@ export default {
       this.$refs.allTable.reload()
     },
     //置顶
-    roof(column) {
-      console.log(column, 'roof(column)roof(column)roof(column)')
+    roof(row) {
+      this.$confirm('确认置顶当前组装单吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api.seePsiWmsService.wmsassembleorderTopSquence(null, row.id)
+          .then(res => {
+            this.reload()
+          })
+          .finally(() => {
+
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      })
     },
     //拖拽
     async onDrag(list) {

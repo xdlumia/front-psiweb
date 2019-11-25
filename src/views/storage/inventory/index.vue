@@ -12,7 +12,7 @@
       busType="0"
       :filterOptions='filterOptions'
       :params="params"
-      :selection='false'
+      selection
       ref='allTable'
       api="seePsiWmsService.wmsblitemList"
       exportApi="seePsiWmsService.wmsblitemExport"

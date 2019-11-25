@@ -10,7 +10,7 @@
     <TableView
       busType="10"
       :filterOptions='filterOptions'
-      :selection='false'
+      selection
       ref='allTable'
       api="seePsiWmsService.wmsassembletaskList"
       exportApi="seePsiWmsService.wmsassembletaskExport"
@@ -28,7 +28,7 @@
           class="d-text-blue d-pointer"
           @click="getassembleVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='assembleOrderState'">{{state[value]}}</span>
+        <span v-else-if="column.columnFields=='assembleTaskState'">{{state[value]}}</span>
         <span v-else-if="column.columnFields=='pickingState'">{{pickingState[value]}}</span>
         <span v-else>{{value}}</span>
       </template>

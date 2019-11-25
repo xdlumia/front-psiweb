@@ -11,7 +11,7 @@
     <TableView
       busType="2"
       :filterOptions='filterOptions'
-      :selection='false'
+      selection
       ref='allTable'
       :params='params'
       api="seePsiWmsService.wmsswaptaskList"

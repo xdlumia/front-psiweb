@@ -13,7 +13,7 @@
       busType="8"
       :filterOptions='filterOptions'
       :params="params"
-      :selection='false'
+      selection
       exportApi="seePsiWmsService.wmspickingorderExport"
       api="seePsiWmsService.wmspickingorderList"
       title="拣货单"

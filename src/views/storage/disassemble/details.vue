@@ -11,7 +11,7 @@
     :status="status"
     :visible.sync="visible"
     @close="close"
-    title="拆卸任务"
+    :title="`拆卸任务-${detailForm.disassemblyTaskCode}`"
     width="990px"
   >
     <div>

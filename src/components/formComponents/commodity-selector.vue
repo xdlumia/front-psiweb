@@ -55,6 +55,7 @@
       v-if="!disabled"
     ></i>
     <commodity-choose
+      ref="commodityChoose"
       :kinds="kinds"
       :multiple="multiple"
       :params="wmsId?{wmsId}:params"
@@ -109,6 +110,11 @@ export default {
       this.selectGood = this.value;
     } else {
       this.search();
+      this.$root.$on('loadSearch', () => {
+        this.searchTable = []
+        this.search();
+        this.$refs.commodityChoose.reload();
+      })
     }
   },
   watch: {
@@ -137,6 +143,7 @@ export default {
       }
     },
     async search(words = '') {
+      console.log('43523234')
       words = String(words).trim();
       if (this.searchTable[words]) {
         return (this.options = this.searchTable[words]);

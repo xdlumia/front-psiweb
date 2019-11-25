@@ -117,7 +117,11 @@
         label="商品类别"
         min-width="110"
         prop="categoryCode"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         label="商品分类"
         min-width="110"
@@ -137,7 +141,11 @@
         label="单位"
         min-width="120"
         prop="unit"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <span>{{scope.row.unit|dictionary('PSI_SP_KIND')}}</span>
+        </template>
+      </el-table-column>
     </el-table>
     <commodityChoose
       @update=update

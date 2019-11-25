@@ -15,7 +15,7 @@
       :filterOptions='filterOptions'
       :params="params"
       ref='table'
-      :selection='false'
+      selection
       api="seePsiWmsService.wmsborrowloantaskList"
       exportApi="seePsiWmsService.wmsborrowloantaskExport"
       title="借入借出任务"
