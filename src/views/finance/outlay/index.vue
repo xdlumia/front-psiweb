@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 17:08:39
+ * @LastEditTime: 2019-11-25 15:10:44
  * @Description: 销售-支出流水
  */
 <template>
@@ -17,7 +17,6 @@
       api="seePsiFinanceService.payrecordList"
       exportApi="seePsiSaleService.payrecordExport"
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
     >
       <template slot="button">
         <el-button

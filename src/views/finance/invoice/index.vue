@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 09:05:08
- * @Description: 销售-销售退货单
+ * @LastEditTime: 2019-11-25 15:10:36
+ * @Description: 发票库
  */
 <template>
   <div>
@@ -31,8 +31,14 @@
             <span style="line-height:28px;">发票账户：</span>
           </el-col>
           <el-col :span="18">
-            <el-select size="mini" v-model="queryForm.companyId">
-              <el-option value label="全部"></el-option>
+            <el-select
+              size="mini"
+              v-model="queryForm.companyId"
+            >
+              <el-option
+                value
+                label="全部"
+              ></el-option>
               <el-option
                 v-for="(item, index) in accountList"
                 :key="index"
@@ -51,8 +57,15 @@
           fit="scale-down"
           :preview-src-list="[row.goodsPic]"
         >
-          <div slot="error" class="image-slot">
-            <el-image :src="noPic" style="width: 40px;height:40px;" fit="fit"></el-image>
+          <div
+            slot="error"
+            class="image-slot"
+          >
+            <el-image
+              :src="noPic"
+              style="width: 40px;height:40px;"
+              fit="fit"
+            ></el-image>
           </div>
         </el-image>
         <el-button
@@ -62,9 +75,7 @@
           style="padding:0"
         >{{row.busCode}}</el-button>
         <span v-else-if="column.columnFields=='state'">{{stateText[row.state]}}</span>
-        <span
-          v-else-if="column.columnFields=='invoiceTyepCode'"
-        >{{row.invoiceTyepCode | dictionary('CW_FP_LX')}}</span>
+        <span v-else-if="column.columnFields=='invoiceTyepCode'">{{row.invoiceTyepCode | dictionary('CW_FP_LX')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
@@ -75,11 +86,11 @@
 import invoiceMixin from '../invoice-mixins'
 
 const filterOptions = [
-  { label: '商品类别', prop: 'categoryCode', default: true, type: 'dict',
-    dictName: 'PSI_SP_KIND' },
+  {    label: '商品类别', prop: 'categoryCode', default: true, type: 'dict',
+    dictName: 'PSI_SP_KIND'  },
   { label: '商品名称', prop: 'goodsName', default: true },
-  { label: '单位', prop: 'unit', default: true, type: 'dict',
-    dictName: 'SC_JLDW' },
+  {    label: '单位', prop: 'unit', default: true, type: 'dict',
+    dictName: 'SC_JLDW'  },
   { label: '规格', prop: 'specOne', default: true },
   { label: '可开票数量', prop: 'EnableNumber', default: true, type: 'numberrange' },
   { label: '实际数量', prop: 'ActualNumber', default: true, type: 'numberrange' }

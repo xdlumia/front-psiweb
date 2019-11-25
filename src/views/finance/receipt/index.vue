@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 16:58:06
+ * @LastEditTime: 2019-11-25 15:10:55
  * @Description: 销售-待收票
  */
 <template>
@@ -17,7 +17,6 @@
       api="seePsiFinanceService.finvoicereceivableList"
       exportApi="seePsiSaleService.finvoicereceivableExport"
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
     >
       <template slot="top-filter">
         <el-row

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 17:55:45
+ * @LastEditTime: 2019-11-25 14:57:02
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -17,7 +17,6 @@
       api="seePsiSaleService.salesshipmentList"
       exprotApi="seePsiSaleService.salesshipmentExport"
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
     >
       <template slot-scope="{column,row,value}">
         <!-- 销售出库单编号 -->
@@ -47,13 +46,13 @@
 </template>
 <script>
 import outLibDetails from './outLib-details' //销售出库单详
-let filterOptions = [
-  { label: '商户编号、商户名称/简称', prop: 'text', type: 'text', default: true, },
-  { label: '联系人、联系人电话', prop: 'text1', type: 'text', default: true, },
-  { label: '商机阶段', prop: 'pushTime', type: 'select', default: true, dicName: 'PSI_SP_KIND' },
-  { label: '跟进时间起止', prop: 'status', type: 'daterange', default: true, },
-  { label: '维护人', prop: 'creator', type: 'employee', default: true, },
-]
+// let filterOptions = [
+//   { label: '商户编号、商户名称/简称', prop: 'text', type: 'text', default: true, },
+//   { label: '联系人、联系人电话', prop: 'text1', type: 'text', default: true, },
+//   { label: '商机阶段', prop: 'pushTime', type: 'select', default: true, dicName: 'PSI_SP_KIND' },
+//   { label: '跟进时间起止', prop: 'status', type: 'daterange', default: true, },
+//   { label: '维护人', prop: 'creator', type: 'employee', default: true, },
+// ]
 export default {
   name: 'outLibrary',
   components: { outLibDetails },
@@ -81,7 +80,7 @@ export default {
         creator: '',//创建人
       },
       // 筛选列表
-      filterOptions: filterOptions,
+      // filterOptions: filterOptions,
       // 当前行数据
       rowData: {},
       detailVisible: false, // 出库单详情

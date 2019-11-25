@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-23 17:26:49
+ * @LastEditTime: 2019-11-25 15:09:18
  * @Description: 销售-销售退货单
  */
 <template>
@@ -17,7 +17,6 @@
       api="seePsiSaleService.salesreturnedList"
       exportApi="seePsiSaleService.salesreturnedExport"
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
     >
 
       <template slot-scope="{column,row,value}">

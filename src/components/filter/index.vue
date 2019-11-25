@@ -1,18 +1,33 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-01 10:31:09
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-24 22:04:32
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-25 14:52:32
  * @Description: 通用过滤组件
 */
 <template>
   <div class="table-filter-box">
-    <div class="bb mb10" style="height:25px;">
-      <span class="b" style="margin-left:112px">筛选</span>
+    <div
+      class="bb mb10"
+      style="height:25px;"
+    >
+      <span
+        class="b"
+        style="margin-left:112px"
+      >筛选</span>
     </div>
-    <div class="d-auto-y" style="max-height:400px; overflow-x:hidden">
+    <div
+      class="d-auto-y"
+      style="max-height:400px; overflow-x:hidden"
+    >
       <!-- 过滤绘制区域 -->
-      <el-form :model="form" class="filter-form" label-position="top" ref="filterForm" size="mini">
+      <el-form
+        :model="form"
+        class="filter-form"
+        label-position="top"
+        ref="filterForm"
+        size="mini"
+      >
         <component
           :form="form"
           :is="getCmp(item)"
@@ -27,19 +42,44 @@
     </div>
     <div style="height:30px; line-height:30px;">
       <!-- 添加筛选 -->
-      <el-popover placement="bottom" ref="morePopover" trigger="click" width="200">
-        <el-link :underline="false" @click="$refs.morePopover.doClose()" class="el-icon-close close fr" title="关闭"></el-link>
+      <el-popover
+        placement="bottom"
+        ref="morePopover"
+        trigger="click"
+        width="200"
+      >
+        <el-link
+          :underline="false"
+          @click="$refs.morePopover.doClose()"
+          class="el-icon-close close fr"
+          title="关闭"
+        ></el-link>
         <div>
-          <div :key="item.prop" v-for="item of options">
+          <div
+            :key="item.prop"
+            v-for="item of options"
+          >
             <el-checkbox v-model="usedFilter[item.prop]">
               <span class="checkbox-label">{{item.label}}</span>
             </el-checkbox>
           </div>
         </div>
-        <el-link :underline="false" class="el-icon-circle-plus-outline" size="mini" slot="reference" type="primary">添加筛选</el-link>
+        <el-link
+          :underline="false"
+          class="el-icon-circle-plus-outline"
+          size="mini"
+          slot="reference"
+          type="primary"
+        >添加筛选</el-link>
       </el-popover>
 
-      <el-link :underline="false" @click="clearFilter" class="fr" size="mini" type="primary">清空筛选</el-link>
+      <el-link
+        :underline="false"
+        @click="clearFilter"
+        class="fr"
+        size="mini"
+        type="primary"
+      >清空筛选</el-link>
     </div>
   </div>
 </template>
@@ -95,11 +135,11 @@ export default {
       addMoreFilter: false,
       usedFilter: {},
       inited: false,
-      defaultParams:{}
+      defaultParams: {}
     };
   },
   mounted() {
-    this.defaultParams=JSON.parse(JSON.stringify(this.form))||{}
+    this.defaultParams = JSON.parse(JSON.stringify(this.form)) || {}
     this.init();
   },
   computed: {
@@ -109,30 +149,30 @@ export default {
         let choose = this.usedFilter[item.prop];
         if (!choose) {
           if (item.type && item.type.match(/range$/i)) {
-            this.$set(this.form, 'min' + item.prop, this.defaultParams['min' + item.prop]||'');
-            this.$set(this.form, 'max' + item.prop, this.defaultParams['max' + item.prop]||'');
+            this.$set(this.form, 'min' + this.firstToUpperCase(item.prop), this.defaultParams['min' + item.prop] || '');
+            this.$set(this.form, 'max' + this.firstToUpperCase(item.prop), this.defaultParams['max' + item.prop] || '');
           } else {
-            this.$set(this.form, item.prop, this.defaultParams[item.prop]||'');
+            this.$set(this.form, item.prop, this.defaultParams[item.prop] || '');
           }
         } else {
           if (item.type && item.type.match(/range$/i)) {
             this.$set(
               this.form,
-              'min' + item.prop,
-              this.form['min' + item.prop] || ''
+              'min' + this.firstToUpperCase(item.prop),
+              this.form['min' + this.firstToUpperCase(item.prop)] || ''
             );
             this.$set(
               this.form,
-              'max' + item.prop,
-              this.form['max' + item.prop] || ''
+              'max' + this.firstToUpperCase(item.prop),
+              this.form['max' + this.firstToUpperCase(item.prop)] || ''
             );
           } else {
             this.$set(
               this.form,
-              item.prop,
-              typeof this.form[item.prop] == 'undefined'
+              this.firstToUpperCase(item.prop),
+              typeof this.form[this.firstToUpperCase(item.prop)] == 'undefined'
                 ? ''
-                : this.form[item.prop]
+                : this.form[this.firstToUpperCase(item.prop)]
             );
           }
         }
@@ -148,6 +188,11 @@ export default {
       });
       this.usedFilter = used;
       this.inited = true;
+    },
+    // 首字母转大写
+    firstToUpperCase(str) {
+      str = str || ''
+      return str.charAt(0).toUpperCase() + str.slice(1)
     },
     clearFilter() {
       this.$refs.filterForm.resetFields();

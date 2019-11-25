@@ -18,7 +18,6 @@
       api="seePsiSaleService.salescostapportionList"
       exportApi="seePsiSaleService.salescostapportioExport"
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
     >
       <template v-slot:button>
         <el-button
