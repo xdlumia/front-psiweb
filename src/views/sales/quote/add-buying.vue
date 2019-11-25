@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 15:08:41
+ * @LastEditTime: 2019-11-25 10:17:06
  * @Description: 请购单
 */
 <template>
@@ -80,6 +80,7 @@
           <customInfo
             :data="form"
             id="customInfo"
+            busType="27"
           ></customInfo>
           <extrasInfo
             :data="form"
