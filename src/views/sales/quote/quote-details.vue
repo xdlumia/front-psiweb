@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-23 16:30:27
+ * @LastEditTime: 2019-11-25 17:28:30
  * @Description: 报价单详情
 */
 <template>
@@ -171,6 +171,11 @@ export default {
         let apiObj = {
           '提交审核': {
             api: 'seePsiSaleService.salesquotationSubmitApproval',
+            data: { ...params, ...{} },
+            needNote: null
+          },
+          '审核通过': {
+            api: 'seePsiSaleService.salesquotationApproval',
             data: { ...params, ...{} },
             needNote: null
           },
