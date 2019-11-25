@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-22 17:46:49
+ * @LastEditTime: 2019-11-25 11:00:42
  * @Description: description
  -->
 <template>
@@ -15,8 +15,12 @@
     v-loading="loading"
   >
     <template slot="button">
-      <el-button size="mini" v-if="buttonState == -1" type="primary"
-@click="showEdit = true">编辑</el-button>
+      <el-button
+        size="mini"
+        v-if="buttonState == -1"
+        type="primary"
+        @click="collectInvoiceVisible = true"
+      >编辑</el-button>
       <el-button
         size="mini"
         v-if="buttonState == -1"
@@ -60,12 +64,19 @@
       <el-tab-pane label="详情">
         <el-form disabled size="mini">
           <approve-panel :data="detailForm"></approve-panel>
+          <!-- 开票申请 -->
+          <make-invoice-info :invoiceType="1" :data="detailForm" id="invoice" />
+          <make-buyer :data="detailForm" id="buyer" />
+          <make-buyer :data="detailForm" from="客户" id="saler"
+prefix="purchase" title="销售方信息" />
+          <make-goods :data="detailForm" id="goods" />
+          <make-goods-card :data="detailForm" />
           <extras-info :data="detailForm" id="extrasInfo" />
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="应收账单">应收账单</el-tab-pane>
-      <el-tab-pane label="应付账单">应付账单</el-tab-pane>
-      <el-tab-pane label="费用分摊单">费用分摊单</el-tab-pane>
+      <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
+      <el-tab-pane label="费用单">费用单</el-tab-pane>
     </el-tabs>
     <!-- <add
       :visible.sync="showEdit"
@@ -81,11 +92,19 @@
       @refresh="refresh"
       :detailForm="detailForm"
     ></billing>
+    <!-- 开票申请 -->
+    <collectInvoice
+      :visible.sync="collectInvoiceVisible"
+      :rowData="rowData"
+      :invoiceType="1"
+      :id="rowData.id"
+    />
   </sideDetail>
 </template>
 
 <script>
 import billing from './billing'
+import collectInvoice from '@/views/finance/receipt/collect-invoice'
 const stateText = {
   '-1': '新建',
   '0': '审核中',
@@ -98,7 +117,8 @@ const stateText = {
 
 export default {
   components: {
-    billing
+    billing,
+    collectInvoice
   },
   props: {
     visible: Boolean,
@@ -115,6 +135,7 @@ export default {
   },
   data() {
     return {
+      collectInvoiceVisible: false,
       showBilling: false,
       showEdit: false,
       loading: false,
