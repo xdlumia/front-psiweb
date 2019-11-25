@@ -11,7 +11,7 @@
     :status="status"
     :visible.sync="visible"
     @close="close"
-    title="组装任务"
+    :title="`组装任务-${detailForm.assembleTaskCode}`"
     width="990px"
   >
     <div>
@@ -90,7 +90,7 @@ export default {
   props: ['data', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '组装状态', value: '待组装' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '组装状态', value: '待组装' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       transferVisible: false,//转移
       hangVisible: false,//挂起
       goodsVisible: false,//组装

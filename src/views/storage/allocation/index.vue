@@ -11,7 +11,7 @@
     <TableView
       busType="6"
       :filterOptions='filterOptions'
-      :selection='false'
+      selection
       ref='allTable'
       exportApi="seePsiWmsService.wmsallocationorderExport"
       api="seePsiWmsService.wmsallocationorderList"

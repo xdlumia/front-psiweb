@@ -25,7 +25,7 @@
           type="primary"
           size='mini'
           :visible='addVisible'
-          @click='addVisible = false'
+          @click='fStop'
         >终止</el-button>
       </div>
       <el-tabs class="wfull hfull tabs-view">
@@ -78,7 +78,7 @@ export default {
   props: ['data', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '组装状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '组装状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       taskVisible: false,
       addVisible: false,
       state: {
@@ -119,6 +119,27 @@ export default {
     },
     reload() {
       this.$emit('reload')
+    },
+    fStop() {
+      this.$confirm('确认终止当前组装单吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api.seePsiWmsService.wmsassembleorderTermination(null, this.detailForm.id)
+          .then(res => {
+            this.reload()
+            this.wmsassembleorderInfo()
+          })
+          .finally(() => {
+
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      })
     }
   }
 }

@@ -11,7 +11,7 @@
     :status="status"
     :visible.sync="visible"
     @close="close"
-    :title="'借入借出任务-'+detailForm.borrowLoanCode"
+    :title="'借入借出任务-'+code"
     width="990px"
   >
     <div>
@@ -19,12 +19,14 @@
 
         <!-- v-if="drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 6 || drawerData.borrowLoanState == 9" -->
         <el-button
+          v-if="drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 6 || drawerData.borrowLoanState == 9"
           @click="backVisible=true,isComponents = 'borrowPayback',dialogData.title='借入归还-UYGVUOUY'"
           size="mini"
           type="primary"
         >归还</el-button>
         <!-- v-if="drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 7 || drawerData.borrowLoanState == 8" -->
         <el-button
+          v-if="drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 7 || drawerData.borrowLoanState == 8"
           @click="backVisible=true,isComponents = 'lendBack',dialogData.title='借出返还-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
@@ -32,6 +34,7 @@
 
         <!-- v-if="drawerData.borrowLoanState == 2 || drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 9" -->
         <el-button
+          v-if="drawerData.borrowLoanState == 2 || drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 9"
           @click="backVisible=true,isComponents = 'borrowScanCode',dialogData.title='借入扫码-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
@@ -39,6 +42,7 @@
 
         <!-- v-if="drawerData.borrowLoanState == 3 || drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 10" -->
         <el-button
+          v-if="drawerData.borrowLoanState == 3 || drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 10"
           @click="backVisible=true,isComponents = 'lendScanCode',dialogData.title='借出扫码-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"

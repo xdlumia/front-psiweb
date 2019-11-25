@@ -10,7 +10,7 @@
     <TableView
       busType="10"
       :filterOptions='filterOptions'
-      :selection='false'
+      selection
       ref='allTable'
       api="seePsiWmsService.wmsassembletaskList"
       exportApi="seePsiWmsService.wmsassembletaskExport"
