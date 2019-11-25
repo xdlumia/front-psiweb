@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 15:40:02
+ * @LastEditTime: 2019-11-25 16:25:55
  * @Description: 拆卸单
 */
 <template>
@@ -68,7 +68,7 @@
     <Task
       :rowData="{
         disassemblyOrderCode:detail.disassemblyOrderCode,
-        commodityList:detail.commodityList
+        commodityList:detail.commodityList.filter(item=>((item.disassemblyNum || 0) - (item.accomplishDisassemblyNum || 0))>0)
       }"
       :visible.sync="showTask"
       @reload="setEdit(),getDetail()"

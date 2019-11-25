@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 14:50:39
+ * @LastEditTime: 2019-11-25 16:27:32
  * @Description: 采购单详情
 */
 <template>
@@ -18,7 +18,7 @@
       <el-button @click="orderStorageVisible=true" size="mini" type="primary" v-if="waitBuyingNumber>0">采购</el-button>
       <el-button @click="addBorrowInVisible=true" size="mini" type="primary" v-if="waitBuyingNumber>0">借入</el-button>
     </template>
-    <el-tabs class="wfull hfull tabs-view">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
         <el-form label-position="top" size="mini" v-if="detail">
           <form-card title="到货信息">
@@ -46,13 +46,13 @@
           <extrasInfo :data="detail" disabled />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="采购入库单">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="采购入库单" name="putin">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.putin">
           <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:code}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane label="报价单">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="报价单" name="quote">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.quote">
           <salesQuote :button="false" :params="{page:1,limit:15,quotationCode:detail.quotationCode}" />
         </FullscreenWrap>
       </el-tab-pane>

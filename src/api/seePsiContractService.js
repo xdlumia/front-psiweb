@@ -3,7 +3,7 @@
 const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = false;
 /**
-* @date 2019-11-20
+* @date 2019-11-25
 * @host 39.99.132.95:9218
 */
 export default {

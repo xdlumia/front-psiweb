@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-24 21:22:42
+ * @LastEditTime: 2019-11-25 16:26:46
  * @Description: 直发单详情
 */
 <template>
@@ -11,7 +11,7 @@
       <el-button @click="showDeliverGoods=true" size="mini" type="primary" v-if="detail&&[0,1].includes(detail.state)">发货</el-button>
       <el-button @click="showAddOrderStorage=true" size="mini" type="primary" v-if="detail&&[0,1].includes(detail.state)">采购</el-button>
     </template>
-    <el-tabs class="wfull hfull tabs-view">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
         <el-form size="mini" v-if="detail">
           <approvePanel></approvePanel>
@@ -34,8 +34,8 @@
           <extrasInfo :data="detail" disabled></extrasInfo>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="采购入库单">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="采购入库单" name="putin">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.putin">
           <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:code}" />
         </FullscreenWrap>
       </el-tab-pane>

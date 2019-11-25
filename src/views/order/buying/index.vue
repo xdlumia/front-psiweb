@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 16:26:35
+ * @LastEditTime: 2019-11-25 16:37:19
  * @Description: 采购-请购单
 */
 <template>
@@ -30,7 +30,13 @@
       </template>
     </TableView>
     <OrderBuyingDetail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
-    <QuoteDetails :code="currentQuotationCode" :visible.sync="showQuotationDetail" @reload="reload" v-if="showQuotationDetail" :rowData="{}" />
+    <QuoteDetails
+      :code="currentQuotationCode"
+      :rowData="{}"
+      :visible.sync="showQuotationDetail"
+      @reload="reload"
+      v-if="showQuotationDetail"
+    />
     <OrderBuyingDetailRec :visible.sync="orderBuyingDetailRecVisible" @reload="reload" v-if="orderBuyingDetailRecVisible" />
   </div>
 </template>
@@ -82,26 +88,13 @@ export default {
         2: '完成',
         3: '终止'
       },
+      // prettier-ignore
       filterOptions: [
-        {
-          label: '请购单编号',
-          prop: 'purchaseApplyCode',
-          default: true
-        },
+        { label: '请购单编号', prop: 'purchaseApplyCode', default: true },
         { label: '报价单编号', prop: 'quotationCode', default: true },
-        {
-          label: '销售要求到货时间',
-          prop: 'SaleArrivalTime',
-          type: 'dateRange',
-          default: true
-        },
-        {
-          label: '采购预计到货时间',
-          prop: 'PurchaseArrivalTime',
-          type: 'dateRange',
-          default: true
-        },
-        // { label: '单据执行人', prop: 'personInChargeId', type: 'employee' },
+        { label: '销售要求到货时间', prop: 'SaleArrivalTime', type: 'dateRange', default: true },
+        { label: '采购预计到货时间', prop: 'PurchaseArrivalTime', type: 'dateRange', default: true },
+        { label: '单据执行人', prop: 'personInChargeId', type: 'employee' },
         { label: '创建人', prop: 'creator', type: 'employee' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }

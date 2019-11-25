@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 18:24:14
+ * @LastEditTime: 2019-11-25 16:24:53
  * @Description: 拆卸任务单
 */
 <template>
@@ -14,7 +14,9 @@
     <el-form :model="form" class="p10" ref="form" v-if="form&&visible">
       <buying-goods-edit
         :customColumns="[
-           { label:'待分配', fixed:true, key:'waitTearNumber', width:100, prop:'teardownNumber',format:(a,row)=>`0/${row.teardownNumber||0}` },
+           { label:'待分配', fixed:true, key:'waitTearNumber', width:100, prop:'teardownNumber',
+             format:(a,row,info)=>info.isChild?'':`${row.maxdisassemblyNum}`
+           },
            { label:'本次分配数量', fixed:true, key:'disassemblyNum', width:100, prop:'disassemblyNum',slot:'disassemblyNum' },
         ]"
         :data="form"
@@ -66,6 +68,8 @@ export default {
     checkDisassemblyNum(row, rule, value, cb) {
       if (!(parseInt(value) || 0 > 1)) {
         cb(new Error('数量最低为1'));
+      } else if (row.maxdisassemblyNum < parseInt(value)) {
+        cb(new Error('数量不能高于未分配数量'));
       } else cb();
     },
     getCommodityInfo({
@@ -96,17 +100,20 @@ export default {
           null,
           this.code
         );
-        data.commodityList = [
-          {
-            id: 1,
-            commodityCode: '000',
-            children: [{ id: 2 }]
-          }
-        ];
         return data;
       } else if (this.rowData) {
         return this.rowData;
       }
+    },
+    afterDetailInit() {
+      this.form.commodityList.map(item => {
+        this.$set(
+          item,
+          'maxdisassemblyNum',
+          (item.disassemblyNum || 0) - (item.accomplishDisassemblyNum || 0)
+        );
+      });
+      console.log(this.form);
     },
     async save() {
       console.log(this.form);
