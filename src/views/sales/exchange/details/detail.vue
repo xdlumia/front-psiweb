@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 19:27:32
+ * @LastEditTime: 2019-11-25 18:07:38
  * @Description: 销售换货单详情-详情
 */
 <template>
@@ -20,17 +20,17 @@
       :data="data"
     />
     <!-- 换入商品信息 -->
-    <goods-return
+    <goods-exchange-info
       title="换入商品信息"
       disabled
-      :params="{busType:17,putawayType:0}"
+      :params="{busType:1,putawayType:0}"
     />
     <!-- 换出商品信息 -->
     <!-- <commodity-info-edit /> -->
-    <goods-return
+    <goods-return-edit
       title="换出商品信息"
       disabled
-      :params="{busType:17,putawayType:1}"
+      :params="{busType:1,putawayType:1}"
     />
     <!-- 其他费用 -->
     <other-fee

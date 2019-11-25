@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 17:57:29
+ * @LastEditTime: 2019-11-25 18:16:49
  * @Description: 退货扫码
 */
 
@@ -31,13 +31,17 @@
     </div>
 
     <el-form
+      v-if="visible"
       :model="form"
       ref="form"
     >
       <!-- 库房列表 -->
       <warehouse-list :data="form" />
       <!-- 退入库商品 -->
-      <goods-in-warehousing :data="form" />
+      <goods-in-warehousing
+        :params="{ busCode: rowData.quotationCode, busType: 1, putawayType: 0 }"
+        :data="form"
+      />
       <!-- 扫描记录 -->
       <sacn-record />
     </el-form>
