@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 19:42:03
+ * @LastEditTime: 2019-11-25 19:42:46
  * @Description: 附加发票 字段对应 但是公式还没计算
 */
 <template>
@@ -70,7 +70,7 @@ export default {
   },
   data() {
     return {
-      // 遍历表单
+      // 税率验证
       taxRate: (rule, value, callback) => {
         var reg = /^(?:[1-9]?\d|100)$/
         if (!reg.test(value)) {
