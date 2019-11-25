@@ -2,8 +2,8 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 16:13:22
- * @Description: 请购单
+ * @LastEditTime: 2019-11-25 18:38:30
+ * @Description: 生成请购单
 */
 <template>
   <el-dialog
@@ -13,7 +13,7 @@
     v-loading="loading"
   >
     <div slot="title">
-      <span>新增请购单</span>
+      <span>生成请购单</span>
       <span class="fr mr20">
         <el-button
           @click="save"
@@ -103,16 +103,19 @@ export default {
   data() {
     return {
       form: {
-        attachList: [], //
-        fieldList: [],
-        note: '',// "备注信息",
-        personInChargeId: '', //单据执行人id
-        purchaseApplyCode: '', //请购单编号",
-        purchaseArrivalTime: '', //采购预计到货时间
-        purchaseBorrow: '', //采购借入（0,采购 1.借入
-        quotationCode: '',  //"示例：报价单",
-        saleArrivalTime: '', // 销售要求到货时间
-        source: '',  //来源"
+        attachList: [],
+        commodityList: [],
+        fieldList: '',// [],
+        isDelete: '',// 9,
+        note: '',// "示例：备注信息",
+        personInChargeId: '',// 100000,
+        purchaseApplyCode: '',// "示例：请购单编号",
+        purchaseArrivalTime: '',// 1572346044931,
+        purchaseBorrow: '',// 0,
+        quotationCode: '',// "示例：报价单",
+        saleArrivalTime: '',// 1572346044931,
+        source: '',// "示例：来源",
+        state: '',// 9
       }
     };
   },

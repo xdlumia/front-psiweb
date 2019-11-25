@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 14:59:40
+ * @LastEditTime: 2019-11-25 18:37:59
  * @Description: 生成请购单商品信息
 */
 <template>
@@ -13,7 +13,7 @@
         :summary-method="getSummaries"
         size="mini"
         border
-        :data="tableData || []"
+        :data="data.commodityList || []"
         ref="table"
       >
         <el-table-column
@@ -138,7 +138,6 @@ export default {
   },
   data() {
     return {
-      tableData: [],
       // queryFrom: {
       //   busType: 1, // 1报价单 2请购单]
       //   putawayType: 1,
@@ -156,18 +155,8 @@ export default {
     businesscommodityGetBusinessCommodityList() {
       this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.params)
         .then(res => {
-          this.tableData = res.data || []
+          this.data.commodityList = res.data || []
         })
-    },
-    sumTaxPrice(row, index) {
-      let taxRate = (row.taxRate || 100) / 100  ///税率
-      let refundNumber = row.refundNumber || 1 //退货数量
-      let salesPrice = row.salesPrice || 1 //销售单价
-      // 税后销售单价  公式:销售单价 * (1-税率)
-      row.taxPrice = salesPrice * (1 - taxRate)
-      // 销售税后总价  公式:税后销售单价 * 销售数量
-      row.taxTotalAmount = (refundNumber * row.taxPrice).toFixed(2)
-
     },
     // 自定义账单金额数据
     getSummaries(param) {
@@ -184,8 +173,6 @@ export default {
           }, 0)
         }
       });
-      //获取税后总价
-      this.data.shouldRefundAmount = sums[13]
       return sums
     },
   },
