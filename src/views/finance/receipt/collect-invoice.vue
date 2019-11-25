@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 18:53:43
+ * @LastEditTime: 2019-11-25 10:52:53
  * @Description: 收票申请
 */
 <template>
@@ -95,7 +95,7 @@ import VisibleMixin from '@/utils/visibleMixin';
 
 export default {
   // 票据类型(0收票，1开票)
-  props: ['invoiceType'],
+  props: ['invoiceType', 'id'],
   mixins: [VisibleMixin],
   components: {},
   data() {
@@ -127,7 +127,7 @@ export default {
           data
         } = this.$api.seePsiPurchaseService.purchasestockorderGetByCode(
           null,
-          this.code
+          this.id
         );
         return data;
       } else if (this.rowData) return this.rowData;
