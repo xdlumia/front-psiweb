@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 15:10:22
+ * @LastEditTime: 2019-11-25 15:35:22
  * @Description: 销售-收入流水
  */
 <template>
@@ -43,6 +43,8 @@
         > {{value}}</span>
         <!-- 匹配状态 -->
         <span v-else-if="column.columnFields=='matchState'"> {{stateText[value]}}</span>
+        <!-- 收支状态 -->
+        <span v-else-if="column.columnFields=='incomeType'"> {{value ==1?'付款':'收款'}}</span>
 
         <!-- 创建时间 -->
         <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>

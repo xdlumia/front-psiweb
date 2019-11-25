@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 15:05:32
+ * @LastEditTime: 2019-11-25 15:37:54
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -314,32 +314,53 @@ export default {
     },
     // 返回的自定义列数据
     columnHandle(cols) {
-      //  筛选
+      //  自定添加筛选
       if (!this.filterOptions) {
         let filterOptions = []
         cols.forEach(item => {
-          // 过滤状态不用添加到筛选里
-          if (item.columnFields != 'state') {
-            //默认筛选类型是text
-            let type = 'text'
-            let options = []
+          // 过滤状态不用添加到筛选里的类型
+          let notFilter = ['state', 'matchState']
+          if (!notFilter.includes(item.columnFields)) {
+
+            let type = 'text' //默认筛选类型是text
+            let columnFields = item.columnFields //筛选字段
+            let options = [] //筛选下拉数据
+
             // 如果字段里有时间那么筛选就是时间段类型
-            if (item.columnFields.match(/Time/)) {
+            if (item.columnFields.match(/Time|Date/)) {
               type = 'daterange'
-            } else if (item.columnFields.match(/Number/)) {
+            }
+            // 如果是数量或者金额字段
+            else if (item.columnFields.match(/Number|Amount/)) {
               type = 'numberrange'
-            } else if (item.columnFields == 'creator' || item.columnFields == 'creatorName') {
+            }
+            // 如果是创建人
+            else if (item.columnFields == 'creator' || item.columnFields == 'creatorName') {
               type = 'employee'
-            } else if (item.columnFields == 'isContract') {
+            }
+            // 如果是有无合同
+            else if (item.columnFields == 'isContract') {
               type = 'select'
               options = [{ label: '有', value: 1 }, { label: '无', value: 0 }]
-            } else if (item.columnFields == 'deptTotalCode') {
+            }
+            // 收支状态
+            else if (item.columnFields == 'incomeType') {
+              type = 'select'
+              options = [{ label: '付款', value: 1 }, { label: '收款', value: 0 }]
+            }
+            // 如果是账户信息
+            else if (item.columnFields == 'companySettlementInfo') {
+              columnFields = 'companySettlementId'
+              type = 'account'
+            }
+            // 如果是部门
+            else if (item.columnFields == 'deptTotalCode') {
               type = 'dept'
             }
             filterOptions.push(
               {
                 label: item.columnName,
-                prop: item.columnFields,
+                prop: columnFields,
                 default: true,
                 type: type,
                 options: options
