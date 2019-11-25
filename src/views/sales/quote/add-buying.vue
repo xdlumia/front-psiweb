@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 18:38:30
+ * @LastEditTime: 2019-11-25 18:39:55
  * @Description: 生成请购单
 */
 <template>
@@ -105,7 +105,7 @@ export default {
       form: {
         attachList: [],
         commodityList: [],
-        fieldList: '',// [],
+        fieldList: [],
         isDelete: '',// 9,
         note: '',// "示例：备注信息",
         personInChargeId: '',// 100000,
@@ -114,8 +114,6 @@ export default {
         purchaseBorrow: '',// 0,
         quotationCode: '',// "示例：报价单",
         saleArrivalTime: '',// 1572346044931,
-        source: '',// "示例：来源",
-        state: '',// 9
       }
     };
   },
