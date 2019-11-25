@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 10:35:09
+ * @LastEditTime: 2019-11-25 18:11:52
  * @Description: 采购-请购明细表
 */
 <template>
@@ -11,7 +11,7 @@
       <span>请购明细表</span>
     </div>
     <div class="buying-requisition-page wfull hfull">
-      <TableView :filterOptions="filterOptions" api="seePsiPurchaseService.purchaseapplyorderCommoditys" busType="33" title="请购明细表">
+      <tableView :filterOptions="filterOptions" api="seePsiPurchaseService.purchaseapplyorderCommoditys" busType="33" title="请购明细表">
         <template slot-scope="{column,row,value,prop}">
           <span v-if="prop=='goodsPic'">
             <el-image :src="value" fit="contain" style="width:100px;height:40px;margin:0;">
@@ -20,16 +20,17 @@
           </span>
           <span v-else-if="prop=='categoryCode'">{{value|dictionary('PSI_SP_KIND')}}</span>
           <span v-else-if="prop=='commodityCode'">
-            <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+            <el-link :underline="false" @click="showCommodityDetail=true,currentCommodityCode=value" class="f12" type="primary">{{value}}</el-link>
           </span>
           <span v-else>{{value}}</span>
         </template>
-      </TableView>
+      </tableView>
     </div>
+    <CommodityDetail :code="currentCommodityCode" :visible.sync="showCommodityDetail" v-if="showCommodityDetail" />
   </el-dialog>
 </template>
 <script>
-import TableView from '@/components/tableView';
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 /**
  * 采购-请购单
  */
@@ -48,13 +49,15 @@ export default {
     }
   },
   components: {
-    TableView
+    CommodityDetail
   },
   data() {
     return {
       status: [],
       currentCode: '',
+      currentCommodityCode: '',
       showDetail: false,
+      showCommodityDetail: false,
       orderStorageVisible: false,
       addBorrowInVisible: true,
       filterOptions: [
