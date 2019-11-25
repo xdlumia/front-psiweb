@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-22 17:37:20
+ * @LastEditTime: 2019-11-25 10:46:47
  * @Description: 付款单
 */
 <template>
@@ -18,6 +18,9 @@
       title="付款单"
       v-loading="loading"
     >
+      <template slot="top-filter">
+        <bill-account-selector @change="reload" v-model="params.companySettlementId" />
+      </template>
       <template slot="button">
         <!-- 15.勾选付款单后，展示批量付款申请。新建、已驳回状态可点击批量提交付款申请。如勾选中包含了其他状态，则只提交新建、已驳回的即可。批量付款申请，不需弹出付款申请确认。 -->
         <el-button @click="multiPay" size="mini" title="新建、已驳回的付款单可批量申请" type="primary">批量付款申请</el-button>
@@ -79,7 +82,7 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => ({ page: 1, limit: 15 })
+      default: () => ({ page: 1, limit: 15, billType: 1 })
     }
   },
   data() {
@@ -91,19 +94,27 @@ export default {
       currentCode: '',
       // prettier-ignore
       filterOptions: [
-        { label: '账单编号', prop: 'billCode', default: true },
-        { label: '结清状态', prop: 'settleStatus', default: true },
-        { label: '逾期状态', prop: 'overSate', default: true },
+        { label: '付款单编号', prop: 'billCode', default: true },
+        { label: '账单状态', prop: 'settleStatus', default: true, type:'select', options:[
+          {label:'未结清',value:'0',},
+          {label:'部分结清',value:'1',},
+          {label:'已结清',value:'2',},
+          {label:'已关闭',value:'3',},
+        ] },
+        { label: '逾期状态', prop: 'overSate', default: true, type:'select', options:[
+          {label:'未逾期',value:0},
+          {label:'已逾期',value:1},
+        ] },
         { label: '对方名称', prop: 'accountName', default: true },
-        { label: '费用详情', prop: 'feeDetailCode', default: true },
+        { label: '费用类型', prop: 'feeTypeCode', default: true, type:'select', options:[] },
+        { label: '费用明细', prop: 'feeDetailCode', default: true, type:'select', options:[] },
         { label: '预付/收金额', prop: 'PredictAmount', type: 'numberRange', default: true },
         { label: '应付/收金额', prop: 'Amount', type: 'numberRange', default: true },
         { label: '实收/付金额', prop: 'FactAmount', type: 'numberRange', default: true },
-        { label: '应收/付日期', prop: 'PayEndDate', type: 'numberRange', int: true, default: true },
-        { label: '客户', prop: 'clientId' },
+        { label: '应收/付日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
         { label: '关联单据编号', prop: 'busCode' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
-        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' },
+        { label: '生成时间', prop: 'CreateTime', type: 'dateRange' },
         { label: '创建人', prop: 'creator', type: 'employee' },
       ],
       stateText: {
@@ -127,8 +138,43 @@ export default {
       }
     };
   },
-  mounted() {},
+  mounted() {
+    this.getFeeDetailCodeList();
+  },
   methods: {
+    // prettier-ignore
+    async getFeeDetailCodeList() {
+      let dicList = JSON.parse(JSON.stringify(this.dictionaryOptions('ZD_DY_LX')))
+      if(!dicList.length){
+        let {data} = await this.$api.seeDictionaryService.getDicCommonValueList('ZD_DY_LX');
+        dicList = data;
+      }
+      let parent = [];
+      let dicParentObj = dicList.reduce((data, item) => {
+        if (!item.parentCode) {
+          data[item.code] = item;
+          item.children = [];
+          parent.push({
+            label: item.content,
+            value: item.code
+          });
+        }
+        return data;
+      },{});
+      let children = [];
+      dicList.map(item => {
+        let parent = dicParentObj[item.parentCode];
+        if (item.parentCode && parent) {
+          parent.children.push(item);
+          children.push({
+            label: `${parent.content}-${item.content}`,
+            value: item.code
+          });
+        }
+      });
+      this.filterOptions.filter(item=>item.prop=='feeTypeCode')[0].options = parent;
+      this.filterOptions.filter(item=>item.prop=='feeDetailCode')[0].options = children;
+    },
     reload() {
       this.$refs.tableView.reload();
     },

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-05 16:57:15
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-24 22:28:51
+ * @LastEditTime: 2019-11-25 13:51:05
  * @Description: 可供商品 以调试 1
 */
 <template>
@@ -116,7 +116,12 @@ export default {
     },
     async getSupplierGoods() {
       this.params.supplierId = this.supplierId;
-      this.$nextTick(() => this.$refs.table.reload(1));
+      this.$nextTick(
+        () =>
+          this.$refs.table &&
+          this.$refs.table.reload &&
+          this.$refs.table.reload(1)
+      );
     },
     async delGoods(row) {
       await this.$confirm('是否确认删除?');

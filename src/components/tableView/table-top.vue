@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-23 11:00:47
+ * @LastEditTime: 2019-11-25 10:58:09
  * @Description: 表格头部 
  */
 <template>
@@ -31,7 +31,10 @@
         </section>
         <!-- 表格顶部统计 财务用到 -->
         <section class="table-header-tool d-nowrap">
-          <slot name="button">
+          <slot
+            name="button"
+            v-if="$parent.$parent.button"
+          >
           </slot>
 
           <!-- 更多功能 跟产品刘晨辉沟通直接放在外面 -->

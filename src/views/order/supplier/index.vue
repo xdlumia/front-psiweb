@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 16:04:59
+ * @LastEditTime: 2019-11-25 09:43:40
  * @Description: 采购-供应商
 */
 <template>
@@ -39,8 +39,8 @@
       </template>
     </TableView>
     <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
-    <Edit :visible.sync="showEdit" @reload="reload" />
-    <Cat :visible.sync="showCat" @reload="reload" />
+    <Edit :visible.sync="showEdit" @reload="reload" v-if="showEdit" />
+    <Cat :visible.sync="showCat" @reload="reload" v-if="showCat" />
   </div>
 </template>
 <script>

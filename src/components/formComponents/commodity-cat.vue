@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-05 17:31:44
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 10:06:18
+ * @LastEditTime: 2019-11-25 12:00:39
  * @Description: 商品分类树组件  字段已绑定 1 
 */
 <template>
@@ -56,8 +56,10 @@ export default {
     };
   },
   mounted() {
-    this.activeMainCat = this.kinds[0].value;
-    this.handleMainCatClick();
+    this.$nextTick(() => {
+      this.activeMainCat = this.kinds[0].value;
+      this.handleMainCatClick();
+    });
   },
   methods: {
     // 获取主分类下商品分类树

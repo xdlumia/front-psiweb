@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-23 18:13:54
+ * @LastEditTime: 2019-11-25 10:53:55
  * @Description: 销售出库单详情
 */
 <template>
@@ -33,7 +33,6 @@
       </div>
       <el-form
         ref="form"
-        :model="form"
         size="mini"
         label-position="top"
       >
