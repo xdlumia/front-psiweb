@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 11:09:07
+ * @LastEditTime: 2019-11-25 10:57:23
  * @Description: 销售-报价单
  */
 <template>
@@ -22,10 +22,7 @@
       @selection-change="selectionChange"
     >
       <!-- 自定义按钮功能 -->
-      <template
-        v-if="button"
-        v-slot:button
-      >
+      <template v-slot:button>
         <el-button
           size="mini"
           type="primary"
