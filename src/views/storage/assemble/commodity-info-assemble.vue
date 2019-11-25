@@ -73,6 +73,7 @@
             @response='response'
             @choose='commodityChoose(arguments,scope)'
             type="code"
+            :codes='codes'
             :params={isConfig:1}
             v-model="scope.row.commodityCode"
           />
@@ -87,6 +88,7 @@
           class="d-relative"
         >
           <commoditySelector
+            :codes='codes'
             @response='response'
             ref='commdity'
             :params={isConfig:1}
@@ -130,6 +132,7 @@
           class="d-relative"
         >
           <el-input
+            v-if="scope.row.commodityCode"
             size="mini"
             v-model="scope.row.allocationNum"
             placeholder="请输入"
@@ -143,6 +146,7 @@
       >
         <template slot-scope="scope">
           <el-image
+            v-if="scope.row.commodityCode"
             style="width: 100px; height: 40px"
             :src="scope.row.goodsPic"
             fit="fill"
@@ -216,7 +220,7 @@ export default {
     commodityChoose(e, scope) {
       let list = e[0]
       let type = e[1]
-      this.codes = []
+
 
       // this.infoForm = list
       this.tableData.forEach((item) => {
@@ -230,7 +234,7 @@ export default {
         } else if (!this.codes.includes(item.commodityCode)) {
           this.tableData.unshift(item)
         } else if (this.codes.includes(item.commodityCode)) {
-          this.tableData.splice(scope.$index, 1)
+          // this.tableData.splice(scope.$index, 1)
         }
       })
       this.codes = []
