@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 12:08:30
+ * @LastEditTime: 2019-11-25 16:33:25
  * @Description: 合同模板--补充信息，自定义内容
 */
 <template>
@@ -53,12 +53,10 @@ export default {
   watch: {
     'data.templateId': {
       handler() {
-        console.log('templateId change');
         this.checkUserField();
       }
     },
     tmpList() {
-      console.log('tmp list change');
       this.checkUserField();
     }
   },

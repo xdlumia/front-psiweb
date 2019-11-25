@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 15:37:54
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-25 17:16:38
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -278,7 +278,7 @@ export default {
         this.loading = true;
         let params = {}
         if (this.selectionRow.length) {
-          params = { ids: this.selectionRow.map(item => item.id) }
+          params = { ...this.params, ids: this.selectionRow.map(item => item.id), }
         } else {
           params = this.params
         }

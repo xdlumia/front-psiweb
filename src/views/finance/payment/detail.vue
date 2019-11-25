@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-24 21:49:34
+ * @LastEditTime: 2019-11-25 16:29:55
  * @Description: 付款单
 */
 <template>
@@ -41,7 +41,7 @@
       >复核通过</el-button>
       <el-button @click="showAddIncoming=true,addIncoming()" size="mini" type="primary" v-if="detail&&[2].includes(detail.state)">付款</el-button>
     </template>
-    <el-tabs class="wfull hfull tabs-view">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
         <el-form size="mini" v-if="detail&&showDetailPage">
           <!-- <approve-panel></approve-panel> -->
@@ -50,8 +50,12 @@
           <extras-info :data="detail" @change="saveExtras" can-modify disabled />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane :label="busInfo[detail.busType].title" v-if="detail.busCode&&busInfo[detail.busType]">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane
+        :label="busInfo[detail.busType].title"
+        :name="busInfo[detail.busType].listPage"
+        v-if="detail.busCode&&busInfo[detail.busType]"
+      >
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus[busInfo[detail.busType].listPage]">
           <component
             :button="false"
             :is="busInfo[detail.busType].listPage"

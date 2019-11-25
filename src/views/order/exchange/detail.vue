@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 14:46:53
+ * @LastEditTime: 2019-11-25 16:12:29
  * @Description: 换货单
 */
 <template>
@@ -55,7 +55,7 @@
       >删除</el-button>
       <!-- <el-button @click="showExchangeGoods=true" size="mini" type="primary">换货扫码</el-button> -->
     </template>
-    <el-tabs class="wfull hfull tabs-view">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
         <el-form :model="detail" ref="form" size="mini" v-if="detail&&showDetailPage">
           <exchange-info :data="detail" disabled id="exchangeInfo" />
@@ -66,13 +66,18 @@
           <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="账单管理">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="账单管理" name="bill">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.bill">
           <FinancePayable :button="false" :params="{page:1,limit:15,busCode:detail.swapOrderCode}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane label="发票管理">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="发票管理" name="invoice">
+        <!-- 待收票 -->
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.invoice&&detail.swapOutMoney>detail.swapInMoney">
+          <FinanceReceipt :button="false" :params="{page:1,limit:15,busCode:detail.swapOrderCode}" />
+        </FullscreenWrap>
+        <!-- 待开票 -->
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.invoice&&detail.swapOutMoney<=detail.swapInMoney">
           <FinanceBilling :button="false" :params="{page:1,limit:15,busCode:detail.swapOrderCode}" />
         </FullscreenWrap>
       </el-tab-pane>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 15:00:20
+ * @LastEditTime: 2019-11-25 17:23:12
  * @Description: 采购合同
 */
 <template>
@@ -12,6 +12,7 @@
       :params="params"
       api="seePsiContractService.contractpurchaseList"
       busType="24"
+      exportApi="seePsiContractService.contractpurchaseExport"
       ref="tableView"
       title="采购合同"
     >

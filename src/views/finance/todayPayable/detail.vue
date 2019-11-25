@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-22 18:52:29
+ * @LastEditTime: 2019-11-25 16:31:40
  * @Description: 今日应付账单
 */
 <template>
@@ -10,7 +10,7 @@
     <template slot="button">
       <el-button @click="showLateAmount=true" size="mini" type="primary">滞纳金</el-button>
     </template>
-    <el-tabs class="wfull hfull tabs-view">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
         <el-form size="mini" v-if="detail&&showDetailPage">
           <!-- <approve-panel></approve-panel> -->
@@ -32,8 +32,12 @@
           <extras-info :data="detail" @change="saveExtras" can-modify disabled />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane :label="busInfo[detail.busType].title" v-if="detail.busCode&&busInfo[detail.busType]">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane
+        :label="busInfo[detail.busType].title"
+        :name="busInfo[detail.busType].listPage"
+        v-if="detail.busCode&&busInfo[detail.busType]"
+      >
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus[busInfo[detail.busType].listPage]">
           <component
             :button="false"
             :is="busInfo[detail.busType].listPage"

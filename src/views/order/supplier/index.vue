@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 09:43:40
+ * @LastEditTime: 2019-11-25 17:19:52
  * @Description: 采购-供应商
 */
 <template>
@@ -14,6 +14,7 @@
       busType="42"
       ref="tableView"
       title="供应商"
+      exportApi="seePsiCommonService.commonsupplierinfoExport"
     >
       <template slot="button">
         <el-button @click="showCat=true" size="mini" type="primary">商品供应分类表</el-button>
