@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 10:47:55
+ * @LastEditTime: 2019-11-25 17:40:31
  * @Description: 退货扫码
 */
 
@@ -44,9 +44,6 @@
   </el-dialog>
 </template> 
 <script>
-// import FullscreenElement from '@/components/fullscreen-element';
-// import purchaseWarehousing from './purchase-warehousing'
-// import purchaseWareDisabled from './purchase-ware-disabled'
 
 import VisibleMixin from '@/utils/visibleMixin';
 export default {
@@ -63,7 +60,7 @@ export default {
   methods: {
     //保存
     saveHandle() {
-      this.$api.seePsiWmsService.wmsinventorydetailBatchPutaway({ businessCode: this.drawerData.purchaseCode, businessId: this.drawerData.id, putawayCommodityList: this.tableData, businessType: 13 })
+      this.$api.seePsiWmsService.salesreturnedScanReturned({ businessCode: this.drawerData.purchaseCode, businessId: this.drawerData.id, putawayCommodityList: this.tableData, businessType: 13 })
         .then(res => {
           this.setEdit()
           this.close()

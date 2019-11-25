@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 17:28:30
+ * @LastEditTime: 2019-11-25 17:41:22
  * @Description: 报价单详情
 */
 <template>
@@ -175,18 +175,18 @@ export default {
             needNote: null
           },
           '审核通过': {
-            api: 'seePsiSaleService.salesquotationApproval',
+            api: 'seePsiSaleService.salesquotationPassApproval',
             data: { ...params, ...{} },
             needNote: null
           },
           '撤销审核': {
             api: 'seePsiSaleService.salesquotationCancel',
-            data: { isAgree: 0, busCode: this.detail.quotationCode },
+            data: params,
             needNote: null
           },
           '驳回': {
             api: 'seePsiSaleService.salesquotationReject',
-            data: { busCode: this.detail.quotationCode },
+            data: params,
             needNote: null
           },
           '删除': {
@@ -196,7 +196,7 @@ export default {
           },
           '终止': {
             api: 'seePsiSaleService.salesquotationPause',
-            data: { busCode: this.detail.quotationCode },
+            data: params,
             needNote: null
           }
         }

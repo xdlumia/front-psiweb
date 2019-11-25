@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-23 16:28:21
+ * @LastEditTime: 2019-11-25 17:43:42
  * @Description: 销售出库单详情
 */
 <template>
@@ -227,6 +227,11 @@ export default {
         let apiObj = {
           '提交审核': {
             api: 'seePsiSaleService.salesshipmentSubmitApproval',
+            data: { ...params },
+            needNote: null
+          },
+          '审核通过': {
+            api: 'seePsiSaleService.salesshipmentPassApproval',
             data: { ...params },
             needNote: null
           },
