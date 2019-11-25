@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 09:12:10
+ * @LastEditTime: 2019-11-25 18:16:47
  * @Description: 采购调价单
 */
 <template>
@@ -58,29 +58,31 @@
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form :model="detail" v-if="detail&&visible">
-          <buying-goods-edit
-            :customColumns="[
-            { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140, },
-            { label:'库存成本(税前)',key:'inventoryPrice',prop:'inventoryPrice',width:140, },
-            { label:'调整金额',key:'adjustPriceMoney',prop:'adjustPriceMoney',width:120, format:(a,b)=>b.adjustPriceMoney||0 },
-            { label:'调整后库存成本(税前)',key:'repertoryCost',prop:'repertoryCost',width:140,
-              format:(a,b)=>b.repertoryCost||0
-            },
-            { label:'调整差异',key:'adjustPriceDifference	',prop:'adjustPriceDifference	',width:100,
-              format:(a,b)=>b.adjustPriceDifference||0
-            },
-            ]"
-            :data="detail"
-            :show="[
-              'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','configName','noteText','fullscreen'
-            ]"
-            :showSummary="false"
-            disabled
-            title="商品信息"
-          ></buying-goods-edit>
-          <extrasInfo :data="detail" disabled id="extrasInfo" />
-        </el-form>
+        <detailApproveWrap :busType="40" :id="detail.id" v-if="detail&&showDetailPage">
+          <el-form :model="detail" v-if="detail&&visible">
+            <buying-goods-edit
+              :customColumns="[
+                { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140, },
+                { label:'库存成本(税前)',key:'inventoryPrice',prop:'inventoryPrice',width:140, },
+                { label:'调整金额',key:'adjustPriceMoney',prop:'adjustPriceMoney',width:120, format:(a,b)=>b.adjustPriceMoney||0 },
+                { label:'调整后库存成本(税前)',key:'repertoryCost',prop:'repertoryCost',width:140,
+                  format:(a,b)=>b.repertoryCost||0
+                },
+                { label:'调整差异',key:'adjustPriceDifference	',prop:'adjustPriceDifference	',width:100,
+                  format:(a,b)=>b.adjustPriceDifference||0
+                },
+              ]"
+              :data="detail"
+              :show="[
+                'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','configName','noteText','fullscreen'
+              ]"
+              :showSummary="false"
+              disabled
+              title="商品信息"
+            ></buying-goods-edit>
+            <extrasInfo :data="detail" disabled id="extrasInfo" />
+          </el-form>
+        </detailApproveWrap>
       </el-tab-pane>
     </el-tabs>
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
