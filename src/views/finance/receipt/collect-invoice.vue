@@ -122,7 +122,7 @@ export default {
   mounted() { },
   methods: {
     async getDetail() {
-      if (this.code) {
+      if (this.code || this.id) {
         let {
           data
         } = this.$api.seePsiPurchaseService.purchasestockorderGetByCode(

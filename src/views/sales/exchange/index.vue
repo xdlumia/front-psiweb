@@ -17,7 +17,6 @@
       api="seePsiSaleService.salesalterationsheetList"
       exportApi="seePsiSaleService.salesalterationsheetExport"
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
     >
 
       <template slot-scope="{column,row,value}">

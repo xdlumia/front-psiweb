@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 18:29:05
+ * @LastEditTime: 2019-11-25 15:08:45
  * @Description: 销售-账单调整单
  */
 <template>
@@ -17,7 +17,6 @@
       api="seePsiFinanceService.fbilladjustList"
       exportApi="seePsiFinanceService.fbilladjustExport"
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
     >
       <template v-slot:button>
         <el-button
