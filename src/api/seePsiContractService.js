@@ -114,7 +114,7 @@ export default {
      */
     contractpurchaseExport: {
         url: '/contractpurchase/export',
-        methods: 'get',
+        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -204,7 +204,7 @@ export default {
      */
     contractsalesExport: {
         url: '/contractsales/export',
-        methods: 'get',
+        methods: 'post',
         mock: isUseMock
     },
     /**
