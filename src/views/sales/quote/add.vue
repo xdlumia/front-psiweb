@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-19 18:23:18
+ * @LastEditTime: 2019-11-25 16:35:07
  * @Description: file content
 */
 <template>
@@ -235,6 +235,10 @@ export default {
 
           delete copyParams.KIND1Data
           delete copyParams.KIND2Data
+          copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.map(item => {
+            item.putawayType = 0 //0=出库
+            return item
+          })
           // copyParams.businessCommoditySaveVoList.forEach(item => {
           //   item.parentCommodityCode = item.commodityCode
           // })
