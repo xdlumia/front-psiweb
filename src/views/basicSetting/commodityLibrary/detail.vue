@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-11 17:49:29
+ * @LastEditTime: 2019-11-25 10:11:56
  * @Description: description
  -->
 <template>
@@ -52,7 +52,8 @@
       style="height: calc(100vh - 270px)!important"
     >
       <el-tab-pane label="详情">
-        <good :code="code" :disabled="true" ref="detail" @update="update"></good>
+        <good :code="code" :disabled="true" ref="detail"
+@update="update"></good>
         <el-form
           size="mini"
           :model="beginnForm"
@@ -81,7 +82,8 @@
         </el-form>
       </el-tab-pane>
     </el-tabs>
-    <el-dialog :visible.sync="showEdit" title v-dialogDrag :show-close="false" width="1000px">
+    <el-dialog :visible.sync="showEdit" title v-dialogDrag
+:show-close="false" width="1000px">
       <div slot="title" style="display:flex;">
         <h3 style="flex:1;text-align:center;">编辑商品</h3>
         <div>
@@ -89,7 +91,8 @@
           <el-button size="mini" @click="showEdit=false">关闭</el-button>
         </div>
       </div>
-      <good :code="code" :isEdit="true" @refresh="refresh" v-if="showEdit" ref="addGood"></good>
+      <good :code="code" :isEdit="true" @refresh="refresh"
+v-if="showEdit" ref="addGood"></good>
     </el-dialog>
     <opening-stock
       :visible.sync="showBeginn"
@@ -189,6 +192,12 @@ export default {
       this.rowData.specOne = temp.values[0].specOne
       this.rowData.goodsPic = temp.values[0].goodsPic
       this.rowData.name = temp.name
+      this.rowData.goodsCode = temp.values[0].goodsCode
+      this.status = [
+        { label: '创建时间', value: temp.createTime, isTime: true },
+        { label: '创建人', value: temp.creatorName },
+        { label: '来源', value: temp.sourceFromCode, dictName: 'SP_SOURCE_FROM' }
+      ]
     },
     checkVisible() {
       this.showPop = this.visible;
