@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-24 22:10:11
+ * @LastEditTime: 2019-11-25 11:29:31
  * @Description: 今日应付账单
 */
 <template>
@@ -73,27 +73,35 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => ({ page: 1, limit: 15 })
+      default: () => ({ page: 1, limit: 15, billType: 1 })
     },
     filterOptions: {
       type: Array,
       // prettier-ignore
       default: () => [
         { label: '账单编号', prop: 'billCode', default: true },
-        { label: '结清状态', prop: 'settleStatus', default: true },
-        { label: '逾期状态', prop: 'overSate', default: true },
+        { label: '账单状态', prop: 'settleStatus', default: true, type:'select', options:[
+          {label:'未结清',value:'0',},
+          {label:'部分结清',value:'1',},
+          {label:'已结清',value:'2',},
+          {label:'已关闭',value:'3',},
+        ] },
+        { label: '逾期状态', prop: 'overSate', default: true, type:'select', options:[
+          {label:'未逾期',value:0},
+          {label:'已逾期',value:1},
+        ] },
         { label: '对方名称', prop: 'accountName', default: true },
-        { label: '费用详情', prop: 'feeDetailCode', default: true },
+        { label: '费用类型', prop: 'feeTypeCode', default: true, type:'select', options:[] },
+        { label: '费用明细', prop: 'feeDetailCode', default: true, type:'select', options:[] },
         { label: '预付/收金额', prop: 'PredictAmount', type: 'numberRange', default: true },
         { label: '应付/收金额', prop: 'Amount', type: 'numberRange', default: true },
         { label: '实收/付金额', prop: 'FactAmount', type: 'numberRange', default: true },
-        { label: '应收/付日期', prop: 'PayEndDate', type: 'numberRange', int: true, default: true },
-        { label: '客户', prop: 'clientId' },
+        { label: '应收/付日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
         { label: '关联单据编号', prop: 'busCode' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
-        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' },
+        { label: '生成时间', prop: 'CreateTime', type: 'dateRange' },
         { label: '创建人', prop: 'creator', type: 'employee' },
-      ],
+      ]
     },
     pageConfig: {
       type: Object,
@@ -117,7 +125,15 @@ export default {
       })
     }
   },
-  mounted() {},
+  mounted() {
+    // prettier-ignore
+    if(this.pageConfig.title=='今日应付账单'){
+      let now = new Date
+      this.$set(this.params,'minPayEndDate',+new Date(`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} 00:00`))
+      this.$set(this.params,'maxPayEndDate',+new Date(`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} 23:59`))
+    }
+    this.getFeeDetailCodeList();
+  },
   data() {
     return {
       status: [],
@@ -147,6 +163,39 @@ export default {
     };
   },
   methods: {
+    // prettier-ignore
+    async getFeeDetailCodeList() {
+      let dicList = JSON.parse(JSON.stringify(this.dictionaryOptions('ZD_DY_LX')))
+      if(!dicList.length){
+        let {data} = await this.$api.seeDictionaryService.getDicCommonValueList('ZD_DY_LX');
+        dicList = data;
+      }
+      let parent = [];
+      let dicParentObj = dicList.reduce((data, item) => {
+        if (!item.parentCode) {
+          data[item.code] = item;
+          item.children = [];
+          parent.push({
+            label: item.content,
+            value: item.code
+          });
+        }
+        return data;
+      },{});
+      let children = [];
+      dicList.map(item => {
+        let parent = dicParentObj[item.parentCode];
+        if (item.parentCode && parent) {
+          parent.children.push(item);
+          children.push({
+            label: `${parent.content}-${item.content}`,
+            value: item.code
+          });
+        }
+      });
+      this.filterOptions.filter(item=>item.prop=='feeTypeCode')[0].options = parent;
+      this.filterOptions.filter(item=>item.prop=='feeDetailCode')[0].options = children;
+    },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;

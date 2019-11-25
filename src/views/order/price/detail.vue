@@ -2,18 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-24 21:37:43
+ * @LastEditTime: 2019-11-25 09:12:10
  * @Description: 采购调价单
 */
 <template>
-  <sideDetail
-    :status="status"
-    :visible="showDetailPage"
-    @close="$emit('update:visible',false)"
-    title="采购调价单"
-    v-loading="loading"
-    width="990px"
-  >
+  <sideDetail :status="status" :visible="showDetailPage" @close="close" title="采购调价单" v-loading="loading" width="990px">
     <template slot="button">
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpriceSubmitApproval',{

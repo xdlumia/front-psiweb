@@ -69,7 +69,11 @@
           <FinancePayable :button="false" :params="{page:1,limit:15,clientId:detail.id,clientType:1}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane label="发票记录">发票记录</el-tab-pane>
+      <el-tab-pane label="发票记录">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+          <FinanceReceipt :button="false" :params="{page:1,limit:15,clientId:detail.id,clientType:1}" />
+        </FullscreenWrap>
+      </el-tab-pane>
     </el-tabs>
     <Edit :code="detail.code" :visible.sync="showEdit" @reload="$reload()" v-if="detail" />
   </sideDetail>

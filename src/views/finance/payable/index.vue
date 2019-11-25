@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-04 13:36:20
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-22 16:36:35
+ * @LastEditTime: 2019-11-25 09:08:28
  * @Description: 应付账单
 */
 <template>
@@ -19,7 +19,7 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => ({ page: 1, limit: 15 })
+      default: () => ({ page: 1, limit: 15,billType:1 })
     }
   },
   data() {
