@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 10:24:25
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-26 14:16:20
  * @Description: 自定义信息 1
 */
 <template>
@@ -84,7 +84,7 @@
       class="mt10"
       type="text"
       icon="el-icon-circle-plus"
-      @click="data.fieldList.push({fieldCode:'',fieldVal:''})"
+      @click="add"
     >添加自定义字段</el-button>
 
   </form-card>
@@ -129,6 +129,10 @@ export default {
         .then(res => {
           this.fieldOptions = res.data || []
         })
+    },
+    add(){
+      if(!this.data.fieldList) this.$set(this.data,'fieldList',[])
+      this.data.fieldList.push({fieldCode:'',fieldVal:''})
     }
   },
 };
