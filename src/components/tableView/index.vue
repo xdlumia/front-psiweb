@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 18:53:33
+ * @LastEditTime: 2019-11-26 20:24:30
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -345,6 +345,7 @@ export default {
             }
             // 如果是创建人
             else if (item.columnFields == 'creator' || item.columnFields == 'creatorName') {
+              columnFields = 'creator'
               type = 'employee'
             }
             // 如果是有无合同
