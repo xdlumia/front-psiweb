@@ -95,7 +95,15 @@ export default {
       status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       filterOptions: [
         { label: '销售出库单编号', prop: 'shipmentCode', default: true },
-        { label: '客户名称', prop: 'clientId', default: true },
+        {
+          label: '客户名称',
+          prop: 'clientId',
+          type: 'select',
+          options: [
+            { label: '完成拣货', value: '2' }
+          ],
+          default: true
+        },
         { label: '销售单编号', prop: 'salesSheetCode', default: true },
         {
           label: '拣货状态',
@@ -109,34 +117,35 @@ export default {
           ],
           default: true
         },
-        // {
-        //   label: '组装任务状态',
-        //   prop: 'assemblyState',
-        //   type: 'select',
-        //   options: [
-        //     { label: '内调', value: '1' },
-        //     { label: '外调', value: '2' }
-        //   ],
-        //   default: true
-        // },
-        // {
-        //   label: '发货状态',
-        //   prop: 'deliverState',
-        //   type: 'select',
-        //   options: [
-        //     { label: '内调', value: '1' },
-        //     { label: '外调', value: '2' }
-        //   ],
-        //   default: true
-        // },
+        {
+          label: '组装任务状态',
+          prop: 'assemblyState',
+          type: 'select',
+          options: [
+            { label: '未开始', value: '0' },
+            { label: '待组装', value: '1' },
+            { label: '部分组装', value: '2' },
+            { label: '完后组装', value: '3' },
+            { label: '终止', value: '-1' },
+          ],
+          default: true
+        },
+        {
+          label: '发货状态',
+          prop: 'deliverState',
+          type: 'select',
+          options: [
+            { label: '待发货', value: '0' },
+            { label: '完成发货', value: '1' },
+            { label: '终止', value: '2' }
+          ],
+          default: true
+        },
         {
           label: '商品类别',
           prop: 'categoryCode',
-          type: 'select',
-          options: [
-            { label: '内调', value: '1' },
-            { label: '外调', value: '2' }
-          ],
+          type: 'dict',
+          dictName: 'PSI_SP_KIND',
           default: true
         },
         {
@@ -180,7 +189,11 @@ export default {
         },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
+      usableList: []
     };
+  },
+  created() {
+    this.commonwmsmanagerUsableList()
   },
   methods: {
     //点击打开右侧边栏
@@ -196,7 +209,23 @@ export default {
     //tab换组件
     handleClick() {
 
-    }
+    },
+    //请求客户列表，用作筛选
+    commonwmsmanagerUsableList() {
+      this.$api.seePsiCommonService.commonclientinfoPagelist({ page: 1, limit: 100 })
+        .then(res => {
+          this.usableList = res.data || []
+          this.usableList.forEach((item) => {
+            item.label = item.clientName
+            item.value = item.id
+          })
+          this.filterOptions[1].options = this.usableList
+          console.log(this.usableList, 'this.usableListthis.usableListthis.usableList')
+        })
+        .finally(() => {
+
+        })
+    },
   }
 };
 </script>

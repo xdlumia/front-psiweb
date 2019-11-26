@@ -70,10 +70,10 @@
             :sn="addForm.type == 2 ? true : false"
             :params="addForm.type == 2 ? {wmsId:addForm.wmsId} : {wmsId:''}" -->
           <commoditySelector
+            :codes="tableData.map(item=>item.commodityCode)"
             @response='response'
             @choose='commodityChoose(arguments,scope)'
             type="code"
-            :codes='codes'
             :params={isConfig:1}
             v-model="scope.row.commodityCode"
           />
@@ -88,7 +88,7 @@
           class="d-relative"
         >
           <commoditySelector
-            :codes='codes'
+            :codes="tableData.map(item=>item.commodityCode)"
             @response='response'
             ref='commdity'
             :params={isConfig:1}
@@ -106,6 +106,7 @@
           class="d-relative"
         >
           <el-select
+            @focus='visibleChange($event,scope)'
             v-model="scope.row.configName"
             @change="changeCommodity($event,scope)"
             placeholder="请选择"
@@ -220,9 +221,6 @@ export default {
     commodityChoose(e, scope) {
       let list = e[0]
       let type = e[1]
-
-
-      // this.infoForm = list
       this.tableData.forEach((item) => {
         if (item.commodityCode) {
           this.codes.push(item.commodityCode)
@@ -231,10 +229,12 @@ export default {
       list.forEach((item, index) => {
         if (!this.codes.includes(item.commodityCode) && scope.row.commodityCode && type == 'select') {//区分非选择状态下的选择商品信息
           this.$set(this.tableData, scope.$index, item)
+          scope.row.configName = ''
         } else if (!this.codes.includes(item.commodityCode)) {
           this.tableData.unshift(item)
-        } else if (this.codes.includes(item.commodityCode)) {
-          // this.tableData.splice(scope.$index, 1)
+          scope.row.configName = ''
+        } else if (this.codes.includes(item.commodityCode)) {//针对配置做判断
+          scope.row.configName = this.configName
         }
       })
       this.codes = []
@@ -243,13 +243,17 @@ export default {
     response(data) {
       this.configList = data
     },
+    //选择重复配置的时候，需要恢复上一次选择的，去掉当前要选的
+    visibleChange(val, scope) {
+      this.configName = scope.row.configName
+    },
     //配置下拉框改变的时候
     changeCommodity(e, scope) {
       let list = this.configList.filter((item) => {
         return item.configId == e
       })
       this.commodityChoose([list, 'select'], scope)
-      scope.row.configName = ''
+
     },
     expand(row) {
       this.$set(row, 'expanded', !row.expanded);

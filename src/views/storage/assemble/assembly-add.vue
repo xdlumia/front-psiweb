@@ -14,7 +14,7 @@
     v-dialogDrag
   >
     <el-container>
-      <el-main
+      <el-main 
         :style="{ 
                 maxHeight:maxHeight+'px'
             }"
