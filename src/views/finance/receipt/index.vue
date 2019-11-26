@@ -72,6 +72,7 @@
       :visible.sync="detailVisible"
       :rowData="rowData"
       :code="rowData.invoiceCode"
+      :id="rowData.id"
       @reload="$refs.table.reload()"
     />
   </div>

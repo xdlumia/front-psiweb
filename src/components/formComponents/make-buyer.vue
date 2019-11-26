@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-22 09:38:51
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 17:26:23
+ * @LastEditTime: 2019-11-26 20:20:11
  * @Description: 销售方/购买方信息 已绑定 1
 */ 
 <template>
