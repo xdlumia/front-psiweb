@@ -29,13 +29,13 @@
           type="primary"
         >终止</el-button>
         <el-button
-          v-if="detailForm.result == 3 || detailForm.result == 2"
+          v-if="detailForm.isLose == 1"
           @click="changeReportingVisible(2)"
           size="mini"
           type="primary"
         >生成报损单</el-button>
         <el-button
-          v-if="detailForm.result == 3 || detailForm.result == 1"
+          v-if="detailForm.isProfit == 1"
           @click="changeReportingVisible(1)"
           size="mini"
           type="primary"
@@ -102,11 +102,11 @@ export default {
       this.$api.seePsiWmsService.wmsblitemInfo(null, this.drawerData.id)
         .then(res => {
           this.detailForm = res.data || {}
-          this.status[0].value = this.drawerData.blitemState == 1 ? '进行中' : '盘点完成'
-          this.status[1].value = this.drawerData.createTime
-          this.status[2].value = this.drawerData.creator
-          this.status[3].value = this.drawerData.deptName
-          this.status[4].value = this.drawerData.source
+          this.status[0].value = this.detailForm.blitemState == 1 ? '进行中' : '盘点完成'
+          this.status[1].value = this.detailForm.createTime
+          this.status[2].value = this.detailForm.creatorName
+          this.status[3].value = this.detailForm.deptName
+          this.status[4].value = this.detailForm.source
           console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {

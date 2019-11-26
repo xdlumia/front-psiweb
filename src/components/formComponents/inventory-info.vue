@@ -146,8 +146,11 @@ export default {
     this.commonwmsmanagerUsableList()
   },
   methods: {
+    //查询库房
     commonwmsmanagerUsableList() {
-      this.$api.seePsiWmsService.commonwmsmanagerUsableList()
+      let api = this.disabled ? 'commonwmsmanagerList' : 'commonwmsmanagerUsableList'
+      let params = this.disabled ? { page: 1, limit: 150 } : ''
+      this.$api.seePsiWmsService[api](params)
         .then(res => {
           this.usableList = res.data || []
         })
@@ -162,7 +165,7 @@ export default {
     },
     //库房改变
     changeRecord() {
-      if (addform.wmsId) {
+      if (this.addform.wmsId) {
         this.$root.$emit('loadSearch')
       }
     }

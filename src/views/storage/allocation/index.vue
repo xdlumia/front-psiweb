@@ -94,7 +94,7 @@ export default {
         { label: '调拨单编号', prop: 'allocationOrderCode', default: true },
         {
           label: '调拨状态',
-          prop: 'allocationOrderState',
+          prop: 'state',
           type: 'select',
           options: [
             { label: '待调拨', value: '1' },
@@ -124,6 +124,17 @@ export default {
           ],
           default: true
         },
+        // {
+        //   label: '调出库房',
+        //   prop: 'shipmentWmsNames',
+        //   type: 'select',
+        //   options: [
+        //     { label: '内调', value: '1' },
+        //     { label: '外调', value: '2' }
+        //   ],
+        //   default: true
+        // },
+
         { label: '调出库房', prop: 'shipmentWmsNames', default: true },
         {
           label: '调拨数量',

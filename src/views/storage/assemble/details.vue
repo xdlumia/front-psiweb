@@ -10,7 +10,7 @@
     :status="status"
     :visible.sync="visible"
     @close="$emit('update:visible',false)"
-    title="组装单"
+    :title="`组装单-${detailForm.assembleOrderCode}`"
     width="990px"
   >
     <div>

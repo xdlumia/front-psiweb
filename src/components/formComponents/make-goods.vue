@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-22 11:35:40
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 14:59:38
+ * @LastEditTime: 2019-11-26 17:49:14
  * @Description: 发票内容 商品列表 已绑定 1
 */
 <template>
@@ -174,6 +174,7 @@ export default {
       });
       return sums;
     },
+
     deleteChoose(row) {
       let index = this.data.invoiceDetailList.indexOf(row);
       if (index >= 0) {

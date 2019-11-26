@@ -38,7 +38,7 @@
         >
           <template slot-scope="scope">
             <span
-              @click="dialogVisible = true"
+              @click="getRowData(scope.row)"
               class="d-text-blue"
             >{{scope.row.num}}</span>
           </template>
@@ -57,9 +57,10 @@
           label="含税成本金额"
           show-overflow-tooltip
         >
-          <template slot-scope="">
-            <!-- scope.row.inventoryPrice * 0.01 * scope.row.inventoryPricetaxRate -->
-            <span>不知道咋算</span>
+          <template slot-scope="scope">
+            <!-- scope.row.inventoryPrice * 0.01 * scope.row.taxRate -->
+
+            <span>{{scope.row.inventoryPrice + (scope.row.inventoryPrice*scope.row.taxRate*0.01)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -84,16 +85,17 @@
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="className"
           min-width="100"
           label="商品分类"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span>{{scope.row.unit|dictionary('PSI_SP_KIND')}}</span>
-          </template>
         </el-table-column>
 
         <el-table-column
@@ -123,7 +125,7 @@
     </form-card>
     <overflowSn
       :visible.sync='dialogVisible'
-      :form={commodityCode:detailForm.commodityCode,businessCode:drawerData.reportingLossesCode,page:1,limit:20}
+      :form={commodityCode:rowData.commodityCode,businessCode:drawerData.reportingLossesCode,page:1,limit:20}
     />
   </div>
 
@@ -144,10 +146,15 @@ export default {
         page: 1,
         limit: 20
       },
+      rowData: {},
       dialogVisible: false,
     }
   },
   methods: {
+    getRowData(row) {
+      this.rowData = row
+      this.dialogVisible = true
+    }
   },
   components: {
     overflowSn

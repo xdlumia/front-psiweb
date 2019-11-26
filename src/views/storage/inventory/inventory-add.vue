@@ -100,6 +100,7 @@ export default {
         creatorName: '',
         wmsName: '',
         wmsId: '',//库房id
+        source: '新增',//
         blitemPerson: '',//盘点人
         type: 1,//盘点类型  1 全盘  2抽盘
         note: '',//备注

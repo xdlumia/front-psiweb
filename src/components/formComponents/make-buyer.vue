@@ -1,15 +1,19 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-22 09:38:51
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-22 15:25:26
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-26 17:26:23
  * @Description: 销售方/购买方信息 已绑定 1
 */ 
 <template>
   <form-card :title="title">
     <el-row :gutter="10">
       <el-col :span="8">
-        <el-form-item :prop="`${prefix}Id`" :rules="[{required:true}]" label="名称">
+        <el-form-item
+          :prop="`${prefix}Id`"
+          :rules="[{required:true}]"
+          label="名称"
+        >
           <el-select
             :disabled="disabled"
             :loading="searching"
@@ -21,29 +25,43 @@
             filterable
             v-model="data[`${prefix}Id`]"
           >
-            <el-option :key="index" :label="item.name" :value="item.id" v-for="(item,index) in companyList"></el-option>
+            <el-option
+              :key="index"
+              :label="item.name"
+              :value="item.id"
+              v-for="(item,index) in companyList"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-col>
-      <el-col :key="index" :span="item.span || 8" v-for="(item,index) of formItems">
+      <el-col
+        :key="index"
+        :span="item.span || 8"
+        v-for="(item,index) of formItems"
+      >
         <el-form-item :label="item.label">
           <el-input
-            :disabled="disabled"
+            :disabled="true"
             :placeholder="`请输入${item.label}`"
             v-if="item.type =='input'"
             v-model.trim="currentCompany[item.prop]"
           />
           <el-select
-            :disabled="disabled"
+            :disabled="true"
             :placeholder="`请输入${item.label}`"
             class="wfull"
             v-else-if="item.type =='select'"
             v-model="currentCompany[item.prop]"
           >
-            <el-option :key="item.code" :label="item.content" :value="item.code" v-for="item in dictionaryOptions(item.dicName)" />
+            <el-option
+              :key="item.code"
+              :label="item.content"
+              :value="item.code"
+              v-for="item in dictionaryOptions(item.dicName)"
+            />
           </el-select>
           <el-date-picker
-            :disabled="disabled"
+            :disabled="true"
             :placeholder="`请选择${item.label}`"
             class="wfull"
             v-else-if="item.type =='date'"
@@ -93,11 +111,11 @@ export default {
     return {
       // prettier-ignore
       items: [
-        { label: '纳税人识别号', prop: 'taxNo', type: 'input', rules: [{ required: true , trigger: 'blur' }] }, 
-        { label: '地址', prop: 'address', type: 'input', rules: [{ required: true , trigger: 'blur' }] }, 
-        { label: '电话', prop: 'phone', type: 'input', rules: [{ required: true , trigger: 'blur' }] }, 
-        { label: '开户行', prop: 'bankName', type: 'input', rules: [{ required: true , trigger: 'blur' }] }, 
-        { label: '开户行账号', prop: 'bankAccount', type: 'input', rules: [{ required: true , trigger: 'blur' }] }, 
+        { label: '纳税人识别号', prop: 'taxNo', type: 'input', rules: [{ required: true, trigger: 'blur' }] },
+        { label: '地址', prop: 'address', type: 'input', rules: [{ required: true, trigger: 'blur' }] },
+        { label: '电话', prop: 'phone', type: 'input', rules: [{ required: true, trigger: 'blur' }] },
+        { label: '开户行', prop: 'bankName', type: 'input', rules: [{ required: true, trigger: 'blur' }] },
+        { label: '开户行账号', prop: 'bankAccount', type: 'input', rules: [{ required: true, trigger: 'blur' }] },
       ],
       companyList: [],
       currentCompany: {},
