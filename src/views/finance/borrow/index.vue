@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 15:43:53
+ * @LastEditTime: 2019-11-26 19:00:27
  * @Description: 销售-借款单
  */
 <template>
@@ -15,7 +15,7 @@
       :column="true"
       title="借款单"
       api="seePsiFinanceService.fborrowingList"
-      exportApi="seePsiSaleService.fborrowingExport"
+      exportApi="seePsiFinanceService.fborrowingExport"
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
     >
