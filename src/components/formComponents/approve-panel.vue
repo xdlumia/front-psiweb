@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 10:12:37
+ * @LastEditTime: 2019-11-26 11:15:15
  * @Description: 审核信息
 */
 <template>
@@ -31,19 +31,25 @@
 import ApproveCard from './approve-card';
 
 let busType = {
-  '15': 'BJD-001',//销售报价单
+  '1': 'psi_wms_swap_01', // 换货单编号
+  '5': 'psi_purchase_borrow_01', // 借入借出单
+  '11': 'psi_purchase_unpack_01', // 拆卸单编号
+  '15': 'psi_sales_quote_01', //销售报价单
   '16': 'XSCKD-001', //销售出库单
-  '50': 'FKD-001',//付款单
-  '17': 'XSTHD-001',//销售退货单
-  '18': 'XSHHD-001',//销售换货单
-  '19': 'FT-001',//分摊单
-  '39': 'psi_adjustPrice_1003 ',//销售调价单
-  '29': 'psi_purchase_stock',//备货单
-  '40': 'psi_purchase_adjust_pric_01',//采购调价单
-  '31': 'psi_purchase_alteration_01',//待审批采购退货单
-  '30': 'psi_purchase_putin_01',//待审批采购入库单
-  '56': 'TTZD-001',//账单调整单
-  '9998': 'psi_purchase_stock_01',//换货单
+  '17': 'psi_sales_return_01', //销售退货单
+  '18': 'psi_sales_exchange_01', //销售换货单
+  '19': 'psi_sales_apportion_01', //分摊单
+  '29': 'psi_purchase_stock', //采购备货单
+  '30': 'psi_purchase_storage_01', //采购入库单
+  '31': 'psi_purchase_reject_01', //采购退货单
+  '39': 'psi_adjustPrice_1003 ', //销售调价单
+  '40': 'psi_purchase_adjust_pric_01', //采购调价单
+  '50': 'psi_finance_pay_bill_01', //付款单
+  '56': 'TTZD-001', //账单调整单
+  '58': 'psi_invoice_001', // 待收票
+  '59': 'psi_invoice_002', // 待开票
+  '62': 'psi_finance_cost_01', // 费用单
+  '9998': 'psi_purchase_stock_01', //换货单
 }
 export default {
   props: {
