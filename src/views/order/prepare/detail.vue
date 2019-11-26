@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 16:06:51
+ * @LastEditTime: 2019-11-26 14:08:17
  * @Description: 备货单详情
 */
 <template>
@@ -65,7 +65,7 @@
         @click="showAddOrderStorage=true"
         size="mini"
         type="primary"
-        v-if="waitBuyingNumber>0&&detail&&[3].includes(detail.state)"
+        v-if="waitBuyingNumber>0&&detail&&[2,3].includes(detail.state)"
       >采购</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">

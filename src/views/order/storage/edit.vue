@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 17:12:39
+ * @LastEditTime: 2019-11-26 14:12:13
  * @Description: 采购入库单
 */
 <template>
@@ -27,7 +27,7 @@
         <el-form :model="form" class="p10" ref="form" size="mini" v-if="visible">
           <supplierInfo :data="form" @change="supplierChange" id="supplierInfo" />
           <companyInfo :data="form" id="companyInfo" />
-          <arrivalInfo :data="form" id="arrivalInfo" ref="arrivalInfo" v-if="form.source!='直发单'" />
+          <arrivalInfo :data="form" :hide="['saleTime']" id="arrivalInfo" ref="arrivalInfo" v-if="form.source!='直发单'" />
           <buyingDeliverInfo :data="form" id="deliverInfo" ref="deliverInfo" v-else />
           <buying-goods-edit
             :data="form"
