@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 17:37:42
+ * @LastEditTime: 2019-11-26 18:53:33
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -223,8 +223,6 @@ export default {
     };
   },
   created() {
-    console.log(this.$parent.button);
-
   },
   mounted() {
 
@@ -293,6 +291,8 @@ export default {
         }
         // 格式化导出接口
         let apiFn = this.exportApi.split('.').reduce((api, item) => api[item], this.$api)
+
+
         apiFn(params)
           .then(res => {
             if (res.data) {

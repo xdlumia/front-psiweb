@@ -7,7 +7,7 @@
     <el-table
       border
       size='mini'
-      :data='[rowData]'
+      :data='data.putawayCommodityList'
       ref="table"
       class="college-main mt15"
       style="max-height:300px"
