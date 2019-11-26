@@ -1,19 +1,31 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-22 13:41:33
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-22 15:21:59
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-26 11:37:08
  * @Description: 发票商品 自定义商品
 */
 <template>
   <div>
-    <form-card :key="i" class="mt10 d-relative" v-for="(goods,i) of data.invoiceDetailList.filter(item=>item.type==1)">
-      <i @click="remove(goods)" class="remove-icon el-icon-error d-pointer f20 d-text-qgray" v-if="!disabled"></i>
+    <form-card
+      :key="i"
+      class="mt10 d-relative"
+      v-for="(goods,i) of (data.invoiceDetailList || []).filter(item=>item.type==1)"
+    >
+      <i
+        @click="remove(goods)"
+        class="remove-icon el-icon-error d-pointer f20 d-text-qgray"
+        v-if="!disabled"
+      ></i>
       <el-row :gutter="10">
-        <el-col :key="index" :span="item.span || 8" v-for="(item,index) of formItems">
+        <el-col
+          :key="index"
+          :span="item.span || 8"
+          v-for="(item,index) of formItems"
+        >
           <el-form-item
             :label="item.label"
-            :prop="`invoiceDetailList.${data.invoiceDetailList.indexOf(goods)}.${item.prop}`"
+            :prop="`invoiceDetailList.${(data.invoiceDetailList || []).indexOf(goods)}.${item.prop}`"
             :rules="item.rules"
           >
             <el-input
@@ -22,7 +34,12 @@
               v-if="item.type =='input'"
               v-model.trim="goods[item.prop]"
             />
-            <el-input :disabled="true" :placeholder="`请输入${item.label}`" :value="item.format(goods)" v-else-if="item.type =='show'" />
+            <el-input
+              :disabled="true"
+              :placeholder="`请输入${item.label}`"
+              :value="item.format(goods)"
+              v-else-if="item.type =='show'"
+            />
             <el-select
               :disabled="disabled||item.disabled"
               :placeholder="`请输入${item.label}`"
@@ -30,7 +47,12 @@
               v-else-if="item.type =='select'"
               v-model="goods[item.prop]"
             >
-              <el-option :key="item.code" :label="item.content" :value="item.code" v-for="item in dictionaryOptions(item.dicName)" />
+              <el-option
+                :key="item.code"
+                :label="item.content"
+                :value="item.code"
+                v-for="item in dictionaryOptions(item.dicName)"
+              />
             </el-select>
             <el-date-picker
               :disabled="disabled||item.disabled"
@@ -44,7 +66,11 @@
         </el-col>
       </el-row>
     </form-card>
-    <div @click="add" class="add-bar d-text-gray ac f14 d-pointer" v-if="!disabled">+ 添加</div>
+    <div
+      @click="add"
+      class="add-bar d-text-gray ac f14 d-pointer"
+      v-if="!disabled"
+    >+ 添加</div>
   </div>
 </template>
 <script>
@@ -72,14 +98,14 @@ export default {
     return {
       // prettier-ignore
       items: [
-        { label: '货物名称', prop: 'articleName', type: 'input', }, 
-        { label: '规格类型', prop: 'specification', type: 'input', }, 
-        { label: '单位', prop: 'unit', type: 'input', }, 
-        { label: '数量', prop: 'quantity', type: 'input', rules: [{ required: true , trigger: 'blur' },{type:'positiveNum'},{validator:this.checkQuantity}] }, 
-        { label: '单价', prop: 'price', type: 'input', rules: [{ required: true , trigger: 'blur' },{type:'price'}] }, 
-        { label: '金额', prop: 'beforeTaxAmount', type: 'show', format:(a)=>+Number(+a.price * +a.quantity).toFixed(2)||0 }, 
-        { label: '税率', prop: 'taxRate', type: 'input', rules: [{ required: true , trigger: 'blur' },{validator:this.checkTax}] }, 
-        { label: '税额', prop: 'taxAmount', type: 'show', format:(a)=>+Number(+a.price * (+a.taxRate/100) * +a.quantity).toFixed(2)||0}, 
+        { label: '货物名称', prop: 'articleName', type: 'input', },
+        { label: '规格类型', prop: 'specification', type: 'input', },
+        { label: '单位', prop: 'unit', type: 'input', },
+        { label: '数量', prop: 'quantity', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'positiveNum' }, { validator: this.checkQuantity }] },
+        { label: '单价', prop: 'price', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'price' }] },
+        { label: '金额', prop: 'beforeTaxAmount', type: 'show', format: (a) => +Number(+a.price * +a.quantity).toFixed(2) || 0 },
+        { label: '税率', prop: 'taxRate', type: 'input', rules: [{ required: true, trigger: 'blur' }, { validator: this.checkTax }] },
+        { label: '税额', prop: 'taxAmount', type: 'show', format: (a) => +Number(+a.price * (+a.taxRate / 100) * +a.quantity).toFixed(2) || 0 },
       ]
     };
   },

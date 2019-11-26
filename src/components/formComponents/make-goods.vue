@@ -1,47 +1,115 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-22 11:35:40
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-22 15:20:18
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-26 11:34:51
  * @Description: 发票内容 商品列表 已绑定 1
 */
 <template>
-  <form-card class="invoice-goods" title="发票内容">
-    <el-table :data="data.invoiceDetailList.filter(item=>item.type==0)" :summary-method="getSum" show-summary size="mini">
-      <el-table-column label="商品编号" min-width="140" prop="commodityCode" show-overflow-tooltip></el-table-column>
-      <el-table-column label="商品名称" min-width="100" prop="articleName" show-overflow-tooltip></el-table-column>
-      <el-table-column label="商品数量" min-width="100" prop="quantity" show-overflow-tooltip>
+  <form-card
+    class="invoice-goods"
+    title="发票内容"
+  >
+    <el-table
+      :data="(data.invoiceDetailList || []).filter(item=>item.type==0)"
+      :summary-method="getSum"
+      show-summary
+      size="mini"
+    >
+      <el-table-column
+        label="商品编号"
+        min-width="140"
+        prop="commodityCode"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        label="商品名称"
+        min-width="100"
+        prop="articleName"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        label="商品数量"
+        min-width="100"
+        prop="quantity"
+        show-overflow-tooltip
+      >
         <template slot-scope="{$index,row}">
-          <el-form-item :prop="`invoiceDetailList.${$index}.quantity`" :rules="[{required:true},{type:'positiveNum'},{min:1}]" size="mini">
-            <el-input :disabled="disabled" class="wfull" v-model="row.quantity"></el-input>
+          <el-form-item
+            :prop="`invoiceDetailList.${$index}.quantity`"
+            :rules="[{required:true},{type:'positiveNum'},{min:1}]"
+            size="mini"
+          >
+            <el-input
+              :disabled="disabled"
+              class="wfull"
+              v-model="row.quantity"
+            ></el-input>
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="商品无税单价" min-width="140" prop="price" show-overflow-tooltip></el-table-column>
-      <el-table-column label="商品税率" min-width="100" prop="taxRate" show-overflow-tooltip></el-table-column>
-      <el-table-column label="商品含税单价" min-width="140" prop="taxPrice" show-overflow-tooltip>
+      <el-table-column
+        label="商品无税单价"
+        min-width="140"
+        prop="price"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        label="商品税率"
+        min-width="100"
+        prop="taxRate"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        label="商品含税单价"
+        min-width="140"
+        prop="taxPrice"
+        show-overflow-tooltip
+      >
         <template slot-scope="{row}">
           <span>{{+Number(+row.price * (1+(row.taxRate/100))).toFixed(2)||0}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="商品无税总价" min-width="140" prop="beforeTaxAmount" show-overflow-tooltip>
+      <el-table-column
+        label="商品无税总价"
+        min-width="140"
+        prop="beforeTaxAmount"
+        show-overflow-tooltip
+      >
         <template slot-scope="{row}">
           <span>{{+Number(+row.price * +row.quantity).toFixed(2)||0}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="商品含税总价" min-width="140" prop="afterTaxAmount" show-overflow-tooltip>
+      <el-table-column
+        label="商品含税总价"
+        min-width="140"
+        prop="afterTaxAmount"
+        show-overflow-tooltip
+      >
         <template slot-scope="{row}">
           <span>{{+Number((+row.price * (1+(row.taxRate/100))) * +row.quantity).toFixed(2)||0}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="是否与订单一致" min-width="140" prop="isOrder" show-overflow-tooltip>
+      <el-table-column
+        label="是否与订单一致"
+        min-width="140"
+        prop="isOrder"
+        show-overflow-tooltip
+      >
         <template slot-scope="{row}">
           <span>{{row.isOrder==0?'否':'是'}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="100" v-if="!disabled">
+      <el-table-column
+        label="操作"
+        min-width="100"
+        v-if="!disabled"
+      >
         <template slot-scope="{row}">
-          <i @click="deleteChoose(row)" class="el-icon-error d-pointer f20 d-text-qgray"></i>
+          <i
+            @click="deleteChoose(row)"
+            class="el-icon-error d-pointer f20 d-text-qgray"
+          ></i>
         </template>
       </el-table-column>
     </el-table>
@@ -91,8 +159,8 @@ export default {
                 item =>
                   +Number(
                     item[this.priceKey] *
-                      (1 + item.taxRate / 100) *
-                      item.commodityNumber || 0
+                    (1 + item.taxRate / 100) *
+                    item.commodityNumber || 0
                   ).toFixed(2)
               )
               .reduce((sum, item) => sum + item, 0)

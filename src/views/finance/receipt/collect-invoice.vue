@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 10:52:53
+ * @LastEditTime: 2019-11-26 11:41:03
  * @Description: 收票申请
 */
 <template>
@@ -100,7 +100,9 @@ export default {
   components: {},
   data() {
     return {
-      form: {},
+      form: {
+        invoiceDetailList: [], //发票列表
+      },
       alwaysDropAndCopyForm: true// 在getDetail返回数据后，重新覆盖form
     };
   },
