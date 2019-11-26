@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 18:16:49
+ * @LastEditTime: 2019-11-26 17:40:20
  * @Description: 退货扫码
 */
 
@@ -43,7 +43,7 @@
         :data="form"
       />
       <!-- 扫描记录 -->
-      <sacn-record />
+      <sacn-record :data="form" />
     </el-form>
   </el-dialog>
 </template> 
