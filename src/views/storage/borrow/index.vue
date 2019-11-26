@@ -161,7 +161,7 @@ export default {
         },
         {
           label: '生成/创建时间',
-          prop: 'Time',
+          prop: 'CreateTime',
           type: 'daterange',
           default: true
         },
