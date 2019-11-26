@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-22 17:38:16
+ * @LastEditTime: 2019-11-26 10:21:39
  * @Description: 目标管理
  -->
 <template>
@@ -14,7 +14,8 @@
       :busType="38"
       title="目标管理"
       api="seePsiCommonService.commonpromotiongoalList"
-      :params="queryForm"
+      :params="Object.assign(queryForm, params)"
+      exportApi="seePsiCommonService.commonpromotiongoalExport"
     >
       <template v-slot:filter>自定义筛选列</template>
       <!-- 自定义按钮功能 -->
@@ -56,7 +57,19 @@
 import addObjective from './add-objective'
 import detail from './detail'
 export default {
-  data() {
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
+  },
+  data () {
     return {
       rowData: null,
       code: null,
@@ -70,7 +83,7 @@ export default {
       filterOptions: [
         { label: '目标编号', prop: 'code', default: true },
         { label: '目标名称', prop: 'promotionName', default: true },
-        { label: '状态',
+        {          label: '状态',
           prop: 'state',
           type: 'select',
           default: true,
@@ -94,19 +107,19 @@ export default {
       ]
     }
   },
-  mounted() {
+  mounted () {
   },
   components: {
     addObjective,
     detail
   },
   methods: {
-    detail(row) {
+    detail (row) {
       this.rowData = row
       this.code = row.code
       this.showDetail = true
     },
-    commonwmsmanagerUpdateState(id, state) {
+    commonwmsmanagerUpdateState (id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -122,7 +135,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete(id) {
+    commonwmsmanagerLogicDelete (id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -138,10 +151,10 @@ export default {
         })
       })
     },
-    saveFacilitator() {
+    saveFacilitator () {
       this.$refs.addObjective && this.$refs.addObjective.commonserviceproviderSave()
     },
-    refresh() {
+    refresh () {
       this.visible = false
       this.$refs.table.reload()
     }

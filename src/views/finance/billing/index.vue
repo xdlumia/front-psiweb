@@ -15,7 +15,7 @@
       :column="true"
       title="待开票"
       api="seePsiFinanceService.finvoicebillingList"
-      exportApi="seePsiFinanceService.salesreturnedExport"
+      exportApi="seePsiFinanceService.finvoicebillingExport"
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
       @selection-change="selectionChange"
@@ -54,12 +54,11 @@
           @click="detail(row)"
           style="padding:0"
         >{{row.invoiceCode || '未确定发票号码'}}</el-button>
-        <el-button
-          type="text"
-          v-else-if="column.columnFields=='busCode'"
-          @click="detail(row)"
-          style="padding:0"
-        >{{row.busCode}}</el-button>
+        <span v-else-if="column.columnFields=='busCode'">
+          <!-- 关联单据编号 -->
+          <el-link :underline="false" @click="openBusPage(row)" class="f12" type="primary">{{value}}</el-link>
+        </span>
+
         <span v-else-if="column.columnFields=='state'">{{stateText[row.state]}}</span>
         <span
           v-else-if="column.columnFields=='invoiceTyepCode'"
@@ -75,6 +74,13 @@
       :code="code"
       :visible.sync="showDetail"
     ></detail>
+    <component
+      :code="currentBusCode"
+      :is="busInfo[currentBusType].detailPage"
+      :visible.sync="showBusDetail"
+      @reload="$refs.table.reload()"
+      v-if="showBusDetail"
+    />
   </div>
 </template>
 
@@ -82,33 +88,21 @@
 import invoiceMixin from '../invoice-mixins'
 import detail from './detail'
 import cancellation from './cancellation'
+import BusMixin from '@/views/finance/payment/busMixin';
 
 const filterOptions = [
-  { label: '发票类型', prop: 'invoiceTyepCode', default: true, type: 'dict',
-    dictName: 'CW_FP_LX' },
-  // { label: '账单状态',
-  //   prop: 'settleStatus',
-  //   type: 'select',
-  //   default: true,
-  //   options: [
-  //     { label: '未结清', value: 0 },
-  //     { label: '部分结清', value: 1 },
-  //     { label: '已结清', value: 2 },
-  //     { label: '已关闭', value: 3 }
-  //   ]
-  // },
+  {    label: '发票类型', prop: 'invoiceTyepCode', default: true, type: 'dict',
+    dictName: 'CW_FP_LX'  },
   { label: '发票号码', prop: 'invoiceCode', default: true },
   { label: '商品合计金额', prop: 'CommodityTotalAmount', default: true, type: 'numberrange' },
   { label: '税价合计金额', prop: 'TaxTotalAmount', default: true, type: 'numberrange' },
   { label: '合计税金', prop: 'AccountTotalAmount', default: true, type: 'numberrange' },
   { label: '票据金额', prop: 'InvoiceAmount', default: true, type: 'numberrange' },
-  // { label: '创建人', prop: 'creator', default: true, type: 'employee' },
-  // { label: '金额', prop: 'Amount', default: true, type: 'numberrange' },
   { label: '开票日期', prop: 'InvoiceDate', default: true, type: 'daterange' }
 ]
 
 export default {
-  mixins: [invoiceMixin],
+  mixins: [invoiceMixin, BusMixin],
   name: 'Return',
   components: {
     detail,
@@ -128,7 +122,7 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
       obsolete: false,
       showDetail: false,
@@ -166,15 +160,15 @@ export default {
   },
   watch: {
     'queryForm.companyId': {
-      handler(newValue) {
+      handler (newValue) {
         this.$refs.table.reload();
       }
     }
   },
-  mounted() {
+  mounted () {
   },
   methods: {
-    finvoicebillingDilution() {
+    finvoicebillingDilution () {
       if (!this.selectList.length) {
         this.$message.error('请选择发票')
         return
@@ -200,17 +194,17 @@ export default {
         })
       })
     },
-    selectionChange(val) {
+    selectionChange (val) {
       console.log(val)
       this.selectList = val
     },
-    detail(row) {
+    detail (row) {
       this.rowData = row
       this.code = row.id
       this.showDetail = true
     },
     // 按钮功能操作
-    eventHandle(type, row) {
+    eventHandle (type, row) {
       this[type] = true
       this.rowData = row || {}
       return

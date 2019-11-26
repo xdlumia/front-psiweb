@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-25 14:19:48
+ * @LastEditTime: 2019-11-25 14:24:04
  * @Description: 业务设置-库房
  -->
 <template>
@@ -26,11 +26,13 @@
           style="margin-top: 20px;"
           @click="save"
         >保存</el-button>
-        <el-button v-if="isEdit" size="small" style="margin-top: 20px;"
+        <el-button
+v-if="isEdit" size="small" style="margin-top: 20px;"
 @click="cancel">取消</el-button>
       </el-col>
     </div>
-    <el-form size="small" :model="warehouseEntity" :disabled="!isEdit"
+    <el-form
+size="small" :model="warehouseEntity" :disabled="!isEdit"
 label-width="190px">
       <fieldset class="d-fieldset mb20">
         <legend>
@@ -78,7 +80,7 @@ label-width="190px">
             >
               <img style="width:100%;height:100%" src="@/assets/img/adminimg.png" />
             </div>
-            <span>{{item.employeeName}}</span>
+            <span class="d-text-qgray">{{item.employeeName}}</span>
           </div>
 
           <employees-chosen
@@ -146,7 +148,7 @@ label-width="190px">
             >
               <img style="width:100%;height:100%" src="@/assets/img/adminimg.png" />
             </div>
-            <span>{{item.employeeName}}</span>
+            <span class="d-text-qgray">{{item.employeeName}}</span>
           </div>
 
           <employees-chosen

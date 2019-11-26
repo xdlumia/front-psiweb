@@ -15,7 +15,7 @@
       :column="true"
       title="发票本"
       api="seePsiFinanceService.finvoicedatumList"
-      exportApi="seePsiFinanceService.salesreturnedExport"
+      exportApi="seePsiFinanceService.finvoicedatumExport"
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
     >

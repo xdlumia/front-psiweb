@@ -15,7 +15,7 @@
       :column="true"
       title="费用单"
       api="seePsiFinanceService.fcostList"
-      exportApi="seePsiFinanceService.salesreturnedExport"
+      exportApi="seePsiFinanceService.fcostExport"
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
     >
