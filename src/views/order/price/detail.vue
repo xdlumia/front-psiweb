@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 17:36:08
+ * @LastEditTime: 2019-11-26 17:52:24
  * @Description: 采购调价单
 */
 <template>
@@ -23,7 +23,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
-        v-if="detail&&[0].includes(detail.approvalState)"
+        v-if="detail&&[0].includes(detail.state)"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpriceCancel',{
@@ -33,7 +33,7 @@
         },'撤销审核')"
         size="mini"
         type="danger"
-        v-if="detail&&[1].includes(detail.approvalState)"
+        v-if="detail&&[1].includes(detail.state)"
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpricePassApproval',{
@@ -43,7 +43,7 @@
         },'通过')"
         size="mini"
         type="primary"
-        v-if="detail&&[1].includes(detail.approvalState)"
+        v-if="detail&&[1].includes(detail.state)"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpriceReject',{
@@ -53,14 +53,14 @@
         },'驳回',true)"
         size="mini"
         type="danger"
-        v-if="detail&&[1].includes(detail.approvalState)"
+        v-if="detail&&[1].includes(detail.state)"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0].includes(detail.approvalState)">编辑</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0].includes(detail.state)">编辑</el-button>
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpriceLogicDelete',{ id:detail.id },'删除')"
         size="mini"
         type="danger"
-        v-if="detail&&[0].includes(detail.approvalState)"
+        v-if="detail&&[0].includes(detail.state)"
       >删除</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
