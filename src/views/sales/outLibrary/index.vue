@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 14:57:02
+ * @LastEditTime: 2019-11-26 16:13:28
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -15,7 +15,7 @@
       :column="true"
       title="销售出库单"
       api="seePsiSaleService.salesshipmentList"
-      exprotApi="seePsiSaleService.salesshipmentExport"
+      exportApi="seePsiSaleService.salesshipmentExport"
       :params="Object.assign(queryForm,params)"
     >
       <template slot-scope="{column,row,value}">
