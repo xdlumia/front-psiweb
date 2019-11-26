@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 11:41:03
+ * @LastEditTime: 2019-11-26 17:24:21
  * @Description: 收票申请
 */
 <template>
@@ -121,16 +121,47 @@ export default {
       });
     }
   },
-  mounted() { },
+  mounted() {
+    this.getBusinessCommodityList()
+  },
+  watch: {
+    visible: {
+      handler(val) {
+        if (val) {
+          this.getBusinessCommodityList()
+        }
+      },
+      immediate: true
+    }
+  },
   methods: {
+    // 获取业务商品列表
+    getBusinessCommodityList() {
+      // invoiceType=1 是收票的时候才加载商品信息
+      if (!this.invoiceType == 1 && this.type != 'edit') {
+        return
+      }
+      this.$api.seePsiSaleService.salesshipmentBusinessCommodityEntity({ code: this.code })
+        .then(res => {
+          let data = res.data || []
+          // type == 0是请求过来的商品信息
+          data = data.map(item => {
+            item.type = 0
+            return item
+          })
+          // this.form.invoiceDetailList = data
+          this.$set(this.form, 'invoiceDetailList', data)
+
+        })
+    },
     async getDetail() {
-      if (this.code || this.id) {
-        let {
-          data
-        } = this.$api.seePsiPurchaseService.purchasestockorderGetByCode(
-          null,
-          this.id
-        );
+      if (this.invoiceType != 1 && this.code) {
+        let { data } = this.$api.seePsiPurchaseService.purchasestockorderGetByCode(null, this.code);
+        return data;
+      }
+      // 如果是收票
+      else if (this.invoiceType == 1 && this.id) {
+        let { data } = this.$api.seePsiFinanceService.finvoicebillingInfo(null, this.id);
         return data;
       } else if (this.rowData) return this.rowData;
     },
@@ -143,6 +174,8 @@ export default {
           type: 'warning'
         });
       }
+      console.log(this.$refs.form.validate());
+
       await this.$refs.form.validate();
       // invoiceType = 1是开票 否则是收票
       if (this.invoiceType == 1) {

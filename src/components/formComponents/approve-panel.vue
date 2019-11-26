@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 11:15:15
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-26 16:25:09
  * @Description: 审核信息
 */
 <template>
@@ -15,15 +15,22 @@
         type="primary"
       >{{showHis?'返回':'历史记录'}}</el-link>
     </div>
-    <div class="progress-list" v-if="!showHis">
+    <div
+      class="progress-list"
+      v-if="!showHis"
+    >
       <ApproveCard :progress="progressData" />
     </div>
     <div
       class="progress-list"
       v-else
     >
-      <ApproveCard />
-      <ApproveCard />
+      <ApproveCard
+        v-for="(item,index) of this.hisData"
+        :key="index"
+        :currProgress="item"
+        :progress="progressData"
+      />
     </div>
   </form-card>
 </template>
@@ -53,14 +60,11 @@ let busType = {
 }
 export default {
   props: {
-    apprpvalNode: [Number, String],
     // 业务类型
     busType: {
       required: false,
-      default: 'BJD-001'
     },
-    id:[Number,String]
-
+    id: [Number, String]
   },
   components: {
     ApproveCard
@@ -82,32 +86,31 @@ export default {
     };
   },
   async mounted() {
+    // 查询当前项共有多少节点
     await this.queryProcessDefinitionSubTask()
-    this.processtaskQueryProcessHistoryEntity()
+    await this.processtaskQueryProcessHistoryEntity()
   },
   methods: {
     // 查询当前项共有多少节点
-    queryProcessDefinitionSubTask() {
+    async queryProcessDefinitionSubTask() {
       let params = {
         typeArray: [busType[this.busType]]
       }
-      this.$api.seeWorkflowService.processdefinitionQueryProcessDefinitionSubTask(params)
-        .then(res => {
-          this.progressData = res.data || []
-        })
+      let { data } = await this.$api.seeWorkflowService.processdefinitionQueryProcessDefinitionSubTask(params)
+      this.progressData = data
     },
     // 查询历史操作
-    processtaskQueryProcessHistoryEntity() {
-
+    async processtaskQueryProcessHistoryEntity() {
 
       let params = {
         processType: busType[this.busType],
         businessId: this.id || this.$parent.rowData.id //一般详情都会传rowData 当前行操作数据 里面有id
       }
-      this.$api.seeWorkflowService.processtaskQueryProcessHistoryEntity(params)
-        .then(res => {
-          console.log(res.data);
-        })
+      let { data } = await this.$api.seeWorkflowService.processtaskQueryProcessHistoryEntity(params)
+      this.hisData = data || []
+      // 历史记录的最后一个节点就是当前节点
+      let lastHis = this.hisData[this.hisData.length - 1]
+
     }
 
   },
