@@ -103,7 +103,7 @@ export default {
         { label: '组装单编号', prop: 'assembleOrderCode', default: true },
         {
           label: '组装单状态',
-          prop: 'assembleOrderState',
+          prop: 'state',
           type: 'select',
           options: [
             { label: '待执行', value: '1' },
