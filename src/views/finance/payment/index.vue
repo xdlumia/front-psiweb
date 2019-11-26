@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 18:43:22
+ * @LastEditTime: 2019-11-26 18:46:37
  * @Description: 付款单
 */
 <template>
@@ -19,7 +19,7 @@
       v-loading="loading"
     >
       <template slot="top-filter">
-        <bill-account-selector @change="reload" v-model="params.companySettlementId" />
+        <bill-account-selector @change="reload" v-model="defaultParams.companySettlementId" />
       </template>
       <template slot="button">
         <!-- 15.勾选付款单后，展示批量付款申请。新建、已驳回状态可点击批量提交付款申请。如勾选中包含了其他状态，则只提交新建、已驳回的即可。批量付款申请，不需弹出付款申请确认。 -->

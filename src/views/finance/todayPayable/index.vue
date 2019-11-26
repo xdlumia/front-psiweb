@@ -21,7 +21,7 @@
       v-loading="loading"
     >
       <template slot="top-filter">
-        <bill-account-selector @change="reload" v-model="params.companySettlementId" />
+        <bill-account-selector @change="reload" v-model="defaultParams.companySettlementId" />
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='billCode'">
