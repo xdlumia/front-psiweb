@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 11:29:31
+ * @LastEditTime: 2019-11-26 15:20:16
  * @Description: 今日应付账单
 */
 <template>
@@ -12,7 +12,7 @@
       :busType="pageConfig.busType"
       :exportApi="pageConfig.api.export"
       :filterOptions="filterOptions"
-      :params="params"
+      :params="Object.assign({ page: 1, limit: 15,billType:1 },params)"
       :selectable="selectable"
       :selection="true"
       :title="pageConfig.title"

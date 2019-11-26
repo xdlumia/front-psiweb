@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-11-04 13:36:20
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 09:08:28
+ * @LastEditTime: 2019-11-26 15:19:43
  * @Description: 应付账单
 */
 <template>
-  <FinanceTodayPayable :button="button" :pageConfig="pageConfig" :params="params" />
+  <FinanceTodayPayable :button="button" :pageConfig="pageConfig" :params="Object.assign({ page: 1, limit: 15,billType:1 },params)" />
 </template>
 <script>
 export default {
@@ -19,7 +19,7 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => ({ page: 1, limit: 15,billType:1 })
+      default: () => ({ page: 1, limit: 15, billType: 1 })
     }
   },
   data() {

@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-22 11:35:40
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 11:34:51
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-26 14:59:38
  * @Description: 发票内容 商品列表 已绑定 1
 */
 <template>
@@ -37,7 +37,7 @@
         <template slot-scope="{$index,row}">
           <el-form-item
             :prop="`invoiceDetailList.${$index}.quantity`"
-            :rules="[{required:true},{type:'positiveNum'},{min:1}]"
+            :rules="[{required:true},{type:'positiveNum'}]"
             size="mini"
           >
             <el-input
@@ -77,7 +77,7 @@
         show-overflow-tooltip
       >
         <template slot-scope="{row}">
-          <span>{{+Number(+row.price * +row.quantity).toFixed(2)||0}}</span>
+          <span>{{calcBeforeTaxAmount(row)}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -87,7 +87,7 @@
         show-overflow-tooltip
       >
         <template slot-scope="{row}">
-          <span>{{+Number((+row.price * (1+(row.taxRate/100))) * +row.quantity).toFixed(2)||0}}</span>
+          <span>{{calcAfterTaxAmount(row)}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -140,6 +140,12 @@ export default {
     return {};
   },
   methods: {
+    calcBeforeTaxAmount(row){
+      return +Number(+row.price * +row.quantity).toFixed(2)||0
+    },
+    calcAfterTaxAmount(row){
+      return +Number((+row.price * (1+(row.taxRate/100))) * +row.quantity).toFixed(2)||0
+    },
     getSum(param) {
       let { columns, data } = param;
       data = data || [];
@@ -152,20 +158,16 @@ export default {
               .map(item => Number(item[prop]) || 0)
               .reduce((sum, item) => sum + item, 0)
           ).toFixed(2);
-        } else if (['preTaxAmount'].includes(col.property)) {
-          sums[index] = +Number(
-            data
-              .map(
-                item =>
-                  +Number(
-                    item[this.priceKey] *
-                    (1 + item.taxRate / 100) *
-                    item.commodityNumber || 0
-                  ).toFixed(2)
-              )
+        } else if (['beforeTaxAmount'].includes(col.property)) {
+          sums[index] = +Number(data
+              .map(item=>this.calcBeforeTaxAmount(item))
               .reduce((sum, item) => sum + item, 0)
           ).toFixed(2);
-          this.$emit('totalAmountChange', sums[index]);
+        } else if (['afterTaxAmount'].includes(col.property)) {
+          sums[index] = +Number(data
+              .map(item=>this.calcAfterTaxAmount(item))
+              .reduce((sum, item) => sum + item, 0)
+          ).toFixed(2);
         } else if (index == 0) {
           sums[0] = '总计';
         } else sums[index] = '';

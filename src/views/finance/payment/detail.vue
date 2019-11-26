@@ -2,11 +2,18 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 18:19:57
+ * @LastEditTime: 2019-11-26 17:41:13
  * @Description: 付款单
 */
 <template>
-  <sideDetail :status="status" :visible="showDetailPage" @close="close" title="付款单" v-loading="loading" width="990px">
+  <sideDetail
+    :status="status"
+    :title="`付款单 ${detail?detail.billCode:''}`"
+    :visible="showDetailPage"
+    @close="close"
+    v-loading="loading"
+    width="990px"
+  >
     <template slot="button">
       <el-button @click="showApply=true" size="mini" type="primary" v-if="detail&&[-1,3].includes(detail.state)">付款申请</el-button>
       <el-button

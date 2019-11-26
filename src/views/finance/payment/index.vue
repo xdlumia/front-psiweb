@@ -2,14 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 10:46:47
+ * @LastEditTime: 2019-11-26 15:20:07
  * @Description: 付款单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <tableView
       :filterOptions="filterOptions"
-      :params="params"
+      :params="Object.assign({ page: 1, limit: 15,billType:1 },params)"
       :selection="true"
       api="seePsiFinanceService.paybillList"
       busType="50"

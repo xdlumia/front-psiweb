@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 18:18:32
+ * @LastEditTime: 2019-11-26 14:53:35
  * @Description: 采购入库单
 */
 <template>
@@ -80,7 +80,7 @@
           <el-form :model="detail" size="mini" v-if="detail">
             <supplierInfo :data="detail" disabled id="supplierInfo" />
             <companyInfo :data="detail" disabled id="companyInfo" />
-            <arrivalInfo :data="detail" disabled id="arrivalInfo" v-if="detail.source!='直发单'" />
+            <arrivalInfo :data="detail" :hide="detail.source=='备货单'?['saleTime']:[]" disabled id="arrivalInfo" v-if="detail.source!='直发单'" />
             <buyingDeliverInfo :data="detail" disabled id="deliverInfo" ref="deliverInfo" v-else />
             <buying-goods-edit
               :data="detail"
@@ -157,7 +157,7 @@
     />
     <orderContract :rowData="orderContractData" :visible.sync="showOrderContract" v-if="showOrderContract" />
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
-    <CollectInvoiceDialog :rowData="collectInvoiceData" :visible.sync="showCollectInvoice" v-if="showCollectInvoice" />
+    <CollectInvoiceDialog :invoiceType="0" :rowData="collectInvoiceData" :visible.sync="showCollectInvoice" v-if="showCollectInvoice" />
   </sideDetail>
 </template>
 <script>
@@ -294,10 +294,12 @@ export default {
               isOrder: 1,
               type: 0,
               taxRate: item.taxRate,
-              price: item.purchasePrice
+              price: item.purchasePrice,
+              quantity: item.commodityNumber
             };
           })
       };
+      console.log(this.collectInvoiceData);
       this.showCollectInvoice = true;
     }
   }

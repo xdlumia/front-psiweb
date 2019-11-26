@@ -2,11 +2,18 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 18:15:33
+ * @LastEditTime: 2019-11-26 17:36:35
  * @Description: 换货单
 */
 <template>
-  <sideDetail :status="status" :visible="showDetailPage" @close="close" title="换货单" v-loading="loading" width="990px">
+  <sideDetail
+    :status="status"
+    :title="`换货单 ${detail?detail.swapOrderCode:''}`"
+    :visible="showDetailPage"
+    @close="close"
+    v-loading="loading"
+    width="990px"
+  >
     <template slot="button">
       <el-button
         @click="$submission('seePsiWmsService.wmsswaporderSubmitApproval',{
