@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 10:58:09
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-26 10:39:55
  * @Description: 表格头部 
  */
 <template>
@@ -41,6 +41,7 @@
           <el-button
             size="mini"
             @click="$emit('moreHandle', 'export')"
+            v-if="moreButton"
           >导出
           </el-button>
           <slot name="moreButton"></slot>

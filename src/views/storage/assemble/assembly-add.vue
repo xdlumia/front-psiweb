@@ -15,7 +15,7 @@
   >
     <el-container>
       <el-main
-        :style="{
+        :style="{ 
                 maxHeight:maxHeight+'px'
             }"
         style="padding:0;"

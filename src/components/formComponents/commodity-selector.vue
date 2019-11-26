@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 16:55:38
+ * @LastEditTime: 2019-11-26 10:03:58
  * @Description: 商品输入选框 字段已绑定 1
 */
 <template>
@@ -26,42 +26,24 @@
         v-for="(item,i) in options"
       >
         <el-row>
-          <el-col
-            :span="6"
-            class="b d-text-black"
-            v-if="i==0"
-          >商品名称</el-col>
-          <el-col
-            :span="18"
-            class="b d-text-black"
-            v-if="i==0"
-          >商品编号</el-col>
-          <el-col
-            :span="6"
-            class="d-hidden d-elip"
-          >{{item.goodsName}}</el-col>
-          <el-col
-            :span="18"
-            class="d-hidden d-elip"
-          >
+          <el-col :span="6" class="b d-text-black" v-if="i==0">商品名称</el-col>
+          <el-col :span="18" class="b d-text-black" v-if="i==0">商品编号</el-col>
+          <el-col :span="6" class="d-hidden d-elip">{{item.goodsName}}</el-col>
+          <el-col :span="18" class="d-hidden d-elip">
             <span :title="item.commodityCode">{{item.commodityCode}}</span>
           </el-col>
         </el-row>
       </el-option>
     </el-select>
-    <i
-      @click="openDialog"
-      class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"
-      v-if="!disabled"
-    ></i>
+    <i @click="openDialog" class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon" v-if="!disabled"></i>
     <commodity-choose
-      ref="commodityChoose"
       :kinds="kinds"
       :multiple="multiple"
       :params="wmsId?{wmsId}:params"
       :sn="sn"
       :visible.sync="showCommodityGoods"
       @choose="choose"
+      ref="commodityChoose"
       v-if="showCommodityGoods||showed"
     />
   </span>
@@ -99,6 +81,7 @@ export default {
     return {
       showCommodityGoods: false,
       selectGood: '',
+      preSelectGoods: '',
       options: [],
       showed: false,
       loading: false,
@@ -108,18 +91,20 @@ export default {
   mounted() {
     if (this.value) {
       this.selectGood = this.value;
+      this.preSelectGoods = this.value;
     } else {
       this.search();
       this.$root.$on('loadSearch', () => {
-        this.searchTable = []
+        this.searchTable = [];
         this.search();
         this.$refs.commodityChoose.reload();
-      })
+      });
     }
   },
   watch: {
     value() {
       this.selectGood = this.value || '';
+      this.preSelectGoods = this.value || '';
     }
   },
   methods: {
@@ -136,6 +121,7 @@ export default {
           this.options.push(e);
         }
         this.selectGood = e.commodityCode;
+        this.preSelectGoods = e.commodityCode;
       }
       const choose = e.filter(a => !this.codes.includes(a.commodityCode));
       if (choose.length) {
@@ -143,7 +129,7 @@ export default {
       }
     },
     async search(words = '') {
-      console.log('43523234')
+      console.log('43523234');
       words = String(words).trim();
       if (this.searchTable[words]) {
         return (this.options = this.searchTable[words]);
@@ -165,7 +151,7 @@ export default {
       this.options = data || [];
       this.loading = false;
       this.searchTable[words] = data;
-      this.$emit('response', data)
+      this.$emit('response', data);
     },
     onSelect(e) {
       const goods = this.options.filter(
@@ -178,7 +164,7 @@ export default {
           this.selectGood = '';
         }
       } else {
-        this.selectGood = '';
+        this.selectGood = this.preSelectGoods || '';
       }
     }
   }
