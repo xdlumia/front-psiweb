@@ -110,6 +110,7 @@ export default {
           prop: 'pickingState',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '完成拣货', value: '2' },
             { label: '部分拣货', value: '1' },
             { label: '待拣货', value: '0' },
@@ -122,6 +123,7 @@ export default {
           prop: 'assemblyState',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '未开始', value: '0' },
             { label: '待组装', value: '1' },
             { label: '部分组装', value: '2' },
@@ -135,6 +137,7 @@ export default {
           prop: 'deliverState',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '待发货', value: '0' },
             { label: '完成发货', value: '1' },
             { label: '终止', value: '2' }

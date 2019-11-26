@@ -40,7 +40,7 @@
       v-if="tableVisible"
     />
     <assembleDetails
-      :code="drawerData.assembleOrderCode"
+      :code="rowData.assembleOrderCode"
       :data='rowData'
       :visible.sync='assembleVisible'
       v-if="assembleVisible"
@@ -103,6 +103,7 @@ export default {
           prop: 'state',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '待组装', value: '1' },
             { label: '部分组装', value: '2' },
             { label: '完成组装', value: '3' },
@@ -116,6 +117,7 @@ export default {
           prop: 'pickingState',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '部分拣货', value: '1' },
             { label: '完成拣货', value: '2' },
             { label: '待拣货 ', value: '0' },

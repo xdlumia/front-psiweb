@@ -104,6 +104,7 @@ export default {
           prop: 'type',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '报溢', value: '1' },
             { label: '报损', value: '2' }
           ],

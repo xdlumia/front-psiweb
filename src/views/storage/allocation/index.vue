@@ -97,6 +97,7 @@ export default {
           prop: 'state',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '待调拨', value: '1' },
             { label: '部分调拨', value: '2' },
             { label: '完成调拨', value: '3' },
@@ -109,6 +110,7 @@ export default {
           prop: 'allocationType',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '内调', value: '1' },
             { label: '外调', value: '2' }
           ],
@@ -193,8 +195,8 @@ export default {
             item.label = item.name
             item.value = item.id
           })
+          this.usableList.unshift({ label: '全部', value: '' })
           this.filterOptions[3].options = this.usableList
-          this.filterOptions[4].options = this.usableList
         })
         .finally(() => {
 

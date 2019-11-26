@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 19:28:58
+ * @LastEditTime: 2019-11-26 19:08:23
  * @Description: 采购-借入借出单
 */
 <template>
@@ -82,8 +82,8 @@ export default {
       },
       // prettier-ignore
       filterOptions: [
-        { label: '销售单编号', prop: 'salesSheetCode',default:true },
         { label: '借入借出单编号', prop: 'borrowLoanCode',default:true },
+        { label: '销售出库单编号', prop: 'salesShipmentCode',default:true },
         { label: '借入借出类型', prop: 'borrowLoanType',default:true,type:'select',options:[
           {label:'借入',value:0},
           {label:'借出',value:1},

@@ -83,6 +83,7 @@ export default {
           prop: 'state',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '待换货', value: '2' },
             { label: '部分换货', value: '3' },
             { label: '完成换货', value: '4' },

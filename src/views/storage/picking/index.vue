@@ -130,6 +130,7 @@ export default {
           prop: 'state',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '完成拣货', value: '2' },
             { label: '部分拣货', value: '1' },
             { label: '待拣货', value: '0' },
