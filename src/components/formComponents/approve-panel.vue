@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 15:41:23
+ * @LastEditTime: 2019-11-26 10:12:37
  * @Description: 审核信息
 */
 <template>
@@ -38,7 +38,7 @@ let busType = {
   '18': 'XSHHD-001',//销售换货单
   '19': 'FT-001',//分摊单
   '39': 'psi_adjustPrice_1003 ',//销售调价单
-  '29': 'psi_purchase_stock_01',//备货单
+  '29': 'psi_purchase_stock',//备货单
   '40': 'psi_purchase_adjust_pric_01',//采购调价单
   '31': 'psi_purchase_alteration_01',//待审批采购退货单
   '30': 'psi_purchase_putin_01',//待审批采购入库单
