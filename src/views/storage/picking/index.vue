@@ -19,6 +19,7 @@
       title="拣货单"
     >
       <template slot-scope="{column,row,value}">
+        <span v-if="column.columnFields=='state'">{{pickingState[value]}}</span>
         <span
           v-if="column.columnFields=='pickingOrderCode'"
           class="d-text-blue d-pointer"
@@ -29,17 +30,17 @@
           class="d-text-blue d-pointer"
           @click="getVisible(row)"
         >{{value}}</span>
-        <span
-          v-else-if="column.columnFields=='shipmentCode'"
-          class="d-text-blue d-pointer"
-          @click="getshipVisible(row)"
-        >{{value}}</span>
-        <span v-else-if="column.columnFields=='state'">{{value == 0 ? '待拣货' : value == 1 ? '部分拣货' : value == 2 ? '完成拣货' : value == -1 ? '终止' : ''}}</span>
         <span v-else-if="column.columnFields=='commodityCategorys'">
           {{(dictionaryOptions('PSI_SP_KIND').forEach((item) => {
           classForm[item.code] = item.content
           }),value.split(',').map(item=> classForm[item])).join(',')}}
         </span>
+        <span
+          v-else-if="column.columnFields=='salesSheetCode'"
+          class="d-text-blue d-pointer"
+          @click="getshipVisible(row)"
+        >{{value}}</span>
+
         <span v-else>{{value}}</span>
       </template>
     </TableView>
@@ -58,7 +59,7 @@
       @reload='reload'
     />
     <shipDetails
-      :code="drawerData.shipmentCode"
+      :code="drawerData.salesSheetCode"
       :data='shipData'
       :visible.sync='shipVisible'
       v-if="shipVisible"
@@ -104,11 +105,11 @@ export default {
         page: 1,
         limit: 20
       },
-      statea: {
+      pickingState: {
+        '-1': '终止',
         0: '待拣货',
         1: '部分拣货',
-        2: '完成拣货',
-        '-1': '终止',
+        2: '完成拣货'
       },
       componentActive: '',//当前的组件
       tableVisible: false,//销售单右侧抽屉
@@ -120,7 +121,7 @@ export default {
       },
       activeName: '',
       filterOptions: [
-        { label: '销售单编号', prop: 'shipmentCode', default: true },
+        { label: '销售单编号', prop: 'salesSheetCode', default: true },
         { label: '组装任务编号', prop: 'assembleTaskCode', default: true },
         { label: '客户名称', prop: 'clientName', default: true },
         { label: '拣货单编号', prop: 'pickingOrderCode', default: true },
