@@ -29,8 +29,8 @@
         </div>
         <div class="ml15">
           <p class="f16 b">{{drawerData.goodsName}}-{{drawerData.commodityCode}}</p>
-          <p class='d-text-qgray mt5'>商品类别：{{drawerData.categoryCode}}</p>
-          <p class='d-text-qgray mt5'>商品分类：{{drawerData.firstClassName}}</p>
+          <p class='d-text-qgray mt5'>商品类别：{{drawerData.categoryCode | dictionary('PSI_SP_KIND')}}</p>
+          <p class='d-text-qgray mt5'>商品分类：{{drawerData.className}}</p>
           <p class='d-text-qgray mt5'>商品规格：{{drawerData.specOne}}</p>
           <p class='d-text-qgray mt5'>商品配置：{{drawerData.configName}}</p>
         </div>

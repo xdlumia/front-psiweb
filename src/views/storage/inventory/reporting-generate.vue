@@ -301,7 +301,7 @@ export default {
         1: '报溢',
         2: '报损'
       },
-      creatorName:'',
+      creatorName: '',
       addForm: {
         commodityList: [],//商品列表
         type: 0,//类别（1-报溢 2-报损）
@@ -311,6 +311,8 @@ export default {
         source: '盘点单',
         totalCostPrice: '',//成本金额总计
         taxInclusiveTotalCostPrice: '',//含税成本金额总计
+        businessId: '',//盘点单id
+        bussinessType: 0,//盘点单
       },
     };
   },
@@ -339,6 +341,7 @@ export default {
       this.addForm.type = this.type
       this.addForm.wmsId = this.data.wmsId
       this.addForm.note = this.data.note
+      this.addForm.businessId = this.data.id
       this.$api.seePsiWmsService.wmsreportinglossesSave(this.addForm)
         .then(res => {
           this.$emit('reload')

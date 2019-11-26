@@ -26,11 +26,11 @@
           @click="getputinVisible(row)"
         >{{value}}</span>
         <span
-          v-if="column.columnFields=='purchaseCode'"
+          v-else-if="column.columnFields=='purchaseCode'"
           class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='putinState'">{{value == 0 ? '待入库' : value == 1 ? '部分完成' : value == 2 ? '完成入库' : value == 3 ? '终止' : '全部'}}</span>
+        <span v-else-if="column.columnFields=='putinState'">{{value == 0 ? '待入库' : value == 1 ? '部分完成' : value == 2 ? '完成入库' : value == 3 ? '终止' : ''}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
@@ -116,18 +116,18 @@ export default {
           ],
           default: true
         },
-        {
-          label: '拆卸任务状态',
-          prop: 'pickingState',
-          type: 'select',
-          options: [
-            { label: '完成拣货', value: '2' },
-            { label: '部分拣货', value: '1' },
-            { label: '待拣货', value: '0' },
-            { label: '终止', value: '-1' }
-          ],
-          default: true
-        },
+        // {
+        //   label: '拆卸任务状态',
+        //   prop: 'pickingState',
+        //   type: 'select',
+        //   options: [
+        //     { label: '完成拣货', value: '2' },
+        //     { label: '部分拣货', value: '1' },
+        //     { label: '待拣货', value: '0' },
+        //     { label: '终止', value: '-1' }
+        //   ],
+        //   default: true
+        // },
         {
           label: '入库数量',
           prop: 'WillPutinNum',
@@ -149,6 +149,12 @@ export default {
           default: true,
           int: true
         },
+        {
+          label: '入库人',
+          prop: 'putinPerson',
+          type: 'employee',
+          default: true
+        },
         // { label: 'creator', prop: 'creator', type: 'employee', default: true },
         {
           label: '生成时间',
@@ -167,6 +173,9 @@ export default {
       assembleVisible: false,
       rowData: {}
     };
+  },
+  created() {
+    this.commonwmsmanagerUsableList()
   },
   methods: {
     // 点击打开右侧边栏
@@ -188,7 +197,23 @@ export default {
     getputinVisible(row) {
       this.assembleVisible = true
       this.rowData = row
-    }
+    },
+    //请求供应商列表，用作筛选
+    commonwmsmanagerUsableList() {
+      this.$api.seePsiCommonService.commonsupplierinfoPagelist({ page: 1, limit: 100 })
+        .then(res => {
+          this.usableList = res.data || []
+          this.usableList.forEach((item) => {
+            item.label = item.supplierName
+            item.value = item.id
+          })
+          this.filterOptions[1].options = this.usableList
+          console.log(this.usableList, 'this.usableListthis.usableListthis.usableList')
+        })
+        .finally(() => {
+
+        })
+    },
   }
 };
 </script>

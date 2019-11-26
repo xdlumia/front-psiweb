@@ -131,7 +131,7 @@ export default {
         },
         {
           label: '盘点库房',
-          prop: 'wmsName',
+          prop: 'wmsId',
           type: 'select',
           options: [
             { label: '内调', value: '1' },
@@ -141,7 +141,7 @@ export default {
         },
         {
           label: '盘盈数量',
-          prop: 'inventorySurplusNum',
+          prop: 'InventorySurplusNum',
           type: 'numberRange',
           default: true
         },
@@ -166,8 +166,8 @@ export default {
         },
         {
           label: '创建时间',
-          prop: 'createTime',
-          type: 'employee',
+          prop: 'CreateTime',
+          type: 'daterange',
           default: true
         },
         {
@@ -176,22 +176,17 @@ export default {
           type: 'employee',
           default: true
         },
-        {
-          label: '创建部门',
-          prop: 'deptTotalCode',
-          type: 'employee',
-          default: true
-        },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
     };
   },
-  mounted() {
+  created() {
     this.commonwmsmanagerUsableList()
   },
   methods: {
-    //请求可用库房
+    //请求所有库房
     commonwmsmanagerUsableList() {
-      this.$api.seePsiWmsService.commonwmsmanagerUsableList()
+      this.$api.seePsiWmsService.commonwmsmanagerList({ page: 1, limit: 500 })
         .then(res => {
           this.usableList = res.data || []
           this.usableList.forEach((item) => {

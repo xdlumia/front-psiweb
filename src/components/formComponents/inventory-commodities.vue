@@ -18,14 +18,18 @@
       :data="tableData"
       max-height="400"
       ref="elTable"
-      row-key="name"
+      row-key="id"
+      :load="load"
+      lazy
       size="mini"
+      :tree-props="{children: 'children', hasChildren: 'configId'}"
     >
-      <!-- <el-table-column  
-        class-name="hide-children"
-        min-width="1"
-        width="1"
-      ></el-table-column> -->
+      <el-table-column
+        fixed
+        min-width="50"
+        prop="name"
+      >
+      </el-table-column>
       <el-table-column
         label="操作"
         min-width="80"
@@ -36,35 +40,17 @@
           slot-scope="scope"
           v-if='scope.row.commodityCode'
         >
-          <span>
+          <span v-if='!scope.row.quotationId'>
             <!-- <i
               class='el-icon-circle-plus f18 d-text-blue d-pointer'
               @click="appand(scope)"
             ></i> -->
             <i
+              v-if='!scope.row.quotationId'
               class='el-icon-remove f18 d-text-qgray ml5 d-pointer'
               @click="deleteInfo(scope)"
             ></i>
           </span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="40">
-        <template slot-scope="scope">
-          <div
-            class="expanded-icons d-text-gray"
-            v-if="scope.row.configName"
-          >
-            <span
-              @click="expand(scope.row)"
-              class="el-icon-plus d-pointer"
-              v-if="!scope.row.expanded"
-            ></span>
-            <span
-              @click="expand(scope.row)"
-              class="el-icon-minus d-pointer"
-              v-else
-            ></span>
-          </div>
         </template>
       </el-table-column>
       <el-table-column
@@ -76,11 +62,12 @@
           class="d-relative"
         >
           <commoditySelector
+            :disabled='!!scope.row.quotationId'
             :params='{wmsId:addform.wmsId}'
             @choose='commodityChoose(arguments,scope)'
             type="code"
             v-model="scope.row.commodityCode"
-            :codes='codes'
+            :codes="tableData.map(item=>item.commodityCode)"
           />
         </template>
       </el-table-column>
@@ -93,10 +80,11 @@
           class="d-relative"
         >
           <commoditySelector
+            :disabled='!!scope.row.quotationId'
             :params='{wmsId:addform.wmsId}'
             @choose='commodityChoose(arguments,scope)'
             v-model="scope.row.goodsName"
-            :codes='codes'
+            :codes="tableData.map(item=>item.commodityCode)"
           />
         </template>
       </el-table-column>
@@ -107,6 +95,7 @@
       >
         <template slot-scope="scope">
           <el-image
+            v-if="scope.row.commodityCode"
             style="width: 100px; height: 40px"
             :src="scope.row.goodsPic"
             fit="fill"
@@ -195,6 +184,17 @@ export default {
         }
       })
       this.codes = []
+    },
+    //表格查询数据懒加载
+    load(tree, treeNode, resolve) {
+      this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName({ page: 1, limit: 50, commodityCode: tree.commodityCode })
+        .then(res => {
+          let list = res.data || []
+          resolve(list)
+        })
+        .finally(() => {
+          treeNode.loading = false
+        })
     },
     expand(row) {
       this.$set(row, 'expanded', !row.expanded);

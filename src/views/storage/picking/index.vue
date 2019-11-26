@@ -35,6 +35,11 @@
           @click="getshipVisible(row)"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='state'">{{value == 0 ? '待拣货' : value == 1 ? '部分拣货' : value == 2 ? '完成拣货' : value == -1 ? '终止' : ''}}</span>
+        <span v-else-if="column.columnFields=='commodityCategorys'">
+          {{(dictionaryOptions('PSI_SP_KIND').forEach((item) => {
+          classForm[item.code] = item.content
+          }),value.split(',').map(item=> classForm[item])).join(',')}}
+        </span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
@@ -70,6 +75,7 @@ import Details from './details.vue'
 import assemblyDetails from '@/views/storage/assembly/details.vue';
 import shipDetails from '@/views/storage/sales/details.vue';
 import SideStatusbar from '@/components/formComponents/side-statusbar';
+import Vue from 'vue'
 export default {
   components: {
     Details,
@@ -152,7 +158,13 @@ export default {
           int: true
         },
         { label: '拣货人', prop: 'PickingPerson', type: 'employee', default: true },
-        { label: '商品类别', prop: 'commodityCategorys', default: true },
+        {
+          label: '商品类别',
+          prop: 'commodityCategorys',
+          type: 'dict',
+          dictName: 'PSI_SP_KIND',
+          default: true
+        },
         { label: '商品名称', prop: 'commodityNames', default: true },
         {
           label: '生成时间',
@@ -168,16 +180,26 @@ export default {
         },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
+      classForm: {},
+      isClass: false,
       shipVisible: false,//销售单
       shipData: {},//销售单详情
     };
+  },
+  mounted() {
+    // setTimeout(() => {
+    //   // this.classForm = {}
+    //   this.dictionaryOptions('PSI_SP_KIND').forEach((item) => {
+    //     this.classForm[item.code] = item.content
+    //   })
+    // }, 1000)
+    // let list = this.dictionaryOptions('PSI_SP_KIND')
   },
   methods: {
     //点击打开右侧边栏
     getTableVisible(data) {
       this.tableVisible = true
       this.drawerData = data
-      console.log(this.drawerData, 'this.drawerDatathis.drawerDatathis.drawerDatathis.drawerDatathis.drawerDatathis.drawerData')
     },
     //打开组装任务详情
     getVisible(data) {
