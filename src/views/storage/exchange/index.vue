@@ -80,14 +80,12 @@ export default {
         { label: '换货方', prop: 'barterThirdparty', default: true },
         {
           label: '换货状态',
-          prop: 'swapState',
+          prop: 'state',
           type: 'select',
           options: [
-            { label: '待组装', value: '1' },
-            { label: '部分组装', value: '2' },
-            { label: '完成组装', value: '3' },
-            { label: '未开始', value: '0' },
-            { label: '终止', value: '-1' },
+            { label: '待换货', value: '2' },
+            { label: '部分换货', value: '3' },
+            { label: '完成换货', value: '4' },
           ],
           default: true
         },

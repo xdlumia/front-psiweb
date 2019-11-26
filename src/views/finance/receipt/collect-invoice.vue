@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 17:27:28
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-26 17:49:25
  * @Description: 收票申请
 */
 <template>
@@ -54,7 +54,7 @@
           class="p10"
           ref="form"
           size="mini"
-          v-if="visible&&form"
+          v-if="visible&&form&&showEditPage&&!loading"
         >
           <make-invoice-info
             :invoiceType="invoiceType"

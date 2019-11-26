@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 11:14:19
+ * @LastEditTime: 2019-11-26 17:30:02
  * @Description: 拆卸商品编辑页面
 */  
 <template>
@@ -11,24 +11,30 @@
         { label:'操作', key:'actions', width:120, prop:'actions',slot:'actions' },
         { label:'商品编号', key:'commodityCodes', width:140, prop:'commodityCode',slot:'commodityCode' },
         { label:'商品名称', key:'goodsNames', width:140, prop:'goodsName',slot:'goodsName' },
-        { label:'单件数量', key:'singleNum', width:140, prop:'singleNum',slot:'singleNum'},
-        { label:'拆卸数量', key:'disassemblyNum', width:140, prop:'disassemblyNum',slot:'disassemblyNum'},
-        { label:'采购单价', key:'purchaseUnivalence', width:140, prop:'purchaseUnivalence',slot:'purchaseUnivalence',showOverflowTip:true},
+        { label:'单件数量', key:'singleNum', width:100, prop:'singleNum',slot:'singleNum'},
+        { label:'拆卸数量', key:'disassemblyNum', width:100, prop:'disassemblyNum',slot:'disassemblyNum'},
+        { label:'采购单价', key:'purchaseUnivalence', width:100, prop:'purchaseUnivalence',slot:'purchaseUnivalence',showOverflowTip:true},
+        { label:'含税总价', key:'taxPrice', width:100, prop:'taxPrice',showOverflowTip:true,format:(a,row,info)=>getTaxPrice(row,info)},
+        { label:'采购总价', key:'childTotalPrice', width:100, prop:'childTotalPrice',showOverflowTip:true,format:(a,row,info)=>getChildTotalPrice(row,info)},
       ]"
     :data="data"
     :show="[
         'categoryCode','className','specOne','configName','noteText','costAmountPrice','taxRate','!add','unit','expanded'
       ]"
     :showSummary="false"
-    :sort="['actions','commodityCodes','goodsNames','singleNum','disassemblyNum','purchaseUnivalence']"
+    :sort="['actions','commodityCodes','goodsNames','singleNum','disassemblyNum','purchaseUnivalence','childTotalPrice','taxRate','taxPrice']"
     class="borrow-goods"
     ref="goodsTable"
     title="拆卸商品"
   >
     <template slot="actions" slot-scope="{row,info}">
-      <span @click="addChild(row,info)" class="d-text-blue d-pointer" v-if="!info.isChild">添加配件</span>
-      <span @click="add(row,info)" class="f20 ml5 el-icon-circle-plus d-pointer"></span>
-      <span @click="del(row,info)" class="f20 ml5 el-icon-remove d-text-red d-pointer" v-if="(info.isChild)?true:(info.index>0)"></span>
+      <span @click="addChild(row,info)" class="d-text-blue d-pointer" v-if="!info.isChild&&!row.configId">添加配件</span>
+      <span @click="add(row,info)" class="f20 ml5 el-icon-circle-plus d-pointer" v-if="info.isChild?(info.parent.configId?false:true):true"></span>
+      <span
+        @click="del(row,info)"
+        class="f20 ml5 el-icon-remove d-text-red d-pointer"
+        v-if="(info.isChild)?(info.parent.configId?false:true):(info.index>0)"
+      ></span>
     </template>
     <template slot="commodityCode" slot-scope="{row,info,formProp}">
       <el-form-item :prop="formProp" :rules="[{required:true}]">
@@ -61,21 +67,17 @@
         :rules="[{required:true},{type:'positiveNum'},{validator:checkSingleNum.bind(this,row)}]"
         v-if="info.isChild"
       >
-        <el-input size="mini" v-model="row.singleNum"></el-input>
+        <el-input :disabled="info.parent.configId?true:false" @change="changeChildNum(info.parent)" size="mini" v-model="row.singleNum"></el-input>
       </el-form-item>
     </template>
     <template slot="disassemblyNum" slot-scope="{row,info,formProp}">
-      <el-form-item
-        :prop="formProp"
-        :rules="[{required:true},{type:'positiveNum'},{validator:checkDisassemblyNum.bind(this,row)}]"
-        v-if="!info.isChild"
-      >
-        <el-input size="mini" v-model="row.disassemblyNum"></el-input>
+      <el-form-item :prop="formProp" :rules="[{required:true},{type:'positiveNum'},{validator:checkDisassemblyNum.bind(this,row)}]">
+        <el-input :disabled="info.isChild" @change="changeChildNum(row)" size="mini" v-model="row.disassemblyNum"></el-input>
       </el-form-item>
     </template>
     <template slot="purchaseUnivalence" slot-scope="{row,info,formProp}">
       <el-form-item :prop="formProp" :rules="[{required:true},{type:'price'},{validator:checkPurchasePrice.bind(this,row,info)}]">
-        <el-input size="mini" v-model="row.purchaseUnivalence"></el-input>
+        <el-input size="mini" v-if="info.isChild" v-model="row.purchaseUnivalence"></el-input>
       </el-form-item>
     </template>
   </buying-goods-edit>
@@ -139,15 +141,32 @@ export default {
         }, 0);
         console.log(total);
         if (row.purchaseUnivalence != total) {
-          return cb(
-            new Error(
-              `整机单价${row.purchaseUnivalence ||
-                0}等于配件价格和数量总和,当前总和${total}`
-            )
-          );
+          // prettier-ignore
+          return cb(new Error(`整机单价${row.purchaseUnivalence || 0}等于配件价格和数量总和,当前总和${total}`));
         }
       }
       cb();
+    },
+    getTaxPrice(row, info) {
+      // prettier-ignore
+      return +Number((row.disassemblyNum * row.purchaseUnivalence * (1+(row.taxRate||0)/100))||0).toFixed(2);
+    },
+    getChildTotalPrice(row, info) {
+      if (info.isChild) {
+        // prettier-ignore
+        return +Number((row.singleNum * row.purchaseUnivalence)||0).toFixed(2);
+      } else return row.purchaseUnivalence;
+    },
+    changeChildNum(row) {
+      if (row.children && row.children.length) {
+        row.children.some(item => {
+          this.$set(
+            item,
+            'disassemblyNum',
+            row.disassemblyNum * item.singleNum || 0
+          );
+        });
+      }
     },
     getData(data) {
       console.log(data);
@@ -172,10 +191,33 @@ export default {
     getScope(e) {
       console.log(e);
     },
-    chooseGoods(goods, row, info) {
+    // prettier-ignore
+    async chooseGoods(goods, row, info) {
       let index = info.index;
       let parent = info.parent;
       goods = JSON.parse(JSON.stringify(goods));
+      goods = goods.map(item=>{
+        return {
+          ...item,
+          purchaseUnivalence: item.inventoryPrice
+        }
+      })
+      if (!info.isChild) {
+        for (let i = 0; i < goods.length; i++) {
+          let good = goods[i]
+          if(good.configId){
+            let {data} = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName({
+                quotationId: good.configId
+            });
+            if(data&&data.length){
+              good.children = data.map(item=>({
+                ...item,
+                singleNum:item.commodityNum,
+              }))
+            }
+          }
+        }
+      }
       if (parent) {
         goods.map(item => {
           item._rowKey = `${parent._rowKey}_${item.commodityCode}`;

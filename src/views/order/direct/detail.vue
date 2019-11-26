@@ -2,11 +2,18 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 16:26:46
+ * @LastEditTime: 2019-11-26 17:38:19
  * @Description: 直发单详情
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showDetailPage" @close="close" title="直发单" v-loading="loading" width="990px">
+  <sideDetail
+    :status="status"
+    :title="`直发单 ${detail?detail.directCode:''}`"
+    :visible.sync="showDetailPage"
+    @close="close"
+    v-loading="loading"
+    width="990px"
+  >
     <template slot="button">
       <el-button @click="showDeliverGoods=true" size="mini" type="primary" v-if="detail&&[0,1].includes(detail.state)">发货</el-button>
       <el-button @click="showAddOrderStorage=true" size="mini" type="primary" v-if="detail&&[0,1].includes(detail.state)">采购</el-button>
@@ -36,13 +43,13 @@
       </el-tab-pane>
       <el-tab-pane label="采购入库单" name="putin">
         <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.putin">
-          <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:code}" />
+          <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:detail.directCode}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <addOrderStorage :joinCode="code" :visible.sync="showAddOrderStorage" from="直发单" />
-    <editDirect :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" />
-    <deliverEdit :code="code" :visible.sync="showDeliverGoods" @reload="setEdit(),getDetail()" />
+    <addOrderStorage :joinCode="detail.directCode" :visible.sync="showAddOrderStorage" from="直发单" v-if="detail" />
+    <editDirect :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" v-if="detail" />
+    <deliverEdit :code="detail.directCode" :visible.sync="showDeliverGoods" @reload="setEdit(),getDetail()" v-if="detail" />
   </sideDetail>
 </template>
 <script>

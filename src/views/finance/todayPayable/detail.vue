@@ -2,11 +2,18 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 16:31:40
+ * @LastEditTime: 2019-11-26 17:40:59
  * @Description: 今日应付账单
 */
 <template>
-  <sideDetail :status="status" :title="pageConfig.title" :visible="showDetailPage" @close="close" v-loading="loading" width="990px">
+  <sideDetail
+    :status="status"
+    :title="`${pageConfig.title} ${detail?detail.billCode:''}`"
+    :visible="showDetailPage"
+    @close="close"
+    v-loading="loading"
+    width="990px"
+  >
     <template slot="button">
       <el-button @click="showLateAmount=true" size="mini" type="primary">滞纳金</el-button>
     </template>

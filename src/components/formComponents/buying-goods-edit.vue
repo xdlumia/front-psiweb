@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 17:24:36
+ * @LastEditTime: 2019-11-26 16:56:46
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -489,6 +489,9 @@ export default {
     }
     .el-input__suffix {
       display: none;
+    }
+    .el-table__row {
+      height: 54px;
     }
   }
 }

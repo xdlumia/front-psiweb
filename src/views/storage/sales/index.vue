@@ -141,13 +141,13 @@ export default {
           ],
           default: true
         },
-        {
-          label: '商品类别',
-          prop: 'categoryCode',
-          type: 'dict',
-          dictName: 'PSI_SP_KIND',
-          default: true
-        },
+        // {
+        //   label: '商品类别',
+        //   prop: 'categoryCode',
+        //   type: 'dict',
+        //   dictName: 'PSI_SP_KIND',
+        //   default: true
+        // },
         {
           label: '出库数量',
           prop: 'WillShipmentNumber',

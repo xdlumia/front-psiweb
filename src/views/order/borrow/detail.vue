@@ -2,11 +2,18 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 18:13:43
+ * @LastEditTime: 2019-11-26 17:40:04
  * @Description: 借入借出详情
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showDetailPage" @close="close" title="借入借出单" v-loading="loading" width="990px">
+  <sideDetail
+    :status="status"
+    :title="`借入借出单 ${detail?detail.borrowLoanCode:''}`"
+    :visible.sync="showDetailPage"
+    @close="close"
+    v-loading="loading"
+    width="990px"
+  >
     <template slot="button" v-if="detail">
       <el-button
         @click="$submission('seePsiWmsService.wmsborrowloanorderSubmitApproval',{
