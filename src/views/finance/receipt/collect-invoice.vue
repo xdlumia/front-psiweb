@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 17:24:21
+ * @LastEditTime: 2019-11-26 17:27:28
  * @Description: 收票申请
 */
 <template>
@@ -174,8 +174,6 @@ export default {
           type: 'warning'
         });
       }
-      console.log(this.$refs.form.validate());
-
       await this.$refs.form.validate();
       // invoiceType = 1是开票 否则是收票
       if (this.invoiceType == 1) {
