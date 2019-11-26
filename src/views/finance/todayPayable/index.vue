@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 15:20:16
+ * @LastEditTime: 2019-11-26 18:42:11
  * @Description: 今日应付账单
 */
 <template>
@@ -12,7 +12,7 @@
       :busType="pageConfig.busType"
       :exportApi="pageConfig.api.export"
       :filterOptions="filterOptions"
-      :params="Object.assign({ page: 1, limit: 15,billType:1 },params)"
+      :params="Object.assign(defaultParams,params)"
       :selectable="selectable"
       :selection="true"
       :title="pageConfig.title"
@@ -81,12 +81,14 @@ export default {
       default: () => [
         { label: '账单编号', prop: 'billCode', default: true },
         { label: '账单状态', prop: 'settleStatus', default: true, type:'select', options:[
+          {label:'全部',value:'',},
           {label:'未结清',value:'0',},
           {label:'部分结清',value:'1',},
           {label:'已结清',value:'2',},
           {label:'已关闭',value:'3',},
         ] },
         { label: '逾期状态', prop: 'overSate', default: true, type:'select', options:[
+          {label:'全部',value:'',},
           {label:'未逾期',value:0},
           {label:'已逾期',value:1},
         ] },
@@ -136,6 +138,7 @@ export default {
   },
   data() {
     return {
+      defaultParams: { page: 1, limit: 15, billType: 1 },
       status: [],
       loading: false,
       showDetail: false,
