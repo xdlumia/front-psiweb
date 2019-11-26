@@ -31,7 +31,7 @@
             <span style="line-height:28px;">发票账户：</span>
           </el-col>
           <el-col :span="18">
-            <el-select size="mini" v-model="queryForm.companyId">
+            <el-select size="mini" v-model="queryForm.marketId">
               <el-option value label="全部"></el-option>
               <el-option
                 v-for="(item, index) in accountList"
@@ -132,7 +132,7 @@ export default {
       queryForm: {
         page: 1,
         limit: 20,
-        companyId: ''
+        marketId: ''
       },
       // 筛选数据
       filterOptions: filterOptions,
@@ -159,7 +159,7 @@ export default {
   computed: {
   },
   watch: {
-    'queryForm.companyId': {
+    'queryForm.marketId': {
       handler (newValue) {
         this.$refs.table.reload();
       }

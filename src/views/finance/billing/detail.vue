@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-25 11:00:42
+ * @LastEditTime: 2019-11-26 15:40:23
  * @Description: description
  -->
 <template>
@@ -10,7 +10,7 @@
     :status="status"
     :visible.sync="showPop"
     @close="$emit('update:visible',false)"
-    :title="'发票号码：' + rowData.invoiceCode"
+    :title="'发票号码：' + (rowData.invoiceCode || '未确定发票号码')"
     width="990px"
     v-loading="loading"
   >
@@ -51,8 +51,7 @@
         type="primary"
         @click="finvoicebillingCancel(rowData.id)"
       >撤销审核</el-button>
-      <el-button size="mini" v-if="buttonState == 2" type="primary"
-@click="showBilling = true">开票</el-button>
+      <el-button size="mini" v-if="buttonState == 2" type="primary" @click="showBilling = true">开票</el-button>
       <el-button
         size="mini"
         v-if="buttonState == 3"
@@ -67,8 +66,7 @@
           <!-- 开票申请 -->
           <make-invoice-info :invoiceType="1" :data="detailForm" id="invoice" />
           <make-buyer :data="detailForm" id="buyer" />
-          <make-buyer :data="detailForm" from="客户" id="saler"
-prefix="purchase" title="销售方信息" />
+          <make-buyer :data="detailForm" from="客户" id="saler" prefix="purchase" title="销售方信息" />
           <make-goods :data="detailForm" id="goods" />
           <make-goods-card :data="detailForm" />
           <extras-info :data="detailForm" id="extrasInfo" />
@@ -133,7 +131,7 @@ export default {
       default: null
     }
   },
-  data() {
+  data () {
     return {
       collectInvoiceVisible: false,
       showBilling: false,
@@ -150,30 +148,30 @@ export default {
       ]
     }
   },
-  mounted() {
+  mounted () {
     this.checkVisible();
     this.detailForm = Object.assign(this.detailForm, this.rowData)
     this.finvoicebillingInfo()
   },
   computed: {
-    buttonState() {
+    buttonState () {
       return this.detailForm.state
     }
   },
   watch: {
-    visible() {
+    visible () {
       this.checkVisible();
     }
   },
   methods: {
-    refresh() {
+    refresh () {
       this.finvoicebillingInfo()
       this.$emit('refresh')
     },
-    checkVisible() {
+    checkVisible () {
       this.showPop = this.visible;
     },
-    finvoicebillingInfo() {
+    finvoicebillingInfo () {
       this.loading = true
       this.$api.seePsiFinanceService.finvoicebillingInfo(null, this.code).then(res => {
         this.detailForm = res.data
@@ -182,7 +180,7 @@ export default {
         this.loading = false
       })
     },
-    fcostAuditApproval(id) {
+    fcostAuditApproval (id) {
       this.$confirm(`是否复核通过`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -198,7 +196,7 @@ export default {
         })
       })
     },
-    finvoicebillingReject(id) {
+    finvoicebillingReject (id) {
       this.$confirm(`是否驳回`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -214,7 +212,7 @@ export default {
         })
       })
     },
-    finvoicebillingPassApproval(id) {
+    finvoicebillingPassApproval (id) {
       this.$confirm(`是否审核通过`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -230,7 +228,7 @@ export default {
         })
       })
     },
-    finvoicebillingCancel(id) {
+    finvoicebillingCancel (id) {
       this.$confirm(`是否撤销审核`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -246,7 +244,7 @@ export default {
         })
       })
     },
-    finvoicebillingSubmitApproval(id) {
+    finvoicebillingSubmitApproval (id) {
       this.$confirm(`是否提交审核`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -262,7 +260,7 @@ export default {
         })
       })
     },
-    finvoicebillingDelete(id) {
+    finvoicebillingDelete (id) {
       this.$confirm(`是否删除`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -279,7 +277,7 @@ export default {
         })
       })
     },
-    finvoicebillingDilution() {
+    finvoicebillingDilution () {
       this.$confirm(`是否进行发票冲红`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
