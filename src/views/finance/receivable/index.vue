@@ -2,15 +2,15 @@
  * @Author: 赵伦
  * @Date: 2019-11-04 13:36:20
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 09:07:58
+ * @LastEditTime: 2019-11-26 15:19:52
  * @Description: 应收账单
 */
 <template>
   <FinanceTodayPayable
     :button="button"
-    @selection-change="selectionChange"
     :pageConfig="pageConfig"
-    :params="params"
+    :params="Object.assign({ page: 1, limit: 15,billType:0 },params)"
+    @selection-change="selectionChange"
   />
 </template>
 <script>
@@ -24,7 +24,7 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => ({ page: 1, limit: 15,billType:0 })
+      default: () => ({ page: 1, limit: 15, billType: 0 })
     }
   },
   data() {
@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     selectionChange(val) {
-      this.$emit("selection-change", val);
+      this.$emit('selection-change', val);
     }
   }
 };

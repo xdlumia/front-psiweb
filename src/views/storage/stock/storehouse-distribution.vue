@@ -35,7 +35,9 @@
               min-width="100"
               prop="categoryCode"
               show-overflow-tooltip
-            ></el-table-column>
+            >
+              <template slot-scope="scope">{{scope.row.categoryCode | dictionary('PSI_SP_KIND')}}</template>
+            </el-table-column>
             <el-table-column
               label="商品分类"
               min-width="100"
@@ -97,25 +99,33 @@
               min-width="120"
               prop="usableInventoryNum"
               show-overflow-tooltip
-            ></el-table-column>
+            >
+              <template slot-scope="scope">{{scope.row.usableInventoryNum || 0}}</template>
+            </el-table-column>
             <el-table-column
               label="待出库数量"
               min-width="120"
               prop="waitPutawayNum"
               show-overflow-tooltip
-            ></el-table-column>
+            >
+              <template slot-scope="scope">{{scope.row.waitPutawayNum || 0}}</template>
+            </el-table-column>
             <el-table-column
               label="待入库数量"
               min-width="100"
               prop="waitShipmentNum"
               show-overflow-tooltip
-            ></el-table-column>
+            >
+              <template slot-scope="scope">{{scope.row.waitShipmentNum || 0}}</template>
+            </el-table-column>
             <el-table-column
               label="锁库量"
               min-width="140"
               prop="lockInventoryNum"
               show-overflow-tooltip
-            ></el-table-column>
+            >
+              <template slot-scope="scope">{{scope.row.lockInventoryNum || 0}}</template>
+            </el-table-column>
           </d-table>
         </form-card>
       </el-main>

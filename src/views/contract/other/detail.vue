@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 11:20:03
+ * @LastEditTime: 2019-11-26 17:44:02
  * @Description: 其他合同
 */
 <template>
-  <sideDetail :status="status" :visible="showDetailPage" @close="close" title="其他合同" v-loading="loading" width="990px">
+  <sideDetail :status="status" :title="`其他合同 ${code||''}`" :visible="showDetailPage" @close="close" v-loading="loading" width="990px">
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
         <el-form :model="detail" class="p10" ref="form" size="mini" v-if="detail&&showDetailPage&&!loading">

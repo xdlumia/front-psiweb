@@ -2,14 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 10:46:47
+ * @LastEditTime: 2019-11-26 18:46:37
  * @Description: 付款单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <tableView
       :filterOptions="filterOptions"
-      :params="params"
+      :params="Object.assign(defaultParams,params)"
       :selection="true"
       api="seePsiFinanceService.paybillList"
       busType="50"
@@ -19,7 +19,7 @@
       v-loading="loading"
     >
       <template slot="top-filter">
-        <bill-account-selector @change="reload" v-model="params.companySettlementId" />
+        <bill-account-selector @change="reload" v-model="defaultParams.companySettlementId" />
       </template>
       <template slot="button">
         <!-- 15.勾选付款单后，展示批量付款申请。新建、已驳回状态可点击批量提交付款申请。如勾选中包含了其他状态，则只提交新建、已驳回的即可。批量付款申请，不需弹出付款申请确认。 -->
@@ -82,7 +82,7 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => ({ page: 1, limit: 15, billType: 1 })
+      default: () => ({})
     }
   },
   data() {
@@ -92,16 +92,23 @@ export default {
       showApply: false,
       showDetail: false,
       currentCode: '',
+      defaultParams: {
+        page: 1,
+        limit: 15,
+        billType: 1
+      },
       // prettier-ignore
       filterOptions: [
         { label: '付款单编号', prop: 'billCode', default: true },
         { label: '账单状态', prop: 'settleStatus', default: true, type:'select', options:[
+          {label:'全部',value:'',},
           {label:'未结清',value:'0',},
           {label:'部分结清',value:'1',},
           {label:'已结清',value:'2',},
           {label:'已关闭',value:'3',},
         ] },
         { label: '逾期状态', prop: 'overSate', default: true, type:'select', options:[
+          {label:'全部',value:'',},
           {label:'未逾期',value:0},
           {label:'已逾期',value:1},
         ] },
@@ -139,6 +146,7 @@ export default {
     };
   },
   mounted() {
+    this.params.billType = 1;
     this.getFeeDetailCodeList();
   },
   methods: {
@@ -149,7 +157,7 @@ export default {
         let {data} = await this.$api.seeDictionaryService.getDicCommonValueList('ZD_DY_LX');
         dicList = data;
       }
-      let parent = [];
+      let parent = [{label:'全部',value:'',}];
       let dicParentObj = dicList.reduce((data, item) => {
         if (!item.parentCode) {
           data[item.code] = item;
@@ -161,7 +169,7 @@ export default {
         }
         return data;
       },{});
-      let children = [];
+      let children = [{label:'全部',value:'',}];
       dicList.map(item => {
         let parent = dicParentObj[item.parentCode];
         if (item.parentCode && parent) {

@@ -2,11 +2,18 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 18:17:52
+ * @LastEditTime: 2019-11-26 17:35:47
  * @Description: 采购退货单
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showDetailPage" @close="$emit('update:visible',false)" title="采购退货单" width="990px">
+  <sideDetail
+    :status="status"
+    :title="`采购退货单 ${detail?detail.alterationCode:''}`"
+    :visible.sync="showDetailPage"
+    @close="close"
+    v-loading="loading"
+    width="990px"
+  >
     <template slot="button">
       <el-button
         @click="$submission('seePsiPurchaseService.purchasealterationSubmitApproval',{
@@ -94,7 +101,7 @@
       </el-tab-pane>
       <el-tab-pane label="应收账单" name="recieve">
         <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.recieve">
-          <FinanceReceivable :button="false" :params="{page:1,limit:15,busCode:detail.putinCode}" />
+          <FinanceReceivable :button="false" :params="{page:1,limit:15,busCode:detail.alterationCode}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
@@ -120,9 +127,7 @@ export default {
     ScanGoods,
     Edit
   },
-  props: {
-    visible: Boolean
-  },
+  props: {},
   data() {
     return {
       showPop: false,

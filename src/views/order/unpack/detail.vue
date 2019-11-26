@@ -2,11 +2,18 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 18:18:58
+ * @LastEditTime: 2019-11-26 17:33:04
  * @Description: 拆卸单
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showDetailPage" @close="close" title="拆卸单" v-loading="loading" width="990px">
+  <sideDetail
+    :status="status"
+    :title="`拆卸单 ${detail?detail.disassemblyOrderCode:''}`"
+    :visible.sync="showDetailPage"
+    @close="close"
+    v-loading="loading"
+    width="990px"
+  >
     <template slot="button">
       <el-button
         @click="$submission('seePsiWmsService.wmsdisassemblyorderSubmitApproval',{

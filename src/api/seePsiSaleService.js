@@ -95,13 +95,6 @@ export default {
   /* =============RocketMQ失败重试end=========== */
 
   /* =============销售退换货单start=========== */
-  // 审核
-  salesalterationsheetApproval: {
-    'url': '/salesalterationsheet/approval',
-    'mock': false,
-    'methods': 'post'
-  },
-
   // 删除
   salesalterationsheetDelete: {
     'url': '/salesalterationsheet/delete',
@@ -112,7 +105,8 @@ export default {
   // 导出
   salesalterationsheetExport: {
     'url': '/salesalterationsheet/export',
-    'mock': false
+    'mock': false,
+    'methods': 'post'
   },
 
   // 查看详细信息
@@ -156,13 +150,6 @@ export default {
   /* =============销售退换货单end=========== */
 
   /* =============销售费用分摊单start=========== */
-  // 审核
-  salescostapportionApproval: {
-    'url': '/salescostapportion/approval',
-    'mock': false,
-    'methods': 'post'
-  },
-
   // 撤销审核
   salescostapportionCancel: {
     'url': '/salescostapportion/cancel',
@@ -180,7 +167,8 @@ export default {
   // 导出
   salescostapportionExport: {
     'url': '/salescostapportion/export',
-    'mock': false
+    'mock': false,
+    'methods': 'post'
   },
 
   // 查看详细信息
@@ -244,7 +232,7 @@ export default {
   },
   /* =============销售费用分摊单end=========== */
 
-  /* =============销售退换货单start=========== */
+  /* =============销售换货单start=========== */
   // 撤销审核
   salesexchangeCancel: {
     'url': '/salesexchange/cancel',
@@ -262,7 +250,8 @@ export default {
   // 导出
   salesexchangeExport: {
     'url': '/salesexchange/export',
-    'mock': false
+    'mock': false,
+    'methods': 'post'
   },
 
   // 查看详细信息
@@ -311,13 +300,20 @@ export default {
     'methods': 'post'
   },
 
+  // 扫码换货
+  salesexchangeScanExchange: {
+    'url': '/salesexchange/scanExchange',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 修改
   salesexchangeUpdate: {
     'url': '/salesexchange/update',
     'mock': false,
     'methods': 'post'
   },
-  /* =============销售退换货单end=========== */
+  /* =============销售换货单end=========== */
 
   /* =============报价单start=========== */
   // 审核
@@ -346,12 +342,6 @@ export default {
     'url': '/salesquotation/export',
     'mock': false,
     'methods': 'post'
-  },
-
-  // 导出
-  salesquotationExport: {
-    'url': '/salesquotation/export',
-    'mock': false
   },
 
   // 根据code查看详细信息
@@ -435,7 +425,7 @@ export default {
   },
   /* =============报价单end=========== */
 
-  /* =============销售退换货单start=========== */
+  /* =============销售退货单start=========== */
   // 撤销审核
   salesreturnedCancel: {
     'url': '/salesreturned/cancel',
@@ -453,7 +443,8 @@ export default {
   // 导出
   salesreturnedExport: {
     'url': '/salesreturned/export',
-    'mock': false
+    'mock': false,
+    'methods': 'post'
   },
 
   // 查看详细信息
@@ -502,6 +493,13 @@ export default {
     'methods': 'post'
   },
 
+  // 扫码退货
+  salesreturnedScanReturned: {
+    'url': '/salesreturned/scanReturned',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 提交审核
   salesreturnedSubmitApproval: {
     'url': '/salesreturned/submitApproval',
@@ -515,7 +513,7 @@ export default {
     'mock': false,
     'methods': 'post'
   },
-  /* =============销售退换货单end=========== */
+  /* =============销售退货单end=========== */
 
   /* =============销售单start=========== */
   // 删除
@@ -528,7 +526,8 @@ export default {
   // 导出
   salessheetExport: {
     'url': '/salessheet/export',
-    'mock': false
+    'mock': false,
+    'methods': 'post'
   },
 
   // 查看详细信息
@@ -572,6 +571,12 @@ export default {
   /* =============销售单end=========== */
 
   /* =============销售出库单start=========== */
+  // 根据code获取出库单商品
+  salesshipmentBusinessCommodityEntity: {
+    'url': '/salesshipment/BusinessCommodityEntity',
+    'mock': false
+  },
+
   // 审核
   salesshipmentApproval: {
     'url': '/salesshipment/approval',
@@ -602,7 +607,8 @@ export default {
   // 导出
   salesshipmentExport: {
     'url': '/salesshipment/export',
-    'mock': false
+    'mock': false,
+    'methods': 'post'
   },
 
   // 根据code查看详细信息
@@ -693,7 +699,7 @@ export default {
     'methods': 'post'
   },
 
-  // 编辑合同
+  // 追加合同附件
   salesshipmentUpdateContract: {
     'url': '/salesshipment/updateContract',
     'mock': false,

@@ -107,7 +107,7 @@ export default {
       activeName: '',
       status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       filterOptions: [
-        { label: '借入借出任务编号', prop: 'borrowLoanCode', default: true },
+        { label: '借入借出任务编号', prop: 'borrowLoanTaskCode', default: true },
         { label: '销售出库单编号', prop: 'salesShipmentCode', default: true },
         {
           label: '借入借出状态',
@@ -140,6 +140,7 @@ export default {
           prop: 'borrowLoanType',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '借入', value: '0' },
             { label: '借出', value: '1' }
           ],
@@ -161,7 +162,7 @@ export default {
         },
         {
           label: '生成/创建时间',
-          prop: 'Time',
+          prop: 'CreateTime',
           type: 'daterange',
           default: true
         },

@@ -10,7 +10,7 @@
     :status="status"
     :visible.sync="visible"
     @close="$emit('update:visible',false)"
-    title="组装单"
+    :title="`组装单-${detailForm.assembleOrderCode}`"
     width="990px"
   >
     <div>
@@ -78,7 +78,7 @@ export default {
   props: ['data', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '组装状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '组装状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       taskVisible: false,
       addVisible: false,
       state: {

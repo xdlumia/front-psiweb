@@ -3,7 +3,7 @@
 const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = false;
 /**
-* @date 2019-11-19
+* @date 2019-11-26
 * @host 39.99.132.95:9205
 */
 export default {
@@ -241,6 +241,15 @@ export default {
     purchaseapplyorderDelete: {
         url: '/purchaseapplyorder/delete',
         methods: 'delete',
+        mock: isUseMock
+    },
+    /**
+     * @tag 请购单
+     * @description 请购明细导出
+     */
+    purchaseapplyorderDetailExport: {
+        url: '/purchaseapplyorder/detailExport',
+        methods: 'post',
         mock: isUseMock
     },
     /**

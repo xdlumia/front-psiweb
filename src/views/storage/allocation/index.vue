@@ -94,9 +94,10 @@ export default {
         { label: '调拨单编号', prop: 'allocationOrderCode', default: true },
         {
           label: '调拨状态',
-          prop: 'allocationOrderState',
+          prop: 'state',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '待调拨', value: '1' },
             { label: '部分调拨', value: '2' },
             { label: '完成调拨', value: '3' },
@@ -109,6 +110,7 @@ export default {
           prop: 'allocationType',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '内调', value: '1' },
             { label: '外调', value: '2' }
           ],
@@ -124,6 +126,17 @@ export default {
           ],
           default: true
         },
+        // {
+        //   label: '调出库房',
+        //   prop: 'shipmentWmsNames',
+        //   type: 'select',
+        //   options: [
+        //     { label: '内调', value: '1' },
+        //     { label: '外调', value: '2' }
+        //   ],
+        //   default: true
+        // },
+
         { label: '调出库房', prop: 'shipmentWmsNames', default: true },
         {
           label: '调拨数量',
@@ -182,8 +195,8 @@ export default {
             item.label = item.name
             item.value = item.id
           })
+          this.usableList.unshift({ label: '全部', value: '' })
           this.filterOptions[3].options = this.usableList
-          this.filterOptions[4].options = this.usableList
         })
         .finally(() => {
 

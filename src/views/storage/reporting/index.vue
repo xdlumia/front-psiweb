@@ -10,7 +10,6 @@
     <!-- 右侧滑出 -->
     <TableView
       busType="3"
-      @reload='reload'
       :filterOptions='filterOptions'
       :params="params"
       ref="allTable"
@@ -42,7 +41,10 @@
       :visible.sync='tableVisible'
       v-if="tableVisible"
     />
-    <reportingAdd :visible.sync='visible' />
+    <reportingAdd
+      :visible.sync='visible'
+      @reload='reload'
+    />
   </div>
 </template> 
 <script>
@@ -102,6 +104,7 @@ export default {
           prop: 'type',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '报溢', value: '1' },
             { label: '报损', value: '2' }
           ],
@@ -159,6 +162,7 @@ export default {
     },
     reload() {
       this.$refs.allTable.reload()
+      console.log('ahahahahha11111')
     },
   }
 };

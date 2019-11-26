@@ -90,6 +90,7 @@ export default {
           prop: 'state',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '待拆卸', value: '1' },
             { label: '部分拆卸', value: '2' },
             { label: '完成拆卸', value: '3' },

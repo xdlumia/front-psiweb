@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 16:31:43
+ * @LastEditTime: 2019-11-26 14:32:36
  * @Description: 账单信息
 */
 <template>
@@ -37,8 +37,10 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="直接生成应收" min-width="100" prop="isBillFee" v-if="!hide.includes('isBillFee')">
-        <template slot-scope="{row}">
-          <el-checkbox :disabled="disabled" :false-label="1" :true-label="1" v-model="row.isBillFee"></el-checkbox>
+        <template slot-scope="{row,$index}">
+          <el-form-item :prop="`financeList.${$index}.isBillFee`" size="mini" style="margin-bottom:0;">
+            <el-checkbox :disabled="disabled" :false-label="0" :true-label="1" v-model="row.isBillFee"></el-checkbox>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column :label="typeName" align="center" min-width="140" prop="payAmount" show-overflow-tooltip>
@@ -144,7 +146,7 @@ export default {
         this.data &&
         (!this.data.financeList || !this.data.financeList.length)
       ) {
-        this.data.financeList = [];
+        this.$set(this.data, 'financeList', []);
         this.addBill();
       }
     },
@@ -170,11 +172,19 @@ export default {
       this.data.financeList.push({
         isBillFee: 0,
         payAmount: '',
-        payTime: ''
+        payTime: '',
+        paymenDays: ''
+      });
+      this.resetPaymentName();
+    },
+    resetPaymentName() {
+      this.data.financeList.map((item, i) => {
+        item.paymenDays = `第${i + 1}期`;
       });
     },
     remove(i) {
       this.data.financeList.splice(i, 1);
+      this.resetPaymentName();
     }
   }
 };

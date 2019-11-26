@@ -18,9 +18,19 @@
       :data="tableData"
       max-height="400"
       ref="elTable"
-      row-key="name"
+      row-key="id"
+      :load="load"
+      lazy
       size="mini"
+      :tree-props="{children: 'children', hasChildren: 'configId'}"
     >
+      >
+      <el-table-column
+        fixed
+        min-width="50"
+        prop="name"
+      >
+      </el-table-column>
       <el-table-column
         label="操作"
         min-width="50"
@@ -30,7 +40,7 @@
           slot-scope="scope"
           v-if='scope.row.commodityCode'
         >
-          <span>
+          <span v-if='!scope.row.quotationId'>
             <i
               class='el-icon-remove f18 d-text-qgray ml5 d-pointer'
               @click="deleteInfo(scope)"
@@ -38,25 +48,6 @@
           </span>
         </template>
       </el-table-column>
-      <!-- <el-table-column min-width="40">
-        <template slot-scope="scope">
-          <div
-            class="expanded-icons d-text-gray"
-            v-if="scope.row.configName"
-          >
-            <span
-              @click="expand(scope.row)"
-              class="el-icon-plus d-pointer"
-              v-if="!scope.row.expanded"
-            ></span>
-            <span
-              @click="expand(scope.row)"
-              class="el-icon-minus d-pointer"
-              v-else
-            ></span>
-          </div>
-        </template>
-      </el-table-column> -->
       <el-table-column
         label="商品编号"
         min-width="150"
@@ -70,6 +61,7 @@
             :sn="addForm.type == 2 ? true : false"
             :params="addForm.type == 2 ? {wmsId:addForm.wmsId} : {wmsId:''}" -->
           <commoditySelector
+            :disabled='!!scope.row.quotationId'
             :codes="tableData.map(item=>item.commodityCode)"
             @response='response'
             @choose='commodityChoose(arguments,scope)'
@@ -88,6 +80,7 @@
           class="d-relative"
         >
           <commoditySelector
+            :disabled='!!scope.row.quotationId'
             :codes="tableData.map(item=>item.commodityCode)"
             @response='response'
             ref='commdity'
@@ -106,6 +99,7 @@
           class="d-relative"
         >
           <el-select
+            :disabled='!!scope.row.quotationId'
             @focus='visibleChange($event,scope)'
             v-model="scope.row.configName"
             @change="changeCommodity($event,scope)"
@@ -133,11 +127,12 @@
           class="d-relative"
         >
           <el-input
-            v-if="scope.row.commodityCode"
+            v-if="scope.row.commodityCode && !scope.row.quotationId"
             size="mini"
             v-model="scope.row.allocationNum"
             placeholder="请输入"
           ></el-input>
+          <span v-else>{{scope.row.commodityNum}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -238,6 +233,18 @@ export default {
         }
       })
       this.codes = []
+    },
+    //表格查询数据懒加载
+    load(tree, treeNode, resolve) {
+      console.log(tree, treeNode, 'loadloadloadloadload')
+      this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName({ page: 1, limit: 50, commodityCode: tree.commodityCode })
+        .then(res => {
+          let list = res.data || []
+          resolve(list)
+        })
+        .finally(() => {
+          treeNode.loading = false
+        })
     },
     //商品加载成功以后,拿到所有数据,用以选择配置
     response(data) {
