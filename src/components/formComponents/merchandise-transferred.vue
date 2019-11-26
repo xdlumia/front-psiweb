@@ -280,7 +280,7 @@ export default {
     getCommodityBySnCode() {
       if (this.form.putawayWmsId) {
         if (this.snCode) {
-          this.$api.seePsiWmsService.wmsinventorydetailGetCommodityBySnCode({ snCode: this.snCode, wmsId: this.form.putawayWmsId })
+          this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.form.id, commodityList: this.upTableData, })
             .then(res => {
               if (res.data) {
                 let arr = this.upTableData.filter((item) => {

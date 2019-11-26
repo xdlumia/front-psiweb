@@ -106,6 +106,7 @@ export default {
           prop: 'state',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '待执行', value: '1' },
             { label: '部分完成', value: '2' },
             { label: '已完成', value: '3' },
@@ -119,6 +120,7 @@ export default {
           prop: 'pickingState',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '部分拣货', value: '1' },
             { label: '完成拣货', value: '2' },
             { label: '待拣货', value: '0' },

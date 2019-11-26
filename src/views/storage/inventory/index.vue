@@ -111,6 +111,7 @@ export default {
           prop: 'state',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '终止', value: '-1' },
             { label: '进行中', value: '1' },
             { label: '盘点完成', value: '2' }
@@ -122,6 +123,7 @@ export default {
           prop: 'result',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '盘盈', value: '1' },
             { label: '盘亏', value: '2' },
             { label: '有盈亏', value: '3' },
@@ -193,6 +195,7 @@ export default {
             item.label = item.name
             item.value = item.id
           })
+          this.usableList.unshift({ label: '全部', value: '' })
           this.filterOptions[3].options = this.usableList
         })
         .finally(() => {
