@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 15:58:23
+ * @LastEditTime: 2019-11-27 16:38:43
  * @Description: 备货单详情
 */
 <template>
@@ -100,7 +100,7 @@
       </el-tab-pane>
       <el-tab-pane label="采购入库单" name="putin">
         <FullscreenWrap v-if="isDataReady&&tabStatus.putin">
-          <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:code}" />
+          <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:code,relationCode:code}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
