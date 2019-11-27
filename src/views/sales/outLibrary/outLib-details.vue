@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 18:08:24
+ * @LastEditTime: 2019-11-27 18:53:35
  * @Description: 销售出库单详情
 */
 <template>
@@ -50,7 +50,7 @@
         </el-tabs>
         <components
           ref="detail"
-          :params="{shipmentCode:code}"
+          :params="{relationCode:code}"
           :code="this.code"
           :rowData="rowData"
           :data="detail || {}"
