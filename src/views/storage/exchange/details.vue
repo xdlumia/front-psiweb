@@ -29,6 +29,8 @@
         <el-tab-pane label="详情">
           <el-form
             size="mini"
+            :model="detailForm"
+            ref="form"
             v-if='detailForm'
           >
             <!-- <approvePanel /> -->
@@ -59,7 +61,7 @@
           <financeReceivable
             v-if="activeName == 'financeReceivable'"
             :button="false"
-            :params="{page:1,limit:15,swapTaskCode:detailForm.swapTaskCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
           ></financeReceivable>
         </el-tab-pane>
         <el-tab-pane
@@ -69,7 +71,7 @@
           <financePayable
             v-if="activeName == 'financePayable'"
             :button="false"
-            :params="{page:1,limit:15,swapTaskCode:detailForm.swapTaskCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
           ></financePayable>
         </el-tab-pane>
         <el-tab-pane
@@ -79,7 +81,7 @@
           <financeBilling
             v-if="activeName == 'financeBilling'"
             :button="false"
-            :params="{page:1,limit:15,swapTaskCode:detailForm.swapTaskCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
           ></financeBilling>
         </el-tab-pane>
         <el-tab-pane
@@ -89,7 +91,7 @@
           <financeReceipt
             v-if="activeName == 'financeReceipt'"
             :button="false"
-            :params="{page:1,limit:15,swapTaskCode:detailForm.swapTaskCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
           ></financeReceipt>
         </el-tab-pane>
       </el-tabs>

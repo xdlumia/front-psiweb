@@ -69,7 +69,7 @@
           <orderUnpack
             v-if="activeName == 'orderUnpack'"
             :button="false"
-            :params="{page:1,limit:15,disassemblyTaskCode:detailForm.disassemblyTaskCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.disassemblyTaskCode}"
           ></orderUnpack>
         </el-tab-pane>
       </el-tabs>

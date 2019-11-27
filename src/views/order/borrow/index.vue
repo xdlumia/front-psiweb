@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 19:08:23
+ * @LastEditTime: 2019-11-27 17:35:24
  * @Description: 采购-借入借出单
 */
 <template>
@@ -10,7 +10,7 @@
     <TableView
       :busType="5"
       :filterOptions="filterOptions"
-      :params="params"
+      :params="Object.assign(defaultParams,params)"
       api="seePsiWmsService.wmsborrowloanorderList"
       exportApi="seePsiWmsService.wmsborrowloanorderExport"
       ref="tableView"
@@ -64,6 +64,10 @@ export default {
       status: [],
       showDetail: false,
       showEdit: false,
+      defaultParams: {
+        page: 1,
+        limit: 15
+      },
       stateText: {
         '0': '新建',
         '1': '审核中',

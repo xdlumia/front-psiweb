@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:01:22
+ * @LastEditTime: 2019-11-27 17:40:50
  * @Description: 付款单
 */
 <template>
@@ -66,7 +66,7 @@
           <component
             :button="false"
             :is="busInfo[detail.busType].listPage"
-            :params="{page:1,limit:15,[busInfo[detail.busType].codeFilterKey]:detail.busCode}"
+            :params="{page:1,limit:15,[busInfo[detail.busType].codeFilterKey]:detail.busCode,relationCode:detail.billCode}"
           />
         </FullscreenWrap>
       </el-tab-pane>

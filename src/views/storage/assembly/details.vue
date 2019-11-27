@@ -67,7 +67,7 @@
           <storageAssemble
             :button="false"
             v-if="activeName == 'storageAssemble'"
-            :params="{page:1,limit:15,assembleTaskCode:detailForm.assembleTaskCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.assembleTaskCode}"
           ></storageAssemble>
         </el-tab-pane>
       </el-tabs>

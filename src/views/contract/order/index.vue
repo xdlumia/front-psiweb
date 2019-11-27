@@ -2,14 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 17:23:12
+ * @LastEditTime: 2019-11-27 17:38:15
  * @Description: 采购合同
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
       :filterOptions="filterOptions"
-      :params="params"
+      :params="Object.assign(defaultParams,params)"
       api="seePsiContractService.contractpurchaseList"
       busType="24"
       exportApi="seePsiContractService.contractpurchaseExport"
@@ -57,6 +57,10 @@ export default {
   },
   data() {
     return {
+      defaultParams: {
+        page: 1,
+        limit: 15
+      },
       status: [],
       showDetail: false,
       showPutinDetail: false,

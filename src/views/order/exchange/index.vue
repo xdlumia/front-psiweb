@@ -2,14 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 16:56:40
+ * @LastEditTime: 2019-11-27 17:33:59
  * @Description: 采购-换货单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
       :filterOptions="filterOptions"
-      :params="params"
+      :params="Object.assign(defaultParams,params)"
       api="seePsiWmsService.wmsswaporderList"
       busType="1"
       exportApi="seePsiWmsService.wmsswaporderExport"
@@ -62,6 +62,10 @@ export default {
       showDetail: false,
       currentCode: '',
       showEdit: false,
+      defaultParams: {
+        page: 1,
+        limit: 15
+      },
       stateText: {
         '0': '新建',
         '1': '审核中',
