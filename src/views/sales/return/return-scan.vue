@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 15:07:05
+ * @LastEditTime: 2019-11-27 16:32:32
  * @Description: 退货扫码
 */
 
@@ -38,9 +38,9 @@
     >
       <!-- 库房列表 -->
       <warehouse-list :data="form" />
-      <!-- 退入库商品 -->
+      <!-- 退换出入库商品 -->
       <goods-in-warehousing
-        :params="{ busCode: rowData.quotationCode, busType: 1, putawayType: 0 }"
+        :params="{ busCode: rowData.quotationCode, busType: 1 }"
         :data="form"
       />
     </el-form>
@@ -51,6 +51,7 @@
 import VisibleMixin from '@/utils/visibleMixin';
 export default {
   mixins: [VisibleMixin],
+  props: { from: String }, //来源 return退货 exchange 换货
   components: {
   },
   data() {
@@ -69,10 +70,12 @@ export default {
         businessCodeList: [],//关联业务code List
         businessId: '',//0,
         businessType: '',//0,
+        returnScanData: [], //临时数据 退货记录
+        exchangeScanData: [], //临时数据 换货记录
         putawayCommodityList: [
           // {
           //   commodityCode: '',//"示例：商品编号",
-          //   operation: '',//0,
+          //   operation: '',//0,入库0
           //   robotCode: '',//"示例：机器码",
           //   snCode: '',//"示例：商品SN码",
           //   wmsCommodityId: '',//100000,
@@ -82,21 +85,27 @@ export default {
       }
     }
   },
+  created() {
+  },
   methods: {
     //保存
     saveHandle() {
       this.form.businessCode = this.code
       this.form.businessId = this.rowData.id
+      this.form.putawayCommodityList = [...this.form.returnScanData, ...this.form.exchangeScanData]
       this.form.alterationCommodityVoList = this.form.putawayCommodityList.map(item => {
         return {
           alterationCode: this.code,//"示例：退换货单code",
           alterationNumber: item.scanNumber,//退货数量/扫码次数
           commodityCode: item.commodityCode,//"示例：商品编号",
-          putawayType: 1,// 入库1
+          putawayType: item.putawayType,// 入库1
         }
       })
-
-      this.$api.seePsiSaleService.salesreturnedScanReturned(this.form)
+      let api = 'salesreturnedScanReturned'
+      if (this.from == 'exchange') {
+        api = 'salesreturnedScanExchange'
+      }
+      this.$api.seePsiSaleService[api](this.form)
         .then(res => {
           this.setEdit()
           this.close()

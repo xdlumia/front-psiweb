@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 15:09:18
+ * @LastEditTime: 2019-11-27 17:16:59
  * @Description: 销售-销售退货单
  */
 <template>
@@ -94,7 +94,6 @@ export default {
       // 查询表单
       queryForm: {
         // status: "",
-        busType: 17,
         page: 1,
         limit: 20
       },
