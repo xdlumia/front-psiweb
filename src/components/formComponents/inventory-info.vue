@@ -165,9 +165,9 @@ export default {
     },
     //库房改变
     changeRecord() {
-      if (this.addform.wmsId) {
+      setTimeout(() => {
         this.$root.$emit('loadSearch')
-      }
+      })
     }
   }
 };

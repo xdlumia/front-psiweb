@@ -12,7 +12,10 @@
   >
     <div>
       <el-row :gutter="20">
-        <el-col :span="12">
+        <el-col
+          :span="12"
+          v-if="!hide.includes('pickingPerson')"
+        >
           <el-form-item
             :rules="[  
               {required:true,message:'必填项',trigger: 'input',}
@@ -36,7 +39,10 @@
             </employees-chosen>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col
+          :span="12"
+          v-if="!hide.includes('assemblePerson')"
+        >
           <el-form-item
             :rules="[ 
               {required:true,message:'必填项',trigger: 'input',}
@@ -61,7 +67,7 @@
         </el-col>
       </el-row>
     </div>
-    <div>
+    <div v-if="!hide.includes('hide')">
       <el-form-item
         label="备注"
         size="mini"
@@ -72,7 +78,7 @@
           placeholder="备注"
           show-word-limit
           type="textarea"
-          v-model="form.note"
+          v-model="data.note"
         />
       </el-form-item>
     </div>
@@ -93,7 +99,6 @@ export default {
       default: () => []
     },
     disabled: Boolean,
-    form: {}
   },
   data() {
     return {
@@ -110,12 +115,12 @@ export default {
     chooseChai(value) {
       console.log(value);
       this.employeeName = value.employeeName;
-      this.form.pickingPerson = value.userId;
+      this.data.pickingPerson = value.userId;
     },
     //选择组装人员
     chooseAssemble(value) {
       this.employeeAssembleName = value.employeeName;
-      this.form.assemblePerson = value.userId;
+      this.data.assemblePerson = value.userId;
     }
   }
 };
