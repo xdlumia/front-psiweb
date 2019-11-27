@@ -37,7 +37,10 @@
           type="primary"
         >继续</el-button>
       </div>
-      <el-tabs class="wfull hfull tabs-view">
+      <el-tabs
+        class="wfull hfull tabs-view"
+        v-model="activeName"
+      >
         <el-tab-pane label="详情">
           <el-form>
             <dismantlingMerchandise :data="detailForm" />
@@ -59,10 +62,14 @@
             </form-card>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="拆卸单">
+        <el-tab-pane
+          label="拆卸单"
+          name='orderUnpack'
+        >
           <orderUnpack
+            v-if="activeName == 'orderUnpack'"
             :button="false"
-            :params="{page:1,limit:15,disassemblyTaskCode:detailForm.disassemblyTaskCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.disassemblyTaskCode}"
           ></orderUnpack>
         </el-tab-pane>
       </el-tabs>
@@ -95,6 +102,7 @@ export default {
       generateVisible: false,
       disassembleVisible: false,
       detailForm: {},
+      activeName: '',
       state: {
         '-1': '终止',
         '0': '未开始',

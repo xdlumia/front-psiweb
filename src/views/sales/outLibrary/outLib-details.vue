@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 17:38:45
+ * @LastEditTime: 2019-11-27 18:58:17
  * @Description: 销售出库单详情
 */
 <template>
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state=1 || 0].includes(item.label)"
+            v-if="currStatusType[detail.state || 0].includes(item.label)"
             size="small"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -50,7 +50,7 @@
         </el-tabs>
         <components
           ref="detail"
-          :params="{shipmentCode:code}"
+          :params="{relationCode:code}"
           :code="this.code"
           :rowData="rowData"
           :data="detail || {}"
@@ -67,47 +67,47 @@
       :visible.sync="editVisible"
       :rowData="rowData"
       type="edit"
-      :params="{salesShipmentCode:rowData.shipmentCode}"
-      :code="rowData.shipmentCode"
+      :params="{salesShipmentCode:code}"
+      :code="code"
     />
     <!-- 生成合同 -->
     <addContract
       :visible.sync="addContractVisible"
       :rowData="rowData"
       type="addContract"
-      :params="{salesShipmentCode:rowData.shipmentCode}"
-      :code="rowData.shipmentCode"
+      :params="{salesShipmentCode:code}"
+      :code="code"
     />
     <!-- 追加合同 -->
     <addContract
       :visible.sync="editContractVisible"
       :rowData="rowData"
       type="editContract"
-      :params="{salesShipmentCode:rowData.shipmentCode}"
-      :code="rowData.shipmentCode"
+      :params="{salesShipmentCode:code}"
+      :code="code"
     />
     <!-- 生成换货单 -->
     <exchangeAdd
       :visible.sync="exchangeAddVisible"
       :rowData="rowData"
       type="add"
-      :params="{salesShipmentCode:rowData.shipmentCode}"
-      :code="rowData.shipmentCode"
+      :params="{salesShipmentCode:code}"
+      :code="code"
     />
     <!-- 生成退货单 -->
     <returnAdd
       :visible.sync="returnAddVisible"
       :rowData="rowData"
       type="add"
-      :params="{salesShipmentCode:rowData.shipmentCode}"
-      :code="rowData.shipmentCode"
+      :params="{salesShipmentCode:code}"
+      :code="code"
     />
     <!-- 开票申请 -->
     <collectInvoice
       :visible.sync="collectInvoiceVisible"
       :rowData="rowData"
       :invoiceType="1"
-      :code="rowData.shipmentCode"
+      :code="code"
     />
   </div>
 </template>
@@ -221,7 +221,7 @@ export default {
         let params = {
           apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
-          processType: 'XSCKD-001',
+          processType: 'psi_sales_outlibrary_01',
         }
         // 使用 ...params是为了 方便增加或者删除参加{ ...params,...{} }
         let apiObj = {

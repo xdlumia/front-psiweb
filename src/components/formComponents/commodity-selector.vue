@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 10:03:58
+ * @LastEditTime: 2019-11-27 16:19:20
  * @Description: 商品输入选框 字段已绑定 1
 */
 <template>
@@ -67,6 +67,9 @@
   </span>
 </template>
 <script>
+import { RequestCache } from '@/utils/requestCache';
+let cache = new RequestCache();
+
 export default {
   props: {
     codes: {
@@ -115,7 +118,8 @@ export default {
       this.$root.$on('loadSearch', () => {
         this.searchTable = [];
         this.search();
-        this.$refs.commodityChoose.reload();
+        this.showCommodityGoods = false;
+        this.showed = false;
       });
     }
   },
@@ -153,7 +157,8 @@ export default {
       }
       this.loading = true;
       const api = this.sn ? 'wmsinventorydetailList' : 'wmsinventoryList';
-      const { data } = await this.$api.seePsiWmsService[api](
+      const { data } = await cache.in(10).for(
+        this.$api.seePsiWmsService[api],
         Object.assign(
           {
             page: 1,

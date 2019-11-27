@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 17:41:00
+ * @LastEditTime: 2019-11-27 18:46:03
  * @Description: 其他费用
  */
 <template>
@@ -33,12 +33,14 @@
               v-if="sub.type==='select'"
               class="wfull mr5"
               v-model="item[sub.prop]"
+              @change="dicChange(item[sub.prop],sub.prop,index)"
             >
+
               <el-option
                 :key="option.code"
                 :label="option.content"
                 :value="option.code"
-                v-for="option in dictionaryOptions(sub.dicName)"
+                v-for="option in sub.options || item.options"
               ></el-option>
             </el-select>
             <el-date-picker
@@ -71,11 +73,12 @@
   </form-card>
 </template>
 <script>
+import { watch } from 'fs';
 let formItems = [
   // 客户名称编辑的时候使用clientId显示的时候使用clientName
   // TODO 费用明细 字典值还没有随便取的
-  { label: '费用类型', prop: 'feeTypeCode', type: 'select', dicName: 'ZD_DY_LX', rules: [{ required: true, trigger: 'blur' }], },
-  { label: '费用明细', prop: 'feeDetailCode', type: 'select', dicName: 'PSI_GSSZ_ZHLX', rules: [{ required: true, trigger: 'blur' }], },
+  { label: '费用类型', prop: 'feeTypeCode', type: 'select', options: [], dicName: "ZD_DY_LX", rules: [{ required: true, trigger: 'blur' }], },
+  { label: '费用明细', prop: 'feeDetailCode', type: 'select', rules: [{ required: true, trigger: 'blur' }], },
   { label: '金额', prop: 'payAmount', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
   { label: '付款时间', prop: 'payTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
 ]
@@ -98,7 +101,25 @@ export default {
       formItems: formItems.filter(item => !this.hide.includes(item.prop)),
     }
   },
+  watch: {
+  },
+  mounted() {
+    this.getDictionaryValueTreeList()
+  },
   methods: {
+    getDictionaryValueTreeList() {
+      this.$api.seeDictionaryService.getDictionaryValueTreeList({ dicCode: 'ZD_DY_LX' }).then(res => {
+        this.formItems[0].options = res.data || []
+      })
+    },
+    dicChange(modelVal, prop, index) {
+      // modelVal值 prop 字段  index 下标
+      if (prop == 'feeTypeCode') {
+        let { children } = this.formItems[0].options.find(v => v.code == modelVal)
+        this.data.shipmentFinanceSaveVoList[index].feeDetailCode = ''
+        this.$set(this.data.shipmentFinanceSaveVoList[index], 'options', children)
+      }
+    },
     addBill() {
       this.data.shipmentFinanceSaveVoList.push({
         // busCode: '',//业务编号,

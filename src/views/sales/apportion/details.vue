@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 19:28:52
+ * @LastEditTime: 2019-11-27 18:48:33
  * @Description: 费用分摊单详情
 */
 <template>
@@ -54,7 +54,7 @@
           :rowData="rowData"
           :data="detail || {}"
           class="d-auto-y"
-          :params="{}"
+          :params="{relationCode:code}"
           :button="false"
           style="height:calc(100vh - 200px)"
           :is="activeName"
@@ -130,7 +130,7 @@ export default {
         let params = {
           apprpvalNode: this.detail.apprpvalNode || 'XSHHD-001',
           id: this.detail.id,
-          processType: 'FT-001',
+          processType: 'psi_sales_apportion_01',
         }
         let apiObj = {
           '提交审核': {

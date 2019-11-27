@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 10:53:55
+ * @LastEditTime: 2019-11-27 18:54:46
  * @Description: 销售出库单详情
 */
 <template>
@@ -24,7 +24,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state=1|| 0].includes(item.label)"
+            v-if="currStatusType[detail.state|| 0].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -52,7 +52,7 @@
               :rowData="rowData"
               :data="detail || {}"
               class="d-auto-y"
-              :params="{alterationCode:rowData.alterationCode}"
+              :params="{relationCode:code}"
               :button="false"
               style="height:calc(100vh - 200px)"
               :is="activeName"
@@ -70,10 +70,11 @@
       :rowData="rowData"
     />
     <!-- 退货扫码 -->
-    <return-sacn
+    <return-scan
       :visible.sync='scanVisible'
       :code="code"
       :rowData='rowData'
+      from="return"
       @reload='$refs.table.reload()'
     />
   </div>
@@ -81,7 +82,7 @@
 <script>
 import detail from './details/detail' //详情
 import add from './add' // 新增退货单
-import returnSacn from './return-sacn' // 退货扫码
+import returnScan from './return-scan' // 退货扫码
 import VisibleMixin from '@/utils/visibleMixin';
 import { log } from 'util';
 export default {
@@ -89,7 +90,7 @@ export default {
   components: {
     detail,
     add,
-    returnSacn
+    returnScan
   },
   data() {
     return {
@@ -156,7 +157,7 @@ export default {
         let params = {
           apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
-          processType: 'XSTHD-001',
+          processType: 'psi_purchase_reject_01',
         }
         let apiObj = {
           '提交审核': {

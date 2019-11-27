@@ -22,10 +22,17 @@
           type="primary"
         >发货</el-button>
       </div>
-      <el-tabs class="wfull hfull tabs-view">
+      <el-tabs
+        class="wfull hfull tabs-view"
+        v-model="activeName"
+      >
         <el-tab-pane label="详情">
           <el-form size="mini">
-            <goodsExported :detailForm='detailForm' />
+            <goodsExported
+              v-if='detailForm'
+              :detailForm='detailForm'
+              :code='data.salesSheetCode'
+            />
             <deliverInfo
               :data='detailForm.salesQuotationEntity'
               :disabled='true'
@@ -37,38 +44,65 @@
             />
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="拣货单">
+        <el-tab-pane
+          label="拣货单"
+          name="storagePicking"
+        >
           <storagePicking
+            v-if="activeName == 'storagePicking'"
             :button="false"
-            :params="{page:1,limit:15,salesSheetCode:detailForm.salesSheetCode}"
+            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
           ></storagePicking>
         </el-tab-pane>
-        <el-tab-pane label="组装任务">
+        <el-tab-pane
+          label="组装任务"
+          name="storageAssembly"
+        >
           <storageAssembly
+            v-if="activeName == 'storageAssembly'"
             :button="false"
-            :params="{page:1,limit:15,salesSheetCode:detailForm.salesSheetCode}"
+            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
           ></storageAssembly>
         </el-tab-pane>
-        <el-tab-pane label="发货单">
+        <el-tab-pane
+          label="发货单"
+          name="storageDeliver"
+        >
           <storageDeliver
+            v-if="activeName == 'storageDeliver'"
             :button="false"
-            :params="{page:1,limit:15,salesSheetCode:detailForm.salesSheetCode}"
+            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
           ></storageDeliver>
         </el-tab-pane>
-        <el-tab-pane label="销售出库单">
+        <el-tab-pane
+          label="销售出库单"
+          name="salesOutLibrary"
+        >>
           <salesOutLibrary
+            v-if="activeName == 'salesOutLibrary'"
             :button="false"
-            :params="{page:1,limit:15,salesSheetCode:detailForm.salesSheetCode}"
+            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
           ></salesOutLibrary>
         </el-tab-pane>
-        <el-tab-pane label="借入单">
+        <el-tab-pane
+          label="借入单"
+          name="orderBorrow"
+        >>
           <orderBorrow
+            v-if="activeName == 'orderBorrow'"
             :button="false"
-            :params="{page:1,limit:15,borrowLoanType:0,salesSheetCode:detailForm.salesSheetCode}"
+            :params="{page:1,limit:15,borrowLoanType:0,relationCode:data.salesSheetCode}"
           ></orderBorrow>
         </el-tab-pane>
-        <el-tab-pane label="应收账单">
-          <financeReceivable :button="false"></financeReceivable>
+        <el-tab-pane
+          label="应收账单"
+          name="financeReceivable"
+        >>
+          <financeReceivable
+            :button="false"
+            :params="{page:1,limit:15,borrowLoanType:0,relationCode:data.salesSheetCode}"
+            v-if="activeName == 'financeReceivable'"
+          ></financeReceivable>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -89,6 +123,7 @@ export default {
       status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       orderStorageVisible: false,
       detailForm: {},
+      activeName: '',
     };
   },
   components: {

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 14:08:17
+ * @LastEditTime: 2019-11-27 16:38:43
  * @Description: 备货单详情
 */
 <template>
@@ -70,38 +70,37 @@
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <detailApproveWrap :busType="29" :id="detail.id" v-if="detail&&showDetailPage">
-          <el-form size="mini">
-            <form-card id="arrivalInfo" title="到货信息">
-              <el-row :gutter="10">
-                <el-col :span="8">
-                  <el-form-item :rules="[{ required: true, trigger: 'blur' }]" label="采购预计到货时间" prop="purchaseArrivalTime">
-                    <el-date-picker
-                      :placeholder="`请选择采购预计到货时间`"
-                      class="wfull"
-                      disabled
-                      v-model="detail.purchaseArrivalTime"
-                      value-format="timestamp"
-                    />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </form-card>
-            <buyingGoodsEdit
-              :data="detail"
-              :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','waitPurchaseNumber','costAmount','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
-          ]"
-              disabled
-            />
-            <customInfo :data="detail" busType="29" disabled />
-            <extrasInfo :data="detail" disabled />
-          </el-form>
-        </detailApproveWrap>
+        <approve-panel :busType="29" :id="detail.id" v-if="isDataReady" />
+        <el-form size="mini">
+          <form-card id="arrivalInfo" title="到货信息">
+            <el-row :gutter="10">
+              <el-col :span="8">
+                <el-form-item :rules="[{ required: true, trigger: 'blur' }]" label="采购预计到货时间" prop="purchaseArrivalTime">
+                  <el-date-picker
+                    :placeholder="`请选择采购预计到货时间`"
+                    class="wfull"
+                    disabled
+                    v-model="detail.purchaseArrivalTime"
+                    value-format="timestamp"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </form-card>
+          <buyingGoodsEdit
+            :data="detail"
+            :show="[
+              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','waitPurchaseNumber','costAmount','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
+            ]"
+            disabled
+          />
+          <customInfo :data="detail" busType="29" disabled />
+          <extrasInfo :data="detail" disabled />
+        </el-form>
       </el-tab-pane>
       <el-tab-pane label="采购入库单" name="putin">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.putin">
-          <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:code}" />
+        <FullscreenWrap v-if="isDataReady&&tabStatus.putin">
+          <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:code,relationCode:code}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>

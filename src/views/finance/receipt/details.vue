@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 20:19:28
+ * @LastEditTime: 2019-11-27 18:55:41
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -56,7 +56,7 @@
           :rowData="rowData"
           :data="detail || {}"
           class="d-auto-y"
-          :params="{}"
+          :params="{relationCode:code}"
           :button="false"
           style="height:calc(100vh - 200px)"
           :is="activeName"
@@ -131,6 +131,7 @@ export default {
         let params = {
           apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
+          processType: 'psi_receipt'
         }
         let apiObj = {
           '提交审核': {

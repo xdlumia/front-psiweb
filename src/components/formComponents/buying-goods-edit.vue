@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 16:56:46
+ * @LastEditTime: 2019-11-27 18:17:23
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -26,13 +26,17 @@
         :class="[showSummary?'':'hide-summary']"
         :data="recalcRowKey(data[fkey])"
         :expand-row-keys="expandRowKeys"
+        :load="loadChildren"
         :style="{height:showInFull?'calc(100% - 40px)':''}"
         :summary-method="showSummary?getSummaries:null"
+        :tree-props="{children: 'children', hasChildren: (sort||[]).includes('expanded')?'configName':'children'}"
+        lazy
         ref="table"
         row-key="_rowKey"
         show-summary
         size="mini"
       >
+        >
         <el-table-column
           :align="item.align"
           :class-name="item.className"
@@ -60,7 +64,7 @@
             <!-- 字典结束 -->
             <!-- 数字类型，默认0 开始 -->
             <template v-else-if="item.type=='number'">
-              <span>{{row[item.prop]||0}}</span>
+              <span v-if="isChildShowColumn(row)">{{row[item.prop]||0}}</span>
             </template>
             <!-- 数字类型，默认0 结束 -->
             <!-- 时间戳开始 -->
@@ -70,7 +74,12 @@
             <!-- 时间戳结束 -->
             <!-- 价格输入开始 -->
             <template v-else-if="item.type=='input'">
-              <el-form-item :prop="`${getCurrentFormProp(row,item.prop)}`" :rules="item.rules||[]" size="mini">
+              <el-form-item
+                :prop="`${getCurrentFormProp(row,item.prop)}`"
+                :rules="item.rules||[]"
+                size="mini"
+                v-if="isChildShowColumn(row)"
+              >
                 <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]" />
               </el-form-item>
             </template>
@@ -86,6 +95,7 @@
                   message:`可输入区间 [1-${row[`max${item.prop}`]}]`
                 }]:[])"
                 size="mini"
+                v-if="isChildShowColumn(row)"
               >
                 <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]"></el-input>
               </el-form-item>
@@ -96,7 +106,7 @@
             </template>
             <!-- 选择开始 -->
             <template v-else-if="item.type=='selection'">
-              <el-form-item :prop="`${getCurrentFormProp(row,item.prop)}`" size="mini">
+              <el-form-item :prop="`${getCurrentFormProp(row,item.prop)}`" size="mini" v-if="isChildShowColumn(row)">
                 <el-checkbox
                   :disabled="disabled"
                   :false-label="0"
@@ -109,7 +119,7 @@
             <!-- 选择结束 -->
             <!-- 展开子项开始 -->
             <template v-else-if="item.type=='expanded'">
-              <div class="expanded-icons d-text-gray" v-if="row.children&&row.children.length">
+              <div class="expanded-icons d-text-gray" v-if="(row.children&&row.children.length)||row.configName">
                 <span @click="expand(row)" class="el-icon-plus d-pointer" v-if="!row.expanded"></span>
                 <span @click="expand(row)" class="el-icon-minus d-pointer" v-else></span>
               </div>
@@ -203,7 +213,9 @@ export default {
       type: Array
     },
     disabled: Boolean,
-    title: String
+    title: String,
+    // 显示报价单商品配置
+    showConfig: Boolean
   },
   data() {
     // prettier-ignore
@@ -222,9 +234,9 @@ export default {
       { label: '库房', key: 'wsm', width: 100, prop: 'wsmName' },
       { label: '商品类别', key: 'categoryCode', width: 80, prop: 'categoryCode', dictName: 'PSI_SP_KIND' },
       { label: '商品分类', key: 'className', width: 80, prop: 'className', },
-      { label: '规格', key: 'specOne', width: 80, prop: 'specOne', },
-      { label: '配置', key: 'configName', width: 100, prop: 'configName', },
-      { label: '备注', key: 'noteText', width: 120, prop: 'note', },
+      { label: '规格', key: 'specOne', width: 80, prop: 'specOne', showOverflowTip: true },
+      { label: '配置', key: 'configName', width: 100, prop: 'configName', showOverflowTip: true },
+      { label: '备注', key: 'noteText', width: 120, prop: 'note', showOverflowTip: true },
       { label: '待采购数量', key: 'waitPurchaseNumber', width: 100, prop: 'waitPurchaseNumber', showOverflowTip: true, type: 'number' },
       { label: '销售单价', key: 'salesPrice', width: 100, prop: 'salesPrice', showOverflowTip: true, type: 'number' },
       { label: '采购成本价', key: 'costAmount', width: 100, prop: 'costAmount', showOverflowTip: true, type: 'number' },
@@ -317,6 +329,12 @@ export default {
   },
   mounted() {},
   methods: {
+    isChildShowColumn(row) {
+      return (this.sort || []).includes('expanded') &&
+        this.getParentInfo(row).isChild
+        ? false
+        : true;
+    },
     // 校验正整数区间 默认row中 `max${prop}` 的值为上限
     checkInputIntegerNumber(row, prop, rule, value, cb) {
       let num = Number(value) || 0;
@@ -383,8 +401,22 @@ export default {
         isExpand = typeof isExpand == 'boolean' ? isExpand : !row.expanded;
         this.$set(row, 'expanded', isExpand);
         this.$refs.table.toggleRowExpansion(row, isExpand);
+        if (isExpand && !row.children) {
+          this.$refs.table.store.loadOrToggle(row, isExpand);
+        }
         // this.expandRowKeys = [row._rowKey]
       });
+    },
+    async loadChildren(row, node, cb) {
+      let {
+        data
+      } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
+        {
+          commodityCode: row.commodityCode
+        }
+      );
+      row.children = this.recalcRowKey(data || [], row._rowKey);
+      cb(row.children);
     },
     // 统计算法
     getSummaries(param) {
@@ -454,6 +486,7 @@ export default {
     // 头部选择
     headerSelect({ prop }, select) {
       this.data[this.fkey].map(item => (item[prop] = select));
+      this.$refs.table.store.updateColumns();
     },
     // 某一行选择
     columnSelect(item, select) {

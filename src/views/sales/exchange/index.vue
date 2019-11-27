@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 18:34:29
+ * @LastEditTime: 2019-11-27 17:16:34
  * @Description: 销售-销售换货单
  */
 <template>
@@ -14,8 +14,8 @@
       :moreButton="true"
       :column="true"
       title="销售换货单"
-      api="seePsiSaleService.salesalterationsheetList"
-      exportApi="seePsiSaleService.salesalterationsheetExport"
+      api="seePsiSaleService.salesexchangeList"
+      exportApi="seePsiSaleService.salesexchangeExport"
       :params="Object.assign(queryForm,params)"
     >
 

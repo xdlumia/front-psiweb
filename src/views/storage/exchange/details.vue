@@ -22,10 +22,15 @@
           type="primary"
         >换货扫码</el-button>
       </div>
-      <el-tabs class="wfull hfull tabs-view">
+      <el-tabs
+        class="wfull hfull tabs-view"
+        v-model="activeName"
+      >
         <el-tab-pane label="详情">
           <el-form
             size="mini"
+            :model="detailForm"
+            ref="form"
             v-if='detailForm'
           >
             <!-- <approvePanel /> -->
@@ -49,28 +54,44 @@
             <!-- <exchangeCommodityNoedit /> -->
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="应收账单">
+        <el-tab-pane
+          label="应收账单"
+          name='financeReceivable'
+        >
           <financeReceivable
+            v-if="activeName == 'financeReceivable'"
             :button="false"
-            :params="{page:1,limit:15,swapTaskCode:detailForm.swapTaskCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
           ></financeReceivable>
         </el-tab-pane>
-        <el-tab-pane label="应付账单">
+        <el-tab-pane
+          label="应付账单"
+          name='financePayable'
+        >
           <financePayable
+            v-if="activeName == 'financePayable'"
             :button="false"
-            :params="{page:1,limit:15,swapTaskCode:detailForm.swapTaskCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
           ></financePayable>
         </el-tab-pane>
-        <el-tab-pane label="待开票">
+        <el-tab-pane
+          label="待开票"
+          name='financeBilling'
+        >
           <financeBilling
+            v-if="activeName == 'financeBilling'"
             :button="false"
-            :params="{page:1,limit:15,swapTaskCode:detailForm.swapTaskCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
           ></financeBilling>
         </el-tab-pane>
-        <el-tab-pane label="待收票">
+        <el-tab-pane
+          label="待收票"
+          name='financeReceipt'
+        >
           <financeReceipt
+            v-if="activeName == 'financeReceipt'"
             :button="false"
-            :params="{page:1,limit:15,swapTaskCode:detailForm.swapTaskCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
           ></financeReceipt>
         </el-tab-pane>
       </el-tabs>
@@ -100,6 +121,7 @@ export default {
       dialogData: {
         title: '换货扫码UAVBFUSBDFU',
       },
+      activeName: '',
       detailForm: {},
       state: {
         2: '待换货',
@@ -124,7 +146,7 @@ export default {
       this.$api.seePsiWmsService.wmsswaptaskGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
-          this.status[0].value = this.state[res.data.swapState]
+          this.status[0].value = this.state[this.drawerData.swapState]
           this.status[1].value = res.data.createTime
           this.status[2].value = res.data.creatorName
           this.status[3].value = res.data.deptName

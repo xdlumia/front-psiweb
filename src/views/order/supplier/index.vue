@@ -2,19 +2,19 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 17:19:52
+ * @LastEditTime: 2019-11-27 17:37:20
  * @Description: 采购-供应商
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
       :filterOptions="filterOptions"
-      :params="params"
+      :params="Object.assign(defaultParams,params)"
       api="seePsiCommonService.commonsupplierinfoPagelist"
       busType="42"
+      exportApi="seePsiCommonService.commonsupplierinfoExport"
       ref="tableView"
       title="供应商"
-      exportApi="seePsiCommonService.commonsupplierinfoExport"
     >
       <template slot="button">
         <el-button @click="showCat=true" size="mini" type="primary">商品供应分类表</el-button>
@@ -72,6 +72,10 @@ export default {
   },
   data() {
     return {
+      defaultParams: {
+        page: 1,
+        limit: 15
+      },
       status: [],
       showDetail: false,
       showEdit: false,

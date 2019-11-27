@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 14:53:35
+ * @LastEditTime: 2019-11-27 17:44:22
  * @Description: 采购入库单
 */
 <template>
@@ -76,71 +76,72 @@
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <detailApproveWrap :busType="30" :id="detail.id" v-if="detail&&showDetailPage">
-          <el-form :model="detail" size="mini" v-if="detail">
-            <supplierInfo :data="detail" disabled id="supplierInfo" />
-            <companyInfo :data="detail" disabled id="companyInfo" />
-            <arrivalInfo :data="detail" :hide="detail.source=='备货单'?['saleTime']:[]" disabled id="arrivalInfo" v-if="detail.source!='直发单'" />
-            <buyingDeliverInfo :data="detail" disabled id="deliverInfo" ref="deliverInfo" v-else />
-            <buying-goods-edit
-              :data="detail"
-              :show="[
+        <approve-panel :busType="30" :id="detail.id" v-if="isDataReady" />
+        <el-form :model="detail" size="mini" v-if="detail">
+          <supplierInfo :data="detail" disabled id="supplierInfo" />
+          <companyInfo :data="detail" disabled id="companyInfo" />
+          <arrivalInfo :data="detail" :hide="detail.source=='备货单'?['saleTime']:[]" disabled id="arrivalInfo" v-if="detail.source!='直发单'" />
+          <buyingDeliverInfo :data="detail" disabled id="deliverInfo" ref="deliverInfo" v-else />
+          <buying-goods-edit
+            :data="detail"
+            :show="[
                 'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
               ]"
-              disabled
-              id="commodityInfo"
-              priceKey="purchasePrice"
-            />
-            <buying-goods-edit
-              :data="detail"
-              :show="[
+            :sort="detail.source=='备货单'?[]:['expanded']"
+            disabled
+            id="commodityInfo"
+            priceKey="purchasePrice"
+          />
+          <buying-goods-edit
+            :data="detail"
+            :show="[
                 'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
               ]"
-              disabled
-              fkey="additionalCommodityList"
-              priceKey="purchasePrice"
-              v-if="detail.source=='请购单'"
-            />
-            <buyingPaymentLate :data="detail" disabled id="paymentLate" />
-            <order-storage-bill :data="detail" disabled id="billInfo" />
-            <customInfo :data="detail" busType="30" disabled id="customInfo" />
-            <extrasInfo :data="detail" disabled id="extrasInfo" />
-          </el-form>
-        </detailApproveWrap>
+            :sort="detail.source=='备货单'?[]:['expanded']"
+            disabled
+            fkey="additionalCommodityList"
+            priceKey="purchasePrice"
+            v-if="detail.source=='请购单'"
+          />
+          <buyingPaymentLate :data="detail" disabled id="paymentLate" />
+          <order-storage-bill :data="detail" disabled id="billInfo" />
+          <customInfo :data="detail" busType="30" disabled id="customInfo" />
+          <extrasInfo :data="detail" disabled id="extrasInfo" />
+        </el-form>
       </el-tab-pane>
       <el-tab-pane label="请购单" name="purchaseApplyCode" v-if="detail&&detail.source=='请购单'">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.purchaseApplyCode">
-          <OrderBuying :button="false" :params="{page:1,limit:15,purchaseApplyCode:detail.joinCode}" />
+        <FullscreenWrap v-if="isDataReady&&tabStatus.purchaseApplyCode">
+          <OrderBuying :button="false" :params="{page:1,limit:15,purchaseApplyCode:detail.joinCode,relationCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="直发单" name="directCode" v-if="detail&&detail.source=='直发单'">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.directCode">
-          <OrderDirect :button="false" :params="{page:1,limit:15,directCode:detail.joinCode}" />
+        <FullscreenWrap v-if="isDataReady&&tabStatus.directCode">
+          <OrderDirect :button="false" :params="{page:1,limit:15,directCode:detail.joinCode,relationCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="备货单" name="stockCode" v-if="detail&&detail.source=='备货单'">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.stockCode">
-          <OrderPrepare :button="false" :params="{page:1,limit:15,stockCode:detail.joinCode}" />
+        <FullscreenWrap v-if="isDataReady&&tabStatus.stockCode">
+          <OrderPrepare :button="false" :params="{page:1,limit:15,stockCode:detail.joinCode,relationCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="采购单" name="purchaseOrder">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.purchaseOrder">
-          <StoragePurchase :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode}" />
+        <FullscreenWrap v-if="isDataReady&&tabStatus.purchaseOrder">
+          <StoragePurchase :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode,relationCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="采购退货单" name="reject">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.reject">
-          <OrderReject :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode}" />
+        <FullscreenWrap v-if="isDataReady&&tabStatus.reject">
+          <OrderReject :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode,relationCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="应付账单" name="payable">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.payable">
-          <FinancePayable :button="false" :params="{page:1,limit:15,busCode:detail.putinCode}" />
+        <FullscreenWrap v-if="isDataReady&&tabStatus.payable">
+          <FinancePayable :button="false" :params="{page:1,limit:15,busCode:detail.putinCode,relationCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="发票记录" name="invoice">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.invoice">
-          <FinanceReceipt :button="false" :params="{page:1,limit:15,busCode:detail.putinCode}" />
+        <FullscreenWrap v-if="isDataReady&&tabStatus.invoice">
+          <FinanceReceipt :button="false" :params="{page:1,limit:15,busCode:detail.putinCode,relationCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>

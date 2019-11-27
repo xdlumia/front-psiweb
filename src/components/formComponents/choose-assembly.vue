@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-28 14:00:55
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 18:22:31
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-27 19:21:03
  * @Description: 生成拣货单和组装任务 人员分配 1
 */
 <template>
@@ -12,7 +12,10 @@
   >
     <div>
       <el-row :gutter="20">
-        <el-col :span="12">
+        <el-col
+          :span="12"
+          v-if="!hide.includes('pickingPerson')"
+        >
           <el-form-item
             :rules="[  
               {required:true,message:'必填项',trigger: 'input',}
@@ -36,7 +39,10 @@
             </employees-chosen>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col
+          :span="12"
+          v-if="!hide.includes('assemblePerson')"
+        >
           <el-form-item
             :rules="[ 
               {required:true,message:'必填项',trigger: 'input',}
@@ -61,7 +67,7 @@
         </el-col>
       </el-row>
     </div>
-    <div>
+    <div v-if="!hide.includes('note')">
       <el-form-item
         label="备注"
         size="mini"
@@ -72,7 +78,7 @@
           placeholder="备注"
           show-word-limit
           type="textarea"
-          v-model="form.note"
+          v-model="data.note"
         />
       </el-form-item>
     </div>
@@ -93,16 +99,12 @@ export default {
       default: () => []
     },
     disabled: Boolean,
-    form: {}
   },
   data() {
     return {
       options: [],
       employeeName: '',
       employeeAssembleName: '',
-      dialogData: {
-        visible: false
-      }
     };
   },
   methods: {
@@ -110,12 +112,12 @@ export default {
     chooseChai(value) {
       console.log(value);
       this.employeeName = value.employeeName;
-      this.form.pickingPerson = value.userId;
+      this.data.pickingPerson = value.userId;
     },
     //选择组装人员
     chooseAssemble(value) {
       this.employeeAssembleName = value.employeeName;
-      this.form.assemblePerson = value.userId;
+      this.data.assemblePerson = value.userId;
     }
   }
 };

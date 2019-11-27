@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 18:43:02
+ * @LastEditTime: 2019-11-27 19:45:43
  * @Description: 报价单详情
 */
 <template>
@@ -55,7 +55,7 @@
           :rowData="rowData"
           :button="false"
           :data="detail || {}"
-          :params="{quotationCode:code}"
+          :params="{relationCode:code}"
           style="height:calc(100vh - 200px)"
           :is="activeName"
         ></components>
@@ -145,7 +145,6 @@ export default {
 
   },
   created() {
-
   },
   methods: {
     async getDetail() {
@@ -165,7 +164,7 @@ export default {
         let params = {
           apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
-          processType: 'BJD-001',//报价单的权限吗
+          processType: 'psi_sales_quote_01',//报价单的权限吗
         }
         // 操作接口
         let apiObj = {

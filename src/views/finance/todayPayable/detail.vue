@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 17:40:59
+ * @LastEditTime: 2019-11-27 16:00:08
  * @Description: 今日应付账单
 */
 <template>
@@ -19,8 +19,7 @@
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <el-form size="mini" v-if="detail&&showDetailPage">
-          <!-- <approve-panel></approve-panel> -->
+        <el-form size="mini" v-if="isDataReady">
           <paybill-detail :data="detail" disabled />
           <payer-info :data="detail" disabled />
           <!-- incomeType 收支类型(0收款/1付款） -->
@@ -44,11 +43,11 @@
         :name="busInfo[detail.busType].listPage"
         v-if="detail.busCode&&busInfo[detail.busType]"
       >
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus[busInfo[detail.busType].listPage]">
+        <FullscreenWrap v-if="isDataReady&&tabStatus[busInfo[detail.busType].listPage]">
           <component
             :button="false"
             :is="busInfo[detail.busType].listPage"
-            :params="{page:1,limit:15,[busInfo[detail.busType].codeFilterKey]:detail.busCode}"
+            :params="{page:1,limit:15,[busInfo[detail.busType].codeFilterKey]:detail.busCode,relationCode:detail.billCode}"
           />
         </FullscreenWrap>
       </el-tab-pane>

@@ -23,7 +23,10 @@
           type="primary"
         >拣货</el-button>
       </div>
-      <el-tabs class="wfull hfull tabs-view">
+      <el-tabs
+        class="wfull hfull tabs-view"
+        v-model="activeName"
+      >
         <el-tab-pane label="详情">
           <el-form>
             <goodsPicking :data='detailForm' />
@@ -37,10 +40,14 @@
             />
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="销售单">
+        <el-tab-pane
+          label="销售单"
+          name="storageSales"
+        >
           <storageSales
+            v-if="activeName == 'storageSales'"
             :button="false"
-            :params="{page:1,limit:15,pickingOrderCode:detailForm.pickingOrderCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.pickingOrderCode}"
           ></storageSales>
         </el-tab-pane>
       </el-tabs>
@@ -58,6 +65,7 @@ export default {
     return {
       status: [{ label: '拣货状态', value: '待拣货' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       detailForm: {},
+      activeName: '',
       orderStorageVisible: false
     };
   },

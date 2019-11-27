@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 15:38:57
+ * @LastEditTime: 2019-11-27 15:54:34
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -26,6 +26,7 @@ export default {
       stateText: {},
       closeTimer: null,
       alwaysDropAndCopyForm: false,
+      isDataReady: false,// 是否数据准备完毕，可以渲染视图了
       activeTab:'',// 页签
       tabStatus:{} // 页签状态
     }
@@ -74,6 +75,7 @@ export default {
   methods: {
     async $reload() {
       this.loading = true;
+      this.isDataReady = false;
       try {
         let data = await this.getDetail();
         if (data) {
@@ -97,6 +99,7 @@ export default {
         }
         if (this.afterDetailInit) this.afterDetailInit()
       } catch (error) { }
+      this.isDataReady = true;
       this.loading = false;
     },
     // 检查可见状态
@@ -126,6 +129,7 @@ export default {
       } else {
         this.showDetailPage = false;
         this.showEditPage = false;
+        this.isDataReady = false;
       }
     },
     // 设置编辑过了

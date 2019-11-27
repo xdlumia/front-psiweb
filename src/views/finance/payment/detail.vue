@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 17:41:13
+ * @LastEditTime: 2019-11-27 17:40:50
  * @Description: 付款单
 */
 <template>
@@ -20,7 +20,7 @@
         @click="$submission('seePsiFinanceService.paybillPassApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
-          processType: 'psi_finance_pay_bill_01'
+          processType: 'psi_payment'
         },'通过')"
         size="mini"
         type="primary"
@@ -30,7 +30,7 @@
         @click="$submission('seePsiFinanceService.paybillReject',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
-          processType: 'psi_finance_pay_bill_01'
+          processType: 'psi_payment'
         },'驳回',true)"
         size="mini"
         type="danger"
@@ -40,7 +40,7 @@
         @click="$submission('seePsiFinanceService.paybillAuditApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
-          processType: 'psi_finance_pay_bill_01'
+          processType: 'psi_payment'
         },'复核通过')"
         size="mini"
         type="primary"
@@ -50,25 +50,23 @@
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <detailApproveWrap :busType="50" :id="detail.id" v-if="detail&&showDetailPage">
-          <el-form size="mini" v-if="detail&&showDetailPage">
-            <!-- <approve-panel></approve-panel> -->
-            <paybill-detail :data="detail" :hide="['billType','lateFeeAmount']" disabled />
-            <payer-info :data="detail" disabled />
-            <extras-info :data="detail" @change="saveExtras" can-modify disabled />
-          </el-form>
-        </detailApproveWrap>
+        <approve-panel :busType="50" :id="detail.id" v-if="isDataReady" />
+        <el-form size="mini" v-if="isDataReady">
+          <paybill-detail :data="detail" :hide="['billType','lateFeeAmount']" disabled />
+          <payer-info :data="detail" disabled />
+          <extras-info :data="detail" @change="saveExtras" can-modify disabled />
+        </el-form>
       </el-tab-pane>
       <el-tab-pane
         :label="busInfo[detail.busType].title"
         :name="busInfo[detail.busType].listPage"
         v-if="detail.busCode&&busInfo[detail.busType]"
       >
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus[busInfo[detail.busType].listPage]">
+        <FullscreenWrap v-if="isDataReady&&tabStatus[busInfo[detail.busType].listPage]">
           <component
             :button="false"
             :is="busInfo[detail.busType].listPage"
-            :params="{page:1,limit:15,[busInfo[detail.busType].codeFilterKey]:detail.busCode}"
+            :params="{page:1,limit:15,[busInfo[detail.busType].codeFilterKey]:detail.busCode,relationCode:detail.billCode}"
           />
         </FullscreenWrap>
       </el-tab-pane>

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 17:55:31
+ * @LastEditTime: 2019-11-27 19:22:14
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -34,17 +34,19 @@
       size="small"
       :model="form"
       label-position="top"
-      class="d-auto-y"
-      style="height:calc(100vh - 110px)"
     >
-      <d-tabs :style="{maxHeight:'calc(100vh - 180px)'}">
+      <d-tabs :style="{maxHeight:'calc(100vh - 110px)'}">
         <d-tab-pane
           v-for="(val,key) of tabs"
           :key="key"
           :label="val"
           :name="key"
         />
-
+        <choose-assembly
+          :hide="['note','assemblePerson']"
+          id="choose-assembly"
+          :data="form"
+        />
         <!-- 客户信息 -->
         <customerInfo
           id="customerInfo"
@@ -105,7 +107,8 @@ export default {
       },
       // 新增orEdit框内容
       form: {
-        id: '1',
+        id: '',
+        pickingPerson: '', //拣货人
         companyAccountId: '',
         companySettlementId: '',
         apprpvalNode: '', // 审核节点,

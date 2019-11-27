@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 15:35:13
+ * @LastEditTime: 2019-11-27 18:36:21
  * @Description: description
  -->
 <template>
@@ -15,8 +15,7 @@
     v-loading="loading"
   >
     <template slot="button">
-      <el-button size="mini" v-if="buttonState == -1" type="primary"
-@click="showEdit = true">编辑</el-button>
+      <el-button size="mini" v-if="buttonState == -1" type="primary" @click="showEdit = true">编辑</el-button>
       <el-button
         size="mini"
         v-if="buttonState == -1"
@@ -64,17 +63,20 @@
       </el-tab-pane>
       <el-tab-pane label="应收账单" name="receivable">
         <FullscreenWrap v-if="showDetailPage&&!loading&&activeTab=='receivable'">
-          <FinanceReceivable :button="false" :params="{page:1,limit:15,busCode:code}" />
+          <FinanceReceivable :button="false" :params="{page:1,limit:15,busCode:code,relationCode:code}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="应付账单" name="payable">
         <FullscreenWrap v-if="showDetailPage&&!loading&&activeTab=='payable'">
-          <FinancePayable :button="false" :params="{page:1,limit:15,busCode:code}" />
+          <FinancePayable
+            :button="false"
+            :params="{page:1,limit:15,busCode:code,relationCode:code}"
+          />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="费用分摊单" name="cost">
         <FullscreenWrap v-if="showDetailPage&&!loading&&activeTab=='cost'">
-          <SalesApportion :button="false" :params="{page:1,limit:15,costCode:code}" />
+          <SalesApportion :button="false" :params="{page:1,limit:15,costCode:code,relationCode:code}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
@@ -119,7 +121,7 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     return {
       activeTab: 'detail',
       showEdit: false,
@@ -129,30 +131,30 @@ export default {
       status: []
     }
   },
-  mounted() {
+  mounted () {
     this.checkVisible();
     this.detailForm = Object.assign(this.detailForm, this.rowData)
     this.fcostGetInfoByCode()
   },
   computed: {
-    buttonState() {
+    buttonState () {
       return this.detailForm.state
     }
   },
   watch: {
-    visible() {
+    visible () {
       this.checkVisible();
     }
   },
   methods: {
-    refresh() {
+    refresh () {
       this.fcostGetInfoByCode()
       this.$emit('refresh')
     },
-    checkVisible() {
+    checkVisible () {
       this.showDetailPage = this.visible;
     },
-    fcostGetInfoByCode() {
+    fcostGetInfoByCode () {
       this.loading = true
       this.$api.seePsiFinanceService.fcostGetInfoByCode({ code: this.code }).then(res => {
         this.detailForm = res.data
@@ -168,13 +170,13 @@ export default {
         this.loading = false
       })
     },
-    fcostAuditApproval(id) {
+    fcostAuditApproval (id) {
       this.$confirm(`是否复核通过`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.fcostAuditApproval({ id, processType: 'psi_finance_cost_01', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
+        this.$api.seePsiFinanceService.fcostAuditApproval({ id, processType: 'psi_finance_fee', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
           this.refresh()
         })
       }).catch(() => {
@@ -184,13 +186,13 @@ export default {
         })
       })
     },
-    fcostReject(id) {
+    fcostReject (id) {
       this.$confirm(`是否驳回`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.fcostReject({ id, processType: 'psi_finance_cost_01', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
+        this.$api.seePsiFinanceService.fcostReject({ id, processType: 'psi_finance_fee', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
           this.refresh()
         })
       }).catch(() => {
@@ -200,13 +202,13 @@ export default {
         })
       })
     },
-    fcostPassApproval(id) {
+    fcostPassApproval (id) {
       this.$confirm(`是否审核通过`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.fcostPassApproval({ id, processType: 'psi_finance_cost_01', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
+        this.$api.seePsiFinanceService.fcostPassApproval({ id, processType: 'psi_finance_fee', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
           this.refresh()
         })
       }).catch(() => {
@@ -216,13 +218,13 @@ export default {
         })
       })
     },
-    fcostSubmitApproval(id) {
+    fcostSubmitApproval (id) {
       this.$confirm(`是否提交审核`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.fcostSubmitApproval({ id, processType: 'psi_finance_cost_01' }).then(res => {
+        this.$api.seePsiFinanceService.fcostSubmitApproval({ id, processType: 'psi_finance_fee' }).then(res => {
           this.refresh()
         })
       }).catch(() => {
@@ -232,7 +234,7 @@ export default {
         })
       })
     },
-    fcostDelete(id) {
+    fcostDelete (id) {
       this.$confirm(`是否删除`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -249,7 +251,7 @@ export default {
         })
       })
     },
-    commonquotationconfigUpdate(id, state) {
+    commonquotationconfigUpdate (id, state) {
       this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

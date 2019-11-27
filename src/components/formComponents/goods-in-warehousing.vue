@@ -1,33 +1,311 @@
 <template>
-  <!-- 退入库商品 -->
-  <form-card title='退入库商品'>
-    <div
-      v-for="(item,index) of goodsData"
-      :key="index"
+  <div>
+    <!-- 退入库商品 -->
+    <form-card title='退入库商品'>
+      <div
+        class="ac d-text-gray"
+        v-if="!goodsData.length"
+      >无商品信息</div>
+      <div
+        v-for="(item,index) of goodsData.filter(v=>v.putawayType==1)"
+        :key="index"
+      >
+        <el-table
+          border
+          size='mini'
+          :data='[item]'
+          ref="table"
+          class="mt15"
+          style="max-height:300px"
+        >
+          <el-table-column
+            fixed
+            min-width="70"
+            label="入库数量"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              <!-- 扫码数量 -->
+              <span>{{scope.row.scanNumber || 0}}/{{scope.row.commodityNumber || 0}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed
+            prop="commodityCode"
+            label="商品编号"
+            min-width="100"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.commodityCode}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed
+            prop="categoryCode"
+            min-width="100"
+            label="商品类别"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="className"
+            min-width="100"
+            label="商品分类"
+            show-overflow-tooltip
+          ></el-table-column>
+          <el-table-column
+            prop="goodsName"
+            label="商品名称"
+            min-width="140"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="configName"
+            min-width="100"
+            label="商品配置"
+            show-overflow-tooltip
+          ></el-table-column>
+          <el-table-column
+            prop="specOne"
+            min-width="100"
+            label="商品规格"
+            show-overflow-tooltip
+          ></el-table-column>
+          <el-table-column
+            prop="unit"
+            min-width="100"
+            label="单位"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="mt10 mb10">
+          <span class="b mt5">机器号/SN码</span>
+          <el-input
+            :disabled="item.commodityNumber==0 || !item.commodityNumber"
+            @keyup.native.13="commodityCheck(item,'return')"
+            size="mini"
+            v-model="item.snCode"
+            style="width:200px;"
+            class="ml10 mt5"
+          >
+            <el-button
+              slot="append"
+              @click="commodityCheck(item,'return')"
+            >确定</el-button>
+          </el-input>
+          <span class="fr d-text-black mr10 mt5">
+            <span>本次成功扫码 </span>
+            <span class="b d-text-red f16">{{item.scanNumber || 0}}</span>
+            <span> 件，历史扫码 </span>
+            <span class="b d-text-green f16">{{item.hisScanNumber||0}}</span>
+            <span> 件，还需扫码 </span>
+            <span class="b d-text-blue f16">{{item.commodityNumber||0}}</span>
+            <span> 件</span>
+          </span>
+        </div>
+      </div>
+    </form-card>
+    <!-- 换出商品 -->
+    <form-card
+      title='换出商品'
+      v-if="from=='exchange'"
+    >
+      <div
+        v-for="(item,index) of goodsData.filter(v=>v.putawayType==0)"
+        :key="index"
+      >
+        <el-table
+          border
+          size='mini'
+          :data='[item]'
+          ref="table"
+          class="mt15"
+          style="max-height:300px"
+        >
+          <el-table-column
+            fixed
+            min-width="70"
+            label="入库数量"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              <!-- 扫码数量 -->
+              <span>{{scope.row.scanNumber || 0}}/{{scope.row.commodityNumber || 0}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed
+            prop="commodityCode"
+            label="商品编号"
+            min-width="100"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.commodityCode}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed
+            prop="categoryCode"
+            min-width="100"
+            label="商品类别"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="className"
+            min-width="100"
+            label="商品分类"
+            show-overflow-tooltip
+          ></el-table-column>
+          <el-table-column
+            prop="goodsName"
+            label="商品名称"
+            min-width="140"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="configName"
+            min-width="100"
+            label="商品配置"
+            show-overflow-tooltip
+          ></el-table-column>
+          <el-table-column
+            prop="specOne"
+            min-width="100"
+            label="商品规格"
+            show-overflow-tooltip
+          ></el-table-column>
+          <el-table-column
+            prop="unit"
+            min-width="100"
+            label="单位"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="mt10 mb10">
+          <span class="b mt5">机器号/SN码</span>
+          <el-input
+            :disabled="item.commodityNumber==0 || !item.commodityNumber"
+            @keyup.native.13="commodityCheck(item,'exchange')"
+            size="mini"
+            v-model="item.snCode"
+            style="width:200px;"
+            class="ml10 mt5"
+          >
+            <el-button
+              slot="append"
+              @click="commodityCheck(item,'exchange')"
+            >确定</el-button>
+          </el-input>
+          <span class="fr d-text-black mr10 mt5">
+            <span>本次成功扫码 </span>
+            <span class="b d-text-red f16">{{item.scanNumber || 0}}</span>
+            <span> 件，历史扫码 </span>
+            <span class="b d-text-green f16">{{item.hisScanNumber||0}}</span>
+            <span> 件，还需扫码 </span>
+            <span class="b d-text-blue f16">{{item.commodityNumber||0}}</span>
+            <span> 件</span>
+          </span>
+        </div>
+      </div>
+    </form-card>
+    <!-- 扫描记录 -->
+    <form-card
+      title='扫描记录'
+      class='wfull'
     >
       <el-table
         border
         size='mini'
-        :data='[item]'
+        :data='[...data.returnScanData,...data.exchangeScanData]'
         ref="table"
-        class="mt15"
+        class="college-main mt15"
         style="max-height:300px"
       >
         <el-table-column
-          fixed
-          min-width="70"
-          label="入库数量"
+          min-width="80"
+          label="操作"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.putinNumber || 0}}/{{scope.row.commodityNumber}}</span>
+            <i
+              class="el-icon-delete-solid d-text-red"
+              @click="delRecord(scope)"
+            ></i>
           </template>
         </el-table-column>
         <el-table-column
-          fixed
+          label="编号"
+          type="index"
+          width="50"
+        >
+        </el-table-column>
+
+        <el-table-column
+          min-width="80"
+          label="状态"
+          show-overflow-tooltip
+        >
+          <template slot-scope="">待退货</template>
+        </el-table-column>
+        <el-table-column
+          prop="snCode"
+          label="SN码"
+          min-width="100"
+          show-overflow-tooltip
+        >
+        </el-table-column>
+        <el-table-column
+          prop="robotCode"
+          min-width="100"
+          label="机器码"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="wmsName"
+          min-width="100"
+          label="入库库房"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="operator"
+          min-width="100"
+          label="入库人"
+          show-overflow-tooltip
+        >
+        </el-table-column>
+        <el-table-column
+          prop="createTime"
+          min-width="100"
+          label="入库时间"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.createTime|timeToStr}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="commodityCode"
           label="商品编号"
-          min-width="100"
+          min-width="160"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
@@ -35,14 +313,13 @@
           </template>
         </el-table-column>
         <el-table-column
-          fixed
           prop="categoryCode"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -61,7 +338,7 @@
         <el-table-column
           prop="configName"
           min-width="100"
-          label="商品配置"
+          label="配置"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
@@ -70,57 +347,26 @@
           label="商品规格"
           show-overflow-tooltip
         ></el-table-column>
-        <el-table-column
-          prop="unit"
-          min-width="100"
-          label="单位"
-          show-overflow-tooltip
-        >
-          <template slot-scope="scope">
-            <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
-          </template>
-        </el-table-column>
       </el-table>
-      <div class="mt10 mb10">
-        <span class="b mt5">机器号/SN码</span>
-        <el-input
-          v-on:keyup.13.native="shipmentCommodityCheck"
-          size="mini"
-          v-model="snCode"
-          style="width:200px;"
-          class="ml10 mt5"
-        ></el-input>
-        <span class="fr d-text-black mr10 mt5">
-          <span>本次成功扫码 </span>
-          <span class="b d-text-red f16">{{tableData.length}}</span>
-          <span> 件，历史扫码 </span>
-          <span class="b d-text-green f16">历史扫码</span>
-          <span> 件，还需扫码 </span>
-          <span class="b d-text-blue f16">还需要扫码</span>
-          <span> 件</span>
-        </span>
-      </div>
-    </div>
-  </form-card>
+
+    </form-card>
+  </div>
 </template>
 <script>
-
 export default {
   components: {
   },
   props: {
     rowData: Object,
     params: Object,
-    data: {},
+    data: Object,
+    from: String, //来源 return退货 exchange 换货
   },
   computed: {
   },
   data() {
     return {
       goodsData: [], //商品列表
-      tableData: [],
-      snCode: '',
-      wmsId: '',//库房id
     };
   },
   mounted() {
@@ -136,7 +382,7 @@ export default {
         })
     },
     //回车机器号和SN码
-    shipmentCommodityCheck() {
+    commodityCheck(item, type) {
       if (!this.data.wmsId) {
         this.$message({
           type: 'error',
@@ -145,35 +391,56 @@ export default {
         })
         return
       }
-
-      //   if ((this.rowData.commodityNumber - (this.rowData.putinNumber || 0) - this.tableData.length) != 0) {
       let params = {
-        snCode: this.snCode,
-        commodityCode: this.rowData.commodityCode,
-        putawayCommodityList: this.tableData,
-        categoryCode: this.rowData.categoryCode,
+        snCode: item.snCode,
+        commodityCode: item.commodityCode,
+        categoryCode: item.categoryCode,
         wmsId: this.data.wmsId
       }
-      this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck(params)
+      // 入库扫码
+      let api = null
+
+      //退货
+      if (type == 'return') {
+        api = 'wmsinventorydetailPutawayCommodityCheck'
+        params.putawayCommodityList = this.data.returnScanData //退货
+        delete params.commodityList
+      }
+      //换货
+      else if (type == 'exchange') {
+        api = 'wmsinventorydetailShipmentCommodityCheck'
+        params.commodityList = this.data.exchangeScanData //换货
+        delete params.putawayCommodityList
+      }
+      this.$api.seePsiWmsService[api](params)
         .then(res => {
-          if (res.data) {
-            this.tableData.push(res.data)
+          let data = res.data || {}
+          data.fromType = type
+          // putawayType操作类型 1入库 0 出库
+          if (item.putawayType == 1) {
+            // operation也是操作类型 0 入库 1出库.  这俩人写的 类型值还不统一.  噗噗噗....
+            data.operation = 0
+          } else {
+            data.operation = 1
           }
+          // this.data.returnScanData.push({ ...item, ...data })
+          this.data[`${type}ScanData`].push({ ...item, ...data })
+          // 本次扫码次数
+          item.scanNumber = (item.scanNumber || 0) + 1
+          // 历史扫码次数
+          item.hisScanNumber = (item.hisScanNumber || 0) + 1
+          item.commodityNumber--
         })
-        .finally(() => {
-
-        })
-      //   } else {
-      //     this.$message({
-      //       type: 'error',
-      //       message: '当前商品待入库数量已为0!'
-      //     })
-      //   }
-
     },
     //删除某条
-    deletePurchase(scope) {
-      this.tableData.splice(scope.$index, 1)
+    delRecord(scope) {
+      let row = scope.row
+      let index = this.data[`${row.fromType}ScanData`].findIndex(v => v.id = row.id)
+      this.data[`${row.fromType}ScanData`].splice(index, 1)
+      let item = this.goodsData.find(item => item.id == row.id)
+      // 本次扫码次数
+      item.scanNumber--
+      item.commodityNumber++
     },
   }
 };

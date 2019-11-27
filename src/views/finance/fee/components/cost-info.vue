@@ -10,8 +10,15 @@
     <form-card title="费用信息">
       <el-row :gutter="10">
         <el-col :span="8">
-          <el-form-item label="费用类型" prop="feeTypeCode">
-            <el-select size="mini" v-model="data.feeTypeCode" class="wfull">
+          <el-form-item
+            label="费用类型"
+            prop="feeTypeCode"
+          >
+            <el-select
+              size="mini"
+              v-model="data.feeTypeCode"
+              class="wfull"
+            >
               <el-option
                 v-for="(item, index) in treeList"
                 :key="index"
@@ -22,8 +29,15 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="费用明细类型" prop="feeDetailCode">
-            <el-select size="mini" v-model="data.feeDetailCode" class="wfull">
+          <el-form-item
+            label="费用明细类型"
+            prop="feeDetailCode"
+          >
+            <el-select
+              size="mini"
+              v-model="data.feeDetailCode"
+              class="wfull"
+            >
               <el-option
                 v-for="(item, index) in children"
                 :key="index"
@@ -34,7 +48,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="金额" prop="amount">
+          <el-form-item
+            label="金额"
+            prop="amount"
+          >
             <el-input v-model="data.amount"></el-input>
           </el-form-item>
         </el-col>

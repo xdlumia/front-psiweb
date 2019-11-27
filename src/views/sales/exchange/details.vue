@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 19:26:54
+ * @LastEditTime: 2019-11-27 18:53:22
  * @Description: 销售换货单详情
 */
 <template>
@@ -49,7 +49,7 @@
 
         <components
           ref="detail"
-          :params="{shipmentCode:code}"
+          :params="{relationCode:code}"
           :code="this.code"
           :rowData="rowData"
           :data="detail || {}"
@@ -67,17 +67,27 @@
       type="edit"
       :rowData="rowData"
     />
+    <!-- 换货扫码 -->
+    <return-scan
+      :visible.sync='scanVisible'
+      :code="code"
+      :rowData='rowData'
+      from="exchange"
+      @reload='$refs.table.reload()'
+    />
   </div>
 </template>
 <script>
 import detail from './details/detail' //详情
 import add from '../return/add'
+import returnScan from '../return/return-scan' // 退货扫码
 import VisibleMixin from '@/utils/visibleMixin';
 export default {
   mixins: [VisibleMixin],
   components: {
     detail,
     add,
+    returnScan
   },
   data() {
     return {
@@ -105,6 +115,7 @@ export default {
         '4': ['提交审核', '编辑', '删除'], //已驳回
       },
       editVisible: false,
+      scanVisible: false,
       // tab操作栏
       tabs: {
         detail: '详情',
@@ -139,7 +150,7 @@ export default {
         let params = {
           apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
-          processType: 'XSHHD-001',
+          processType: 'psi_sales_exchange_01',
         }
         let apiObj = {
           '提交审核': {

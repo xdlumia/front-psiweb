@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 19:29:31
+ * @LastEditTime: 2019-11-27 18:48:16
  * @Description: 账单调整详情
 */
 <template>
@@ -66,11 +66,12 @@
     <!-- 客户编辑 -->
     <add
       v-if="editVisible"
+      adjustPriceType='1'
       :visible.sync="editVisible"
       @reload="setEdit(),getDetail()"
       :rowData="rowData"
       type="edit"
-      :params="{salesShipmentCode:rowData.shipmentCode}"
+      :params="{relationCode:code}"
       :code="rowData.shipmentCode"
     />
   </div>

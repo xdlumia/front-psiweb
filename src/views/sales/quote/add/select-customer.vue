@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 16:12:31
+ * @LastEditTime: 2019-11-27 17:29:08
  * @Description: 选择客户
 */
 <template>
@@ -43,10 +43,12 @@
         name="clientInfo"
       ></el-tab-pane>
       <el-tab-pane
+        :disabled="!data.clientId"
         label="客户数据"
         name="clientData"
       ></el-tab-pane>
       <el-tab-pane
+        :disabled="!data.clientId"
         label="历史报价单"
         name="salesQuote"
       ></el-tab-pane>
@@ -93,6 +95,7 @@ export default {
 
   },
   watch: {
+
     // 'data.clientId': {
     //   handler(val) {
     //     if (val) {

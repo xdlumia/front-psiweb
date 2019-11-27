@@ -45,7 +45,9 @@
             >
               {{scope.row.commodityInfoList ? scope.row.commodityInfoList.length : '扫码添加'}}
             </div>
+            <!-- 扫码完成或者终止的情况下不显示码字 -->
             <i
+              v-if='data.blitemState !== 2 && data.blitemState !== -1'
               @click="clickCode(scope)"
               class="d-text-blue d-absolute f14 b d-pointer"
               style='right:15px;z-index:200;top:8px;'
@@ -161,7 +163,6 @@ export default {
     //扫码成功以后的保存
     sumitSn(data) {
       this.$set(this.data.commodityCodeList[this.ceIndex], 'commodityInfoList', data)
-      console.log(this.data.commodityCodeList, 'this.data.commodityCodeListthis.data.commodityCodeListthis.data.commodityCodeListthis.data.commodityCodeList')
     }
   },
   components: {

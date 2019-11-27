@@ -19,11 +19,11 @@
       title="组装单"
     >
       <template v-slot:button>
-        <div class='fl mr10 mt5'>
+        <!-- <div class='fl mr10 mt5'>
           <span class="d-text-black">自动分配：</span>
           <el-switch v-model="isSelfMotion">
           </el-switch>
-        </div>
+        </div> -->
         <el-button
           type="primary"
           size='mini'

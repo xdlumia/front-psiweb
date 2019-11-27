@@ -29,8 +29,7 @@
           />
           <chooseAssembly
             ref="chooseAssembly"
-            :data='data'
-            :form='form'
+            :data='form'
           />
         </el-form>
 
