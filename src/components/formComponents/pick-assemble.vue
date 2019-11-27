@@ -30,7 +30,7 @@
             slot-scope="scope"
             v-if="scope.row.childrenCommodityList"
           >
-            <span>{{scope.row.accomplishNum || 0}}</span>
+            <span>{{scope.row.allocationNum || 0}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -43,12 +43,14 @@
             slot-scope="scope"
             v-if="scope.row.childrenCommodityList"
           >
-            <el-input
+            <el-input-number
               class="wfull"
               size='mini'
-              v-model="scope.row.allocationNum"
-              placeholder="请输入"
-            ></el-input>
+              v-model="scope.row.num"
+              :controls='false'
+              :min="0"
+              label="请输入"
+            ></el-input-number>
           </template>
         </el-table-column>
 
