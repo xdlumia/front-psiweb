@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 14:11:42
+ * @LastEditTime: 2019-11-27 15:59:49
  * @Description: 付款单
 */
 <template>
@@ -50,9 +50,8 @@
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <approve-panel :busType="50" :id="detail.id" v-if="detail&&showDetailPage" />
-        <el-form size="mini" v-if="detail&&showDetailPage">
-          <!-- <approve-panel></approve-panel> -->
+        <approve-panel :busType="50" :id="detail.id" v-if="isDataReady" />
+        <el-form size="mini" v-if="isDataReady">
           <paybill-detail :data="detail" :hide="['billType','lateFeeAmount']" disabled />
           <payer-info :data="detail" disabled />
           <extras-info :data="detail" @change="saveExtras" can-modify disabled />
@@ -63,7 +62,7 @@
         :name="busInfo[detail.busType].listPage"
         v-if="detail.busCode&&busInfo[detail.busType]"
       >
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus[busInfo[detail.busType].listPage]">
+        <FullscreenWrap v-if="isDataReady&&tabStatus[busInfo[detail.busType].listPage]">
           <component
             :button="false"
             :is="busInfo[detail.busType].listPage"

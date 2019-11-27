@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 14:09:35
+ * @LastEditTime: 2019-11-27 15:58:30
  * @Description: 采购调价单
 */
 <template>
@@ -65,7 +65,7 @@
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <approve-panel :busType="40" :id="detail.id" v-if="detail&&showDetailPage" />
+        <approve-panel :busType="40" :id="detail.id" v-if="isDataReady" />
         <el-form :model="detail" v-if="detail&&visible">
           <buying-goods-edit
             :customColumns="[
