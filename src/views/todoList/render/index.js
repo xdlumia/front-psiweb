@@ -31,7 +31,7 @@ const list = [
     key: '',
     children: storeroom,
     processNum: 0,
-    show: true
+    show: false
   },
   {
     label: '财务',

@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 10:22:36
+ * @LastEditTime: 2019-11-27 13:52:36
  * @Description: 库房管理
  -->
 <template>
@@ -38,7 +38,7 @@
           >删除</el-button>
           <el-button
             type="text"
-            v-if="scope.row.state"
+            v-if="scope.row.state == 1"
             :disabled="scope.row.state !== 1"
             @click="commonwmsmanagerUpdateState(scope.row.id, 0)"
             style="padding:0"
@@ -46,10 +46,11 @@
           <el-button
             @click="commonwmsmanagerUpdateState(scope.row.id, 1)"
             type="text"
-            v-else
+            v-else-if="!scope.row.state"
             style="padding:0"
           >启用</el-button>
         </span>
+        <span v-else-if="column.columnFields=='state'">{{stateText[row.state]}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
@@ -96,6 +97,11 @@ export default {
         page: 1
       },
       editId: null,
+      stateText: {
+        0: '已停用',
+        1: '启用中',
+        2: '盘点中'
+      },
       filterOptions: [
         { label: '库房名', prop: 'name', default: true },
         { label: '负责人', prop: 'personInChargeId', type: 'employee', default: true },
