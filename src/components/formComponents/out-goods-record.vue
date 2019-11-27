@@ -12,7 +12,7 @@
       :visible.sync="visible"
       v-if="visible"
       @close='close'
-      title="调出商品记录"
+      :title="`${form.name}商品记录`"
       v-dialogDrag
     >
       <el-container>
@@ -61,13 +61,13 @@
               <el-table-column
                 prop="operator"
                 min-width="100"
-                label="调拨人"
+                :label="`${form.name}人`"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
                 prop="createTime"
                 min-width="100"
-                label="调拨时间"
+                :label="`${form.name}时间`"
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>

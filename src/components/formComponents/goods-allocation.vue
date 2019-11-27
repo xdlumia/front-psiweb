@@ -195,6 +195,7 @@ export default {
       this.tpForm.page = 1
       this.tpForm.limit = 20
       this.tpForm.operation = type//参数，0入库 1 出库 
+      this.tpForm.name = '调拨'//区分换货和调拨单
     }
   },
   components: {

@@ -86,7 +86,7 @@
           <orderBorrow
             v-if="activeName == 'orderBorrow'"
             :button="false"
-            :params="{page:1,limit:15,borrowLoanTaskCode:drawerData.borrowLoanTaskCode}"
+            :params="{page:1,limit:15,relationCode:drawerData.borrowLoanTaskCode}"
           ></orderBorrow>
         </el-tab-pane>
       </el-tabs>

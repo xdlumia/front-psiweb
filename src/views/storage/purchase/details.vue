@@ -41,7 +41,7 @@
           <storageDisassemble
             v-if="activeName == 'storageDisassemble'"
             :button="false"
-            :params="{page:1,limit:15,purchaseCode:detailForm.purchaseCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
           ></storageDisassemble>
         </el-tab-pane>
         <el-tab-pane
@@ -51,7 +51,7 @@
           <orderStorage
             v-if="activeName == 'orderStorage'"
             :button="false"
-            :params="{page:1,limit:15,purchaseCode:detailForm.purchaseCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
           ></orderStorage>
         </el-tab-pane>
         <el-tab-pane
@@ -61,7 +61,7 @@
           <financePayable
             v-if="activeName == 'financePayable'"
             :button="false"
-            :params="{page:1,limit:15,purchaseCode:detailForm.purchaseCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
           ></financePayable>
         </el-tab-pane>
       </el-tabs>

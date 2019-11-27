@@ -57,7 +57,7 @@
           <storagePicking
             v-if="activeName == 'storagePicking'"
             :button="false"
-            :params="{page:1,limit:15,assembleOrderCode:detailForm.assembleOrderCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
           ></storagePicking>
         </el-tab-pane>
         <el-tab-pane
@@ -67,7 +67,7 @@
           <storageAssembly
             v-if="activeName == 'storageAssembly'"
             :button="false"
-            :params="{page:1,limit:15,assembleOrderCode:detailForm.assembleOrderCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
           ></storageAssembly>
         </el-tab-pane>
         <el-tab-pane
@@ -77,7 +77,7 @@
           <storageSales
             v-if="activeName == 'storageSales'"
             :button="false"
-            :params="{page:1,limit:15,assembleOrderCode:detailForm.assembleOrderCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
           ></storageSales>
         </el-tab-pane>
       </el-tabs>
