@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-27 17:02:21
+ * @LastEditTime: 2019-11-27 18:45:30
  * @Description: description
  -->
 <template>
@@ -59,8 +59,8 @@
         @click="finvoicebillingDilution(rowData.id)"
       >发票冲红</el-button>
     </template>
-    <el-tabs class="wfull hfull tabs-view">
-      <el-tab-pane label="详情">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
+      <el-tab-pane label="详情" name="detail">
         <el-form disabled size="mini">
           <approve-panel :data="detailForm"></approve-panel>
           <!-- 开票申请 -->
@@ -72,9 +72,22 @@
           <extras-info :data="detailForm" id="extrasInfo" />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="应收账单">应收账单</el-tab-pane>
+      <!-- <el-tab-pane label="应收账单">应收账单</el-tab-pane>
       <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
-      <el-tab-pane label="费用单">费用单</el-tab-pane>
+      <el-tab-pane label="费用单">费用单</el-tab-pane>-->
+      <el-tab-pane
+        :label="busInfo[detailForm.busType].title"
+        :name="busInfo[detailForm.busType].listPage"
+        v-if="detailForm.busCode&&busInfo[detailForm.busType]"
+      >
+        <FullscreenWrap v-if="activeTab == busInfo[detailForm.busType].listPage">
+          <component
+            :button="false"
+            :is="busInfo[detailForm.busType].listPage"
+            :params="{page:1,limit:15,[busInfo[detailForm.busType].codeFilterKey]:detailForm.busCode,relationCode:detailForm.billCode}"
+          />
+        </FullscreenWrap>
+      </el-tab-pane>
     </el-tabs>
     <!-- <add
       :visible.sync="showEdit"
@@ -103,6 +116,8 @@
 <script>
 import billing from './billing'
 import collectInvoice from '@/views/finance/receipt/collect-invoice'
+import BusMixin from '@/views/finance/payment/busMixin';
+
 const stateText = {
   '-1': '新建',
   '0': '审核中',
@@ -114,6 +129,7 @@ const stateText = {
 }
 
 export default {
+  mixins: [BusMixin],
   components: {
     billing,
     collectInvoice
@@ -133,6 +149,7 @@ export default {
   },
   data () {
     return {
+      activeTab: 'detail',
       collectInvoiceVisible: false,
       showBilling: false,
       showEdit: false,

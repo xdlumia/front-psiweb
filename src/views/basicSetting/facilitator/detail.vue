@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 14:45:30
+ * @LastEditTime: 2019-11-27 18:36:58
  * @Description: description
  -->
 <template>
@@ -56,7 +56,7 @@
         <FullscreenWrap v-if="showDetailPage&&!loading&&activeTab=='payable'">
           <FinancePayable
             :button="false"
-            :params="{page:1,limit:15,clientId:detailForm.id,clientType:2}"
+            :params="{page:1,limit:15,clientId:detailForm.id,clientType:2,relationCode:code}"
           />
         </FullscreenWrap>
       </el-tab-pane>
@@ -92,7 +92,7 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     return {
       activeTab: 'detail',
       showEdit: false,
@@ -108,24 +108,24 @@ export default {
       ]
     }
   },
-  mounted() {
+  mounted () {
     this.checkVisible();
     this.commonserviceproviderInfoBycode()
   },
   watch: {
-    visible() {
+    visible () {
       this.checkVisible();
     }
   },
   methods: {
-    refresh() {
+    refresh () {
       this.commonserviceproviderInfoBycode()
       this.$emit('refresh')
     },
-    checkVisible() {
+    checkVisible () {
       this.showDetailPage = this.visible;
     },
-    commonserviceproviderInfoBycode() {
+    commonserviceproviderInfoBycode () {
       this.loading = true
       this.$api.seePsiCommonService.commonserviceproviderInfoBycode(null, this.code).then(res => {
         this.detailForm = res.data || {}
@@ -135,7 +135,7 @@ export default {
         this.loading = false
       })
     },
-    commonserviceproviderUpdate(id, state) {
+    commonserviceproviderUpdate (id, state) {
       this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
