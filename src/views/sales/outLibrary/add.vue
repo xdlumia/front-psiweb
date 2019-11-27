@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 19:18:02
+ * @LastEditTime: 2019-11-27 19:20:37
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -110,6 +110,7 @@ export default {
       // 新增orEdit框内容
       form: {
         id: '',
+        pickingPerson: '', //拣货人
         companyAccountId: '',
         companySettlementId: '',
         apprpvalNode: '', // 审核节点,
