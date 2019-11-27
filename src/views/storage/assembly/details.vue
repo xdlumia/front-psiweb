@@ -42,7 +42,10 @@
           type="primary"
         >组装</el-button>
       </div>
-      <el-tabs class="wfull hfull tabs-view">
+      <el-tabs
+        class="wfull hfull tabs-view"
+        v-model="activeName"
+      >
         <el-tab-pane label="详情">
           <el-form>
             <goodsAssemble
@@ -57,9 +60,13 @@
             />
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="组装单">
+        <el-tab-pane
+          label="组装单"
+          name="storageAssemble"
+        >
           <storageAssemble
             :button="false"
+            v-if="activeName == 'storageAssemble'"
             :params="{page:1,limit:15,assembleTaskCode:detailForm.assembleTaskCode}"
           ></storageAssemble>
         </el-tab-pane>
@@ -94,6 +101,7 @@ export default {
       transferVisible: false,//转移
       hangVisible: false,//挂起
       goodsVisible: false,//组装
+      activeName: '',
       state: {
         '-1': '终止',
         0: '未开始',

@@ -28,7 +28,10 @@
           @click='fStop'
         >终止</el-button>
       </div>
-      <el-tabs class="wfull hfull tabs-view">
+      <el-tabs
+        class="wfull hfull tabs-view"
+        v-model="activeName"
+      >
         <el-tab-pane label="详情">
           <el-form>
             <assembleNoedit
@@ -47,20 +50,32 @@
             />
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="拣货单">
+        <el-tab-pane
+          label="拣货单"
+          name="storagePicking"
+        >
           <storagePicking
+            v-if="activeName == 'storagePicking'"
             :button="false"
             :params="{page:1,limit:15,assembleOrderCode:detailForm.assembleOrderCode}"
           ></storagePicking>
         </el-tab-pane>
-        <el-tab-pane label="组装任务">
+        <el-tab-pane
+          label="组装任务"
+          name="storageAssembly"
+        >
           <storageAssembly
+            v-if="activeName == 'storageAssembly'"
             :button="false"
             :params="{page:1,limit:15,assembleOrderCode:detailForm.assembleOrderCode}"
           ></storageAssembly>
         </el-tab-pane>
-        <el-tab-pane label="销售单">
+        <el-tab-pane
+          label="销售单"
+          name="storageSales"
+        >
           <storageSales
+            v-if="activeName == 'storageSales'"
             :button="false"
             :params="{page:1,limit:15,assembleOrderCode:detailForm.assembleOrderCode}"
           ></storageSales>
@@ -81,6 +96,7 @@ export default {
       status: [{ label: '组装状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       taskVisible: false,
       addVisible: false,
+      activeName: '',
       state: {
         '-1': '终止',
         '0': '未开始',

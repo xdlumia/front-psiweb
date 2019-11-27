@@ -55,7 +55,7 @@
               <el-table-column
                 prop="wmsName"
                 min-width="100"
-                label="调出库房"
+                :label="form.operation == 0 ? '调入库房' : '调出库房'"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
