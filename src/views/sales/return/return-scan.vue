@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 10:38:40
+ * @LastEditTime: 2019-11-27 11:53:04
  * @Description: 退货扫码
 */
 
@@ -44,7 +44,7 @@
         :data="form"
       />
       <!-- 扫描记录 -->
-      <sacn-record :data="form" />
+      <scan-record :data="form" />
     </el-form>
   </el-dialog>
 </template> 
@@ -71,6 +71,7 @@ export default {
         businessCodeList: '',//关联业务code List
         businessId: '',//0,
         businessType: '',//0,
+        scanData: [], //扫描记录数据 临时数据
         putawayCommodityList: [
           // {
           //   commodityCode: '',//"示例：商品编号",
