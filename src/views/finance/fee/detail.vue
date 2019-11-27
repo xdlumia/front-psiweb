@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 15:35:13
+ * @LastEditTime: 2019-11-27 18:36:21
  * @Description: description
  -->
 <template>
@@ -63,17 +63,20 @@
       </el-tab-pane>
       <el-tab-pane label="应收账单" name="receivable">
         <FullscreenWrap v-if="showDetailPage&&!loading&&activeTab=='receivable'">
-          <FinanceReceivable :button="false" :params="{page:1,limit:15,busCode:code}" />
+          <FinanceReceivable :button="false" :params="{page:1,limit:15,busCode:code,relationCode:code}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="应付账单" name="payable">
         <FullscreenWrap v-if="showDetailPage&&!loading&&activeTab=='payable'">
-          <FinancePayable :button="false" :params="{page:1,limit:15,busCode:code}" />
+          <FinancePayable
+            :button="false"
+            :params="{page:1,limit:15,busCode:code,relationCode:code}"
+          />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="费用分摊单" name="cost">
         <FullscreenWrap v-if="showDetailPage&&!loading&&activeTab=='cost'">
-          <SalesApportion :button="false" :params="{page:1,limit:15,costCode:code}" />
+          <SalesApportion :button="false" :params="{page:1,limit:15,costCode:code,relationCode:code}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
