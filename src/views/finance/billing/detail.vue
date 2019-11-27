@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 15:40:23
+ * @LastEditTime: 2019-11-27 17:02:21
  * @Description: description
  -->
 <template>
@@ -186,7 +186,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.fcostAuditApproval({ id, processType: 'psi_invoice_002', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
+        this.$api.seePsiFinanceService.fcostAuditApproval({ id, processType: 'psi_billing', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
           this.refresh()
         })
       }).catch(() => {
@@ -202,7 +202,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.finvoicebillingReject({ id, processType: 'psi_invoice_002', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
+        this.$api.seePsiFinanceService.finvoicebillingReject({ id, processType: 'psi_billing', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
           this.refresh()
         })
       }).catch(() => {
@@ -218,7 +218,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.finvoicebillingPassApproval({ id, processType: 'psi_invoice_002', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
+        this.$api.seePsiFinanceService.finvoicebillingPassApproval({ id, processType: 'psi_billing', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
           this.refresh()
         })
       }).catch(() => {
@@ -234,7 +234,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.finvoicebillingCancel({ id, processType: 'psi_invoice_002', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
+        this.$api.seePsiFinanceService.finvoicebillingCancel({ id, processType: 'psi_billing', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
           this.refresh()
         })
       }).catch(() => {
@@ -250,7 +250,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.finvoicebillingSubmitApproval({ id, processType: 'psi_invoice_002' }).then(res => {
+        this.$api.seePsiFinanceService.finvoicebillingSubmitApproval({ id, processType: 'psi_billing' }).then(res => {
           this.refresh()
         })
       }).catch(() => {
