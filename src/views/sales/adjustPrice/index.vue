@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 15:09:01
+ * @LastEditTime: 2019-11-27 17:10:18
  * @Description: 销售-销售调价单
  */
 <template>
@@ -85,19 +85,12 @@ export default {
       // 查询表单
       queryForm: {
         page: 1,
-        limit: 20
+        limit: 20,
+        adjustPriceType: 1,
       },
       rowData: {},
       addVisible: false,
       detailVisible: false,
-      // 筛选框数据
-      filterOptions: [
-        // { label: '商户编号、商户名称/简称', prop: 'title', default: true, type: 'text' },
-        // { label: '联系人、联系人电话', prop: 'city', default: true, type: 'text' },
-        // { label: '商机阶段', prop: 'pushTime', default: true, type: 'select', },
-        // { label: '跟进时间起止', prop: 'status', default: true, type: 'daterange' },
-        // { label: '维护人', prop: 'messageType', default: true, type: 'employee', },
-      ]
     };
   },
   methods: {
