@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 18:14:55
+ * @LastEditTime: 2019-11-26 10:25:09
  * @Description: 服务商
  -->
 <template>
@@ -14,7 +14,8 @@
       :busType="36"
       title="服务商管理"
       api="seePsiCommonService.commonserviceproviderList"
-      :params="queryForm"
+      :params="Object.assign(queryForm, params)"
+      exportApi="seePsiCommonService.commonserviceproviderExport"
     >
       <template v-slot:filter>自定义筛选列</template>
       <!-- 自定义按钮功能 -->
@@ -29,9 +30,6 @@
           style="padding:0"
         >{{scope.row.code}}</el-button>
         <span v-else-if="column.columnFields=='state'">{{scope.row.state ? '停用' : '启用'}}</span>
-        <span
-          v-else-if="column.columnFields=='createTime'"
-        >{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
       <el-table-column label="www"></el-table-column>
@@ -56,7 +54,19 @@
 import addFacilitator from './add-facilitator'
 import detail from './detail'
 export default {
-  data() {
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
+  },
+  data () {
     return {
       rowData: null,
       code: null,
@@ -70,7 +80,7 @@ export default {
       filterOptions: [
         { label: '服务商编号', prop: 'code', default: true },
         { label: '服务商名称', prop: 'fuzzyServiceName', default: true },
-        { label: '状态',
+        {          label: '状态',
           prop: 'state',
           type: 'select',
           default: true,
@@ -93,19 +103,19 @@ export default {
       ]
     }
   },
-  mounted() {
+  mounted () {
   },
   components: {
     addFacilitator,
     detail
   },
   methods: {
-    detail(row) {
+    detail (row) {
       this.rowData = row
       this.code = row.code
       this.showDetail = true
     },
-    commonwmsmanagerUpdateState(id, state) {
+    commonwmsmanagerUpdateState (id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -121,7 +131,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete(id) {
+    commonwmsmanagerLogicDelete (id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -137,10 +147,10 @@ export default {
         })
       })
     },
-    saveFacilitator() {
+    saveFacilitator () {
       this.$refs.addFacilitator && this.$refs.addFacilitator.commonserviceproviderSave()
     },
-    refresh() {
+    refresh () {
       this.visible = false
       this.$refs.table.reload()
     }

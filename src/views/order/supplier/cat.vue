@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 16:05:32
+ * @LastEditTime: 2019-11-25 17:37:54
  * @Description: 商品供应分类表
 */
 <template>
@@ -16,6 +16,7 @@
         :params="queryForm"
         api="seePsiCommonService.commonsupplierinfoQueryListClassification"
         busType="47"
+        exportApi="seePsiCommonService.commonsupplierinfoExport"
         ref="tableView"
         title="供应商"
       >

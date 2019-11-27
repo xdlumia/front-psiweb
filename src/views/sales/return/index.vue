@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 16:56:03
+ * @LastEditTime: 2019-11-25 15:09:18
  * @Description: 销售-销售退货单
  */
 <template>
@@ -17,11 +17,10 @@
       api="seePsiSaleService.salesreturnedList"
       exportApi="seePsiSaleService.salesreturnedExport"
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
     >
 
       <template slot-scope="{column,row,value}">
-        <!-- 销售换货单编号 -->
+        <!-- 退货单编号 -->
         <span
           class="d-text-blue d-pointer"
           v-if="column.columnFields=='alterationCode'"

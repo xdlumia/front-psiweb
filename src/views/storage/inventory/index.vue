@@ -11,10 +11,11 @@
     <TableView
       busType="0"
       :filterOptions='filterOptions'
-      :params="queryForm"
-      :selection='false'
+      :params="params"
+      selection
       ref='allTable'
       api="seePsiWmsService.wmsblitemList"
+      exportApi="seePsiWmsService.wmsblitemExport"
       title="盘点单"
     >
       <template v-slot:button>
@@ -27,22 +28,23 @@
       <template slot-scope="{column,row,value}">
         <span
           v-if="column.columnFields=='blitemCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='blitemState'">{{value == 1 ? '进行中' : '盘点完成'}}</span>
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <span v-else-if="column.columnFields=='blitemState'">{{value == 1 ? '进行中' :value == 2? '盘点完成' : value == -1? '已终止' : '-'}}</span>
+        <span v-else-if="column.columnFields=='result'">{{value == 1 ? '盘盈' : value == 2 ? '盘亏' : value == 3 ? '有盈亏' : value == 4 ? '吻合' : '-'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
       :drawerData='drawerData'
       :visible.sync='tableVisible'
-      @update='update'
+      @reload='reload'
       v-if="tableVisible"
     />
     <inventoryAdd
       :visible.sync='visible'
+      v-if="visible"
       @reload='reload'
     />
   </div>
@@ -59,6 +61,18 @@ export default {
     Details,
     TableView,
     inventoryAdd
+  },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   data() {
     return {
@@ -82,21 +96,23 @@ export default {
         limit: 20
       },
       visible: false,
+      usableList: [],
       tableVisible: false,
       componentActive: '',//当前的组件
       drawerData: {//弹框的相关数据
-        tableVisible: false,//销售单右侧抽屉
         title: '',
         component: 'Details'
       },
       activeName: '',
       filterOptions: [
-        { label: '盘点单编号', prop: 'allocationOrderCode', default: true },
+        { label: '盘点单编号', prop: 'blitemCode', default: true },
         {
           label: '盘点状态',
-          prop: 'allocationOrderState',
+          prop: 'state',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
+            { label: '终止', value: '-1' },
             { label: '进行中', value: '1' },
             { label: '盘点完成', value: '2' }
           ],
@@ -107,8 +123,11 @@ export default {
           prop: 'result',
           type: 'select',
           options: [
-            { label: '内调', value: '1' },
-            { label: '外调', value: '2' }
+            { label: '全部', value: '' },
+            { label: '盘盈', value: '1' },
+            { label: '盘亏', value: '2' },
+            { label: '有盈亏', value: '3' },
+            { label: '吻合', value: '4' },
           ],
           default: true
         },
@@ -124,33 +143,33 @@ export default {
         },
         {
           label: '盘盈数量',
-          prop: 'inventorySurplusNum',
-          type: 'employee',
+          prop: 'InventorySurplusNum',
+          type: 'numberRange',
           default: true
         },
         {
           label: '盘盈金额(成本)',
-          prop: 'inventorySurplusSum',
-          type: 'employee',
+          prop: 'InventorySurplusSum',
+          type: 'numberRange',
           dictName: 'FM_FANGYUAN_MJ',
           default: true
         },
         {
           label: '盘亏数量',
-          prop: 'inventoryLossesNum',
-          type: 'employee',
+          prop: 'InventoryLossesNum',
+          type: 'numberRange',
           default: true
         },
         {
           label: '盘亏金额(成本)',
-          prop: 'inventoryLossesSum',
-          type: 'employee',
+          prop: 'InventoryLossesSum',
+          type: 'numberRange',
           default: true
         },
         {
           label: '创建时间',
-          prop: 'createTime',
-          type: 'employee',
+          prop: 'CreateTime',
+          type: 'daterange',
           default: true
         },
         {
@@ -159,16 +178,30 @@ export default {
           type: 'employee',
           default: true
         },
-        {
-          label: '创建部门',
-          prop: 'deptTotalCode',
-          type: 'employee',
-          default: true
-        },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
     };
   },
+  created() {
+    this.commonwmsmanagerUsableList()
+  },
   methods: {
+    //请求所有库房
+    commonwmsmanagerUsableList() {
+      this.$api.seePsiWmsService.commonwmsmanagerList({ page: 1, limit: 500 })
+        .then(res => {
+          this.usableList = res.data || []
+          this.usableList.forEach((item) => {
+            item.label = item.name
+            item.value = item.id
+          })
+          this.usableList.unshift({ label: '全部', value: '' })
+          this.filterOptions[3].options = this.usableList
+        })
+        .finally(() => {
+
+        })
+    },
     //点击打开右侧边栏
     getTableVisible(data) {
       this.tableVisible = true

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 09:38:24
+ * @LastEditTime: 2019-11-25 14:28:50
  * @Description: 采购合同
 */
 <template>
@@ -38,15 +38,7 @@
             disabled
             id="companyInfo"
           />
-          <arrivalInfo :data="detail" disabled id="arrivalInfo" v-if="form.source!='直发单'" />
-          <buyingDeliverInfo
-            :data="detail"
-            :defaultClientData="form.shipmentsLogistics"
-            disabled
-            id="deliverInfo"
-            ref="deliverInfo"
-            v-else
-          />
+          <arrivalInfo :data="detail" disabled id="arrivalInfo" />
           <buying-goods-edit
             :data="form"
             :show="[

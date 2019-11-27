@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-30 16:25:12
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-13 15:14:11
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-11-22 16:47:44
  * @Description: 每个模块首页全局引入解决无限调用自己递归的问题
  */
 
@@ -39,20 +39,20 @@ export default {
       // 找出 采购(order) 合同(contract) 下的index列表页，如果要引入其他模块，也可以在下面加
       .filter(a => a.match(/^\.\/(sales|finance|storage|order|contract)/))
       .map(item => {
-        let cmpName = item.match(/([a-z]*)/gi)
+        const cmpName = item.match(/([a-z]*)/gi)
           .filter(a => a).reverse()
           .splice(1).filter((a, b) => !(b == 0 && a == 'index')).reverse()
           .map(a => a[0].toUpperCase() + a.substr(1)).join('')
           .replace(/-[a-z]/g, a => a[1].toUpperCase());
-        let file = indexFiles(item).default;
+        const file = indexFiles(item).default;
         Vue.component(cmpName, file);
         return [cmpName, file]
       }).reduce((data, [name, file]) => ({
         ...data,
-        [name]: file,
+        [name]: file
       }), {})
 
-    let props = {
+    const props = {
       // 是否显示按钮
       button: {
         type: Boolean,
@@ -62,7 +62,7 @@ export default {
       params: {
         type: Object,
         default: () => ({})
-      },
+      }
     }
     // for (let key in cmps) {
     //   // cmps[key].mixin(

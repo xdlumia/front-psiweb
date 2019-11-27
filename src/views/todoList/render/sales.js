@@ -2,24 +2,24 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:20:17
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-15 11:43:39
+ * @LastEditTime: 2019-11-25 16:10:25
  * @Description: 销售
  */
 
 const sales = [
   {
     label: '待审批报价单',
-    key: '',
+    key: 'psi_sales_quotation_01',
     component: 'SalesQuote',
-    authorityCode: '',
+    authorityCode: 'psi_sales_quotation_01',
     processNum: 0,
     show: true
   },
   {
     label: '待审批销售出库单',
-    key: '',
+    key: 'psi_sales_shipment_01',
     component: 'SalesOutLibrary',
-    authorityCode: '',
+    authorityCode: 'psi_sales_shipment_01',
     processNum: 0,
     show: true
   },

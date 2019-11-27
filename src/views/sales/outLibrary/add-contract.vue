@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 14:31:46
+ * @LastEditTime: 2019-11-25 10:16:00
  * @Description: 生成合同
 */
 <template>
@@ -94,6 +94,7 @@
             <!-- 自定义信息 -->
             <customInfo
               id="customInfo"
+              busType="25"
               :data="form"
             />
             <!-- 备注信息 -->

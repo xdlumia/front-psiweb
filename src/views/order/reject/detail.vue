@@ -2,11 +2,18 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:33:54
+ * @LastEditTime: 2019-11-26 17:35:47
  * @Description: 采购退货单
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showDetailPage" @close="$emit('update:visible',false)" title="采购退货单" width="990px">
+  <sideDetail
+    :status="status"
+    :title="`采购退货单 ${detail?detail.alterationCode:''}`"
+    :visible.sync="showDetailPage"
+    @close="close"
+    v-loading="loading"
+    width="990px"
+  >
     <template slot="button">
       <el-button
         @click="$submission('seePsiPurchaseService.purchasealterationSubmitApproval',{
@@ -15,6 +22,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
+        v-if="detail&&[0,5].includes(detail.state)"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasealterationCancel',{
@@ -23,6 +31,7 @@
         },'撤销审核')"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.state)"
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasealterationPassApproval',{
@@ -31,6 +40,7 @@
         },'通过')"
         size="mini"
         type="primary"
+        v-if="detail&&[1].includes(detail.state)"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasealterationReject',{
@@ -39,49 +49,61 @@
         },'驳回',true)"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.state)"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0,5].includes(detail.state)">编辑</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasealterationLogicDelete',{ id:detail.id },'删除')"
         size="mini"
         type="primary"
+        v-if="detail&&[0,5].includes(detail.state)"
       >删除</el-button>
-      <el-button @click="showScanGoods=true" size="mini" type="primary">退货扫码</el-button>
+      <el-button @click="showScanGoods=true" size="mini" type="primary" v-if="detail&&[2,3].includes(detail.state)">退货扫码</el-button>
     </template>
-    <el-tabs class="wfull hfull tabs-view">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <el-form :model="detail" size="mini" v-if="detail">
-          <supplierInfo :data="detail" disabled id="supplierInfo"></supplierInfo>
-          <companyInfo :data="detail" disabled id="companyInfo"></companyInfo>
-          <buyingRejectDeliver
-            :data="detail"
-            :hide="[
-            'saleTime','logisticsSn','collected'
-          ]"
-            disabled
-            id="deliverInfo"
-          />
-          <buyingGoodsEdit
-            :data="detail"
-            :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','!add'
-          ]"
-            :summaryMethod="getSummarys"
-            disabled
-            id="commodityInfo"
-          />
-          <orderStorageBill :data="detail" :hide="['isBillFee']" :type="1" disabled id="billInfo" />
-          <customInfo :data="detail" disabled id="customInfo" busType="31"></customInfo>
-          <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
-        </el-form>
+        <detailApproveWrap :busType="31" :id="detail.id" v-if="detail&&showDetailPage">
+          <el-form :model="detail" size="mini">
+            <supplierInfo :data="detail" disabled id="supplierInfo"></supplierInfo>
+            <companyInfo :data="detail" disabled id="companyInfo"></companyInfo>
+            <buyingRejectDeliver
+              :data="detail"
+              :hide="[
+                'saleTime','logisticsSn','collected'
+              ]"
+              disabled
+              id="deliverInfo"
+            />
+            <buyingGoodsEdit
+              :data="detail"
+              :show="[
+                'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','!add'
+              ]"
+              :summaryMethod="getSummarys"
+              disabled
+              id="commodityInfo"
+            />
+            <orderStorageBill :data="detail" :hide="['isBillFee']" :type="1" disabled id="billInfo" />
+            <customInfo :data="detail" busType="31" disabled id="customInfo"></customInfo>
+            <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
+          </el-form>
+        </detailApproveWrap>
       </el-tab-pane>
-      <el-tab-pane label="采购入库单">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="采购入库单" name="putin">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.putin">
           <OrderStorage :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane label="采购单">采购单</el-tab-pane>
-      <el-tab-pane label="应收账单">应收账单</el-tab-pane>
+      <el-tab-pane label="采购单" name="order">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.order">
+          <StoragePurchase :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="应收账单" name="recieve">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.recieve">
+          <FinanceReceivable :button="false" :params="{page:1,limit:15,busCode:detail.alterationCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
     </el-tabs>
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" />
     <scanGoods
@@ -105,9 +127,7 @@ export default {
     ScanGoods,
     Edit
   },
-  props: {
-    visible: Boolean
-  },
+  props: {},
   data() {
     return {
       showPop: false,

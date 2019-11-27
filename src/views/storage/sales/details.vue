@@ -11,7 +11,7 @@
     :status="status"
     :visible.sync="visible"
     @close="$emit('update:visible',false)"
-    :title="'销售单-' + drawerData.salesSheetCode"
+    :title="'销售单-' + data.salesSheetCode"
     width="990px"
   >
     <div>
@@ -37,12 +37,39 @@
             />
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="拣货单">拣货单</el-tab-pane>
-        <el-tab-pane label="组装任务">组装任务</el-tab-pane>
-        <el-tab-pane label="发货单">发货单</el-tab-pane>
-        <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
-        <el-tab-pane label="借入单">借入单</el-tab-pane>
-        <el-tab-pane label="应收账单">应收账单</el-tab-pane>
+        <el-tab-pane label="拣货单">
+          <storagePicking
+            :button="false"
+            :params="{page:1,limit:15,salesSheetCode:detailForm.salesSheetCode}"
+          ></storagePicking>
+        </el-tab-pane>
+        <el-tab-pane label="组装任务">
+          <storageAssembly
+            :button="false"
+            :params="{page:1,limit:15,salesSheetCode:detailForm.salesSheetCode}"
+          ></storageAssembly>
+        </el-tab-pane>
+        <el-tab-pane label="发货单">
+          <storageDeliver
+            :button="false"
+            :params="{page:1,limit:15,salesSheetCode:detailForm.salesSheetCode}"
+          ></storageDeliver>
+        </el-tab-pane>
+        <el-tab-pane label="销售出库单">
+          <salesOutLibrary
+            :button="false"
+            :params="{page:1,limit:15,salesSheetCode:detailForm.salesSheetCode}"
+          ></salesOutLibrary>
+        </el-tab-pane>
+        <el-tab-pane label="借入单">
+          <orderBorrow
+            :button="false"
+            :params="{page:1,limit:15,borrowLoanType:0,salesSheetCode:detailForm.salesSheetCode}"
+          ></orderBorrow>
+        </el-tab-pane>
+        <el-tab-pane label="应收账单">
+          <financeReceivable :button="false"></financeReceivable>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </SideDetail>
@@ -56,10 +83,10 @@ import deliverInfo from '@/components/formComponents/deliver-info';
 import generateDeliver from './generate-deliver';
 import SideDetail from '@/components/side-detail';
 export default {
-  props: ['drawerData', 'visible'],
+  props: ['data', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       orderStorageVisible: false,
       detailForm: {},
     };
@@ -79,14 +106,14 @@ export default {
   methods: {
     //查询详情  
     salessheetInfo() {
-      this.$api.seePsiSaleService.salessheetInfo(null, this.drawerData.id)
+      this.$api.seePsiSaleService.salessheetGetInfoByCode({ code: this.code })
         .then(res => {
           this.detailForm = res.data || {}
-          this.status[0].value = this.drawerData.assemblyState
-          this.status[1].value = this.drawerData.createTime
-          this.status[2].value = this.drawerData.creator
-          this.status[3].value = this.drawerData.deptName
-          this.status[4].value = this.drawerData.source
+          this.status[0].value = this.detailForm.deliverState == 0 ? '待发货' : this.detailForm.deliverState == 1 ? '完成发货' : this.detailForm.deliverState == 2 ? '终止' : ''
+          this.status[1].value = this.detailForm.createTime
+          this.status[2].value = this.detailForm.creator
+          this.status[3].value = this.detailForm.deptName
+          this.status[4].value = this.detailForm.source
           console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
@@ -97,49 +124,4 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-.side-page {
-  .header-btns {
-    position: absolute;
-    right: 40px;
-    top: 12px;
-  }
-  /deep/ {
-    > .popup-main {
-      > .popup-head {
-        font-weight: bold;
-        font-size: 18px;
-        > .d-inline > .popup-close {
-          position: absolute;
-          right: 10px;
-          top: 16px;
-        }
-      }
-      > .popup-body {
-        padding: 0;
-        overflow: hidden;
-      }
-    }
-  }
-  .tabs-view {
-    width: 100% !important;
-    position: relative;
-    /deep/ {
-      & > .el-tabs__header {
-        width: 100% !important;
-        background-color: #f2f2f2;
-        padding: 0 20px;
-        margin-bottom: 0;
-        > .el-tabs__nav-wrap::after {
-          background-color: #f2f2f2;
-        }
-      }
-      & > .el-tabs__content {
-        height: calc(100% - 40px);
-        overflow: hidden;
-        overflow-y: auto;
-        padding: 0 20px;
-      }
-    }
-  }
-}
 </style>

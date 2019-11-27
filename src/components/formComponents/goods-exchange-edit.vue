@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 10:26:28
+ * @LastEditTime: 2019-11-25 10:26:23
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -330,8 +330,6 @@ export default {
     //选择商品
     commodityChoose(e, scope) {
       let [list] = e[0]
-      console.log(list);
-
       let type = e[1]
       this.data.exChangeCommodityList[scope.$index].commodityCode = ''
       this.data.exChangeCommodityList.forEach((item) => {

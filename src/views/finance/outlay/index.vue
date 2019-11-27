@@ -2,76 +2,109 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
+<<<<<<< HEAD
  * @LastEditTime: 2019-11-21 10:07:33
  * @Description: 财务-支出流水
+=======
+ * @LastEditTime: 2019-11-26 19:20:34
+ * @Description: 销售-支出流水
+>>>>>>> dev
  */
 <template>
   <div>
     <table-view
+<<<<<<< HEAD
       busType="55"
+=======
+      busType="54"
+>>>>>>> dev
       ref="table"
       :filter="true"
       :moreButton="true"
       :column="true"
       title="支出流水"
+<<<<<<< HEAD
       api="seePsiSaleService.salesreturnedList"
       exportApi="seePsiSaleService.salesreturnedExport"
+=======
+      api="seePsiFinanceService.payrecordList"
+      exportApi="seePsiFinanceService.payrecordExport"
+>>>>>>> dev
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
     >
-
+      <template slot="button">
+        <el-button
+          type="primary"
+          size="mini"
+          icon="el-icon-plus"
+          @click="addVisible = true"
+        >新增支出流水</el-button>
+        <el-button
+          size="mini"
+          @click="addTransferVisible = true"
+          icon="el-icon-plus"
+        >新增转账单</el-button>
+      </template>
+      <template slot="top-filter">
+        <bill-account-selector v-model="queryForm.companySettlementId" />
+      </template>
       <template slot-scope="{column,row,value}">
-        <!-- 销售换货单编号 -->
+        <!-- 流水编号 -->
         <span
           class="d-text-blue d-pointer"
-          v-if="column.columnFields=='alterationCode'"
-          @click="eventHandle('returnVisible',row)"
+          v-if="column.columnFields=='incomeRecordCode'"
+          @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
-        <!-- 销售出库单编号 -->
-        <span
-          class="d-text-blue d-pointer"
-          v-else-if="column.columnFields=='salesShipmentCode'"
-          @click="eventHandle('outLibVisible',row)"
-        > {{value}}</span>
-        <!-- 状态 -->
-        <span v-else-if="column.columnFields=='state'">{{value}}</span>
-        <!-- 创建时间 -->
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
+        <!-- 匹配状态 -->
+        <span v-else-if="column.columnFields=='matchState'"> {{stateText[value]}}</span>
+        <!-- 收支状态 -->
+        <span v-else-if="column.columnFields=='incomeType'"> {{value ==1?'付款':'收款'}}</span>
+
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <!-- 销售退货单详情 -->
-    <returnDetails
-      v-if="returnVisible"
-      :visible.sync="returnVisible"
-      :rowData="rowData"
-      :code="rowData.alterationCode"
-      @reload="this.$refs.table.reload()"
+    <!-- 新增 -->
+    <add
+      :visible.sync="addVisible"
+      incomeType="1"
+      type="add"
+      @reload="$refs.table.reload()"
     />
-    <!-- 销售出库单详情 -->
-    <outLibDetails
-      v-if="outLibVisible"
-      :visible.sync="outLibVisible"
+    <!-- 新增转账单 -->
+    <addTransfer
+      incomeType="1"
+      :visible.sync="addTransferVisible"
+      type="add"
+      @reload="$refs.table.reload()"
+    />
+    <!-- 详情 -->
+    <detail
+      v-if="detailVisible"
+      :visible.sync="detailVisible"
       :rowData="rowData"
-      :code="rowData.salesShipmentCode"
+      :code="rowData.incomeRecordCode"
       @reload="this.$refs.table.reload()"
     />
   </div>
 </template>
 <script>
-import returnDetails from './details' //销售退货单详情
+import add from '../income/add' //新增 支出流水
+import addTransfer from '../income/add-transfer' //新增 流水账单
+import detail from './details' //详情
 let filterOptions = [
   // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
-  { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
+  // { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
   // { label: '商机阶段', prop: 'state', default: true, type: 'select', options: [] },
   // { label: '跟进时间起止', prop: 'CreateTime', default: true, type: 'daterange' },
   // { label: '维护人', prop: 'creator', default: true, type: 'employee' }
 ]
 
 export default {
-  name: 'return',
+  name: 'financeOutlay',
   components: {
-    returnDetails,
+    detail,
+    add,
+    addTransfer
 
   },
   props: {
@@ -90,35 +123,35 @@ export default {
   },
   data() {
     return {
+      stateText: {
+        '0': '未匹配',
+        '1': '部分匹配',
+        '2': '已匹配',
+      },
       loading: false,
       // 查询表单
       queryForm: {
-        // status: "",
-        busType: 17,
         page: 1,
         limit: 20
-      },
-      // 列表状态
-      stateText: {
-        '-1': '新建',
-        '0': '审核中',
-        '1': '待完成',
-        '2': '部分完成',
-        '3': '已完成',
-        '4': '已驳回',
       },
       // 筛选数据
       filterOptions: filterOptions,
       // 当前行数据
       rowData: {},
-      returnVisible: false,
-      outLibVisible: false,
+      addVisible: false,
+      detailVisible: false,
+      addTransferVisible: false,
     };
   },
   computed: {
 
   },
   watch: {
+    'queryForm.companySettlementId': {
+      handler(newValue) {
+        this.$refs.table.reload();
+      }
+    }
   },
   methods: {
     // 按钮功能操作

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:31:54
+ * @LastEditTime: 2019-11-25 16:27:32
  * @Description: 采购单详情
 */
 <template>
@@ -15,10 +15,10 @@
     width="990px"
   >
     <template slot="button">
-      <el-button @click="orderStorageVisible=true" size="mini" type="primary">采购</el-button>
-      <el-button @click="addBorrowInVisible=true" size="mini" type="primary">借入</el-button>
+      <el-button @click="orderStorageVisible=true" size="mini" type="primary" v-if="waitBuyingNumber>0">采购</el-button>
+      <el-button @click="addBorrowInVisible=true" size="mini" type="primary" v-if="waitBuyingNumber>0">借入</el-button>
     </template>
-    <el-tabs class="wfull hfull tabs-view">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
         <el-form label-position="top" size="mini" v-if="detail">
           <form-card title="到货信息">
@@ -42,23 +42,33 @@
             ]"
             disabled
           />
-          <customInfo :data="detail" disabled :busType="27" />
+          <customInfo :busType="27" :data="detail" disabled />
           <extrasInfo :data="detail" disabled />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="采购入库单">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="采购入库单" name="putin">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.putin">
           <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:code}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane label="报价单">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="报价单" name="quote">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.quote">
           <salesQuote :button="false" :params="{page:1,limit:15,quotationCode:detail.quotationCode}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <OrderStorageAdd :joinCode="code" :visible.sync="orderStorageVisible" @reload="setEdit" from="请购单" />
-    <addBorrowIn :visible.sync="addBorrowInVisible" @reload="setEdit" />
+    <OrderStorageAdd :joinCode="code" :visible.sync="orderStorageVisible" @reload="setEdit(),$reload()" from="请购单" />
+    <addBorrowIn
+      :rowData="{
+      commodityList:detail.commodityList.filter(a=>a.waitPurchaseNumber>0),
+      borrowLoanType:0,
+      salesSheetCode:detail.purchaseApplyCode
+    }"
+      :visible.sync="addBorrowInVisible"
+      @reload="setEdit(),$reload()"
+      from="请购单"
+      v-if="addBorrowInVisible"
+    />
   </sideDetail>
 </template>
 <script>
@@ -84,6 +94,18 @@ export default {
         3: '终止'
       }
     };
+  },
+  computed: {
+    waitBuyingNumber() {
+      if (this.detail) {
+        return []
+          .concat(this.detail.commodityList || [])
+          .reduce((data, item) => {
+            data += Number(item.waitPurchaseNumber) || 0;
+            return data;
+          }, 0);
+      } else return 0;
+    }
   },
   methods: {
     async getDetail() {

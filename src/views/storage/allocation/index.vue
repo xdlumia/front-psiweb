@@ -11,10 +11,11 @@
     <TableView
       busType="6"
       :filterOptions='filterOptions'
-      :selection='false'
+      selection
       ref='allTable'
+      exportApi="seePsiWmsService.wmsallocationorderExport"
       api="seePsiWmsService.wmsallocationorderList"
-      :params="queryForm"
+      :params="params"
       title="调拨单"
     >
       <template v-slot:button>
@@ -25,10 +26,9 @@
         >新增</el-button>
       </template>
       <template slot-scope="{column,row,value}">
-        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span
-          v-else-if="column.columnFields=='allocationOrderCode'"
-          class="d-text-blue"
+          v-if="column.columnFields=='allocationOrderCode'"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='allocationOrderState'">{{value == 1 ? '待调拨' : value == 2 ? '部分调拨' : value == 3 ? '完成调拨' : '终止'}}</span>
@@ -40,7 +40,7 @@
       @reload='reload'
       ref='details'
       :drawerData='drawerData'
-      :visible='tableVisible'
+      :visible.sync='tableVisible'
       v-if="tableVisible"
     />
     <allocationAdd
@@ -63,6 +63,18 @@ export default {
     TableView,
     allocationAdd
   },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
+  },
   data() {
     return {
       // 查询表单
@@ -82,9 +94,10 @@ export default {
         { label: '调拨单编号', prop: 'allocationOrderCode', default: true },
         {
           label: '调拨状态',
-          prop: 'allocationOrderState',
+          prop: 'state',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '待调拨', value: '1' },
             { label: '部分调拨', value: '2' },
             { label: '完成调拨', value: '3' },
@@ -97,6 +110,7 @@ export default {
           prop: 'allocationType',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '内调', value: '1' },
             { label: '外调', value: '2' }
           ],
@@ -112,6 +126,17 @@ export default {
           ],
           default: true
         },
+        // {
+        //   label: '调出库房',
+        //   prop: 'shipmentWmsNames',
+        //   type: 'select',
+        //   options: [
+        //     { label: '内调', value: '1' },
+        //     { label: '外调', value: '2' }
+        //   ],
+        //   default: true
+        // },
+
         { label: '调出库房', prop: 'shipmentWmsNames', default: true },
         {
           label: '调拨数量',
@@ -170,8 +195,8 @@ export default {
             item.label = item.name
             item.value = item.id
           })
+          this.usableList.unshift({ label: '全部', value: '' })
           this.filterOptions[3].options = this.usableList
-          this.filterOptions[4].options = this.usableList
         })
         .finally(() => {
 

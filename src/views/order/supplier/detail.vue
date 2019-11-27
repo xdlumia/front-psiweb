@@ -2,19 +2,26 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 09:33:56
+ * @LastEditTime: 2019-11-25 15:38:02
  * @Description: 供应商编号
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showPop" @close="close" :title="`供应商编号 ${detail?detail.code:''}`" v-loading="loading" width="990px">
+  <sideDetail
+    :status="status"
+    :title="`供应商编号 ${detail?detail.code:''}`"
+    :visible="showDetailPage"
+    @close="close"
+    v-loading="loading"
+    width="990px"
+  >
     <template slot="button">
       <el-button @click="changeState(0)" size="mini" type="primary" v-if="detail&&detail.state!=0">启用</el-button>
       <el-button @click="changeState(1)" size="mini" type="danger" v-else>停用</el-button>
       <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
     </template>
-    <el-tabs class="wfull hfull tabs-view">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <el-form v-if="detail">
+        <el-form v-if="detail" :model="detail">
           <form-card title="往来账款">
             <el-row>
               <el-col :span="8">
@@ -32,48 +39,59 @@
           <extras-info :data="detail" disabled></extras-info>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="可供商品">
-        <el-form class="supplier-goods" v-if="detail">
+      <el-tab-pane label="可供商品" name="supplierGoods">
+        <el-form class="supplier-goods" v-if="detail&&tabStatus.supplierGoods">
           <supplier-goods :supplierId="detail.id" show-cat />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
-      <el-tab-pane label="采购合同">采购合同</el-tab-pane>
-      <el-tab-pane label="采购单">采购单</el-tab-pane>
-      <el-tab-pane label="采购退货单">采购退货单</el-tab-pane>
-      <el-tab-pane label="应付账单">应付账单</el-tab-pane>
-      <el-tab-pane label="发票记录">发票记录</el-tab-pane>
+      <el-tab-pane label="采购入库单" name="putin">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.putin">
+          <OrderStorage :button="false" :params="{page:1,limit:15,supplierId:detail.id}" />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="采购合同" name="orderContract">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.orderContract">
+          <ContractOrder :button="false" :params="{page:1,limit:15,supplierId:detail.id}" />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="采购单" name="purchaseOrder">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.purchaseOrder">
+          <StoragePurchase :button="false" :params="{page:1,limit:15,supplierId:detail.id}" />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="采购退货单" name="reject">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.reject">
+          <OrderReject :button="false" :params="{page:1,limit:15,supplierId:detail.id}" />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="应付账单" name="payable">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.payable">
+          <FinancePayable :button="false" :params="{page:1,limit:15,clientId:detail.id,clientType:1}" />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="发票记录" name="invoice">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.invoice">
+          <FinanceReceipt :button="false" :params="{page:1,limit:15,marketId:detail.id}" />
+        </FullscreenWrap>
+      </el-tab-pane>
     </el-tabs>
-    <Edit :code="detail.code" :visible.sync="showEdit" @reload="reloadDetail" v-if="detail" />
+    <Edit :code="detail.code" :visible.sync="showEdit" @reload="$reload()" v-if="detail" />
   </sideDetail>
 </template>
 <script>
 import Edit from './edit';
+import VisibleMixin from '@/utils/visibleMixin';
 
 export default {
+  mixins: [VisibleMixin],
   components: {
     Edit
   },
-  props: {
-    visible: Boolean,
-    code: String
-  },
+  props: {},
   data() {
     return {
-      showEdit: false,
-      showPop: false,
-      detail: null,
-      loading: false,
-      modified: false
+      showEdit: false
     };
-  },
-  mounted() {
-    this.checkVisible();
-  },
-  watch: {
-    visible() {
-      this.checkVisible();
-    }
   },
   computed: {
     status() {
@@ -96,16 +114,6 @@ export default {
     }
   },
   methods: {
-    checkVisible() {
-      this.showPop = this.visible;
-      if (this.visible) {
-        this.getDetail();
-      } else {
-        if (this.modified) {
-          this.$emit('reload');
-        }
-      }
-    },
     async getDetail() {
       this.loading = true;
       try {
@@ -134,20 +142,10 @@ export default {
             data
           )
         );
-        this.modified = true;
+        this.setEdit();
         Object.assign(this.detail, data);
       } catch (error) {}
       this.loading = false;
-    },
-    close() {
-      if (this.modified) {
-        this.$emit('reload');
-      }
-      this.$emit('update:visible', false);
-    },
-    reloadDetail() {
-      this.modified = true;
-      this.getDetail();
     },
     async changeState(state) {
       await this.$confirm(

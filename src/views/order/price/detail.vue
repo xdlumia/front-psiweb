@@ -2,15 +2,15 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 14:46:27
+ * @LastEditTime: 2019-11-26 17:52:24
  * @Description: 采购调价单
 */
 <template>
   <sideDetail
     :status="status"
+    :title="`采购调价单 ${detail?detail.code:''}`"
     :visible="showDetailPage"
-    @close="$emit('update:visible',false)"
-    title="采购调价单"
+    @close="close"
     v-loading="loading"
     width="990px"
   >
@@ -23,6 +23,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
+        v-if="detail&&[0].includes(detail.state)"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpriceCancel',{
@@ -32,6 +33,7 @@
         },'撤销审核')"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.state)"
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpricePassApproval',{
@@ -41,6 +43,7 @@
         },'通过')"
         size="mini"
         type="primary"
+        v-if="detail&&[1].includes(detail.state)"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpriceReject',{
@@ -50,35 +53,43 @@
         },'驳回',true)"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.state)"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
-      <el-button @click="$submission('seePsiCommonService.commonadjustpriceLogicDelete',{ id:detail.id },'删除')" size="mini" type="danger">删除</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0].includes(detail.state)">编辑</el-button>
+      <el-button
+        @click="$submission('seePsiCommonService.commonadjustpriceLogicDelete',{ id:detail.id },'删除')"
+        size="mini"
+        type="danger"
+        v-if="detail&&[0].includes(detail.state)"
+      >删除</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <el-form :model="detail" v-if="detail&&visible">
-          <buying-goods-edit
-            :customColumns="[
-            { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140, },
-            { label:'库存成本(税前)',key:'inventoryPrice',prop:'inventoryPrice',width:140, },
-            { label:'调整金额',key:'adjustPriceMoney',prop:'adjustPriceMoney',width:120, format:(a,b)=>b.adjustPriceMoney||0 },
-            { label:'调整后库存成本(税前)',key:'repertoryCost',prop:'repertoryCost',width:140,
-              format:(a,b)=>b.repertoryCost||0
-            },
-            { label:'调整差异',key:'adjustPriceDifference	',prop:'adjustPriceDifference	',width:100,
-              format:(a,b)=>b.adjustPriceDifference||0
-            },
-            ]"
-            :data="detail"
-            :show="[
-              'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','configName','noteText','fullscreen'
-            ]"
-            :showSummary="false"
-            disabled
-            title="商品信息"
-          ></buying-goods-edit>
-          <extrasInfo :data="detail" disabled id="extrasInfo" />
-        </el-form>
+        <detailApproveWrap :busType="40" :id="detail.id" v-if="detail&&showDetailPage">
+          <el-form :model="detail" v-if="detail&&visible">
+            <buying-goods-edit
+              :customColumns="[
+                { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140, },
+                { label:'库存成本(税前)',key:'inventoryPrice',prop:'inventoryPrice',width:140, },
+                { label:'调整金额',key:'adjustPriceMoney',prop:'adjustPriceMoney',width:120, format:(a,b)=>b.adjustPriceMoney||0 },
+                { label:'调整后库存成本(税前)',key:'repertoryCost',prop:'repertoryCost',width:140,
+                  format:(a,b)=>b.repertoryCost||0
+                },
+                { label:'调整差异',key:'adjustPriceDifference	',prop:'adjustPriceDifference	',width:100,
+                  format:(a,b)=>b.adjustPriceDifference||0
+                },
+              ]"
+              :data="detail"
+              :show="[
+                'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','configName','noteText','fullscreen'
+              ]"
+              :showSummary="false"
+              disabled
+              title="商品信息"
+            ></buying-goods-edit>
+            <extrasInfo :data="detail" disabled id="extrasInfo" />
+          </el-form>
+        </detailApproveWrap>
       </el-tab-pane>
     </el-tabs>
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
@@ -96,7 +107,12 @@ export default {
   props: {},
   data() {
     return {
-      showEdit: false
+      showEdit: false,
+      stateText: {
+        '0': '新建',
+        '1': '审核中',
+        '2': '通过'
+      }
     };
   },
   watch: {},

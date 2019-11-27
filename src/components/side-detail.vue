@@ -2,22 +2,15 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-08 16:42:18
+ * @LastEditTime: 2019-11-23 17:04:43
  * @Description: 侧边详情弹框
 */
 <template>
-  <el-drawer
-    :title="title"
-    destroy-on-close
-    :visible.sync="showPop"
-    :size="width"
-    @close="close"
-    class="side-page"
-  >
+  <el-drawer :size="width" :title="title" :visible.sync="showPop" @close="close" class="side-page" destroy-on-close>
     <span>
       <slot name="title"></slot>
     </span>
-    <sideStatusbar style="margin:-10px -15px 10px" :status="status" />
+    <sideStatusbar :status="status" style="margin:-10px -15px 10px" />
     <span class="drawer-header" v-if="hasButton">
       <slot name="button" />
     </span>
@@ -25,12 +18,15 @@
   </el-drawer>
 </template>
 <script>
-
 export default {
-  components: {
-  },
+  components: {},
   props: {
-    status: { type: Array, default: () => { return [] } },
+    status: {
+      type: Array,
+      default: () => {
+        return [];
+      }
+    },
     title: String,
     visible: Boolean,
     width: String
@@ -38,7 +34,8 @@ export default {
 
   data() {
     return {
-      showPop: false
+      showPop: false,
+      hasButton: false
     };
   },
   mounted() {
@@ -47,18 +44,18 @@ export default {
   watch: {
     visible() {
       this.showPop = this.visible;
-    },
-  },
-  computed: {
-    hasButton() {
-      return this.$slots.button && this.$slots.button.length;
     }
+  },
+  computed: { 
   },
   methods: {
     close() {
       this.$emit('close');
       this.$emit('update:visible', false);
     }
+  },
+  updated(){
+    this.hasButton = this.$slots.button && this.$slots.button.length;
   }
 };
 </script>

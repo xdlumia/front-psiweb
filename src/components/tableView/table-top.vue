@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 14:25:15
+ * @LastEditTime: 2019-11-26 10:39:55
  * @Description: 表格头部 
  */
 <template>
@@ -31,13 +31,17 @@
         </section>
         <!-- 表格顶部统计 财务用到 -->
         <section class="table-header-tool d-nowrap">
-          <slot name="button">
+          <slot
+            name="button"
+            v-if="$parent.$parent.button"
+          >
           </slot>
 
           <!-- 更多功能 跟产品刘晨辉沟通直接放在外面 -->
           <el-button
             size="mini"
             @click="$emit('moreHandle', 'export')"
+            v-if="moreButton"
           >导出
           </el-button>
           <slot name="moreButton"></slot>
@@ -135,15 +139,14 @@
       >
         <div
           v-for="(item,index) of staData"
-          v-if="index<6"
           :key="index"
           class="table-sta-item"
         >
-          <p class="d-nowrap d-text-gray f13 mb5">需要付(11笔)</p>
+          <p class="d-nowrap d-text-gray f13 mb5">{{item.name||'未命名'}}({{item.count}}笔)</p>
           <p
             class="f24"
             style="color:#333"
-          >{{item.id | milliFormat}}</p>
+          >{{(item.amount||0) | milliFormat}}</p>
         </div>
       </div>
     </div>
@@ -172,7 +175,7 @@
         >暂无数据</p>
         <draggable v-model="tableColList">
           <el-button
-            class="col-button mb5"
+            class="col-button mb10"
             size="mini"
             @click="item.isDisplay = !item.isDisplay"
             :type="item.isDisplay?'':'primary'"
@@ -367,6 +370,7 @@ export default {
   }
 }
 .col-button.el-button {
+  width: 142px;
   margin-left: 0px;
   margin-right: 10px;
 }

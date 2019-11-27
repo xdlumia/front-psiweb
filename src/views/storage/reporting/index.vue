@@ -10,11 +10,11 @@
     <!-- 右侧滑出 -->
     <TableView
       busType="3"
-      @reload='reload'
       :filterOptions='filterOptions'
-      :params="queryForm"
+      :params="params"
       ref="allTable"
-      :selection='false'
+      selection
+      exportApi="seePsiWmsService.wmsreportinglossesExport"
       api="seePsiWmsService.wmsreportinglossesList"
       title="报溢报损单"
     >
@@ -28,10 +28,9 @@
       <template slot-scope="{column,row,value}">
         <span
           v-if="column.columnFields=='reportingLossesCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else-if="column.columnFields=='type'">{{value == 1 ? '报溢' : '报损'}}</span>
         <span v-else>{{value}}</span>
       </template>
@@ -42,7 +41,10 @@
       :visible.sync='tableVisible'
       v-if="tableVisible"
     />
-    <reportingAdd :visible.sync='visible' />
+    <reportingAdd
+      :visible.sync='visible'
+      @reload='reload'
+    />
   </div>
 </template> 
 <script>
@@ -57,6 +59,18 @@ export default {
     Details,
     TableView,
     reportingAdd
+  },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   data() {
     return {
@@ -90,6 +104,7 @@ export default {
           prop: 'type',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '报溢', value: '1' },
             { label: '报损', value: '2' }
           ],
@@ -147,6 +162,7 @@ export default {
     },
     reload() {
       this.$refs.allTable.reload()
+      console.log('ahahahahha11111')
     },
   }
 };

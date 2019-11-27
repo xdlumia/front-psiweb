@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-08 17:27:26
+ * @LastEditTime: 2019-11-26 14:50:42
  * @Description: 促销详情
  -->
 <template>
@@ -21,7 +21,8 @@
         type="danger"
         @click="commonpromotionUpdate(rowData.id, 1)"
       >停用</el-button>
-      <el-button v-else size="mini" type="primary" @click="commonpromotionUpdate(rowData.id, 0)">启用</el-button>
+      <el-button v-else size="mini" type="primary"
+@click="commonpromotionUpdate(rowData.id, 0)">启用</el-button>
       <el-button size="mini" type="primary" @click="showEdit = true">编辑</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
@@ -37,9 +38,9 @@
           <extras-info :data="detailForm" />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="报价单">报价单</el-tab-pane>
+      <!-- <el-tab-pane label="报价单">报价单</el-tab-pane>
       <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
-      <el-tab-pane label="销售合同">销售合同</el-tab-pane>
+      <el-tab-pane label="销售合同">销售合同</el-tab-pane>-->
     </el-tabs>
     <addPromotion
       :visible.sync="showEdit"

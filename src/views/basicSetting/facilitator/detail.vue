@@ -2,13 +2,13 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-06 16:32:24
+ * @LastEditTime: 2019-11-26 14:45:30
  * @Description: description
  -->
 <template>
   <sideDetail
     :status="status"
-    :visible.sync="showPop"
+    :visible.sync="showDetailPage"
     @close="$emit('update:visible',false)"
     :title="'服务商编号：' + code"
     width="990px"
@@ -29,8 +29,8 @@
       >启用</el-button>
       <el-button size="mini" type="primary" @click="showEdit = true">编辑</el-button>
     </template>
-    <el-tabs class="wfull hfull tabs-view">
-      <el-tab-pane label="详情">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
+      <el-tab-pane label="详情" name="detail">
         <el-form disabled size="mini">
           <form-card title="往来账款">
             <el-row>
@@ -52,7 +52,14 @@
           <extras-info :data="detailForm" />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="应付账单">应付账单</el-tab-pane>
+      <el-tab-pane label="应付账单" name="payable">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&activeTab=='payable'">
+          <FinancePayable
+            :button="false"
+            :params="{page:1,limit:15,clientId:detailForm.id,clientType:2}"
+          />
+        </FullscreenWrap>
+      </el-tab-pane>
     </el-tabs>
     <addFacilitator
       :visible.sync="showEdit"
@@ -87,9 +94,10 @@ export default {
   },
   data() {
     return {
+      activeTab: 'detail',
       showEdit: false,
       loading: false,
-      showPop: false,
+      showDetailPage: false,
       detailForm: {},
       status: [
         { label: '状态', value: this.rowData.state ? '停用' : '启用' },
@@ -115,7 +123,7 @@ export default {
       this.$emit('refresh')
     },
     checkVisible() {
-      this.showPop = this.visible;
+      this.showDetailPage = this.visible;
     },
     commonserviceproviderInfoBycode() {
       this.loading = true

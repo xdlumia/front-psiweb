@@ -248,23 +248,30 @@ export default {
     },
     //扫SN码
     shipmentCommodityCheck(item, index) {
-      console.log(item, this.dialogData, 'dialogDatadialogDatadialogDatadialogDatadialogDatadialogDatadialogDatadialogData')
-      this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ putawayCommodityList: this.downTableData, snCode: item.snCode, categoryCode: item.categoryCode, commodityCode: item.commodityCode, wmsId: this.dialogData.putawayWmsId })
+      let params = {
+        businessId: this.dialogData.id,
+        putawayCommodityList: this.downTableData || [],
+        snCode: item.snCode,
+        categoryCode: item.categoryCode,
+        commodityCode: item.commodityCode,
+        wmsId: this.dialogData.putawayWmsId
+      }
+      this.$api.seePsiWmsService.wmsallocationorderPutawayCommodityCheck(params)
         .then(res => {
-          // if (res.data) {
-          //   let arr = this.downTableData.filter((item) => {
-          //     return item.id == res.data.id
-          //   })
-          //   if (arr.length == 0) {
-          //     this.doSth(res.data)
-          //   } else {
-          //     this.$message({
-          //       type: 'info',
-          //       message: '扫过喽'
-          //     })
-          //   }
-          // }
-          // this.snCode = ''
+          if (res.data) {
+            let arr = this.downTableData.filter((item) => {
+              return item.id == res.data.id
+            })
+            // if (arr.length == 0) {
+            this.doSth(res.data)
+            // } else {
+            //   this.$message({
+            //     type: 'info',
+            //     message: '扫过喽'
+            //   })
+            // }
+          }
+          item.snCode = ''
         })
         .finally(() => {
 
@@ -275,15 +282,15 @@ export default {
       this.dialogData.allocationCommodityList.forEach((item) => {
         // item.accomplishNum = 0
         if (item.commodityCode == data.commodityCode) {
-          if (Number(item.accomplishNum) < Number(item.total)) {//数量还不够的时候可以继续扫
-            item.accomplishNum++
-            this.downTableData.push(data)
-          } else {
-            this.$message({
-              type: 'info',
-              message: '扫过喽'
-            })
-          }
+          // if (Number(item.accomplishNum) < Number(item.total)) {//数量还不够的时候可以继续扫
+          item.accomplishNum++
+          this.downTableData.push(data)
+          // } else {
+          //   this.$message({
+          //     type: 'info',
+          //     message: '扫过喽'
+          //   })
+          // }
         }
       })
     },
@@ -299,9 +306,10 @@ export default {
     //调入扫码保存
     wmsallocationorderBatchSsave() {
       if (this.downTableData.length > 0) {
-        this.$api.seePsiWmsService.wmsallocationorderBatchSsave({ list: this.downTableData, businessCode: this.dialogData.allocationOrderCode })
+        this.$api.seePsiWmsService.wmsallocationorderBatchSsave({ putawayCommodityList: this.downTableData, businessCode: this.dialogData.allocationOrderCode, businessId: this.dialogData.id, })
           .then(res => {
             this.close()
+            this.$reload()
           })
           .finally(() => {
           })

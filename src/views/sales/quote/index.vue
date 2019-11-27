@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 11:09:07
+ * @LastEditTime: 2019-11-25 14:57:11
  * @Description: 销售-报价单
  */
 <template>
@@ -18,14 +18,10 @@
       api="seePsiSaleService.salesquotationList"
       exportApi="seePsiSaleService.salesquotationExport"
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
       @selection-change="selectionChange"
     >
       <!-- 自定义按钮功能 -->
-      <template
-        v-if="button"
-        v-slot:button
-      >
+      <template v-slot:button>
         <el-button
           size="mini"
           type="primary"
@@ -93,13 +89,13 @@ import quoteDetails from './quote-details' //报价详情
 import outLibDetails from '../outLibrary/outLib-details' //销售详
 import quoteAdd from './add' //新增
 import outLibAdd from '../outLibrary/add' //生成出库单
-let filterOptions = [
-  { label: '报价单编号', prop: 'quotationCode', default: true, type: 'text' },
-  { label: '销售出库单编号', prop: 'shipmentCode', default: true, type: 'text' },
-  { label: '单据状态', prop: 'state', default: true, type: 'select', options: [] },
-  { label: '客户名称', prop: 'clientId', default: true, type: 'employee' },
-  { label: '创建人', prop: 'creator', default: true, type: 'select' }
-]
+// let filterOptions = [
+//   { label: '报价单编号', prop: 'quotationCode', default: true, type: 'text' },
+//   { label: '销售出库单编号', prop: 'shipmentCode', default: true, type: 'text' },
+//   { label: '单据状态', prop: 'state', default: true, type: 'select', options: [] },
+//   { label: '客户名称', prop: 'clientId', default: true, type: 'employee' },
+//   { label: '创建人', prop: 'creator', default: true, type: 'select' }
+// ]
 export default {
   name: 'quote',
   components: {
@@ -146,7 +142,7 @@ export default {
       // 出库单详情
       outLibVisible: false,
       // 筛选
-      filterOptions: filterOptions,
+      // filterOptions: filterOptions,
     };
   },
   methods: {

@@ -1,9 +1,9 @@
 // const MOCK_ADDRESS = '/mock/5dc23e61bc54fc3da273f404/39.99.132.95:9215'; // pc端用
 // const MOCK_ADDRESS = 'http://10.168.1.145:7300/mock/5dc23e61bc54fc3da273f404/39.99.132.95:9215'; // 小程序用
 const MOCK_ADDRESS = ''; // 禁用easymock
-const isUseMock = true;
+const isUseMock = false;
 /**
-* @date 2019-11-20
+* @date 2019-11-22
 * @host 39.99.132.95:9215
 */
 export default {
@@ -380,7 +380,7 @@ export default {
     },
     /**
      * @tag 费用单
-     * @description 账单调整申请
+     * @description 提交审核
      */
     fcostSubmitApproval: {
         url: '/fcost/submitApproval',
@@ -627,7 +627,7 @@ export default {
      */
     finvoicebillingCancellation: {
         url: '/finvoicebilling/cancellation',
-        methods: 'get',
+        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -645,7 +645,7 @@ export default {
      */
     finvoicebillingDilution: {
         url: '/finvoicebilling/dilution',
-        methods: 'get',
+        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -852,6 +852,105 @@ export default {
      */
     finvoicedetailSave: {
         url: '/finvoicedetail/save',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 收票
+     * @description 撤销审核
+     */
+    finvoicereceivableCancel: {
+        url: '/finvoicereceivable/cancel',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 收票
+     * @description 作废
+     */
+    finvoicereceivableCancellation: {
+        url: '/finvoicereceivable/cancellation',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 收票
+     * @description 删除
+     */
+    finvoicereceivableDelete: {
+        url: '/finvoicereceivable/delete',
+        methods: 'delete',
+        mock: isUseMock
+    },
+    /**
+     * @tag 收票
+     * @description 导出
+     */
+    finvoicereceivableExport: {
+        url: '/finvoicereceivable/export',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 收票
+     * @description 查看详细信息
+     */
+    finvoicereceivableInfo: {
+        url: '/finvoicereceivable/info/{id}',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 收票
+     * @description 获取列表
+     */
+    finvoicereceivableList: {
+        url: '/finvoicereceivable/list',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 收票
+     * @description 审核通过
+     */
+    finvoicereceivablePassApproval: {
+        url: '/finvoicereceivable/passApproval',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 收票
+     * @description 驳回
+     */
+    finvoicereceivableReject: {
+        url: '/finvoicereceivable/reject',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 收票
+     * @description 保存
+     */
+    finvoicereceivableSave: {
+        url: '/finvoicereceivable/save',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 收票
+     * @description 提交审核
+     */
+    finvoicereceivableSubmitApproval: {
+        url: '/finvoicereceivable/submitApproval',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 收票
+     * @description 修改
+     */
+    finvoicereceivableUpdate: {
+        url: '/finvoicereceivable/update',
         methods: 'post',
         mock: isUseMock
     },

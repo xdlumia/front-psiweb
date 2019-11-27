@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 14:59:40
+ * @LastEditTime: 2019-11-25 19:04:22
  * @Description: 生成请购单商品信息
 */
 <template>
@@ -13,7 +13,7 @@
         :summary-method="getSummaries"
         size="mini"
         border
-        :data="tableData || []"
+        :data="tableData"
         ref="table"
       >
         <el-table-column
@@ -128,7 +128,7 @@ export default {
       default: () => ({})
     },
     title: {
-      default: '退货商品信息',
+      default: '商品信息',
       type: String
     },
     disabled: {
@@ -157,17 +157,18 @@ export default {
       this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.params)
         .then(res => {
           this.tableData = res.data || []
+          // 清空商品数量
+          this.data.commodityList = []
+          this.tableData.forEach(item => {
+            // 商品数量-总库存大于0的商品才生成请购单
+            let commodityNumber = (item.commodityNumber || 0) - (item.inventoryNumber || 0)
+            if (commodityNumber > 0) {
+              // 生成请购单商品数量是 请求过来的商品数量-总库存数量
+              item.commodityNumber = commodityNumber
+              this.data.commodityList.push(item)
+            }
+          })
         })
-    },
-    sumTaxPrice(row, index) {
-      let taxRate = (row.taxRate || 100) / 100  ///税率
-      let refundNumber = row.refundNumber || 1 //退货数量
-      let salesPrice = row.salesPrice || 1 //销售单价
-      // 税后销售单价  公式:销售单价 * (1-税率)
-      row.taxPrice = salesPrice * (1 - taxRate)
-      // 销售税后总价  公式:税后销售单价 * 销售数量
-      row.taxTotalAmount = (refundNumber * row.taxPrice).toFixed(2)
-
     },
     // 自定义账单金额数据
     getSummaries(param) {
@@ -184,8 +185,6 @@ export default {
           }, 0)
         }
       });
-      //获取税后总价
-      this.data.shouldRefundAmount = sums[13]
       return sums
     },
   },

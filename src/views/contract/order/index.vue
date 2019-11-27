@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 15:36:05
+ * @LastEditTime: 2019-11-25 17:23:12
  * @Description: 采购合同
 */
 <template>
@@ -12,6 +12,7 @@
       :params="params"
       api="seePsiContractService.contractpurchaseList"
       busType="24"
+      exportApi="seePsiContractService.contractpurchaseExport"
       ref="tableView"
       title="采购合同"
     >
@@ -61,35 +62,15 @@ export default {
       showPutinDetail: false,
       currentCode: '',
       currentPutinCode: '',
+      // prettier-ignore
       filterOptions: [
         { label: '合同编号', prop: 'contractCode', default: true },
         { label: '采购入库编号', prop: 'purchasePutinCode', default: true },
-        { label: '供应商名称', prop: 'supplierName', default: true },
-        {
-          label: '总计数量',
-          prop: 'TotalNum',
-          type: 'numberRange',
-          default: true,
-          int: true
-        },
-        {
-          label: '总计采购价',
-          prop: 'TotalAmount',
-          type: 'numberRange',
-          default: true
-        },
-        {
-          label: '预计到货时间',
-          prop: 'PurchaseTime',
-          type: 'dateRange',
-          default: true
-        },
-        {
-          label: '合同创建人',
-          prop: 'creator',
-          type: 'employee',
-          default: true
-        },
+        { label: '供应商名称', prop: 'supplierName', default: true, },
+        { label: '总计数量', prop: 'TotalNum', type: 'numberRange', default: true, int: true },
+        { label: '总计采购价', prop: 'TotalAmount', type: 'numberRange', default: true },
+        { label: '预计到货时间', prop: 'PurchaseTime', type: 'dateRange', default: true },
+        { label: '合同创建人', prop: 'creator', type: 'employee', default: true },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
       ]

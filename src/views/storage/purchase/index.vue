@@ -12,8 +12,8 @@
       busType="32"
       :filter="true"
       :filterOptions='filterOptions'
-      :params="queryForm"
-      :selection='false'
+      :params="params"
+      selection
       exportApi="seePsiPurchaseService.purchaseExport"
       ref='allTable'
       api="seePsiPurchaseService.purchaseList"
@@ -22,23 +22,30 @@
       <template slot-scope="{column,row,value}">
         <span
           v-if="column.columnFields=='putinCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
+          @click="getputinVisible(row)"
         >{{value}}</span>
         <span
-          v-if="column.columnFields=='purchaseCode'"
-          class="d-text-blue"
+          v-else-if="column.columnFields=='purchaseCode'"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
-        <span v-else-if="column.columnFields=='putinState'">{{value == 0 ? '待入库' : value == 1 ? '部分完成' : value == 2 ? '完成入库' : value == 3 ? '终止' : '全部'}}</span>
+        <span v-else-if="column.columnFields=='putinState'">{{value == 0 ? '待入库' : value == 1 ? '部分完成' : value == 2 ? '完成入库' : value == 3 ? '终止' : ''}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
+      :code="drawerData.purchaseCode"
       :drawerData='drawerData'
       @reload='reload'
       v-if="tableVisible"
       :visible.sync='tableVisible'
+    />
+    <storageDetails
+      :code="rowData.putinCode"
+      :visible.sync="assembleVisible"
+      @reload="reload"
+      v-if="assembleVisible"
     />
   </div>
 </template>
@@ -47,11 +54,25 @@
  * 采购-请购单
  */
 import TableView from '@/components/tableView';
+import storageDetails from '@/views/order/storage/detail.vue';
 import Details from './details.vue'
 export default {
   components: {
     Details,
-    TableView
+    TableView,
+    storageDetails
+  },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   data() {
     return {
@@ -62,7 +83,6 @@ export default {
       },
       componentActive: '', // 当前的组件
       tableVisible: false, // 销售单右侧抽屉
-      button: true,
       drawerData: { // 弹框的相关数据
         title: '',
         component: 'Details'
@@ -96,18 +116,18 @@ export default {
           ],
           default: true
         },
-        {
-          label: '拆卸任务状态',
-          prop: 'pickingState',
-          type: 'select',
-          options: [
-            { label: '完成拣货', value: '2' },
-            { label: '部分拣货', value: '1' },
-            { label: '待拣货', value: '0' },
-            { label: '终止', value: '-1' }
-          ],
-          default: true
-        },
+        // {
+        //   label: '拆卸任务状态',
+        //   prop: 'pickingState',
+        //   type: 'select',
+        //   options: [
+        //     { label: '完成拣货', value: '2' },
+        //     { label: '部分拣货', value: '1' },
+        //     { label: '待拣货', value: '0' },
+        //     { label: '终止', value: '-1' }
+        //   ],
+        //   default: true
+        // },
         {
           label: '入库数量',
           prop: 'WillPutinNum',
@@ -129,6 +149,12 @@ export default {
           default: true,
           int: true
         },
+        {
+          label: '入库人',
+          prop: 'putinPerson',
+          type: 'employee',
+          default: true
+        },
         // { label: 'creator', prop: 'creator', type: 'employee', default: true },
         {
           label: '生成时间',
@@ -143,8 +169,13 @@ export default {
           default: true
         },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true }
-      ]
+      ],
+      assembleVisible: false,
+      rowData: {}
     };
+  },
+  created() {
+    this.commonwmsmanagerUsableList()
   },
   methods: {
     // 点击打开右侧边栏
@@ -161,7 +192,28 @@ export default {
     },
     reload() {
       this.$refs.allTable.reload()
-    }
+    },
+    //点击采购入库单编号
+    getputinVisible(row) {
+      this.assembleVisible = true
+      this.rowData = row
+    },
+    //请求供应商列表，用作筛选
+    commonwmsmanagerUsableList() {
+      this.$api.seePsiCommonService.commonsupplierinfoPagelist({ page: 1, limit: 100 })
+        .then(res => {
+          this.usableList = res.data || []
+          this.usableList.forEach((item) => {
+            item.label = item.supplierName
+            item.value = item.id
+          })
+          this.filterOptions[1].options = this.usableList
+          console.log(this.usableList, 'this.usableListthis.usableListthis.usableList')
+        })
+        .finally(() => {
+
+        })
+    },
   }
 };
 </script>

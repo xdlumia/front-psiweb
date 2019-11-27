@@ -10,7 +10,7 @@
     :status="status"
     :visible.sync="visible"
     @close="$emit('update:visible',false)"
-    title="组装单"
+    :title="`组装单-${detailForm.assembleOrderCode}`"
     width="990px"
   >
     <div>
@@ -25,7 +25,7 @@
           type="primary"
           size='mini'
           :visible='addVisible'
-          @click='addVisible = false'
+          @click='fStop'
         >终止</el-button>
       </div>
       <el-tabs class="wfull hfull tabs-view">
@@ -33,7 +33,7 @@
           <el-form>
             <assembleNoedit
               :data='detailForm'
-              :drawerData='drawerData'
+              :drawerData='data'
             />
             <assembleInfo
               :disabled='true'
@@ -47,13 +47,24 @@
             />
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="销售单">销售单</el-tab-pane>
-        <el-tab-pane label="拣货单">拣货单</el-tab-pane>
-        <el-tab-pane label="组装任务">组装任务</el-tab-pane>
-        <el-tab-pane label="发货单">发货单</el-tab-pane>
-        <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
-        <el-tab-pane label="借入单">借入单</el-tab-pane>
-        <el-tab-pane label="应收账单">应收账单</el-tab-pane>
+        <el-tab-pane label="拣货单">
+          <storagePicking
+            :button="false"
+            :params="{page:1,limit:15,assembleOrderCode:detailForm.assembleOrderCode}"
+          ></storagePicking>
+        </el-tab-pane>
+        <el-tab-pane label="组装任务">
+          <storageAssembly
+            :button="false"
+            :params="{page:1,limit:15,assembleOrderCode:detailForm.assembleOrderCode}"
+          ></storageAssembly>
+        </el-tab-pane>
+        <el-tab-pane label="销售单">
+          <storageSales
+            :button="false"
+            :params="{page:1,limit:15,assembleOrderCode:detailForm.assembleOrderCode}"
+          ></storageSales>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </SideDetail>
@@ -64,10 +75,10 @@ import assembleInfo from '@/components/formComponents/assemble-info';
 import assemblyTask from './assembly-task';
 import SideDetail from '@/components/side-detail';
 export default {
-  props: ['drawerData', 'visible'],
+  props: ['data', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '组装状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '组装状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       taskVisible: false,
       addVisible: false,
       state: {
@@ -92,7 +103,7 @@ export default {
   methods: {
     //查看详情
     wmsassembleorderInfo() {
-      this.$api.seePsiWmsService.wmsassembleorderInfo(null, this.drawerData.id)
+      this.$api.seePsiWmsService.wmsassembleorderGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = this.state[res.data.assembleOrderState]
@@ -108,52 +119,30 @@ export default {
     },
     reload() {
       this.$emit('reload')
+    },
+    fStop() {
+      this.$confirm('确认终止当前组装单吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api.seePsiWmsService.wmsassembleorderTermination(null, this.detailForm.id)
+          .then(res => {
+            this.reload()
+            this.wmsassembleorderInfo()
+          })
+          .finally(() => {
+
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      })
     }
   }
 }
 </script>
 <style lang='scss' scoped>
-.side-page {
-  .header-btns {
-    position: absolute;
-    right: 40px;
-    top: 12px;
-  }
-  /deep/ {
-    > .popup-main {
-      > .popup-head {
-        font-weight: bold;
-        font-size: 18px;
-        > .d-inline > .popup-close {
-          position: absolute;
-          right: 10px;
-          top: 16px;
-        }
-      }
-      > .popup-body {
-        padding: 0;
-        overflow: hidden;
-      }
-    }
-  }
-  .tabs-view {
-    position: relative;
-    /deep/ {
-      & > .el-tabs__header {
-        background-color: #f2f2f2;
-        padding: 0 20px;
-        margin-bottom: 0;
-        > .el-tabs__nav-wrap::after {
-          background-color: #f2f2f2;
-        }
-      }
-      & > .el-tabs__content {
-        height: calc(100% - 40px);
-        overflow: hidden;
-        overflow-y: auto;
-        padding: 0 20px;
-      }
-    }
-  }
-}
 </style>

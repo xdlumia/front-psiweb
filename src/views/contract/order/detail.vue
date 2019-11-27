@@ -2,18 +2,18 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:23:32
+ * @LastEditTime: 2019-11-26 17:44:11
  * @Description: 采购合同
 */
 <template>
-  <sideDetail :status="status" :visible="showDetailPage" @close="close" title="采购合同" v-loading="loading" width="990px">
-    <el-tabs class="wfull hfull tabs-view">
+  <sideDetail :status="status" :title="`采购合同 ${code||''}`" :visible="showDetailPage" @close="close" v-loading="loading" width="990px">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
         <el-form :model="detail" class="p10" ref="form" size="mini" v-if="detail&&showDetailPage&&!loading">
           <supplierInfo :data="detail" :defaultData="detail.supplierInfo" disabled />
           <companyInfo :data="detail" :defaultData="getCompanyInfo()" disabled />
-          <arrivalInfo :data="detail" disabled v-if="detail.source!='直发单'" :hide="['saleTime']" />
-          <buyingDeliverInfo :data="detail" :defaultClientData="detail.shipmentsLogistics" disabled ref="deliverInfo" v-else :hide="['saleTime']" />
+          <arrivalInfo :data="detail" :hide="['saleTime']" disabled />
+          <!-- <buyingDeliverInfo :data="detail" :defaultClientData="detail.shipmentsLogistics" disabled ref="deliverInfo" v-else :hide="['saleTime']" /> -->
           <buying-goods-edit
             :data="detail"
             :show="[
@@ -30,8 +30,8 @@
           <extrasInfo :data="detail" disabled />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="采购入库单">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="采购入库单" name="putin">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.putin">
           <OrderStorage :button="false" :params="{page:1,limit:15,putinCode:detail.purchasePutinCode}" />
         </FullscreenWrap>
       </el-tab-pane>

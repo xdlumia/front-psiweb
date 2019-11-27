@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 09:38:36
+ * @LastEditTime: 2019-11-23 19:31:33
  * @Description: 新增借入单
 */
 <template>
-  <el-dialog :visible="visible" @close="close" v-dialogDrag v-loading="loading" width="900px">
+  <el-dialog :visible="showEditPage" @close="close" v-dialogDrag v-loading="loading" width="900px">
     <div slot="title">
       <span>{{isEdit?'编辑':'新增'}}借入/出单</span>
       <span class="fr mr20">
@@ -19,7 +19,7 @@
       <d-tab-pane :label="form.borrowLoanType==1?'借出商品':'借入商品'" name="borrowGoods" />
       <div>
         <el-form :model="form" class="p10" ref="form" size="mini" v-if="visible&&form">
-          <borrowIn :data="form" :disables="isEdit||from?['borrowLoanType']:[]" id="borrowIn" />
+          <borrowIn :data="form" :disables="(isEdit||from)?['borrowLoanType']:[]" id="borrowIn" />
           <borrowGoodsEdit :data="form" id="borrowGoods" />
         </el-form>
       </div>
@@ -37,9 +37,7 @@ export default {
   props: {
     from: String
   },
-  computed: {
-    
-  },
+  computed: {},
   data() {
     return {
       form: {
@@ -90,6 +88,13 @@ export default {
       }
     },
     async save() {
+      if (!this.form.commodityList || !this.form.commodityList.length) {
+        return this.$message({
+          message: '无商品借入',
+          showClose: true,
+          type: 'warning'
+        });
+      }
       await this.$refs.form.validate();
       this.loading = true;
       this.form.borrowLoanNum = this.form.commodityList.reduce(

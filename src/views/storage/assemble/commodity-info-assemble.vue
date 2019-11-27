@@ -18,9 +18,19 @@
       :data="tableData"
       max-height="400"
       ref="elTable"
-      row-key="name"
+      row-key="id"
+      :load="load"
+      lazy
       size="mini"
+      :tree-props="{children: 'children', hasChildren: 'configId'}"
     >
+      >
+      <el-table-column
+        fixed
+        min-width="50"
+        prop="name"
+      >
+      </el-table-column>
       <el-table-column
         label="操作"
         min-width="50"
@@ -30,31 +40,12 @@
           slot-scope="scope"
           v-if='scope.row.commodityCode'
         >
-          <span>
+          <span v-if='!scope.row.quotationId'>
             <i
               class='el-icon-remove f18 d-text-qgray ml5 d-pointer'
               @click="deleteInfo(scope)"
             ></i>
           </span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="40">
-        <template slot-scope="scope">
-          <div
-            class="expanded-icons d-text-gray"
-            v-if="scope.row.configName"
-          >
-            <span
-              @click="expand(scope.row)"
-              class="el-icon-plus d-pointer"
-              v-if="!scope.row.expanded"
-            ></span>
-            <span
-              @click="expand(scope.row)"
-              class="el-icon-minus d-pointer"
-              v-else
-            ></span>
-          </div>
         </template>
       </el-table-column>
       <el-table-column
@@ -70,12 +61,13 @@
             :sn="addForm.type == 2 ? true : false"
             :params="addForm.type == 2 ? {wmsId:addForm.wmsId} : {wmsId:''}" -->
           <commoditySelector
+            :disabled='!!scope.row.quotationId'
+            :codes="tableData.map(item=>item.commodityCode)"
             @response='response'
             @choose='commodityChoose(arguments,scope)'
             type="code"
             :params={isConfig:1}
             v-model="scope.row.commodityCode"
-            :codes='codes'
           />
         </template>
       </el-table-column>
@@ -88,12 +80,13 @@
           class="d-relative"
         >
           <commoditySelector
+            :disabled='!!scope.row.quotationId'
+            :codes="tableData.map(item=>item.commodityCode)"
             @response='response'
             ref='commdity'
             :params={isConfig:1}
             @choose='commodityChoose(arguments,scope)'
             v-model="scope.row.goodsName"
-            :codes='codes'
           />
         </template>
       </el-table-column>
@@ -106,6 +99,8 @@
           class="d-relative"
         >
           <el-select
+            :disabled='!!scope.row.quotationId'
+            @focus='visibleChange($event,scope)'
             v-model="scope.row.configName"
             @change="changeCommodity($event,scope)"
             placeholder="请选择"
@@ -125,17 +120,19 @@
       <el-table-column
         label="组装数量"
         min-width="150"
-        prop="assembleNum"
+        prop="allocationNum"
       >
         <template
           slot-scope="scope"
           class="d-relative"
         >
           <el-input
+            v-if="scope.row.commodityCode && !scope.row.quotationId"
             size="mini"
-            v-model="scope.row.assembleNum"
+            v-model="scope.row.allocationNum"
             placeholder="请输入"
           ></el-input>
+          <span v-else>{{scope.row.commodityNum}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -145,6 +142,7 @@
       >
         <template slot-scope="scope">
           <el-image
+            v-if="scope.row.commodityCode"
             style="width: 100px; height: 40px"
             :src="scope.row.goodsPic"
             fit="fill"
@@ -218,24 +216,43 @@ export default {
     commodityChoose(e, scope) {
       let list = e[0]
       let type = e[1]
-      // this.infoForm = list
       this.tableData.forEach((item) => {
         if (item.commodityCode) {
           this.codes.push(item.commodityCode)
         }
       })
-      list.forEach((item) => {
+      list.forEach((item, index) => {
         if (!this.codes.includes(item.commodityCode) && scope.row.commodityCode && type == 'select') {//区分非选择状态下的选择商品信息
           this.$set(this.tableData, scope.$index, item)
+          scope.row.configName = ''
         } else if (!this.codes.includes(item.commodityCode)) {
           this.tableData.unshift(item)
+          scope.row.configName = ''
+        } else if (this.codes.includes(item.commodityCode)) {//针对配置做判断
+          scope.row.configName = this.configName
         }
       })
       this.codes = []
     },
+    //表格查询数据懒加载
+    load(tree, treeNode, resolve) {
+      console.log(tree, treeNode, 'loadloadloadloadload')
+      this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName({ page: 1, limit: 50, commodityCode: tree.commodityCode })
+        .then(res => {
+          let list = res.data || []
+          resolve(list)
+        })
+        .finally(() => {
+          treeNode.loading = false
+        })
+    },
     //商品加载成功以后,拿到所有数据,用以选择配置
     response(data) {
       this.configList = data
+    },
+    //选择重复配置的时候，需要恢复上一次选择的，去掉当前要选的
+    visibleChange(val, scope) {
+      this.configName = scope.row.configName
     },
     //配置下拉框改变的时候
     changeCommodity(e, scope) {
@@ -243,7 +260,7 @@ export default {
         return item.configId == e
       })
       this.commodityChoose([list, 'select'], scope)
-      scope.row.configName = ''
+
     },
     expand(row) {
       this.$set(row, 'expanded', !row.expanded);

@@ -13,20 +13,22 @@
     <TableView
       busType="4"
       :filterOptions='filterOptions'
-      :params="queryForm"
+      :params="params"
       ref='table'
-      :selection='false'
+      selection
       api="seePsiWmsService.wmsborrowloantaskList"
+      exportApi="seePsiWmsService.wmsborrowloantaskExport"
       title="借入借出任务"
     >
       <template slot-scope="{column,row,value}">
         <span
-          v-if="column.columnFields=='putinCode'"
-          class="d-text-blue"
+          v-if="column.columnFields=='salesShipmentCode'"
+          class="d-text-blue d-pointer"
+          @click="getdisassemblyVisible(row)"
         >{{value}}</span>
         <span
-          v-if="column.columnFields=='borrowLoanTaskCode'"
-          class="d-text-blue"
+          v-else-if="column.columnFields=='borrowLoanTaskCode'"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='borrowLoanType'">{{value == 0 ? '借入' : '借出'}}</span>
@@ -35,10 +37,19 @@
       </template>
     </TableView>
     <Details
+      :code='drawerData.borrowLoanTaskCode'
       @reload='reload'
       :drawerData='drawerData'
       :visible.sync='tableVisible'
       v-if="tableVisible"
+    />
+    <!-- 出库单详情 -->
+    <outLibDetails
+      :visible.sync="disassemblyVisible"
+      :rowData="rowData"
+      v-if="disassemblyVisible"
+      :code="rowData.salesShipmentCode"
+      @reload="$refs.table.reload()"
     />
   </div>
 </template>
@@ -47,11 +58,25 @@
  * 采购-请购单
  */
 import TableView from '@/components/tableView';
+import outLibDetails from '@/views/sales/outLibrary/outLib-details';
 import Details from './details.vue'
 export default {
   components: {
     Details,
-    TableView
+    TableView,
+    outLibDetails
+  },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   data() {
     return {
@@ -61,7 +86,6 @@ export default {
         limit: 20
       },
       tableVisible: false,//销售单右侧抽屉
-      button: true,
       state: {
         2: '待借入',
         3: '待借出',
@@ -83,7 +107,7 @@ export default {
       activeName: '',
       status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       filterOptions: [
-        { label: '借入借出任务编号', prop: 'borrowLoanCode', default: true },
+        { label: '借入借出任务编号', prop: 'borrowLoanTaskCode', default: true },
         { label: '销售出库单编号', prop: 'salesShipmentCode', default: true },
         {
           label: '借入借出状态',
@@ -116,6 +140,7 @@ export default {
           prop: 'borrowLoanType',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '借入', value: '0' },
             { label: '借出', value: '1' }
           ],
@@ -137,7 +162,7 @@ export default {
         },
         {
           label: '生成/创建时间',
-          prop: 'Time',
+          prop: 'CreateTime',
           type: 'daterange',
           default: true
         },
@@ -149,6 +174,8 @@ export default {
         },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
+      disassemblyVisible: false,
+      rowData: {}
     };
   },
   methods: {
@@ -157,6 +184,11 @@ export default {
       this.tableVisible = true
       this.drawerData = data
       console.log(this.drawerData, 'this.drawerDatathis.drawerDatathis.drawerDatathis.drawerData')
+    },
+    //销售出库单
+    getdisassemblyVisible(row) {
+      this.disassemblyVisible = true
+      this.rowData = row
     },
     //tab换组件
     handleClick() {

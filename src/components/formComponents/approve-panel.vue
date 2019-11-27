@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 19:30:57
+ * @LastEditTime: 2019-11-26 16:25:09
  * @Description: 审核信息
 */
 <template>
@@ -15,15 +15,22 @@
         type="primary"
       >{{showHis?'返回':'历史记录'}}</el-link>
     </div>
-    <div v-if="!showHis">
+    <div
+      class="progress-list"
+      v-if="!showHis"
+    >
       <ApproveCard :progress="progressData" />
     </div>
     <div
-      class
+      class="progress-list"
       v-else
     >
-      <ApproveCard />
-      <ApproveCard />
+      <ApproveCard
+        v-for="(item,index) of this.hisData"
+        :key="index"
+        :currProgress="item"
+        :progress="progressData"
+      />
     </div>
   </form-card>
 </template>
@@ -31,29 +38,33 @@
 import ApproveCard from './approve-card';
 
 let busType = {
-  '15': 'BJD-001',//销售报价单
+  '1': 'psi_wms_swap_01', // 换货单编号
+  '5': 'psi_purchase_borrow_01', // 借入借出单
+  '11': 'psi_purchase_unpack_01', // 拆卸单编号
+  '15': 'psi_sales_quote_01', //销售报价单
   '16': 'XSCKD-001', //销售出库单
-  '50': 'FKD-001',//付款单
-  '17': 'XSTHD-001',//销售退货单
-  '18': 'XSHHD-001',//销售换货单
-  '19': 'FT-001',//分摊单
-  '39': 'psi_adjustPrice_1003 ',//销售调价单
-  '29': 'psi_purchase_stock_01',//备货单
-  '40': 'psi_purchase_adjust_pric_01',//采购调价单
-  '31': 'psi_purchase_alteration_01',//待审批采购退货单
-  '30': 'psi_purchase_putin_01',//待审批采购入库单
-  '56': 'TTZD-001',//账单调整单
-  '9998': 'psi_purchase_stock_01',//换货单
+  '17': 'psi_sales_return_01', //销售退货单
+  '18': 'psi_sales_exchange_01', //销售换货单
+  '19': 'psi_sales_apportion_01', //分摊单
+  '29': 'psi_purchase_stock', //采购备货单
+  '30': 'psi_purchase_storage_01', //采购入库单
+  '31': 'psi_purchase_reject_01', //采购退货单
+  '39': 'psi_adjustPrice_1003 ', //销售调价单
+  '40': 'psi_purchase_adjust_pric_01', //采购调价单
+  '50': 'psi_finance_pay_bill_01', //付款单
+  '56': 'TTZD-001', //账单调整单
+  '58': 'psi_invoice_001', // 待收票
+  '59': 'psi_invoice_002', // 待开票
+  '62': 'psi_finance_cost_01', // 费用单
+  '9998': 'psi_purchase_stock_01', //换货单
 }
 export default {
   props: {
-    apprpvalNode: [Number, String],
     // 业务类型
     busType: {
       required: false,
-      default: 'BJD-001'
     },
-
+    id: [Number, String]
   },
   components: {
     ApproveCard
@@ -74,33 +85,32 @@ export default {
       hisData: [],// 历史审核数据
     };
   },
-  async created() {
+  async mounted() {
+    // 查询当前项共有多少节点
     await this.queryProcessDefinitionSubTask()
-    this.processtaskQueryProcessHistoryEntity()
+    await this.processtaskQueryProcessHistoryEntity()
   },
   methods: {
     // 查询当前项共有多少节点
-    queryProcessDefinitionSubTask() {
+    async queryProcessDefinitionSubTask() {
       let params = {
         typeArray: [busType[this.busType]]
       }
-      this.$api.seeWorkflowService.processdefinitionQueryProcessDefinitionSubTask(params)
-        .then(res => {
-          this.progressData = res.data || []
-        })
+      let { data } = await this.$api.seeWorkflowService.processdefinitionQueryProcessDefinitionSubTask(params)
+      this.progressData = data
     },
     // 查询历史操作
-    processtaskQueryProcessHistoryEntity() {
-
+    async processtaskQueryProcessHistoryEntity() {
 
       let params = {
         processType: busType[this.busType],
-        businessId: this.$parent.rowData.id //一般详情都会传rowData 当前行操作数据 里面有id
+        businessId: this.id || this.$parent.rowData.id //一般详情都会传rowData 当前行操作数据 里面有id
       }
-      this.$api.seeWorkflowService.processtaskQueryProcessHistoryEntity(params)
-        .then(res => {
-          console.log(res.data);
-        })
+      let { data } = await this.$api.seeWorkflowService.processtaskQueryProcessHistoryEntity(params)
+      this.hisData = data || []
+      // 历史记录的最后一个节点就是当前节点
+      let lastHis = this.hisData[this.hisData.length - 1]
+
     }
 
   },

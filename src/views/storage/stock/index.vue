@@ -13,10 +13,11 @@
       style="height:calc(100vh - 150px)"
       busType="48"
       :filterOptions='filterOptions'
-      :selection='false'
+      selection
       ref='allTable'
       api="seePsiWmsService.wmsinventoryList"
-      :params="queryForm"
+      exportApi="seePsiWmsService.commonwmsmanagerExport"
+      :params="params"
       title="库存查询"
     >
       <template v-slot:button>
@@ -38,6 +39,7 @@
       <template slot-scope="{column,row,value}">
         <span v-if="column.columnFields=='unit'">{{value|dictionary('SC_JLDW')}}</span>
         <span v-else-if="column.columnFields=='categoryCode'">{{value|dictionary('PSI_SP_KIND')}}</span>
+        <span v-else-if="column.columnFields=='originalInventoryNum'">{{value || 0}}</span>
         <span
           v-else-if="column.columnFields=='inventoryWarning'"
           :class="value == 1 ? 'd-text-red' : value == 2 ? 'd-text-yellow' : ''"
@@ -51,7 +53,7 @@
         </span>
         <span v-else-if="column.columnFields=='commodityCode'">
           <span
-            class="d-text-blue"
+            class="d-text-blue d-pointer"
             @click="changeTableVisible(row)"
           >{{value}}</span>
         </span>
@@ -63,7 +65,7 @@
         class="choose-aside fl"
         style="height: calc(100% - 40px);"
       >
-        <el-button 
+        <el-button
           type="text"
           class="ml10"
           @click="clickAll"
@@ -110,6 +112,18 @@ export default {
     TableView,
     commodityInquiry
   },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15, classId: '' })
+    }
+  },
   data() {
     return {
       defaultProps: {
@@ -119,7 +133,8 @@ export default {
       snCode: '',
       queryForm: {
         page: 1,
-        limit: 20
+        limit: 20,
+        classId: ''
       },
       input2: '',
       treeData: [],
@@ -133,101 +148,90 @@ export default {
       totalInventoryPrice: 0,
       data: [],
       filterOptions: [
-        { label: '商品编号', prop: 'goodsCodeCustomer', default: true },
-        { label: '商品类别', prop: 'categoryCode', default: true },
+        { label: '商品编号', prop: 'commodityCode', default: true },
         {
-          label: '商品分类',
-          prop: 'className',
-          type: 'select',
-          options: [
-            { label: '待调拨', value: '1' },
-            { label: '部分调拨', value: '2' },
-            { label: '完成调拨', value: '3' },
-            { label: '终止', value: '-1' },
-          ],
+          label: '商品类别',
+          prop: 'categoryCode',
+          type: 'dict',
+          dictName: 'PSI_SP_KIND',
           default: true
         },
         { label: '商品名称', prop: 'goodsName', default: true },
         { label: '商品规格', prop: 'specOne', default: true },
-        {
-          label: '商品配置',
-          prop: 'configId',
-          type: 'select',
-          options: [
-            { label: '内调', value: '1' },
-            { label: '外调', value: '2' }
-          ],
-          default: true
-        },
+        { label: '商品配置', prop: 'configName', default: true },
         {
           label: '单位',
           prop: 'unit',
-          type: 'select',
-          options: [
-            { label: '内调', value: '1' },
-            { label: '外调', value: '2' }
-          ],
+          type: 'dict',
+          dictName: 'SC_JLDW',
           default: true
         },
         {
           label: '实物库存',
-          prop: 'usableInventoryNum',
+          prop: 'UsableInventoryNum',
+          type: 'numberRange',
+          default: true,
+          int: true
+        },
+        {
+          label: '期初库存',
+          prop: 'OriginalInventoryNum',
           type: 'numberRange',
           default: true,
           int: true
         },
         {
           label: '入库数量',
-          prop: 'sumShipmentNum',
+          prop: 'SumShipmentNum',
           type: 'numberRange',
           default: true,
           int: true
         },
         {
           label: '出库数量',
-          prop: 'sumPutawayNum',
+          prop: 'SumPutawayNum',
           type: 'numberRange',
           default: true,
           int: true
         },
         {
           label: '待入库数量',
-          prop: 'waitShipmentNum',
+          prop: 'WaitShipmentNum',
           type: 'numberRange',
           default: true,
           int: true
         },
         {
           label: '待出库数量',
-          prop: 'waitPutawayNum',
+          prop: 'WaitPutawayNum',
           type: 'numberRange',
           default: true,
           int: true
         },
         {
           label: '锁库量',
-          prop: 'lockInventoryNum',
+          prop: 'LockInventoryNum',
           type: 'numberRange',
           default: true,
           int: true
         },
         {
           label: '最低采购价',
-          prop: 'minimumPurchasePrice',
+          prop: 'MumPurchasePrice',
           type: 'numberRange',
           default: true,
           int: true
         },
         {
           label: '库存成本',
-          prop: 'inventoryPrice',
+          prop: 'InventoryPrice',
           type: 'numberRange',
           default: true,
           int: true
         },
         {
           label: '销售参考价',
-          prop: 'saleReferencePrice',
+          prop: 'SaleReferencePrice',
           type: 'numberRange',
           default: true,
           int: true
@@ -283,11 +287,11 @@ export default {
     },
     //点击树节点
     handleNodeClick(data) {
-      this.queryForm.classId = data.id
+      this.params.classId = data.id
       this.reload()
     },
     clickAll() {
-      this.queryForm.classId = null
+      this.params.classId = null
       this.reload()
     }
   }

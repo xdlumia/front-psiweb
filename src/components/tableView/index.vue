@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 11:56:15
+ * @LastEditTime: 2019-11-26 20:24:30
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -59,7 +59,7 @@
   <div
     class="main-content"
     v-loading="loading"
-    element-loading-text="正在初始化"
+    element-loading-text="正在导出"
   >
     <table-top
       @staHandle="staHandle"
@@ -88,11 +88,11 @@
       <template slot="filterTable">
         <slot
           name="filterTable"
-          v-if="filterOptions"
+          v-if="filterOptions || autoFilterOptions"
         >
           <dFilter
             v-model="params"
-            :options="filterOptions"
+            :options="filterOptions || autoFilterOptions"
             @change="reload()"
           />
         </slot>
@@ -123,6 +123,7 @@
     >
       <el-table-column
         v-if="selection"
+        :selectable="selectable"
         :fixed="true"
         width="50"
         type="selection"
@@ -198,6 +199,7 @@ export default {
     },
     // 筛选配置
     filterOptions: Array,
+    selectable: Function,
     // 自定义头
     // headers: {
     //   type: Array,
@@ -216,6 +218,8 @@ export default {
       // 财务统计数据列表
       staList: [],
       statusText: {},
+      // 自动加载的筛选数据
+      autoFilterOptions: null,
     };
   },
   created() {
@@ -224,9 +228,21 @@ export default {
 
   },
   computed: {
+
     // 判断当前表格的高度
     tableHeader() {
-      return this.$parent.button && this.staList.length ? 'calc(100% - 110px)' : this.height
+      // 如果首页有操作按钮 并且有统计
+      if (this.$parent.button && this.staList.length) {
+        return 'calc(100% - 110px)'
+      }
+      // 如果没有按钮 那一定也没有统计
+      else if (!this.$parent.button) {
+        return 'calc(100vh - 240px)'
+      }
+      // 否则就是默认高度
+      else {
+        return this.height
+      }
     },
   },
   methods: {
@@ -238,13 +254,14 @@ export default {
     tabelRes(res) {
       // 获取状态列表数据
       this.statusList = this.$refs.table.response.statisticData || []
+      // statusText统计状态
       this.statusList.forEach(item => {
         if (item.name != '全部') {
           this.statusText[item.state] = item.name
         }
       })
       // 获取统计列表数据(财务独有)
-      this.staList = this.$refs.table.response.staList || []
+      this.staList = this.$refs.table.response.busStatisticData || []
       this.$emit('response', res)
     },
     // 统计点击筛选
@@ -256,18 +273,34 @@ export default {
     moreHandle(type) {
       // 导出操作
       if (type == "export") {
+        if (!this.exportApi) {
+          this.$message({
+            message: '当前页面的当初接口没有配!参数:exportApi',
+            type: 'error',
+            showClose: true,
+          });
+          return
+        }
+
         this.loading = true;
-        let server = this.exportApi.split('.')[0]
-        let url = this.exportApi.split('.')[1]
         let params = {}
         if (this.selectionRow.length) {
-          params = { ids: this.selectionRow.map(item => item.id) }
+          params = { ...this.params, ids: this.selectionRow.map(item => item.id), }
         } else {
           params = this.params
         }
-        this.$api[server][url](params)
+        // 格式化导出接口
+        let apiFn = this.exportApi.split('.').reduce((api, item) => api[item], this.$api)
+
+
+        apiFn(params)
           .then(res => {
-            console.log("导出成功");
+            if (res.data) {
+              window.open(res.data)
+              console.log("导出成功");
+            } else {
+              console.error("导出失败");
+            }
           })
           .finally(() => {
             //关闭loading
@@ -276,6 +309,7 @@ export default {
 
       }
     },
+    // 格式化状态和时间
     formatState(row, fields) {
       if (fields.match(/(Time|Date)/)) {
         return this.$options.filters.timeToStr(row[fields], 'YYYY-MM-DD HH:mm:ss')
@@ -287,8 +321,64 @@ export default {
       }
 
     },
-    // 返回的列数据
+    // 返回的自定义列数据
     columnHandle(cols) {
+      //  自定添加筛选
+      if (!this.filterOptions) {
+        let filterOptions = []
+        cols.forEach(item => {
+          // 过滤状态不用添加到筛选里的类型
+          let notFilter = ['state', 'matchState']
+          if (!notFilter.includes(item.columnFields)) {
+
+            let type = 'text' //默认筛选类型是text
+            let columnFields = item.columnFields //筛选字段
+            let options = [] //筛选下拉数据
+
+            // 如果字段里有时间那么筛选就是时间段类型
+            if (item.columnFields.match(/Time|Date/)) {
+              type = 'daterange'
+            }
+            // 如果是数量或者金额字段
+            else if (item.columnFields.match(/Number|Amount/)) {
+              type = 'numberrange'
+            }
+            // 如果是创建人
+            else if (item.columnFields == 'creator' || item.columnFields == 'creatorName') {
+              columnFields = 'creator'
+              type = 'employee'
+            }
+            // 如果是有无合同
+            else if (item.columnFields == 'isContract') {
+              type = 'select'
+              options = [{ label: '有', value: 1 }, { label: '无', value: 0 }]
+            }
+            // 收支状态
+            else if (item.columnFields == 'incomeType') {
+              type = 'select'
+              options = [{ label: '付款', value: 1 }, { label: '收款', value: 0 }]
+            }
+            // 如果是账户信息
+            else if (item.columnFields == 'companySettlementInfo') {
+              columnFields = 'companySettlementId'
+              type = 'account'
+            }
+            // 如果是部门
+            else if (item.columnFields == 'deptTotalCode') {
+              type = 'dept'
+            }
+            filterOptions.push(
+              {
+                label: item.columnName,
+                prop: columnFields,
+                default: true,
+                type: type,
+                options: options
+              })
+          }
+        })
+        this.autoFilterOptions = filterOptions
+      }
       // 列表默认请求的就是全部列数据 所以这里就不用重新请求了
       this.headers = cols;
       this.$refs.table.reload(1)

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 15:23:14
+ * @LastEditTime: 2019-11-25 15:38:57
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -26,11 +26,17 @@ export default {
       stateText: {},
       closeTimer: null,
       alwaysDropAndCopyForm: false,
+      activeTab:'',// 页签
+      tabStatus:{} // 页签状态
     }
   },
   watch: {
     visible() {
       this.$checkVisible();
+    },
+    // 监听页签切换，改变状态，为true开始渲染
+    activeTab(){
+      this.$set(this.tabStatus,this.activeTab,true)
     }
   },
   mounted() {
@@ -73,7 +79,7 @@ export default {
         if (data) {
           data = JSON.parse(JSON.stringify(data))
           this.detail = data || {}
-          if (this.alwaysDropAndCopyForm) this.form = data;
+          if (this.alwaysDropAndCopyForm&&data) this.form = data;
           else {
             // this.rowData = data || {}
             if (this.form && this.type == 'edit') {
@@ -161,13 +167,17 @@ export default {
           center: true
         })
       }
-      let fn = api.split('.').reduce((api, item) => api[item], this.$api)
-      if (!fn) console.error(`接口不存在 ${api}`)
-      if (data instanceof Array && data[0] == null) {
-        await fn(data[0], data[1])
-      } else {
-        await fn(data)
-      }
+      this.loading = true
+      try {
+        let fn = api.split('.').reduce((api, item) => api[item], this.$api)
+        if (!fn) console.error(`接口不存在 ${api}`)
+        if (data instanceof Array && data[0] == null) {
+          await fn(data[0], data[1])
+        } else {
+          await fn(data)
+        }
+      } catch (error) { }
+      this.loading = false
       this.setEdit()
       if (title === '删除') {
         this.close()

@@ -11,15 +11,17 @@
     <TableView
       busType="2"
       :filterOptions='filterOptions'
-      :selection='false'
+      selection
       ref='allTable'
+      :params='params'
       api="seePsiWmsService.wmsswaptaskList"
+      exportApi="seePsiWmsService.wmsswaptaskExport"
       title="换货任务"
     >
       <template slot-scope="{column,row,value}">
         <span
           v-if="column.columnFields=='swapTaskCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='swapState'">{{state[value]}}</span>
@@ -27,6 +29,7 @@
       </template>
     </TableView>
     <Details
+      :code='drawerData.swapTaskCode'
       :drawerData='drawerData'
       :visible.sync='tableVisible'
       @reload='reload'
@@ -45,6 +48,18 @@ export default {
     Details,
     TableView
   },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
+  },
   data() {
     return {
       // 查询表单
@@ -57,7 +72,6 @@ export default {
         3: '部分换货',
         4: '完成换货'
       },
-      button: true,
       tableVisible: false,//销售单右侧抽屉
       drawerData: {//弹框的相关数据
       },
@@ -66,14 +80,13 @@ export default {
         { label: '换货方', prop: 'barterThirdparty', default: true },
         {
           label: '换货状态',
-          prop: 'swapState',
+          prop: 'state',
           type: 'select',
           options: [
-            { label: '待组装', value: '1' },
-            { label: '部分组装', value: '2' },
-            { label: '完成组装', value: '3' },
-            { label: '未开始', value: '0' },
-            { label: '终止', value: '-1' },
+            { label: '全部', value: '' },
+            { label: '待换货', value: '2' },
+            { label: '部分换货', value: '3' },
+            { label: '完成换货', value: '4' },
           ],
           default: true
         },

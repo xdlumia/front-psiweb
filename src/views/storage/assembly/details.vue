@@ -11,7 +11,7 @@
     :status="status"
     :visible.sync="visible"
     @close="close"
-    title="组装任务"
+    :title="`组装任务-${detailForm.assembleTaskCode}`"
     width="990px"
   >
     <div>
@@ -47,7 +47,7 @@
           <el-form>
             <goodsAssemble
               :data='detailForm'
-              :drawerData='drawerData'
+              :drawerData='data'
               @reload="reload"
             />
             <assemblyInfo :data='detailForm' />
@@ -57,7 +57,12 @@
             />
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="组装任务">组装任务</el-tab-pane>
+        <el-tab-pane label="组装单">
+          <storageAssemble
+            :button="false"
+            :params="{page:1,limit:15,assembleTaskCode:detailForm.assembleTaskCode}"
+          ></storageAssemble>
+        </el-tab-pane>
       </el-tabs>
     </div>
     <transfer
@@ -82,10 +87,10 @@ import assembledGoodsChoose from '@/components/formComponents/assembled-goods-ch
 import SideDetail from '@/components/side-detail';
 
 export default {
-  props: ['drawerData', 'visible'],
+  props: ['data', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '组装状态', value: '待组装' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '组装状态', value: '待组装' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       transferVisible: false,//转移
       hangVisible: false,//挂起
       goodsVisible: false,//组装
@@ -113,7 +118,7 @@ export default {
   methods: {
     //查看详情
     wmsassembleorderInfo() {
-      this.$api.seePsiWmsService.wmsassembletaskInfo(null, this.drawerData.id)
+      this.$api.seePsiWmsService.wmsassembletaskGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = this.state[res.data.assembleOrderState]
@@ -141,7 +146,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiWmsService.wmsassembletaskStart(null, this.drawerData.id)
+        this.$api.seePsiWmsService.wmsassembletaskStart(null, this.data.id)
           .then(res => {
             this.$emit('reload')
           })
@@ -189,47 +194,4 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-.side-page {
-  .header-btns {
-    position: absolute;
-    right: 40px;
-    top: 12px;
-  }
-  /deep/ {
-    > .popup-main {
-      > .popup-head {
-        font-weight: bold;
-        font-size: 18px;
-        > .d-inline > .popup-close {
-          position: absolute;
-          right: 10px;
-          top: 16px;
-        }
-      }
-      > .popup-body {
-        padding: 0;
-        overflow: hidden;
-      }
-    }
-  }
-  .tabs-view {
-    position: relative;
-    /deep/ {
-      & > .el-tabs__header {
-        background-color: #f2f2f2;
-        padding: 0 20px;
-        margin-bottom: 0;
-        > .el-tabs__nav-wrap::after {
-          background-color: #f2f2f2;
-        }
-      }
-      & > .el-tabs__content {
-        height: calc(100% - 40px);
-        overflow: hidden;
-        overflow-y: auto;
-        padding: 0 20px;
-      }
-    }
-  }
-}
 </style>

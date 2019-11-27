@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 16:05:51
+ * @LastEditTime: 2019-11-26 18:52:11
  * @Description: 销售-费用分摊单
  */
 <template>
@@ -16,9 +16,8 @@
       title="费用分摊单"
       @clear-filter="reset()"
       api="seePsiSaleService.salescostapportionList"
-      exportApi="seePsiSaleService.salescostapportioExport"
+      exportApi="seePsiSaleService.salescostapportionExport"
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
     >
       <template v-slot:button>
         <el-button
@@ -26,13 +25,6 @@
           size="mini"
           @click="eventHandle('addVisible')"
         >新增分摊</el-button>
-      </template>
-      <template v-slot:filter>
-        <filters
-          ref="filters"
-          @submit-filter="$refs.table.reload(1)"
-          :form="queryForm"
-        />
       </template>
       <!-- 自定义按钮功能 -->
       <template slot-scope="{column,row,value}">

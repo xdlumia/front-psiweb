@@ -21,6 +21,7 @@
           size="mini"
         >
           <el-select
+            @change='changeRecord()'
             v-model="addform.wmsId"
             :disabled='disabled'
             placeholder="请选择"
@@ -58,7 +59,7 @@
           >
             <el-input
               :disabled='disabled'
-              :value="addform.wmsName"
+              :value="addform.creatorName"
               size="mini"
             ></el-input>
           </employees-chosen>
@@ -145,11 +146,13 @@ export default {
     this.commonwmsmanagerUsableList()
   },
   methods: {
+    //查询库房
     commonwmsmanagerUsableList() {
-      this.$api.seePsiWmsService.commonwmsmanagerUsableList()
+      let api = this.disabled ? 'commonwmsmanagerList' : 'commonwmsmanagerUsableList'
+      let params = this.disabled ? { page: 1, limit: 150 } : ''
+      this.$api.seePsiWmsService[api](params)
         .then(res => {
           this.usableList = res.data || []
-          console.log(this.usableList, 'this.usableListthis.usableList')
         })
         .finally(() => {
 
@@ -157,9 +160,15 @@ export default {
     },
     //选择人员
     choose(value) {
-      this.employeeName = value.employeeName
+      this.addform.creatorName = value.employeeName
       this.addform.blitemPerson = value.userId
     },
+    //库房改变
+    changeRecord() {
+      if (this.addform.wmsId) {
+        this.$root.$emit('loadSearch')
+      }
+    }
   }
 };
 </script>

@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-28 14:00:55
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-16 14:30:28
+ * @LastEditTime: 2019-11-23 18:22:31
  * @Description: 生成拣货单和组装任务 人员分配 1
 */
 <template>

@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-11 17:49:29
+ * @LastEditTime: 2019-11-26 15:37:28
  * @Description: description
  -->
 <template>
@@ -126,7 +126,7 @@ export default {
       default: true
     }
   },
-  data() {
+  data () {
     return {
       noPic: require('@/assets/img/no-pic.png'),
       showEdit: false,
@@ -134,34 +134,30 @@ export default {
       loading: false,
       showPop: false,
       etailForm: {},
-      status: [
-        { label: '创建时间', value: this.rowData.createTime, isTime: true },
-        { label: '创建人', value: this.rowData.creatorName },
-        { label: '来源', value: this.rowData.sourceFromCode, dictName: 'SP_SOURCE_FROM' }
-      ],
+      status: [],
       beginnForm: {}
     }
   },
-  mounted() {
+  mounted () {
     this.checkVisible();
     this.wmsinventorycommodityinitialinfoInfo()
   },
   watch: {
-    visible() {
+    visible () {
       this.checkVisible();
       this.wmsinventorycommodityinitialinfoInfo()
     }
   },
   methods: {
-    saveGood() {
+    saveGood () {
       this.$refs.addGood && this.$refs.addGood.saveGood()
     },
-    wmsinventorycommodityinitialinfoInfo() {
+    wmsinventorycommodityinitialinfoInfo () {
       this.$api.seePsiWmsService.wmsinventorycommodityinitialinfoInfo(null, this.code).then(res => {
         this.beginnForm = res.data
       })
     },
-    deleteGood(id) {
+    deleteGood (id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -178,19 +174,25 @@ export default {
       })
 
     },
-    refresh() {
+    refresh () {
       this.$refs.detail.getGoodsDetailV2(this.code)
       this.showEdit = false
       this.$emit('reload')
     },
-    update(temp) {
+    update (temp) {
       this.rowData.categoryCode = temp.categoryCode
       this.rowData.secondClassName = temp.secondClassName
       this.rowData.specOne = temp.values[0].specOne
       this.rowData.goodsPic = temp.values[0].goodsPic
       this.rowData.name = temp.name
+      this.rowData.goodsCode = temp.values[0].goodsCode
+      this.status = [
+        { label: '创建时间', value: temp.createTime, isTime: true },
+        { label: '创建人', value: temp.creatorName },
+        { label: '来源', value: temp.sourceFromCode, dictName: 'SP_SOURCE_FROM' }
+      ]
     },
-    checkVisible() {
+    checkVisible () {
       this.showPop = this.visible;
     }
   }

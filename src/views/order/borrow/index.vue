@@ -2,12 +2,20 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 18:01:43
+ * @LastEditTime: 2019-11-26 19:08:23
  * @Description: 采购-借入借出单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView :busType="5" :filterOptions="filterOptions" api="seePsiWmsService.wmsborrowloanorderList" ref="tableView" title="借入借出单">
+    <TableView
+      :busType="5"
+      :filterOptions="filterOptions"
+      :params="params"
+      api="seePsiWmsService.wmsborrowloanorderList"
+      exportApi="seePsiWmsService.wmsborrowloanorderExport"
+      ref="tableView"
+      title="借入借出单"
+    >
       <template slot="button">
         <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
       </template>
@@ -24,7 +32,7 @@
       </template>
     </TableView>
     <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
-    <AddIn :visible.sync="showEdit" @reload="reload" type="add" />
+    <AddIn :visible.sync="showEdit" @reload="reload" type="add" v-if="showEdit" />
   </div>
 </template>
 <script>
@@ -74,15 +82,18 @@ export default {
       },
       // prettier-ignore
       filterOptions: [
-        { label: '销售单编号', prop: 'salesSheetCode' },
-        { label: '借入借出单编号', prop: 'borrowLoanCode' },
-        { label: '借入借出类型（0-借入 1-借出）', prop: 'borrowLoanType' }, 
-        { label: '最少借入借出数量',  prop: 'BorrowLoanNum', type: 'numberRange', int: true },
-        { label: '最少返还数量', prop: 'ReturnNum', type: 'numberRange', int: true },
-        { label: '部门ID', prop: 'deptId', type: 'dept' },
+        { label: '借入借出单编号', prop: 'borrowLoanCode',default:true },
+        { label: '销售出库单编号', prop: 'salesShipmentCode',default:true },
+        { label: '借入借出类型', prop: 'borrowLoanType',default:true,type:'select',options:[
+          {label:'借入',value:0},
+          {label:'借出',value:1},
+        ] }, 
+        { label: '最少借入借出数量',  prop: 'BorrowLoanNum', type: 'numberRange', int: true,default:true },
+        { label: '最少返还数量', prop: 'ReturnNum', type: 'numberRange', int: true,default:true },
+        { label: '返回时间', prop: 'ReturnTime', type: 'dateRange',default:true },
+        { label: '创建部门', prop: 'deptId', type: 'dept',default:true },
         { label: '创建人', prop: 'creator', type: 'employee' },
-        { label: '创建开始时间', prop: 'CreateTime', type: 'dateRange' },
-        { label: '返回开始时间', prop: 'ReturnTime', type: 'dateRange' }
+        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' },
       ]
     };
   },

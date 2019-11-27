@@ -127,6 +127,7 @@ export default {
         .then(res => {
           this.close()
           this.$emit("reload")
+          console.log('ahahahahha')
         })
         .finally(() => {
 

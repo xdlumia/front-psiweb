@@ -10,27 +10,40 @@
     <TableView
       busType="10"
       :filterOptions='filterOptions'
-      :selection='false'
+      selection
       ref='allTable'
       api="seePsiWmsService.wmsassembletaskList"
-      :params="queryForm"
+      exportApi="seePsiWmsService.wmsassembletaskExport"
+      :params="params"
       title="组装任务"
     >
       <template slot-scope="{column,row,value}">
         <span
           v-if="column.columnFields=='assembleTaskCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='assembleOrderState'">{{state[value]}}</span>
+        <span
+          v-else-if="column.columnFields=='assembleOrderCode'"
+          class="d-text-blue d-pointer"
+          @click="getassembleVisible(row)"
+        >{{value}}</span>
+        <span v-else-if="column.columnFields=='assembleTaskState'">{{state[value]}}</span>
         <span v-else-if="column.columnFields=='pickingState'">{{pickingState[value]}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
-      :drawerData='drawerData'
+      :code="drawerData.assembleTaskCode"
+      :data='drawerData'
       :visible.sync='tableVisible'
       v-if="tableVisible"
+    />
+    <assembleDetails
+      :code="rowData.assembleOrderCode"
+      :data='rowData'
+      :visible.sync='assembleVisible'
+      v-if="assembleVisible"
     />
   </div>
 </template>
@@ -39,11 +52,25 @@
  * 采购-请购单
  */
 import TableView from '@/components/tableView';
+import assembleDetails from '@/views/storage/assemble/details.vue';
 import Details from './details.vue'
 export default {
   components: {
     Details,
-    TableView
+    TableView,
+    assembleDetails
+  },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   data() {
     return {
@@ -61,7 +88,6 @@ export default {
         1: '部分拣货',
         2: '完成拣货'
       },
-      button: true,
       queryForm: {
         page: 1,
         limit: 20
@@ -74,9 +100,10 @@ export default {
         { label: '组装单编号', prop: 'assembleOrderCode', default: true },
         {
           label: '组装单状态',
-          prop: 'assembleOrderState',
+          prop: 'state',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '待组装', value: '1' },
             { label: '部分组装', value: '2' },
             { label: '完成组装', value: '3' },
@@ -90,6 +117,7 @@ export default {
           prop: 'pickingState',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '部分拣货', value: '1' },
             { label: '完成拣货', value: '2' },
             { label: '待拣货 ', value: '0' },
@@ -133,6 +161,8 @@ export default {
         },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
+      assembleVisible: false,
+      rowData: {}
     };
   },
   methods: {
@@ -141,6 +171,11 @@ export default {
       this.tableVisible = true
       this.drawerData = data
     },
+    //打开组装单详情
+    getassembleVisible(row) {
+      this.assembleVisible = true
+      this.rowData = row
+    }
   }
 };
 </script>

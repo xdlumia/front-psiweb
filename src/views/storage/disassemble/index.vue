@@ -11,32 +11,39 @@
     <TableView
       busType="12"
       :filterOptions='filterOptions'
-      :selection='false'
+      selection
       ref='allTable'
       api="seePsiWmsService.wmsdisassemblytaskList"
-      :params="queryForm"
+      exportApi="seePsiWmsService.wmsdisassemblytaskExport"
+      :params="params"
       title="拆卸任务"
     >
       <template slot-scope="{column,row,value}">
         <span
           v-if="column.columnFields=='disassemblyTaskCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
         <span
           v-else-if="column.columnFields=='disassemblyOrderCode'"
-          class="d-text-blue"
-          @click="getTableVisible(row)"
+          class="d-text-blue d-pointer"
+          @click="getdisassemblyVisible(row)"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='disassemblyTaskState'">{{value == 0 ? '未开始' : value == 1 ? '待拆卸' : value == 2 ? '部分拆卸' : value == 3 ? '完成拆卸' : '全部'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
+      :code="drawerData.disassemblyTaskCode"
       :drawerData='drawerData'
       :visible.sync='tableVisible'
       v-if="tableVisible"
       @reload='reload'
+    />
+    <unpackDetails
+      :code="rowData.disassemblyOrderCode"
+      :visible.sync="disassemblyVisible"
+      v-if="disassemblyVisible"
     />
   </div>
 </template> 
@@ -45,11 +52,25 @@
  * 采购-请购单
  */
 import TableView from '@/components/tableView';
+import unpackDetails from '@/views/order/unpack/detail.vue';
 import Details from './details.vue'
 export default {
   components: {
     Details,
-    TableView
+    TableView,
+    unpackDetails
+  },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   data() {
     return {
@@ -58,7 +79,6 @@ export default {
         page: 1,
         limit: 20
       },
-      button: true,
       tableVisible: false,//销售单右侧抽屉
       drawerData: {//弹框的相关数据
       },
@@ -70,6 +90,7 @@ export default {
           prop: 'state',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '待拆卸', value: '1' },
             { label: '部分拆卸', value: '2' },
             { label: '完成拆卸', value: '3' },
@@ -113,6 +134,8 @@ export default {
         },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
+      disassemblyVisible: false,
+      rowData: {}
     };
   },
   methods: {
@@ -120,6 +143,11 @@ export default {
     getTableVisible(data) {
       this.tableVisible = true
       this.drawerData = data
+    },
+    //拆卸单
+    getdisassemblyVisible(row) {
+      this.disassemblyVisible = true
+      this.rowData = row
     },
     //tab换组件
     handleClick() {

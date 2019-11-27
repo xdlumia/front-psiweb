@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 10:02:45
+ * @LastEditTime: 2019-11-26 17:38:45
  * @Description: 销售出库单详情
 */
 <template>
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state || 0].includes(item.label)"
+            v-if="currStatusType[detail.state=1 || 0].includes(item.label)"
             size="small"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -86,6 +86,7 @@
       :params="{salesShipmentCode:rowData.shipmentCode}"
       :code="rowData.shipmentCode"
     />
+    <!-- 生成换货单 -->
     <exchangeAdd
       :visible.sync="exchangeAddVisible"
       :rowData="rowData"
@@ -93,11 +94,19 @@
       :params="{salesShipmentCode:rowData.shipmentCode}"
       :code="rowData.shipmentCode"
     />
+    <!-- 生成退货单 -->
     <returnAdd
       :visible.sync="returnAddVisible"
       :rowData="rowData"
       type="add"
       :params="{salesShipmentCode:rowData.shipmentCode}"
+      :code="rowData.shipmentCode"
+    />
+    <!-- 开票申请 -->
+    <collectInvoice
+      :visible.sync="collectInvoiceVisible"
+      :rowData="rowData"
+      :invoiceType="1"
       :code="rowData.shipmentCode"
     />
   </div>
@@ -108,6 +117,7 @@ import addContract from './add-contract' //合同新增
 
 import returnAdd from '../return/add' //退货单新增
 import exchangeAdd from '../exchange/add' //换货单新增
+import collectInvoice from '@/views/finance/receipt/collect-invoice' //开票申请
 
 import detail from './outLibDetails/detail' //详情
 import VisibleMixin from '@/utils/visibleMixin';
@@ -118,7 +128,8 @@ export default {
     add,
     addContract,
     returnAdd,
-    exchangeAdd
+    exchangeAdd,
+    collectInvoice
   },
 
   data() {
@@ -176,6 +187,7 @@ export default {
       editContractVisible: false, // 追加合同
       returnAddVisible: false,
       exchangeAddVisible: false,
+      collectInvoiceVisible: false, //开票申请
 
     }
   },
@@ -190,19 +202,20 @@ export default {
   },
   methods: {
     buttonsClick(label) {
+      // 需要弹出操作功能
       let labelObj = {
         '编辑': 'editVisible',
         '生成合同': 'addContractVisible',
         '追加合同附件': 'editContractVisible',
         '生成退货单': 'returnAddVisible',
         '生成换货单': 'exchangeAddVisible',
+        '开票申请': 'collectInvoiceVisible',
       }
-
+      // 需要弹出操作的功能
       if (labelObj.hasOwnProperty(label)) {
         let visible = labelObj[label]
         this[visible] = true
       }
-
       // 需要二次确认操作
       else {
         let params = {
@@ -210,30 +223,41 @@ export default {
           id: this.detail.id,
           processType: 'XSCKD-001',
         }
+        // 使用 ...params是为了 方便增加或者删除参加{ ...params,...{} }
         let apiObj = {
           '提交审核': {
-            api: 'seePsiSaleService.salesshipmentApproval',
-            data: { isAgree: 1, busCode: this.detail.shipmentCode },
+            api: 'seePsiSaleService.salesshipmentSubmitApproval',
+            data: { ...params },
+            needNote: null
+          },
+          '审核通过': {
+            api: 'seePsiSaleService.salesshipmentPassApproval',
+            data: { ...params },
             needNote: null
           },
           '撤销审核': {
-            api: 'seePsiSaleService.salesshipmentApproval',
-            data: { isAgree: 0, busCode: this.detail.shipmentCode },
+            api: 'seePsiSaleService.salesshipmentCancel',
+            data: params,
             needNote: null
           },
           '驳回': {
-            api: 'seePsiSaleService.salesshipmentApproval',
-            data: { busCode: this.detail.shipmentCode },
+            api: 'seePsiSaleService.salesshipmentReject',
+            data: params,
+            needNote: null
+          },
+          '合同完善': {
+            api: 'seePsiSaleService.salesshipmentPassContractApproval',
+            data: params,
             needNote: null
           },
           '删除': {
             api: 'seePsiSaleService.salesshipmentLogicDelete',
-            data: ({ id: this.detail.id }),
+            data: params,
             needNote: null
           },
           '终止': {
             api: 'seePsiSaleService.salesshipmentPause',
-            data: { busCode: this.detail.shipmentCode },
+            data: { shipmentCode: this.detail.shipmentCode },
             needNote: null
           }
         }

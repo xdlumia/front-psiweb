@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 10:20:02
+ * @LastEditTime: 2019-11-27 09:31:05
  * @Description: 销售出库单详情
 */
 <template>
   <div>
     <side-detail
-      title="销售退货单"
+      :title="`流水编号:${code}`"
       :visible.sync="showDetailPage"
       width="920px"
       :status="status"
@@ -49,25 +49,31 @@
           :data="detail"
         />
 
+        <!-- 备注信息 其他信息-->
+        <extras-info
+          disabled
+          :data="detail"
+        />
       </el-form>
     </side-detail>
-    <!-- 退货单新增/编辑 -->
-    <add
-      :visible.sync="editVisible"
-      :code="code"
-      type="edit"
+    <!-- 账单匹配 -->
+    <receivableMatch
       :rowData="rowData"
-    />
+      :visible.sync="receivableVisible"
+      @reload="$emit('reload')"
+    ></receivableMatch>
   </div>
 </template>
 <script>
 import add from './add' // 新增退货单
 import VisibleMixin from '@/utils/visibleMixin';
+import receivableMatch from './receivable-match'; //账单匹配
 import { log } from 'util';
 export default {
   mixins: [VisibleMixin],
   components: {
-    add
+    add,
+    receivableMatch
   },
   data() {
     return {
@@ -77,11 +83,9 @@ export default {
         { label: '收款单匹配', type: 'primary', authCode: '' },
         { label: '删除', type: 'danger', authCode: '' },
       ],
-      editVisible: false,
-      /**
-       * 根据当前状态判断显示哪些按钮
-       */
-      // currStatus: 3, // 当前数据状态
+      // 收款单匹配
+      receivableVisible: false,
+      // 状态功能按钮
       currStatusType: {
         '-1': ['删除', '收款单匹配'], // 未匹配
         '0': [], // 已匹配
@@ -109,39 +113,17 @@ export default {
       }
     },
     buttonsClick(label) {
-      if (label == '编辑' || label == '退货扫码') {
-        if (label == '编辑') { this.editVisible = true }
-        else if (label == '退货扫码') { this.outLibAddVisible = true }
+      if (label == '收款单匹配') {
+        this.receivableVisible = true
       } else {
         let params = {
-          apprpvalNode: this.detail.apprpvalNode || 'XSHHD-001',
           id: this.detail.id,
           processType: 'XSTHD-001',//报价单的权限吗
         }
         let apiObj = {
-          '提交审核': {
-            api: 'seePsiSaleService.salesreturnedSubmitApproval',
-            data: { ...params },
-            needNote: null
-          },
-          '审核通过': {
-            api: 'seePsiSaleService.salesreturnedPassApproval',
-            data: { ...params, ...{} },
-            needNote: null
-          },
-          '撤销审核': {
-            api: 'seePsiSaleService.salesreturnedCancel',
-            data: { ...params, ...{} },
-            needNote: null
-          },
-          '驳回': {
-            api: 'seePsiSaleService.salesreturnedReject',
-            data: { ...params, ...{} },
-            needNote: null
-          },
           '删除': {
-            api: 'seePsiSaleService.salesreturnedLogicDelete',
-            data: { ...params, ...{} },
+            api: 'seePsiFinanceService.revenuerecordDelete',
+            data: params,
             needNote: null
           }
         }

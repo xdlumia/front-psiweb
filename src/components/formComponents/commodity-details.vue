@@ -10,7 +10,7 @@
     <form-card title='商品明细'>
       <d-table
         api="seePsiWmsService.wmsflowrecordList"
-        :params="{page:1,limit:20,commodityCode:drawerData.commodityCode}"
+        :params="{page:1,limit:20,commodityCode:drawerData.commodityCode,operation:0}"
         ref="companyTable"
         class="college-main"
         style="height:calc(100vh - 340px)"

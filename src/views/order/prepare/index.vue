@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 15:23:33
+ * @LastEditTime: 2019-11-25 17:11:44
  * @Description: 采购-备货单
 */
 <template>
@@ -67,14 +67,10 @@ export default {
         '4': '已完成',
         '5': '已驳回'
       },
+      // prettier-ignore
       filterOptions: [
-        { label: '请购单编号', prop: 'stockCode', default: true },
-        {
-          label: '采购预计到货时间',
-          prop: 'PurchaseArrivalTime',
-          type: 'dateRange',
-          default: true
-        },
+        { label: '备货单编号', prop: 'stockCode', default: true },
+        { label: '采购预计到货时间', prop: 'PurchaseArrivalTime', type: 'dateRange', default: true },
         { label: '合同创建人', prop: 'creator', type: 'employee' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }

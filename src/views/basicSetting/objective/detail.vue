@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-08 17:26:56
+ * @LastEditTime: 2019-11-26 14:50:30
  * @Description: 促销详情
  -->
 <template>
@@ -45,9 +45,9 @@
           <extras-info :data="detailForm" />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="报价单">报价单</el-tab-pane>
+      <!-- <el-tab-pane label="报价单">报价单</el-tab-pane>
       <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
-      <el-tab-pane label="销售合同">销售合同</el-tab-pane>
+      <el-tab-pane label="销售合同">销售合同</el-tab-pane>-->
     </el-tabs>
     <addObjective
       :visible.sync="showEdit"

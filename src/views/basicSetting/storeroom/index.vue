@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-15 10:49:11
+ * @LastEditTime: 2019-11-26 10:22:36
  * @Description: 库房管理
  -->
 <template>
@@ -14,7 +14,8 @@
       :busType="46"
       title="库房管理"
       api="seePsiWmsService.commonwmsmanagerList"
-      :params="queryForm"
+      exportApi="seePsiWmsService.commonwmsmanagerExport"
+      :params="Object.assign(queryForm, params)"
     >
       <template v-slot:filter>自定义筛选列</template>
       <!-- 自定义按钮功能 -->
@@ -38,6 +39,7 @@
           <el-button
             type="text"
             v-if="scope.row.state"
+            :disabled="scope.row.state !== 1"
             @click="commonwmsmanagerUpdateState(scope.row.id, 0)"
             style="padding:0"
           >停用</el-button>
@@ -66,8 +68,7 @@
           <el-button size="mini" @click="visible=false">关闭</el-button>
         </div>
       </div>
-      <add-store-room ref="addStoreRoom" :editId="editId" v-if="visible"
-@refresh="refresh"></add-store-room>
+      <add-store-room ref="addStoreRoom" :editId="editId" v-if="visible" @refresh="refresh"></add-store-room>
     </el-dialog>
   </div>
 </template>
@@ -75,7 +76,19 @@
 <script type='text/ecmascript-6'>
 import addStoreRoom from './add-storeroom'
 export default {
-  data() {
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
+  },
+  data () {
     return {
       visible: false,
       queryForm: {
@@ -97,13 +110,13 @@ export default {
       ]
     }
   },
-  mounted() {
+  mounted () {
   },
   components: {
     addStoreRoom
   },
   methods: {
-    commonwmsmanagerUpdateState(id, state) {
+    commonwmsmanagerUpdateState (id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -119,7 +132,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete(id) {
+    commonwmsmanagerLogicDelete (id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -135,10 +148,10 @@ export default {
         })
       })
     },
-    saveStoreRoom() {
+    saveStoreRoom () {
       this.$refs.addStoreRoom && this.$refs.addStoreRoom.commonwmsmanagerSave()
     },
-    refresh() {
+    refresh () {
       this.visible = false
       this.$refs.table.reload()
     }

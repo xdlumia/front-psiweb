@@ -31,9 +31,24 @@
             />
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="拆卸任务">拆卸任务</el-tab-pane>
-        <el-tab-pane label="采购入库单">采购入库单</el-tab-pane>
-        <el-tab-pane label="应付账单">应付账单</el-tab-pane>
+        <el-tab-pane label="拆卸任务">
+          <storageDisassemble
+            :button="false"
+            :params="{page:1,limit:15,purchaseCode:detailForm.purchaseCode}"
+          ></storageDisassemble>
+        </el-tab-pane>
+        <el-tab-pane label="采购入库单">
+          <orderStorage
+            :button="false"
+            :params="{page:1,limit:15,purchaseCode:detailForm.purchaseCode}"
+          ></orderStorage>
+        </el-tab-pane>
+        <el-tab-pane label="应付账单">
+          <financePayable
+            :button="false"
+            :params="{page:1,limit:15,purchaseCode:detailForm.purchaseCode}"
+          ></financePayable>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </SideDetail>
@@ -45,7 +60,7 @@ import purchaseReceivingInfo from '@/components/formComponents/purchase-receivin
 import goodsWarehousing from '@/components/formComponents/goods-warehousing';
 import SideDetail from '@/components/side-detail';
 export default {
-  props: ['drawerData', 'visible'],
+  props: ['drawerData', 'visible', 'code'],
   data() {
     return {
       status: [{ label: '入库状态', value: '待入库' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
@@ -64,7 +79,7 @@ export default {
   methods: {
     // 查看详情
     wmsallocationorderInfo() {
-      this.$api.seePsiPurchaseService.purchaseGetByCode(null, this.drawerData.purchaseCode)
+      this.$api.seePsiPurchaseService.purchaseGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = this.detailForm.putinState == 0 ? '待入库' : this.detailForm.putinState == 1 ? '部分完成' : this.detailForm.putinState == 2 ? '完成入库' : this.detailForm.putinState == 3 ? '终止' : '全部'
@@ -85,49 +100,4 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-.side-page {
-  .header-btns {
-    position: absolute;
-    right: 40px;
-    top: 12px;
-  }
-  /deep/ {
-    > .popup-main {
-      > .popup-head {
-        font-weight: bold;
-        font-size: 18px;
-        > .d-inline > .popup-close {
-          position: absolute;
-          right: 10px;
-          top: 16px;
-        }
-      }
-      > .popup-body {
-        padding: 0;
-        overflow: hidden;
-      }
-    }
-  }
-  .tabs-view {
-    width: 100% !important;
-    position: relative;
-    /deep/ {
-      & > .el-tabs__header {
-        width: 100% !important;
-        background-color: #f2f2f2;
-        padding: 0 20px;
-        margin-bottom: 0;
-        > .el-tabs__nav-wrap::after {
-          background-color: #f2f2f2;
-        }
-      }
-      & > .el-tabs__content {
-        height: calc(100% - 40px);
-        overflow: hidden;
-        overflow-y: auto;
-        padding: 0 20px;
-      }
-    }
-  }
-}
 </style>

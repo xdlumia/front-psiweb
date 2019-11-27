@@ -2,46 +2,43 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 19:18:16
+ * @LastEditTime: 2019-11-26 20:20:21
  * @Description: 销售出库单详情-详情
 */
 <template>
   <div>
     <!-- 审核面板 -->
-    <approve-panel :data="data" />
-    <!-- 客户信息 -->
-    <customer-info
+    <approve-panel
       disabled
       :data="data"
     />
-    <!-- 公司信息 -->
-    <company-info
+
+    <make-invoice-info
+      :invoiceType="1"
       disabled
       :data="data"
+      id="invoice"
     />
-    <!-- 退货商品信息 -->
-    <goods-return-edit
-      :options="[data.quotationCode]"
-      :data="data"
+    <make-buyer
       disabled
+      :data="data"
+      id="buyer"
     />
-    <!-- 其他费用 -->
-    <other-fee
+    <make-buyer
       disabled
       :data="data"
+      from="供应商"
+      id="saler"
+      prefix="market"
+      title="销售方信息"
     />
-    <!-- 账期信息 -->
-    <return-bill-info
+    <make-goods
       disabled
       :data="data"
-    />
-    <!-- 自定义信息 -->
-    <custom-info
-      disabled
-      :data="data"
+      id="goods"
     />
     <!-- 备注信息 -->
-    <extras-info
+    <extrasInfo
       disabled
       :data="data"
     />
@@ -50,25 +47,32 @@
 <script>
 
 export default {
-  components: {
-
-  },
   props: {
-    code: [Number, String],
     rowData: Object,
     data: {
       default: () => ({}),
       type: Object
     },
   },
+  components: {
+
+  },
+
   data() {
     return {
+
+    }
+  },
+  computed: {
+    rowDatas() {
+      return []
     }
   },
   mounted() {
 
   },
   methods: {
+
   },
   beforeDestroy() {
   }

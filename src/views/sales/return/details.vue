@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 19:25:30
+ * @LastEditTime: 2019-11-25 10:53:55
  * @Description: 销售出库单详情
 */
 <template>
@@ -24,7 +24,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state|| 0].includes(item.label)"
+            v-if="currStatusType[detail.state=1|| 0].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -33,7 +33,6 @@
       </div>
       <el-form
         ref="form"
-        :model="form"
         size="mini"
         label-position="top"
       >
@@ -42,10 +41,10 @@
           type="card"
         >
           <el-tab-pane
-            v-for="(item,index) of tabs"
-            :key="index"
-            :label="item.label"
-            :name="item.comp"
+            v-for="(val,key) of tabs"
+            :key="key"
+            :label="val"
+            :name="key"
           >
             <components
               ref="detail"
@@ -53,7 +52,7 @@
               :rowData="rowData"
               :data="detail || {}"
               class="d-auto-y"
-              :params="item.params"
+              :params="{alterationCode:rowData.alterationCode}"
               :button="false"
               style="height:calc(100vh - 200px)"
               :is="activeName"
@@ -70,18 +69,27 @@
       type="edit"
       :rowData="rowData"
     />
+    <!-- 退货扫码 -->
+    <return-sacn
+      :visible.sync='scanVisible'
+      :code="code"
+      :rowData='rowData'
+      @reload='$refs.table.reload()'
+    />
   </div>
 </template>
 <script>
 import detail from './details/detail' //详情
 import add from './add' // 新增退货单
+import returnSacn from './return-sacn' // 退货扫码
 import VisibleMixin from '@/utils/visibleMixin';
 import { log } from 'util';
 export default {
   mixins: [VisibleMixin],
   components: {
     detail,
-    add
+    add,
+    returnSacn
   },
   data() {
     return {
@@ -96,7 +104,10 @@ export default {
         { label: '驳回', authCode: '' },
         { label: '退货扫码', type: 'primary', authCode: '' }
       ],
+      // 编辑
       editVisible: false,
+      // 退货扫码
+      scanVisible: false,
       /**
        * 根据当前状态判断显示哪些按钮
        */
@@ -112,10 +123,10 @@ export default {
 
 
       // tabs 切换操作栏
-      tabs: [
-        { label: '详情', comp: 'detail' },
-        { label: '销售出库单', comp: 'salesOutLibrary', params: { shipmentCode: this.rowData.shipmentCode } },
-      ],
+      tabs: {
+        detail: '详情',
+        salesOutLibrary: '销售出库单'
+      },
       activeName: 'detail',
       form: {},
     }
@@ -140,7 +151,7 @@ export default {
     buttonsClick(label) {
       if (label == '编辑' || label == '退货扫码') {
         if (label == '编辑') { this.editVisible = true }
-        else if (label == '退货扫码') { this.outLibAddVisible = true }
+        else if (label == '退货扫码') { this.scanVisible = true }
       } else {
         let params = {
           apprpvalNode: this.detail.apprpvalNode,
@@ -155,7 +166,7 @@ export default {
           },
           '审核通过': {
             api: 'seePsiSaleService.salesreturnedPassApproval',
-            data: { ...params, ...{} },
+            data: { ...params },
             needNote: null
           },
           '撤销审核': {

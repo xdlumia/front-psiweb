@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 10:14:02
+ * @LastEditTime: 2019-11-26 16:56:46
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -16,16 +16,9 @@
           class="ml10"
           v-if="(!disabled)&&!hide.includes('add')&&!show.includes(`!add`)"
         />
-        <span
-          class="fr"
-          v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')"
-        >
+        <span class="fr" v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')">
           <span>
-            <el-link
-              :underline="false"
-              @click="showInFull=true"
-              type="primary"
-            >全屏显示</el-link>
+            <el-link :underline="false" @click="showInFull=true" type="primary">全屏显示</el-link>
           </span>
         </span>
       </div>
@@ -53,15 +46,10 @@
         >
           <template slot-scope="{row}">
             <template v-if="item.key=='commodityCode'">
-              <div class="d-text-blue d-elip">{{row.commodityCode}}</div>
+              <div @click="openCommodityDetail(row.commodityCode)" class="d-text-blue d-elip d-pointer">{{row.commodityCode}}</div>
             </template>
             <template v-else-if="item.key=='goodsPic'">
-              <el-image
-                :src="row.goodsPic"
-                class="d-center"
-                fit="fill"
-                style="width: 100px; height: 40px"
-              >
+              <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
                 <span slot="error">暂无图片</span>
               </el-image>
             </template>
@@ -82,16 +70,8 @@
             <!-- 时间戳结束 -->
             <!-- 价格输入开始 -->
             <template v-else-if="item.type=='input'">
-              <el-form-item
-                :prop="`${getCurrentFormProp(row,item.prop)}`"
-                :rules="item.rules||[]"
-                size="mini"
-              >
-                <el-input
-                  :disabled="disabled"
-                  class="wfull"
-                  v-model="row[item.prop]"
-                />
+              <el-form-item :prop="`${getCurrentFormProp(row,item.prop)}`" :rules="item.rules||[]" size="mini">
+                <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]" />
               </el-form-item>
             </template>
             <!-- 价格输入结束 -->
@@ -102,32 +82,21 @@
                 :rules="[{required:true},{type:'positiveNum'}].concat(Number(row[
                   `max${item.prop}`
                 ])>0?[{
-                  min:1,
-                  max:row[`max${item.prop}`],
+                  validator:checkInputIntegerNumber.bind(this,row,item.prop),
                   message:`可输入区间 [1-${row[`max${item.prop}`]}]`
                 }]:[])"
                 size="mini"
               >
-                <el-input
-                  :disabled="disabled"
-                  class="wfull"
-                  v-model="row[item.prop]"
-                ></el-input>
+                <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]"></el-input>
               </el-form-item>
             </template>
             <!-- 商品数量结束 -->
             <template v-else-if="item.key=='action'">
-              <i
-                @click="deleteChoose(row)"
-                class="el-icon-error d-pointer f20 d-text-red"
-              ></i>
+              <i @click="deleteChoose(row)" class="el-icon-error d-pointer f20 d-text-red"></i>
             </template>
             <!-- 选择开始 -->
             <template v-else-if="item.type=='selection'">
-              <el-form-item
-                :prop="`${getCurrentFormProp(row,item.prop)}`"
-                size="mini"
-              >
+              <el-form-item :prop="`${getCurrentFormProp(row,item.prop)}`" size="mini">
                 <el-checkbox
                   :disabled="disabled"
                   :false-label="0"
@@ -140,20 +109,9 @@
             <!-- 选择结束 -->
             <!-- 展开子项开始 -->
             <template v-else-if="item.type=='expanded'">
-              <div
-                class="expanded-icons d-text-gray"
-                v-if="row.children&&row.children.length"
-              >
-                <span
-                  @click="expand(row)"
-                  class="el-icon-plus d-pointer"
-                  v-if="!row.expanded"
-                ></span>
-                <span
-                  @click="expand(row)"
-                  class="el-icon-minus d-pointer"
-                  v-else
-                ></span>
+              <div class="expanded-icons d-text-gray" v-if="row.children&&row.children.length">
+                <span @click="expand(row)" class="el-icon-plus d-pointer" v-if="!row.expanded"></span>
+                <span @click="expand(row)" class="el-icon-minus d-pointer" v-else></span>
               </div>
             </template>
             <!-- 展开子项结束 -->
@@ -178,10 +136,7 @@
             </template>
             <!-- 其他结束 -->
           </template>
-          <template
-            slot="header"
-            v-if="item.type=='selection'"
-          >
+          <template slot="header" v-if="item.type=='selection'">
             <el-checkbox
               :disabled="disabled"
               :false-label="0"
@@ -193,15 +148,18 @@
         </el-table-column>
       </el-table>
     </form-card>
-    <FullscreenElement
-      :element="$refs.table"
-      :visible.sync="showInFull"
-    />
+    <FullscreenElement :element="$refs.table" :visible.sync="showInFull" />
+    <CommodityDetail :code="currentCommodityCode" :visible.sync="showCommodityDetail" v-if="showCommodityDetail" />
   </div>
 </template>
 <script>
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
+
 let fakeId = 1;
 export default {
+  components: {
+    CommodityDetail
+  },
   props: {
     // 数据
     data: {
@@ -295,10 +253,13 @@ export default {
       showInFull: false,
       columns,
       fakeId: 1,
-      expandRowKeys: []
+      expandRowKeys: [],
+      showCommodityDetail: false,
+      currentCommodityCode: ''
     };
   },
   computed: {
+    // 筛选自定义列
     useColumns() {
       let list = [];
       if (this.hide.length) {
@@ -354,8 +315,24 @@ export default {
       return list;
     }
   },
-  mounted() { },
+  mounted() {},
   methods: {
+    // 校验正整数区间 默认row中 `max${prop}` 的值为上限
+    checkInputIntegerNumber(row, prop, rule, value, cb) {
+      let num = Number(value) || 0;
+      let max = Number(row[`max${prop}`]) || 0;
+      if (max > 0) {
+        if (num > 0 && num <= max) {
+          cb();
+        } else cb(new Error(`可输入区间 [1-${max}]`));
+      } else cb();
+    },
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
+    // 获取父级信息
     getParentInfo(row) {
       let top = this.data[this.fkey];
       let isChild = row._rowKey != row.commodityCode;
@@ -372,6 +349,7 @@ export default {
       };
       return info;
     },
+    // 生成表单属性路径
     getCurrentFormProp(row, prop) {
       let info = this.getParentInfo(row);
       let key = info.isChild
@@ -379,6 +357,7 @@ export default {
         : `${this.fkey}.${info.index}.${prop}`;
       return key;
     },
+    // 生成树列表需要的rowkey
     recalcRowKey(list, pk = '') {
       (list || []).map(item => {
         this.$set(
@@ -386,7 +365,7 @@ export default {
           '_rowKey',
           String(
             item._rowKey ||
-            [pk, item.commodityCode || fakeId++].filter(a => a).join('_')
+              [pk, item.commodityCode || fakeId++].filter(a => a).join('_')
           )
         );
         if (pk) {
@@ -398,6 +377,7 @@ export default {
       });
       return list || [];
     },
+    // 展开树
     expand(row, isExpand) {
       this.$nextTick(() => {
         isExpand = typeof isExpand == 'boolean' ? isExpand : !row.expanded;
@@ -406,6 +386,7 @@ export default {
         // this.expandRowKeys = [row._rowKey]
       });
     },
+    // 统计算法
     getSummaries(param) {
       if (this.summaryMethod) return this.summaryMethod(param);
       let { columns, data } = param;
@@ -426,8 +407,8 @@ export default {
                 item =>
                   +Number(
                     item[this.priceKey] *
-                    (1 + item.taxRate / 100) *
-                    item.commodityNumber || 0
+                      (1 + item.taxRate / 100) *
+                      item.commodityNumber || 0
                   ).toFixed(2)
               )
               .reduce((sum, item) => sum + item, 0)
@@ -439,12 +420,14 @@ export default {
       });
       return sums;
     },
+    // 选择商品
     choose(e) {
       this.data[this.fkey] = this.data[this.fkey] || [];
       this.data[this.fkey] = this.data[this.fkey].concat(
         e.map(this.goodToBuyingInfo)
       );
     },
+    // 删除某个商品
     deleteChoose(row) {
       let { parent, index, isChild } = this.getParentInfo(row);
       if (isChild) {
@@ -453,12 +436,13 @@ export default {
         this.data[this.fkey].splice(index, 1);
       }
     },
+    // 商品转换字段 可能不需要了吧
     goodToBuyingInfo(good) {
       let target = {
         commodityCode: 'commodityCode',
         commodityId: 'id',
         costAmount: 'inventoryPrice',
-        inventoryNumber: 'usableInventoryNum',
+        inventoryNumber: 'usableInventoryNum'
       };
       let nGood = { ...good };
       delete nGood.id;
@@ -467,9 +451,11 @@ export default {
       });
       return nGood;
     },
+    // 头部选择
     headerSelect({ prop }, select) {
       this.data[this.fkey].map(item => (item[prop] = select));
     },
+    // 某一行选择
     columnSelect(item, select) {
       let { prop } = item;
       let first = 0;
@@ -503,6 +489,9 @@ export default {
     }
     .el-input__suffix {
       display: none;
+    }
+    .el-table__row {
+      height: 54px;
     }
   }
 }

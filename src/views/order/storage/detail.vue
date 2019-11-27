@@ -2,11 +2,18 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:42:29
+ * @LastEditTime: 2019-11-26 14:53:35
  * @Description: 采购入库单
 */
 <template>
-  <sideDetail :status="status" :title="`采购入库单 ${detail?detail.putinCode:''}`" :visible.sync="showDetailPage" @close="close" width="990px" v-loading="loading">
+  <sideDetail
+    :status="status"
+    :title="`采购入库单 ${detail?detail.putinCode:''}`"
+    :visible.sync="showDetailPage"
+    @close="close"
+    v-loading="loading"
+    width="990px"
+  >
     <template slot="button">
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinSubmitApproval',{
@@ -15,6 +22,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
+        v-if="detail&&[0,5].includes(detail.state)"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinCancel',{
@@ -23,14 +31,17 @@
         },'撤销审核')"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.state)"
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinPassApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
+          busCode:detail.putinCode
         },'通过')"
         size="mini"
         type="primary"
+        v-if="detail&&[1].includes(detail.state)"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinReject',{
@@ -39,16 +50,18 @@
         },'驳回',true)"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.state)"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0,5].includes(detail.state)">编辑</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinLogicDelete',{
           id:detail.id,
         },'删除')"
         size="mini"
-        type="primary"
+        type="danger"
+        v-if="detail&&[0,5].includes(detail.state)"
       >删除</el-button>
-      <el-button @click="showReject=true" size="mini" type="primary">退货</el-button>
+      <el-button @click="showReject=true" size="mini" type="primary" v-if="detail&&[3,4].includes(detail.state)">退货</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinShutdown',{
           apprpvalNode:detail.apprpvalNode,
@@ -56,65 +69,80 @@
         },'终止')"
         size="mini"
         type="danger"
+        v-if="detail&&[3].includes(detail.state)"
       >终止</el-button>
-      <el-button size="mini" type="primary">收票申请</el-button>
-      <el-button @click="generateContract" size="mini" type="primary">生成合同</el-button>
+      <el-button @click="collectInvoiceApply" size="mini" type="primary" v-if="detail&&[3,4].includes(detail.state)">收票申请</el-button>
+      <el-button @click="generateContract" size="mini" type="primary" v-if="detail&&[3].includes(detail.state)">生成合同</el-button>
     </template>
-    <el-tabs class="wfull hfull tabs-view">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <el-form :model="detail" size="mini" v-if="detail">
-          <supplierInfo :data="detail" disabled id="supplierInfo" />
-          <companyInfo :data="detail" disabled id="companyInfo" />
-          <arrivalInfo :data="detail" disabled id="arrivalInfo" v-if="detail.source!='直发单'" />
-          <buyingDeliverInfo :data="detail" disabled id="deliverInfo" ref="deliverInfo" v-else />
-          <buying-goods-edit
-            :data="detail"
-            :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
-          ]"
-            disabled
-            id="commodityInfo"
-            priceKey="purchasePrice"
-          />
-          <buying-goods-edit
-            :data="detail"
-            :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
-          ]"
-            disabled
-            fkey="additionalCommodityList"
-            priceKey="purchasePrice"
-            v-if="detail.source=='请购单'"
-          />
-          <buyingPaymentLate :data="detail" disabled id="paymentLate" />
-          <order-storage-bill :data="detail" disabled id="billInfo" />
-          <customInfo :data="detail" disabled id="customInfo" busType="30"/>
-          <extrasInfo :data="detail" disabled id="extrasInfo" />
-        </el-form>
+        <detailApproveWrap :busType="30" :id="detail.id" v-if="detail&&showDetailPage">
+          <el-form :model="detail" size="mini" v-if="detail">
+            <supplierInfo :data="detail" disabled id="supplierInfo" />
+            <companyInfo :data="detail" disabled id="companyInfo" />
+            <arrivalInfo :data="detail" :hide="detail.source=='备货单'?['saleTime']:[]" disabled id="arrivalInfo" v-if="detail.source!='直发单'" />
+            <buyingDeliverInfo :data="detail" disabled id="deliverInfo" ref="deliverInfo" v-else />
+            <buying-goods-edit
+              :data="detail"
+              :show="[
+                'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
+              ]"
+              disabled
+              id="commodityInfo"
+              priceKey="purchasePrice"
+            />
+            <buying-goods-edit
+              :data="detail"
+              :show="[
+                'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
+              ]"
+              disabled
+              fkey="additionalCommodityList"
+              priceKey="purchasePrice"
+              v-if="detail.source=='请购单'"
+            />
+            <buyingPaymentLate :data="detail" disabled id="paymentLate" />
+            <order-storage-bill :data="detail" disabled id="billInfo" />
+            <customInfo :data="detail" busType="30" disabled id="customInfo" />
+            <extrasInfo :data="detail" disabled id="extrasInfo" />
+          </el-form>
+        </detailApproveWrap>
       </el-tab-pane>
       <el-tab-pane label="请购单" name="purchaseApplyCode" v-if="detail&&detail.source=='请购单'">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.purchaseApplyCode">
           <OrderBuying :button="false" :params="{page:1,limit:15,purchaseApplyCode:detail.joinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="直发单" name="directCode" v-if="detail&&detail.source=='直发单'">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.directCode">
           <OrderDirect :button="false" :params="{page:1,limit:15,directCode:detail.joinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="备货单" name="stockCode" v-if="detail&&detail.source=='备货单'">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.stockCode">
           <OrderPrepare :button="false" :params="{page:1,limit:15,stockCode:detail.joinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane label="采购单">采购单</el-tab-pane>
-      <el-tab-pane label="采购退货单">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail">
+      <el-tab-pane label="采购单" name="purchaseOrder">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.purchaseOrder">
+          <StoragePurchase :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="采购退货单" name="reject">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.reject">
           <OrderReject :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane label="应付账单">应付账单</el-tab-pane>
-      <el-tab-pane label="发票记录">发票记录</el-tab-pane>
+      <el-tab-pane label="应付账单" name="payable">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.payable">
+          <FinancePayable :button="false" :params="{page:1,limit:15,busCode:detail.putinCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="发票记录" name="invoice">
+        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.invoice">
+          <FinanceReceipt :button="false" :params="{page:1,limit:15,busCode:detail.putinCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
     </el-tabs>
     <OrderRejectEdit
       :params="{
@@ -129,6 +157,7 @@
     />
     <orderContract :rowData="orderContractData" :visible.sync="showOrderContract" v-if="showOrderContract" />
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
+    <CollectInvoiceDialog :invoiceType="0" :rowData="collectInvoiceData" :visible.sync="showCollectInvoice" v-if="showCollectInvoice" />
   </sideDetail>
 </template>
 <script>
@@ -136,13 +165,15 @@ import OrderRejectEdit from '../reject/edit'; // 采购退货单
 import Edit from './edit'; // 采购入库单编辑
 import OrderContract from '@/views/contract/order/edit'; // 采购合同
 import VisibleMixin from '@/utils/visibleMixin';
+import CollectInvoiceDialog from '@/views/finance/receipt/collect-invoice';
 
 export default {
   mixins: [VisibleMixin],
   components: {
     OrderRejectEdit,
     OrderContract,
-    Edit
+    Edit,
+    CollectInvoiceDialog
   },
   data() {
     return {
@@ -157,7 +188,9 @@ export default {
         '4': '已完成',
         '5': '已驳回',
         '6': '已终止'
-      }
+      },
+      collectInvoiceData: null,
+      showCollectInvoice: false
     };
   },
   methods: {
@@ -237,8 +270,37 @@ export default {
       delete contract.id;
       delete contract.state;
       console.log(contract);
+      contract.source = '采购入库单';
       this.orderContractData = contract;
       this.showOrderContract = true;
+    },
+    collectInvoiceApply() {
+      // 收集
+      this.collectInvoiceData = {
+        type: 0,
+        busCode: this.detail.putinCode,
+        busType: 30,
+        purchaseId: this.detail.companySettlementId,
+        marketId: this.detail.supplierId,
+        invoiceDetailList: []
+          .concat(
+            this.detail.commodityList || [],
+            this.detail.additionalCommodityList || []
+          )
+          .map(item => {
+            return {
+              articleName: item.goodsName,
+              commodityCode: item.commodityCode,
+              isOrder: 1,
+              type: 0,
+              taxRate: item.taxRate,
+              price: item.purchasePrice,
+              quantity: item.commodityNumber
+            };
+          })
+      };
+      console.log(this.collectInvoiceData);
+      this.showCollectInvoice = true;
     }
   }
 };

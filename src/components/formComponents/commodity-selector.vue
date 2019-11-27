@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 16:55:38
+ * @LastEditTime: 2019-11-26 10:03:58
  * @Description: 商品输入选框 字段已绑定 1
 */
 <template>
@@ -61,6 +61,7 @@
       :sn="sn"
       :visible.sync="showCommodityGoods"
       @choose="choose"
+      ref="commodityChoose"
       v-if="showCommodityGoods||showed"
     />
   </span>
@@ -98,6 +99,7 @@ export default {
     return {
       showCommodityGoods: false,
       selectGood: '',
+      preSelectGoods: '',
       options: [],
       showed: false,
       loading: false,
@@ -107,13 +109,20 @@ export default {
   mounted() {
     if (this.value) {
       this.selectGood = this.value;
+      this.preSelectGoods = this.value;
     } else {
       this.search();
+      this.$root.$on('loadSearch', () => {
+        this.searchTable = [];
+        this.search();
+        this.$refs.commodityChoose.reload();
+      });
     }
   },
   watch: {
     value() {
       this.selectGood = this.value || '';
+      this.preSelectGoods = this.value || '';
     }
   },
   methods: {
@@ -130,6 +139,7 @@ export default {
           this.options.push(e);
         }
         this.selectGood = e.commodityCode;
+        this.preSelectGoods = e.commodityCode;
       }
       const choose = e.filter(a => !this.codes.includes(a.commodityCode));
       if (choose.length) {
@@ -158,7 +168,7 @@ export default {
       this.options = data || [];
       this.loading = false;
       this.searchTable[words] = data;
-      this.$emit('response', data)
+      this.$emit('response', data);
     },
     onSelect(e) {
       const goods = this.options.filter(
@@ -171,7 +181,7 @@ export default {
           this.selectGood = '';
         }
       } else {
-        this.selectGood = '';
+        this.selectGood = this.preSelectGoods || '';
       }
     }
   }

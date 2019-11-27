@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 10:13:37
+ * @LastEditTime: 2019-11-27 09:29:27
  * @Description: 销售-收入流水
  */
 <template>
@@ -15,11 +15,25 @@
       :column="true"
       title="收入流水"
       api="seePsiFinanceService.revenuerecordList"
-      exportApi="seePsiSaleService.revenuerecordExport"
+      exportApi="seePsiFinanceService.revenuerecordExport"
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
     >
-
+      <template slot="top-filter">
+        <bill-account-selector v-model="queryForm.companySettlementId" />
+      </template>
+      <template slot="button">
+        <el-button
+          type="primary"
+          size="mini"
+          icon="el-icon-plus"
+          @click="addVisible = true"
+        >新增收入流水</el-button>
+        <el-button
+          size="mini"
+          @click="addTransferVisible = true"
+          icon="el-icon-plus"
+        >新增转账单</el-button>
+      </template>
       <template slot-scope="{column,row,value}">
         <!-- 流水编号 -->
         <span
@@ -27,30 +41,49 @@
           v-if="column.columnFields=='incomeRecordCode'"
           @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
-        <span
-          class="d-text-blue d-pointer"
-          v-else-if="column.columnFields=='salesShipmentCode'"
-          @click="eventHandle('outLibVisible',row)"
-        > {{value}}</span>
-        <!-- 状态 -->
-        <span v-else-if="column.columnFields=='state'">{{value}}</span>
+        <!-- 匹配状态 -->
+        <span v-else-if="column.columnFields=='matchState'"> {{stateText[value]}}</span>
+        <!-- 收支状态 -->
+        <span v-else-if="column.columnFields=='incomeType'"> {{value ==1?'付款':'收款'}}</span>
+
         <!-- 创建时间 -->
         <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <!-- 销售退货单详情 -->
+
+    <!-- 新增 -->
+    <add
+      :visible.sync="addVisible"
+      incomeType="0"
+      type="add"
+      @reload="$refs.table.reload()"
+    />
+    <!-- 新增转账单 -->
+    <addTransfer
+      incomeType="0"
+      :visible.sync="addTransferVisible"
+      type="add"
+      @reload="$refs.table.reload()"
+    />
+    <!-- 详情 -->
     <detail
       v-if="detailVisible"
       :visible.sync="detailVisible"
       :rowData="rowData"
       :code="rowData.incomeRecordCode"
-      @reload="this.$refs.table.reload()"
-    />
+      <<<<<<<
+      HEAD
+      @reload="this.$refs.table.reload()"=======@reload="$refs.table.reload()"
+    >>>>>>> dev
+      />
   </div>
 </template>
 <script>
-import detail from './details' //销售退货单详情
+import detail from './details' //详情
+import add from './add' //新增
+import addTransfer from './add-transfer' //新增转账单
+import invoiceMixin from '../invoice-mixins'
 let filterOptions = [
   // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
   // { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
@@ -60,10 +93,12 @@ let filterOptions = [
 ]
 
 export default {
-  name: 'return',
+  name: 'financeIncome',
+  mixins: [invoiceMixin],
   components: {
-    detail
-
+    detail,
+    add,
+    addTransfer
   },
   props: {
     // 是否显示按钮
@@ -81,6 +116,11 @@ export default {
   },
   data() {
     return {
+      stateText: {
+        '0': '未匹配',
+        '1': '部分匹配',
+        '2': '已匹配',
+      },
       loading: false,
       // 查询表单
       queryForm: {
@@ -92,13 +132,19 @@ export default {
       // 当前行数据
       rowData: {},
       detailVisible: false,
-      outLibVisible: false,
+      addTransferVisible: false,
+      addVisible: false,
     };
   },
   computed: {
 
   },
   watch: {
+    'queryForm.companySettlementId': {
+      handler(newValue) {
+        this.$refs.table.reload();
+      }
+    }
   },
   methods: {
     // 按钮功能操作

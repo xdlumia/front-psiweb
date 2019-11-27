@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-31 14:35:15
+ * @LastEditTime: 2019-11-25 14:24:04
  * @Description: 业务设置-库房
  -->
 <template>
@@ -26,10 +26,14 @@
           style="margin-top: 20px;"
           @click="save"
         >保存</el-button>
-        <el-button v-if="isEdit" size="small" style="margin-top: 20px;" @click="cancel">取消</el-button>
+        <el-button
+v-if="isEdit" size="small" style="margin-top: 20px;"
+@click="cancel">取消</el-button>
       </el-col>
     </div>
-    <el-form size="small" :model="warehouseEntity" :disabled="!isEdit" label-width="190px">
+    <el-form
+size="small" :model="warehouseEntity" :disabled="!isEdit"
+label-width="190px">
       <fieldset class="d-fieldset mb20">
         <legend>
           <i class="d-round12 d-circle d-bg-blue"></i>
@@ -58,6 +62,42 @@
             <span class="f12 pb10" style="color: #999">说明：优先分配最少拆卸数量最少的拆卸人，如数量相同则默认分配</span>
           </el-form-item>
         </el-col>
+      </fieldset>
+      <fieldset class="d-fieldset mb20">
+        <legend>
+          <i class="d-round12 d-circle d-bg-blue"></i>
+          <span>拆卸责任人</span>
+        </legend>
+        <div style="display: flex;" class="mb10 ml10 pt10">
+          <div
+            v-for="(item,index) in warehouseEntity.disassemblyUserId"
+            :key="index"
+            style="display:flex;flex-direction: column;align-items: center;margin-right:20px;"
+          >
+            <div
+              style="width:40px;height:40px;display:flex;justify-content: center;align-items: center;border-radius: 50%;"
+              class="mb5"
+            >
+              <img style="width:100%;height:100%" src="@/assets/img/adminimg.png" />
+            </div>
+            <span class="d-text-qgray">{{item.employeeName}}</span>
+          </div>
+
+          <employees-chosen
+            v-model="warehouseEntity.disassemblyUserId"
+            :isEdit="true"
+            :closeOnSelect="false"
+          >
+            <el-button type="text" style="padding:0">
+              <div
+                style="width:40px;height:40px;display:flex;justify-content: center;align-items: center;border-radius: 50%;"
+                class="ba"
+              >
+                <i class="el-icon-plus" style="font-size:20px;"></i>
+              </div>
+            </el-button>
+          </employees-chosen>
+        </div>
       </fieldset>
       <el-col :span="24">
         <h3 class="mt10 mb10 d-text-gray b">组装单设置</h3>
@@ -91,6 +131,43 @@
           </el-form-item>
         </el-col>
       </fieldset>
+      <fieldset class="d-fieldset mb20">
+        <legend>
+          <i class="d-round12 d-circle d-bg-blue"></i>
+          <span>组装责任人</span>
+        </legend>
+        <div style="display: flex;" class="mb10 ml10 pt10">
+          <div
+            v-for="(item,index) in warehouseEntity.assembleUserId"
+            :key="index"
+            style="display:flex;flex-direction: column;align-items: center;margin-right:20px;"
+          >
+            <div
+              style="width:40px;height:40px;display:flex;justify-content: center;align-items: center;border-radius: 50%;"
+              class="mb5"
+            >
+              <img style="width:100%;height:100%" src="@/assets/img/adminimg.png" />
+            </div>
+            <span class="d-text-qgray">{{item.employeeName}}</span>
+          </div>
+
+          <employees-chosen
+            v-model="warehouseEntity.assembleUserId"
+            :isEdit="true"
+            :closeOnSelect="false"
+          >
+            <el-button type="text" style="padding:0">
+              <div
+                style="width:40px;height:40px;display:flex;justify-content: center;align-items: center;border-radius: 50%;"
+                class="ba"
+              >
+                <i class="el-icon-plus" style="font-size:20px;"></i>
+              </div>
+            </el-button>
+          </employees-chosen>
+        </div>
+      </fieldset>
+
       <el-col :span="24">
         <h3 class="mt10 mb10 d-text-gray b">组装任务设置</h3>
       </el-col>
@@ -179,6 +256,7 @@ export default {
       loading: false,
       isEdit: false,
       tempObj: null,
+      employee: null,
       warehouseEntity: {
         assembleNum: 0,
         assembleState: 1,
@@ -186,7 +264,9 @@ export default {
         disassemblyState: 1,
         disassemblynNum: 0,
         exchangeState: 1,
-        pickingOrdersConfigArray: []
+        pickingOrdersConfigArray: [],
+        disassemblyUserId: [],
+        assembleUserId: []
       }
     }
   },

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 18:29:05
+ * @LastEditTime: 2019-11-26 18:45:32
  * @Description: 销售-账单调整单
  */
 <template>
@@ -17,7 +17,6 @@
       api="seePsiFinanceService.fbilladjustList"
       exportApi="seePsiFinanceService.fbilladjustExport"
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
     >
       <template v-slot:button>
         <el-button
@@ -77,7 +76,8 @@ export default {
   name: 'return',
   components: {
     add,
-    detail
+    detail,
+    outLibDetails
   },
   props: {
     // 是否显示按钮

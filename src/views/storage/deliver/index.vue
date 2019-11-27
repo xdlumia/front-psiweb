@@ -11,43 +11,65 @@
     <TableView
       busType="7"
       :filterOptions='filterOptions'
-      :params="queryForm"
-      :selection='false'
+      :params="params"
+      selection
       api="seePsiWmsService.wmsshipmentsorderList"
+      exportApi="seePsiWmsService.wmsshipmentsorderExport"
       title="发货单"
     >
       <template slot-scope="{column,row,value}">
-        <span v-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span
-          v-else-if="column.columnFields=='shipmentCode'"
-          class="d-text-blue"
-          @click="getTableVisible(row)"
+          v-if="column.columnFields=='salesShipmentCode'"
+          class="d-text-blue d-pointer"
+          @click="getDetailVisible(row)"
         >{{value}}</span>
         <span
           v-else-if="column.columnFields=='shipmentsOrderCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
+      :code="drawerData.shipmentsOrderCode"
       :visible.sync='tableVisible'
       :drawerData='drawerData'
       @update='update'
       v-if="tableVisible"
+    />
+    <outLibDetails
+      :visible.sync="outLibVisible"
+      :rowData="rowData"
+      v-if="outLibVisible"
+      :code="rowData.salesShipmentCode"
+      @reload="$refs.table.reload()"
     />
   </div>
 </template>
 <script>
 import TableView from '@/components/tableView';
 import Details from './details.vue'
+import outLibDetails from '@/views/sales/outLibrary/outLib-details'
 import SideStatusbar from '@/components/formComponents/side-statusbar';
 export default {
   components: {
     Details,
     SideStatusbar,
+    outLibDetails,
     TableView
+  },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
   },
   data() {
     return {
@@ -56,7 +78,6 @@ export default {
         page: 1,
         limit: 20
       },
-      button: true,
       tableVisible: false,//销售单右侧抽屉
       componentActive: '',//当前的组件
       drawerData: {//弹框的相关数据
@@ -84,6 +105,8 @@ export default {
         },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
       ],
+      rowData: {},
+      outLibVisible: false,//销售出库单详情
     };
   },
   methods: {
@@ -94,7 +117,12 @@ export default {
     },
     update() {
       this.tableVisible = false
-    }
+    },
+    //打开销售出库单详情
+    getDetailVisible(data) {
+      this.outLibVisible = true
+      this.rowData = data
+    },
   }
 };
 </script>

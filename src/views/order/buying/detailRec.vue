@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 10:35:09
+ * @LastEditTime: 2019-11-26 17:48:17
  * @Description: 采购-请购明细表
 */
 <template>
@@ -11,7 +11,13 @@
       <span>请购明细表</span>
     </div>
     <div class="buying-requisition-page wfull hfull">
-      <TableView :filterOptions="filterOptions" api="seePsiPurchaseService.purchaseapplyorderCommoditys" busType="33" title="请购明细表">
+      <tableView
+        :filterOptions="filterOptions"
+        api="seePsiPurchaseService.purchaseapplyorderCommoditys"
+        busType="33"
+        exportApi="seePsiPurchaseService.purchaseapplyorderDetailExport"
+        title="请购明细表"
+      >
         <template slot-scope="{column,row,value,prop}">
           <span v-if="prop=='goodsPic'">
             <el-image :src="value" fit="contain" style="width:100px;height:40px;margin:0;">
@@ -20,16 +26,17 @@
           </span>
           <span v-else-if="prop=='categoryCode'">{{value|dictionary('PSI_SP_KIND')}}</span>
           <span v-else-if="prop=='commodityCode'">
-            <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+            <el-link :underline="false" @click="showCommodityDetail=true,currentCommodityCode=value" class="f12" type="primary">{{value}}</el-link>
           </span>
           <span v-else>{{value}}</span>
         </template>
-      </TableView>
+      </tableView>
     </div>
+    <CommodityDetail :code="currentCommodityCode" :visible.sync="showCommodityDetail" v-if="showCommodityDetail" />
   </el-dialog>
 </template>
 <script>
-import TableView from '@/components/tableView';
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 /**
  * 采购-请购单
  */
@@ -48,23 +55,25 @@ export default {
     }
   },
   components: {
-    TableView
+    CommodityDetail
   },
   data() {
     return {
       status: [],
       currentCode: '',
+      currentCommodityCode: '',
       showDetail: false,
+      showCommodityDetail: false,
       orderStorageVisible: false,
       addBorrowInVisible: true,
+      // prettier-ignore
       filterOptions: [
         { label: '商品编号', prop: 'commodityCode', default: true },
         { label: '请购单编号', prop: 'purchaseApplyCode', default: true },
-        { label: '请购数量', prop: 'applyNum', default: true },
-        { label: '采购数量', prop: 'purchaseNum', default: true },
-        { label: '借入数量', prop: 'borrowNum', default: true },
-        { label: '待入库数量', prop: 'waitPutinNum', default: true },
-        { label: '部门', prop: 'deptTotalCode', type: 'dept' }
+        { label: '请购数量', prop: 'ApplyNum', type: 'numberRange', int: true, default: true },
+        { label: '采购数量', prop: 'PurchaseNum', type: 'numberRange', int: true , default: true},
+        { label: '借入数量', prop: 'BorrowNum', type: 'numberRange', int: true, default: true },
+        { label: '待入库数量', prop: 'WaitPutinNum', type: 'numberRange', int: true, default: true },
       ]
     };
   },
@@ -80,5 +89,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .buying-requisition-page {
+  /deep/ .d-table {
+    height: calc(100vh - 116px) !important;
+  }
 }
 </style>

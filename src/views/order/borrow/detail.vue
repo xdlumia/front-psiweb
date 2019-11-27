@@ -2,45 +2,79 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 11:25:11
+ * @LastEditTime: 2019-11-26 17:40:04
  * @Description: 借入借出详情
 */
 <template>
-  <sideDetail :status="status" :visible.sync="showDetailPage" @close="$emit('update:visible',false)" title="借入借出单" width="990px">
+  <sideDetail
+    :status="status"
+    :title="`借入借出单 ${detail?detail.borrowLoanCode:''}`"
+    :visible.sync="showDetailPage"
+    @close="close"
+    v-loading="loading"
+    width="990px"
+  >
     <template slot="button" v-if="detail">
       <el-button
-        @click="$submission('seePsiWmsService.wmsborrowloanorderSubmitAudit',[null,detail.id],'提交审核')"
+        @click="$submission('seePsiWmsService.wmsborrowloanorderSubmitApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'提交审核')"
         size="mini"
         type="primary"
+        v-if="detail&&[0,-1].includes(detail.borrowLoanState)"
       >提交审核</el-button>
       <el-button
-        @click="$submission('seePsiWmsService.wmsborrowloanorderRevocationAudit',[null,detail.id],'撤销审核')"
+        @click="$submission('seePsiWmsService.wmsborrowloanorderCancel',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'撤销审核')"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.borrowLoanState)"
       >撤销审核</el-button>
-      <el-button @click="$submission('seePsiWmsService.wmsborrowloanorderPassAudit',[null,detail.id],'通过')" size="mini" type="primary">通过</el-button>
       <el-button
-        @click="$submission('seePsiWmsService.wmsborrowloanorderRejectAudit',[null,detail.id],'驳回',true)"
+        @click="$submission('seePsiWmsService.wmsborrowloanorderPassApproval',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'通过')"
+        size="mini"
+        type="primary"
+        v-if="detail&&[1].includes(detail.borrowLoanState)"
+      >通过</el-button>
+      <el-button
+        @click="$submission('seePsiWmsService.wmsborrowloanorderReject',{
+          apprpvalNode:detail.apprpvalNode,
+          id:detail.id,
+        },'驳回',true)"
         size="mini"
         type="danger"
+        v-if="detail&&[1].includes(detail.borrowLoanState)"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0,-1].includes(detail.borrowLoanState)">编辑</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsborrowloanorderLogicDelete',{
         id:detail.id
       },'删除')"
         size="mini"
-        type="primary"
+        type="danger"
+        v-if="detail&&[0,-1].includes(detail.borrowLoanState)"
       >删除</el-button>
     </template>
-    <el-tabs class="wfull hfull tabs-view">
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <el-form :model="detail" size="mini" v-if="detail">
-          <borrow-in :data="detail" disabled />
-          <borrow-goods :data="detail" disabled />
-        </el-form>
+        <detailApproveWrap :busType="5" :id="detail.id" v-if="detail&&showDetailPage">
+          <el-form :model="detail" size="mini">
+            <borrow-in :data="detail" disabled />
+            <borrow-goods :data="detail" disabled />
+          </el-form>
+        </detailApproveWrap>
       </el-tab-pane>
-      <el-tab-pane label="销售单">销售单</el-tab-pane>
+      <el-tab-pane label="销售出库单" name="outlib" v-if="showDetailPage&&!loading&&detail&&detail.salesShipmentCode">
+        <FullscreenWrap v-if="tabStatus.outlib">
+          <SalesOutLibrary :button="false" :params="{page:1,limit:15,shipmentCode:detail.salesShipmentCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
     </el-tabs>
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
   </sideDetail>
@@ -95,7 +129,7 @@ export default {
       if (this.code) {
         let {
           data
-        } = await this.$api.seePsiWmsService.wmsborrowloanorderQueryInfoByOrderCode(
+        } = await this.$api.seePsiWmsService.wmsborrowloanorderGetByCode(
           null,
           this.code
         );

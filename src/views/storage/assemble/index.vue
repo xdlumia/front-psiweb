@@ -11,8 +11,10 @@
     <TableView
       busType="9"
       :filterOptions='filterOptions'
-      :selection='false'
+      selection
       ref='allTable'
+      :params="params"
+      exportApi="seePsiWmsService.wmsassembleorderExport"
       api="seePsiWmsService.wmsassembleorderList"
       title="组装单"
     >
@@ -31,7 +33,7 @@
       <template slot-scope="{column,row,value}">
         <span
           v-if="column.columnFields=='assembleOrderCode'"
-          class="d-text-blue"
+          class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='operation'">
@@ -40,7 +42,7 @@
             class="ml15"
             size="mini"
             type="primary"
-            @click="roof(column)"
+            @click="roof(row)"
           >置顶</el-button>
         </span>
         <span v-else-if="column.columnFields=='assembleOrderState'">{{value == 0 ? '未开始' : value == 1 ? '待执行' : value == 2 ? '部分完成' : value == 3 ? '已完成' : '终止'}}</span>
@@ -50,8 +52,9 @@
 
     </TableView>
     <Details
-      :drawerData='drawerData'
+      :data='drawerData'
       :visible.sync='tableVisible'
+      :code="drawerData.assembleOrderCode"
       v-if="tableVisible"
       @reload='reload'
     />
@@ -64,7 +67,7 @@
   </div>
 </template>
 <script>
-/**
+/** 
  * 采购-请购单
  */
 import TableView from '@/components/tableView';
@@ -76,22 +79,34 @@ export default {
     TableView,
     assemblyAdd
   },
+  props: {
+    // 是否显示按钮
+    button: {
+      type: Boolean,
+      default: true
+    },
+    // 在当做组件引用的时候替换的参数
+    params: {
+      type: Object,
+      default: () => ({ page: 1, limit: 15 })
+    }
+  },
   data() {
     return {
       // 查询表单
       isSelfMotion: true,
       tableVisible: false,//销售单右侧抽屉
       drawerData: {},//弹框的相关数据
-      button: true,
       addVisible: false,//新增弹窗
       activeName: '',
       filterOptions: [
         { label: '组装单编号', prop: 'assembleOrderCode', default: true },
         {
           label: '组装单状态',
-          prop: 'assembleOrderState',
+          prop: 'state',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '待执行', value: '1' },
             { label: '部分完成', value: '2' },
             { label: '已完成', value: '3' },
@@ -105,6 +120,7 @@ export default {
           prop: 'pickingState',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '部分拣货', value: '1' },
             { label: '完成拣货', value: '2' },
             { label: '待拣货', value: '0' },
@@ -170,8 +186,25 @@ export default {
       this.$refs.allTable.reload()
     },
     //置顶
-    roof(column) {
-      console.log(column, 'roof(column)roof(column)roof(column)')
+    roof(row) {
+      this.$confirm('确认置顶当前组装单吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api.seePsiWmsService.wmsassembleorderTopSquence(null, row.id)
+          .then(res => {
+            this.reload()
+          })
+          .finally(() => {
+
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      })
     },
     //拖拽
     async onDrag(list) {

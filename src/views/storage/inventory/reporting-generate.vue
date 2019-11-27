@@ -8,7 +8,7 @@
 <template>
   <el-dialog
     :visible.sync="visible"
-    title="生成报溢报损单"
+    :title="`生成${state[type]}单`"
     @close='close'
     v-dialogDrag
   >
@@ -18,10 +18,10 @@
     >
       <el-main style="padding:0;max-height:700px;">
         <el-form
-          :model="addForm"
+          :model="data"
           class="p10"
         >
-          <form-card title="报溢报损信息">
+          <form-card :title="`${state[type]}信息`">
             <el-row>
               <el-col
                 :span="8"
@@ -36,7 +36,7 @@
                   size="mini"
                 >
                   <el-select
-                    v-model='addForm.type'
+                    v-model='type'
                     :disabled='disabled'
                     placeholder="请选择"
                     class="wfull"
@@ -68,7 +68,7 @@
                   size="mini"
                 >
                   <el-select
-                    v-model='addForm.wmsId'
+                    v-model='data.wmsId'
                     :disabled='disabled'
                     placeholder="请选择"
                     class="wfull"
@@ -96,12 +96,6 @@
                   prop
                   size="mini"
                 >
-
-                  <!-- v-model="employee"
-          :isEdit="true"
-          :multiple="true"
-          :closeOnSelect="false"
-          @input="choose" -->
                   <employees-chosen
                     :disabled='disabled'
                     :multiple="false"
@@ -111,7 +105,7 @@
                     class="d-inline"
                   >
                     <el-input
-                      :value="employeeName"
+                      :value="creatorName"
                       size="mini"
                     ></el-input>
                   </employees-chosen>
@@ -126,7 +120,7 @@
                   size="mini"
                 >
                   <el-input
-                    v-model='addForm.note'
+                    v-model='data.note'
                     :disabled='disabled'
                     type="textarea"
                     maxlength="140"
@@ -145,107 +139,44 @@
             <span>商品信息</span>
           </div>
           <el-table
+            show-summary
+            sum-text='总计'
             border
+            :summary-method="getSummaries"
             :data="tableData"
             max-height="400"
             ref="elTable"
             row-key="name"
             size="mini"
           >
-            <!-- <el-table-column
-        class-name="hide-children"
-        min-width="1"
-        width="1"
-      ></el-table-column> -->
-            <el-table-column
-              label="操作"
-              min-width="80"
-              prop="name"
-            >
-              <template
-                slot-scope="scope"
-                v-if='scope.row.goodsCode'
-              >
-                <span>
-                  <i
-                    class='el-icon-remove f18 d-text-qgray ml5 d-pointer'
-                    @click="deleteInfo(scope)"
-                  ></i>
-                </span>
-              </template>
-            </el-table-column>
-            <el-table-column min-width="40">
-              <template slot-scope="scope">
-                <div
-                  class="expanded-icons d-text-gray"
-                  v-if="scope.row.configName"
-                >
-                  <span
-                    @click="expand(scope.row)"
-                    class="el-icon-plus d-pointer"
-                    v-if="!scope.row.expanded"
-                  ></span>
-                  <span
-                    @click="expand(scope.row)"
-                    class="el-icon-minus d-pointer"
-                    v-else
-                  ></span>
-                </div>
+            <el-table-column min-width="50">
+              <template slot-scope="">
               </template>
             </el-table-column>
             <el-table-column
               label="商品编号"
               min-width="150"
+              prop="commodityCode"
+              show-overflow-tooltip
             >
-              <template
-                slot-scope="scope"
-                class="d-relative"
-              >
-                <commoditySelector
-                  :wmsId='addForm.wmsId'
-                  @choose='commodityChoose(arguments,scope)'
-                  type="code"
-                  v-model="scope.row.goodsCode"
-                  :codes='codes'
-                />
-              </template>
             </el-table-column>
             <el-table-column
               label="商品名称"
               min-width="150"
+              prop="goodsName"
             >
-              <template
-                slot-scope="scope"
-                class="d-relative"
-              >
-                <commoditySelector
-                  :wmsId='addForm.wmsId'
-                  @choose='commodityChoose(arguments,scope)'
-                  v-model="scope.row.goodsName"
-                  :codes='codes'
-                />
-              </template>
             </el-table-column>
             <el-table-column
-              label="报溢报损数量"
+              :label="`${state[type]}数量`"
               min-width="150"
             >
               <template
                 slot-scope="scope"
                 class="d-relative"
-                v-if="scope.row.goodsCode"
               >
-                <div
-                  class="ac"
-                  style="width:130px;height:28px;background-color:#F5F7FA;color:#C0C4CC;border:1px solid #E4E7ED;border-radius:5px;line-height:27px"
-                >
-                  {{scope.row.commodityInfoList ? scope.row.commodityInfoList.length : '扫码添加'}}
-                </div>
-                <i
-                  @click="clickCode(scope)"
-                  class="d-text-blue d-absolute f14 b d-pointer"
-                  style='right:15px;z-index:200;top:18px;'
-                >码</i>
+                <span>
+                  {{scope.row.commodityInfoList ? scope.row.commodityInfoList.length : 0}}
+                </span>
               </template>
             </el-table-column>
             <el-table-column
@@ -257,12 +188,23 @@
               label="税率"
               min-width="100"
               prop="taxRate"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span v-if="scope.row.taxRate">{{scope.row.taxRate}}%</span>
+              </template>
+            </el-table-column>
             <el-table-column
               label="含税成本金额"
               min-width="100"
-              prop="name"
-            ></el-table-column>
+              prop="taxInclusiveTotalCostPrice"
+            >
+              <template
+                slot-scope="scope"
+                v-if="scope.row.commodityCode"
+              >
+                <span>{{scope.row.commodityInfoList ? ((Number(scope.row.taxRate) * 0.01 + 1) * Number(scope.row.commodityInfoList.length) * Number(scope.row.inventoryPrice)).toFixed(2) : 0}}</span>
+              </template>
+            </el-table-column>
             <el-table-column
               label="商品图片"
               min-width="120"
@@ -280,7 +222,11 @@
               label="商品类别"
               min-width="110"
               prop="categoryCode"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+              </template>
+            </el-table-column>
             <el-table-column
               label="商品分类"
               min-width="110"
@@ -300,7 +246,11 @@
               label="单位"
               min-width="120"
               prop="unit"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+              </template>
+            </el-table-column>
           </el-table>
         </form-card>
       </el-main>
@@ -330,6 +280,11 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    data: {},
+    type: {
+      type: Number,
+      default: 1
     }
   },
   computed: {
@@ -339,41 +294,107 @@ export default {
   },
   data() {
     return {
-      activeName: '',
       disabled: true,
       usableList: [],
       tableData: [],
-      employeeName: '',
+      state: {
+        1: '报溢',
+        2: '报损'
+      },
+      creatorName: '',
       addForm: {
         commodityList: [],//商品列表
-        type: 2,//类别（1-报溢 2-报损）
+        type: 0,//类别（1-报溢 2-报损）
         wmsId: '',//库房id
         personInChargeId: '',//责任人id
         note: '',//备注
+        source: '盘点单',
         totalCostPrice: '',//成本金额总计
         taxInclusiveTotalCostPrice: '',//含税成本金额总计
+        businessId: '',//盘点单id
+        bussinessType: 0,//盘点单
       },
     };
   },
   mounted() {
     this.commonwmsmanagerUsableList()
+    this.getDetail()
   },
   methods: {
-    handleClick({ label, name }) {
-      this.activeName = '';
+    //请求报溢/报损商品
+    getDetail() {
+      this.$api.seePsiWmsService.wmsblitemGenerateReportingOrder({ id: this.data.id, type: this.type })
+        .then(res => {
+          console.log(res, 'resresresresresresresresresresresresresresresresresres')
+          this.tableData = res.data || []
+        })
+        .finally(() => {
+
+        })
     },
     close() {
       this.$emit('update:visible', false)
     },
     //点一下保存
     submit() {
+      this.addForm.commodityList = this.tableData
+      this.addForm.type = this.type
+      this.addForm.wmsId = this.data.wmsId
+      this.addForm.note = this.data.note
+      this.addForm.businessId = this.data.id
       this.$api.seePsiWmsService.wmsreportinglossesSave(this.addForm)
         .then(res => {
-
+          this.$emit('reload')
+          this.close()
         })
         .finally(() => {
 
         })
+    },
+    //算合计的
+    getSummaries(param) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = '总计';
+          return;
+        }
+
+        if (column.property == 'inventoryPrice') {
+          const values = data.map((item) => {
+            if (item.commodityInfoList && item.commodityInfoList.length > 0) {
+              return Number(item.inventoryPrice) * Number(item.commodityInfoList.length)
+            }
+          });
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr);
+            if (!isNaN(value)) {
+              return prev + curr;
+            } else {
+              return prev;
+            }
+          }, 0);
+        }
+        if (column.property == 'taxInclusiveTotalCostPrice') {
+          const values = data.map((item) => {
+            if (item.commodityInfoList && item.commodityInfoList.length > 0) {
+              return (Number(item.taxRate) * 0.01 + 1) * Number(item.commodityInfoList.length) * Number(item.inventoryPrice)
+            }
+          });
+          sums[index] = (values.reduce((prev, curr) => {
+            const value = Number(curr);
+            if (!isNaN(value)) {
+              return prev + curr;
+            } else {
+              return prev;
+            }
+          }, 0)).toFixed(2);
+        }
+      })
+      this.addForm.totalCostPrice = sums[sums.length - 2] || 0
+      this.addForm.taxInclusiveTotalCostPrice = sums[sums.length - 1] || 0
+      return sums;
     },
     //请求可用库房
     async commonwmsmanagerUsableList() {
@@ -382,7 +403,7 @@ export default {
     },
     //选择人员
     choose(value) {
-      this.employeeName = value.employeeName
+      this.creatorName = value.employeeName
       this.addForm.personInChargeId = value.userId
     },
   }
