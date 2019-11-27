@@ -2,14 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 16:45:28
+ * @LastEditTime: 2019-11-27 17:36:41
  * @Description: 采购-采购调价单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
       :filterOptions="filterOptions"
-      :params="params"
+      :params="Object.assign(defaultParams,params)"
       api="seePsiCommonService.commonadjustpriceList"
       busType="40"
       exportApi="seePsiCommonService.commonadjustpriceExport"
@@ -57,6 +57,11 @@ export default {
   },
   data() {
     return {
+      defaultParams: {
+        page: 1,
+        limit: 15,
+        adjustPriceType: 2
+      },
       status: [],
       showDetail: false,
       currentCode: '',
@@ -72,7 +77,6 @@ export default {
     };
   },
   mounted() {
-    this.params.adjustPriceType = 2;
   },
   methods: {
     logData(e) {

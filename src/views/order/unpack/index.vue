@@ -2,14 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 15:05:16
+ * @LastEditTime: 2019-11-27 17:37:33
  * @Description: 采购-拆卸单
 */
 <template>
   <div class="buying-requisition-page wfull hfull" v-loading="loading">
     <TableView
       :filterOptions="filterOptions"
-      :params="params"
+      :params="Object.assign(defaultParams,params)"
       @response="onTableData"
       api="seePsiWmsService.wmsdisassemblyorderList"
       busType="11"
@@ -19,14 +19,14 @@
     >
       <template slot="button">
         <!-- <span>自动分配：</span>
-        <el-switch class="mr10" v-model="switchValue"></el-switch> -->
+        <el-switch class="mr10" v-model="switchValue"></el-switch>-->
         <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
         <span v-else-if="prop=='operation'">
           <span class="elTableDragDefault el-icon-rank f20" v-if="row.sequence>0"></span>
-          <el-button class="ml10" @click="setTop(row)" size="mini" type="primary" v-if="row.sequence>0">置顶</el-button>
+          <el-button @click="setTop(row)" class="ml10" size="mini" type="primary" v-if="row.sequence>0">置顶</el-button>
         </span>
         <span v-else-if="prop=='disassemblyOrderState'">{{stateText[value]}}</span>
         <span v-else-if="prop=='disassemblyOrderCode'">
@@ -65,6 +65,10 @@ export default {
   },
   data() {
     return {
+      defaultParams: {
+        page: 1,
+        limit: 15
+      },
       status: [],
       showDetail: false,
       showEdit: false,

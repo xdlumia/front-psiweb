@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 15:58:40
+ * @LastEditTime: 2019-11-27 17:43:48
  * @Description: 采购退货单
 */
 <template>
@@ -91,17 +91,17 @@
       </el-tab-pane>
       <el-tab-pane label="采购入库单" name="putin">
         <FullscreenWrap v-if="isDataReady&&tabStatus.putin">
-          <OrderStorage :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode}" />
+          <OrderStorage :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode,relationCode:detail.alterationCode}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="采购单" name="order">
         <FullscreenWrap v-if="isDataReady&&tabStatus.order">
-          <StoragePurchase :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode}" />
+          <StoragePurchase :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode,relationCode:detail.alterationCode}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="应收账单" name="recieve">
         <FullscreenWrap v-if="isDataReady&&tabStatus.recieve">
-          <FinanceReceivable :button="false" :params="{page:1,limit:15,busCode:detail.alterationCode}" />
+          <FinanceReceivable :button="false" :params="{page:1,limit:15,busCode:detail.alterationCode,relationCode:detail.alterationCode}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>

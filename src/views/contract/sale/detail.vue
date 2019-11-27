@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 17:43:46
+ * @LastEditTime: 2019-11-27 17:40:07
  * @Description: 销售合同
 */
 <template>
@@ -29,7 +29,7 @@
       </el-tab-pane>
       <el-tab-pane label="销售出库单" name="outlib">
         <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.outlib">
-          <SalesOutLibrary :button="false" :params="{page:1,limit:15,shipmentCode:detail.shipmentCode}" />
+          <SalesOutLibrary :button="false" :params="{page:1,limit:15,shipmentCode:detail.shipmentCode,relationCode:code}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>

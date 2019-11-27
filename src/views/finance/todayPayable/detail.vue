@@ -47,7 +47,7 @@
           <component
             :button="false"
             :is="busInfo[detail.busType].listPage"
-            :params="{page:1,limit:15,[busInfo[detail.busType].codeFilterKey]:detail.busCode}"
+            :params="{page:1,limit:15,[busInfo[detail.busType].codeFilterKey]:detail.busCode,relationCode:detail.billCode}"
           />
         </FullscreenWrap>
       </el-tab-pane>
