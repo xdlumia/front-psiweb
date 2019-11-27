@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-23 11:06:47
+ * @LastEditTime: 2019-11-27 19:46:11
  * @Description: 报价单详情
 */
 <template>
   <div>
     <!-- 审核面板 -->
-    <approve-panel />
+    <approve-panel busType="15" />
     <!-- 客户信息 -->
     <customerInfo
       disabled

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 17:15:57
+ * @LastEditTime: 2019-11-27 19:24:43
  * @Description: 审核小卡片
 */
 <template>
@@ -57,30 +57,6 @@ export default {
           approved: false,
           rejected: true,
           taskName: '审核驳回',
-          operatTime: +new Date(),
-          approvalName: '小胖'
-        },
-        {
-          approved: false,
-          taskName: '完成',
-          operatTime: +new Date(),
-          approvalName: '小胖'
-        },
-        {
-          approved: false,
-          name: '完成',
-          operatTime: +new Date(),
-          approvalName: '小胖'
-        },
-        {
-          approved: false,
-          name: '完成',
-          operatTime: +new Date(),
-          approvalName: '小胖'
-        },
-        {
-          approved: false,
-          name: '完成',
           operatTime: +new Date(),
           approvalName: '小胖'
         }
