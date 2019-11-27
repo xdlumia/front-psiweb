@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 10:03:58
+ * @LastEditTime: 2019-11-27 13:56:28
  * @Description: 商品输入选框 字段已绑定 1
 */
 <template>
@@ -26,34 +26,16 @@
         v-for="(item,i) in options"
       >
         <el-row>
-          <el-col
-            :span="6"
-            class="b d-text-black"
-            v-if="i==0"
-          >商品名称</el-col>
-          <el-col
-            :span="18"
-            class="b d-text-black"
-            v-if="i==0"
-          >商品编号</el-col>
-          <el-col
-            :span="6"
-            class="d-hidden d-elip"
-          >{{item.goodsName}}</el-col>
-          <el-col
-            :span="18"
-            class="d-hidden d-elip"
-          >
+          <el-col :span="6" class="b d-text-black" v-if="i==0">商品名称</el-col>
+          <el-col :span="18" class="b d-text-black" v-if="i==0">商品编号</el-col>
+          <el-col :span="6" class="d-hidden d-elip">{{item.goodsName}}</el-col>
+          <el-col :span="18" class="d-hidden d-elip">
             <span :title="item.commodityCode">{{item.commodityCode}}</span>
           </el-col>
         </el-row>
       </el-option>
     </el-select>
-    <i
-      @click="openDialog"
-      class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"
-      v-if="!disabled"
-    ></i>
+    <i @click="openDialog" class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon" v-if="!disabled"></i>
     <commodity-choose
       :kinds="kinds"
       :multiple="multiple"
@@ -67,6 +49,8 @@
   </span>
 </template>
 <script>
+let preReqs = new Map();
+
 export default {
   props: {
     codes: {
@@ -153,18 +137,29 @@ export default {
       }
       this.loading = true;
       const api = this.sn ? 'wmsinventorydetailList' : 'wmsinventoryList';
-      const { data } = await this.$api.seePsiWmsService[api](
-        Object.assign(
-          {
-            page: 1,
-            limit: 50,
-            goodsName: words,
-            categoryCode:
-              this.kinds && this.kinds.length ? this.kinds[0].value : ''
-          },
-          this.params
-        )
+      let params = Object.assign(
+        {
+          page: 1,
+          limit: 50,
+          goodsName: words,
+          categoryCode:
+            this.kinds && this.kinds.length ? this.kinds[0].value : ''
+        },
+        this.params
       );
+      let key = JSON.stringify({ ...params, sn: this.sn });
+      let preReq = preReqs.get(key);
+      let req = Promise.resolve();
+      if (preReq && preReq.timestamp >= +new Date() - 10 * 1000) {
+        req = preReq.data;
+      } else {
+        req = this.$api.seePsiWmsService[api](params);
+        preReqs.set(key, {
+          data: req,
+          timestamp: +new Date()
+        });
+      }
+      const { data } = await req;
       this.options = data || [];
       this.loading = false;
       this.searchTable[words] = data;

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 17:41:13
+ * @LastEditTime: 2019-11-27 14:11:42
  * @Description: 付款单
 */
 <template>
@@ -50,14 +50,13 @@
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <detailApproveWrap :busType="50" :id="detail.id" v-if="detail&&showDetailPage">
-          <el-form size="mini" v-if="detail&&showDetailPage">
-            <!-- <approve-panel></approve-panel> -->
-            <paybill-detail :data="detail" :hide="['billType','lateFeeAmount']" disabled />
-            <payer-info :data="detail" disabled />
-            <extras-info :data="detail" @change="saveExtras" can-modify disabled />
-          </el-form>
-        </detailApproveWrap>
+        <approve-panel :busType="50" :id="detail.id" v-if="detail&&showDetailPage" />
+        <el-form size="mini" v-if="detail&&showDetailPage">
+          <!-- <approve-panel></approve-panel> -->
+          <paybill-detail :data="detail" :hide="['billType','lateFeeAmount']" disabled />
+          <payer-info :data="detail" disabled />
+          <extras-info :data="detail" @change="saveExtras" can-modify disabled />
+        </el-form>
       </el-tab-pane>
       <el-tab-pane
         :label="busInfo[detail.busType].title"

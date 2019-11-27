@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 17:44:11
+ * @LastEditTime: 2019-11-27 11:45:05
  * @Description: 采购合同
 */
 <template>
@@ -17,8 +17,9 @@
           <buying-goods-edit
             :data="detail"
             :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
-          ]"
+              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
+            ]"
+            :sort="['expanded']"
             disabled
             priceKey="costAmount"
           />

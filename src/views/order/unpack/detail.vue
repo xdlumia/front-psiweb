@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 17:33:04
+ * @LastEditTime: 2019-11-27 14:11:03
  * @Description: 拆卸单
 */
 <template>
@@ -61,12 +61,11 @@
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <detailApproveWrap :busType="11" :id="detail.id" v-if="detail&&showDetailPage">
-          <el-form :model="detail" v-if="showDetailPage">
-            <goodsUnpack :data="detail" disabled id="goodsUnpack" />
-            <extrasInfo :data="detail" :needUpload="false" disabled id="extrasInfo" />
-          </el-form>
-        </detailApproveWrap>
+        <approve-panel :busType="11" :id="detail.id" v-if="detail&&showDetailPage" />
+        <el-form :model="detail" v-if="showDetailPage">
+          <goodsUnpack :data="detail" disabled id="goodsUnpack" />
+          <extrasInfo :data="detail" :needUpload="false" disabled id="extrasInfo" />
+        </el-form>
       </el-tab-pane>
       <el-tab-pane label="拆卸任务" name="unpack">
         <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.unpack">

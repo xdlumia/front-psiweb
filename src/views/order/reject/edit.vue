@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:34:02
+ * @LastEditTime: 2019-11-27 11:45:54
  * @Description: 采购退货单
 */
 <template>
@@ -32,8 +32,9 @@
           <buyingGoodsEdit
             :data="form"
             :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','action','!add'
-          ]"
+              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','action','!add'
+            ]"
+            :sort="['expanded']"
             :summaryMethod="getSummarys"
             id="commodityInfo"
           />
