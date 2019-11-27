@@ -7,7 +7,7 @@
     <el-table
       border
       size='mini'
-      :data='data.putawayCommodityList'
+      :data='data.scanData'
       ref="table"
       class="college-main mt15"
       style="max-height:300px"
@@ -147,12 +147,7 @@ export default {
   components: {
   },
   props: {
-
-    rowData: {
-      type: Object,
-    },
-    form: {},
-    drawerData: {}
+    data: Object,
   },
   computed: {
   },
@@ -169,33 +164,7 @@ export default {
 
   },
   methods: {
-    //回车机器号和SN码
-    shipmentCommodityCheck() {
-      if (this.wmsId) {
-        if ((this.rowData.commodityNumber - (this.rowData.putinNumber || 0) - this.tableData.length) != 0) {
-          this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: this.snCode, commodityCode: this.rowData.commodityCode, putawayCommodityList: this.tableData, categoryCode: this.rowData.categoryCode, wmsId: this.wmsId })
-            .then(res => {
-              if (res.data) {
-                this.tableData.push(res.data)
-              }
-            })
-            .finally(() => {
 
-            })
-        } else {
-          this.$message({
-            type: 'error',
-            message: '当前商品待入库数量已为0!'
-          })
-        }
-
-      } else {
-        this.$message({
-          type: 'error',
-          message: '请先选择入库库房!'
-        })
-      }
-    },
     //删除某条
     delRecord(scope) {
       this.tableData.splice(scope.$index, 1)

@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 10:24:20
+ * @LastEditTime: 2019-11-26 17:54:29
  * @Description: 促销管理
  -->
 <template>
@@ -15,7 +15,7 @@
       title="促销管理"
       api="seePsiCommonService.commonpromotionList"
       :params="Object.assign(queryForm, params)"
-      exportApi="seePsiCommonService.commonquotationconfigExport"
+      exportApi="seePsiCommonService.commonpromotionExport"
     >
       <template v-slot:filter>自定义筛选列</template>
       <!-- 自定义按钮功能 -->

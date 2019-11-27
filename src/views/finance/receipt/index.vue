@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 16:13:17
+ * @LastEditTime: 2019-11-26 19:00:56
  * @Description: 销售-待收票
  */
 <template>
@@ -15,7 +15,7 @@
       :column="true"
       title="待收票"
       api="seePsiFinanceService.finvoicereceivableList"
-      exportApi="seePsiSaleService.finvoicereceivableExport"
+      exportApi="seePsiFinanceService.finvoicereceivableExport"
       :params="Object.assign(queryForm,params)"
     >
       <template slot="top-filter">
@@ -72,6 +72,7 @@
       :visible.sync="detailVisible"
       :rowData="rowData"
       :code="rowData.invoiceCode"
+      :id="rowData.id"
       @reload="$refs.table.reload()"
     />
   </div>

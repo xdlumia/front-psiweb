@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 15:35:55
+ * @LastEditTime: 2019-11-26 19:20:34
  * @Description: 销售-支出流水
  */
 <template>
@@ -15,7 +15,7 @@
       :column="true"
       title="支出流水"
       api="seePsiFinanceService.payrecordList"
-      exportApi="seePsiSaleService.payrecordExport"
+      exportApi="seePsiFinanceService.payrecordExport"
       :params="Object.assign(queryForm,params)"
     >
       <template slot="button">
@@ -52,13 +52,13 @@
     <!-- 新增 -->
     <add
       :visible.sync="addVisible"
-      :incomeType="1"
+      incomeType="1"
       type="add"
       @reload="$refs.table.reload()"
     />
     <!-- 新增转账单 -->
     <addTransfer
-      :incomeType="1"
+      incomeType="1"
       :visible.sync="addTransferVisible"
       type="add"
       @reload="$refs.table.reload()"

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 17:38:45
+ * @LastEditTime: 2019-11-27 11:00:56
  * @Description: 销售出库单详情
 */
 <template>
@@ -67,47 +67,47 @@
       :visible.sync="editVisible"
       :rowData="rowData"
       type="edit"
-      :params="{salesShipmentCode:rowData.shipmentCode}"
-      :code="rowData.shipmentCode"
+      :params="{salesShipmentCode:code}"
+      :code="code"
     />
     <!-- 生成合同 -->
     <addContract
       :visible.sync="addContractVisible"
       :rowData="rowData"
       type="addContract"
-      :params="{salesShipmentCode:rowData.shipmentCode}"
-      :code="rowData.shipmentCode"
+      :params="{salesShipmentCode:code}"
+      :code="code"
     />
     <!-- 追加合同 -->
     <addContract
       :visible.sync="editContractVisible"
       :rowData="rowData"
       type="editContract"
-      :params="{salesShipmentCode:rowData.shipmentCode}"
-      :code="rowData.shipmentCode"
+      :params="{salesShipmentCode:code}"
+      :code="code"
     />
     <!-- 生成换货单 -->
     <exchangeAdd
       :visible.sync="exchangeAddVisible"
       :rowData="rowData"
       type="add"
-      :params="{salesShipmentCode:rowData.shipmentCode}"
-      :code="rowData.shipmentCode"
+      :params="{salesShipmentCode:code}"
+      :code="code"
     />
     <!-- 生成退货单 -->
     <returnAdd
       :visible.sync="returnAddVisible"
       :rowData="rowData"
       type="add"
-      :params="{salesShipmentCode:rowData.shipmentCode}"
-      :code="rowData.shipmentCode"
+      :params="{salesShipmentCode:code}"
+      :code="code"
     />
     <!-- 开票申请 -->
     <collectInvoice
       :visible.sync="collectInvoiceVisible"
       :rowData="rowData"
       :invoiceType="1"
-      :code="rowData.shipmentCode"
+      :code="code"
     />
   </div>
 </template>

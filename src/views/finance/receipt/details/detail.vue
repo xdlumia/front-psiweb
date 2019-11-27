@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 17:20:01
+ * @LastEditTime: 2019-11-26 20:20:21
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -13,9 +13,29 @@
       :data="data"
     />
 
-    <goods-buying-quote
-      :params="{busCode:data.quotationCode,busType:1,putawayType:1}"
+    <make-invoice-info
+      :invoiceType="1"
+      disabled
       :data="data"
+      id="invoice"
+    />
+    <make-buyer
+      disabled
+      :data="data"
+      id="buyer"
+    />
+    <make-buyer
+      disabled
+      :data="data"
+      from="供应商"
+      id="saler"
+      prefix="market"
+      title="销售方信息"
+    />
+    <make-goods
+      disabled
+      :data="data"
+      id="goods"
     />
     <!-- 备注信息 -->
     <extrasInfo

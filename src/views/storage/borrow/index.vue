@@ -140,6 +140,7 @@ export default {
           prop: 'borrowLoanType',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '借入', value: '0' },
             { label: '借出', value: '1' }
           ],

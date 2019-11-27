@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 17:51:13
+ * @LastEditTime: 2019-11-26 19:49:50
  * @Description: 付款 新增流水 单据信息
 */
 <template>
@@ -50,7 +50,7 @@
             <el-select
               class="wfull"
               v-else-if="item.type =='select' && item.prop == 'companySettlementId'"
-              :disabled="disabled || item.prop== 'incomeType'"
+              :disabled="disabled"
               v-model="data[item.prop]"
               :placeholder="`请输入${item.label}`"
             >
@@ -65,7 +65,7 @@
             <el-select
               class="wfull"
               v-else-if="item.type =='select'"
-              :disabled="disabled || item.prop== 'incomeType'"
+              :disabled="disabled || (item.prop == 'incomeType' && incomeType)"
               v-model="data[item.prop]"
               :placeholder="`请输入${item.label}`"
             >
@@ -116,6 +116,7 @@ export default {
       type: Array,
       default: () => []
     },
+    incomeType: [String],
     span: {
       type: Number,
       default: 8
@@ -128,7 +129,7 @@ export default {
       // 遍历表单
       items: [
         { label: '流水号', prop: 'incomeRecordCode', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
-        { label: '收支状态', prop: 'incomeType', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [{ content: '收款', code: 0 }, { content: '付款', code: 1 }], },
+        { label: '收支状态', prop: 'incomeType', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [{ content: '收款', code: '0' }, { content: '付款', code: '1' }], },
         { label: '发生金额', prop: 'incomeAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'price' }], },
         { label: '收款日期', prop: 'accountDate', type: 'date', rules: [{ required: true, trigger: 'blur' }] },
         { label: '结算账户', prop: 'companySettlementId', type: 'select', rules: [{ required: true, trigger: 'blur' }] },
@@ -151,6 +152,10 @@ export default {
         })))
       }))
     },
+
+  },
+  created() {
+
 
   },
   methods: {

@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 16:45:52
- * @Description: 新增收入流水
+ * @LastEditTime: 2019-11-26 19:51:32
+ * @Description: 新增收支流水
 */
 <template>
   <el-dialog
@@ -15,7 +15,7 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{type=='add'?'新增收入流水':`编辑:${code}`}}</span>
+      <span>{{type=='add'?`新增流水`:`编辑:${code}`}}</span>
       <div class="fr mr30">
         <el-button
           type="primary"
@@ -38,6 +38,7 @@
     >
       <!-- 单据信息 -->
       <receipt-info
+        :incomeType="incomeType"
         :span="12"
         :hide="['incomeRecordCode']"
         :data="form"
@@ -53,11 +54,8 @@
 
 import VisibleMixin from '@/utils/visibleMixin';
 export default {
-  prop: {
-    incomeType: {
-      type: Number,
-      default: 0, //来源 0收入流水  1支出流水
-    }
+  props: {
+    incomeType: String //来源 0收入流水  1支出流水
   },
   mixins: [VisibleMixin],
   components: {
@@ -77,7 +75,7 @@ export default {
         id: '',// ,
         incomeAmount: '',// 流水金额
         incomeRecordCode: '',// 流水编号",
-        incomeType: 0,//收支类型    
+        incomeType: this.incomeType,//收支类型    
         matchState: '',//匹配状态
         matchedAmount: '',// 已匹配金额
         note: '',// 备注",
@@ -107,7 +105,7 @@ export default {
           this.loading = true
           let api = 'revenuerecordSave' //默认收入流水
           // 如果是支出流水
-          if (this.incomeType == 1) {
+          if (this.form.incomeType == 1) {
             api = 'payrecordSave'
           }
           this.$api.seePsiFinanceService[api](this.form)

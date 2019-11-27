@@ -20,7 +20,8 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.putinNumber || 0}}/{{scope.row.commodityNumber}}</span>
+            <!-- 扫码数量 -->
+            <span>{{scope.row.scanNumber || 0}}/{{scope.row.commodityNumber}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -84,19 +85,25 @@
       <div class="mt10 mb10">
         <span class="b mt5">机器号/SN码</span>
         <el-input
-          v-on:keyup.13.native="shipmentCommodityCheck"
+          :disabled="item.commodityNumber==0"
+          @keyup.native.13="shipmentCommodityCheck(item)"
           size="mini"
-          v-model="snCode"
+          v-model="item.snCode"
           style="width:200px;"
           class="ml10 mt5"
-        ></el-input>
+        >
+          <el-button
+            slot="append"
+            @click="shipmentCommodityCheck(item)"
+          >确定</el-button>
+        </el-input>
         <span class="fr d-text-black mr10 mt5">
           <span>本次成功扫码 </span>
-          <span class="b d-text-red f16">{{tableData.length}}</span>
+          <span class="b d-text-red f16">{{item.scanNumber || 0}}</span>
           <span> 件，历史扫码 </span>
-          <span class="b d-text-green f16">历史扫码</span>
+          <span class="b d-text-green f16">{{item.hisScanNumber||0}}</span>
           <span> 件，还需扫码 </span>
-          <span class="b d-text-blue f16">还需要扫码</span>
+          <span class="b d-text-blue f16">{{item.commodityNumber||0}}</span>
           <span> 件</span>
         </span>
       </div>
@@ -119,8 +126,6 @@ export default {
     return {
       goodsData: [], //商品列表
       tableData: [],
-      snCode: '',
-      wmsId: '',//库房id
     };
   },
   mounted() {
@@ -136,7 +141,7 @@ export default {
         })
     },
     //回车机器号和SN码
-    shipmentCommodityCheck() {
+    shipmentCommodityCheck(item) {
       if (!this.data.wmsId) {
         this.$message({
           type: 'error',
@@ -145,36 +150,24 @@ export default {
         })
         return
       }
-
-      //   if ((this.rowData.commodityNumber - (this.rowData.putinNumber || 0) - this.tableData.length) != 0) {
       let params = {
-        snCode: this.snCode,
-        commodityCode: this.rowData.commodityCode,
-        putawayCommodityList: this.tableData,
-        categoryCode: this.rowData.categoryCode,
+        snCode: item.snCode,
+        commodityCode: item.commodityCode,
+        putawayCommodityList: [],
+        categoryCode: item.categoryCode,
         wmsId: this.data.wmsId
       }
       this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck(params)
         .then(res => {
-          if (res.data) {
-            this.tableData.push(res.data)
-          }
+          let data = res.data || {}
+          this.data.sacnData.push({ ...item, ...data })
+          // 本次扫码次数
+          item.scanNumber++
+          // 历史扫码次数
+          item.hisScanNumber++
+          item.commodityNumber--
         })
-        .finally(() => {
-
-        })
-      //   } else {
-      //     this.$message({
-      //       type: 'error',
-      //       message: '当前商品待入库数量已为0!'
-      //     })
-      //   }
-
-    },
-    //删除某条
-    deletePurchase(scope) {
-      this.tableData.splice(scope.$index, 1)
-    },
+    }
   }
 };
 </script>

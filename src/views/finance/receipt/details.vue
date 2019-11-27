@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 17:02:18
+ * @LastEditTime: 2019-11-26 20:19:28
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -50,6 +50,7 @@
         </el-tabs>
 
         <components
+          v-if="Object.keys(detail).length"
           ref="detail"
           :code="code"
           :rowData="rowData"
@@ -72,6 +73,7 @@ import detail from './details/detail' //详情
 import { log } from 'util';
 export default {
   mixins: [VisibleMixin],
+  props: ['id'],
   components: {
     detail
   },
@@ -89,11 +91,10 @@ export default {
       ],
       // 状态功能按钮
       currStatusType: {
-        '0': ['提交审核', '删除', '编辑'], // 新建
-        '1': ['撤销审核', '通过', '驳回'], // 审核中
-        '2': [], // 已收票
-        '3': ['提交审核', '删除', '编辑'], //已驳回
-        '4': [], //已收票
+        '-1': ['提交审核', '删除', '编辑'], // 新建
+        '0': ['撤销审核', '通过', '驳回'], // 审核中
+        '1': ['提交审核', '删除', '编辑'], //已驳回
+        '2': [], //已收票
       },
       // tab操作栏
       tabs: {
@@ -118,11 +119,8 @@ export default {
   },
   methods: {
     async getDetail() {
-      if (this.code) {
-        console.log(data);
+      if (this.id) {
         let { data } = await this.$api.seePsiFinanceService.finvoicereceivableInfo(null, this.rowData.id)
-
-
         return data;
       }
     },
