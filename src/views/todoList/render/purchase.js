@@ -2,55 +2,63 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:20:37
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 18:07:55
+ * @LastEditTime: 2019-11-27 11:17:31
  * @Description: description
  */
 const purchase = [
   {
-    label: '待采购请购单',
-    key: '',
-    component: 'OrderBuying',
-    authorityCode: '',
-    processNum: 0,
-    show: false
-  },
-  {
-    label: '待审批备货单',
-    key: 'psi_purchase_stock_01',
+    label: '备货单审批',
+    key: 'psi_purchase_stock',
     component: 'OrderPrepare',
-    authorityCode: '',
+    authorityCode: 'psi_purchase_stock',
     processNum: 0,
     show: true
   },
   {
-    label: '待发货直发单',
-    key: '',
-    component: 'OrderDirect',
-    authorityCode: '',
-    processNum: 0,
-    show: false
-  },
-  {
-    label: '待审批采购入库单',
-    key: 'psi_purchase_putin_01',
+    label: '入库单审批',
+    key: 'psi_purchase_storage_01',
     component: 'OrderStorage',
-    authorityCode: '',
+    authorityCode: 'psi_purchase_storage_01',
     processNum: 0,
     show: true
   },
   {
-    label: '待审批采购退货单',
-    key: 'psi_purchase_alteration_01',
+    label: '退货单审批',
+    key: 'psi_purchase_reject_01',
     component: 'OrderReject',
-    authorityCode: 'psi_purchase_alteration_01',
+    authorityCode: 'psi_purchase_reject_01',
     processNum: 0,
     show: true
   },
   {
-    label: '采购调价单',
+    label: '采购调价单审批',
     key: 'psi_purchase_adjust_pric_01',
     component: 'OrderPrice',
-    authorityCode: '',
+    authorityCode: 'psi_purchase_adjust_pric_01',
+    processNum: 0,
+    show: true
+  },
+  {
+    label: '拆卸单审批',
+    key: 'psi_purchase_unpack_01',
+    component: 'OrderUnpack',
+    authorityCode: 'psi_purchase_unpack_01',
+    processNum: 0,
+    show: true
+  },
+  {
+    label: '借入借出单审批',
+    key: 'psi_purchase_borrow_01',
+    component: 'OrderBorrow',
+    authorityCode: 'psi_purchase_borrow_01',
+    processNum: 0,
+    show: true
+  },
+  {
+    label: '换货单审批',
+    key: 'psi_wms_swap_01',
+    component: 'OrderExchange',
+    authorityCode: 'psi_wms_swap_01',
     processNum: 0,
     show: true
   }

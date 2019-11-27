@@ -13,16 +13,17 @@
     @close="$emit('update:visible',false)"
     width="990px"
   >
+
     <div
       slot='title'
       class="mb10"
-      style="background:#F2F2F2"
+      style="background:#F2F2F2;margin: -10px -15px 10px;"
     >
       <div class="d-flex">
         <div>
           <el-image
             style="width: 120px; height: 120px"
-            class="mt5"
+            class="mt5 ml20"
             :src="drawerData.goodsPic"
             fit="fill"
           ></el-image>
@@ -66,9 +67,10 @@
         </el-tab-pane>
         <el-tab-pane
           label="供应商"
-          name='2'
+          name='orderSupplier'
         >
           <orderSupplier
+            v-if="activeName == 'orderSupplier'"
             :button="false"
             :params="{page:1,limit:15,commodityCode:drawerData.commodityCode}"
           ></orderSupplier>

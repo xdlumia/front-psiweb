@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 16:27:32
+ * @LastEditTime: 2019-11-27 11:37:27
  * @Description: 采购单详情
 */
 <template>
@@ -40,6 +40,7 @@
             :show="[
               'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','waitPurchaseNumber','inventoryNumber'
             ]"
+            :sort="['expanded']"
             disabled
           />
           <customInfo :busType="27" :data="detail" disabled />
@@ -116,6 +117,11 @@ export default {
           null,
           this.code
         );
+        // data.commodityList.map(item=>{
+        //   if(item.commodityCode=='ZC1P0009RCSP20191125000001'){
+        //     item.configName="ZC1P0009RCSP20191125000001"
+        //   }
+        // })
         return data;
       } else if (this.rowData) {
         return this.rowData;

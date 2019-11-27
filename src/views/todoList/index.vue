@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:16:28
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-15 14:21:46
+ * @LastEditTime: 2019-11-27 14:15:52
  * @Description: 待办事项
  -->
 <template>
@@ -91,6 +91,10 @@ export default {
         (res.data || []).forEach(item => {
           obj[item.processTypeCode] = item.processNum
         })
+        const num = (res.data || []).reduce((val, item) => {
+          return val + item.processNum
+        }, 0)
+        this.$store.commit('setBacklogNum', num)
         return obj
       })
     },

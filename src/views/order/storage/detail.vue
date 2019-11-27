@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 14:53:35
+ * @LastEditTime: 2019-11-27 14:09:56
  * @Description: 采购入库单
 */
 <template>
@@ -76,37 +76,38 @@
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <detailApproveWrap :busType="30" :id="detail.id" v-if="detail&&showDetailPage">
-          <el-form :model="detail" size="mini" v-if="detail">
-            <supplierInfo :data="detail" disabled id="supplierInfo" />
-            <companyInfo :data="detail" disabled id="companyInfo" />
-            <arrivalInfo :data="detail" :hide="detail.source=='备货单'?['saleTime']:[]" disabled id="arrivalInfo" v-if="detail.source!='直发单'" />
-            <buyingDeliverInfo :data="detail" disabled id="deliverInfo" ref="deliverInfo" v-else />
-            <buying-goods-edit
-              :data="detail"
-              :show="[
+        <approve-panel :busType="30" :id="detail.id" v-if="detail&&showDetailPage" />
+        <el-form :model="detail" size="mini" v-if="detail">
+          <supplierInfo :data="detail" disabled id="supplierInfo" />
+          <companyInfo :data="detail" disabled id="companyInfo" />
+          <arrivalInfo :data="detail" :hide="detail.source=='备货单'?['saleTime']:[]" disabled id="arrivalInfo" v-if="detail.source!='直发单'" />
+          <buyingDeliverInfo :data="detail" disabled id="deliverInfo" ref="deliverInfo" v-else />
+          <buying-goods-edit
+            :data="detail"
+            :show="[
                 'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
               ]"
-              disabled
-              id="commodityInfo"
-              priceKey="purchasePrice"
-            />
-            <buying-goods-edit
-              :data="detail"
-              :show="[
+            :sort="detail.source=='备货单'?[]:['expanded']"
+            disabled
+            id="commodityInfo"
+            priceKey="purchasePrice"
+          />
+          <buying-goods-edit
+            :data="detail"
+            :show="[
                 'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
               ]"
-              disabled
-              fkey="additionalCommodityList"
-              priceKey="purchasePrice"
-              v-if="detail.source=='请购单'"
-            />
-            <buyingPaymentLate :data="detail" disabled id="paymentLate" />
-            <order-storage-bill :data="detail" disabled id="billInfo" />
-            <customInfo :data="detail" busType="30" disabled id="customInfo" />
-            <extrasInfo :data="detail" disabled id="extrasInfo" />
-          </el-form>
-        </detailApproveWrap>
+            :sort="detail.source=='备货单'?[]:['expanded']"
+            disabled
+            fkey="additionalCommodityList"
+            priceKey="purchasePrice"
+            v-if="detail.source=='请购单'"
+          />
+          <buyingPaymentLate :data="detail" disabled id="paymentLate" />
+          <order-storage-bill :data="detail" disabled id="billInfo" />
+          <customInfo :data="detail" busType="30" disabled id="customInfo" />
+          <extrasInfo :data="detail" disabled id="extrasInfo" />
+        </el-form>
       </el-tab-pane>
       <el-tab-pane label="请购单" name="purchaseApplyCode" v-if="detail&&detail.source=='请购单'">
         <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.purchaseApplyCode">

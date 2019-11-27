@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 14:57:11
+ * @LastEditTime: 2019-11-27 11:52:34
  * @Description: 换货单换货商品 已绑定字段 1
 */  
 <template>
@@ -14,7 +14,7 @@
     :show="[
       'categoryCode','className','specOne','configName','noteText','costAmountPrice','taxRate','!add','unit',
     ]"
-    :sort="[].concat(
+    :sort="['expanded'].concat(
       disabled?['snCodes','swapInNum','swapOutNum','swapInWmsNames','swapOutWmsNames']:[],
       ['actions','commodityCodes','goodsNames','swapInNum','swapInMoney','swapOutNum','swapOutMoney','taxRate','preTaxAmount']
     )"
@@ -24,14 +24,14 @@
     ref="goodsTable"
   >
     <template slot="actions" slot-scope="{row,info}">
-      <span @click="add(row,info)" class="f20 ml5 el-icon-circle-plus d-pointer"></span>
-      <span @click="del(row,info)" class="f20 ml5 el-icon-remove d-text-red d-pointer" v-if="(info.isChild)?true:(info.index>0)"></span>
+      <span @click="add(row,info)" class="f20 ml5 el-icon-circle-plus d-pointer" v-if="!info.isChild"></span>
+      <span @click="del(row,info)" class="f20 ml5 el-icon-remove d-text-red d-pointer" v-if="(info.isChild)?false:(info.index>0)"></span>
     </template>
     <template slot="commodityCode" slot-scope="{row,info,formProp}">
       <el-form-item :prop="formProp" :rules="[{required:true}]">
         <commodity-selector
           :codes="info.parentArray.map(item=>item.commodityCode)"
-          :disabled="disabled"
+          :disabled="info.isChild?true:disabled"
           @choose="chooseGoods($event,row,info)"
           type="code"
           v-model="row.commodityCode"
@@ -42,29 +42,37 @@
       <el-form-item :prop="formProp" :rules="[{required:true}]">
         <commodity-selector
           :codes="info.parentArray.map(item=>item.commodityCode)"
-          :disabled="disabled"
+          :disabled="info.isChild?true:disabled"
           @choose="chooseGoods($event,row,info)"
           v-model="row.goodsName"
         />
       </el-form-item>
     </template>
     <template slot="swapInNum" slot-scope="{row,info,formProp}">
-      <el-form-item :prop="formProp" :rules="[{required:true},{type:'positiveNum'},{validator:checkSwapInNum.bind(this,row)}]">
+      <el-form-item
+        :prop="formProp"
+        :rules="[{required:true},{type:'positiveNum'},{validator:checkSwapInNum.bind(this,row)}]"
+        v-if="!info.isChild"
+      >
         <el-input :disabled="disabled" size="mini" v-model="row.swapInNum"></el-input>
       </el-form-item>
     </template>
     <template slot="swapInMoney" slot-scope="{row,info,formProp}">
-      <el-form-item :prop="formProp" :rules="[{required:true},{type:'price'}]">
+      <el-form-item :prop="formProp" :rules="[{required:true},{type:'price'}]" v-if="!info.isChild">
         <el-input :disabled="disabled" size="mini" v-model="row.swapInMoney"></el-input>
       </el-form-item>
     </template>
     <template slot="swapOutNum" slot-scope="{row,info,formProp}">
-      <el-form-item :prop="formProp" :rules="[{required:true},{type:'positiveNum'},{validator:checkSwapOutNum.bind(this,row)}]">
+      <el-form-item
+        :prop="formProp"
+        :rules="[{required:true},{type:'positiveNum'},{validator:checkSwapOutNum.bind(this,row)}]"
+        v-if="!info.isChild"
+      >
         <el-input :disabled="disabled" size="mini" v-model="row.swapOutNum"></el-input>
       </el-form-item>
     </template>
     <template slot="swapOutMoney" slot-scope="{row,info,formProp}">
-      <el-form-item :prop="formProp" :rules="[{required:true},{type:'price'}]">
+      <el-form-item :prop="formProp" :rules="[{required:true},{type:'price'}]" v-if="!info.isChild">
         <el-input :disabled="disabled" size="mini" v-model="row.swapOutMoney"></el-input>
       </el-form-item>
     </template>

@@ -34,7 +34,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.accomplishNum || '0'}}/{{scope.row.total}}</span>
+            <span>{{scope.row.inAccomplishNum || '0'}}/{{scope.row.num}}</span>
           </template>
         </el-table-column>
 
@@ -47,9 +47,9 @@
         >
           <template slot-scope="scope">
             <span
-              @click="getOutGoodsRecord(scope)"
+              @click="getOutGoodsRecord(scope,0)"
               class="d-text-blue"
-            >{{scope.row.total}}</span>
+            >{{scope.row.inAccomplishNum}}</span>
           </template>
         </el-table-column>
 
@@ -61,7 +61,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.accomplishNum || '0'}}/{{scope.row.total}}</span>
+            <span>{{scope.row.outAccomplishNum || '0'}}/{{scope.row.num}}</span>
           </template>
         </el-table-column>
 
@@ -74,9 +74,9 @@
         >
           <template slot-scope="scope">
             <span
-              @click="getOutGoodsRecord(scope)"
+              @click="getOutGoodsRecord(scope,1)"
               class="d-text-blue"
-            >{{scope.row.total}}</span>
+            >{{scope.row.outAccomplishNum}}</span>
           </template>
         </el-table-column>
 
@@ -177,7 +177,9 @@ export default {
       showInFullscreen: false,
       tpForm: {
         commodityCode: '',
-        businessCode: ''
+        businessCode: '',
+        page: 1,
+        limit: 20
       }
     }
   },
@@ -186,12 +188,13 @@ export default {
       this.showInFullscreen = true;
     },
     //查看商品记录
-    getOutGoodsRecord(scope) {
+    getOutGoodsRecord(scope, type) {
       this.dialogVisible = true
       this.tpForm.commodityCode = scope.row.commodityCode
       this.tpForm.businessCode = this.form.allocationOrderCode
       this.tpForm.page = 1
       this.tpForm.limit = 20
+      this.tpForm.operation = type//参数，0入库 1 出库 
     }
   },
   components: {

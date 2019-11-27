@@ -22,7 +22,7 @@
       </div>
       <d-table
         api="seePsiSaleService.businesscommodityGetBusinessCommodityList"
-        :params="{busCode:detailForm.salesSheetCode,busType:5}"
+        :params="{busCode:code,busType:5}"
         ref="companyTable"
         class="college-main"
         style="max-height:300px"
@@ -161,7 +161,7 @@ import commodityPicking from '@/components/formComponents/commodity-picking'
 import FullscreenElement from '@/components/fullscreen-element';
 import machineSn from '@/components/formComponents/machine-sn'
 export default {
-  props: ['detailForm'],
+  props: ['detailForm', 'code'],
   data() {
     return {
       rowData: {},
