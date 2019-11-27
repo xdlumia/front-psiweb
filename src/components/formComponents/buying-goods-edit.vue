@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 14:23:40
+ * @LastEditTime: 2019-11-27 18:17:23
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -486,6 +486,7 @@ export default {
     // 头部选择
     headerSelect({ prop }, select) {
       this.data[this.fkey].map(item => (item[prop] = select));
+      this.$refs.table.store.updateColumns();
     },
     // 某一行选择
     columnSelect(item, select) {
