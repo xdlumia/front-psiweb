@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-28 14:00:55
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 18:22:31
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-27 19:16:40
  * @Description: 生成拣货单和组装任务 人员分配 1
 */
 <template>
@@ -105,9 +105,6 @@ export default {
       options: [],
       employeeName: '',
       employeeAssembleName: '',
-      dialogData: {
-        visible: false
-      }
     };
   },
   methods: {

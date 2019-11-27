@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 19:08:43
+ * @LastEditTime: 2019-11-27 19:18:02
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -45,6 +45,7 @@
           :name="key"
         />
         <choose-assembly
+          :hide="['note','assemblePerson']"
           id="choose-assembly"
           :data="form"
         />
@@ -108,7 +109,7 @@ export default {
       },
       // 新增orEdit框内容
       form: {
-        id: '1',
+        id: '',
         companyAccountId: '',
         companySettlementId: '',
         apprpvalNode: '', // 审核节点,
