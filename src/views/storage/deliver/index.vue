@@ -40,7 +40,6 @@
     />
     <outLibDetails
       :visible.sync="outLibVisible"
-      :rowData="rowData"
       v-if="outLibVisible"
       :code="rowData.salesShipmentCode"
       @reload="$refs.table.reload()"

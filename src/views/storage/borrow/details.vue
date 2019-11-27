@@ -16,31 +16,24 @@
   >
     <div>
       <div class="drawer-header">
-
-        <!-- v-if="drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 6 || drawerData.borrowLoanState == 9" -->
         <el-button
           v-if="drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 6 || drawerData.borrowLoanState == 9"
           @click="backVisible=true,isComponents = 'borrowPayback',dialogData.title='借入归还-UYGVUOUY'"
           size="mini"
           type="primary"
         >归还</el-button>
-        <!-- v-if="drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 7 || drawerData.borrowLoanState == 8" -->
         <el-button
           v-if="drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 7 || drawerData.borrowLoanState == 8"
           @click="backVisible=true,isComponents = 'lendBack',dialogData.title='借出返还-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
         >返还</el-button>
-
-        <!-- v-if="drawerData.borrowLoanState == 2 || drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 9" -->
         <el-button
           v-if="drawerData.borrowLoanState == 2 || drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 9"
           @click="backVisible=true,isComponents = 'borrowScanCode',dialogData.title='借入扫码-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
         >借入扫码</el-button>
-
-        <!-- v-if="drawerData.borrowLoanState == 3 || drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 10" -->
         <el-button
           v-if="drawerData.borrowLoanState == 3 || drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 10"
           @click="backVisible=true,isComponents = 'lendScanCode',dialogData.title='借出扫码-'+detailForm.borrowLoanCode"
@@ -48,7 +41,10 @@
           type="primary"
         >借出扫码</el-button>
       </div>
-      <el-tabs class="wfull hfull tabs-view">
+      <el-tabs
+        class="wfull hfull tabs-view"
+        v-model="activeName"
+      >
         <el-tab-pane label="详情">
           <el-form
             size="mini"
@@ -83,10 +79,14 @@
             <lendScanCode :visible='lendCodeVisible' /> -->
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="借入借出单">
+        <el-tab-pane
+          label="借入借出单"
+          name='orderBorrow'
+        >
           <orderBorrow
+            v-if="activeName == 'orderBorrow'"
             :button="false"
-            :params="{page:1,limit:15,borrowLoanTaskCode:detailForm.borrowLoanTaskCode}"
+            :params="{page:1,limit:15,borrowLoanTaskCode:drawerData.borrowLoanTaskCode}"
           ></orderBorrow>
         </el-tab-pane>
       </el-tabs>
@@ -116,6 +116,7 @@ export default {
       dialogData: {
         title: ''
       },
+      activeName: '',
       state: {
         2: '待借入',
         3: '待借出',

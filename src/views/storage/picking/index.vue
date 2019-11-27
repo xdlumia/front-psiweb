@@ -52,14 +52,14 @@
       @reload='reload'
     />
     <assemblyDetails
-      :data='drawerData'
-      :code="drawerData.assembleTaskCode"
+      :data='rowData'
+      :code="rowData.assembleTaskCode"
       :visible.sync='assembleVisible'
       v-if="assembleVisible"
       @reload='reload'
     />
     <shipDetails
-      :code="drawerData.salesSheetCode"
+      :code="shipData.salesSheetCode"
       :data='shipData'
       :visible.sync='shipVisible'
       v-if="shipVisible"
@@ -202,6 +202,7 @@ export default {
     getTableVisible(data) {
       this.tableVisible = true
       this.drawerData = data
+      console.log(this.drawerData, 'this.drawerDatathis.drawerDatathis.drawerData')
     },
     //打开组装任务详情
     getVisible(data) {
