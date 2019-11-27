@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 16:25:09
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-27 17:03:56
  * @Description: 审核信息
 */
 <template>
@@ -45,7 +45,7 @@ const busType = {
   '31': 'psi_purchase_reject_01', // 采购退货单
   '39': 'psi_adjustPrice_1003 ', // 销售调价单
   '40': 'psi_purchase_adjust_pric_01', // 采购调价单
-  '50': 'psi_finance_pay_bill_01', // 付款单
+  '50': 'psi_payment', // 付款单
   '56': 'TTZD-001', // 账单调整单
   '58': 'psi_invoice_001', // 待收票
   '59': 'psi_billing', // 待开票
