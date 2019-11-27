@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 11:57:21
+ * @LastEditTime: 2019-11-27 14:01:45
  * @Description: 换货单
 */
 <template>
@@ -71,7 +71,6 @@ export default {
       ).toFixed(2);
     },
     getDetail() {
-      console.log(this.rowData);
       if (this.rowData) return this.rowData;
       return {
         putinCommodityList: [],

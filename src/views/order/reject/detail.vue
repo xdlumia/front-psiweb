@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 17:35:47
+ * @LastEditTime: 2019-11-27 14:09:45
  * @Description: 采购退货单
 */
 <template>
@@ -62,32 +62,32 @@
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <detailApproveWrap :busType="31" :id="detail.id" v-if="detail&&showDetailPage">
-          <el-form :model="detail" size="mini">
-            <supplierInfo :data="detail" disabled id="supplierInfo"></supplierInfo>
-            <companyInfo :data="detail" disabled id="companyInfo"></companyInfo>
-            <buyingRejectDeliver
-              :data="detail"
-              :hide="[
+        <approve-panel :busType="31" :id="detail.id" v-if="detail&&showDetailPage" />
+        <el-form :model="detail" size="mini">
+          <supplierInfo :data="detail" disabled id="supplierInfo"></supplierInfo>
+          <companyInfo :data="detail" disabled id="companyInfo"></companyInfo>
+          <buyingRejectDeliver
+            :data="detail"
+            :hide="[
                 'saleTime','logisticsSn','collected'
               ]"
-              disabled
-              id="deliverInfo"
-            />
-            <buyingGoodsEdit
-              :data="detail"
-              :show="[
+            disabled
+            id="deliverInfo"
+          />
+          <buyingGoodsEdit
+            :data="detail"
+            :show="[
                 'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','!add'
               ]"
-              :summaryMethod="getSummarys"
-              disabled
-              id="commodityInfo"
-            />
-            <orderStorageBill :data="detail" :hide="['isBillFee']" :type="1" disabled id="billInfo" />
-            <customInfo :data="detail" busType="31" disabled id="customInfo"></customInfo>
-            <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
-          </el-form>
-        </detailApproveWrap>
+            :sort="['expanded']"
+            :summaryMethod="getSummarys"
+            disabled
+            id="commodityInfo"
+          />
+          <orderStorageBill :data="detail" :hide="['isBillFee']" :type="1" disabled id="billInfo" />
+          <customInfo :data="detail" busType="31" disabled id="customInfo"></customInfo>
+          <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
+        </el-form>
       </el-tab-pane>
       <el-tab-pane label="采购入库单" name="putin">
         <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.putin">

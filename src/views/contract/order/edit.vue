@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 14:28:50
+ * @LastEditTime: 2019-11-27 11:44:56
  * @Description: 采购合同
 */
 <template>
@@ -42,8 +42,9 @@
           <buying-goods-edit
             :data="form"
             :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
-          ]"
+              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
+            ]"
+            :sort="['expanded']"
             disabled
             id="commodityInfo"
             priceKey="costAmount"
@@ -72,9 +73,7 @@ export default {
   props: {
     from: String // 来源
   },
-  computed: {
-    
-  },
+  computed: {},
   data() {
     return {
       tmpList: [],

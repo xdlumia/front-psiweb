@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 17:36:35
+ * @LastEditTime: 2019-11-27 14:08:27
  * @Description: 换货单
 */
 <template>
@@ -64,16 +64,15 @@
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <detailApproveWrap :busType="1" :id="detail.id" v-if="detail&&showDetailPage">
-          <el-form :model="detail" ref="form" size="mini">
-            <exchange-info :data="detail" disabled id="exchangeInfo" />
-            <buying-exchange-goods :data="detail" disabled exchangeType="in" id="inGoods" />
-            <buying-exchange-goods :data="detail" disabled exchangeType="out" id="outGoods" />
-            <orderStorageBill :data="detail" :hide="['isBillFee']" :type="3" disabled id="billInfo" />
-            <customInfo :data="detail" busType="1" disabled id="customInfo"></customInfo>
-            <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
-          </el-form>
-        </detailApproveWrap>
+        <approve-panel :busType="1" :id="detail.id" v-if="detail&&showDetailPage" />
+        <el-form :model="detail" ref="form" size="mini">
+          <exchange-info :data="detail" disabled id="exchangeInfo" />
+          <buying-exchange-goods :data="detail" disabled exchangeType="in" id="inGoods" />
+          <buying-exchange-goods :data="detail" disabled exchangeType="out" id="outGoods" />
+          <orderStorageBill :data="detail" :hide="['isBillFee']" :type="3" disabled id="billInfo" />
+          <customInfo :data="detail" busType="1" disabled id="customInfo"></customInfo>
+          <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
+        </el-form>
       </el-tab-pane>
       <el-tab-pane label="账单管理" name="bill">
         <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.bill">

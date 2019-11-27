@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 17:52:24
+ * @LastEditTime: 2019-11-27 14:09:35
  * @Description: 采购调价单
 */
 <template>
@@ -65,10 +65,10 @@
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <detailApproveWrap :busType="40" :id="detail.id" v-if="detail&&showDetailPage">
-          <el-form :model="detail" v-if="detail&&visible">
-            <buying-goods-edit
-              :customColumns="[
+        <approve-panel :busType="40" :id="detail.id" v-if="detail&&showDetailPage" />
+        <el-form :model="detail" v-if="detail&&visible">
+          <buying-goods-edit
+            :customColumns="[
                 { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140, },
                 { label:'库存成本(税前)',key:'inventoryPrice',prop:'inventoryPrice',width:140, },
                 { label:'调整金额',key:'adjustPriceMoney',prop:'adjustPriceMoney',width:120, format:(a,b)=>b.adjustPriceMoney||0 },
@@ -79,17 +79,16 @@
                   format:(a,b)=>b.adjustPriceDifference||0
                 },
               ]"
-              :data="detail"
-              :show="[
+            :data="detail"
+            :show="[
                 'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','configName','noteText','fullscreen'
               ]"
-              :showSummary="false"
-              disabled
-              title="商品信息"
-            ></buying-goods-edit>
-            <extrasInfo :data="detail" disabled id="extrasInfo" />
-          </el-form>
-        </detailApproveWrap>
+            :showSummary="false"
+            disabled
+            title="商品信息"
+          ></buying-goods-edit>
+          <extrasInfo :data="detail" disabled id="extrasInfo" />
+        </el-form>
       </el-tab-pane>
     </el-tabs>
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
