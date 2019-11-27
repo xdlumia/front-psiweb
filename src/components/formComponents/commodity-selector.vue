@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 13:56:28
+ * @LastEditTime: 2019-11-27 16:19:20
  * @Description: 商品输入选框 字段已绑定 1
 */
 <template>
@@ -49,7 +49,8 @@
   </span>
 </template>
 <script>
-let preReqs = new Map();
+import { RequestCache } from '@/utils/requestCache';
+let cache = new RequestCache();
 
 export default {
   props: {
@@ -137,29 +138,19 @@ export default {
       }
       this.loading = true;
       const api = this.sn ? 'wmsinventorydetailList' : 'wmsinventoryList';
-      let params = Object.assign(
-        {
-          page: 1,
-          limit: 50,
-          goodsName: words,
-          categoryCode:
-            this.kinds && this.kinds.length ? this.kinds[0].value : ''
-        },
-        this.params
+      const { data } = await cache.in(10).for(
+        this.$api.seePsiWmsService[api],
+        Object.assign(
+          {
+            page: 1,
+            limit: 50,
+            goodsName: words,
+            categoryCode:
+              this.kinds && this.kinds.length ? this.kinds[0].value : ''
+          },
+          this.params
+        )
       );
-      let key = JSON.stringify({ ...params, sn: this.sn });
-      let preReq = preReqs.get(key);
-      let req = Promise.resolve();
-      if (preReq && preReq.timestamp >= +new Date() - 10 * 1000) {
-        req = preReq.data;
-      } else {
-        req = this.$api.seePsiWmsService[api](params);
-        preReqs.set(key, {
-          data: req,
-          timestamp: +new Date()
-        });
-      }
-      const { data } = await req;
       this.options = data || [];
       this.loading = false;
       this.searchTable[words] = data;

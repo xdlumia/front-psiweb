@@ -15,8 +15,7 @@
     v-loading="loading"
   >
     <template slot="button">
-      <el-button size="mini" v-if="buttonState == -1" type="primary"
-@click="showEdit = true">编辑</el-button>
+      <el-button size="mini" v-if="buttonState == -1" type="primary" @click="showEdit = true">编辑</el-button>
       <el-button
         size="mini"
         v-if="buttonState == -1"
@@ -119,7 +118,7 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     return {
       activeTab: 'detail',
       showEdit: false,
@@ -129,30 +128,30 @@ export default {
       status: []
     }
   },
-  mounted() {
+  mounted () {
     this.checkVisible();
     this.detailForm = Object.assign(this.detailForm, this.rowData)
     this.fcostGetInfoByCode()
   },
   computed: {
-    buttonState() {
+    buttonState () {
       return this.detailForm.state
     }
   },
   watch: {
-    visible() {
+    visible () {
       this.checkVisible();
     }
   },
   methods: {
-    refresh() {
+    refresh () {
       this.fcostGetInfoByCode()
       this.$emit('refresh')
     },
-    checkVisible() {
+    checkVisible () {
       this.showDetailPage = this.visible;
     },
-    fcostGetInfoByCode() {
+    fcostGetInfoByCode () {
       this.loading = true
       this.$api.seePsiFinanceService.fcostGetInfoByCode({ code: this.code }).then(res => {
         this.detailForm = res.data
@@ -168,13 +167,13 @@ export default {
         this.loading = false
       })
     },
-    fcostAuditApproval(id) {
+    fcostAuditApproval (id) {
       this.$confirm(`是否复核通过`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.fcostAuditApproval({ id, processType: 'psi_finance_cost_01', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
+        this.$api.seePsiFinanceService.fcostAuditApproval({ id, processType: 'psi_finance_fee', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
           this.refresh()
         })
       }).catch(() => {
@@ -184,13 +183,13 @@ export default {
         })
       })
     },
-    fcostReject(id) {
+    fcostReject (id) {
       this.$confirm(`是否驳回`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.fcostReject({ id, processType: 'psi_finance_cost_01', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
+        this.$api.seePsiFinanceService.fcostReject({ id, processType: 'psi_finance_fee', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
           this.refresh()
         })
       }).catch(() => {
@@ -200,13 +199,13 @@ export default {
         })
       })
     },
-    fcostPassApproval(id) {
+    fcostPassApproval (id) {
       this.$confirm(`是否审核通过`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.fcostPassApproval({ id, processType: 'psi_finance_cost_01', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
+        this.$api.seePsiFinanceService.fcostPassApproval({ id, processType: 'psi_finance_fee', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
           this.refresh()
         })
       }).catch(() => {
@@ -216,13 +215,13 @@ export default {
         })
       })
     },
-    fcostSubmitApproval(id) {
+    fcostSubmitApproval (id) {
       this.$confirm(`是否提交审核`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiFinanceService.fcostSubmitApproval({ id, processType: 'psi_finance_cost_01' }).then(res => {
+        this.$api.seePsiFinanceService.fcostSubmitApproval({ id, processType: 'psi_finance_fee' }).then(res => {
           this.refresh()
         })
       }).catch(() => {
@@ -232,7 +231,7 @@ export default {
         })
       })
     },
-    fcostDelete(id) {
+    fcostDelete (id) {
       this.$confirm(`是否删除`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -249,7 +248,7 @@ export default {
         })
       })
     },
-    commonquotationconfigUpdate(id, state) {
+    commonquotationconfigUpdate (id, state) {
       this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 14:10:36
+ * @LastEditTime: 2019-11-27 15:56:10
  * @Description: 借入借出详情
 */
 <template>
@@ -63,13 +63,13 @@
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <approve-panel :busType="5" :id="detail.id" v-if="detail&&showDetailPage" />
+        <approve-panel :busType="5" :id="detail.id" v-if="isDataReady" />
         <el-form :model="detail" size="mini">
           <borrow-in :data="detail" disabled />
           <borrow-goods :data="detail" disabled />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="销售出库单" name="outlib" v-if="showDetailPage&&!loading&&detail&&detail.salesShipmentCode">
+      <el-tab-pane label="销售出库单" name="outlib" v-if="isDataReady&&detail.salesShipmentCode">
         <FullscreenWrap v-if="tabStatus.outlib">
           <SalesOutLibrary :button="false" :params="{page:1,limit:15,shipmentCode:detail.salesShipmentCode}" />
         </FullscreenWrap>

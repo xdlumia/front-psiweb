@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 14:10:44
+ * @LastEditTime: 2019-11-27 16:38:43
  * @Description: 备货单详情
 */
 <template>
@@ -70,7 +70,7 @@
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <approve-panel :busType="29" :id="detail.id" v-if="detail&&showDetailPage" />
+        <approve-panel :busType="29" :id="detail.id" v-if="isDataReady" />
         <el-form size="mini">
           <form-card id="arrivalInfo" title="到货信息">
             <el-row :gutter="10">
@@ -99,8 +99,8 @@
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="采购入库单" name="putin">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.putin">
-          <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:code}" />
+        <FullscreenWrap v-if="isDataReady&&tabStatus.putin">
+          <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:code,relationCode:code}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>

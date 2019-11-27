@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-27 13:52:36
+ * @LastEditTime: 2019-11-27 14:21:33
  * @Description: 库房管理
  -->
 <template>
@@ -105,6 +105,18 @@ export default {
       filterOptions: [
         { label: '库房名', prop: 'name', default: true },
         { label: '负责人', prop: 'personInChargeId', type: 'employee', default: true },
+        {
+          label: '状态',
+          prop: 'state',
+          type: 'select',
+          default: true,
+          options: [
+            { label: '全部', value: null },
+            { label: '启用中', value: 1 },
+            { label: '已停用', value: 0 },
+            { label: '盘点中', value: 2 }
+          ]
+        },
         {
           label: '创建人',
           prop: 'creatorName',

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 11:36:59
+ * @LastEditTime: 2019-11-27 15:57:48
  * @Description: 直发单详情
 */
 <template>
@@ -21,7 +21,6 @@
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
         <el-form size="mini" v-if="detail">
-          <approvePanel></approvePanel>
           <deliverInfo
             :data="detail"
             :hide="[
@@ -43,7 +42,7 @@
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="采购入库单" name="putin">
-        <FullscreenWrap v-if="showDetailPage&&!loading&&detail&&tabStatus.putin">
+        <FullscreenWrap v-if="isDataReady&&tabStatus.putin">
           <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:detail.directCode}" />
         </FullscreenWrap>
       </el-tab-pane>
