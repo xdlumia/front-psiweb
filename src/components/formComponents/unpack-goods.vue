@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 14:05:53
+ * @LastEditTime: 2019-11-27 16:51:43
  * @Description: 拆卸商品编辑页面
 */  
 <template>
@@ -76,8 +76,8 @@
       </el-form-item>
     </template>
     <template slot="purchaseUnivalence" slot-scope="{row,info,formProp}">
-      <el-form-item :prop="formProp" :rules="[{required:true},{type:'price'},{validator:checkPurchasePrice.bind(this,row,info)}]">
-        <el-input size="mini" v-if="info.isChild" v-model="row.purchaseUnivalence"></el-input>
+      <el-form-item :prop="formProp" :rules="[{required:true},{type:'price'},{validator:checkPurchasePrice.bind(this,row,info)}]" v-if="info.isChild">
+        <el-input size="mini" v-model="row.purchaseUnivalence"></el-input>
       </el-form-item>
     </template>
   </buying-goods-edit>
@@ -211,6 +211,7 @@ export default {
               good.children = data.map(item=>({
                 ...item,
                 singleNum:item.commodityNum,
+                purchaseUnivalence:item.inventoryPrice
               }))
             }
           }
