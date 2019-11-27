@@ -2,75 +2,67 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:20:17
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-25 16:10:25
+ * @LastEditTime: 2019-11-27 11:19:51
  * @Description: 销售
  */
 
 const sales = [
-  {
-    label: '待审批报价单',
-    key: 'psi_sales_quotation_01',
-    component: 'SalesQuote',
-    authorityCode: 'psi_sales_quotation_01',
-    processNum: 0,
-    show: true
-  },
-  {
-    label: '待审批销售出库单',
-    key: 'psi_sales_shipment_01',
-    component: 'SalesOutLibrary',
-    authorityCode: 'psi_sales_shipment_01',
-    processNum: 0,
-    show: true
-  },
-  {
-    label: '待审批销售出库单采购时间',
-    key: '',
-    component: '',
-    authorityCode: '',
-    processNum: 0,
-    show: false
-  },
-  {
-    label: '待审批销售退货单',
-    key: 'psi_purchase_alteration',
-    component: 'SalesReturn',
-    authorityCode: '',
-    processNum: 0,
-    show: true
-  },
-  {
-    label: '待审批销售换货单',
-    key: '',
-    component: 'SalesExchange',
-    authorityCode: '',
-    processNum: 0,
-    show: true
-  },
-  {
-    label: '待审批账单调整单',
-    key: '',
-    component: 'SalesAdjust',
-    authorityCode: '',
-    processNum: 0,
-    show: true
-  },
-  {
-    label: '待审批费用分摊',
-    key: '',
-    component: 'SalesApportion',
-    authorityCode: '',
-    processNum: 0,
-    show: true
-  },
-  {
-    label: '销售调价单',
-    key: 'psi_adjustPrice_1003',
-    component: 'SalesAdjustPrice',
-    authorityCode: 'psi_adjustPrice_1003',
-    processNum: 0,
-    show: true
-  }
+	{
+		label: '报价单审批',
+		key: 'psi_sales_quote_01',
+		component: 'SalesQuote',
+		authorityCode: 'psi_sales_quote_01',
+		processNum: 0,
+		show: true
+	},
+	{
+		label: '销售出库单审批',
+		key: 'psi_sales_outlibrary_01',
+		component: 'SalesOutLibrary',
+		authorityCode: 'psi_sales_outlibrary_01',
+		processNum: 0,
+		show: true
+	},
+	{
+		label: '销售退货单审批',
+		key: 'psi_sales_return_01',
+		component: 'SalesReturn',
+		authorityCode: 'psi_sales_return_01',
+		processNum: 0,
+		show: true
+	},
+	{
+		label: '销售换货单审批',
+		key: 'psi_sales_exchange_01',
+		component: 'SalesExchange',
+		authorityCode: 'psi_sales_exchange_01',
+		processNum: 0,
+		show: true
+	},
+	{
+		label: '分摊单审批',
+		key: 'psi_sales_apportion_01',
+		component: 'SalesApportion',
+		authorityCode: 'psi_sales_apportion_01',
+		processNum: 0,
+		show: true
+	},
+	{
+		label: '销售调价单审批',
+		key: 'psi_adjustPrice_1003',
+		component: 'SalesAdjustPrice',
+		authorityCode: 'psi_adjustPrice_1003',
+		processNum: 0,
+		show: true
+	},
+	{
+		label: '账单调整单审批',
+		key: 'psi_sales_adjust_01',
+		component: 'SalesAdjust',
+		authorityCode: 'psi_sales_adjust_01',
+		processNum: 0,
+		show: true
+	}
 ]
 
 export default sales
