@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 17:44:13
+ * @LastEditTime: 2019-11-27 18:48:16
  * @Description: 账单调整详情
 */
 <template>
@@ -71,7 +71,7 @@
       @reload="setEdit(),getDetail()"
       :rowData="rowData"
       type="edit"
-      :params="{salesShipmentCode:rowData.shipmentCode}"
+      :params="{relationCode:code}"
       :code="rowData.shipmentCode"
     />
   </div>
