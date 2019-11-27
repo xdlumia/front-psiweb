@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 11:53:04
+ * @LastEditTime: 2019-11-27 15:07:05
  * @Description: 退货扫码
 */
 
@@ -43,8 +43,6 @@
         :params="{ busCode: rowData.quotationCode, busType: 1, putawayType: 0 }"
         :data="form"
       />
-      <!-- 扫描记录 -->
-      <scan-record :data="form" />
     </el-form>
   </el-dialog>
 </template> 
@@ -68,10 +66,9 @@ export default {
           // }
         ],
         businessCode: '',//关联业务编号
-        businessCodeList: '',//关联业务code List
+        businessCodeList: [],//关联业务code List
         businessId: '',//0,
         businessType: '',//0,
-        scanData: [], //扫描记录数据 临时数据
         putawayCommodityList: [
           // {
           //   commodityCode: '',//"示例：商品编号",
@@ -88,7 +85,18 @@ export default {
   methods: {
     //保存
     saveHandle() {
-      this.$api.seePsiWmsService.salesreturnedScanReturned({ businessCode: this.drawerData.purchaseCode, businessId: this.drawerData.id, putawayCommodityList: this.tableData, businessType: 13 })
+      this.form.businessCode = this.code
+      this.form.businessId = this.rowData.id
+      this.form.alterationCommodityVoList = this.form.putawayCommodityList.map(item => {
+        return {
+          alterationCode: this.code,//"示例：退换货单code",
+          alterationNumber: item.scanNumber,//退货数量/扫码次数
+          commodityCode: item.commodityCode,//"示例：商品编号",
+          putawayType: 1,// 入库1
+        }
+      })
+
+      this.$api.seePsiSaleService.salesreturnedScanReturned(this.form)
         .then(res => {
           this.setEdit()
           this.close()
