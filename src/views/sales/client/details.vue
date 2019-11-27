@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-15 18:48:54
+ * @LastEditTime: 2019-11-27 17:36:17
  * @Description: 客户详情
 */
 <template>
@@ -72,7 +72,7 @@
     <!-- 新建报价单 -->
     <quoteAdd
       :visible.sync="addQuotoVisible"
-      type="edit"
+      type="add"
       :rowData="rowData"
     />
   </div>
