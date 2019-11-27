@@ -29,6 +29,7 @@
         <el-tab-pane label="详情">
           <el-form size="mini">
             <goodsExported
+              v-if='detailForm'
               :detailForm='detailForm'
               :code='data.salesSheetCode'
             />
@@ -50,7 +51,7 @@
           <storagePicking
             v-if="activeName == 'storagePicking'"
             :button="false"
-            :params="{page:1,limit:15,salesSheetCode:data.salesSheetCode}"
+            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
           ></storagePicking>
         </el-tab-pane>
         <el-tab-pane
@@ -60,7 +61,7 @@
           <storageAssembly
             v-if="activeName == 'storageAssembly'"
             :button="false"
-            :params="{page:1,limit:15,salesSheetCode:data.salesSheetCode}"
+            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
           ></storageAssembly>
         </el-tab-pane>
         <el-tab-pane
@@ -70,7 +71,7 @@
           <storageDeliver
             v-if="activeName == 'storageDeliver'"
             :button="false"
-            :params="{page:1,limit:15,salesSheetCode:data.salesSheetCode}"
+            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
           ></storageDeliver>
         </el-tab-pane>
         <el-tab-pane
@@ -80,7 +81,7 @@
           <salesOutLibrary
             v-if="activeName == 'salesOutLibrary'"
             :button="false"
-            :params="{page:1,limit:15,salesSheetCode:data.salesSheetCode}"
+            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
           ></salesOutLibrary>
         </el-tab-pane>
         <el-tab-pane
@@ -90,7 +91,7 @@
           <orderBorrow
             v-if="activeName == 'orderBorrow'"
             :button="false"
-            :params="{page:1,limit:15,borrowLoanType:0,salesSheetCode:data.salesSheetCode}"
+            :params="{page:1,limit:15,borrowLoanType:0,relationCode:data.salesSheetCode}"
           ></orderBorrow>
         </el-tab-pane>
         <el-tab-pane
@@ -99,7 +100,7 @@
         >>
           <financeReceivable
             :button="false"
-            :params="{page:1,limit:15,borrowLoanType:0,salesSheetCode:data.salesSheetCode}"
+            :params="{page:1,limit:15,borrowLoanType:0,relationCode:data.salesSheetCode}"
             v-if="activeName == 'financeReceivable'"
           ></financeReceivable>
         </el-tab-pane>

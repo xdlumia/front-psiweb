@@ -6,81 +6,149 @@
  * @Description: 换货单换货商品 已绑定字段 1
 */  
 <template>
-  <buying-goods-edit
-    :customColumns="customColumns"
-    :data="data"
-    :disabled="disabled"
-    :fkey="fkey"
-    :show="[
+  <div>
+    <buying-goods-edit
+      :customColumns="customColumns"
+      :data="data"
+      :disabled="disabled"
+      :fkey="fkey"
+      :show="[
       'categoryCode','className','specOne','configName','noteText','costAmountPrice','taxRate','!add','unit',
     ]"
-    :sort="['expanded'].concat(
+      :sort="['expanded'].concat(
       disabled?['snCodes','swapInNum','swapOutNum','swapInWmsNames','swapOutWmsNames']:[],
       ['actions','commodityCodes','goodsNames','swapInNum','swapInMoney','swapOutNum','swapOutMoney','taxRate','preTaxAmount']
     )"
-    :summaryMethod="getSummaries"
-    :title="exchangeType=='in'?'换入商品':'换出商品'"
-    class="borrow-goods"
-    ref="goodsTable"
-  >
-    <template slot="actions" slot-scope="{row,info}">
-      <span @click="add(row,info)" class="f20 ml5 el-icon-circle-plus d-pointer" v-if="!info.isChild"></span>
-      <span @click="del(row,info)" class="f20 ml5 el-icon-remove d-text-red d-pointer" v-if="(info.isChild)?false:(info.index>0)"></span>
-    </template>
-    <template slot="commodityCode" slot-scope="{row,info,formProp}">
-      <el-form-item :prop="formProp" :rules="[{required:true}]">
-        <commodity-selector
-          :codes="info.parentArray.map(item=>item.commodityCode)"
-          :disabled="info.isChild?true:disabled"
-          @choose="chooseGoods($event,row,info)"
-          type="code"
-          v-model="row.commodityCode"
-        />
-      </el-form-item>
-    </template>
-    <template slot="goodsName" slot-scope="{row,info,formProp}">
-      <el-form-item :prop="formProp" :rules="[{required:true}]">
-        <commodity-selector
-          :codes="info.parentArray.map(item=>item.commodityCode)"
-          :disabled="info.isChild?true:disabled"
-          @choose="chooseGoods($event,row,info)"
-          v-model="row.goodsName"
-        />
-      </el-form-item>
-    </template>
-    <template slot="swapInNum" slot-scope="{row,info,formProp}">
-      <el-form-item
-        :prop="formProp"
-        :rules="[{required:true},{type:'positiveNum'},{validator:checkSwapInNum.bind(this,row)}]"
-        v-if="!info.isChild"
+      :summaryMethod="getSummaries"
+      :title="exchangeType=='in'?'换入商品':'换出商品'"
+      class="borrow-goods"
+      ref="goodsTable"
+    >
+      <template
+        slot="actions"
+        slot-scope="{row,info}"
       >
-        <el-input :disabled="disabled" size="mini" v-model="row.swapInNum"></el-input>
-      </el-form-item>
-    </template>
-    <template slot="swapInMoney" slot-scope="{row,info,formProp}">
-      <el-form-item :prop="formProp" :rules="[{required:true},{type:'price'}]" v-if="!info.isChild">
-        <el-input :disabled="disabled" size="mini" v-model="row.swapInMoney"></el-input>
-      </el-form-item>
-    </template>
-    <template slot="swapOutNum" slot-scope="{row,info,formProp}">
-      <el-form-item
-        :prop="formProp"
-        :rules="[{required:true},{type:'positiveNum'},{validator:checkSwapOutNum.bind(this,row)}]"
-        v-if="!info.isChild"
+        <span
+          @click="add(row,info)"
+          class="f20 ml5 el-icon-circle-plus d-pointer"
+          v-if="!info.isChild"
+        ></span>
+        <span
+          @click="del(row,info)"
+          class="f20 ml5 el-icon-remove d-text-red d-pointer"
+          v-if="(info.isChild)?false:(info.index>0)"
+        ></span>
+      </template>
+      <template
+        slot="commodityCode"
+        slot-scope="{row,info,formProp}"
       >
-        <el-input :disabled="disabled" size="mini" v-model="row.swapOutNum"></el-input>
-      </el-form-item>
-    </template>
-    <template slot="swapOutMoney" slot-scope="{row,info,formProp}">
-      <el-form-item :prop="formProp" :rules="[{required:true},{type:'price'}]" v-if="!info.isChild">
-        <el-input :disabled="disabled" size="mini" v-model="row.swapOutMoney"></el-input>
-      </el-form-item>
-    </template>
-  </buying-goods-edit>
+        <el-form-item
+          :prop="formProp"
+          :rules="[{required:true}]"
+        >
+          <commodity-selector
+            :codes="info.parentArray.map(item=>item.commodityCode)"
+            :disabled="info.isChild?true:disabled"
+            @choose="chooseGoods($event,row,info)"
+            type="code"
+            v-model="row.commodityCode"
+          />
+        </el-form-item>
+      </template>
+      <template
+        slot="goodsName"
+        slot-scope="{row,info,formProp}"
+      >
+        <el-form-item
+          :prop="formProp"
+          :rules="[{required:true}]"
+        >
+          <commodity-selector
+            :codes="info.parentArray.map(item=>item.commodityCode)"
+            :disabled="info.isChild?true:disabled"
+            @choose="chooseGoods($event,row,info)"
+            v-model="row.goodsName"
+          />
+        </el-form-item>
+      </template>
+      <template
+        slot="swapInNum"
+        slot-scope="{row,info,formProp}"
+      >
+        <el-form-item
+          :prop="formProp"
+          :rules="[{required:true},{type:'positiveNum'},{validator:checkSwapInNum.bind(this,row)}]"
+          v-if="!info.isChild"
+        >
+          <el-input
+            :disabled="disabled"
+            size="mini"
+            v-model="row.swapInNum"
+          ></el-input>
+        </el-form-item>
+      </template>
+      <template
+        slot="swapInMoney"
+        slot-scope="{row,info,formProp}"
+      >
+        <el-form-item
+          :prop="formProp"
+          :rules="[{required:true},{type:'price'}]"
+          v-if="!info.isChild"
+        >
+          <el-input
+            :disabled="disabled"
+            size="mini"
+            v-model="row.swapInMoney"
+          ></el-input>
+        </el-form-item>
+      </template>
+      <template
+        slot="swapOutNum"
+        slot-scope="{row,info,formProp}"
+      >
+        <el-form-item
+          :prop="formProp"
+          :rules="[{required:true},{type:'positiveNum'},{validator:checkSwapOutNum.bind(this,row)}]"
+          v-if="!info.isChild"
+        >
+          <el-input
+            :disabled="disabled"
+            size="mini"
+            v-model="row.swapOutNum"
+          ></el-input>
+        </el-form-item>
+      </template>
+      <template
+        slot="swapOutMoney"
+        slot-scope="{row,info,formProp}"
+      >
+        <el-form-item
+          :prop="formProp"
+          :rules="[{required:true},{type:'price'}]"
+          v-if="!info.isChild"
+        >
+          <el-input
+            :disabled="disabled"
+            size="mini"
+            v-model="row.swapOutMoney"
+          ></el-input>
+        </el-form-item>
+      </template>
+
+    </buying-goods-edit>
+    <outGoodsRecord
+      :visible.sync='dialogVisible'
+      v-if="dialogVisible"
+      :form='tpForm'
+    />
+  </div>
 </template>
 <script>
+import outGoodsRecord from './out-goods-record'
 export default {
-  components: {},
+  components: { outGoodsRecord },
   props: {
     data: {
       default: () => {
@@ -102,7 +170,9 @@ export default {
   },
   data() {
     return {
-      showInFullscreen: false
+      showInFullscreen: false,
+      dialogVisible: false,
+      tpForm: {}
     };
   },
   mounted() {
@@ -124,45 +194,54 @@ export default {
         : 'putoutCommodityList';
     },
     // prettier-ignore
-    customColumns(){
+    customColumns() {
       let cols = [
-          { label:'含税总金额', key:'preTaxAmount', width:140, prop:'preTaxAmount',
-            format:(a,b)=>this.getPreTaxAmount(b) 
-          },
+        {          label: '含税总金额', key: 'preTaxAmount', width: 140, prop: 'preTaxAmount',
+          format: (a, b) => this.getPreTaxAmount(b)
+        },
       ]
-      if(this.disabled){
-        cols=cols.concat([
-          { label:'商品编号', key:'commodityCodes', width:140, prop:'commodityCode',showOverflowTip:true },
-          { label:'商品名称', key:'goodsNames', width:140, prop:'goodsName',showOverflowTip:true },
-          { label:'SN码/机器号', key:'snCodes',fixed:true, width:140, prop:'goodsName',
-            format:(a,b)=>(this.exchangeType=='in'?b.swapInAccomplishNum:b.swapOutAccomplishNum)||0,
-            click:()=>{}
+      if (this.disabled) {
+        cols = cols.concat([
+          { label: '商品编号', key: 'commodityCodes', width: 140, prop: 'commodityCode', showOverflowTip: true },
+          { label: '商品名称', key: 'goodsNames', width: 140, prop: 'goodsName', showOverflowTip: true },
+          {            label: 'SN码/机器号', key: 'snCodes', fixed: true, width: 140, prop: 'goodsName',
+            format: (a, b) => (this.exchangeType == 'in' ? b.swapInAccomplishNum : b.swapOutAccomplishNum) || 0,
+            click: (a) => { this.changeDialog(a) }
           },
-        ],this.exchangeType=='in'?[
-            { label:'换入数量', key:'swapInNum',fixed:true, width:140, prop:'swapInNum', },
-            { label:'换入金额', key:'swapInMoney', width:140, prop:'swapInMoney', },
-            { label:'换入库房', key:'swapInWmsNames',fixed:true, width:140, prop:'swapInWmsNames', },
-        ]:[
-            { label:'换出数量', key:'swapOutNum',fixed:true, width:140, prop:'swapOutNum', },
-            { label:'换出金额', key:'swapOutMoney', width:140, prop:'swapOutMoney', },
-            { label:'换出库房', key:'swapOutWmsNames',fixed:true, width:140, prop:'swapOutWmsNames', },
-        ],)
-      }else{
-        cols=cols.concat([
-          { label:'商品编号', key:'commodityCodes', width:140, prop:'commodityCode',slot:'commodityCode' },
-          { label:'商品名称', key:'goodsNames', width:140, prop:'goodsName',slot:'goodsName' },
-        ],this.exchangeType=='in'?[
-            { label:'换入数量', key:'swapInNum', width:140, prop:'swapInNum',slot:'swapInNum'},
-            { label:'换入金额', key:'swapInMoney', width:140, prop:'swapInMoney',slot:'swapInMoney'},
-        ]:[
-            { label:'换出数量', key:'swapOutNum', width:140, prop:'swapOutNum',slot:'swapOutNum'},
-            { label:'换出金额', key:'swapOutMoney', width:140, prop:'swapOutMoney',slot:'swapOutMoney'},
-        ], [{ label:'操作', key:'actions', width:120, prop:'actions',slot:'actions' }])
+        ], this.exchangeType == 'in' ? [
+          { label: '换入数量', key: 'swapInNum', fixed: true, width: 140, prop: 'swapInNum', },
+          { label: '换入金额', key: 'swapInMoney', width: 140, prop: 'swapInMoney', },
+          { label: '换入库房', key: 'swapInWmsNames', fixed: true, width: 140, prop: 'swapInWmsNames', },
+        ] : [
+              { label: '换出数量', key: 'swapOutNum', fixed: true, width: 140, prop: 'swapOutNum', },
+              { label: '换出金额', key: 'swapOutMoney', width: 140, prop: 'swapOutMoney', },
+              { label: '换出库房', key: 'swapOutWmsNames', fixed: true, width: 140, prop: 'swapOutWmsNames', },
+            ], )
+      } else {
+        cols = cols.concat([
+          { label: '商品编号', key: 'commodityCodes', width: 140, prop: 'commodityCode', slot: 'commodityCode' },
+          { label: '商品名称', key: 'goodsNames', width: 140, prop: 'goodsName', slot: 'goodsName' },
+        ], this.exchangeType == 'in' ? [
+          { label: '换入数量', key: 'swapInNum', width: 140, prop: 'swapInNum', slot: 'swapInNum' },
+          { label: '换入金额', key: 'swapInMoney', width: 140, prop: 'swapInMoney', slot: 'swapInMoney' },
+        ] : [
+              { label: '换出数量', key: 'swapOutNum', width: 140, prop: 'swapOutNum', slot: 'swapOutNum' },
+              { label: '换出金额', key: 'swapOutMoney', width: 140, prop: 'swapOutMoney', slot: 'swapOutMoney' },
+            ], [{ label: '操作', key: 'actions', width: 120, prop: 'actions', slot: 'actions' }])
       }
       return cols;
     }
   },
   methods: {
+    changeDialog(row) {
+      this.dialogVisible = true
+      this.tpForm.commodityCode = row.commodityCode
+      this.tpForm.businessCode = this.data.swapOrderCode//换货单/换货任务   this.data.swapTaskCode || 都用换货单的code
+      this.tpForm.page = 1
+      this.tpForm.limit = 20
+      this.tpForm.operation = this.exchangeType == 'in' ? 0 : 1//参数，0入库 1 出库 
+      this.tpForm.name = '换货'//区分换货和调拨单
+    },
     getPreTaxAmount(row) {
       let np = this.exchangeType == 'in' ? 'swapInNum' : 'swapOutNum';
       let mp = this.exchangeType == 'in' ? 'swapInMoney' : 'swapOutMoney';

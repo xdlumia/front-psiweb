@@ -33,7 +33,7 @@
           <storageSales
             v-if="activeName == 'storageSales'"
             :button="false"
-            :params="{page:1,limit:15,shipmentsOrderCode:detailForm.shipmentsOrderCode}"
+            :params="{page:1,limit:15,relationCode:detailForm.shipmentsOrderCode}"
           ></storageSales>
         </el-tab-pane>
       </el-tabs>
