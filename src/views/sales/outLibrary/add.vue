@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 17:55:31
+ * @LastEditTime: 2019-11-27 19:08:43
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -44,7 +44,10 @@
           :label="val"
           :name="key"
         />
-
+        <choose-assembly
+          id="choose-assembly"
+          :data="form"
+        />
         <!-- 客户信息 -->
         <customerInfo
           id="customerInfo"
