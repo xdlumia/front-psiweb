@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 10:53:55
+ * @LastEditTime: 2019-11-27 11:38:42
  * @Description: 销售出库单详情
 */
 <template>
@@ -70,7 +70,7 @@
       :rowData="rowData"
     />
     <!-- 退货扫码 -->
-    <return-sacn
+    <return-scan
       :visible.sync='scanVisible'
       :code="code"
       :rowData='rowData'
@@ -81,7 +81,7 @@
 <script>
 import detail from './details/detail' //详情
 import add from './add' // 新增退货单
-import returnSacn from './return-sacn' // 退货扫码
+import returnScan from './return-scan' // 退货扫码
 import VisibleMixin from '@/utils/visibleMixin';
 import { log } from 'util';
 export default {
@@ -89,7 +89,7 @@ export default {
   components: {
     detail,
     add,
-    returnSacn
+    returnScan
   },
   data() {
     return {
