@@ -84,12 +84,17 @@
       <div class="mt10 mb10">
         <span class="b mt5">机器号/SN码</span>
         <el-input
-          v-on:keyup.13.native="shipmentCommodityCheck"
+          @keyup.native.13="shipmentCommodityCheck(item)"
           size="mini"
           v-model="snCode"
           style="width:200px;"
           class="ml10 mt5"
-        ></el-input>
+        >
+          <el-button
+            slot="append"
+            @click="shipmentCommodityCheck(item)"
+          >确定</el-button>
+        </el-input>
         <span class="fr d-text-black mr10 mt5">
           <span>本次成功扫码 </span>
           <span class="b d-text-red f16">{{tableData.length}}</span>
@@ -136,7 +141,7 @@ export default {
         })
     },
     //回车机器号和SN码
-    shipmentCommodityCheck() {
+    shipmentCommodityCheck(item) {
       if (!this.data.wmsId) {
         this.$message({
           type: 'error',
@@ -149,9 +154,9 @@ export default {
       //   if ((this.rowData.commodityNumber - (this.rowData.putinNumber || 0) - this.tableData.length) != 0) {
       let params = {
         snCode: this.snCode,
-        commodityCode: this.rowData.commodityCode,
+        commodityCode: item.commodityCode,
         putawayCommodityList: this.tableData,
-        categoryCode: this.rowData.categoryCode,
+        categoryCode: item.categoryCode,
         wmsId: this.data.wmsId
       }
       this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck(params)

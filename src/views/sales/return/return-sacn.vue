@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 17:40:20
+ * @LastEditTime: 2019-11-27 10:38:40
  * @Description: 退货扫码
 */
 
@@ -31,6 +31,7 @@
     </div>
 
     <el-form
+      @submit.native.prevent
       v-if="visible"
       :model="form"
       ref="form"

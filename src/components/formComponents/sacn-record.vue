@@ -147,12 +147,7 @@ export default {
   components: {
   },
   props: {
-
-    rowData: {
-      type: Object,
-    },
-    form: {},
-    drawerData: {}
+    data: Object,
   },
   computed: {
   },
