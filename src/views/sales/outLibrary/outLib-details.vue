@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 11:00:56
+ * @LastEditTime: 2019-11-27 17:45:26
  * @Description: 销售出库单详情
 */
 <template>
@@ -221,7 +221,7 @@ export default {
         let params = {
           apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
-          processType: 'XSCKD-001',
+          processType: 'psi_sales_outlibrary_01',
         }
         // 使用 ...params是为了 方便增加或者删除参加{ ...params,...{} }
         let apiObj = {

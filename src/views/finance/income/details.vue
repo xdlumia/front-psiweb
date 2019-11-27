@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 19:45:32
+ * @LastEditTime: 2019-11-27 17:47:32
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -107,14 +107,10 @@ export default {
       if (label == '收款单匹配') {
         this.receivableVisible = true
       } else {
-        let params = {
-          id: this.detail.id,
-          processType: 'XSTHD-001',//报价单的权限吗
-        }
         let apiObj = {
           '删除': {
             api: 'seePsiFinanceService.revenuerecordDelete',
-            data: params,
+            data: { id: this.detail.id },
             needNote: null
           }
         }

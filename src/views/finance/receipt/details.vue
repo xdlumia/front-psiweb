@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 20:19:28
+ * @LastEditTime: 2019-11-27 17:48:40
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -131,6 +131,7 @@ export default {
         let params = {
           apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
+          processType: 'psi_receipt'
         }
         let apiObj = {
           '提交审核': {

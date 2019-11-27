@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 16:47:19
+ * @LastEditTime: 2019-11-27 17:46:24
  * @Description: 销售出库单详情
 */
 <template>
@@ -157,7 +157,7 @@ export default {
         let params = {
           apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
-          processType: 'XSTHD-001',
+          processType: 'psi_purchase_reject_01',
         }
         let apiObj = {
           '提交审核': {

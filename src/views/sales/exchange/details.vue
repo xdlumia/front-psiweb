@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 16:46:37
+ * @LastEditTime: 2019-11-27 17:45:03
  * @Description: 销售换货单详情
 */
 <template>
@@ -150,7 +150,7 @@ export default {
         let params = {
           apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
-          processType: 'XSHHD-001',
+          processType: 'psi_sales_exchange_01',
         }
         let apiObj = {
           '提交审核': {
