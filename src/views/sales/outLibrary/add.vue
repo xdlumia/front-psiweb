@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 19:20:37
+ * @LastEditTime: 2019-11-27 19:22:14
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -34,10 +34,8 @@
       size="small"
       :model="form"
       label-position="top"
-      class="d-auto-y"
-      style="height:calc(100vh - 110px)"
     >
-      <d-tabs :style="{maxHeight:'calc(100vh - 180px)'}">
+      <d-tabs :style="{maxHeight:'calc(100vh - 110px)'}">
         <d-tab-pane
           v-for="(val,key) of tabs"
           :key="key"

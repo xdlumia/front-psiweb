@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 16:32:32
+ * @LastEditTime: 2019-11-27 19:23:15
  * @Description: 退货扫码
 */
 
@@ -35,6 +35,8 @@
       v-if="visible"
       :model="form"
       ref="form"
+      class="d-auto-y"
+      style="max-height:calc(100vh - 110px)"
     >
       <!-- 库房列表 -->
       <warehouse-list :data="form" />
