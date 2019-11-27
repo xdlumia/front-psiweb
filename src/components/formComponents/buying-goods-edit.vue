@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 13:52:14
+ * @LastEditTime: 2019-11-27 14:23:40
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -29,7 +29,7 @@
         :load="loadChildren"
         :style="{height:showInFull?'calc(100% - 40px)':''}"
         :summary-method="showSummary?getSummaries:null"
-        :tree-props="{children: 'children', hasChildren: 'configName'}"
+        :tree-props="{children: 'children', hasChildren: (sort||[]).includes('expanded')?'configName':'children'}"
         lazy
         ref="table"
         row-key="_rowKey"
@@ -330,7 +330,8 @@ export default {
   mounted() {},
   methods: {
     isChildShowColumn(row) {
-      return (this.sort||[]).includes('expanded') && this.getParentInfo(row).isChild
+      return (this.sort || []).includes('expanded') &&
+        this.getParentInfo(row).isChild
         ? false
         : true;
     },
