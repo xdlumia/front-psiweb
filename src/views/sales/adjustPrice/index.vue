@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 17:10:18
+ * @LastEditTime: 2019-11-27 17:13:32
  * @Description: 销售-销售调价单
  */
 <template>
@@ -49,6 +49,7 @@
     <!-- 新增账单调整-->
     <add
       :visible.sync="addVisible"
+      adjustPriceType='1'
       @reload="$refs.table.reload()"
     />
   </div>
