@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 15:59:49
+ * @LastEditTime: 2019-11-27 17:01:22
  * @Description: 付款单
 */
 <template>
@@ -20,7 +20,7 @@
         @click="$submission('seePsiFinanceService.paybillPassApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
-          processType: 'psi_finance_pay_bill_01'
+          processType: 'psi_payment'
         },'通过')"
         size="mini"
         type="primary"
@@ -30,7 +30,7 @@
         @click="$submission('seePsiFinanceService.paybillReject',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
-          processType: 'psi_finance_pay_bill_01'
+          processType: 'psi_payment'
         },'驳回',true)"
         size="mini"
         type="danger"
@@ -40,7 +40,7 @@
         @click="$submission('seePsiFinanceService.paybillAuditApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
-          processType: 'psi_finance_pay_bill_01'
+          processType: 'psi_payment'
         },'复核通过')"
         size="mini"
         type="primary"

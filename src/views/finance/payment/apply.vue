@@ -72,7 +72,7 @@ export default {
         await this.$api.seePsiFinanceService.paybillPaymentApply({
           apprpvalNode: this.form.apprpvalNode,
           id: this.form.id,
-          processType: 'psi_finance_pay_bill_01'
+          processType: 'psi_payment'
         });
         this.setEdit();
         this.close();
