@@ -2,14 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 16:37:19
+ * @LastEditTime: 2019-11-27 17:35:44
  * @Description: 采购-请购单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
       :filterOptions="filterOptions"
-      :params="params"
+      :params="Object.assign(defaultParams,params)"
       :selection="true"
       api="seePsiPurchaseService.purchaseapplyorderList"
       busType="27"
@@ -73,6 +73,10 @@ export default {
   },
   data() {
     return {
+      defaultParams: {
+        page: 1,
+        limit: 15
+      },
       status: [],
       showEdit: false,
       showDetail: false,

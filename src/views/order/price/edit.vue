@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 18:24:50
+ * @LastEditTime: 2019-11-27 17:13:14
  * @Description: 销售和采购调价单
 */
 <template>
@@ -93,7 +93,8 @@ export default {
   mixins: [VisibleMixin],
   components: {},
   props: {
-    from: String // 来源
+    from: String, // 来源
+    adjustPriceType: String,
   },
   computed: {
     // 使用calc属性
@@ -144,7 +145,7 @@ export default {
       form.adjustPriceDifference = +Number(form.adjustPriceDifference).toFixed(
         2
       );
-      form.adjustPriceType = 2;
+      form.adjustPriceType = this.adjustPriceType || 2;
       delete form.commodityList;
       form.source = this.from || '新建';
       console.log(form);
