@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 19:24:20
+ * @LastEditTime: 2019-11-28 11:30:49
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -10,6 +10,7 @@
     <!-- 审核面板 -->
     <approve-panel
       disabled
+      busType="16"
       :data="data"
     />
     <!-- 客户信息 -->

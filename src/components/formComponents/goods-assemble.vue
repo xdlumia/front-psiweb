@@ -58,7 +58,11 @@
           min-width="100"
           label="可用数量"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.usableNum || '-'}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           fixed
           prop="accomplishNum"
@@ -124,11 +128,11 @@
         ></el-table-column>
         <el-table-column
           min-width="80"
-          label="单位"
+          label="备注"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+            <span>{{scope.row.note}}</span>
           </template>
         </el-table-column>
 

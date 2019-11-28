@@ -15,23 +15,35 @@
     width="990px"
   >
     <div>
+      <!-- options: [
+            { label: '全部', value: '' },
+            { label: '待拆卸', value: '1' },
+            { label: '部分拆卸', value: '2' },
+            { label: '完成拆卸', value: '3' },
+            { label: '未开始', value: '0' },
+            { label: '终止', value: '-1' },
+          ], -->
       <div class="drawer-header">
         <el-button
+          v-if="detailForm.disassemblyTaskState == 0"
           @click="wmsdisassemblytaskStart"
           size="mini"
           type="primary"
         >确认收到并开始</el-button>
         <el-button
+          v-if="detailForm.disassemblyTaskState == 1 || detailForm.disassemblyTaskState == 2"
           @click="disassembleVisible =true"
           size="mini"
           type="primary"
         >拆卸</el-button>
         <el-button
+          v-if="detailForm.isHang == 0"
           @click="wmsdisassemblytaskHangTask"
           size="mini"
           type="primary"
         >挂起</el-button>
         <el-button
+          v-if="detailForm.isHang == 1"
           @click="wmsdisassemblytaskContinueTask"
           size="mini"
           type="primary"
@@ -43,7 +55,10 @@
       >
         <el-tab-pane label="详情">
           <el-form>
-            <dismantlingMerchandise :data="detailForm" />
+            <dismantlingMerchandise
+              :data="detailForm"
+              @reload="reload"
+            />
             <form-card
               class="choose-man"
               title="人员分配"
@@ -82,6 +97,7 @@
       <disassembleGoodsChoose
         :visible.sync='disassembleVisible'
         :data="detailForm"
+        @reload='reload'
         @close='disassembleVisible = false'
       />
     </div>
@@ -141,6 +157,7 @@ export default {
       this.$emit('update:visible', false)
     },
     reload() {
+      this.wmsallocationorderInfo()
       this.$emit('reload')
     },
     //确认并开始拆卸任务
@@ -152,6 +169,7 @@ export default {
       }).then(() => {
         this.$api.seePsiWmsService.wmsdisassemblytaskStart(null, this.drawerData.id)
           .then(res => {
+            this.wmsallocationorderInfo()
             this.$emit('reload')
           })
           .finally(() => {

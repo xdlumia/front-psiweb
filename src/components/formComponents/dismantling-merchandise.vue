@@ -116,13 +116,15 @@
     />
     <disassDsassemble
       :allData='data'
+      @reload="$emit('reload'),disVisible = false"
       :data='visibleData'
       :visible.sync='disVisible'
       @close='disVisible = false'
     />
     <goods-unpack-record
       :params='{businessCode:data.disassemblyTaskCode,commodityCode:recCommodity[0].commodityCode}'
-      :commodityList="recCommodity"
+      :commodityList="
+      recCommodity"
       :data='data'
       :visible.sync="showRec"
       v-if="showRec"
@@ -163,7 +165,6 @@ export default {
     disassemble(scope) {
       this.disVisible = true
       this.visibleData = scope.row
-      console.log(scope.row, 'visibleDatavisibleDatavisibleDatavisibleDatavisibleDatavisibleDatavisibleDatavisibleData')
     },
   }
 };

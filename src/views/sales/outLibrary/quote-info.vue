@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 10:23:46
+ * @LastEditTime: 2019-11-28 11:58:25
  * @Description: 报价单信息 编辑查看时使用
 */
 <template>
@@ -23,6 +23,7 @@
     <div slot="body">
       <el-form
         label-position="top"
+        :model="detail"
         size="small"
       >
         <!-- 发货信息 -->
