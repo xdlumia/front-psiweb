@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-22 11:35:40
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 17:49:14
+ * @LastEditTime: 2019-11-28 15:43:28
  * @Description: 发票内容 商品列表 已绑定 1
 */
 <template>
@@ -141,10 +141,10 @@ export default {
   },
   methods: {
     calcBeforeTaxAmount(row){
-      return +Number(+row.price * +row.quantity).toFixed(2)||0
+      return +Number(+row.price * Number(row.quantity)).toFixed(2)||0
     },
     calcAfterTaxAmount(row){
-      return +Number((+row.price * (1+(row.taxRate/100))) * +row.quantity).toFixed(2)||0
+      return +Number((+row.price * (1+(row.taxRate/100))) * Number(row.quantity)).toFixed(2)||0
     },
     getSum(param) {
       let { columns, data } = param;
