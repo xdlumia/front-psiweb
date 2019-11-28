@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 20:49:43
+ * @LastEditTime: 2019-11-28 15:56:27
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -25,8 +25,6 @@
       row-key="id"
       size="mini"
     >
-      <el-table-column width="50">
-      </el-table-column>
       <el-table-column
         label="操作"
         min-width="80"
@@ -129,6 +127,7 @@
 
       <el-table-column
         label="商品数量"
+        prop="commodityNumber"
         min-width="110"
       >
         <template slot-scope="scope">
@@ -138,6 +137,7 @@
           >
             <el-input
               size="mini"
+              @input="numberChange(scope.row)"
               placeholder="请输入商品数量"
               v-model="scope.row.commodityNumber"
             />
@@ -162,6 +162,7 @@
           >
             <el-input
               size="mini"
+              @input="numberChange(scope.row)"
               placeholder="折扣"
               v-model="scope.row.discount"
             ></el-input>
@@ -171,6 +172,7 @@
 
       <el-table-column
         label="折后销售单价"
+        prop="discountSprice"
         min-width="110"
       >
         <template slot-scope="scope">
@@ -181,6 +183,7 @@
             <el-input
               size="mini"
               placeholder="请输入"
+              @input="discountSpriceChange(scope.row)"
               v-model="scope.row.discountSprice"
             />
           </el-form-item>
@@ -325,27 +328,38 @@ export default {
     getSummaries(param) {
       const { columns, data } = param;
       const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = '总计';
-          return;
+      columns.forEach((col, index) => {
+        if (index == 0) {
+          sums[index] = '总价'
         }
-        if (column.property == 'inventoryPrice') {
-          const values = data.map((item) => {
-            if (item.commodityInfoList && item.commodityInfoList.length > 0) {
-              return Number(item.inventoryPrice) * Number(item.commodityInfoList.length)
-            }
-          });
-          sums[index] = values.reduce((prev, curr) => {
-            const value = Number(curr);
-            if (!isNaN(value)) {
-              return prev + curr;
-            } else {
-              return prev;
-            }
-          }, 0);
+        /**
+         * discountSprice 折后销售价 
+         * commodityNumber 数量
+         * reference 销售参考价
+         */
+        else if (['commodityNumber'].includes(col.property)) {
+          const values = data.map(item => Number(item[col.property] || 0));
+          sums[index] = values.reduce((sum, curr) => {
+            const val = Number(curr)
+            return sum + curr
+          }, 0)
         }
-      })
+        else if (['discountSprice', 'reference'].includes(col.property)) {
+          // 单价 * 数量
+          const values = data.map(item => Number(item[col.property] || 0) * (item.commodityNumber || 0));
+          sums[index] = values.reduce((sum, curr) => {
+            const val = Number(curr)
+            return sum + curr
+          }, 0)
+        }
+        if (col.property == 'commodityNumber') {
+          this.data.totalNumber = sums[index] //总计数量,
+        } else if (col.property == 'reference') {
+          this.data.totalCostAmount = sums[index]//  销售参考价总计
+        } else if (col.property == 'discountSprice') {
+          this.data.totalSalesAmount = sums[index]// //总计销售价
+        }
+      });
       return sums;
     },
     expand(row) {
@@ -365,18 +379,36 @@ export default {
       console.log(row)
       // this.data.businessCommoditySaveVoList.splice(row.$index, 1)
     },
+    // 商品数量和折扣修改
+    numberChange(row) {
+      if (row.discount > 1 && row.discount <= 0) {
+        this.$message({
+          message: '折扣不能大于1且小于0',
+          type: 'info',
+          showClose: true,
+        });
+        row.discount = 1
+        return
+      }
+      let reference = row.reference || 0   //销售参考价
+      let taxRate = (row.taxRate || 100) / 100  ///税率
+      let discountSprice = row.discountSprice || 0 //折后金额
+      let discount = row.discount || 1 //折扣
+      // 折扣价格  公式:税前金额  * (1-税率) * 折扣
+      row.discountSprice = (reference * (1 - taxRate) * discount).toFixed(2)
+    },
+    discountSpriceChange(row) {
+      let reference = row.reference || 0   //销售参考价
+      let taxRate = (row.taxRate || 100) / 100  ///税率
+      let discountSprice = row.discountSprice || 0 //折后金额
+      let discount = row.discount || 1 //折扣
+      // 折后价格 / (税后价格*(1-税率)
+
+      row.discount = (discountSprice / (reference * (1 - taxRate))).toFixed(2)
+    },
     //关闭弹窗
     update() {
       this.visible = false
-    },
-
-    sumitSn(data) {
-      this.$set(this.data.businessCommoditySaveVoList[this.ceIndex], 'commodityInfoList', data)
-      this.data.businessCommoditySaveVoList.forEach((item) => {
-        if (item.commodityCode) {
-          this.addForm.commodityList.push(item)
-        }
-      })
     }
   }
 };
