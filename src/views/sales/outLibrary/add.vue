@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 11:07:53
+ * @LastEditTime: 2019-11-28 11:25:21
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -130,9 +130,9 @@ export default {
             busType: '', // 9,
             feeDetailCode: '', // 费用明细",
             feeTypeCode: '', // 费用类型",
-            isBillFee: '', // 是否直接生成应收付,
-            payAmount: '', // 付款金额
-            payTime: '', // 付款时间
+            isBillFee: 1, // 是否直接生成应收付,
+            payAmount: 0, // 付款金额
+            payTime: new Date().getTime(), // 付款时间
             paymenDays: '第1期', // 账期",
             paymentType: '', // 9
           }
