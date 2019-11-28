@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 14:01:45
+ * @LastEditTime: 2019-11-28 16:41:06
  * @Description: 换货单
 */
 <template>
@@ -26,8 +26,15 @@
           <exchange-info :data="form" id="exchangeInfo" />
           <buying-exchange-goods :data="form" @totalAmountChange="onInMoneyChange" exchangeType="in" id="inGoods" />
           <buying-exchange-goods :data="form" @totalAmountChange="onOutMoneyChange" exchangeType="out" id="outGoods" />
-          <orderStorageBill :data="form" :hide="['isBillFee']" :max="Math.abs(money.in-money.out)" :type="3" id="billInfo" />
-          <customInfo :data="form" id="customInfo" busType="1"></customInfo>
+          <orderStorageBill
+            :data="form"
+            :hide="['isBillFee']"
+            :max="Math.abs(money.in-money.out)"
+            :type="3"
+            feeDetailCode="ZD_DY_LX-4-3"
+            id="billInfo"
+          />
+          <customInfo :data="form" busType="1" id="customInfo"></customInfo>
           <extrasInfo :data="form" id="extrasInfo"></extrasInfo>
         </el-form>
       </div>
@@ -43,16 +50,14 @@ export default {
   props: {
     from: String // 来源
   },
-  computed: {
-    
-  },
+  computed: {},
   data() {
     return {
       money: {
         in: 0,
         out: 0
       },
-      alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
+      alwaysDropAndCopyForm: true // 在getDetail返回数据后，重新覆盖form
     };
   },
   mounted() {},

@@ -193,7 +193,7 @@ export default {
       //   cancelButtonText: '取消',
       //   type: 'warning'
       // }).then(() => {
-      this.$api.seePsiWmsService.wmsdisassemblytaskContinueTask({ id: this.detailForm.id })
+      this.$api.seePsiWmsService.wmsdisassemblytaskContinueTask({ id: this.detailForm.id, isHang: 0 })
         .then(res => {
           this.$emit('reload')
         })

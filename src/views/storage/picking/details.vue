@@ -96,6 +96,7 @@ export default {
         })
     },
     reload() {
+      this.wmspickingorderInfo()
       this.$emit('reload')
     }
   }

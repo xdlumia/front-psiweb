@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 10:41:08
+ * @LastEditTime: 2019-11-28 15:50:54
  * @Description: 收票申请
 */
 <template>
@@ -112,8 +112,8 @@ export default {
       return (this.form.invoiceDetailList || []).reduce((data, item) => {
         // 金额合计：999.00
         // 价税合计：1999.00 
-        data.amount += +Number(+item.price * +item.quantity).toFixed(2) || 0;
-        data.taxTotal += +Number(+item.price * (1 + (item.taxRate || 0 / 100)) * +item.quantity).toFixed(2) || 0;
+        data.amount += +Number(+item.price * Number(item.quantity)).toFixed(2) || 0;
+        data.taxTotal += +Number(+item.price * (1 + ((item.taxRate || 0) / 100)) * Number(item.quantity)).toFixed(2) || 0;
         return data;
       }, {
         amount: 0,
@@ -190,14 +190,10 @@ export default {
       // prettier-ignore
       this.form.invoiceDetailList.map(item => {
         item.taxRate = item.taxRate || 0
-        item.taxPrice =
-          +Number(+item.price * (1 + (item.taxRate || 0 / 100))).toFixed(2) || 0;
-        item.beforeTaxAmount =
-          +Number(+item.price * +item.quantity).toFixed(2) || 0;
-        item.afterTaxAmount =
-          +Number(+item.price * (1 + (item.taxRate || 0 / 100)) * +item.quantity).toFixed(2) || 0;
-        item.taxAmount =
-          +Number(+item.price * (item.taxRate || 0 / 100) * +item.quantity).toFixed(2) || 0;
+        item.taxPrice = +Number(+item.price * (1 + (item.taxRate / 100))).toFixed(2) || 0;
+        item.beforeTaxAmount = +Number(+item.price * Number(item.quantity)).toFixed(2) || 0;
+        item.afterTaxAmount = +Number(+item.price * (1 + (item.taxRate / 100)) * Number(item.quantity)).toFixed(2) || 0;
+        item.taxAmount = +Number(+item.price * (item.taxRate / 100) * Number(item.quantity)).toFixed(2) || 0;
         totalCount += Number(item.quantity||0)
 
         this.form.accountTotalAmount += item.taxAmount;

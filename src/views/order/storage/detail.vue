@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 10:05:57
+ * @LastEditTime: 2019-11-28 15:39:00
  * @Description: 采购入库单
 */
 <template>
@@ -110,6 +110,7 @@
             disabled
             fkey="additionalCommodityList"
             priceKey="purchasePrice"
+            title="附加商品"
             v-if="detail.source=='请购单'"
           />
           <buyingPaymentLate :data="detail" disabled id="paymentLate" />

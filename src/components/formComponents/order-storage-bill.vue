@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 13:40:54
+ * @LastEditTime: 2019-11-28 16:30:11
  * @Description: 账单信息
 */
 <template>
@@ -94,7 +94,15 @@ export default {
       default: 0 // 0 付款金额 1 收款金额
     },
     disabled: Boolean,
-    max: Number
+    max: Number,
+    feeTypeCode: {
+      type: String,
+      default: 'ZD_DY_LX-4'
+    },
+    feeDetailCode: {
+      type: String,
+      default: 'ZD_DY_LX-4-1'
+    }
   },
   data() {
     return {
@@ -165,7 +173,7 @@ export default {
           }
         });
         if (sum < this.max) {
-          list[0].payAmount = this.max - sum;
+          list[0].payAmount = +Number(this.max - sum).toFixed(2);
         }
       }
     },
@@ -208,6 +216,8 @@ export default {
     },
     resetPaymentName() {
       this.data.financeList.map((item, i) => {
+        item.feeTypeCode = this.feeTypeCode;
+        item.feeDetailCode = this.feeDetailCode;
         item.paymenDays = `第${i + 1}期`;
       });
     },

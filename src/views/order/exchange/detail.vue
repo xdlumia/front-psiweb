@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:43:13
+ * @LastEditTime: 2019-11-28 16:41:13
  * @Description: 换货单
 */
 <template>
@@ -69,7 +69,7 @@
           <exchange-info :data="detail" disabled id="exchangeInfo" />
           <buying-exchange-goods :data="detail" disabled exchangeType="in" id="inGoods" />
           <buying-exchange-goods :data="detail" disabled exchangeType="out" id="outGoods" />
-          <orderStorageBill :data="detail" :hide="['isBillFee']" :type="3" disabled id="billInfo" />
+          <orderStorageBill :data="detail" :hide="['isBillFee']" :type="3" disabled feeDetailCode="ZD_DY_LX-4-3" id="billInfo" />
           <customInfo :data="detail" busType="1" disabled id="customInfo"></customInfo>
           <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
         </el-form>

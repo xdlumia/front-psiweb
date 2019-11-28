@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 10:46:46
+ * @LastEditTime: 2019-11-28 15:36:20
  * @Description: 借入/借出商品
 */  
 <template>
@@ -30,7 +30,7 @@
           <span>{{row.borrowLoanAccomplishNum}}/{{row.borrowLoanNum}}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed label="借入库房" min-width="70" prop="borrowWmsName"></el-table-column>
+      <el-table-column fixed label="借入库房" min-width="120" prop="borrowWmsName" show-overflow-tooltip></el-table-column>
       <el-table-column fixed label="机器号/SN码" min-width="100" prop="borrowLoanAccomplishNum" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span
@@ -44,7 +44,7 @@
           <span>{{row.returnAccomplishNum}}/{{row.returnNum}}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed label="返还库房" min-width="70" prop="returnWmsName"></el-table-column>
+      <el-table-column fixed label="返还库房" min-width="120" prop="returnWmsName" show-overflow-tooltip></el-table-column>
       <el-table-column fixed label="机器号/SN码" min-width="100" prop="returnAccomplishNum" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span
