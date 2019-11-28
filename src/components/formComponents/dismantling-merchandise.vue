@@ -119,6 +119,7 @@
       @reload="$emit('reload'),disVisible = false"
       :data='visibleData'
       :visible.sync='disVisible'
+      v-if="disVisible"
       @close='disVisible = false'
     />
     <goods-unpack-record
