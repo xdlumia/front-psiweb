@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 19:25:56
+ * @LastEditTime: 2019-11-28 19:52:04
  * @Description: 销售出库单详情
 */
 <template>
@@ -14,7 +14,10 @@
       :status="status"
       @close="close"
     >
-      <div slot="button">
+      <div
+        slot="button"
+        v-if="Object.keys(detail).length"
+      >
         <!-- 操作按钮 -->
         <span
           v-for="(item,index) of buttons"
@@ -23,7 +26,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state || 0].includes(item.label)"
+            v-if="isShowButton(item.label)"
             size="small"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -201,6 +204,20 @@ export default {
 
   },
   methods: {
+    isShowButton(label) {
+      let state = this.detail.state || 0
+      let nodes = (this.apprpvalNode || '').split(',')
+      if (state == 0 && label == '审核通过') {
+        // 如果 节点里有07 不显示审核通过
+        return !nodes.includes('psi_sales_outlibrary_07')
+      } else if (state == 0 && label == '合同完善') {
+        // 如果 节点里有10 不显示合同完善
+        return !nodes.includes('psi_sales_outlibrary_10')
+      } else {
+        return this.currStatusType[state].includes(label)
+      }
+
+    },
     buttonsClick(label) {
       // 需要弹出操作功能
       let labelObj = {
