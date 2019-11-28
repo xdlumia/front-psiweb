@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 19:06:45
+ * @LastEditTime: 2019-11-28 19:25:46
  * @Description: 换退货商品扫码卡片 
 */
 <template>
@@ -11,7 +11,7 @@
     <buying-goods-edit
       :customColumns="[
         { label: '退货商品数量', key: 'alterationNumber', width: 140, prop: 'alterationNumber', showOverflowTip: true, 
-          format:(a,row)=>`${row.returenNumber}/${row.alterationNumber||0}`
+          format:(a,row)=>`${row.returenNumber||0}/${row.alterationNumber||0}`
         },
       ]"
       :data="data"
@@ -159,12 +159,22 @@ export default {
               item.snCode == data.snCode || item.robotCode == data.robotCode
           )
         ) {
-          if (!this.data.putawayCommodityList) {
-            this.$set(this.data, 'putawayCommodityList', []);
+          if (commodity.alterationNumber > commodity.returenNumber) {
+            if (!this.data.putawayCommodityList) {
+              this.$set(this.data, 'putawayCommodityList', []);
+            }
+            this.data.putawayCommodityList.push({ ...commodity, ...data });
+            this.putawayCommodityList.push({ ...commodity, ...data });
+            this.$forceUpdate();
+            commodity.returenNumber = (commodity.returenNumber || 0) + 1;
+            this.status.current = (this.status.current || 0) + 1;
+          } else {
+            this.$message({
+              message: '该商品退货数量已到上限，不能退货',
+              type: 'warning',
+              showClose: true
+            });
           }
-          this.data.putawayCommodityList.push({ ...commodity, ...data });
-          this.putawayCommodityList.push({ ...commodity, ...data });
-          this.$forceUpdate();
         }
       } catch (error) {}
       this.inputSN = '';
