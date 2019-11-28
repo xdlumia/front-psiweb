@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 16:51:43
+ * @LastEditTime: 2019-11-28 10:35:28
  * @Description: 拆卸商品编辑页面
 */  
 <template>
@@ -28,7 +28,7 @@
     title="拆卸商品"
   >
     <template slot="actions" slot-scope="{row,info}">
-      <span @click="addChild(row,info)" class="d-text-blue d-pointer" v-if="!info.isChild&&!row.configId">添加配件</span>
+      <span @click="addChild(row,info)" class="d-text-blue d-pointer" v-if="!info.isChild&&!row.configId&&row.commodityCode">添加配件</span>
       <span @click="add(row,info)" class="f20 ml5 el-icon-circle-plus d-pointer" v-if="info.isChild?(info.parent.configId?false:true):true"></span>
       <span
         @click="del(row,info)"
@@ -37,7 +37,7 @@
       ></span>
     </template>
     <template slot="commodityCode" slot-scope="{row,info,formProp}">
-      <el-form-item :prop="formProp" :rules="[{required:true}]">
+      <el-form-item :prop="formProp" :rules="[{required:true}]" ref="commodityCode">
         <commodity-selector
           :codes="info.parentArray.map(item=>item.commodityCode)"
           :kinds="(info.isChild)?
@@ -67,17 +67,26 @@
         :rules="[{required:true},{type:'positiveNum'},{validator:checkSingleNum.bind(this,row)}]"
         v-if="info.isChild"
       >
-        <el-input :disabled="info.parent.configId?true:false" @change="changeChildNum(info.parent)" size="mini" v-model="row.singleNum"></el-input>
+        <el-input
+          :disabled="info.parent.configId?true:false"
+          @change="changeChildNum(info.parent),checkAll()"
+          size="mini"
+          v-model="row.singleNum"
+        ></el-input>
       </el-form-item>
     </template>
     <template slot="disassemblyNum" slot-scope="{row,info,formProp}">
       <el-form-item :prop="formProp" :rules="[{required:true},{type:'positiveNum'},{validator:checkDisassemblyNum.bind(this,row)}]">
-        <el-input :disabled="info.isChild" @change="changeChildNum(row)" size="mini" v-model="row.disassemblyNum"></el-input>
+        <el-input :disabled="info.isChild" @change="changeChildNum(row),checkAll()" size="mini" v-model="row.disassemblyNum"></el-input>
       </el-form-item>
     </template>
     <template slot="purchaseUnivalence" slot-scope="{row,info,formProp}">
-      <el-form-item :prop="formProp" :rules="[{required:true},{type:'price'},{validator:checkPurchasePrice.bind(this,row,info)}]" v-if="info.isChild">
-        <el-input size="mini" v-model="row.purchaseUnivalence"></el-input>
+      <el-form-item
+        :prop="formProp"
+        :rules="[{required:true},{type:'price'},{validator:checkPurchasePrice.bind(this,row,info)}]"
+        v-if="info.isChild"
+      >
+        <el-input @change="checkAll" size="mini" v-model="row.purchaseUnivalence"></el-input>
       </el-form-item>
     </template>
   </buying-goods-edit>
@@ -108,6 +117,7 @@ export default {
     };
   },
   mounted() {
+    console.log(this);
     if (!this.data.commodityList || !this.data.commodityList.length) {
       this.data.commodityList = [
         {
@@ -247,6 +257,12 @@ export default {
       let i = info.index;
       let parent = info.parentArray;
       parent.splice(i, 1);
+    },
+    checkAll() {
+      let item = Array.isArray(this.$refs.commodityCode)
+        ? this.$refs.commodityCode[0]
+        : this.$refs.commodityCode;
+      item.form.validate();
     }
   }
 };

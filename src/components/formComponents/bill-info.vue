@@ -2,22 +2,22 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 11:46:50
+ * @LastEditTime: 2019-11-28 11:43:08
  * @Description: 账期信息
  */
 <template>
   <form-card title='账期信息'>
+    {{data.paymentTypeCode}}
     <el-form-item
       label="结账方式"
-      prop="paymentType"
+      prop="paymentTypeCode"
     >
       <el-select
         :disabled="disabled"
-        v-model="data.paymentType"
+        v-model="data.paymentTypeCode"
       >
-        <!-- TODO 字典码不对 后期调整 -->
         <el-option
-          v-for="item in dictionaryOptions('PSI_FWS_FWLX')"
+          v-for="item in dictionaryOptions('PSI_SALE_JZFS ')"
           :key="item.code"
           :label="item.content"
           :value="item.code"
@@ -34,6 +34,7 @@
       max-height="300px"
     >
       <el-table-column
+        v-if="!disabled && !billDisable"
         label="操作"
         width="60"
         show-overflow-tooltip
@@ -65,7 +66,7 @@
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.payTime`"
           >
             <el-date-picker
-              :disabled="disabled"
+              :disabled="disabled || billDisable"
               size="mini"
               value-format="timestamp"
               v-model="scope.row.payTime"
@@ -88,7 +89,7 @@
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.isBillFee`"
           >
             <el-switch
-              :disabled="disabled"
+              :disabled="disabled || billDisable"
               :active-value="1"
               :inactive-value="0"
               v-model="scope.row.isBillFee"
@@ -108,7 +109,7 @@
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.payAmount`"
           >
             <el-input
-              :disabled="disabled"
+              :disabled="disabled || billDisable"
               size="mini"
               placeholder="请输入"
               v-model="scope.row.payAmount"
@@ -118,7 +119,7 @@
       </el-table-column>
     </el-table>
     <el-button
-      v-if="!disabled"
+      v-if="!disabled && !billDisable"
       class="mt10 el-icon-circle-plus-outline"
       size="mini"
       @click="addBill"
@@ -127,6 +128,8 @@
 </template>
 <script>
 export default {
+  components: {
+  },
   props: {
     data: {
       default: () => ({})
@@ -145,6 +148,12 @@ export default {
 
     }
   },
+  computed: {
+    // 结账方式如果是现结不能增加账期 不能修改操作
+    billDisable() {
+      return this.data.paymentTypeCode == 'PSI_SALE_JZFS-2'
+    }
+  },
   methods: {
     delBill(index) {
       this.data.shipmentFinanceSaveVoList.splice(index, 1)
@@ -155,11 +164,12 @@ export default {
       })
     },
     addBill() {
+      // 账期
       let paymenDays = (this.data.shipmentFinanceSaveVoList || []).length + 1
       this.data.shipmentFinanceSaveVoList.push({
         feeDetailCode: '', // 费用明细",
         feeTypeCode: '', // 费用类型",
-        isBillFee: '', // 0,
+        isBillFee: 1, // 0,
         payAmount: '', // 98765432109876.12,
         payTime: '', // 1572403069534,
         paymenDays: `第${paymenDays}期`, // 账期",
@@ -184,8 +194,7 @@ export default {
       return sums
     },
   },
-  components: {
-  },
+
 }
 </script>
 <style scoped>

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 10:26:55
+ * @LastEditTime: 2019-11-28 11:49:48
  * @Description: 收款滞纳金
  */
 <template>
@@ -12,14 +12,14 @@
         <el-form-item
           :rules="{ required: true, }"
           label="滞纳金方案"
-          prop="lateFeesId"
+          prop="lateFeesInfo"
         >
           <el-select
             @change="change"
             class="wfull"
             :disabled='disabled'
-            v-model="data.lateFeesId"
-            value-key="id"
+            v-model="lateFeesInfo"
+            value-key="overdueFineName"
           >
             <el-option
               v-for="(item,index) in options"
@@ -42,7 +42,7 @@
         >
           <el-input
             disabled
-            v-model.trim="detail[item.prop]"
+            v-model.trim="lateFeesInfo[item.prop]"
             :placeholder="`请输入${item.label}`"
           />
 
@@ -80,6 +80,14 @@ export default {
     };
   },
   computed: {
+    lateFeesInfo: {
+      get() {
+        return (JSON.parse(this.data.lateFeesInfo || '{}'))
+      },
+      set(val) {
+        this.data.lateFeesInfo = JSON.stringify(val)
+      }
+    },
     formItems() {
       return this.items.filter(item => !this.hide.includes(item.prop))
     }
@@ -102,9 +110,9 @@ export default {
         this.options = [];
       }
     },
-    change(id) {
-      let item = this.options.find(v => v.id = id)
-      this.detail = item
+    change(item) {
+      // let item = this.options.find(v => v.id = id)
+      // this.detail = item
     }
   }
 };

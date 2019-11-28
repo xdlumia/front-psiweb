@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 19:22:14
+ * @LastEditTime: 2019-11-28 11:59:27
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -58,7 +58,10 @@
           :data="form"
         />
         <!-- 报价单信息 -->
-        <quote-info :options="quoteCodes" />
+        <quote-info
+          v-if="quoteCodes && quoteCodes.length"
+          :options="quoteCodes"
+        />
         <!-- 收款滞纳金 -->
         <payment-late-sales
           id="paymentLateSales"
@@ -115,11 +118,11 @@ export default {
         attachList: [], // 附件",
         clientId: '', // 100000,
         contractTemplate: '', // 9,
-        deptTotalCode: '', // 部门code",
         fieldList: [], // 自定义字段",
         isContract: '', // 有无合同,
-        lateFeesId: '', // 收款滞纳金id
+        lateFeesInfo: '', // 收款滞纳金id
         note: '', // 备注",
+        paymentTypeCode: '',// 账单类型
         procurementExpectedArrivalTime: '', // 采购预计到货时间
         quotationIds: [], // 报价单ids
         salesExpectedShipmentsTime: '', // 销售预计发货时间
@@ -130,15 +133,13 @@ export default {
             busType: '', // 9,
             feeDetailCode: '', // 费用明细",
             feeTypeCode: '', // 费用类型",
-            isBillFee: '', // 是否直接生成应收付,
-            payAmount: '', // 付款金额
-            payTime: '', // 付款时间
+            isBillFee: 1, // 是否直接生成应收付,
+            payAmount: 0, // 付款金额
+            payTime: new Date().getTime(), // 付款时间
             paymenDays: '第1期', // 账期",
             paymentType: '', // 9
           }
         ],
-        source: '', // 来源",
-        state: '', // 9,
         totalAmount: '', // 98765432109876.12,
         totalNumber: '', //
       },
