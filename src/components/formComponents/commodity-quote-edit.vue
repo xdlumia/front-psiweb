@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 20:49:43
+ * @LastEditTime: 2019-11-28 15:13:39
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -25,8 +25,6 @@
       row-key="id"
       size="mini"
     >
-      <el-table-column width="50">
-      </el-table-column>
       <el-table-column
         label="操作"
         min-width="80"
@@ -129,6 +127,7 @@
 
       <el-table-column
         label="商品数量"
+        prop="commodityNumber"
         min-width="110"
       >
         <template slot-scope="scope">
@@ -152,7 +151,7 @@
       ></el-table-column>
 
       <el-table-column
-        label="折扣"
+        label="折扣%"
         min-width="110"
       >
         <template slot-scope="scope">
@@ -171,6 +170,7 @@
 
       <el-table-column
         label="折后销售单价"
+        prop="discountSprice"
         min-width="110"
       >
         <template slot-scope="scope">
@@ -325,27 +325,38 @@ export default {
     getSummaries(param) {
       const { columns, data } = param;
       const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = '总计';
-          return;
+      columns.forEach((col, index) => {
+        if (index == 0) {
+          sums[index] = '总价'
         }
-        if (column.property == 'inventoryPrice') {
-          const values = data.map((item) => {
-            if (item.commodityInfoList && item.commodityInfoList.length > 0) {
-              return Number(item.inventoryPrice) * Number(item.commodityInfoList.length)
-            }
-          });
-          sums[index] = values.reduce((prev, curr) => {
-            const value = Number(curr);
-            if (!isNaN(value)) {
-              return prev + curr;
-            } else {
-              return prev;
-            }
-          }, 0);
+        /**
+         * discountSprice 折后销售价 
+         * commodityNumber 数量
+         * reference 销售参考价
+         */
+        else if (['commodityNumber'].includes(col.property)) {
+          const values = data.map(item => Number(item[col.property] || 0));
+          sums[index] = values.reduce((sum, curr) => {
+            const val = Number(curr)
+            return sum + curr
+          }, 0)
         }
-      })
+        else if (['discountSprice', 'reference'].includes(col.property)) {
+          // 单价 * 数量
+          const values = data.map(item => Number(item[col.property] || 0) * (item.commodityNumber || 0));
+          sums[index] = values.reduce((sum, curr) => {
+            const val = Number(curr)
+            return sum + curr
+          }, 0)
+        }
+        if (col.property == 'commodityNumber') {
+          this.totalNumber = sums[index] //总计数量,
+        } else if (col.property == 'reference') {
+          this.totalCostAmount = sums[index]//  销售参考价总计
+        } else if (col.property == 'commodityNumber') {
+          this.totalSalesAmount = sums[index]// //总计销售价
+        }
+      });
       return sums;
     },
     expand(row) {
@@ -368,15 +379,6 @@ export default {
     //关闭弹窗
     update() {
       this.visible = false
-    },
-
-    sumitSn(data) {
-      this.$set(this.data.businessCommoditySaveVoList[this.ceIndex], 'commodityInfoList', data)
-      this.data.businessCommoditySaveVoList.forEach((item) => {
-        if (item.commodityCode) {
-          this.addForm.commodityList.push(item)
-        }
-      })
     }
   }
 };

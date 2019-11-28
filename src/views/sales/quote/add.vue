@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 16:35:07
+ * @LastEditTime: 2019-11-28 15:10:35
  * @Description: file content
 */
 <template>
   <el-dialog
     :visible.sync="showDetailPage"
-    width="920px"
+    width="1120px"
     @close="close"
     v-dialogDrag
   >
@@ -155,6 +155,7 @@ export default {
         taxRate: '', //税率
         totalNumber: '', //总计数量,
         totalSalesAmount: '', //总计销售价
+        totalCostAmount: '',//  销售参考价总计
       }
     }
   },
