@@ -19,11 +19,11 @@
     >
       <div class='wfull d-flex'>
         <span class='mr10 mt5'>入库仓库</span>
-        <span class='mr10 mt5'>这里是库房名称,字段没对</span>
+        <span class='mr10 mt5'>{{wmsName}}</span>
         <!-- <el-select
           :disabled="true"
           size='small'
-          v-model="value"
+          v-model="value" 
           placeholder="请选择"
         >
           <el-option
@@ -125,6 +125,7 @@
       <d-table
         api="seePsiWmsService.wmsflowrecordList"
         :params="{page:1,limit:20,commodityCode:dialogData.commodityCode,businessCode:drawerData.purchaseCode}"
+        @response="response"
         ref="companyTable"
         class="college-main"
         style="height:calc(100vh - 340px)"
@@ -223,6 +224,7 @@ export default {
     return {
       activeName: '',
       usableList: [],
+      wmsName: '',
       tableData: [],
       formInline: {
         user: ''
@@ -236,6 +238,9 @@ export default {
     },
     close() {
       this.$emit('update:visible', false)
+    },
+    response(res) {
+      this.wmsName = res.data[0].wmsName || '-'
     },
     //请求可用库房
     commonwmsmanagerUsableList() {
