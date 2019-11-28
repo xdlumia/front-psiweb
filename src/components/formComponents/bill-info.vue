@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 11:46:50
+ * @LastEditTime: 2019-11-28 09:47:41
  * @Description: 账期信息
  */
 <template>
@@ -15,9 +15,8 @@
         :disabled="disabled"
         v-model="data.paymentType"
       >
-        <!-- TODO 字典码不对 后期调整 -->
         <el-option
-          v-for="item in dictionaryOptions('PSI_FWS_FWLX')"
+          v-for="item in dictionaryOptions('PSI_SALE_JZFS ')"
           :key="item.code"
           :label="item.content"
           :value="item.code"
