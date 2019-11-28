@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 10:16:00
+ * @LastEditTime: 2019-11-28 20:13:25
  * @Description: 生成合同
 */
 <template>
@@ -12,7 +12,6 @@
       width="920px"
       @close="close"
       v-dialogDrag
-      v-loading="loading"
     >
       <!-- 确定按钮 -->
       <div slot="title">
