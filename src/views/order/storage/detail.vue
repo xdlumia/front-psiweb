@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 17:37:14
+ * @LastEditTime: 2019-11-28 19:18:08
  * @Description: 采购入库单
 */
 <template>
@@ -61,7 +61,7 @@
         type="danger"
         v-if="detail&&[0,5].includes(detail.state)"
       >删除</el-button>
-      <el-button @click="showReject=true" size="mini" type="primary" v-if="detail&&[3,4].includes(detail.state)">退货</el-button>
+      <el-button @click="showReject=true" size="mini" type="primary" v-if="detail&&[3,4].includes(detail.state)&&canReject">退货</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinShutdown',{
           apprpvalNode:detail.apprpvalNode,
@@ -157,13 +157,14 @@
     </el-tabs>
     <OrderRejectEdit
       :params="{
-      putinCode:detail.putinCode,
-      companyAccountId:detail.companyAccountId,
-      companySettlementId:detail.companySettlementId,
-      supplierId:detail.supplierId,
-      commodityList:[].concat(detail.commodityList||[],detail.additionalCommodityList||[])
-    }"
+        putinCode:detail.putinCode,
+        companyAccountId:detail.companyAccountId,
+        companySettlementId:detail.companySettlementId,
+        supplierId:detail.supplierId,
+        commodityList:[].concat(detail.commodityList||[],detail.additionalCommodityList||[]).filter(item=>(item.commodityNumber-(item.returenNumber||0)))
+      }"
       :visible.sync="showReject"
+      @reload="setEdit(),$reload()"
       v-if="detail"
     />
     <orderContract :rowData="orderContractData" :visible.sync="showOrderContract" v-if="showOrderContract" />
@@ -203,6 +204,20 @@ export default {
       collectInvoiceData: null,
       showCollectInvoice: false
     };
+  },
+  computed: {
+    // 是否可以退货
+    canReject() {
+      if (!this.detail) return false;
+      return []
+        .concat(
+          this.detail.commodityList || [],
+          this.detail.additionalCommodityList || []
+        )
+        .filter(item => item.commodityNumber - (item.returenNumber || 0)).length
+        ? true
+        : false;
+    }
   },
   methods: {
     async getDetail() {

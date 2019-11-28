@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 16:40:18
+ * @LastEditTime: 2019-11-28 19:10:06
  * @Description: 采购退货单
 */
 <template>
@@ -108,10 +108,11 @@
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" />
     <scanGoods
       :rowData="{
-      businessCode: detail.alterationCode,
-      commodityList: detail.commodityList
-    }"
+        businessCode: detail.alterationCode,
+        commodityList: detail.commodityList
+      }"
       :visible.sync="showScanGoods"
+      @reload="setEdit(),$reload()"
       v-if="showScanGoods"
     />
   </sideDetail>
