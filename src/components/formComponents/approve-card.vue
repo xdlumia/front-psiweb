@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 19:24:43
+ * @LastEditTime: 2019-11-28 14:25:49
  * @Description: 审核小卡片
 */
 <template>
@@ -23,15 +23,11 @@
           slot="icon"
         ></span>
         <div slot="description">
-          <div>{{item.approvalName}}</div>
-          <div>{{item.operatTime | timeToStr('YYYY-MM-DD hh:mm:ss')}}</div>
+          <div>{{item.approvalName ||'审核人名称'}}</div>
+          <div>{{item.createTime | timeToStr('YYYY-MM-DD hh:mm:ss')}}</div>
         </div>
       </el-step>
     </el-steps>
-    <div
-      class="d-text-gray"
-      v-if="isReject"
-    >审核 驳回原因：价格不符</div>
   </div>
 </template>
 <script>
@@ -97,14 +93,16 @@ export default {
   methods: {
     getStatus(data, index) {
       //   wait / process / finish / error / success
-      if (data.approved) {
+      if (data.wait == '驳回') {
         return 'finish';
-      } else if (data.rejected) {
-        return 'error';
-      } else if (this.currentStepIndex == index) {
-        return 'wait';
-      } else {
-        return 'wait';
+      }
+      // else if (data.rejected) {
+      //   return 'error';
+      // } else if (this.currentStepIndex == index) {
+      //   return 'wait';
+      // } 
+      else {
+        return 'finish';
       }
     },
     getIcons(data, index) {
