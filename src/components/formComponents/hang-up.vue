@@ -86,6 +86,7 @@ export default {
           this.$api.seePsiWmsService.wmsdisassemblytaskHangTask({ hangCause: this.ruleForm.desc, id: this.data.id })
             .then(res => {
               this.$emit('reload')
+              this.close()
             })
             .finally(() => {
 

@@ -120,7 +120,7 @@
       <el-table-column
         label="组装数量"
         min-width="150"
-        prop="allocationNum"
+        prop="num"
       >
         <template
           slot-scope="scope"
@@ -129,7 +129,7 @@
           <el-input
             v-if="scope.row.commodityCode && !scope.row.quotationId"
             size="mini"
-            v-model="scope.row.allocationNum"
+            v-model="scope.row.num"
             placeholder="请输入"
           ></el-input>
           <span v-else>{{scope.row.commodityNum}}</span>
