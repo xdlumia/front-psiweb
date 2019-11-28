@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-27 18:45:30
+ * @LastEditTime: 2019-11-28 09:53:24
  * @Description: description
  -->
 <template>
@@ -84,7 +84,7 @@
           <component
             :button="false"
             :is="busInfo[detailForm.busType].listPage"
-            :params="{page:1,limit:15,[busInfo[detailForm.busType].codeFilterKey]:detailForm.busCode,relationCode:detailForm.billCode}"
+            :params="{page:1,limit:15,[busInfo[detailForm.busType].codeFilterKey]:detailForm.busCode,relationCode:detailForm.busCode}"
           />
         </FullscreenWrap>
       </el-tab-pane>

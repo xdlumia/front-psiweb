@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 11:52:34
+ * @LastEditTime: 2019-11-28 10:49:14
  * @Description: 换货单换货商品 已绑定字段 1
 */  
 <template>
@@ -17,7 +17,7 @@
     ]"
       :sort="['expanded'].concat(
       disabled?['snCodes','swapInNum','swapOutNum','swapInWmsNames','swapOutWmsNames']:[],
-      ['actions','commodityCodes','goodsNames','swapInNum','swapInMoney','swapOutNum','swapOutMoney','taxRate','preTaxAmount']
+      ['actions','commodityCodes','commodityCode','goodsNames','swapInNum','swapInMoney','swapOutNum','swapOutMoney','taxRate','preTaxAmount']
     )"
       :summaryMethod="getSummaries"
       :title="exchangeType=='in'?'换入商品':'换出商品'"
@@ -202,9 +202,9 @@ export default {
       ]
       if (this.disabled) {
         cols = cols.concat([
-          { label: '商品编号', key: 'commodityCodes', width: 140, prop: 'commodityCode', showOverflowTip: true },
+          { label: '商品编号', key: 'commodityCode', width: 140, prop: 'commodityCode', showOverflowTip: true },
           { label: '商品名称', key: 'goodsNames', width: 140, prop: 'goodsName', showOverflowTip: true },
-          {            label: 'SN码/机器号', key: 'snCodes', fixed: true, width: 140, prop: 'goodsName',
+          { label: 'SN码/机器号', key: 'snCodes', fixed: true, width: 140, prop: 'goodsName',
             format: (a, b) => (this.exchangeType == 'in' ? b.swapInAccomplishNum : b.swapOutAccomplishNum) || 0,
             click: (a) => { this.changeDialog(a) }
           },
@@ -213,10 +213,10 @@ export default {
           { label: '换入金额', key: 'swapInMoney', width: 140, prop: 'swapInMoney', },
           { label: '换入库房', key: 'swapInWmsNames', fixed: true, width: 140, prop: 'swapInWmsNames', },
         ] : [
-              { label: '换出数量', key: 'swapOutNum', fixed: true, width: 140, prop: 'swapOutNum', },
-              { label: '换出金额', key: 'swapOutMoney', width: 140, prop: 'swapOutMoney', },
-              { label: '换出库房', key: 'swapOutWmsNames', fixed: true, width: 140, prop: 'swapOutWmsNames', },
-            ], )
+          { label: '换出数量', key: 'swapOutNum', fixed: true, width: 140, prop: 'swapOutNum', },
+          { label: '换出金额', key: 'swapOutMoney', width: 140, prop: 'swapOutMoney', },
+          { label: '换出库房', key: 'swapOutWmsNames', fixed: true, width: 140, prop: 'swapOutWmsNames', },
+        ], )
       } else {
         cols = cols.concat([
           { label: '商品编号', key: 'commodityCodes', width: 140, prop: 'commodityCode', slot: 'commodityCode' },
@@ -225,9 +225,9 @@ export default {
           { label: '换入数量', key: 'swapInNum', width: 140, prop: 'swapInNum', slot: 'swapInNum' },
           { label: '换入金额', key: 'swapInMoney', width: 140, prop: 'swapInMoney', slot: 'swapInMoney' },
         ] : [
-              { label: '换出数量', key: 'swapOutNum', width: 140, prop: 'swapOutNum', slot: 'swapOutNum' },
-              { label: '换出金额', key: 'swapOutMoney', width: 140, prop: 'swapOutMoney', slot: 'swapOutMoney' },
-            ], [{ label: '操作', key: 'actions', width: 120, prop: 'actions', slot: 'actions' }])
+          { label: '换出数量', key: 'swapOutNum', width: 140, prop: 'swapOutNum', slot: 'swapOutNum' },
+          { label: '换出金额', key: 'swapOutMoney', width: 140, prop: 'swapOutMoney', slot: 'swapOutMoney' },
+        ], [{ label: '操作', key: 'actions', width: 120, prop: 'actions', slot: 'actions' }])
       }
       return cols;
     }

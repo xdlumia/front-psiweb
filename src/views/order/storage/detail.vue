@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:44:22
+ * @LastEditTime: 2019-11-28 10:05:57
  * @Description: 采购入库单
 */
 <template>
@@ -80,7 +80,16 @@
         <el-form :model="detail" size="mini" v-if="detail">
           <supplierInfo :data="detail" disabled id="supplierInfo" />
           <companyInfo :data="detail" disabled id="companyInfo" />
-          <arrivalInfo :data="detail" :hide="detail.source=='备货单'?['saleTime']:[]" disabled id="arrivalInfo" v-if="detail.source!='直发单'" />
+          <arrivalInfo
+            :data="detail"
+            :hide="detail.source=='备货单'?['saleTime']:[]"
+            :labels="detail.source=='直发单'?{
+              saleTime:'销售预计发货时间'
+            }:{}"
+            disabled
+            id="arrivalInfo"
+            v-if="detail.source!='直发单'"
+          />
           <buyingDeliverInfo :data="detail" disabled id="deliverInfo" ref="deliverInfo" v-else />
           <buying-goods-edit
             :data="detail"
