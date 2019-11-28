@@ -2,15 +2,15 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 14:25:49
+ * @LastEditTime: 2019-11-28 18:39:14
  * @Description: 审核小卡片
 */
 <template>
   <div>
-    <el-steps :active="currentStepIndex">
-      <!-- el-icon-error 驳回
+    <!-- el-icon-error 驳回
       el-icon-success 审核通过-->
-      <!-- wait / process / finish / error / success -->
+    <!-- wait / process / finish / error / success -->
+    <!-- <el-steps :active="currentStepIndex">
       <el-step
         :key="i"
         :status="getStatus(item,i)"
@@ -27,7 +27,21 @@
           <div>{{item.createTime | timeToStr('YYYY-MM-DD hh:mm:ss')}}</div>
         </div>
       </el-step>
-    </el-steps>
+    </el-steps> -->
+    <ul class="approve-wrap">
+      <li
+        class="approve-item d-text-qgray"
+        :class="classStatus(item)"
+        :style="{float:classFloat(index)}"
+        v-for="(item,index) of progress"
+        :key="index"
+      >
+        <div class="approve-state"></div>
+        <div class="approve-title ac">{{item.taskName}}</div>
+        <div class="approve-name ac">王晓冬</div>
+        <div class="approve-time ac f12">{{item.createTime | timeToStr('YYYY-MM-DD HH:MM:ss')}}</div>
+      </li>
+    </ul>
   </div>
 </template>
 <script>
@@ -71,46 +85,117 @@ export default {
     };
   },
   computed: {
-    currentStepIndex() {
-      let index = 0;
-      this.progress.some((item, i) => {
-        if (!(item.rejected || item.approved)) {
-          index = i;
-          return true;
-        }
-      });
-      return index;
-    },
-    isReject() {
-      let latestDealed = this.progress[this.currentStepIndex - 1];
-      if (latestDealed) {
-        return latestDealed.rejected;
-      } else {
-        return false;
-      }
-    }
+
   },
   methods: {
-    getStatus(data, index) {
-      //   wait / process / finish / error / success
-      if (data.wait == '驳回') {
-        return 'finish';
+    classFloat(index) {
+      let rowIndex = Math.ceil((index + 1) / 5)
+      let isOdd = rowIndex % 2 == 1
+      // 奇数行添加float left  偶数right
+      return isOdd ? "left" : "right"
+    },
+    classStatus(data, index) {
+      if (data.taskName == '驳回') {
+        return 'error';
       }
-      // else if (data.rejected) {
-      //   return 'error';
-      // } else if (this.currentStepIndex == index) {
-      //   return 'wait';
-      // } 
       else {
         return 'finish';
       }
-    },
-    getIcons(data, index) {
-      let icon = this.icons[this.getStatus(data, index)];
-      return icon || 'el-icon-success';
     }
   }
 };
 </script>
 <style lang="scss" scoped>
+.approve-wrap {
+  overflow: hidden;
+  .approve-item {
+    padding-bottom: 20px;
+    width: 20%;
+    position: relative;
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      background-color: #dad6d6;
+    }
+
+    &::before {
+      height: 3px;
+      left: 0;
+      top: 11px;
+      right: 0;
+    }
+    &:nth-of-type(5n) {
+      &::after {
+        width: 3px;
+        bottom: -11px;
+        top: 11px;
+        right: 0;
+      }
+    }
+    &:nth-of-type(10n) {
+      &::after {
+        width: 3px;
+        bottom: -11px;
+        left: 0px;
+        top: 11px;
+      }
+    }
+    .approve-state {
+      font-family: element-icons !important;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      &::before {
+        content: "";
+        line-height: 24px;
+        text-align: center;
+        font-size: 20px;
+        display: inline-block;
+        color: #fff;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: #dad6d6;
+      }
+    }
+    &.finish {
+      &::before,
+      &::after {
+        background-color: #409eff;
+      }
+      .approve-state::before {
+        content: "\e6da";
+        background-color: #409eff;
+      }
+      .approve-title {
+        color: #409eff;
+      }
+    }
+    &.error {
+      &::before,
+      &::after {
+        background-color: #f56c6c;
+      }
+      .approve-state::before {
+        content: "\e6db";
+        background-color: #f56c6c;
+      }
+      .approve-title {
+        color: #f56c6c;
+      }
+    }
+    &:first-of-type {
+      &::before {
+        left: 50%;
+      }
+    }
+    &:last-of-type {
+      &::before {
+        right: 50%;
+      }
+    }
+  }
+}
 </style>
