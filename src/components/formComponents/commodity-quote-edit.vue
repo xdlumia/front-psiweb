@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 15:23:58
+ * @LastEditTime: 2019-11-28 15:54:14
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -162,6 +162,7 @@
           >
             <el-input
               size="mini"
+              @input="numberChange(scope.row)"
               placeholder="折扣"
               v-model="scope.row.discount"
             ></el-input>
@@ -182,6 +183,7 @@
             <el-input
               size="mini"
               placeholder="请输入"
+              @input="discountSpriceChange(scope.row)"
               v-model="scope.row.discountSprice"
             />
           </el-form-item>
@@ -351,11 +353,11 @@ export default {
           }, 0)
         }
         if (col.property == 'commodityNumber') {
-          this.totalNumber = sums[index] //总计数量,
+          this.data.totalNumber = sums[index] //总计数量,
         } else if (col.property == 'reference') {
-          this.totalCostAmount = sums[index]//  销售参考价总计
+          this.data.totalCostAmount = sums[index]//  销售参考价总计
         } else if (col.property == 'commodityNumber') {
-          this.totalSalesAmount = sums[index]// //总计销售价
+          this.data.totalSalesAmount = sums[index]// //总计销售价
         }
       });
       return sums;
@@ -377,7 +379,8 @@ export default {
       console.log(row)
       // this.data.businessCommoditySaveVoList.splice(row.$index, 1)
     },
-    NumberChange(row) {
+    // 商品数量和折扣修改
+    numberChange(row) {
       if (row.discount > 1 && row.discount <= 0) {
         this.$message({
           message: '折扣不能大于1且小于0',
@@ -391,8 +394,17 @@ export default {
       let taxRate = (row.taxRate || 100) / 100  ///税率
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
-      // 税后金额  公式:税前金额 * 税率
-      this.data.discountSprice = (reference * (1 - taxRate) * discount).toFixed(2)
+      // 折扣价格  公式:税前金额  * (1-税率) * 折扣
+      row.discountSprice = (reference * (1 - taxRate) * discount).toFixed(2)
+    },
+    discountSpriceChange(row) {
+      let reference = row.reference || 0   //销售参考价
+      let taxRate = (row.taxRate || 100) / 100  ///税率
+      let discountSprice = row.discountSprice || 0 //折后金额
+      let discount = row.discount || 1 //折扣
+      // 折后价格 / (税后价格*(1-税率)
+
+      row.discount = (discountSprice / (reference * (1 - taxRate))).toFixed(2)
     },
     //关闭弹窗
     update() {
