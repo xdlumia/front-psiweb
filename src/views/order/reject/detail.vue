@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:43:48
+ * @LastEditTime: 2019-11-28 16:40:18
  * @Description: 采购退货单
 */
 <template>
@@ -84,7 +84,7 @@
             disabled
             id="commodityInfo"
           />
-          <orderStorageBill :data="detail" :hide="['isBillFee']" :type="1" disabled id="billInfo" />
+          <orderStorageBill :data="detail" :hide="['isBillFee']" :type="1" disabled feeDetailCode="ZD_DY_LX-4-2" id="billInfo" />
           <customInfo :data="detail" busType="31" disabled id="customInfo"></customInfo>
           <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
         </el-form>
