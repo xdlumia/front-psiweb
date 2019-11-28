@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 18:39:14
+ * @LastEditTime: 2019-11-28 18:41:11
  * @Description: 审核小卡片
 */
 <template>
@@ -38,7 +38,7 @@
       >
         <div class="approve-state"></div>
         <div class="approve-title ac">{{item.taskName}}</div>
-        <div class="approve-name ac">王晓冬</div>
+        <div class="approve-name ac">{{item.creatorName || 'null'}}</div>
         <div class="approve-time ac f12">{{item.createTime | timeToStr('YYYY-MM-DD HH:MM:ss')}}</div>
       </li>
     </ul>
