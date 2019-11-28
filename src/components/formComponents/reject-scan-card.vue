@@ -2,19 +2,24 @@
  * @Author: 赵伦
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 14:15:13
+ * @LastEditTime: 2019-11-28 19:06:45
  * @Description: 换退货商品扫码卡片 
 */
 <template>
   <div class="reject-scan-goods" v-loading="loading">
     <!-- 商品列表 -->
     <buying-goods-edit
+      :customColumns="[
+        { label: '退货商品数量', key: 'alterationNumber', width: 140, prop: 'alterationNumber', showOverflowTip: true, 
+          format:(a,row)=>`${row.returenNumber}/${row.alterationNumber||0}`
+        },
+      ]"
       :data="data"
       :show="[
-        'commodityCode','goodsName','wsm','categoryCode','className','specOne','configName','unit','alterationNumberRate','!formTitle'
+        'commodityCode','goodsName','wsm','categoryCode','className','specOne','configName','unit','!formTitle'
       ]"
       :showSummary="false"
-      :sort="['alterationNumberRate']"
+      :sort="['alterationNumber']"
       disabled
     />
     <div class="mt10 mb20">

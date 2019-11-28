@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 16:40:03
+ * @LastEditTime: 2019-11-28 19:15:41
  * @Description: 采购退货单
 */
 <template>
@@ -109,7 +109,9 @@ export default {
       if (form.commodityList && form.commodityList.length) {
         form.commodityList.map(item => {
           item.alterationPrice = item.costAmount;
-          item.alterationNumber = item.commodityNumber;
+          item.alterationNumber =
+            item.commodityNumber - (item.returenNumber || 0);
+          item.maxalterationNumber = item.alterationNumber;
         });
       }
       return form;
