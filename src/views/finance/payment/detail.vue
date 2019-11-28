@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:40:50
+ * @LastEditTime: 2019-11-28 17:35:45
  * @Description: 付款单
 */
 <template>
@@ -46,7 +46,13 @@
         type="primary"
         v-if="detail&&[1].includes(detail.state)"
       >复核通过</el-button>
-      <el-button @click="showAddIncoming=true,addIncoming()" size="mini" type="primary" v-if="detail&&[2].includes(detail.state)">付款</el-button>
+      <!-- :billAmount="+(Number(detail.billTotalAmount-detail.factAmount)||0).toFixed(2)" -->
+      <el-button
+        @click="showAddIncoming=true,addIncoming()"
+        size="mini"
+        type="primary"
+        v-if="detail&&[2].includes(detail.state)&&+Number(detail.billTotalAmount-detail.factAmount).toFixed(2)"
+      >付款</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
@@ -125,7 +131,7 @@ export default {
           },
           { label: '总应付金额', value: this.detail.billTotalAmount },
           { label: '实付金额', value: this.detail.factAmount },
-          { label: '付款方', value: this.detail.accountName }
+          { label: '收款方', value: this.detail.accountName }
         ];
       }
     }
@@ -171,6 +177,7 @@ export default {
     },
     async saveIncoming() {
       this.loading = true;
+      this.$refs.addIncoming.loading = true;
       try {
         await this.$refs.addIncoming.$refs.form.validate();
         await this.$api.seePsiFinanceService.paybillPay(
@@ -181,8 +188,11 @@ export default {
             this.$refs.addIncoming.form
           )
         );
+        this.$refs.addIncoming.setEdit();
+        this.$refs.addIncoming.close();
       } catch (error) {}
       this.loading = false;
+      this.$refs.addIncoming.loading = false;
     }
   }
 };
