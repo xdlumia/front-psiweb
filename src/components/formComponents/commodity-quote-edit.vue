@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 15:13:39
+ * @LastEditTime: 2019-11-28 15:23:58
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -137,6 +137,7 @@
           >
             <el-input
               size="mini"
+              @input="numberChange(scope.row)"
               placeholder="请输入商品数量"
               v-model="scope.row.commodityNumber"
             />
@@ -151,7 +152,7 @@
       ></el-table-column>
 
       <el-table-column
-        label="折扣%"
+        label="折扣"
         min-width="110"
       >
         <template slot-scope="scope">
@@ -375,6 +376,23 @@ export default {
     deleteInfo(row) {
       console.log(row)
       // this.data.businessCommoditySaveVoList.splice(row.$index, 1)
+    },
+    NumberChange(row) {
+      if (row.discount > 1 && row.discount <= 0) {
+        this.$message({
+          message: '折扣不能大于1且小于0',
+          type: 'info',
+          showClose: true,
+        });
+        row.discount = 1
+        return
+      }
+      let reference = row.reference || 0   //销售参考价
+      let taxRate = (row.taxRate || 100) / 100  ///税率
+      let discountSprice = row.discountSprice || 0 //折后金额
+      let discount = row.discount || 1 //折扣
+      // 税后金额  公式:税前金额 * 税率
+      this.data.discountSprice = (reference * (1 - taxRate) * discount).toFixed(2)
     },
     //关闭弹窗
     update() {
