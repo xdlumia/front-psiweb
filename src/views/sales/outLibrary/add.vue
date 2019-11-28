@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 09:49:46
+ * @LastEditTime: 2019-11-28 11:07:53
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -115,12 +115,11 @@ export default {
         attachList: [], // 附件",
         clientId: '', // 100000,
         contractTemplate: '', // 9,
-        deptTotalCode: '', // 部门code",
         fieldList: [], // 自定义字段",
         isContract: '', // 有无合同,
-        lateFeesId: '', // 收款滞纳金id
+        lateFeesInfo: '', // 收款滞纳金id
         note: '', // 备注",
-        paymentType: '',// 账单类型
+        paymentTypeCode: '',// 账单类型
         procurementExpectedArrivalTime: '', // 采购预计到货时间
         quotationIds: [], // 报价单ids
         salesExpectedShipmentsTime: '', // 销售预计发货时间
@@ -138,8 +137,6 @@ export default {
             paymentType: '', // 9
           }
         ],
-        source: '', // 来源",
-        state: '', // 9,
         totalAmount: '', // 98765432109876.12,
         totalNumber: '', //
       },
