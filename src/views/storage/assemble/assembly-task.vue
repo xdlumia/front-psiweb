@@ -89,19 +89,29 @@ export default {
       this.$emit('update:visible', false)
     },
     submit() {
-      this.$api.seePsiWmsService.wmsassembletaskSave({
-        assembleCommoditySaveVoList: this.data.commodityList,
-        assembleOrderCode: this.data.assembleOrderCode,
-        note: this.form.note,
-        assemblePerson: this.form.assemblePerson,
-        pickingPerson: this.form.assemblePerson
+      let isNum = this.data.commodityList.some((item) => {
+        return item.num >= 1
       })
-        .then(res => {
-          this.$emit('reload')
-          this.close()
+      isNum ?
+        this.$api.seePsiWmsService.wmsassembletaskSave({
+          assembleCommoditySaveVoList: this.data.commodityList,
+          assembleOrderCode: this.data.assembleOrderCode,
+          note: this.form.note,
+          assemblePerson: this.form.assemblePerson,
+          pickingPerson: this.form.assemblePerson
         })
-        .finally(() => {
-        })
+          .then(res => {
+            this.$emit('reload')
+            this.close()
+          })
+          .finally(() => {
+          })
+        :
+        this.$message({
+          message: '请至少添加一个分配数量！',
+          type: 'error',
+          showClose: true,
+        });
     }
   }
 };

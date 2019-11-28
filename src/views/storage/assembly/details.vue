@@ -17,7 +17,7 @@
     <div>
       <div class="drawer-header">
         <el-button
-          v-if="detailForm.assembleTaskState == 0 && detailForm.assembleTaskState !== -1 && detailForm.assembleTaskState !== 3"
+          v-if="detailForm.assembleTaskState == 0"
           @click="wmsassembletaskStart"
           size="mini"
           type="primary"
@@ -29,19 +29,19 @@
           type="primary"
         >转移</el-button>
         <el-button
-          v-if="detailForm.assembleTaskState !== -1 && detailForm.assembleTaskState !== 3 && detailForm.isHang == 0"
+          v-if="detailForm.isHang == 0 || !detailForm.isHang"
           @click="wmsdisassemblytaskHangTask"
           size="mini"
           type="primary"
         >挂起</el-button>
         <el-button
-          v-if="detailForm.assembleTaskState !== -1 && detailForm.assembleTaskState !== 3 && detailForm.isHang == 1"
+          v-if="detailForm.isHang == 1"
           @click="wmsassembletaskContinueTask"
           size="mini"
           type="primary"
         >继续</el-button>
         <el-button
-          v-if="detailForm.assembleTaskState == 1 && detailForm.assembleTaskState == 2"
+          v-if="detailForm.assembleTaskState == 1 || detailForm.assembleTaskState == 2"
           @click="goodsVisible=true"
           size="mini"
           type="primary"
@@ -84,6 +84,7 @@
     />
     <hangUp
       :visible.sync='hangVisible'
+      v-if="hangVisible"
       :data="detailForm"
       @reload="reload"
     />
@@ -161,7 +162,7 @@ export default {
       }).then(() => {
         this.$api.seePsiWmsService.wmsassembletaskStart(null, this.data.id)
           .then(res => {
-            this.reload
+            this.reload()
           })
           .finally(() => {
 
@@ -188,9 +189,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiWmsService.wmsassembletaskContinueTask({ id: this.detailForm.id })
+        this.$api.seePsiWmsService.wmsassembletaskContinueTask({ id: this.detailForm.id, isHang: 0 })
           .then(res => {
-            this.$emit('reload')
+            this.reload()
           })
           .finally(() => {
 

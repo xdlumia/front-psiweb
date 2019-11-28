@@ -34,6 +34,7 @@
       </template>
     </TableView>
     <Details
+      @reload='reload'
       :code="drawerData.assembleTaskCode"
       :data='drawerData'
       :visible.sync='tableVisible'
@@ -170,6 +171,9 @@ export default {
     getTableVisible(data) {
       this.tableVisible = true
       this.drawerData = data
+    },
+    reload() {
+      this.$refs.allTable.reload()
     },
     //打开组装单详情
     getassembleVisible(row) {
