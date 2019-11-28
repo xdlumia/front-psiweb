@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 18:58:17
+ * @LastEditTime: 2019-11-28 19:25:56
  * @Description: 销售出库单详情
 */
 <template>
@@ -219,7 +219,7 @@ export default {
       // 需要二次确认操作
       else {
         let params = {
-          apprpvalNode: this.detail.apprpvalNode,
+          apprpvalNode: this.detail.apprpvalNode, //数据里没值. 所以下写死
           id: this.detail.id,
           processType: 'psi_sales_outlibrary_01',
         }
@@ -232,9 +232,16 @@ export default {
           },
           '审核通过': {
             api: 'seePsiSaleService.salesshipmentPassApproval',
-            data: { ...params },
+            data: { ...params, apprpvalNode: 'psi_sales_outlibrary_07' },
             needNote: null
           },
+
+          '审核采购时间': {
+            api: 'seePsiSaleService.salesshipmentPurchaseTimeApproval',
+            data: { ...params, apprpvalNode: 'psi_sales_outlibrary_12' },
+            needNote: null
+          },
+
           '撤销审核': {
             api: 'seePsiSaleService.salesshipmentCancel',
             data: params,
@@ -247,7 +254,7 @@ export default {
           },
           '合同完善': {
             api: 'seePsiSaleService.salesshipmentPassContractApproval',
-            data: params,
+            data: { ...params, apprpvalNode: 'psi_sales_outlibrary_10' },
             needNote: null
           },
           '删除': {
