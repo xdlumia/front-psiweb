@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 15:54:14
+ * @LastEditTime: 2019-11-28 15:56:27
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -356,7 +356,7 @@ export default {
           this.data.totalNumber = sums[index] //总计数量,
         } else if (col.property == 'reference') {
           this.data.totalCostAmount = sums[index]//  销售参考价总计
-        } else if (col.property == 'commodityNumber') {
+        } else if (col.property == 'discountSprice') {
           this.data.totalSalesAmount = sums[index]// //总计销售价
         }
       });
