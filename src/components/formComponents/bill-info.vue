@@ -2,12 +2,11 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 11:43:08
+ * @LastEditTime: 2019-11-28 19:04:31
  * @Description: 账期信息
  */
 <template>
   <form-card title='账期信息'>
-    {{data.paymentTypeCode}}
     <el-form-item
       label="结账方式"
       prop="paymentTypeCode"
