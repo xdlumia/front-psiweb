@@ -2,13 +2,13 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:16:28
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-27 14:15:52
+ * @LastEditTime: 2019-11-28 10:11:27
  * @Description: 待办事项
  -->
 <template>
   <div class="todo">
     <h3>待办事项</h3>
-    <div class="todo-wrapper">
+    <div class="todo-wrapper" v-if="list.length">
       <div class="menu">
         <el-menu :default-active="defaultActived">
           <el-submenu
@@ -44,13 +44,20 @@
         ></component>
       </div>
     </div>
+    <div
+      v-else
+      class="todo-wrapper d-bg-white"
+      style="justify-content: center;align-items: center;"
+    >
+      <span class="d-text-qgray">暂无待办事项</span>
+    </div>
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
 import list from './render'
 export default {
-  data() {
+  data () {
     return {
       list,
       componentName: '',
@@ -59,15 +66,15 @@ export default {
   },
   components: {
   },
-  mounted() {
+  mounted () {
     this.handleList()
     this.defaultMenu()
   },
   methods: {
-    showDetail(item) {
+    showDetail (item) {
       this.componentName = item.component
     },
-    defaultMenu() {
+    defaultMenu () {
       const menu = this.list.find(item => {
         return item.children.some(sub => {
           return sub.show
@@ -77,15 +84,15 @@ export default {
       this.componentName = sub.component
       this.defaultActived = sub.label
     },
-    filterChildren(list) {
+    filterChildren (list) {
       return list.filter(item => {
         if (item.authorityCode) {
-          return item.show && this.authorityButtons.includes(item.authorityCode)
+          return item.show && item.processNum && this.authorityButtons.includes(item.authorityCode)
         }
         return item.show
       })
     },
-    homePageQueryList() {
+    homePageQueryList () {
       return this.$api.seePsiCommonService.homePageQueryList().then(res => {
         const obj = Object.create(null);
         (res.data || []).forEach(item => {
@@ -98,8 +105,7 @@ export default {
         return obj
       })
     },
-    handleList() {
-      this.list = this.list.filter(item => item.show && this.filterChildren(item.children).length)
+    handleList () {
       this.homePageQueryList().then(res => {
         this.list.forEach(item => {
           const num = item.children.reduce((val, sub) => {
@@ -108,6 +114,7 @@ export default {
           }, 0)
           item.processNum = num
         })
+        this.list = this.list.filter(item => item.show && this.filterChildren(item.children).length)
       })
     }
   }
@@ -169,7 +176,7 @@ export default {
       margin-left: 10px;
       overflow-y: auto;
       /deep/ .main-content {
-        height: calc(100vh - 150px);
+        height: calc(100vh - 145px);
       }
     }
   }
