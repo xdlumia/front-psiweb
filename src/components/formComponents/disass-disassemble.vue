@@ -29,6 +29,7 @@
           prop="name"
         >
           <el-select
+            :disabled="!!wmsId"
             style="width:30%"
             class="wfull"
             v-model="wmsId"
@@ -132,7 +133,7 @@
     </form-card>
     <!-- 新商品 -->
     <form-card
-      class="borrow-goods-info mb20"
+      class="mb20"
       :title="index == 0 ? '新商品' : ''"
       v-for="(item,index) of data.childrenCommodityList"
       :key="index"
@@ -338,9 +339,6 @@ export default {
       type: Boolean,
       default: false
     },
-    dialogData: {
-      type: Object,
-    },
     data: {},
     allData: {}
   },
@@ -361,8 +359,20 @@ export default {
   },
   mounted() {
     this.commonwmsmanagerUsableList()
+    this.getLastWmId()
   },
   methods: {
+    //查询上一次选择的仓库，下一次不能更改
+    getLastWmId() {
+      this.$api.seePsiWmsService.wmsflowrecordList({ page: 1, limit: 2, commodityCode: this.data.commodityCode, businessCode: this.allData.disassemblyTaskCode })
+        .then(res => {
+          let list = res.data || []
+          this.wmsId = list[0].wmsId || ''
+        })
+        .finally(() => {
+
+        })
+    },
     close() {
       this.$emit('update:visible', false)
     },
