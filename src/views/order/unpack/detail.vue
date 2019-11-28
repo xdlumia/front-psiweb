@@ -79,11 +79,11 @@
         commodityList:detail.commodityList.filter(item=>((item.disassemblyNum || 0) - (item.accomplishDisassemblyNum || 0))>0)
       }"
       :visible.sync="showTask"
-      @reload="setEdit(),getDetail()"
+      @reload="setEdit(),$reload()"
       source="拆卸单"
       v-if="showTask"
     />
-    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" v-if="showEdit" />
   </sideDetail>
 </template>
 <script>

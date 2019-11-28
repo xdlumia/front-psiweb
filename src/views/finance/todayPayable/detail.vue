@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 16:00:08
+ * @LastEditTime: 2019-11-28 17:24:44
  * @Description: 今日应付账单
 */
 <template>
@@ -104,7 +104,7 @@ export default {
           { label: '逾期状态', value: this.overText[this.detail.overSate||0] },
           { label: this.pageConfig.type==0?'总应收金额':'总应付金额', value: this.detail.billTotalAmount },
           { label: this.pageConfig.type==0?'实收金额':'实付金额', value: this.detail.factAmount },
-          { label: '付款方', value: this.detail.accountName }
+          { label: this.pageConfig.type==0?'收款方':'付款方', value: this.detail.accountName }
         ];
       }
     }

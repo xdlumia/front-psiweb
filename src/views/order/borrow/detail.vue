@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:41:29
+ * @LastEditTime: 2019-11-28 18:11:10
  * @Description: 借入借出详情
 */
 <template>
@@ -75,7 +75,7 @@
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" v-if="showEdit" />
   </sideDetail>
 </template>
 <script>

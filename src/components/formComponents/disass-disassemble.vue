@@ -444,8 +444,12 @@ export default {
     },
     //保存按钮
     submit() {
-      console.log(this.allData, 'this.allDatathis.allData')
-      this.$api.seePsiWmsService.wmsdisassemblytaskPutawayCommodity({ businessCode: this.allData.disassemblyTaskCode, businessCodeList: [this.allData.disassemblyOrderCode], putawayCommodityList: this.tableData })
+      let params = {
+        businessCode: this.allData.disassemblyTaskCode,
+        businessCodeList: [this.allData.disassemblyOrderCode],
+        putawayCommodityList: this.tableData
+      }
+      this.$api.seePsiWmsService.wmsdisassemblytaskPutawayCommodity(params)
         .then(res => {
           this.$emit('reload')
           this.close()

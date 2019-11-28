@@ -90,7 +90,7 @@
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" v-if="showEdit" />
     <exchange-sweepcode :rowData="getExchangeGoods()" :visible.sync="showExchangeGoods" v-if="showExchangeGoods" />
   </sideDetail>
 </template>

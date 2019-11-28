@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-22 18:42:17
+ * @LastEditTime: 2019-11-28 17:04:28
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -10,8 +10,8 @@
     <div slot="title">
       <span>收支流水</span>
       <span class="fr">
-        <el-link :underline="false" @click="showAdd=true,addIncoming()" class="mr10" type="primary">+新建</el-link>
-        <el-link :underline="false" @click="showChooseIncoming=true" type="primary">匹配</el-link>
+        <el-link :underline="false" @click="showAdd=true,addIncoming()" class="mr10" type="primary" v-if="billAmount">+新建</el-link>
+        <el-link :underline="false" @click="showChooseIncoming=true" type="primary" v-if="billAmount">匹配</el-link>
       </span>
     </div>
     <el-table :data="recList" size="mini" v-loading="loading">
@@ -47,9 +47,9 @@
     />
     <payment-match
       :bill="{
-      billAmount:billAmount,
-      unmatch:unmatchData
-    }"
+        billAmount:billAmount,
+        unmatch:unmatchData
+      }"
       :visible.sync="showMatchDialog"
       @change="submitMatch"
       v-if="showMatchDialog"
@@ -139,6 +139,7 @@ export default {
     },
     async saveIncoming() {
       this.loading = true;
+      this.$refs.addIncoming.loading = true;
       try {
         await this.$refs.addIncoming.$refs.form.validate();
         await this.$getApi(this.addApi)(
@@ -149,8 +150,11 @@ export default {
             this.$refs.addIncoming.form
           )
         );
+        this.$refs.addIncoming.setEdit();
+        this.$refs.addIncoming.close();
       } catch (error) {}
       this.loading = false;
+      this.$refs.addIncoming.loading = false;
     },
     async chooseIncoming(data) {
       this.unmatchData = data.unmatchAmount;

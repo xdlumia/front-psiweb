@@ -21,7 +21,7 @@
         <span class='mr10 mt5'>入库仓库</span>
         <el-select
           v-model="wmsId"
-          :disabled="rowData.type == 'disable'"
+          :disabled="rowData.type == 'disable' || !!wmsId"
           size='small'
           placeholder="请选择"
         >
@@ -277,8 +277,20 @@ export default {
   },
   mounted() {
     this.commonwmsmanagerUsableList()
+    this.getLastWmId()
   },
   methods: {
+    //查询上一次选择的仓库，下一次不能更改
+    getLastWmId() {
+      this.$api.seePsiWmsService.wmsflowrecordList({ page: 1, limit: 2, commodityCode: this.rowData.commodityCode, businessCode: this.drawerData.purchaseCode })
+        .then(res => {
+          let list = res.data || []
+          this.wmsId = list[0].wmsId || ''
+        })
+        .finally(() => {
+
+        })
+    },
     //回车机器号和SN码
     shipmentCommodityCheck() {
       if (this.wmsId) {
@@ -327,7 +339,7 @@ export default {
     },
     //保存
     submit() {
-      this.$api.seePsiWmsService.wmsinventorydetailBatchPutaway({ businessCode: this.drawerData.purchaseCode, businessId: this.drawerData.id, putawayCommodityList: this.tableData, businessType: 13 })
+      this.$api.seePsiWmsService.wmsinventorydetailBatchPutaway({ businessCode: this.drawerData.purchaseCode, businessId: this.drawerData.id, putawayCommodityList: this.tableData, businessType: 32 })
         .then(res => {
           this.close()
           this.$emit('reload')
