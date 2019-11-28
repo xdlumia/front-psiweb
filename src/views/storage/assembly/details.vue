@@ -17,26 +17,31 @@
     <div>
       <div class="drawer-header">
         <el-button
+          v-if="detailForm.assembleTaskState == 0 && detailForm.assembleTaskState !== -1 && detailForm.assembleTaskState !== 3"
           @click="wmsassembletaskStart"
           size="mini"
           type="primary"
         >确认收到并开始</el-button>
         <el-button
+          v-if="detailForm.assembleTaskState !== -1 && detailForm.assembleTaskState !== 3"
           @click="wmsassembletaskTransferTask"
           size="mini"
           type="primary"
         >转移</el-button>
         <el-button
+          v-if="detailForm.assembleTaskState !== -1 && detailForm.assembleTaskState !== 3 && detailForm.isHang == 0"
           @click="wmsdisassemblytaskHangTask"
           size="mini"
           type="primary"
         >挂起</el-button>
         <el-button
+          v-if="detailForm.assembleTaskState !== -1 && detailForm.assembleTaskState !== 3 && detailForm.isHang == 1"
           @click="wmsassembletaskContinueTask"
           size="mini"
           type="primary"
         >继续</el-button>
         <el-button
+          v-if="detailForm.assembleTaskState == 1 && detailForm.assembleTaskState == 2"
           @click="goodsVisible=true"
           size="mini"
           type="primary"
@@ -129,7 +134,7 @@ export default {
       this.$api.seePsiWmsService.wmsassembletaskGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
-          this.status[0].value = this.state[res.data.assembleOrderState]
+          this.status[0].value = this.state[res.data.assembleTaskState]
           this.status[1].value = res.data.createTime
           this.status[2].value = res.data.creatorName
           this.status[3].value = res.data.deptName
@@ -156,7 +161,7 @@ export default {
       }).then(() => {
         this.$api.seePsiWmsService.wmsassembletaskStart(null, this.data.id)
           .then(res => {
-            this.$emit('reload')
+            this.reload
           })
           .finally(() => {
 

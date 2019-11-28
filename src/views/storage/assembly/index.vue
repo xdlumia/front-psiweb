@@ -61,7 +61,7 @@ export default {
     assembleDetails
   },
   props: {
-    // 是否显示按钮
+    // 是否显示按钮 
     button: {
       type: Boolean,
       default: true

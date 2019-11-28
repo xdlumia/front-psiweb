@@ -363,12 +363,13 @@ export default {
                     message: '当前商品已经扫够啦!'
                   })
                 }
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: '当前商品不在借出库商品列表内!'
-                })
               }
+              // else {
+              //   this.$message({
+              //     type: 'error',
+              //     message: '当前商品不在借出库商品列表内!'
+              //   })
+              // }
             })
           }
         })

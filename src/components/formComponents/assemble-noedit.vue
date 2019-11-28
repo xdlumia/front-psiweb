@@ -27,7 +27,7 @@
         ref="companyTable"
         row-key="commodityCode"
         class="college-main"
-        style="max-height:300px"
+        max-height="200"
         :tree-props="{children: 'childrenCommodityList'}"
       >
         <el-table-column
@@ -50,14 +50,22 @@
           min-width="100"
           label="拣货数量"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.pickingNum || '-'}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           fixed
           prop="usableNum"
           min-width="100"
           label="可用数量"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.usableNum || '-'}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           fixed
           prop="accomplishNum"

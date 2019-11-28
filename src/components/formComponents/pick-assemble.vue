@@ -14,7 +14,7 @@
         :data="data.commodityList"
         ref="companyTable"
         row-key="commodityCode"
-        style="max-height:300px"
+        max-height="300"
         :tree-props="{children: 'childrenCommodityList'}"
       >
         <el-table-column

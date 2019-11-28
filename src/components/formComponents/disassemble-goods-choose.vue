@@ -122,6 +122,7 @@
             :visible='recordVisible'
           /> -->
           <disassDsassemble
+            @reload="$emit('reload'),visible = false"
             :data='radioData'
             :allData='data'
             @close='disVisible = false'

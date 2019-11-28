@@ -37,6 +37,7 @@
         >
           <template slot-scope="scope">
             <el-button
+              :disabled='Number(scope.row.putinNumber) == scope.row.commodityNumber'
               type="primary"
               size="mini"
               @click="changeWareVisible(scope)"
@@ -49,9 +50,9 @@
           label="入库数量"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">{{scope.row.putinNumber}}/{{scope.row.commodityNumber}}</template>
+          <template slot-scope="scope">{{scope.row.putinNumber || 0}}/{{scope.row.commodityNumber}}</template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           fixed
           prop="teardownNumber"
           min-width="100"
@@ -59,7 +60,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">{{scope.row.teardownNumber}}/{{scope.row.commodityNumber}}</template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           label="机器号/SN码"
           min-width="140"
@@ -69,7 +70,7 @@
             <span
               class="d-text-blue"
               @click="changeWareDisabledVisible(scope)"
-            >{{scope.row.putinNumber}}{{scope.row.commodityNumber}}</span>
+            >{{scope.row.putinNumber || 0}}</span>
           </template>
         </el-table-column>
         <el-table-column

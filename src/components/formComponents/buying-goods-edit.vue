@@ -16,13 +16,21 @@
           class="ml10"
           v-if="(!disabled)&&!hide.includes('add')&&!show.includes(`!add`)"
         />
-        <span class="fr" v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')">
+        <span
+          class="fr"
+          v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')"
+        >
           <span>
-            <el-link :underline="false" @click="showInFull=true" type="primary">全屏显示</el-link>
+            <el-link
+              :underline="false"
+              @click="showInFull=true"
+              type="primary"
+            >全屏显示</el-link>
           </span>
         </span>
       </div>
       <el-table
+        border
         :class="[showSummary?'':'hide-summary']"
         :data="recalcRowKey(data[fkey])"
         :expand-row-keys="expandRowKeys"
@@ -50,10 +58,18 @@
         >
           <template slot-scope="{row}">
             <template v-if="item.key=='commodityCode'">
-              <div @click="openCommodityDetail(row.commodityCode)" class="d-text-blue d-elip d-pointer">{{row.commodityCode}}</div>
+              <div
+                @click="openCommodityDetail(row.commodityCode)"
+                class="d-text-blue d-elip d-pointer"
+              >{{row.commodityCode}}</div>
             </template>
             <template v-else-if="item.key=='goodsPic'">
-              <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
+              <el-image
+                :src="row.goodsPic"
+                class="d-center"
+                fit="fill"
+                style="width: 100px; height: 40px"
+              >
                 <span slot="error">暂无图片</span>
               </el-image>
             </template>
@@ -80,7 +96,11 @@
                 size="mini"
                 v-if="isChildShowColumn(row)"
               >
-                <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]" />
+                <el-input
+                  :disabled="disabled"
+                  class="wfull"
+                  v-model="row[item.prop]"
+                />
               </el-form-item>
             </template>
             <!-- 价格输入结束 -->
@@ -97,16 +117,27 @@
                 size="mini"
                 v-if="isChildShowColumn(row)"
               >
-                <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]"></el-input>
+                <el-input
+                  :disabled="disabled"
+                  class="wfull"
+                  v-model="row[item.prop]"
+                ></el-input>
               </el-form-item>
             </template>
             <!-- 商品数量结束 -->
             <template v-else-if="item.key=='action'">
-              <i @click="deleteChoose(row)" class="el-icon-error d-pointer f20 d-text-red"></i>
+              <i
+                @click="deleteChoose(row)"
+                class="el-icon-error d-pointer f20 d-text-red"
+              ></i>
             </template>
             <!-- 选择开始 -->
             <template v-else-if="item.type=='selection'">
-              <el-form-item :prop="`${getCurrentFormProp(row,item.prop)}`" size="mini" v-if="isChildShowColumn(row)">
+              <el-form-item
+                :prop="`${getCurrentFormProp(row,item.prop)}`"
+                size="mini"
+                v-if="isChildShowColumn(row)"
+              >
                 <el-checkbox
                   :disabled="disabled"
                   :false-label="0"
@@ -119,9 +150,20 @@
             <!-- 选择结束 -->
             <!-- 展开子项开始 -->
             <template v-else-if="item.type=='expanded'">
-              <div class="expanded-icons d-text-gray" v-if="(row.children&&row.children.length)||row.configName">
-                <span @click="expand(row)" class="el-icon-plus d-pointer" v-if="!row.expanded"></span>
-                <span @click="expand(row)" class="el-icon-minus d-pointer" v-else></span>
+              <div
+                class="expanded-icons d-text-gray"
+                v-if="(row.children&&row.children.length)||row.configName"
+              >
+                <span
+                  @click="expand(row)"
+                  class="el-icon-plus d-pointer"
+                  v-if="!row.expanded"
+                ></span>
+                <span
+                  @click="expand(row)"
+                  class="el-icon-minus d-pointer"
+                  v-else
+                ></span>
               </div>
             </template>
             <!-- 展开子项结束 -->
@@ -146,7 +188,10 @@
             </template>
             <!-- 其他结束 -->
           </template>
-          <template slot="header" v-if="item.type=='selection'">
+          <template
+            slot="header"
+            v-if="item.type=='selection'"
+          >
             <el-checkbox
               :disabled="disabled"
               :false-label="0"
@@ -158,8 +203,15 @@
         </el-table-column>
       </el-table>
     </form-card>
-    <FullscreenElement :element="$refs.table" :visible.sync="showInFull" />
-    <CommodityDetail :code="currentCommodityCode" :visible.sync="showCommodityDetail" v-if="showCommodityDetail" />
+    <FullscreenElement
+      :element="$refs.table"
+      :visible.sync="showInFull"
+    />
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </div>
 </template>
 <script>
@@ -327,7 +379,7 @@ export default {
       return list;
     }
   },
-  mounted() {},
+  mounted() { },
   methods: {
     isChildShowColumn(row) {
       return (this.sort || []).includes('expanded') &&
@@ -383,7 +435,7 @@ export default {
           '_rowKey',
           String(
             item._rowKey ||
-              [pk, item.commodityCode || fakeId++].filter(a => a).join('_')
+            [pk, item.commodityCode || fakeId++].filter(a => a).join('_')
           )
         );
         if (pk) {
@@ -439,8 +491,8 @@ export default {
                 item =>
                   +Number(
                     item[this.priceKey] *
-                      (1 + item.taxRate / 100) *
-                      item.commodityNumber || 0
+                    (1 + item.taxRate / 100) *
+                    item.commodityNumber || 0
                   ).toFixed(2)
               )
               .reduce((sum, item) => sum + item, 0)
