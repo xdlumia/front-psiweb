@@ -70,6 +70,15 @@ export default {
   },
   /* =============业务单账期表end=========== */
 
+  /* =============job-controllerstart=========== */
+  // execute
+  jobExecute: {
+    'url': '/job/execute',
+    'mock': false,
+    'methods': 'post'
+  },
+  /* =============job-controllerend=========== */
+
   /* =============process-event-controllerstart=========== */
   // allListenerConfig
   processEventAllListenerConfig: {
@@ -303,6 +312,13 @@ export default {
   // 扫码换货
   salesexchangeScanExchange: {
     'url': '/salesexchange/scanExchange',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 提交审核
+  salesexchangeSubmitApproval: {
+    'url': '/salesexchange/submitApproval',
     'mock': false,
     'methods': 'post'
   },
@@ -609,6 +625,12 @@ export default {
     'url': '/salesshipment/export',
     'mock': false,
     'methods': 'post'
+  },
+
+  // 根据报价单id，计算获取销售出库单金额数据
+  salesshipmentGetAddShipemtAmount: {
+    'url': '/salesshipment/getAddShipemtAmount',
+    'mock': false
   },
 
   // 根据code查看详细信息

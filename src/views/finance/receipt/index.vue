@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 19:00:56
+ * @LastEditTime: 2019-11-28 18:47:01
  * @Description: 销售-待收票
  */
 <template>
@@ -79,22 +79,13 @@
 </template>
 <script>
 import detail from './details' //详情
-import add from './add' //新增
 import invoiceMixin from '../invoice-mixins'
-let filterOptions = [
-  // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
-  // { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
-  // { label: '商机阶段', prop: 'state', default: true, type: 'select', options: [] },
-  // { label: '跟进时间起止', prop: 'CreateTime', default: true, type: 'daterange' },
-  // { label: '维护人', prop: 'creator', default: true, type: 'employee' }
-]
 
 export default {
   name: 'financeIncome',
   mixins: [invoiceMixin],
   components: {
-    detail,
-    add
+    detail
   },
   props: {
     // 是否显示按钮
@@ -125,8 +116,6 @@ export default {
         dataType: 0, //票据类型(0收票，1开票)
         // invoiceCode: ''
       },
-      // 筛选数据
-      filterOptions: filterOptions,
       // 当前行数据
       rowData: {},
       detailVisible: false,

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 11:59:27
+ * @LastEditTime: 2019-11-28 17:01:58
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -140,8 +140,9 @@ export default {
             paymentType: '', // 9
           }
         ],
-        totalAmount: '', // 98765432109876.12,
-        totalNumber: '', //
+        totalAmount: '', // 销售单总金额
+        totalCostAmount: '', //销售参考价总金额
+        totalNumber: '', //销售单总数量
       },
     }
   },
@@ -153,22 +154,49 @@ export default {
   },
   computed: {
     quoteCodes() {
-
+      let quotationCodes = null
       // 如果是编辑 详情数据里会带多个quotationCodes
       if (this.type == 'edit') {
-        return this.detail.quotationCodes
+        quotationCodes = this.detail.quotationCodes
       }
       // 如果是合并 那操作的是出库单的数据 rowData 一定是多个数据.
       else if (this.type == 'merge') {
-        return this.rowData.map(item => item.quotationCode)
+        quotationCodes = this.rowData.map(item => item.quotationCode)
       }
       //  如果是新增 那操作的是出库单的数据 是一条数据
       else if (this.type == 'add') {
-        return [this.rowData].map(item => item.quotationCode)
+        quotationCodes = [this.rowData].map(item => item.quotationCode)
       }
+      return quotationCodes
     },
   },
+  watch: {
+    visible(val) {
+      if (val && this.type == 'add') {
+        this.$nextTick(() => {
+          let ids = null
+          if (this.type == 'merge') {
+            ids = this.rowData.map(item => item.id)
+          }
+          else if (this.type == 'add') {
+            ids = [this.rowData].map(item => item.id)
+          }
+          this.salesshipmentGetAddShipemtAmount(ids)
+        })
+      }
+    }
+  },
   methods: {
+    // 根据报价单id，计算获取销售出库单金额数据
+    salesshipmentGetAddShipemtAmount(ids) {
+      this.$api.seePsiSaleService.salesshipmentGetAddShipemtAmount({ quotationIds: ids })
+        .then(res => {
+          let data = res.data || {}
+          this.form.totalAmount = data.totalAmount || 0
+          this.form.totalCostAmount = data.totalCostAmount || 0
+          this.form.totalNumber = data.totalNumber || 0
+        })
+    },
     async getDetail() {
       if (this.code) {
         let { data } = await this.$api.seePsiSaleService.salesshipmentGetInfoByCode({ shipmentCode: this.code })

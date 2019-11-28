@@ -152,6 +152,7 @@ export default {
       this.$emit('update:visible', false)
     },
     reload() {
+      this.wmsallocationorderInfo()
       this.$emit('reload')
     },
     //查看调拨单详情
