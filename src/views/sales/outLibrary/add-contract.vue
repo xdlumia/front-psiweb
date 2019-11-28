@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 20:13:25
+ * @LastEditTime: 2019-11-28 20:15:19
  * @Description: 生成合同
 */
 <template>
@@ -191,7 +191,6 @@ export default {
     },
     // 保存表单数据
     saveHandle() {
-
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true

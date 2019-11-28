@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 19:52:04
+ * @LastEditTime: 2019-11-28 20:25:45
  * @Description: 销售出库单详情
 */
 <template>
@@ -206,7 +206,7 @@ export default {
   methods: {
     isShowButton(label) {
       let state = this.detail.state || 0
-      let nodes = (this.apprpvalNode || '').split(',')
+      let nodes = (this.detail.apprpvalNode || '').split(',')
       if (state == 0 && label == '审核通过') {
         // 如果 节点里有07 不显示审核通过
         return !nodes.includes('psi_sales_outlibrary_07')
@@ -272,6 +272,11 @@ export default {
           '合同完善': {
             api: 'seePsiSaleService.salesshipmentPassContractApproval',
             data: { ...params, apprpvalNode: 'psi_sales_outlibrary_10' },
+            needNote: null
+          },
+          '收回合同': {
+            api: 'seePsiSaleService.salesshipmentWithdrawApproval',
+            data: { ...params, apprpvalNode: 'psi_sales_outlibrary_13' },
             needNote: null
           },
           '删除': {
