@@ -2,15 +2,15 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 11:35:21
+ * @LastEditTime: 2019-11-28 10:04:27
  * @Description: 到货信息 已绑定字段 1
  */
 <template>
   <form-card title="到货信息">
     <el-row :gutter="10">
       <el-col :span="8" v-if="!hide.includes('saleTime')">
-        <el-form-item :rules="[{ required: true, trigger: 'blur' }]" label="销售要求到货时间" prop="saleTime">
-          <el-date-picker :disabled="disabled" :placeholder="`请选择销售要求到货时间`" class="wfull" v-model="data.saleTime" value-format="timestamp" />
+        <el-form-item :rules="[{ required: true, trigger: 'blur' }]" :label="labels.saleTime?labels.saleTime:'销售要求到货时间'" prop="saleTime">
+          <el-date-picker :disabled="disabled" :placeholder="`请选择${labels.saleTime?labels.saleTime:'销售要求到货时间'}`" class="wfull" v-model="data.saleTime" value-format="timestamp" />
         </el-form-item>
       </el-col>
       <el-col :span="8" v-if="!hide.includes('purchaseTime')">
@@ -91,6 +91,10 @@ export default {
     hide: {
       type: Array,
       default: () => []
+    },
+    labels:{
+      type:Object,
+      default:()=>({})
     }
   },
   data() {

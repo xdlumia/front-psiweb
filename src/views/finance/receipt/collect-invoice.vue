@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 17:49:25
+ * @LastEditTime: 2019-11-28 10:41:08
  * @Description: 收票申请
 */
 <template>
@@ -182,11 +182,11 @@ export default {
         this.form.type = 0;
       }
 
-      this.loading = true;
       this.form.accountTotalAmount = 0; //合计税金
       this.form.commodityTotalAmount = 0; //商品合计金额
       this.form.invoiceAmount = 0; //票据金额
       this.form.taxTotalAmount = 0; //税价合计金额
+      let totalCount = 0;// 商品总数量
       // prettier-ignore
       this.form.invoiceDetailList.map(item => {
         item.taxRate = item.taxRate || 0
@@ -198,12 +198,22 @@ export default {
           +Number(+item.price * (1 + (item.taxRate || 0 / 100)) * +item.quantity).toFixed(2) || 0;
         item.taxAmount =
           +Number(+item.price * (item.taxRate || 0 / 100) * +item.quantity).toFixed(2) || 0;
+        totalCount += Number(item.quantity||0)
 
         this.form.accountTotalAmount += item.taxAmount;
         this.form.commodityTotalAmount += item.beforeTaxAmount;
         this.form.invoiceAmount += item.afterTaxAmount;
         this.form.taxTotalAmount += item.afterTaxAmount;
       });
+      if(!(totalCount>0)){
+        return this.$message({
+          message: '货物总数量不能为空',
+          showClose: true,
+          type: 'warning'
+        });
+      }
+
+      this.loading = true;
       try {
         if (this.isEdit) {
           let api = 'finvoicereceivableUpdate'
