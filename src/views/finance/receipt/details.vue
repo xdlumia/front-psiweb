@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 18:55:41
+ * @LastEditTime: 2019-11-28 18:51:12
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state|| 0].includes(item.label)"
+            v-if="currStatusType[detail.state=-1|| 0].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -61,21 +61,29 @@
           style="height:calc(100vh - 200px)"
           :is="activeName"
         ></components>
-
       </el-form>
     </side-detail>
+    <!-- 开票申请 -->
+    <collectInvoice
+      :visible.sync="editVisible"
+      :rowData="rowData"
+      type="edit"
+      :invoiceType="1"
+    />
 
   </div>
 </template>
 <script>
 import VisibleMixin from '@/utils/visibleMixin';
 import detail from './details/detail' //详情
+import collectInvoice from './collect-invoice' //详情
 import { log } from 'util';
 export default {
   mixins: [VisibleMixin],
   props: ['id'],
   components: {
-    detail
+    detail,
+    collectInvoice
   },
   data() {
     return {
