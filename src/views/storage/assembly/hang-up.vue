@@ -83,7 +83,7 @@ export default {
     submit() {
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
-          this.$api.seePsiWmsService.wmsassembletaskHangTask({ id: this.data.id, hangUpNote: this.ruleForm.desc })
+          this.$api.seePsiWmsService.wmsassembletaskHangTask({ id: this.data.id, hangUpNote: this.ruleForm.desc, isHang: 1 })
             .then(res => {
               this.close();
               this.$emit('reload')

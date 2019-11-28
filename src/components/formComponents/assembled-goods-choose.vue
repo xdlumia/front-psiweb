@@ -117,6 +117,7 @@
             ></el-table-column>
           </el-table>
           <commodityAssemblyEdit
+            @reload='reload'
             :data='radioData'
             :allData='data'
             :visible.sync='disVisible'
@@ -174,6 +175,10 @@ export default {
     submit() {
       this.disVisible = true
       console.log(this.radioData)
+    },
+    reload(){
+      this.$emit('reload')
+      this.close()
     }
   },
   computed: {

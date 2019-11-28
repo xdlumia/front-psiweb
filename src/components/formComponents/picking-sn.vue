@@ -142,9 +142,9 @@ export default {
     this.commonsystemconfigInfo()
   },
   methods: {
-    //回车机器号和SN码
+    //回车机器号和SN码 
     shipmentCommodityCheck() {
-      this.$api.seePsiWmsService.wmspickingorderShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData })
+      this.$api.seePsiWmsService.wmspickingorderShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData, businessCode: this.data.pickingOrderCode, })
         .then(res => {
           if (res.data) {
             this.tableData.push(res.data)

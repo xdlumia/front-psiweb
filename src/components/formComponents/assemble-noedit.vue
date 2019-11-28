@@ -46,13 +46,13 @@
         </el-table-column>
         <el-table-column
           fixed
-          prop="pickingNum"
+          prop="pickingAccomplishNum"
           min-width="100"
           label="拣货数量"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.pickingNum || '-'}}</span>
+            <span>{{scope.row.pickingAccomplishNum || 0}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -63,7 +63,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.usableNum || '-'}}</span>
+            <span>{{scope.row.usableNum || 0}}</span>
           </template>
         </el-table-column>
         <el-table-column

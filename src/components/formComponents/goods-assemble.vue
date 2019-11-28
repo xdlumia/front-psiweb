@@ -176,7 +176,6 @@ export default {
     },
     //点击组装
     changeAssemblyVisible(row) {
-      console.log(row, 'rowrowrow')
       this.rowData = row
       this.assemblyVisible = true
     },
