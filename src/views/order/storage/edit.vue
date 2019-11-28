@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 11:40:06
+ * @LastEditTime: 2019-11-28 10:13:58
  * @Description: 采购入库单
 */
 <template>
@@ -30,6 +30,9 @@
           <arrivalInfo
             :data="form"
             :hide="form.source=='备货单'?['saleTime']:[]"
+            :labels="form.source=='直发单'?{
+              saleTime:'销售预计发货时间'
+            }:{}"
             id="arrivalInfo"
             ref="arrivalInfo"
             v-if="form.source!='直发单'"
@@ -180,6 +183,11 @@ export default {
         请购单: 'purchaseapplyorderGetByCode',
         直发单: 'purchasedirectGetByCode'
       };
+      let saleTime = '',
+        clientId = '',
+        clientLinkman = '',
+        clientPhone = '',
+        clientAddress = '';
       try {
         let { data } = await this.$api.seePsiPurchaseService[api[this.from]](
           null,
@@ -192,9 +200,22 @@ export default {
             item.maxcommodityNumber = item.commodityNumber;
             return item;
           });
+        if (this.from == '请购单') {
+          saleTime = data.saleArrivalTime;
+        } else if (this.from == '直发单') {
+          saleTime = data.salesExpectedShipmentsTime;
+          clientId = data.clientId;
+          clientLinkman = data.clientLinkman;
+          clientPhone = data.clientPhone;
+          clientAddress = data.clientReceivingAddress;
+        }
       } catch (error) {}
-      console.log(commodityList);
       return {
+        saleTime,
+        clientId,
+        clientLinkman,
+        clientPhone,
+        clientAddress,
         commodityList,
         additionalCommodityList: [],
         logistics: {},

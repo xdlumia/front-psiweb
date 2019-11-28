@@ -15,6 +15,7 @@
   >
     <div>
       <div class="drawer-header">
+        <!-- {value == 0 ? '未开始' : value == 1 ? '待执行' : value == 2 ? '部分完成' : value == 3 ? '已完成' : value == -1 ? '终止' : '' -->
         <el-button
           type="primary"
           size='mini'
@@ -22,6 +23,7 @@
         >
           生成拣货单和组装任务</el-button>
         <el-button
+          v-if="detailForm.assembleOrderState !== 2 && detailForm.assembleOrderState !== 3 && detailForm.assembleOrderState !== -1"
           type="primary"
           size='mini'
           :visible='addVisible'
@@ -127,13 +129,13 @@ export default {
           this.status[2].value = res.data.creatorName
           this.status[3].value = res.data.deptName
           this.status[4].value = res.data.source
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 
         })
     },
     reload() {
+      this.wmsassembleorderInfo()
       this.$emit('reload')
     },
     fStop() {

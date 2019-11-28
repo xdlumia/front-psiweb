@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 10:03:29
+ * @LastEditTime: 2019-11-28 11:17:50
  * @Description: 附加发票 字段对应 但是公式还没计算
 */
 <template>
@@ -26,10 +26,11 @@
         <el-form-item
           label="税率"
           prop="taxRate"
-          :rules="[{required:false,type:'taxRate'},{}]"
+          :rules="[{required:false},{type:'taxRate'}]"
         >
           <el-input
             placeholder="请输入"
+            :disabled="disabled"
             @input="preTaxAmountChange"
             v-model="data.taxRate"
           >
@@ -76,7 +77,6 @@ export default {
           callback(new Error('只能输入0-100的整数'));
         }
         else {
-
           callback();
         }
       }

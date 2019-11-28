@@ -45,7 +45,7 @@
             @click="roof(row)"
           >置顶</el-button>
         </span>
-        <span v-else-if="column.columnFields=='assembleOrderState'">{{value == 0 ? '未开始' : value == 1 ? '待执行' : value == 2 ? '部分完成' : value == 3 ? '已完成' : '终止'}}</span>
+        <span v-else-if="column.columnFields=='assembleOrderState'">{{value == 0 ? '未开始' : value == 1 ? '待执行' : value == 2 ? '部分完成' : value == 3 ? '已完成' : value == -1 ? '终止' : ''}}</span>
         <span v-else-if="column.columnFields=='pickingState'">{{value == 0 ? '待拣货' : value == 1 ? '部分拣货' : value == 2 ? '完成拣货' : '终止'}}</span>
         <span v-else>{{value}}</span>
       </template>

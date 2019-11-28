@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 14:48:17
+ * @LastEditTime: 2019-11-28 10:46:46
  * @Description: 借入/借出商品
 */  
 <template>
@@ -56,7 +56,7 @@
       <el-table-column label="商品编号" min-width="130" prop="commodityCode">
         <template slot-scope="{row}">
           <div class="d-elip">
-            <el-link :underline="false" class="f12" type="primary">{{row.commodityCode}}</el-link>
+            <el-link :underline="false" class="f12" type="primary" @click="showCommodityDetail=true,currentCommodityCode=row.commodityCode">{{row.commodityCode}}</el-link>
           </div>
         </template>
       </el-table-column>
@@ -92,15 +92,19 @@
       :visible.sync="visible"
       v-if="visible"
     />
+    <CommodityDetail :code="currentCommodityCode" :visible.sync="showCommodityDetail" v-if="showCommodityDetail" />
   </form-card>
 </template>
 <script>
 import FullscreenElement from '@/components/fullscreen-element';
 import commodityRecordBorrow from './commodity-record-borrow';
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
+
 export default {
   components: {
     FullscreenElement,
-    commodityRecordBorrow
+    commodityRecordBorrow,
+    CommodityDetail
   },
   props: {
     data: {
@@ -122,7 +126,9 @@ export default {
   data() {
     return {
       currentCode: '',
+      currentCommodityCode: '',
       showInFullscreen: false,
+      showCommodityDetail: false,
       operationType: 0,
       visible: false
     };

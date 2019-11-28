@@ -14,7 +14,7 @@
     v-dialogDrag
   >
     <el-container>
-      <el-main 
+      <el-main
         :style="{ 
                 maxHeight:maxHeight+'px'
             }"
@@ -93,7 +93,10 @@ export default {
     returnList(arr) {
       let list = []
       arr.forEach((item) => {
-        if (Object.keys(item).length > 0) {
+        // if (Object.values(item).length > 0) {
+        //   list.push(item)
+        // }
+        if (item.num) {
           list.push(item)
         }
       })

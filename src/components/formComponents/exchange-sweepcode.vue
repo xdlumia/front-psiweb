@@ -53,7 +53,6 @@
       :key="index"
     >
       <el-table
-        class="m20"
         border
         :data="[item]"
         max-height="400"
@@ -358,11 +357,6 @@ export default {
     data: {},
     allData: {}
   },
-  computed: {
-    maxHeight() {
-      return window.innerHeight - 130;
-    }
-  },
   data() {
     return {
       queryForm: {},
@@ -395,11 +389,12 @@ export default {
         .then(res => {
           if (res.data) {
             this.data.putoutCommodityList.forEach((item) => {
-              if (item.swapOutNum - item.swapOutAccomplishNum > 0) {
-                if (item.commodityCode == res.data.commodityCode) {
-                  item.swapOutAccomplishNum ? item.swapOutAccomplishNum++ : item.swapOutAccomplishNum = 1
-                  this.tableData.push(res.data)
-                }
+              console.log(item, Number(item.swapOutAccomplishNum), 'itemitemitemitem')
+              if (item.swapOutNum - Number(item.swapOutAccomplishNum) > 0) {
+                // if (item.commodityCode == res.data.commodityCode) {
+                item.swapOutAccomplishNum ? item.swapOutAccomplishNum++ : item.swapOutAccomplishNum = 1
+                this.tableData.push(res.data)
+                // }
               } else {
                 this.$message({
                   type: 'error',
@@ -465,7 +460,6 @@ export default {
     },
     //保存按钮
     submit() {
-      console.log(this.allData, 'this.allDatathis.allData')
       this.$api.seePsiWmsService.wmsswaptaskSwapCommodity({ businessCode: this.allData.swapOrderCode, businessCodeList: [this.allData.swapTaskCode], putawayCommodityList: this.tableData })
         .then(res => {
           this.$emit('reload')
