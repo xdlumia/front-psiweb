@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 11:05:55
+ * @LastEditTime: 2019-11-28 11:49:48
  * @Description: 收款滞纳金
  */
 <template>
@@ -105,8 +105,6 @@ export default {
         let { data: { configJson } } = await this.$api.seePsiCommonService.commonsystemconfigInfo(null, 3);
         let list = JSON.parse(configJson).financeConfigList;
         this.options = list;
-        console.log(list);
-
       } catch (error) {
         console.error(error);
         this.options = [];

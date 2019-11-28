@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 11:24:56
+ * @LastEditTime: 2019-11-28 11:43:08
  * @Description: 账期信息
  */
 <template>
@@ -166,8 +166,6 @@ export default {
     addBill() {
       // 账期
       let paymenDays = (this.data.shipmentFinanceSaveVoList || []).length + 1
-
-
       this.data.shipmentFinanceSaveVoList.push({
         feeDetailCode: '', // 费用明细",
         feeTypeCode: '', // 费用类型",

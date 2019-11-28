@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-28 14:00:55
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 19:21:03
+ * @LastEditTime: 2019-11-28 11:49:01
  * @Description: 生成拣货单和组装任务 人员分配 1
 */
 <template>
@@ -28,6 +28,7 @@
               :closeOnSelect="false"
               :multiple="false"
               @input="chooseChai"
+              value="791"
               class="d-inline"
               style="width:100%"
             >
