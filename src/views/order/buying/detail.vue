@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:41:57
+ * @LastEditTime: 2019-11-28 14:58:31
  * @Description: 采购单详情
 */
 <template>
@@ -61,10 +61,11 @@
     <OrderStorageAdd :joinCode="code" :visible.sync="orderStorageVisible" @reload="setEdit(),$reload()" from="请购单" />
     <addBorrowIn
       :rowData="{
-      commodityList:detail.commodityList.filter(a=>a.waitPurchaseNumber>0),
-      borrowLoanType:0,
-      salesSheetCode:detail.purchaseApplyCode
-    }"
+        commodityList:detail.commodityList.filter(a=>a.waitPurchaseNumber>0),
+        borrowLoanType:0,
+        businessCode :detail.purchaseApplyCode,
+        businessType:1
+      }"
       :visible.sync="addBorrowInVisible"
       @reload="setEdit(),$reload()"
       from="请购单"

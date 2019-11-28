@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 18:17:23
+ * @LastEditTime: 2019-11-28 15:05:05
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -37,7 +37,7 @@
         :load="loadChildren"
         :style="{height:showInFull?'calc(100% - 40px)':''}"
         :summary-method="showSummary?getSummaries:null"
-        :tree-props="{children: 'children', hasChildren: (sort||[]).includes('expanded')?'configName':'children'}"
+        :tree-props="{children: 'children', hasChildren: (sort||[]).includes('expanded')?'configName':'_children'}"
         lazy
         ref="table"
         row-key="_rowKey"

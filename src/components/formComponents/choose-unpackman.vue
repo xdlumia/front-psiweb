@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-28 14:00:55
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 18:24:47
+ * @LastEditTime: 2019-11-28 13:51:14
  * @Description: 拆卸单 人员分配 1
 */
 <template>
@@ -12,8 +12,8 @@
         <el-col :span="12">
           <el-form-item
             :rules="[  
-              {required:true,message:'必填项',trigger: 'input',}
-          ]"
+                {required:true,message:'必填项',trigger: 'input',}
+            ]"
             label="选择拣货人"
             prop="disassemblyPerson"
             size="mini"
@@ -62,7 +62,7 @@ export default {
     //选择拣货人员
     chooseChai(value) {
       this.employeeName = value.employeeName;
-      this.data.disassemblyPerson = value.userId;
+      this.$set(this.data, 'disassemblyPerson', value.userId);
     }
   }
 };

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 18:13:14
+ * @LastEditTime: 2019-11-28 14:15:13
  * @Description: 换退货商品扫码卡片 
 */
 <template>
@@ -11,8 +11,10 @@
     <buying-goods-edit
       :data="data"
       :show="[
-        'commodityCode','goodsName','wsm','categoryCode','className','specOne','configName','alterationNumberRate','unit','!formTitle'
+        'commodityCode','goodsName','wsm','categoryCode','className','specOne','configName','unit','alterationNumberRate','!formTitle'
       ]"
+      :showSummary="false"
+      :sort="['alterationNumberRate']"
       disabled
     />
     <div class="mt10 mb20">
