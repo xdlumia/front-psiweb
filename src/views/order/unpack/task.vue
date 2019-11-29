@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 14:09:06
+ * @LastEditTime: 2019-11-29 09:06:33
  * @Description: 拆卸任务单
 */
 <template>
@@ -109,11 +109,8 @@ export default {
     afterDetailInit() {
       this.form.commodityList.map(item => {
         delete item.expanded;
-        this.$set(
-          item,
-          'maxdisassemblyNum',
-          (item.disassemblyNum || 0) - (item.accomplishDisassemblyNum || 0)
-        );
+        this.$set(item, 'maxdisassemblyNum', item.undistributedNum || 0);
+        this.$set(item, 'disassemblyNum', item.undistributedNum || 0);
       });
       console.log(this.form);
     },
