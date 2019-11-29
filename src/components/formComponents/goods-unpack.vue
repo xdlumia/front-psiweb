@@ -10,7 +10,7 @@
     <buying-goods-edit
       :customColumns="[
         { label:'拆卸数量', fixed:true, key:'disassemblyNum', width:100, prop:'disassemblyNum',
-          format:(a,row,info)=>info.isChild?'':`${row.accomplishDisassemblyNum||0}/${row.disassemblyNum||0}` 
+          format:(a,row,info)=>info.isChild?'':`${(row.disassemblyNum - row.undistributedNum||0)}/${row.disassemblyNum||0}` 
         },
         { label:'待分配', fixed:true, key:'waitTeardownNumber', width:100, prop:'teardownNumber',
           format:(a,row,info)=>info.isChild?'':`${(row.undistributedNum||0)}`
