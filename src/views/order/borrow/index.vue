@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:35:24
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-29 14:45:06
  * @Description: 采购-借入借出单
 */
 <template>
@@ -14,25 +14,49 @@
       api="seePsiWmsService.wmsborrowloanorderList"
       exportApi="seePsiWmsService.wmsborrowloanorderExport"
       ref="tableView"
+      @selection-change="selectionChange"
       title="借入借出单"
     >
       <template slot="button">
-        <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
+        <el-button
+          @click="showEdit=true"
+          size="mini"
+          type="primary"
+        >新增</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='borrowLoanCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link
+            :underline="false"
+            @click="showDetail=true,currentCode=value"
+            class="f12"
+            type="primary"
+          >{{value}}</el-link>
         </span>
         <span v-else-if="prop=='salesSheetCode'">
-          <el-link :underline="false" class="f12" type="primary">{{value}}</el-link>
+          <el-link
+            :underline="false"
+            class="f12"
+            type="primary"
+          >{{value}}</el-link>
         </span>
         <span v-else-if="prop=='borrowLoanState'">{{stateText[value]}}</span>
         <span v-else-if="prop=='borrowLoanType'">{{value==0?'借入':'借出'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
-    <AddIn :visible.sync="showEdit" @reload="reload" type="add" v-if="showEdit" />
+    <Detail
+      :code="currentCode"
+      :visible.sync="showDetail"
+      @reload="reload"
+      v-if="showDetail"
+    />
+    <AddIn
+      :visible.sync="showEdit"
+      @reload="reload"
+      type="add"
+      v-if="showEdit"
+    />
   </div>
 </template>
 <script>
@@ -86,16 +110,16 @@ export default {
       },
       // prettier-ignore
       filterOptions: [
-        { label: '借入借出单编号', prop: 'borrowLoanCode',default:true },
-        { label: '销售出库单编号', prop: 'salesShipmentCode',default:true },
-        { label: '借入借出类型', prop: 'borrowLoanType',default:true,type:'select',options:[
-          {label:'借入',value:0},
-          {label:'借出',value:1},
-        ] }, 
-        { label: '最少借入借出数量',  prop: 'BorrowLoanNum', type: 'numberRange', int: true,default:true },
-        { label: '最少返还数量', prop: 'ReturnNum', type: 'numberRange', int: true,default:true },
-        { label: '返回时间', prop: 'ReturnTime', type: 'dateRange',default:true },
-        { label: '创建部门', prop: 'deptId', type: 'dept',default:true },
+        { label: '借入借出单编号', prop: 'borrowLoanCode', default: true },
+        { label: '销售出库单编号', prop: 'salesShipmentCode', default: true },
+        {          label: '借入借出类型', prop: 'borrowLoanType', default: true, type: 'select', options: [
+            { label: '借入', value: 0 },
+            { label: '借出', value: 1 },
+          ]        },
+        { label: '最少借入借出数量', prop: 'BorrowLoanNum', type: 'numberRange', int: true, default: true },
+        { label: '最少返还数量', prop: 'ReturnNum', type: 'numberRange', int: true, default: true },
+        { label: '返回时间', prop: 'ReturnTime', type: 'dateRange', default: true },
+        { label: '创建部门', prop: 'deptId', type: 'dept', default: true },
         { label: '创建人', prop: 'creator', type: 'employee' },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange' },
       ]
@@ -104,6 +128,10 @@ export default {
   methods: {
     logData(e) {
       console.log(e);
+    },
+    // 多选
+    selectionChange(val) {
+      this.$emit("selection-change", val);
     },
     reload() {
       this.$refs.tableView.reload(1);

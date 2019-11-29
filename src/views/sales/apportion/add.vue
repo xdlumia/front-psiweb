@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 11:39:21
+ * @LastEditTime: 2019-11-29 14:32:28
  * @Description: 客户管理-新增分摊
 */
 <template>
@@ -50,10 +50,10 @@
           id="apportionInfo"
         />
         <!-- 商品信息 -->
-        <commodity-info
+        <!-- <commodity-info
           :data="form"
           id="commodityInfo"
-        />
+        /> -->
         <!-- 备注信息 -->
         <extras-info
           :data="form"
@@ -111,6 +111,8 @@ export default {
         costAmount: '', //采购/销售成本金额
         costApportionCode: '', //"分摊单编号",
         costCode: '', //费用单编号
+        busCode: '',
+        busType: '',
         note: '', //"备注",
         shipmentCode: '', //出库单编号
         state: '', //9
