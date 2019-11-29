@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 13:54:25
+ * @LastEditTime: 2019-11-29 14:19:33
  * @Description: 收票申请
 */
 <template>
@@ -14,7 +14,7 @@
     width="1000"
   >
     <div slot="title">
-      <span>收票申请</span>
+      <span>{{invoiceType==0?'收票申请':'开票申请'}}</span>
       <span class="fr mr20">
         <el-button
           @click="save"
@@ -60,7 +60,7 @@
             :invoiceType="invoiceType"
             :data="form"
             id="invoice"
-            :hide="invoiceType?[]:['invoiceCoding','invoiceCode']"
+            :hide="invoiceType==0?[]:['invoiceCoding','invoiceCode']"
           />
           <make-buyer
             :data="form"
