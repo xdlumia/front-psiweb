@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 15:04:59
+ * @LastEditTime: 2019-11-29 18:33:57
  * @Description: 商品发货信息
 */  
 <template>
@@ -10,8 +10,8 @@
     <div slot="title">
       <span>商品发货信息</span>
     </div>
-    <el-table :data="data.delivers" ref="elTable" row-key="name" size="mini" style="height:100%;">
-      <el-table-column class-name="hide-children" min-width="1" width="1"></el-table-column>
+    <el-table :data="data.delivers" ref="elTable" row-key="name" size="mini" max-height="600px">
+      <!-- <el-table-column class-name="hide-children" min-width="1" width="1"></el-table-column>
       <el-table-column min-width="60">
         <template slot-scope="{row}">
           <div class="expanded-icons d-text-gray" v-if="row.children&&row.children.length">
@@ -19,10 +19,10 @@
             <span @click="expand(row)" class="el-icon-minus d-pointer" v-else></span>
           </div>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="商品编号" min-width="200" prop="title" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="d-text-blue">{{row.commodityCode}}</span>
+          <span class="d-text-blue" v-if="!row.fake">{{row.commodityCode}}</span>
         </template>
       </el-table-column>
       <el-table-column label="商品图片" min-width="100" prop="goodsPic" show-overflow-tooltip>

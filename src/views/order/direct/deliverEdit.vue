@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 11:57:33
+ * @LastEditTime: 2019-11-29 18:53:22
  * @Description: 直发单发货
 */
 <template>
@@ -10,7 +10,7 @@
     <div slot="title">
       <span>直发单发货</span>
     </div>
-    <el-form style="max-height:calc(100vh - 130px)" ref="form" v-model="form">
+    <el-form ref="form" style="max-height:calc(100vh - 130px)" v-model="form">
       <deliverGoods :data="form" id="deliverGoods"></deliverGoods>
     </el-form>
     <div class="ac" slot="footer">
@@ -39,7 +39,7 @@ export default {
         // 是否完成 0全部为空 1部分为空 2全部不为空
         flag: ''
       },
-      alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
+      alwaysDropAndCopyForm: true // 在getDetail返回数据后，重新覆盖form
     };
   },
   mounted() {},
@@ -52,7 +52,8 @@ export default {
         if (!item.fake) {
           currentCode = item.commodityCode;
           data[currentCode] = {
-            bcId: item.bcId,
+            bcId: item.bcId || item.id,
+            directCode: this.code || this.rowData.directCode,
             commodityCode: item.commodityCode,
             commodityNumber: item.commodityNumber,
             completeNumber: 0,
@@ -61,7 +62,11 @@ export default {
           delivers.push(data[currentCode]);
         }
         if (item.deliverInfo.snCode || item.deliverInfo.orderCode) {
-          data[currentCode].directDeliverList.push(item.deliverInfo);
+          data[currentCode].directDeliverList.push({
+            ...item.deliverInfo,
+            bcId: item.bcId || item.id,
+            directCode: this.code || this.rowData.directCode
+          });
           if (item.deliverInfo.snCode && item.deliverInfo.orderCode) {
             data[currentCode].completeNumber++;
           }
@@ -81,14 +86,16 @@ export default {
         }
       );
       if (flagStatus.complete != flagStatus.total) {
-        flag = 1;
+        if (flagStatus.complete) {
+          flag = 1;
+        }
       } else {
         flag = 2;
       }
       this.loading = true;
       try {
         await this.$api.seePsiPurchaseService.purchasedirectDeliver({
-          delivers,
+          delivers: delivers.filter(item => item.directDeliverList.length),
           directCode: this.form.directCode,
           flag
         });
@@ -106,6 +113,15 @@ export default {
           null,
           code
         );
+        let deliverGoodsStatus = data.reduce((data, item) => {
+          data[item.commodityCode] = true;
+          return data;
+        }, {});
+        this.rowData.commodityEntityList.map(item => {
+          if (!deliverGoodsStatus[item.commodityCode]) {
+            data.push({ ...item });
+          }
+        });
         let delivers = [];
         data.map(item => {
           item.deliverInfo = {
@@ -113,7 +129,7 @@ export default {
             orderCode: ''
           };
           delivers.push(item);
-          let listNum = item.commodityNumber || 5;
+          let listNum = item.commodityNumber || 0;
           let preNum = 1;
           if (item.directDeliverList && item.directDeliverList.length) {
             item.deliverInfo = item.directDeliverList.splice(0, 1)[0];
@@ -144,7 +160,8 @@ export default {
         console.log({
           delivers,
           directCode: code,
-          flag: 0
+          flag: 0,
+          rowData: this.rowData
         });
         return {
           delivers,
