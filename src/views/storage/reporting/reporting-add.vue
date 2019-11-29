@@ -43,7 +43,7 @@
           :model="addForm"
           class="p10"
         >
-          <reportingInfo
+          <reportingInfo 
             ref="deliverEdit"
             :addForm='addForm'
             @wmsChange='wmsChange'

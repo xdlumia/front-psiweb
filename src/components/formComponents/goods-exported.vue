@@ -155,12 +155,12 @@
       >
         <commodityPicking :data='rowData' />
         <machineSn :data='rowData' />
-        <CommodityDetail
-          :code="currentCommodityCode"
-          :visible.sync="showCommodityDetail"
-          v-if="showCommodityDetail"
-        />
       </el-dialog>
+      <CommodityDetail
+        :code="currentCommodityCode"
+        :visible.sync="showCommodityDetail"
+        v-if="showCommodityDetail"
+      />
     </form-card>
   </div>
 </template>

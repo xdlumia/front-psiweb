@@ -146,7 +146,7 @@
         :data="tableData"
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
+        max-height="200"
         :tree-props="{children: 'id', hasChildren: 'id'}"
       >
         <el-table-column
