@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 11:32:36
+ * @LastEditTime: 2019-11-29 14:26:40
  * @Description: 今日应付账单
 */
 <template>
@@ -21,7 +21,7 @@
       <el-tab-pane label="详情">
         <el-form size="mini" v-if="isDataReady">
           <paybill-detail :data="detail" disabled />
-          <payer-info :data="detail" disabled />
+          <payer-info :data="detail" disabled :type="this.pageConfig.type" />
           <!-- incomeType 收支类型(0收款/1付款） -->
           <payment-log
             :addApi="pageConfig.api.addIncoming"
@@ -104,7 +104,7 @@ export default {
           { label: '逾期状态', value: this.overText[this.detail.overSate||0] },
           { label: this.pageConfig.type==0?'总应收金额':'总应付金额', value: this.detail.billTotalAmount },
           { label: this.pageConfig.type==0?'实收金额':'实付金额', value: this.detail.factAmount },
-          { label: this.pageConfig.type==0?'收款方':'付款方', value: this.detail.accountName }
+          { label: this.pageConfig.type==1?'收款方':'付款方', value: this.detail.accountName }
         ];
       }
     }

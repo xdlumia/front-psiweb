@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 13:43:21
+ * @LastEditTime: 2019-11-29 14:28:17
  * @Description: 开票/收票 记录 已绑定 1
 */
 <template>
@@ -21,7 +21,12 @@
       <el-table-column label="状态" min-width="80" prop="name" show-overflow-tooltip></el-table-column>
     </el-table>
     <!-- 票据类型(0收票，1开票) -->
-    <CollectInvoiceDialog :invoiceType="type" :rowData="collectInvoiceData" :visible.sync="showCollectInvoice" v-if="showCollectInvoice" />
+    <CollectInvoiceDialog
+      :invoiceType="type"
+      :rowData="collectInvoiceData"
+      :visible.sync="showCollectInvoice"
+      v-if="showCollectInvoice"
+    />
   </form-card>
 </template>
 <script>
@@ -70,7 +75,7 @@ export default {
     add() {
       let data = {};
       // 票据类型(0收票，1开票)
-      if (this.type == 0) {
+      if (this.type == 1) {
         data.purchaseId = this.data.clientId;
         data.purchaseType = this.data.clientType;
         data.marketType = 3;
@@ -81,9 +86,11 @@ export default {
         data.purchaseType = 3;
         data.purchaseId = this.data.companySettlementId;
       }
-      data.type = this.type;
+      data.type = this.type == 0;
+      data.busCode = this.data.busCode;
+      data.busType = this.data.busType;
       this.collectInvoiceData = data;
-      this.showCollectInvoice = true;
+      this.$nextTick(() => (this.showCollectInvoice = true));
     }
   }
 };
