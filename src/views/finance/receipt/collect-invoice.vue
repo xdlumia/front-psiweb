@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 15:52:21
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-29 16:48:46
  * @Description: 收票申请
 */
 <template>
@@ -70,7 +70,7 @@
           <make-buyer
             :data="form"
             id="saler"
-            prefix="market" 
+            prefix="market"
           />
           <make-goods
             :data="form"
@@ -174,7 +174,7 @@ export default {
       }
       await this.$refs.form.validate();
       // invoiceType = 0是开票 否则是收票
-      this.form.type=this.invoiceType; 
+      this.form.type = this.invoiceType;
 
       this.form.accountTotalAmount = 0; //合计税金
       this.form.commodityTotalAmount = 0; //商品合计金额
@@ -206,19 +206,19 @@ export default {
       this.loading = true;
       try {
         if (this.isEdit) {
-          let api = 'finvoicereceivableUpdate'
+          let api = 'finvoicebillingUpdate'
           // 如果是开票编辑
           if (this.invoiceType == 1) {
-            api = 'finvoicebillingUpdate'
+            api = 'finvoicereceivableUpdate'
           }
           await this.$api.seePsiFinanceService[api](this.form);
         } else {
-          let api = 'finvoicereceivableSave'
+          let api = 'finvoicebillingSave'
           // 如果是开票 保存
           if (this.invoiceType == 1) {
-            api = 'finvoicebillingSave'
+            api = 'finvoicereceivableSave'
           }
-          await this.$api.seePsiFinanceService.finvoicereceivableSave(this.form);
+          await this.$api.seePsiFinanceService[api](this.form);
         }
         this.setEdit();
         this.close();
