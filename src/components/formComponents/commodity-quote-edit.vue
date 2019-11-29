@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 10:34:29
+ * @LastEditTime: 2019-11-29 11:37:30
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -374,8 +374,7 @@ export default {
     // },
     //点击删除当前行
     deleteInfo(row) {
-      console.log(row)
-      // this.data.businessCommoditySaveVoList.splice(row.$index, 1)
+      this.data.businessCommoditySaveVoList.splice(row.$index, 1)
     },
     // 商品数量和折扣修改
     numberChange(row) {

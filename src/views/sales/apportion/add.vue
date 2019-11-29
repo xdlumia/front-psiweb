@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 18:50:15
+ * @LastEditTime: 2019-11-29 11:39:21
  * @Description: 客户管理-新增分摊
 */
 <template>
@@ -37,7 +37,7 @@
       label-position="top"
     >
 
-      <d-tabs :style="{maxHeight:'calc(100vh - 180px)'}">
+      <d-tabs :style="{maxHeight:'calc(100vh - 110px)'}">
         <d-tab-pane
           v-for="(val,key) of tabs"
           :key="key"
