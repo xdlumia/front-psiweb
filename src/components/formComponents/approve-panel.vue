@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 15:16:29
+ * @LastEditTime: 2019-11-29 16:17:15
  * @Description: 审核信息
 */
 <template>
@@ -49,22 +49,13 @@ export default {
   data() {
     return {
       showHis: false, // 是否查看历史状态
-      progressData: [
-        {
-          taskName: '', // 任务节点名称
-          taskCode: '', // 任务节点码
-          taskStatus: '', // 任务节状态
-          approvalName: '', // 审核人 add
-          createTime: '', // 审核时间 add
-          type: '' // 任务类型
-        }
-      ], // 当前流程节点
+      progressData: [], // 当前流程节点
     };
   },
   async mounted() {
     // 查询当前项共有多少节点
     // await this.queryProcessDefinitionSubTask()
-    // await this.processtaskQueryProcessHistoryEntity()
+    await this.processtaskQueryProcessHistoryEntity()
   },
   watch: {
     '$parent.data.id': {
@@ -99,13 +90,12 @@ export default {
         processType: busType[this.busType],
         businessId: this.id || this.$parent.rowData.id || this.$parent.data.id// 一般详情都会传rowData 当前行操作数据 里面有id
       }
-      this.$api.seeWorkflowService.processtaskQueryProcessHistoryEntity(params)
-        .then(res => {
-          this.progressData = res.data || []
-        })
-
-      // 历史记录的最后一个节点就是当前节点
-      // const lastHis = this.hisData[this.hisData.length - 1]
+      if (this.id || this.$parent.rowData.id || this.$parent.data.id) {
+        this.$api.seeWorkflowService.processtaskQueryProcessHistoryEntity(params)
+          .then(res => {
+            this.progressData = res.data || []
+          })
+      }
 
     }
 
