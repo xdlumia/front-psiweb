@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="close"
     :title="`组装任务-${detailForm.assembleTaskCode}`"
     width="990px"
@@ -17,7 +17,7 @@
     <div>
       <div class="drawer-header">
         <el-button
-          v-if="detailForm.assembleTaskState == 0"
+          v-if="detailForm.assembleTaskState == 0 && detailForm.assembleTaskState !=-1"
           @click="wmsassembletaskStart"
           size="mini"
           type="primary"
@@ -29,19 +29,19 @@
           type="primary"
         >转移</el-button>
         <el-button
-          v-if="detailForm.isHang == 0 || !detailForm.isHang"
+          v-if="(detailForm.isHang == 0 || !detailForm.isHang) && detailForm.assembleTaskState != -1"
           @click="wmsdisassemblytaskHangTask"
           size="mini"
           type="primary"
         >挂起</el-button>
         <el-button
-          v-if="detailForm.isHang == 1"
+          v-if="detailForm.isHang == 1 && detailForm.assembleTaskState != -1"
           @click="wmsassembletaskContinueTask"
           size="mini"
           type="primary"
         >继续</el-button>
         <el-button
-          v-if="(detailForm.assembleTaskState == 1 || detailForm.assembleTaskState == 2) && detailForm.isHang==0"
+          v-if="(detailForm.assembleTaskState == 1 || detailForm.assembleTaskState == 2) && detailForm.isHang==0 && detailForm.assembleTaskState != -1"
           @click="goodsVisible=true"
           size="mini"
           type="primary"
@@ -140,7 +140,6 @@ export default {
           this.status[2].value = res.data.creatorName
           this.status[3].value = res.data.deptName
           this.status[4].value = res.data.source
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 

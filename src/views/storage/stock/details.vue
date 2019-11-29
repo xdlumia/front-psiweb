@@ -49,13 +49,7 @@
         class="wfull hfull tabs-view"
         v-model="activeName"
       >
-        <!-- <el-tab-pane
-          label="成本明细"
-          name='1'
-        >
-          <el-form>
-          </el-form>
-        </el-tab-pane> -->
+
         <el-tab-pane
           label="商品明细表"
           name='1'

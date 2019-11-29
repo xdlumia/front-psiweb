@@ -119,7 +119,7 @@
           <commodityAssemblyEdit
             @reload='reload'
             :data='radioData'
-            :allData='data'
+            :detailForm='data'
             :visible.sync='disVisible'
             v-if="disVisible"
           />
@@ -176,7 +176,7 @@ export default {
       this.disVisible = true
       console.log(this.radioData)
     },
-    reload(){
+    reload() {
       this.$emit('reload')
       this.close()
     }

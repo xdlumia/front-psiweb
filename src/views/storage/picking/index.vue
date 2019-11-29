@@ -195,7 +195,7 @@ export default {
     //     this.classForm[item.code] = item.content
     //   })
     // }, 1000)
-    // let list = this.dictionaryOptions('PSI_SP_KIND')
+    // let list = this.dictionaryOptions('PSI_SP_KIND') 
   },
   methods: {
     //点击打开右侧边栏

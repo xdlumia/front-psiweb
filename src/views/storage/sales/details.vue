@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="$emit('update:visible',false)"
     :title="'销售单-' + data.salesSheetCode"
     width="990px"
@@ -149,7 +149,6 @@ export default {
           this.status[2].value = this.detailForm.creator
           this.status[3].value = this.detailForm.deptName
           this.status[4].value = this.detailForm.source
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 

@@ -8,11 +8,23 @@
 <template>
   <div>
     <form-card title='组装商品'>
+      <div slot="title">
+        <span>组装商品</span>
+        <span class="fr">
+          <span>
+            <el-link
+              :underline="false"
+              @click="fullscreen"
+              type="primary"
+            >全屏显示</el-link>
+          </span>
+        </span>
+      </div>
       <el-table
         :data="data.commodityList"
         border
         size="mini"
-        ref="companyTable"
+        ref="table"
         class="college-main"
         style="max-height:340px"
         row-key="commodityCode"
@@ -93,8 +105,11 @@
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
           </template>
         </el-table-column>
 
@@ -152,10 +167,21 @@
       :visible.sync='dialogVisible'
       v-if="dialogVisible"
     />
+    <FullscreenElement
+      :element="$refs.table"
+      :visible.sync="showInFullscreen"
+    />
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </div>
 </template>
 <script>
 import commodityAssemblyEdit from './commodity-assembly-edit'
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
+import FullscreenElement from '@/components/fullscreen-element';
 import assemblyRecord from './assembly-record'
 export default {
   props: ['data', 'drawerData'],
@@ -165,10 +191,21 @@ export default {
       dialogData: {},
       rowData: {},
       assemblyVisible: false,//组装弹窗
+      showInFullscreen: false,
+      showCommodityDetail: false,
+      currentCommodityCode: '',
       tableData: [{ cityName: '假的' }]
     }
   },
   methods: {
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
+    fullscreen() {
+      this.showInFullscreen = true;
+    },
     //点击SN码
     changeRecord(scope) {
       this.dialogVisible = true;
@@ -185,7 +222,9 @@ export default {
   },
   components: {
     commodityAssemblyEdit,
-    assemblyRecord
+    assemblyRecord,
+    FullscreenElement,
+    CommodityDetail
   },
 }
 </script>

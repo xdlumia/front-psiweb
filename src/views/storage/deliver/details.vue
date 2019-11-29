@@ -8,7 +8,7 @@
 <template>
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="$emit('update',false)"
     :title="'发货单-'+drawerData.shipmentsOrderCode"
     width="990px"

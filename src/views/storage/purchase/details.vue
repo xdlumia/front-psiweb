@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="$emit('update:visible',false)"
     :title="`采购单-${drawerData.purchaseCode}`"
     width="990px"

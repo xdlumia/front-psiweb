@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="close"
     :title="'换货任务-'+drawerData.swapTaskCode"
     width="990px"
