@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 15:01:16
+ * @LastEditTime: 2019-11-29 15:02:23
  * @Description: 采购-换货单
 */
 <template>
@@ -122,6 +122,4 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.buying-requisition-page {
-}
 </style>

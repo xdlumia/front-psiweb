@@ -2,33 +2,17 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 10:17:24
+ * @LastEditTime: 2019-11-29 15:17:18
  * @Description: 审核小卡片
 */
 <template>
   <div>
-    <!-- el-icon-error 驳回
-      el-icon-success 审核通过-->
-    <!-- wait / process / finish / error / success -->
-    <!-- <el-steps :active="currentStepIndex">
-      <el-step
-        :key="i"
-        :status="getStatus(item,i)"
-        :title="item.taskName"
-        v-for="(item,i) of progress"
-      >
-        <span
-          :class="getIcons(item,i)"
-          class="f24"
-          slot="icon"
-        ></span>
-        <div slot="description">
-          <div>{{item.approvalName ||'审核人名称'}}</div>
-          <div>{{item.createTime | timeToStr('YYYY-MM-DD hh:mm:ss')}}</div>
-        </div>
-      </el-step>
-    </el-steps> -->
+
     <ul class="approve-wrap">
+      <div
+        v-if="!progress.length"
+        class="ac d-text-gray"
+      >暂无操作流程</div>
       <li
         class="approve-item d-text-qgray"
         :class="`${classStatus(item)} ${classFloat(index)}`"
@@ -48,39 +32,12 @@ export default {
   props: {
     progress: {
       type: Array,
-      default: () => [
-        {
-          approved: true,
-          taskName: '提交审核',
-          operatTime: +new Date(),
-          approvalName: '小胖'
-        },
-        {
-          approved: true,
-          rejected: false,
-          taskName: '财务审核',
-          operatTime: +new Date(),
-          approvalName: '小胖'
-        },
-        {
-          approved: false,
-          rejected: true,
-          taskName: '审核驳回',
-          operatTime: +new Date(),
-          approvalName: '小胖'
-        }
-      ]
+      default: () => []
     }
   },
   data() {
     return {
-      icons: {
-        wait: 'el-icon-success',
-        process: 'el-icon-success',
-        error: 'el-icon-error',
-        finish: 'el-icon-success',
-        success: 'el-icon-success'
-      }
+
     };
   },
   computed: {
