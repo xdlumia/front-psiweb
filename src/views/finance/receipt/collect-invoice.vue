@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 15:50:54
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-11-29 10:20:32
  * @Description: 收票申请
 */
 <template>
@@ -138,21 +138,19 @@ export default {
     // 获取业务商品列表
     getBusinessCommodityList() {
       // invoiceType=1 是收票的时候才加载商品信息
-      if (!this.invoiceType == 1 && this.type != 'edit') {
-        return
-      }
-      this.$api.seePsiSaleService.salesshipmentBusinessCommodityEntity({ code: this.code })
-        .then(res => {
-          let data = res.data || []
-          // type == 0是请求过来的商品信息
-          data = data.map(item => {
-            item.type = 0
-            return item
+      if (this.invoiceType == 1 && this.type != 'edit') {
+        this.$api.seePsiSaleService.salesshipmentBusinessCommodityEntity({ code: this.code })
+          .then(res => {
+            let data = res.data || []
+            // type == 0是请求过来的商品信息
+            data = data.map(item => {
+              item.type = 0
+              return item
+            })
+            // this.form.invoiceDetailList = data
+            this.$set(this.form, 'invoiceDetailList', data)
           })
-          // this.form.invoiceDetailList = data
-          this.$set(this.form, 'invoiceDetailList', data)
-
-        })
+      }
     },
     async getDetail() {
       if (this.invoiceType != 1 && this.code) {
@@ -194,14 +192,14 @@ export default {
         item.beforeTaxAmount = +Number(+item.price * Number(item.quantity)).toFixed(2) || 0;
         item.afterTaxAmount = +Number(+item.price * (1 + (item.taxRate / 100)) * Number(item.quantity)).toFixed(2) || 0;
         item.taxAmount = +Number(+item.price * (item.taxRate / 100) * Number(item.quantity)).toFixed(2) || 0;
-        totalCount += Number(item.quantity||0)
+        totalCount += Number(item.quantity || 0)
 
         this.form.accountTotalAmount += item.taxAmount;
         this.form.commodityTotalAmount += item.beforeTaxAmount;
         this.form.invoiceAmount += item.afterTaxAmount;
         this.form.taxTotalAmount += item.afterTaxAmount;
       });
-      if(!(totalCount>0)){
+      if (!(totalCount > 0)) {
         return this.$message({
           message: '货物总数量不能为空',
           showClose: true,
