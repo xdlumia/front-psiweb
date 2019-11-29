@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-14 18:55:01
+ * @LastEditTime: 2019-11-29 11:43:20
  * @Description: 分摊信息
  */
 <template>
@@ -90,6 +90,7 @@
       v-dialogDrag
     >
       <components
+        class="add-fee"
         :status="false"
         :more="false"
         :button="false"
@@ -97,6 +98,13 @@
         :is="dialogData.component"
         :dialogData="dialogData"
       ></components>
+      <div class="ac">
+        <el-button size="small">取消</el-button>
+        <el-button
+          size="small"
+          type="primary"
+        >确定</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -149,5 +157,8 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+/deep/.add-fee .main-content {
+  height: calc(100vh - 159px);
+}
 </style>

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 17:01:58
+ * @LastEditTime: 2019-11-29 11:48:04
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -195,6 +195,7 @@ export default {
           this.form.totalAmount = data.totalAmount || 0
           this.form.totalCostAmount = data.totalCostAmount || 0
           this.form.totalNumber = data.totalNumber || 0
+          this.form.shipmentFinanceSaveVoList[0].payAmount = this.form.totalCostAmount
         })
     },
     async getDetail() {
