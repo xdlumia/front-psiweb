@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 16:30:11
+ * @LastEditTime: 2019-11-29 11:13:02
  * @Description: 账单信息
 */
 <template>
@@ -109,7 +109,7 @@ export default {
       financeListRule: [
         {
           validator: (rule, value, cb) => {
-            let max = Number(this.max) || 0;
+            let max = +(Number(this.max) || 0).toFixed(2);
             let now = Number(this.billTotalAmount) || 0;
             if (!this.data.financeList || !this.data.financeList.length) {
               return cb(new Error((this.errorTip = '请填写账单信息')));
