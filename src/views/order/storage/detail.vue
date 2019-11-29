@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 10:42:01
+ * @LastEditTime: 2019-11-29 11:18:52
  * @Description: 采购入库单
 */
 <template>
@@ -215,7 +215,7 @@ export default {
           this.detail.commodityList || [],
           this.detail.additionalCommodityList || []
         )
-        .filter(item => item.commodityNumber - (item.returenNumber || 0)).length
+        .filter(item => (item.commodityNumber - (item.returenNumber || 0))>0).length
         ? true
         : false;
     }
