@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 16:50:53
+ * @LastEditTime: 2019-11-29 17:58:49
  * @Description: 采购调价单
 */
 <template>
@@ -113,6 +113,20 @@ export default {
         '2': '通过'
       }
     };
+  },
+  computed: {
+    status() {
+      if (!this.detail) return [];
+      else {
+        return [
+          { label: '状态', value: this.stateText[this.detail.state] },
+          { label: '单据创建人', value: this.detail.creatorName },
+          { label: '创建部门', value: this.detail.deptName },
+          { label: '创建时间', value: this.detail.createTime, isTime: true },
+          { label: '调价类型', value: '采购调价' }
+        ];
+      }
+    }
   },
   watch: {},
   methods: {

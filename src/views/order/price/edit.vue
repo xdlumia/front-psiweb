@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 16:51:01
+ * @LastEditTime: 2019-11-29 17:57:25
  * @Description: 销售和采购调价单
 */
 <template>
@@ -127,7 +127,6 @@ export default {
       ).toFixed(2);
     },
     async save() {
-      console.log(this.form);
       await this.$refs.form.validate();
       let form = { ...this.form };
       form.commonAdjustPriceDetailedEntityList = form.commodityList.map(
@@ -148,8 +147,6 @@ export default {
       );
       form.adjustPriceType = this.adjustPriceType || 2;
       delete form.commodityList;
-      form.source = this.from || '新建';
-      console.log(form);
       this.loading = true;
       try {
         if (this.isEdit) {
