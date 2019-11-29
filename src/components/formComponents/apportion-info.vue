@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 13:56:59
+ * @LastEditTime: 2019-11-29 14:42:18
  * @Description: 分摊信息
  */
 <template>
@@ -65,30 +65,33 @@
               class="wfull"
               :disabled="disabled"
               :rules="[{required:true,message:'必填项'}]"
-              v-model="data.customerName"
+              v-model="data.busType"
             >
               <el-option
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-                v-for="item in options"
+                :key="val.busType"
+                :label="val.title"
+                :value="key"
+                v-for="(val,key) in options"
               ></el-option>
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col
+          :span="8"
+          v-if="dialogData.title"
+        >
           <el-form-item
             :rules="[{required:true,message:'必填项'}]"
-            label="销售出≥库单"
+            :label="dialogData.title"
             prop
           >
             <el-input
               :disabled="disabled"
-              v-model="data.shipmentCode"
+              v-model="data.busCode"
             >
               <el-button
                 slot="append"
-                @click="eventHandle('outLib')"
+                @click="eventHandle(data.busType)"
                 icon="el-icon-plus"
               ></el-button>
             </el-input>
@@ -148,26 +151,35 @@ export default {
         type: '',
         data: '',
       },
-      options: [],
+      options: {
+        '0': { comp: 'salesOutLibrary', title: '销售出库单' },
+        '1': { comp: 'orderStorage', title: '采购入库单' },
+        '2': { comp: 'storageAllocation', title: '调拨单' },
+        '3': { comp: 'orderBorrow', title: '借出借入单' },
+        '4': { comp: 'orderExchange', title: '换货单' },
+      },
       multipleSelection: [],
+    }
+  },
+  watch: {
+    'data.busType': {
+      handler(val) {
+        this.dialogData.title = this.options[val].title
+      }
     }
   },
   methods: {
     // 按钮功能操作
-    eventHandle(type, row) {
-      // 防止row为undefined 导致报错
-      row = row ? row : {}
+    eventHandle(type, ) {
       // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {
         'financeFee': { comp: 'financeFee', title: `费用单` },
-        'outLib': { comp: 'salesOutLibrary', title: `销售出库单` },
+        ...this.options
       }
       this.dialogData.visible = true
       this.dialogData.type = type
       this.dialogData.title = typeObj[type].title
       this.dialogData.component = typeObj[type].comp
-      this.dialogData.data = row;
-
     },
     selectionChange(val) {
       if (val.length > 1) {
@@ -182,7 +194,7 @@ export default {
     },
     confirm() {
       if (this.dialogData.type == 'financeFee') {
-        this.financeFee
+        this.data.costCode = this.multipleSelection[0].costCode
       } else {
         this.data.shipmentCode = this.multipleSelection[0].shipmentCode
       }
