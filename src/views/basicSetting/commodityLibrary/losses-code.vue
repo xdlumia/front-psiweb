@@ -151,6 +151,7 @@ export default {
       this.$api.seePsiWmsService['wmsinventorydetailPutawayCommodityCheck'](params)
         .then(res => {
           res.data ? this.tableData.push(res.data) : ''
+          this.snCode = ''
         })
         .finally(() => {
 

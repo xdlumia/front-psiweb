@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-28 09:53:24
+ * @LastEditTime: 2019-11-29 16:13:14
  * @Description: description
  -->
 <template>
@@ -64,9 +64,9 @@
         <el-form disabled size="mini">
           <approve-panel :data="detailForm"></approve-panel>
           <!-- 开票申请 -->
-          <make-invoice-info :invoiceType="1" :data="detailForm" id="invoice" />
-          <make-buyer :data="detailForm" id="buyer" />
-          <make-buyer :data="detailForm" from="客户" id="saler" prefix="purchase" title="销售方信息" />
+          <make-invoice-info :invoiceType="0" :data="detailForm" id="invoice" />
+          <make-buyer :data="detailForm" id="buyer" prefix="market" />
+          <make-buyer :data="detailForm" id="saler" prefix="purchase" />
           <make-goods :data="detailForm" id="goods" />
           <make-goods-card :data="detailForm" />
           <extras-info :data="detailForm" id="extrasInfo" />
@@ -107,7 +107,7 @@
     <collectInvoice
       :visible.sync="collectInvoiceVisible"
       :rowData="rowData"
-      :invoiceType="1"
+      :invoiceType="0"
       :id="rowData.id"
     />
   </sideDetail>

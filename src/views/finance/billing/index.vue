@@ -61,8 +61,8 @@
 
         <span v-else-if="column.columnFields=='state'">{{stateText[row.state]}}</span>
         <span
-          v-else-if="column.columnFields=='invoiceTyepCode'"
-        >{{row.invoiceTyepCode | dictionary('CW_FP_LX')}}</span>
+          v-else-if="column.columnFields=='invoiceTypeCode'"
+        >{{row.invoiceTypeCode | dictionary('CW_FP_LX')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
