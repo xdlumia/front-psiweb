@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 15:10:35
+ * @LastEditTime: 2019-11-29 11:25:37
  * @Description: file content
 */
 <template>
@@ -197,7 +197,13 @@ export default {
           limit: 999
         }
         let { data } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
+
         let wholeListData = data || []
+        wholeListData = wholeListData.map(item => {
+          item.inventoryNumber = item.usableInventoryNum
+          item.reference = item.saleReferencePrice
+          return item
+        })
         // 配件列表
         let fixingsList = []
         for (let key in this.form.KIND2List) {
