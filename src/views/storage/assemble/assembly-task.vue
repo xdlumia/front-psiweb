@@ -98,7 +98,7 @@ export default {
           assembleOrderCode: this.data.assembleOrderCode,
           note: this.form.note,
           assemblePerson: this.form.assemblePerson,
-          pickingPerson: this.form.assemblePerson
+          pickingPerson: this.form.pickingPerson
         })
           .then(res => {
             this.$emit('reload')

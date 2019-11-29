@@ -117,10 +117,10 @@
         <el-table-column
           label="数量"
           min-width="100"
-          prop="borrowLoanAccomplishNum"
+          prop="returnAccomplishNum"
         >
           <template slot-scope="scope">
-            <span>{{scope.row.borrowLoanAccomplishNum}}/{{scope.row.borrowLoanNum}}</span>
+            <span>{{scope.row.returnAccomplishNum}}/{{scope.row.returnNum}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -354,8 +354,8 @@ export default {
           if (res.data) {
             this.data.commodityShowList.forEach((item, index) => {
               if (item.commodityCode == res.data.commodityCode) {
-                if (this.data.commodityShowList[index].borrowLoanAccomplishNum < this.data.commodityShowList[index].borrowLoanNum) {
-                  this.data.commodityShowList[index].borrowLoanAccomplishNum++
+                if (this.data.commodityShowList[index].returnAccomplishNum < this.data.commodityShowList[index].returnNum) {
+                  this.data.commodityShowList[index].returnAccomplishNum++
                   this.tableData.push(res.data)
                 } else {
                   this.$message({
@@ -381,7 +381,7 @@ export default {
       this.tableData.splice(scope.$index, 1)
       this.data.commodityShowList.forEach((item, index) => {
         if (item.commodityCode == scope.row.commodityCode) {
-          this.data.commodityShowList[index].borrowLoanAccomplishNum--
+          this.data.commodityShowList[index].returnAccomplishNum--
         }
       })
     },

@@ -16,9 +16,22 @@
   >
     <div>
       <div class="drawer-header">
+        state: {
+        2: '待借入',
+        3: '待借出',
+        4: '部分借入',
+        5: '部分借出',
+        6: '待归还',
+        7: '待返还',
+        8: '部分返还',
+        9: '部分归还',
+        10: '完成返还',
+        11: '完成归还',
+        '-1': '终止',
+        },
         <el-button
           v-if="drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 6 || drawerData.borrowLoanState == 9"
-          @click="backVisible=true,isComponents = 'borrowPayback',dialogData.title='借入归还-UYGVUOUY'"
+          @click="backVisible=true,isComponents = 'borrowPayback',dialogData.title='借入归还-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
         >归还</el-button>
@@ -35,7 +48,7 @@
           type="primary"
         >借入扫码</el-button>
         <el-button
-          v-if="drawerData.borrowLoanState == 3 || drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 10"
+          v-if="drawerData.borrowLoanState == 3 || drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 8"
           @click="backVisible=true,isComponents = 'lendScanCode',dialogData.title='借出扫码-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
