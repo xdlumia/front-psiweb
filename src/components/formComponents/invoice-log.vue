@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 16:17:26
+ * @LastEditTime: 2019-11-29 16:39:50
  * @Description: 开票/收票 记录 已绑定 1
 */
 <template>
@@ -14,19 +14,27 @@
       </span>
     </div>
     <el-table :data="list" size="mini">
-      <el-table-column label="购买方名称" min-width="80" prop="name" show-overflow-tooltip></el-table-column>
-      <el-table-column label="发票号码" min-width="80" prop="name" show-overflow-tooltip></el-table-column>
-      <el-table-column label="开票金额" min-width="80" prop="name" show-overflow-tooltip></el-table-column>
-      <el-table-column label="开票时间" min-width="80" prop="name" show-overflow-tooltip></el-table-column>
-      <el-table-column label="状态" min-width="80" prop="name" show-overflow-tooltip></el-table-column>
+      <el-table-column label="购买方名称" min-width="80" prop="purchaseName" show-overflow-tooltip></el-table-column>
+      <el-table-column label="发票号码" min-width="80" prop="invoiceCode" show-overflow-tooltip></el-table-column>
+      <el-table-column label="开票金额" min-width="80" prop="taxTotalAmount" show-overflow-tooltip></el-table-column>
+      <el-table-column label="开票时间" min-width="80" prop="invoiceData" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span>{{row.invoiceDate|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" min-width="80" prop="name" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span>{{type==1?receiveStateText[row.state]:billStateText[row.state]}}</span>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 票据类型(1收票，0开票) -->
     <CollectInvoiceDialog
       :invoiceType="type"
       :rowData="collectInvoiceData"
       :visible.sync="showCollectInvoice"
-      v-if="showCollectInvoice"
       @reload="getRecList()"
+      v-if="showCollectInvoice"
     />
   </form-card>
 </template>
@@ -49,7 +57,22 @@ export default {
     return {
       list: [],
       collectInvoiceData: null,
-      showCollectInvoice: false
+      showCollectInvoice: false,
+      billStateText: {
+        '0': '审核中',
+        '1': '已驳回',
+        '2': '待开票',
+        '3': '已开票',
+        '4': '已作废',
+        '5': '已冲红',
+        '-1': '新建'
+      },
+      receiveStateText: {
+        '0': '审核中',
+        '1': '已驳回',
+        '2': '已收票',
+        '-1': '新建'
+      }
     };
   },
   watch: {
@@ -64,7 +87,7 @@ export default {
     async getRecList() {
       if (!this.busCode) return;
       let { data } = await this.$api.seePsiFinanceService[
-        this.type == 0 ? 'finvoicereceivableList' : 'finvoicebillingList'
+        this.type == 1 ? 'finvoicereceivableList' : 'finvoicebillingList'
       ]({
         page: 1,
         limit: 999,
@@ -76,7 +99,7 @@ export default {
     add() {
       let data = {};
       // 票据类型(1收票，0开票)
-      if (this.type == 1) {
+      if (this.type == 0) {
         data.purchaseId = this.data.clientId;
         data.purchaseType = this.data.clientType;
         data.marketType = 3;
