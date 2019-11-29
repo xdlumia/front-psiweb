@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 14:42:18
+ * @LastEditTime: 2019-11-29 14:59:27
  * @Description: 分摊信息
  */
 <template>
@@ -165,6 +165,7 @@ export default {
     'data.busType': {
       handler(val) {
         this.dialogData.title = this.options[val].title
+        this.data.busCode = ''
       }
     }
   },
@@ -185,19 +186,37 @@ export default {
       if (val.length > 1) {
         this.$message({
           message: '只能选择一条数据',
-          type: 'info',
+          type: 'error',
+          showClose: true,
+        });
+      };
+      this.multipleSelection = val
+      console.log(this.multipleSelection);
+
+    },
+    confirm() {
+      if (this.multipleSelection.length > 1 || !this.multipleSelection.length) {
+        this.$message({
+          message: !this.multipleSelection.length ? '必须选择一条数据' : '只能选择一条数据',
+          type: 'error',
           showClose: true,
         });
         return
-      }
-      this.multipleSelection = val
-    },
-    confirm() {
+      };
+      let [rowData] = this.multipleSelection
       if (this.dialogData.type == 'financeFee') {
-        this.data.costCode = this.multipleSelection[0].costCode
+        this.data.costCode = rowData.costCode
       } else {
-        this.data.shipmentCode = this.multipleSelection[0].shipmentCode
+        let codeObj = {
+          '0': 'shipmentCode',
+          '1': 'putinCode',
+          '2': 'allocationOrderCode',
+          '3': 'borrowLoanCode',
+          '4': 'swapOrderCode',
+        }
+        this.data.busCode = rowData[codeObj[this.data.busType]]
       }
+      this.dialogData.visible = false
     }
   },
   components: {
