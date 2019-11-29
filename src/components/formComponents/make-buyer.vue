@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-22 09:38:51
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 13:41:21
+ * @LastEditTime: 2019-11-29 16:33:33
  * @Description: 销售方/购买方信息 已绑定 1
 */ 
 <template>
@@ -296,7 +296,7 @@ export default {
       this.companyList = [info];
       this.currentCompany = info;
       this.$set(this.data, `${this.prefix}Name`, info.name);
-      console.log(this)
+      console.log(this);
     }
   }
 };
