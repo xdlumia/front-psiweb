@@ -108,14 +108,11 @@ export default {
             taxTotalAmount: '', //98765432109876.12
           }
         ],
-        companyCode: '', //"公司编码code",
-        costAmount: '', //98765432109876.12,
+        costAmount: '', //采购/销售成本金额
         costApportionCode: '', //"分摊单编号",
-        costCode: '', //"100000",
-        deptCode: '', //"部门code",
-        isDelete: '', //9,
+        costCode: '', //费用单编号
         note: '', //"备注",
-        shipmentCode: '', //"100000",
+        shipmentCode: '', //出库单编号
         state: '', //9
 
       },
