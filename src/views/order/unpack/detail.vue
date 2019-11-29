@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 09:02:38
+ * @LastEditTime: 2019-11-29 11:21:13
  * @Description: 拆卸单
 */
 <template>
@@ -28,6 +28,7 @@
         @click="$submission('seePsiWmsService.wmsdisassemblyorderPassApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
+          busCode:detail.disassemblyOrderCode
         },'通过')"
         size="mini"
         type="primary"

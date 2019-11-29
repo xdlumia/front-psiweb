@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 16:41:13
+ * @LastEditTime: 2019-11-29 11:20:10
  * @Description: 换货单
 */
 <template>
@@ -37,6 +37,7 @@
         @click="$submission('seePsiWmsService.wmsswaporderPassApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
+          busCode:detail.swapOrderCode
         },'通过')"
         size="mini"
         type="primary"

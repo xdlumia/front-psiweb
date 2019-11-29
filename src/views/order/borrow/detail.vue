@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 18:11:10
+ * @LastEditTime: 2019-11-29 11:19:50
  * @Description: 借入借出详情
 */
 <template>
@@ -37,6 +37,7 @@
         @click="$submission('seePsiWmsService.wmsborrowloanorderPassApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
+          busCode:detail.borrowLoanCode
         },'通过')"
         size="mini"
         type="primary"

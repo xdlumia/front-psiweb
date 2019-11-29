@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 19:25:46
+ * @LastEditTime: 2019-11-29 10:52:45
  * @Description: 换退货商品扫码卡片 
 */
 <template>
@@ -31,7 +31,7 @@
         <span>件，历史扫码</span>
         <span class="b d-text-green">{{status.historyNum||0}}</span>
         <span>件，还需扫码</span>
-        <span class="b d-text-blue">{{status.allNum||0-status.historyNum||0-status.current||0}}</span>
+        <span class="b d-text-blue">{{(status.allNum||0)-(status.historyNum||0)-(status.current||0)}}</span>
         <span>件</span>
       </span>
     </div>
@@ -88,7 +88,7 @@ export default {
       inputSN: '',
       loading: false,
       status: {
-        current: '',
+        current: 0,
         allNum: 0,
         historyNum: 0
       },
@@ -126,13 +126,19 @@ export default {
       this.loading = false;
     },
     async getScanStatus() {
-      let {
-        data
-      } = await this.$api.seePsiPurchaseService.purchasealterationStatWms(
-        null,
-        this.data.businessCode
-      );
-      this.status = data || {};
+      // let {
+      //   data
+      // } = await this.$api.seePsiPurchaseService.purchasealterationStatWms(
+      //   null,
+      //   this.data.businessCode
+      // );
+      // this.status = data || {};
+      this.data.commodityList.reduce((data, item) => {
+        // ${row.returenNumber||0}/${row.alterationNumber||0}
+        data.allNum += item.alterationNumber;
+        data.historyNum += item.returenNumber;
+        return data;
+      }, this.status);
     },
     async checkSN(e) {
       e.preventDefault();
@@ -156,7 +162,8 @@ export default {
           commodity &&
           !this.data.putawayCommodityList.some(
             item =>
-              item.snCode == data.snCode || item.robotCode == data.robotCode
+              (item.snCode && item.snCode == data.snCode) ||
+              (item.robotCode && item.robotCode == data.robotCode)
           )
         ) {
           if (commodity.alterationNumber > commodity.returenNumber) {

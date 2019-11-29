@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 19:10:06
+ * @LastEditTime: 2019-11-29 11:10:59
  * @Description: 采购退货单
 */
 <template>
@@ -37,6 +37,7 @@
         @click="$submission('seePsiPurchaseService.purchasealterationPassApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
+          busCode:detail.alterationCode
         },'通过')"
         size="mini"
         type="primary"
@@ -58,7 +59,13 @@
         type="primary"
         v-if="detail&&[0,5].includes(detail.state)"
       >删除</el-button>
-      <el-button @click="showScanGoods=true" size="mini" type="primary" v-if="detail&&[2,3].includes(detail.state)">退货扫码</el-button>
+      <el-button
+        :disabled="canReject"
+        @click="showScanGoods=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&[2,3].includes(detail.state)"
+      >退货扫码</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
@@ -146,6 +153,15 @@ export default {
   },
   mounted() {},
   watch: {},
+  computed: {
+    canReject() {
+      if (!this.detail) return false;
+      // ${row.returenNumber||0}/${row.alterationNumber||0}
+      return !this.detail.commodityList.some(
+        item => item.returenNumber < item.alterationNumber
+      );
+    }
+  },
   methods: {
     async getDetail() {
       if (this.code) {
