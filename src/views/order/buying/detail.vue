@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 14:58:31
+ * @LastEditTime: 2019-11-29 17:39:28
  * @Description: 采购单详情
 */
 <template>
@@ -15,8 +15,8 @@
     width="990px"
   >
     <template slot="button">
-      <el-button @click="orderStorageVisible=true" size="mini" type="primary" v-if="waitBuyingNumber>0">采购</el-button>
-      <el-button @click="addBorrowInVisible=true" size="mini" type="primary" v-if="waitBuyingNumber>0">借入</el-button>
+      <el-button :disabled="!(waitBuyingNumber>0)" @click="orderStorageVisible=true" size="mini" type="primary">采购</el-button>
+      <el-button :disabled="!(waitBuyingNumber>0)" @click="addBorrowInVisible=true" size="mini" type="primary">借入</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">

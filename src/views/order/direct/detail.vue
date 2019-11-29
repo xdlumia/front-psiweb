@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 18:09:51
+ * @LastEditTime: 2019-11-29 17:03:09
  * @Description: 直发单详情
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`直发单 ${detail?detail.directCode:''}`"
+    :title="`直发单 ${detail?(detail.directCode||code||''):''}`"
     :visible.sync="showDetailPage"
     @close="close"
     v-loading="loading"
@@ -47,9 +47,9 @@
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <addOrderStorage :joinCode="detail.directCode" :visible.sync="showAddOrderStorage" from="直发单" v-if="detail" />
-    <editDirect :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" v-if="detail" />
-    <deliverEdit :code="detail.directCode" :visible.sync="showDeliverGoods" @reload="setEdit(),$reload()" v-if="detail" />
+    <addOrderStorage :joinCode="detail.directCode||code" :visible.sync="showAddOrderStorage" from="直发单" v-if="showAddOrderStorage" />
+    <editDirect :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" v-if="showEdit" />
+    <deliverEdit :code="detail.directCode||code" :visible.sync="showDeliverGoods" @reload="setEdit(),$reload()" v-if="showDeliverGoods" />
   </sideDetail>
 </template>
 <script>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 10:13:58
+ * @LastEditTime: 2019-11-29 17:37:50
  * @Description: 采购入库单
 */
 <template>
@@ -185,6 +185,7 @@ export default {
       };
       let saleTime = '',
         clientId = '',
+        clientName = '',
         clientLinkman = '',
         clientPhone = '',
         clientAddress = '';
@@ -205,6 +206,7 @@ export default {
         } else if (this.from == '直发单') {
           saleTime = data.salesExpectedShipmentsTime;
           clientId = data.clientId;
+          clientName = data.clientName;
           clientLinkman = data.clientLinkman;
           clientPhone = data.clientPhone;
           clientAddress = data.clientReceivingAddress;
@@ -212,13 +214,15 @@ export default {
       } catch (error) {}
       return {
         saleTime,
-        clientId,
-        clientLinkman,
-        clientPhone,
-        clientAddress,
         commodityList,
         additionalCommodityList: [],
-        logistics: {},
+        logistics: {
+          clientId,
+          clientName,
+          clientLinkman,
+          clientPhone,
+          clientAddress
+        },
         financeConfig: {},
         source: this.from,
         joinCode: this.joinCode
