@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 16:41:22
+ * @LastEditTime: 2019-11-29 17:48:14
  * @Description: 分摊信息
  */
 <template>
@@ -11,7 +11,7 @@
       <el-row :gutter="10">
         <el-col :span="8">
           <el-form-item
-            :rules="[{required:true,message:'必填项'}]"
+            :rules="[{required:true,message:'必填项',trigger:'blur'}]"
             label="费用单"
             prop="costCode"
           >
@@ -55,6 +55,7 @@
             <el-input
               :disabled="disabled"
               v-model="data.costAmount"
+              @input="costAmountChange"
             >
               <template slot="append">元</template>
             </el-input>
@@ -69,6 +70,7 @@
             <el-select
               class="wfull"
               :disabled="disabled"
+              @change="busTypeChange"
               :rules="[{required:true,message:'必填项'}]"
               v-model="data.busType"
             >
@@ -88,7 +90,7 @@
           <el-form-item
             :rules="[{required:true,message:'必填项'}]"
             :label="dialogData.title"
-            prop
+            prop="busCode"
           >
             <div
               class="not-disabled-class"
@@ -160,6 +162,7 @@ export default {
   data() {
     return {
       sumAmount: 0, //总金额
+      notCostAmount: 0,
 
       //dialog弹出框
       dialogData: {
@@ -180,7 +183,22 @@ export default {
     }
   },
   computed: {
-    notCostAmount() {
+
+  },
+  watch: {
+    'data.busType': {
+      handler(val) {
+        this.dialogData.title = this.options[val].title
+      }
+    }
+  },
+  methods: {
+    busTypeChange(val) {
+      this.dialogData.title = this.options[val].title
+      this.data.busCode = ''
+      this.data.businessCommoditySaveVoList = []
+    },
+    costAmountChange() {
       if (!this.data.costCode) {
         this.$message({
           message: '请先选择费用单',
@@ -198,18 +216,7 @@ export default {
         this.data.costAmount = this.sumAmount
       }
       return this.sumAmount - (this.data.costAmount || 0)
-    }
-  },
-  watch: {
-    'data.busType': {
-      handler(val) {
-        this.dialogData.title = this.options[val].title
-        this.data.busCode = ''
-        this.data.businessCommoditySaveVoList = []
-      }
-    }
-  },
-  methods: {
+    },
     // 按钮功能操作
     eventHandle(type) {
       if (this.disabled) return
