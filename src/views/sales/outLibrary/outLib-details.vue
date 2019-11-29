@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 18:58:17
+ * @LastEditTime: 2019-11-28 20:25:45
  * @Description: 销售出库单详情
 */
 <template>
@@ -14,7 +14,10 @@
       :status="status"
       @close="close"
     >
-      <div slot="button">
+      <div
+        slot="button"
+        v-if="Object.keys(detail).length"
+      >
         <!-- 操作按钮 -->
         <span
           v-for="(item,index) of buttons"
@@ -23,7 +26,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state || 0].includes(item.label)"
+            v-if="isShowButton(item.label)"
             size="small"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -201,6 +204,20 @@ export default {
 
   },
   methods: {
+    isShowButton(label) {
+      let state = this.detail.state || 0
+      let nodes = (this.detail.apprpvalNode || '').split(',')
+      if (state == 0 && label == '审核通过') {
+        // 如果 节点里有07 不显示审核通过
+        return !nodes.includes('psi_sales_outlibrary_07')
+      } else if (state == 0 && label == '合同完善') {
+        // 如果 节点里有10 不显示合同完善
+        return !nodes.includes('psi_sales_outlibrary_10')
+      } else {
+        return this.currStatusType[state].includes(label)
+      }
+
+    },
     buttonsClick(label) {
       // 需要弹出操作功能
       let labelObj = {
@@ -219,7 +236,7 @@ export default {
       // 需要二次确认操作
       else {
         let params = {
-          apprpvalNode: this.detail.apprpvalNode,
+          apprpvalNode: this.detail.apprpvalNode, //数据里没值. 所以下写死
           id: this.detail.id,
           processType: 'psi_sales_outlibrary_01',
         }
@@ -232,9 +249,16 @@ export default {
           },
           '审核通过': {
             api: 'seePsiSaleService.salesshipmentPassApproval',
-            data: { ...params },
+            data: { ...params, apprpvalNode: 'psi_sales_outlibrary_07' },
             needNote: null
           },
+
+          '审核采购时间': {
+            api: 'seePsiSaleService.salesshipmentPurchaseTimeApproval',
+            data: { ...params, apprpvalNode: 'psi_sales_outlibrary_12' },
+            needNote: null
+          },
+
           '撤销审核': {
             api: 'seePsiSaleService.salesshipmentCancel',
             data: params,
@@ -247,7 +271,12 @@ export default {
           },
           '合同完善': {
             api: 'seePsiSaleService.salesshipmentPassContractApproval',
-            data: params,
+            data: { ...params, apprpvalNode: 'psi_sales_outlibrary_10' },
+            needNote: null
+          },
+          '收回合同': {
+            api: 'seePsiSaleService.salesshipmentWithdrawApproval',
+            data: { ...params, apprpvalNode: 'psi_sales_outlibrary_13' },
             needNote: null
           },
           '删除': {
