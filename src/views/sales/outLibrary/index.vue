@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 16:13:28
+ * @LastEditTime: 2019-11-29 11:54:30
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -16,6 +16,7 @@
       title="销售出库单"
       api="seePsiSaleService.salesshipmentList"
       exportApi="seePsiSaleService.salesshipmentExport"
+      @selection-change="selectionChange"
       :params="Object.assign(queryForm,params)"
     >
       <template slot-scope="{column,row,value}">
@@ -84,6 +85,7 @@ export default {
       // 当前行数据
       rowData: {},
       detailVisible: false, // 出库单详情
+      multipleSelection: [],
     };
   },
   methods: {
@@ -92,6 +94,10 @@ export default {
       this.rowData = row ? row : {}
       this[type] = true
       return
+    },
+    // 多选
+    selectionChange(val) {
+      this.$emit("selection-change", val);
     },
 
 

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 11:43:20
+ * @LastEditTime: 2019-11-29 13:56:59
  * @Description: 分摊信息
  */
 <template>
@@ -30,7 +30,21 @@
         <el-col :span="8">
           <el-form-item
             :rules="[{required:true,message:'必填项'}]"
-            label="未匹配费用金额"
+            label="未分摊费用金额"
+            prop
+          >
+            <el-input
+              :disabled="disabled"
+              v-model="data.telPhone"
+            >
+              <template slot="append">元</template>
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item
+            :rules="[{required:true,message:'必填项'}]"
+            label="本次分摊费用金额"
             prop
           >
             <el-input
@@ -65,12 +79,12 @@
         <el-col :span="8">
           <el-form-item
             :rules="[{required:true,message:'必填项'}]"
-            label="销售出库单"
+            label="销售出≥库单"
             prop
           >
             <el-input
               :disabled="disabled"
-              v-model="data.telPhone"
+              v-model="data.shipmentCode"
             >
               <el-button
                 slot="append"
@@ -95,12 +109,17 @@
         :more="false"
         :button="false"
         :column="false"
+        @selection-change="selectionChange"
         :is="dialogData.component"
         :dialogData="dialogData"
       ></components>
       <div class="ac">
-        <el-button size="small">取消</el-button>
         <el-button
+          size="small"
+          @click="dialogData.visible = false"
+        >取消</el-button>
+        <el-button
+          @click="confirm"
           size="small"
           type="primary"
         >确定</el-button>
@@ -130,9 +149,7 @@ export default {
         data: '',
       },
       options: [],
-      form: {
-        telPhone: '我是电话号码'
-      },
+      multipleSelection: [],
     }
   },
   methods: {
@@ -152,6 +169,24 @@ export default {
       this.dialogData.data = row;
 
     },
+    selectionChange(val) {
+      if (val.length > 1) {
+        this.$message({
+          message: '只能选择一条数据',
+          type: 'info',
+          showClose: true,
+        });
+        return
+      }
+      this.multipleSelection = val
+    },
+    confirm() {
+      if (this.dialogData.type == 'financeFee') {
+        this.financeFee
+      } else {
+        this.data.shipmentCode = this.multipleSelection[0].shipmentCode
+      }
+    }
   },
   components: {
   },
