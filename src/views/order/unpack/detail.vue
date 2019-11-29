@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:45:14
+ * @LastEditTime: 2019-11-29 09:02:38
  * @Description: 拆卸单
 */
 <template>
@@ -69,14 +69,17 @@
       </el-tab-pane>
       <el-tab-pane label="拆卸任务" name="unpack">
         <FullscreenWrap v-if="isDataReady&&tabStatus.unpack">
-          <StorageDisassemble :button="false" :params="{page:1,limit:15,disassemblyOrderCode:detail.disassemblyOrderCode,relationCode:detail.disassemblyOrderCode}" />
+          <StorageDisassemble
+            :button="false"
+            :params="{page:1,limit:15,disassemblyOrderCode:detail.disassemblyOrderCode,relationCode:detail.disassemblyOrderCode}"
+          />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
     <Task
       :rowData="{
         disassemblyOrderCode:detail.disassemblyOrderCode,
-        commodityList:detail.commodityList.filter(item=>((item.disassemblyNum || 0) - (item.accomplishDisassemblyNum || 0))>0)
+        commodityList:detail.commodityList.filter(item=>(item.undistributedNum || 0)>0)
       }"
       :visible.sync="showTask"
       @reload="setEdit(),$reload()"
