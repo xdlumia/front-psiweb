@@ -44,7 +44,7 @@
         >
           <buying-goods-edit
             :customColumns="[
-            { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140, },
+            { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140,format:(a,b)=>b.purchaseAverage||b.inventoryPrice },
             { label:'库存成本(税前)',key:'inventoryPrice',prop:'inventoryPrice',width:140, },
             { label:'调整金额',key:'adjustPriceMoney',prop:'adjustPriceMoney',width:120,slot:'adjustPriceMoney' },
             { label:'调整后库存成本(税前)',key:'repertoryCost',prop:'repertoryCost',width:140,

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 11:35:35
+ * @LastEditTime: 2019-11-29 16:06:10
  * @Description: 今日应付账单
 */
 <template>
@@ -110,7 +110,7 @@ export default {
       default: () => ({
         title: '今日应付账单',
         busType: '51',
-        // 票据类型(0收票，1开票)
+        // 票据类型(1收票，0开票)
         // 账单类型（0收款 1付款）
         type: 1,
         api: {

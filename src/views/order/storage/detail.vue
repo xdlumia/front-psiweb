@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 14:09:43
+ * @LastEditTime: 2019-11-29 16:10:57
  * @Description: 采购入库单
 */
 <template>
@@ -170,7 +170,7 @@
     />
     <orderContract :rowData="orderContractData" :visible.sync="showOrderContract" v-if="showOrderContract" />
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" v-if="showEdit" />
-    <CollectInvoiceDialog :invoiceType="0" :rowData="collectInvoiceData" :visible.sync="showCollectInvoice" v-if="showCollectInvoice" />
+    <CollectInvoiceDialog :invoiceType="1" :rowData="collectInvoiceData" :visible.sync="showCollectInvoice" v-if="showCollectInvoice" />
   </sideDetail>
 </template>
 <script>
