@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 19:18:08
+ * @LastEditTime: 2019-11-29 09:57:40
  * @Description: 采购入库单
 */
 <template>
@@ -66,6 +66,7 @@
         @click="$submission('seePsiPurchaseService.purchaseputinShutdown',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
+          busCode:detail.putinCode
         },'终止')"
         size="mini"
         type="danger"
