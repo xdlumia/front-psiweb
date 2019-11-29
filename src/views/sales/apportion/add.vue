@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 14:32:28
+ * @LastEditTime: 2019-11-29 15:54:43
  * @Description: 客户管理-新增分摊
 */
 <template>
@@ -49,11 +49,6 @@
           :data="form"
           id="apportionInfo"
         />
-        <!-- 商品信息 -->
-        <!-- <commodity-info
-          :data="form"
-          id="commodityInfo"
-        /> -->
         <!-- 备注信息 -->
         <extras-info
           :data="form"

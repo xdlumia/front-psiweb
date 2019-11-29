@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 16:05:11
+ * @LastEditTime: 2019-11-29 16:17:26
  * @Description: 开票/收票 记录 已绑定 1
 */
 <template>
@@ -26,6 +26,7 @@
       :rowData="collectInvoiceData"
       :visible.sync="showCollectInvoice"
       v-if="showCollectInvoice"
+      @reload="getRecList()"
     />
   </form-card>
 </template>

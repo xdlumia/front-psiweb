@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 17:04:28
+ * @LastEditTime: 2019-11-29 16:18:32
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -53,6 +53,7 @@
       :visible.sync="showMatchDialog"
       @change="submitMatch"
       v-if="showMatchDialog"
+      @reload="getRecList"
     />
   </form-card>
 </template>
@@ -172,6 +173,7 @@ export default {
           matchAmount: e
         });
         this.showMatchDialog = false;
+        this.getRecList()
       } catch (error) {
         console.error(error);
       }

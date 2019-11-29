@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 14:59:27
+ * @LastEditTime: 2019-11-29 16:21:21
  * @Description: 分摊信息
  */
 <template>
@@ -34,8 +34,8 @@
             prop
           >
             <el-input
-              :disabled="disabled"
-              v-model="data.telPhone"
+              :disabled="true"
+              v-model="notCostAmount"
             >
               <template slot="append">元</template>
             </el-input>
@@ -49,7 +49,7 @@
           >
             <el-input
               :disabled="disabled"
-              v-model="data.telPhone"
+              v-model="data.costAmount"
             >
               <template slot="append">元</template>
             </el-input>
@@ -99,6 +99,10 @@
         </el-col>
       </el-row>
     </form-card>
+    <goods-apportion
+      ref="goodsTable"
+      :data="data.businessCommoditySaveVoList"
+    />
     <!-- 新增 / 编辑 弹出框-->
     <el-dialog
       :title="dialogData.title"
@@ -107,6 +111,7 @@
       v-dialogDrag
     >
       <components
+        v-if="dialogData.visible"
         class="add-fee"
         :status="false"
         :more="false"
@@ -144,6 +149,8 @@ export default {
   },
   data() {
     return {
+      sumAmount: 0, //总金额
+
       //dialog弹出框
       dialogData: {
         visible: false,
@@ -159,6 +166,28 @@ export default {
         '4': { comp: 'orderExchange', title: '换货单' },
       },
       multipleSelection: [],
+      goodsTableData: [],
+    }
+  },
+  computed: {
+    notCostAmount() {
+      if (!this.data.costCode) {
+        this.$message({
+          message: '请先选择费用单',
+          type: 'error',
+          showClose: true,
+        });
+        return
+      }
+      if (this.data.costAmount > this.sumAmount) {
+        this.$message({
+          message: `本次分摊费用金额不能大于${this.sumAmount}`,
+          type: 'error',
+          showClose: true,
+        });
+        this.data.costAmount = this.sumAmount
+      }
+      return this.sumAmount - (this.data.costAmount || 0)
     }
   },
   watch: {
@@ -171,7 +200,7 @@ export default {
   },
   methods: {
     // 按钮功能操作
-    eventHandle(type, ) {
+    eventHandle(type) {
       // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {
         'financeFee': { comp: 'financeFee', title: `费用单` },
@@ -182,6 +211,7 @@ export default {
       this.dialogData.title = typeObj[type].title
       this.dialogData.component = typeObj[type].comp
     },
+    // 弹出框选择行数据
     selectionChange(val) {
       if (val.length > 1) {
         this.$message({
@@ -191,9 +221,8 @@ export default {
         });
       };
       this.multipleSelection = val
-      console.log(this.multipleSelection);
-
     },
+    // 数据选择完成确认
     confirm() {
       if (this.multipleSelection.length > 1 || !this.multipleSelection.length) {
         this.$message({
@@ -206,6 +235,7 @@ export default {
       let [rowData] = this.multipleSelection
       if (this.dialogData.type == 'financeFee') {
         this.data.costCode = rowData.costCode
+        this.sumAmount = rowData.amount
       } else {
         let codeObj = {
           '0': 'shipmentCode',
@@ -215,6 +245,18 @@ export default {
           '4': 'swapOrderCode',
         }
         this.data.busCode = rowData[codeObj[this.data.busType]]
+
+        if (this.data.busType == 0) {
+          this.$api.seePsiSaleService.salesshipmentGetShipmentCommodity({ code: this.data.busCode })
+            .then(res => {
+              this.data.businessCommoditySaveVoList = res.data || []
+            })
+        } else if (this.data.busType == 1) {
+          this.$api.seePsiPurchaseService.purchaseputinGetByCode(null, this.data.busCode)
+            .then(res => {
+              this.data.businessCommoditySaveVoList = (res.data || {}).commodityList
+            })
+        }
       }
       this.dialogData.visible = false
     }
