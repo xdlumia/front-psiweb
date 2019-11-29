@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 16:09:10
+ * @LastEditTime: 2019-11-29 16:50:53
  * @Description: 采购调价单
 */
 <template>
@@ -69,7 +69,7 @@
         <el-form :model="detail" v-if="detail&&visible">
           <buying-goods-edit
             :customColumns="[
-                { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140,format:(a,b)=>b.purchaseAverage||b.inventoryPrice },
+                { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140,format:(a,b)=>Number(b.purchaseAverage||b.inventoryPrice).toFixed(2) },
                 { label:'库存成本(税前)',key:'inventoryPrice',prop:'inventoryPrice',width:140, },
                 { label:'调整金额',key:'adjustPriceMoney',prop:'adjustPriceMoney',width:120, format:(a,b)=>b.adjustPriceMoney||0 },
                 { label:'调整后库存成本(税前)',key:'repertoryCost',prop:'repertoryCost',width:140,
