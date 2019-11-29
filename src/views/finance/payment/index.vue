@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 10:06:41
+ * @LastEditTime: 2019-11-29 11:35:53
  * @Description: 付款单
 */
 <template>
@@ -32,7 +32,7 @@
         <span v-else-if="['feeDetailCode','feeTypeCode'].includes(prop)">
           <span>{{value|dictionary('ZD_DY_LX')}}</span>
         </span>
-        <span v-else-if="prop=='overSate'">
+        <span v-else-if="prop=='overState'">
           <span>{{overText[value||0]}}</span>
         </span>
         <span v-else-if="prop=='settleStatus'">

@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 10:53:17
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-29 13:54:25
  * @Description: 收票申请
 */
 <template>
@@ -54,23 +54,23 @@
           class="p10"
           ref="form"
           size="mini"
-          v-if="visible&&form&&showEditPage&&!loading"
+          v-if="isDataReady"
         >
           <make-invoice-info
             :invoiceType="invoiceType"
             :data="form"
             id="invoice"
+            :hide="invoiceType?[]:['invoiceCoding','invoiceCode']"
           />
           <make-buyer
             :data="form"
             id="buyer"
+            prefix="purchase"
           />
           <make-buyer
             :data="form"
-            from="供应商"
             id="saler"
-            prefix="market"
-            title="销售方信息"
+            prefix="market" 
           />
           <make-goods
             :data="form"
@@ -138,7 +138,7 @@ export default {
     // 获取业务商品列表
     salesshipmentGetShipmentCommodity() {
       // invoiceType=1 是收票的时候才加载商品信息
-      if (this.invoiceType == 1 && this.type != 'edit') {
+      if (this.invoiceType == 1 && this.type != 'edit' && this.code) {
         this.$api.seePsiSaleService.salesshipmentGetShipmentCommodity({ code: this.code })
           .then(res => {
             let data = res.data || []

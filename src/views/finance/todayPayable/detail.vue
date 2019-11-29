@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 17:24:44
+ * @LastEditTime: 2019-11-29 11:32:36
  * @Description: 今日应付账单
 */
 <template>
@@ -33,7 +33,7 @@
             :matchApi="pageConfig.api.matchIncoming"
             :type="pageConfig.type"
           />
-          <invoice-log :busCode="detail.busCode" :type="pageConfig.type==0?1:0" />
+          <invoice-log :busCode="detail.busCode" :data="detail" :type="pageConfig.type==0?1:0" />
           <paybill-log :billId="detail.id" v-if="pageConfig.show.includes('paybillLog')" />
           <extras-info :data="detail" @change="saveExtras" can-modify disabled />
         </el-form>

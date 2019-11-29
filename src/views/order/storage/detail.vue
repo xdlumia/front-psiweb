@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 11:18:52
+ * @LastEditTime: 2019-11-29 13:45:06
  * @Description: 采购入库单
 */
 <template>
@@ -215,7 +215,8 @@ export default {
           this.detail.commodityList || [],
           this.detail.additionalCommodityList || []
         )
-        .filter(item => (item.commodityNumber - (item.returenNumber || 0))>0).length
+        .filter(item => item.commodityNumber - (item.returenNumber || 0) > 0)
+        .length
         ? true
         : false;
     }
@@ -308,7 +309,9 @@ export default {
         busCode: this.detail.putinCode,
         busType: 30,
         purchaseId: this.detail.companySettlementId,
+        purchaseType: 3,
         marketId: this.detail.supplierId,
+        marketType: 1,
         invoiceDetailList: []
           .concat(
             this.detail.commodityList || [],

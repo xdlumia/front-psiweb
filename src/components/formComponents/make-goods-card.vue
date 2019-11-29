@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-22 13:41:33
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 11:37:08
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-29 13:34:52
  * @Description: 发票商品 自定义商品
 */
 <template>
@@ -133,6 +133,7 @@ export default {
       }
     },
     add() {
+      if(!this.data.invoiceDetailList) this.$set(this.data,'invoiceDetailList',[])
       this.data.invoiceDetailList.push({
         type: 1,
         isOrder: 0
