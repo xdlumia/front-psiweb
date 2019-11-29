@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 15:54:43
+ * @LastEditTime: 2019-11-29 16:44:02
  * @Description: 客户管理-新增分摊
 */
 <template>
@@ -109,7 +109,6 @@ export default {
         busCode: '',
         busType: '',
         note: '', //"备注",
-        shipmentCode: '', //出库单编号
         state: '', //9
 
       },
@@ -122,15 +121,13 @@ export default {
     // 保存表单数据
     saveHandle() {
       this.$refs.form.validate(valid => {
-
         if (valid) {
           this.loading = true
-          this.form.quotationIds = this.rowDatas.map(item => item.id)
           // rules 表单验证是否通过
-          let api = 'salesshipmentUpdate' // 默认编辑更新
+          let api = 'salescostapportionUpdate' // 默认编辑更新
           // 新增保存
           if (this.type === 'add') {
-            api = 'salesshipmentSave'
+            api = 'salescostapportionSave'
             // 编辑保存
           }
           this.$api.seePsiSaleService[api](this.form)

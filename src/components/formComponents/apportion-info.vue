@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 16:29:38
+ * @LastEditTime: 2019-11-29 16:41:22
  * @Description: 分摊信息
  */
 <template>
@@ -15,16 +15,21 @@
             label="费用单"
             prop="costCode"
           >
-            <el-input
-              :disabled="disabled"
-              v-model="data.costCode"
+            <div
+              class="not-disabled-class"
+              @click="eventHandle('financeFee')"
             >
-              <el-button
-                slot="append"
-                @click="eventHandle('financeFee')"
-                icon="el-icon-plus"
-              ></el-button>
-            </el-input>
+              <el-input
+                :disabled="true"
+                v-model="data.costCode"
+              >
+                <el-button
+                  slot="append"
+                  @click="eventHandle('financeFee')"
+                  icon="el-icon-plus"
+                ></el-button>
+              </el-input>
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -85,16 +90,21 @@
             :label="dialogData.title"
             prop
           >
-            <el-input
-              :disabled="disabled"
-              v-model="data.busCode"
+            <div
+              class="not-disabled-class"
+              @click="eventHandle(data.busType)"
             >
-              <el-button
-                slot="append"
-                @click="eventHandle(data.busType)"
-                icon="el-icon-plus"
-              ></el-button>
-            </el-input>
+              <el-input
+                :disabled="true"
+                v-model="data.busCode"
+              >
+                <el-button
+                  slot="append"
+                  @click="eventHandle(data.busType)"
+                  icon="el-icon-plus"
+                ></el-button>
+              </el-input>
+            </div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -202,6 +212,7 @@ export default {
   methods: {
     // 按钮功能操作
     eventHandle(type) {
+      if (this.disabled) return
       // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {
         'financeFee': { comp: 'financeFee', title: `费用单` },
@@ -289,5 +300,11 @@ export default {
 <style lang="scss" scoped>
 /deep/.add-fee .main-content {
   height: calc(100vh - 159px);
+}
+</style>
+<style lang="scss">
+.not-disabled-class .el-input.is-disabled .el-input__inner {
+  background-color: #fff;
+  cursor: pointer;
 }
 </style>

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 20:25:45
+ * @LastEditTime: 2019-11-29 16:46:57
  * @Description: 销售出库单详情
 */
 <template>
@@ -109,7 +109,7 @@
     <collectInvoice
       :visible.sync="collectInvoiceVisible"
       :rowData="rowData"
-      :invoiceType="1"
+      :invoiceType="0"
       :code="code"
     />
   </div>
