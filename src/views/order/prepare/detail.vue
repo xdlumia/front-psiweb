@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 18:10:10
+ * @LastEditTime: 2019-11-29 11:20:24
  * @Description: 备货单详情
 */
 <template>
@@ -38,6 +38,7 @@
         @click="$submission('seePsiPurchaseService.purchasestockorderPassApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
+          busCode:detail.stockCode
         },'通过')"
         size="mini"
         type="primary"
