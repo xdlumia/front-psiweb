@@ -48,7 +48,7 @@ export default {
   props: ['drawerData', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '生成时间', value: '', isTime: true }, { label: '单据创建人', value: '' }, { label: '创建部门', value: '' }, { label: '来源', value: '' }],
+      status: [{ label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       detailForm: {},
       activeName: ''
     };

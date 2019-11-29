@@ -41,7 +41,7 @@
           type="primary"
         >继续</el-button>
         <el-button
-          v-if="detailForm.assembleTaskState == 1 || detailForm.assembleTaskState == 2"
+          v-if="(detailForm.assembleTaskState == 1 || detailForm.assembleTaskState == 2) && detailForm.isHang==0"
           @click="goodsVisible=true"
           size="mini"
           type="primary"
@@ -103,7 +103,7 @@ export default {
   props: ['data', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '组装状态', value: '待组装' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '组装状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       transferVisible: false,//转移
       hangVisible: false,//挂起
       goodsVisible: false,//组装

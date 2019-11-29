@@ -50,7 +50,7 @@
 </template>
 <script>
 /**
- * 采购-请购单
+ * 采购-请购单 
  */
 import TableView from '@/components/tableView';
 import assembleDetails from '@/views/storage/assemble/details.vue';

@@ -45,6 +45,7 @@
           v-if='scope.row.childrenCommodityList !=null'
         >
           <el-button
+            v-if="(data.disassemblyTaskState == 1 || data.disassemblyTaskState == 2) && data.isHang==0"
             size="mini"
             type="primary"
             @click="disassemble(scope)"

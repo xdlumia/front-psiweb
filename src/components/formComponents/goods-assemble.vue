@@ -23,6 +23,7 @@
           min-width="50"
         ></el-table-column>
         <el-table-column
+          v-if="(data.assembleTaskState == 1 || data.assembleTaskState == 2) && data.isHang==0"
           fixed
           prop="title"
           label="操作"
