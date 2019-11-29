@@ -39,6 +39,7 @@
         <span v-else-if="column.columnFields=='operation'">
           <span class="elTableDragDefault el-icon-rank f20 ml10"></span>
           <el-button
+            :disabled='row.generateOrder == 1'
             class="ml15"
             size="mini"
             type="primary"
@@ -214,12 +215,13 @@ export default {
         return isChanged;
       });
       let [a, b] = changed;
+
       this.loading = true;
       try {
-        if (a.sequence && b.sequence) {
-          await this.$api.seePsiWmsService.wmsdisassemblyorderUpdatesSquence([
-            { id: a.id, sequence: b.sequence },
-            { id: b.id, sequence: a.sequence }
+        if (a.generateOrder && b.generateOrder) {
+          await this.$api.seePsiWmsService.wmsassembleorderUpdatesSquence([
+            { id: a.id, sequence: b.generateOrder },
+            { id: b.id, sequence: a.generateOrder }
           ]);
         }
         this.reload();

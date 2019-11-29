@@ -68,7 +68,12 @@
           min-width="140"
           show-overflow-tooltip
         >
-
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
+          </template>
         </el-table-column>
 
         <el-table-column
@@ -123,12 +128,18 @@
         :element="$refs.companyTable"
         :visible.sync="showInFullscreen"
       />
+      <CommodityDetail
+        :code="currentCommodityCode"
+        :visible.sync="showCommodityDetail"
+        v-if="showCommodityDetail"
+      />
     </form-card>
   </div>
 </template>
 <script>
 import FullscreenElement from '@/components/fullscreen-element';
 import scanCodeInventory from './scan-code-inventory';
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 
 export default {
   props: ['data'],
@@ -147,10 +158,17 @@ export default {
       tableData: [{ name: '假的' }],
       codeVisible: false,
       showInFullscreen: false,
+      showCommodityDetail: false,
+      currentCommodityCode: '',
       commodityForm: {}
     }
   },
   methods: {
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
     fullscreen() {
       this.showInFullscreen = true;
     },
@@ -167,7 +185,8 @@ export default {
   },
   components: {
     FullscreenElement,
-    scanCodeInventory
+    scanCodeInventory,
+    CommodityDetail
   },
 }
 </script>

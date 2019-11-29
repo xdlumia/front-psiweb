@@ -2,7 +2,7 @@
  * @Author: 徐贺 
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-10-28 14:02:43 
+ * @Last Modified time: 2019-10-28 14:02:43  
  * @Description: 库房  销售单 详情组件 出库商品
  */
 <template>
@@ -96,8 +96,11 @@
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -152,6 +155,11 @@
       >
         <commodityPicking :data='rowData' />
         <machineSn :data='rowData' />
+        <CommodityDetail
+          :code="currentCommodityCode"
+          :visible.sync="showCommodityDetail"
+          v-if="showCommodityDetail"
+        />
       </el-dialog>
     </form-card>
   </div>
@@ -160,16 +168,24 @@
 import commodityPicking from '@/components/formComponents/commodity-picking'
 import FullscreenElement from '@/components/fullscreen-element';
 import machineSn from '@/components/formComponents/machine-sn'
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 export default {
   props: ['detailForm', 'code'],
   data() {
     return {
       rowData: {},
       dialogVisible: false,
-      showInFullscreen: false
+      showInFullscreen: false,
+      showCommodityDetail: false,
+      currentCommodityCode: '',
     }
   },
   methods: {
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
     //点击机器号和SN码
     getTableVisible(row) {
       this.dialogVisible = true
@@ -183,7 +199,8 @@ export default {
   components: {
     commodityPicking,
     machineSn,
-    FullscreenElement
+    FullscreenElement,
+    CommodityDetail
   },
 }
 </script>

@@ -8,7 +8,7 @@
 <template>
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="$emit('update:visible',false)"
     :title="'拣货单-'+ drawerData.pickingOrderCode"
     width="990px"
@@ -18,6 +18,7 @@
     <div>
       <div class="drawer-header">
         <el-button
+          v-if="detailForm.state !== 2 && detailForm.state !== -1"
           @click="orderStorageVisible=true"
           size="mini"
           type="primary"
@@ -89,7 +90,6 @@ export default {
           this.status[2].value = this.drawerData.creatorName
           this.status[3].value = this.drawerData.deptName
           this.status[4].value = this.detailForm.source
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 

@@ -8,9 +8,22 @@
 <template>
   <div>
     <form-card title='报溢商品'>
+      <div slot="title">
+        <span>组装商品</span>
+        <span class="fr">
+          <span>
+            <el-link
+              :underline="false"
+              @click="fullscreen"
+              type="primary"
+            >全屏显示</el-link>
+          </span>
+        </span>
+      </div>
       <el-table
         size='mini'
         border
+        ref="table"
         :data='detailForm.commondityList'
         class="college-main"
         style="height:calc(100vh - 340px)"
@@ -69,8 +82,11 @@
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
           </template>
         </el-table-column>
 
@@ -127,11 +143,22 @@
       :visible.sync='dialogVisible'
       :form={commodityCode:rowData.commodityCode,businessCode:drawerData.reportingLossesCode,page:1,limit:20}
     />
+    <FullscreenElement
+      :element="$refs.table"
+      :visible.sync="showInFullscreen"
+    />
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </div>
 
 </template>
 <script>
 import overflowSn from './overflow-sn'
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
+import FullscreenElement from '@/components/fullscreen-element';
 export default {
   props: ['detailForm', 'drawerData'],
   data() {
@@ -146,18 +173,31 @@ export default {
         page: 1,
         limit: 20
       },
+      showInFullscreen: false,
       rowData: {},
       dialogVisible: false,
+      showCommodityDetail: false,
+      currentCommodityCode: '',
     }
   },
   methods: {
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
+    fullscreen() {
+      this.showInFullscreen = true;
+    },
     getRowData(row) {
       this.rowData = row
       this.dialogVisible = true
     }
   },
   components: {
-    overflowSn
+    overflowSn,
+    FullscreenElement,
+    CommodityDetail
   },
 }
 </script>

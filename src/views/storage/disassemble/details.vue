@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="close"
     :title="`拆卸任务-${detailForm.disassemblyTaskCode}`"
     width="990px"

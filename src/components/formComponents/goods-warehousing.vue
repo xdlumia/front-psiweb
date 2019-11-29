@@ -90,8 +90,11 @@
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -153,11 +156,17 @@
       :drawerData='drawerData'
       v-if="wareDisabledVisible"
     />
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </div>
 </template> 
 <script>
 import FullscreenElement from '@/components/fullscreen-element';
 import purchaseWarehousing from './purchase-warehousing'
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 import purchaseWareDisabled from './purchase-ware-disabled'
 
 export default {
@@ -167,6 +176,8 @@ export default {
       dialogVisible: false,
       showInFullscreen: false,
       wareDisabledVisible: false,
+      showCommodityDetail: false,
+      currentCommodityCode: '',
       wareVisible: false,
       dialogData: {
       },
@@ -174,6 +185,11 @@ export default {
     }
   },
   methods: {
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
     fullscreen() {
       this.showInFullscreen = true;
     },
@@ -194,7 +210,8 @@ export default {
   components: {
     purchaseWarehousing,
     FullscreenElement,
-    purchaseWareDisabled
+    purchaseWareDisabled,
+    CommodityDetail
   },
 }
 </script>

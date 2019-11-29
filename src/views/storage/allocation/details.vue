@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="close"
     :title="drawerData.title"
     width="990px"
@@ -107,7 +107,6 @@ export default {
           this.status[1].value = res.data.creatorName
           this.status[2].value = res.data.deptName
           this.status[3].value = res.data.source
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 
