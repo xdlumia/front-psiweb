@@ -588,8 +588,8 @@ export default {
 
   /* =============销售出库单start=========== */
   // 根据code获取出库单商品
-  salesshipmentBusinessCommodityEntity: {
-    'url': '/salesshipment/BusinessCommodityEntity',
+  salesshipmentGetShipmentCommodity: {
+    'url': '/salesshipment/getShipmentCommodity',
     'mock': false
   },
 

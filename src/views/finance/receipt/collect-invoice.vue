@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 10:20:32
+ * @LastEditTime: 2019-11-29 10:53:17
  * @Description: 收票申请
 */
 <template>
@@ -122,13 +122,13 @@ export default {
     }
   },
   mounted() {
-    this.getBusinessCommodityList()
+    this.salesshipmentGetShipmentCommodity()
   },
   watch: {
     visible: {
       handler(val) {
         if (val) {
-          this.getBusinessCommodityList()
+          this.salesshipmentGetShipmentCommodity()
         }
       },
       immediate: true
@@ -136,10 +136,10 @@ export default {
   },
   methods: {
     // 获取业务商品列表
-    getBusinessCommodityList() {
+    salesshipmentGetShipmentCommodity() {
       // invoiceType=1 是收票的时候才加载商品信息
       if (this.invoiceType == 1 && this.type != 'edit') {
-        this.$api.seePsiSaleService.salesshipmentBusinessCommodityEntity({ code: this.code })
+        this.$api.seePsiSaleService.salesshipmentGetShipmentCommodity({ code: this.code })
           .then(res => {
             let data = res.data || []
             // type == 0是请求过来的商品信息

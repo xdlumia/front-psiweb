@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 15:56:27
+ * @LastEditTime: 2019-11-29 10:34:29
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -313,9 +313,7 @@ export default {
         }
       })
       if (!this.codes.includes(list.commodityCode)) {
-
         list.reference = list.saleReferencePrice //销售参考价
-
         this.$set(this.data.businessCommoditySaveVoList, scope.$index, { ...addRowData, ...list })
         this.codes = []
       }
