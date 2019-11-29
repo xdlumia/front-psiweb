@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 13:54:25
+ * @LastEditTime: 2019-11-29 15:52:21
  * @Description: 收票申请
 */
 <template>
@@ -14,7 +14,7 @@
     width="1000"
   >
     <div slot="title">
-      <span>收票申请</span>
+      <span>{{invoiceType==1?'收票申请':'开票申请'}}</span>
       <span class="fr mr20">
         <el-button
           @click="save"
@@ -60,7 +60,7 @@
             :invoiceType="invoiceType"
             :data="form"
             id="invoice"
-            :hide="invoiceType?[]:['invoiceCoding','invoiceCode']"
+            :hide="invoiceType==1?[]:['invoiceCoding','invoiceCode']"
           />
           <make-buyer
             :data="form"
@@ -94,7 +94,7 @@
 import VisibleMixin from '@/utils/visibleMixin';
 
 export default {
-  // 票据类型(0收票，1开票)
+  // 票据类型(1收票，0开票)
   props: ['invoiceType', 'id'],
   mixins: [VisibleMixin],
   components: {},
@@ -138,7 +138,7 @@ export default {
     // 获取业务商品列表
     salesshipmentGetShipmentCommodity() {
       // invoiceType=1 是收票的时候才加载商品信息
-      if (this.invoiceType == 1 && this.type != 'edit' && this.code) {
+      if (this.invoiceType == 0 && this.type != 'edit' && this.code) {
         this.$api.seePsiSaleService.salesshipmentGetShipmentCommodity({ code: this.code })
           .then(res => {
             let data = res.data || []
@@ -153,12 +153,12 @@ export default {
       }
     },
     async getDetail() {
-      if (this.invoiceType != 1 && this.code) {
+      if (this.invoiceType != 0 && this.code) {
         let { data } = this.$api.seePsiPurchaseService.purchasestockorderGetByCode(null, this.code);
         return data;
       }
       // 如果是收票
-      else if (this.invoiceType == 1 && this.id) {
+      else if (this.invoiceType == 0 && this.id) {
         let { data } = this.$api.seePsiFinanceService.finvoicebillingInfo(null, this.id);
         return data;
       } else if (this.rowData) return this.rowData;
@@ -173,12 +173,8 @@ export default {
         });
       }
       await this.$refs.form.validate();
-      // invoiceType = 1是开票 否则是收票
-      if (this.invoiceType == 1) {
-        this.form.type = 1;
-      } else {
-        this.form.type = 0;
-      }
+      // invoiceType = 0是开票 否则是收票
+      this.form.type=this.invoiceType; 
 
       this.form.accountTotalAmount = 0; //合计税金
       this.form.commodityTotalAmount = 0; //商品合计金额

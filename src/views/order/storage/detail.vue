@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 13:45:06
+ * @LastEditTime: 2019-11-29 16:10:57
  * @Description: 采购入库单
 */
 <template>
@@ -170,7 +170,7 @@
     />
     <orderContract :rowData="orderContractData" :visible.sync="showOrderContract" v-if="showOrderContract" />
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" v-if="showEdit" />
-    <CollectInvoiceDialog :invoiceType="0" :rowData="collectInvoiceData" :visible.sync="showCollectInvoice" v-if="showCollectInvoice" />
+    <CollectInvoiceDialog :invoiceType="1" :rowData="collectInvoiceData" :visible.sync="showCollectInvoice" v-if="showCollectInvoice" />
   </sideDetail>
 </template>
 <script>
@@ -307,7 +307,7 @@ export default {
       this.collectInvoiceData = {
         type: 0,
         busCode: this.detail.putinCode,
-        busType: 30,
+        busType: 4,
         purchaseId: this.detail.companySettlementId,
         purchaseType: 3,
         marketId: this.detail.supplierId,

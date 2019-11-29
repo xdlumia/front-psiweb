@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-22 09:38:51
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 18:55:02
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-29 15:52:50
  * @Description: 收票申请 发票信息 已绑定 1
 */ 
 <template>
@@ -72,20 +72,20 @@ export default {
     }
   },
   data() {
-    return {
-      // prettier-ignore
-      items: [
-        { label: '发票类型', prop: 'invoiceTypeCode', type: 'select', rules: [{ required: true, trigger: 'blur' }], dicName: 'CW_FP_LX' },
-        { label: `${this.invoiceType ? '开' : '收'}票时间`, prop: 'invoiceDate', type: 'date', rules: [{ required: true, trigger: 'blur' }] },
-        { label: '发票代码', prop: 'invoiceCoding', type: 'input', rules: [{ required: true, trigger: 'blur' }] },
-        { label: '发票号码', prop: 'invoiceCode', type: 'input', rules: [{ required: true, trigger: 'blur' }] },
-      ]
+    return { 
     };
   },
   components: {},
   computed: {
     formItems() {
-      return this.items.filter(item => !this.hide.includes(item.prop));
+      // prettier-ignore
+      let items = [
+        { label: '发票类型', prop: 'invoiceTypeCode', type: 'select', rules: [{ required: true, trigger: 'blur' }], dicName: 'CW_FP_LX' },
+        { label: `${this.invoiceType==0 ? '开' : '收'}票时间`, prop: 'invoiceDate', type: 'date', rules: [{ required: true, trigger: 'blur' }] },
+        { label: '发票代码', prop: 'invoiceCoding', type: 'input', rules: [{ required: true, trigger: 'blur' }] },
+        { label: '发票号码', prop: 'invoiceCode', type: 'input', rules: [{ required: true, trigger: 'blur' }] },
+      ]
+      return items.filter(item => !this.hide.includes(item.prop));
     }
   }
 };

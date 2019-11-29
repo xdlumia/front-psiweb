@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 11:54:30
+ * @LastEditTime: 2019-11-29 14:43:28
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -99,8 +99,6 @@ export default {
     selectionChange(val) {
       this.$emit("selection-change", val);
     },
-
-
   }
 };
 </script>

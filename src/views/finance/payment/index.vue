@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 11:35:53
+ * @LastEditTime: 2019-11-29 14:40:51
  * @Description: 付款单
 */
 <template>
@@ -100,7 +100,7 @@ export default {
       // prettier-ignore
       filterOptions: [
         { label: '付款单编号', prop: 'billCode', default: true },
-        { label: '关联单据编号', prop: 'busCode' },
+        { label: '关联单据编号', prop: 'busCode', default: true },
         { label: '账单状态', prop: 'settleStatus', default: true, type:'select', options:[
           {label:'全部',value:'',},
           {label:'未结清',value:'0',},

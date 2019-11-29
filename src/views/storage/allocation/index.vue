@@ -17,6 +17,7 @@
       api="seePsiWmsService.wmsallocationorderList"
       :params="params"
       title="调拨单"
+      @selection-change="selectionChange"
     >
       <template v-slot:button>
         <el-button
@@ -185,6 +186,10 @@ export default {
     },
     update() {
       this.drawerData.tableVisible = false
+    },
+    // 多选
+    selectionChange(val) {
+      this.$emit("selection-change", val);
     },
     //请求可用库房
     commonwmsmanagerUsableList() {
