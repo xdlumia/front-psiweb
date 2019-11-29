@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="$emit('update:visible',false)"
     :title="drawerData.type == 1 ? '报溢单-'+ drawerData.reportingLossesCode : '报损单-' + drawerData.reportingLossesCode"
     width="990px"

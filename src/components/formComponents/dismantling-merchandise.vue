@@ -82,8 +82,11 @@
         min-width="140"
         show-overflow-tooltip
       >
-        <template slot-scope="scope">
-          <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+        <template slot-scope="{row}">
+          <div
+            @click="openCommodityDetail(row.commodityCode)"
+            class="d-text-blue d-elip d-pointer"
+          >{{row.commodityCode}}</div>
         </template>
       </el-table-column>
       <el-table-column
@@ -131,16 +134,22 @@
       :visible.sync="showRec"
       v-if="showRec"
     />
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </form-card>
 
 </template>
 <script>
 import FullscreenElement from '@/components/fullscreen-element';
 import disassDsassemble from './disass-disassemble';//拆卸
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 
 export default {
   props: ['data'],
-  components: { FullscreenElement, disassDsassemble },
+  components: { FullscreenElement, disassDsassemble, CommodityDetail },
   data() {
     return {
       showInFullscreen: false,
@@ -151,10 +160,17 @@ export default {
       },
       recCommodity: [],
       showRec: false,
+      showCommodityDetail: false,
+      currentCommodityCode: '',
       disVisible: false
     };
   },
   methods: {
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
     fullscreen() {
       this.showInFullscreen = true;
     },

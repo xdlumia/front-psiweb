@@ -92,7 +92,7 @@
           <form-card title='机器号/SN记录'>
             <d-table
               api="seePsiWmsService.wmsflowrecordList"
-              :params="{commodityCode:data.commodityCode,businessCode:drawerData.assembleTaskCode,page:1,limit:15}"
+              :params="{commodityCode:data.commodityCode,businessCode:drawerData.assembleOrderCode,page:1,limit:15}"
               ref="companyTable"
               class="college-main"
               style="height:calc(100vh - 340px)"

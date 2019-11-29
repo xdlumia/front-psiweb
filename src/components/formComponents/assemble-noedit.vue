@@ -94,8 +94,11 @@
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
           </template>
         </el-table-column>
 
@@ -146,13 +149,18 @@
         :visible.sync='dialogVisible'
         v-if="dialogVisible"
       />
+      <CommodityDetail
+        :code="currentCommodityCode"
+        :visible.sync="showCommodityDetail"
+        v-if="showCommodityDetail"
+      />
     </form-card>
   </div>
 </template>
 <script>
 import FullscreenElement from '@/components/fullscreen-element';
 import assemblyRecord from './assembly-record'
-
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 export default {
   props: ['data', 'drawerData'],
   data() {
@@ -160,10 +168,16 @@ export default {
       tableData: [{ cityName: 1 }],
       dialogVisible: false,
       dialogData: {},
+      showCommodityDetail: false,
+      currentCommodityCode: '',
       showInFullscreen: false
     }
   },
   methods: {
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
     fullscreen() {
       this.showInFullscreen = true;
     },
@@ -176,7 +190,8 @@ export default {
   },
   components: {
     FullscreenElement,
-    assemblyRecord
+    assemblyRecord,
+    CommodityDetail
   },
 }
 </script>

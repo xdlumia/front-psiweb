@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="close"
     :title="'借入借出任务-'+code"
     width="990px"
@@ -165,7 +165,6 @@ export default {
           this.status[2].value = res.data.creatorName
           this.status[3].value = res.data.deptName
           this.status[4].value = res.data.source
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
           this.detailForm.commodityList = this.detailForm.commodityShowList || [];
         })
         .finally(() => {
