@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 16:21:21
+ * @LastEditTime: 2019-11-29 16:29:38
  * @Description: 分摊信息
  */
 <template>
@@ -195,6 +195,7 @@ export default {
       handler(val) {
         this.dialogData.title = this.options[val].title
         this.data.busCode = ''
+        this.data.businessCommoditySaveVoList = []
       }
     }
   },
@@ -251,10 +252,30 @@ export default {
             .then(res => {
               this.data.businessCommoditySaveVoList = res.data || []
             })
-        } else if (this.data.busType == 1) {
+        }
+        else if (this.data.busType == 1) {
           this.$api.seePsiPurchaseService.purchaseputinGetByCode(null, this.data.busCode)
             .then(res => {
               this.data.businessCommoditySaveVoList = (res.data || {}).commodityList
+            })
+        }
+        else if (this.data.busType == 2) {
+          this.$api.seePsiWmsService.wmsallocationorderInfo(null, this.data.busCode)
+            .then(res => {
+              this.data.businessCommoditySaveVoList = (res.data || {}).allocationCommodityList
+            })
+        }
+        else if (this.data.busType == 3) {
+          this.$api.seePsiWmsService.wmsborrowloanorderGetByCode(null, this.data.busCode)
+            .then(res => {
+              this.data.businessCommoditySaveVoList = (res.data || {}).commodityShowList
+            })
+        }
+        else if (this.data.busType == 4) {
+          this.$api.seePsiWmsService.wmsswaporderGetByCode(null, this.data.busCode)
+            .then(res => {
+              let data = res.data || {}
+              this.data.businessCommoditySaveVoList = [...data.putinCommodityList, ...putoutCommodityList]
             })
         }
       }
