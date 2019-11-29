@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 16:03:39
+ * @LastEditTime: 2019-11-29 10:04:13
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -12,7 +12,7 @@
   >
     <d-table
       border
-      style="max-height:250px"
+      style="height:250px"
       api="seePsiSaleService.businesscommodityGetBusinessCommodityList"
       :params="queryForm"
       size="mini"

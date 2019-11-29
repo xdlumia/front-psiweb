@@ -139,7 +139,6 @@
       :key="index"
     >
       <el-table
-        class="m20"
         border
         :data="[item]"
         max-height="400"

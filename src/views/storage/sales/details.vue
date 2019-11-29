@@ -120,7 +120,7 @@ export default {
   props: ['data', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '出库状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       orderStorageVisible: false,
       detailForm: {},
       activeName: '',

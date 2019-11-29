@@ -17,6 +17,7 @@
     <div>
       <div class="drawer-header">
         <el-button
+          v-if="drawerData.swapState != 4"
           @click="exchangeVisible=true"
           size="mini"
           type="primary"
@@ -116,7 +117,7 @@ export default {
   props: ['drawerData', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '换货状态', value: '2019-9-21 10:04:38' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '换货状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       exchangeVisible: false,
       dialogData: {
         title: '换货扫码UAVBFUSBDFU',
@@ -157,7 +158,6 @@ export default {
           this.detailForm.putoutCommodityList.map(item => {
             item.commodityCode = item.swapOutCommodityCode;
           });
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 

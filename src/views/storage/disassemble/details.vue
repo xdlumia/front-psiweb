@@ -31,7 +31,7 @@
           type="primary"
         >确认收到并开始</el-button>
         <el-button
-          v-if="detailForm.disassemblyTaskState == 1 || detailForm.disassemblyTaskState == 2"
+          v-if="(detailForm.disassemblyTaskState == 1 || detailForm.disassemblyTaskState == 2) && detailForm.isHang==0"
           @click="disassembleVisible =true"
           size="mini"
           type="primary"
@@ -113,7 +113,7 @@ export default {
   props: ['drawerData', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '拆卸状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '拆卸状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       hangVisible: false,
       generateVisible: false,
       disassembleVisible: false,
@@ -188,24 +188,25 @@ export default {
     },
     //继续
     wmsdisassemblytaskContinueTask() {
-      // this.$confirm('是否继续拆卸任务?', '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(() => {
-      this.$api.seePsiWmsService.wmsdisassemblytaskContinueTask({ id: this.detailForm.id, isHang: 0 })
-        .then(res => {
-          this.$emit('reload')
-        })
-        .finally(() => {
+      this.$confirm('是否继续拆卸任务?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api.seePsiWmsService.wmsdisassemblytaskContinueTask({ id: this.detailForm.id, isHang: 0 })
+          .then(res => {
+            this.wmsallocationorderInfo()
+            this.$emit('reload')
+          })
+          .finally(() => {
 
-        })
-      // }).catch(() => {
-      //   this.$message({
-      //     type: 'info',
-      //     message: '已取消'
-      //   });
-      // })
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      })
 
     }
   },

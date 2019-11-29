@@ -94,7 +94,7 @@ export default {
   props: ['drawerData', 'visible'],
   data() {
     return {
-      status: [{ label: '创建时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '创建时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '来源', value: '-' }],
       backVisible: false,
       isComponents: '',
       activeName: '1',
