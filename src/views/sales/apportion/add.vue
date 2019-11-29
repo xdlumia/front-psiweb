@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 17:46:10
+ * @LastEditTime: 2019-11-29 19:01:45
  * @Description: 客户管理-新增分摊
 */
 <template>
@@ -104,17 +104,27 @@ export default {
           }
         ],
         costAmount: '', //采购/销售成本金额
+        unAmount: '',
         costApportionCode: '', //"分摊单编号",
         costCode: '', //费用单编号
         busCode: '',
         busType: '',
         note: '', //"备注",
         state: '', //9
-
       },
     }
   },
   computed: {
+
+  },
+  watch: {
+    visible(val) {
+      if (val && this.add == 'edit') {
+        this.form.businessCommoditySaveVoList = []
+      }
+    }
+  },
+  created() {
 
   },
   methods: {
