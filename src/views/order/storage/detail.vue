@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 09:57:40
+ * @LastEditTime: 2019-11-29 10:42:01
  * @Description: 采购入库单
 */
 <template>
@@ -61,7 +61,7 @@
         type="danger"
         v-if="detail&&[0,5].includes(detail.state)"
       >删除</el-button>
-      <el-button @click="showReject=true" size="mini" type="primary" v-if="detail&&[3,4].includes(detail.state)&&canReject">退货</el-button>
+      <el-button :disabled="!canReject" @click="showReject=true" size="mini" type="primary" v-if="detail&&[3,4].includes(detail.state)">退货</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinShutdown',{
           apprpvalNode:detail.apprpvalNode,

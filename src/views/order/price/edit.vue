@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 17:13:14
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-29 10:59:33
  * @Description: 销售和采购调价单
 */
 <template>
@@ -58,6 +58,7 @@
             :show="[
               'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','configName','noteText','!fullscreen'
             ]"
+            :sort="['actions']"
             :showSummary="false"
             title="商品信息"
           >
@@ -122,7 +123,7 @@ export default {
     },
     calcAdjustPriceDifference(row) {
       return +Number(
-        (+row.inventoryNum || 0) * (+row.adjustPriceMoney || 0)
+        (+row.usableInventoryNum || 0) * (+row.adjustPriceMoney || 0)
       ).toFixed(2);
     },
     async save() {
