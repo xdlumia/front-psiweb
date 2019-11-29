@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 14:10:13
+ * @LastEditTime: 2019-11-29 14:12:26
  * @Description: 开票/收票 记录 已绑定 1
 */
 <template>
@@ -81,7 +81,7 @@ export default {
         data.purchaseType = 3;
         data.purchaseId = this.data.companySettlementId;
       }
-      data.type = this.type;
+      data.type = this.type == 0 ? 1 : 0;
       data.busCode = this.data.busCode;
       data.busType = this.data.busType;
       this.collectInvoiceData = data;
