@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 14:43:19
+ * @LastEditTime: 2019-11-29 16:51:01
  * @Description: 销售和采购调价单
 */
 <template>
@@ -44,7 +44,7 @@
         >
           <buying-goods-edit
             :customColumns="[
-            { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140,format:(a,b)=>b.purchaseAverage||b.inventoryPrice },
+            { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140,format:(a,b)=>Number(b.purchaseAverage||b.inventoryPrice).toFixed(2) },
             { label:'库存成本(税前)',key:'inventoryPrice',prop:'inventoryPrice',width:140, },
             { label:'调整金额',key:'adjustPriceMoney',prop:'adjustPriceMoney',width:120,slot:'adjustPriceMoney' },
             { label:'调整后库存成本(税前)',key:'repertoryCost',prop:'repertoryCost',width:140,
