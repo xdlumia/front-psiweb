@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 09:24:59
+ * @LastEditTime: 2019-11-29 10:17:24
  * @Description: 审核小卡片
 */
 <template>
@@ -31,8 +31,7 @@
     <ul class="approve-wrap">
       <li
         class="approve-item d-text-qgray"
-        :class="classStatus(item)"
-        :style="{float:classFloat(index)}"
+        :class="`${classStatus(item)} ${classFloat(index)}`"
         v-for="(item,index) of progress"
         :key="index"
       >
@@ -92,7 +91,7 @@ export default {
       let rowIndex = Math.ceil((index + 1) / 5)
       let isOdd = rowIndex % 2 == 1
       // 奇数行添加float left  偶数right
-      return isOdd ? "left" : "right"
+      return isOdd ? "fl" : "fr"
     },
     classStatus(data, index) {
       if (data.taskName == '驳回') {
@@ -191,9 +190,14 @@ export default {
         left: 50%;
       }
     }
-    &:last-of-type {
+    &.fl:last-of-type {
       &::before {
         right: 50%;
+      }
+    }
+    &.fr:last-of-type {
+      &::before {
+        left: 50%;
       }
     }
   }
