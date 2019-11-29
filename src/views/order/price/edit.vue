@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 10:59:33
+ * @LastEditTime: 2019-11-29 14:43:19
  * @Description: 销售和采购调价单
 */
 <template>
@@ -56,9 +56,9 @@
             ]"
             :data="form"
             :show="[
-              'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','configName','noteText','!fullscreen'
+              'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','configName','noteText','action','!fullscreen'
             ]"
-            :sort="['actions']"
+            :sort="['action']"
             :showSummary="false"
             title="商品信息"
           >
