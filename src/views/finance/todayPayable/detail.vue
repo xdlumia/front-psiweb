@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 15:58:30
+ * @LastEditTime: 2019-11-29 19:03:08
  * @Description: 今日应付账单
 */
 <template>
@@ -21,7 +21,7 @@
       <el-tab-pane label="详情">
         <el-form size="mini" v-if="isDataReady">
           <paybill-detail :data="detail" disabled />
-          <payer-info :data="detail" disabled :type="this.pageConfig.type" />
+          <payer-info :data="detail" :type="this.pageConfig.type" disabled />
           <!-- incomeType 收支类型(0收款/1付款） -->
           <payment-log
             :addApi="pageConfig.api.addIncoming"
@@ -52,7 +52,7 @@
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <Late :rowData="detail" :visible.sync="showLateAmount" @reload="setEdit(),$reload()" v-if="showLateAmount" />
+    <Late :pageConfig="pageConfig" :rowData="detail" :visible.sync="showLateAmount" @reload="setEdit(),$reload()" v-if="showLateAmount" />
   </sideDetail>
 </template>
 <script>
