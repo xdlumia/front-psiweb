@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 16:10:11
+ * @LastEditTime: 2019-11-29 16:21:34
  * @Description: 新增费用分摊单商品信息
 */
 <template>

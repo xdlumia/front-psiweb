@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 16:14:39
+ * @LastEditTime: 2019-11-29 16:21:21
  * @Description: 分摊信息
  */
 <template>
@@ -101,7 +101,7 @@
     </form-card>
     <goods-apportion
       ref="goodsTable"
-      :data="goodsTableData"
+      :data="data.businessCommoditySaveVoList"
     />
     <!-- 新增 / 编辑 弹出框-->
     <el-dialog
@@ -249,12 +249,12 @@ export default {
         if (this.data.busType == 0) {
           this.$api.seePsiSaleService.salesshipmentGetShipmentCommodity({ code: this.data.busCode })
             .then(res => {
-              this.goodsTableData = res.data || []
+              this.data.businessCommoditySaveVoList = res.data || []
             })
         } else if (this.data.busType == 1) {
           this.$api.seePsiPurchaseService.purchaseputinGetByCode(null, this.data.busCode)
             .then(res => {
-              this.goodsTableData = (res.data || {}).commodityList
+              this.data.businessCommoditySaveVoList = (res.data || {}).commodityList
             })
         }
       }
