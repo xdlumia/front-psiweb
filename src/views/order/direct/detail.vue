@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 17:03:09
+ * @LastEditTime: 2019-11-29 18:29:48
  * @Description: 直发单详情
 */
 <template>
@@ -49,7 +49,7 @@
     </el-tabs>
     <addOrderStorage :joinCode="detail.directCode||code" :visible.sync="showAddOrderStorage" from="直发单" v-if="showAddOrderStorage" />
     <editDirect :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" v-if="showEdit" />
-    <deliverEdit :code="detail.directCode||code" :visible.sync="showDeliverGoods" @reload="setEdit(),$reload()" v-if="showDeliverGoods" />
+    <deliverEdit :code="detail.directCode||code" :rowData="detail" :visible.sync="showDeliverGoods" @reload="setEdit(),$reload()" v-if="showDeliverGoods" />
   </sideDetail>
 </template>
 <script>

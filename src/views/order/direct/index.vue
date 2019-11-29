@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:36:01
+ * @LastEditTime: 2019-11-29 17:49:47
  * @Description: 采购-直发单
 */
 <template>
@@ -20,22 +20,31 @@
           <el-link :underline="false" @click="open(value)" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else-if="prop=='quotationCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="showQuotationDetail=true,currentQuotationCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
+    <QuoteDetails
+      :code="currentQuotationCode"
+      :rowData="{}"
+      :visible.sync="showQuotationDetail"
+      @reload="reload"
+      v-if="showQuotationDetail"
+    />
     <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" />
   </div>
 </template>
 <script>
 import TableView from '@/components/tableView';
 import Detail from './detail';
+import QuoteDetails from '@/views/sales/quote/quote-details';
 
 export default {
   components: {
     TableView,
-    Detail
+    Detail,
+    QuoteDetails
   },
   props: {
     // 是否显示按钮
@@ -57,7 +66,9 @@ export default {
       },
       status: [],
       showDetail: false,
+      showQuotationDetail: false,
       currentCode: '',
+      currentQuotationCode: '',
       stateText: {
         '0': '待完成',
         '1': '部分完成',

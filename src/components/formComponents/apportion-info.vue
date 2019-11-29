@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 17:48:14
+ * @LastEditTime: 2019-11-29 18:58:02
  * @Description: 分摊信息
  */
 <template>
@@ -36,11 +36,11 @@
           <el-form-item
             :rules="[{required:true,message:'必填项'}]"
             label="未分摊费用金额"
-            prop
+            prop="unAmount"
           >
             <el-input
               :disabled="true"
-              v-model="notCostAmount"
+              v-model="data.unAmount"
             >
               <template slot="append">元</template>
             </el-input>
@@ -50,7 +50,7 @@
           <el-form-item
             :rules="[{required:true,message:'必填项'}]"
             label="本次分摊费用金额"
-            prop
+            prop="costAmount"
           >
             <el-input
               :disabled="disabled"
@@ -65,7 +65,7 @@
           <el-form-item
             :rules="[{required:true,message:'必填项'}]"
             label="关联单据"
-            prop
+            prop="busType"
           >
             <el-select
               class="wfull"
@@ -85,7 +85,7 @@
         </el-col>
         <el-col
           :span="8"
-          v-if="dialogData.title"
+          v-if="data.busType"
         >
           <el-form-item
             :rules="[{required:true,message:'必填项'}]"
@@ -162,7 +162,6 @@ export default {
   data() {
     return {
       sumAmount: 0, //总金额
-      notCostAmount: 0,
 
       //dialog弹出框
       dialogData: {
@@ -188,7 +187,9 @@ export default {
   watch: {
     'data.busType': {
       handler(val) {
-        this.dialogData.title = this.options[val].title
+        if (val) {
+          this.dialogData.title = this.options[val].title
+        }
       }
     }
   },
@@ -215,7 +216,7 @@ export default {
         });
         this.data.costAmount = this.sumAmount
       }
-      return this.sumAmount - (this.data.costAmount || 0)
+      this.data.unAmount = this.sumAmount - (this.data.costAmount || 0)
     },
     // 按钮功能操作
     eventHandle(type) {
@@ -255,6 +256,7 @@ export default {
       if (this.dialogData.type == 'financeFee') {
         this.data.costCode = rowData.costCode
         this.sumAmount = rowData.amount
+        this.data.unAmount = rowData.amount
       } else {
         let codeObj = {
           '0': 'shipmentCode',

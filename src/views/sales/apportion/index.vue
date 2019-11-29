@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 18:52:11
+ * @LastEditTime: 2019-11-29 18:40:52
  * @Description: 销售-费用分摊单
  */
 <template>
@@ -58,14 +58,14 @@
       :visible.sync="feeVisible"
       :rowData="rowData"
       :code="rowData.salesShipmentCode"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
     <!-- 新增分摊-->
     <add
       type="add"
       :visible.sync="addVisible"
       :rowData="rowData"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
   </div>
 </template>
