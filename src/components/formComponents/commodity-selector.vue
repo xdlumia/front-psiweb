@@ -22,7 +22,7 @@
       <el-option
         :key="item.commodityCode"
         :label="type=='code'?item.commodityCode:item.goodsName"
-        :value="item.commodityCode"
+        :value="sn?item.commodityCode:(item.snCode+robotCode)"
         v-for="(item,i) in options"
       >
         <el-row>

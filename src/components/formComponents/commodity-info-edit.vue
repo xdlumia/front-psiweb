@@ -68,7 +68,7 @@
             :disabled='!!scope.row.quotationId'
             v-if="addForm.wmsId"
             :sn="addForm.type == 2 ? true : false"
-            :params="addForm.type == 2 ? {wmsId:addForm.wmsId} : {wmsId:''}"
+            :params="{wmsId:addForm.wmsId}"
             @choose='commodityChoose(arguments,scope)'
             type="code"
             v-model="scope.row.commodityCode"
@@ -89,7 +89,7 @@
             ref='commdity'
             v-if="addForm.wmsId"
             :sn="addForm.type == 2 ? true : false"
-            :params="addForm.type == 2 ? {wmsId:addForm.wmsId} : {wmsId:''}"
+            :params="{wmsId:addForm.wmsId}"
             @choose='commodityChoose(arguments,scope)'
             v-model="scope.row.goodsName"
             :codes="tableData.map(item=>item.commodityCode)"
@@ -232,6 +232,7 @@ export default {
     };
   },
   methods: {
+
     //选择商品
     commodityChoose(e, scope) {
       let list = e[0]
@@ -250,6 +251,24 @@ export default {
       })
       this.codes = []
     },
+    //选择商品
+    // commodityChoose(e, scope) {
+    //   let list = e[0]
+    //   let type = e[1]
+    //   let codes = []
+    //   this.tableData.forEach((item) => {
+    //     if (item.snCode) {
+    //       codes.push(item.snCode)
+    //     }
+    //   })
+    //   list.forEach((item) => {
+    //     if (!codes.includes(item.snCode) && scope.row.snCode && type == 'select') {//区分非选择状态下的选择商品信息
+    //       this.$set(this.tableData, scope.$index, item)
+    //     } else if (!codes.includes(item.snCode)) {
+    //       this.tableData.unshift(item)
+    //     }
+    //   })
+    // },
     //表格查询数据懒加载
     load(tree, treeNode, resolve) {
       this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName({ page: 1, limit: 50, commodityCode: tree.commodityCode })
@@ -286,7 +305,6 @@ export default {
             }
           }, 0);
         }
-        console.log(column, 'columncolumncolumncolumncolumncolumncolumn')
         if (column.property == 'taxInclusiveTotalCostPrice') {
           const values = data.map((item) => {
             if (item.commodityInfoList && item.commodityInfoList.length > 0) {

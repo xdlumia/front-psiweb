@@ -98,7 +98,7 @@ export default {
     return {
       activeName: '',
       addForm: {
-        commodityList: [],//商品列表
+        commodityList: [],//商品列表 
         type: 2,//类别（1-报溢 2-报损）
         wmsId: null,//库房id
         personInChargeId: '',//责任人id
