@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-30 14:25:09
+ * @LastEditTime: 2019-11-30 14:27:08
  * @Description: 客户管理-账单调整单
 */
 <template>
@@ -93,6 +93,14 @@ export default {
   computed: {
 
   },
+  watch: {
+    visible(val) {
+      if (val && this.type == 'add') {
+        this.form.fbillId = ''
+      }
+    }
+  },
+
   methods: {
     async getDetail() {
       if (this.code) {
