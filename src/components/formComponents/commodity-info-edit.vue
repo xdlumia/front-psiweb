@@ -237,19 +237,35 @@ export default {
     commodityChoose(e, scope) {
       let list = e[0]
       let type = e[1]
-      this.tableData.forEach((item) => {
-        if (item.commodityCode) {
-          this.codes.push(item.commodityCode)
-        }
-      })
-      list.forEach((item) => {
-        if (!this.codes.includes(item.commodityCode) && scope.row.commodityCode && type == 'select') {//区分非选择状态下的选择商品信息
-          this.$set(this.tableData, scope.$index, item)
-        } else if (!this.codes.includes(item.commodityCode)) {
-          this.tableData.unshift(item)
-        }
-      })
-      this.codes = []
+      if (this.addForm.type == 1) {
+        this.tableData.forEach((item) => {
+          if (item.commodityCode) {
+            this.codes.push(item.commodityCode)
+          }
+        })
+        list.forEach((item) => {
+          if (!this.codes.includes(item.commodityCode) && scope.row.commodityCode && type == 'select') {//区分非选择状态下的选择商品信息
+            this.$set(this.tableData, scope.$index, item)
+          } else if (!this.codes.includes(item.commodityCode)) {
+            this.tableData.unshift(item)
+          }
+        })
+        this.codes = []
+      } else {
+        let codeList = []
+        this.tableData.forEach((item) => {
+          if (item.snCode) {
+            codeList.push(item.snCode)
+          }
+        })
+        list.forEach((item) => {
+          if (!codeList.includes(item.snCode) && scope.row.snCode && type == 'select') {//区分非选择状态下的选择商品信息
+            this.$set(this.tableData, scope.$index, item)
+          } else if (!codeList.includes(item.snCode)) {
+            this.tableData.unshift(item)
+          }
+        })
+      }
     },
     //选择商品
     // commodityChoose(e, scope) {

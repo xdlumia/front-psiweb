@@ -20,9 +20,9 @@
       v-model="selectGood"
     >
       <el-option
-        :key="item.commodityCode"
+        :key="item.snCode"
         :label="type=='code'?item.commodityCode:item.goodsName"
-        :value="sn?item.commodityCode:(item.snCode+robotCode)"
+        :value="sn?item.snCode:item.commodityCode"
         v-for="(item,i) in options"
       >
         <el-row>
@@ -176,10 +176,15 @@ export default {
       this.$emit('response', data);
     },
     onSelect(e) {
-      const goods = this.options.filter(
+      console.log(e, 'eeeeeeeeeeeeeeeeeeeeeeee')
+      const goods = !this.sn ? this.options.filter(
         item =>
           item.commodityCode == e && !this.codes.includes(item.commodityCode)
-      );
+      )
+        : this.options.filter(
+          item =>
+            item.snCode == e
+        )
       if (goods.length) {
         this.$emit('choose', goods, 'select');
         if (this.autoClear) {
