@@ -21,7 +21,7 @@
       :data="tableData"
       max-height="400"
       ref="elTable"
-      row-key="id"
+      :row-key="addForm.type == 1 ? 'commodityCode' : 'snCode'"
       :load="load"
       lazy
       size="mini"
@@ -254,37 +254,20 @@ export default {
       } else {
         let codeList = []
         this.tableData.forEach((item) => {
-          if (item.snCode) {
-            codeList.push(item.snCode)
+          if (item.snCode || item.robotCode) {
+            codeList.push(item.snCode + item.robotCode)
           }
         })
         list.forEach((item) => {
-          if (!codeList.includes(item.snCode) && scope.row.snCode && type == 'select') {//区分非选择状态下的选择商品信息
+          // 有Sn码的时候，商品code有可能是重复的，所以要snCode—+机器号作为唯一值
+          if (!codeList.includes((item.snCode + item.robotCode)) && scope.row.snCode && type == 'select') {//区分非选择状态下的选择商品信息
             this.$set(this.tableData, scope.$index, item)
-          } else if (!codeList.includes(item.snCode)) {
+          } else if (!codeList.includes((item.snCode + item.robotCode))) {
             this.tableData.unshift(item)
           }
         })
       }
     },
-    //选择商品
-    // commodityChoose(e, scope) {
-    //   let list = e[0]
-    //   let type = e[1]
-    //   let codes = []
-    //   this.tableData.forEach((item) => {
-    //     if (item.snCode) {
-    //       codes.push(item.snCode)
-    //     }
-    //   })
-    //   list.forEach((item) => {
-    //     if (!codes.includes(item.snCode) && scope.row.snCode && type == 'select') {//区分非选择状态下的选择商品信息
-    //       this.$set(this.tableData, scope.$index, item)
-    //     } else if (!codes.includes(item.snCode)) {
-    //       this.tableData.unshift(item)
-    //     }
-    //   })
-    // },
     //表格查询数据懒加载
     load(tree, treeNode, resolve) {
       this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName({ page: 1, limit: 50, commodityCode: tree.commodityCode })
