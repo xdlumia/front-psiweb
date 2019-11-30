@@ -13,7 +13,8 @@
     v-dialogDrag
   >
     <el-container
-      style="padding:0;max-height:700px;"
+      :style="{maxHeight:'calc(100vh - 240px)'}"
+      style="padding:0;"
       class="d-auto-y"
     >
       <el-header
@@ -43,7 +44,7 @@
           :model="addForm"
           class="p10"
         >
-          <reportingInfo 
+          <reportingInfo
             ref="deliverEdit"
             :addForm='addForm'
             @wmsChange='wmsChange'

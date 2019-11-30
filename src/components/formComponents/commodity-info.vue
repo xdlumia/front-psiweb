@@ -26,7 +26,7 @@
         :params="queryForm"
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
+        max-height='300px'
         :tree-props="{children: 'id', hasChildren: 'id'}"
       >
         <el-table-column

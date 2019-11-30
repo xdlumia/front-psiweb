@@ -25,7 +25,7 @@
         :params="{page:1,limit:20,commodityCode:drawerData.commodityCode,operation:0}"
         ref="table"
         class="college-main"
-        style="height:calc(100vh - 340px)"
+        max-height='300px'
       >
         <el-table-column
           type='index'

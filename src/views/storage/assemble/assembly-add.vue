@@ -15,9 +15,7 @@
   >
     <el-container>
       <el-main
-        :style="{ 
-                maxHeight:maxHeight+'px'
-            }"
+        :style="{maxHeight:'calc(100vh - 240px)'}"
         style="padding:0;"
       >
         <el-form

@@ -38,13 +38,17 @@
           </el-tab-pane>
         </el-tabs>
       </el-header>
-      <el-main style="padding:0;max-height:700px;">
+      <el-main
+        style="padding:0;"
+        :style="{maxHeight:'calc(100vh - 240px)'}"
+      >
         <el-form
           :model="allForm"
           class="p10"
           ref='allForm'
         >
           <allocationInfo
+            @changeWmsId='changeWmsId'
             v-if="visible = true"
             ref="deliverEdit"
             :form='allForm'
@@ -119,6 +123,10 @@ export default {
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
+    },
+    //库房切换，下边选择的东西清空掉
+    changeWmsId() {
+      this.$refs.logisticsEdit.changeWmsId()
     },
     close() {
       this.$emit('update:visible', false)

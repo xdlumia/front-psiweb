@@ -14,9 +14,7 @@
   >
     <el-container>
       <el-main
-        :style="{
-                maxHeight:maxHeight+'px'
-            }"
+        :style="{maxHeight:'calc(100vh - 180px)'}"
         style="padding:0;"
       >
         <form-card title='拣货商品'>

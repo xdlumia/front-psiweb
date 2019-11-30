@@ -8,7 +8,7 @@
 <template>
   <div>
     <div
-      style="max-height:600px"
+      :style="{maxHeight:'calc(100vh - 180px)'}"
       class="borrow-goods-info mt10 d-auto-y"
     >
       <form-card
