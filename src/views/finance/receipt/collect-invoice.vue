@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 16:48:46
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-30 13:31:05
  * @Description: 收票申请
 */
 <template>
@@ -92,11 +92,12 @@
 </template>
 <script>
 import VisibleMixin from '@/utils/visibleMixin';
+import CollectGoodsMixin from './collect-goods';
 
 export default {
   // 票据类型(1收票，0开票)
   props: ['invoiceType', 'id'],
-  mixins: [VisibleMixin],
+  mixins: [VisibleMixin,CollectGoodsMixin],
   components: {},
   data() {
     return {

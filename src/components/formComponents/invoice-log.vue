@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 16:39:50
+ * @LastEditTime: 2019-11-30 13:41:36
  * @Description: 开票/收票 记录 已绑定 1
 */
 <template>
@@ -40,8 +40,10 @@
 </template>
 <script>
 import CollectInvoiceDialog from '@/views/finance/receipt/collect-invoice';
+import CollectGoodsMixin from '@/views/finance/receipt/collect-goods.js';
 
 export default {
+  mixins: [CollectGoodsMixin],
   components: {
     CollectInvoiceDialog
   },
@@ -96,7 +98,7 @@ export default {
       });
       this.list = data;
     },
-    add() {
+    async add() {
       let data = {};
       // 票据类型(1收票，0开票)
       if (this.type == 0) {
@@ -113,6 +115,11 @@ export default {
       data.type = this.type == 0;
       data.busCode = this.data.busCode;
       data.busType = this.data.busType;
+      data.invoiceDetailList = await this.getInvoiceGoods(
+        this.data.busCode,
+        this.data.busType
+      );
+      console.log(data)
       this.collectInvoiceData = data;
       this.$nextTick(() => (this.showCollectInvoice = true));
     }
