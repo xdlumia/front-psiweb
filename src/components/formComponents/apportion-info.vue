@@ -221,7 +221,6 @@ export default {
     // 按钮功能操作
     eventHandle(type) {
       if (this.disabled) return
-      // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {
         'financeFee': { comp: 'financeFee', title: `费用单` },
         ...this.options

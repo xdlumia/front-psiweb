@@ -44,7 +44,13 @@
           :data="detail"
         />
         <!-- 还款记录 -->
-        <repayment-history :data="detail" />
+        <repayment-history 
+        :params="{
+          limit: 20,
+          page: 1,
+          borrowingCode: this.rowData.borrowingCode, //借款单编号
+        }"
+        :data="detail" />
       </el-form>
     </side-detail>
     <!-- 还款 -->

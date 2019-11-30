@@ -86,7 +86,7 @@ export default {
         deptTotalCode: '',// 示例：部门code,
         fbiiBusCode: '',// 示例：账单业务编号,
         fbiiBusType: '',// 100000,
-        fbillId: '1232',// 100000,
+        fbillId: '',// 100000,
         id: '',
         note: '',// 示例：备注,
       },
