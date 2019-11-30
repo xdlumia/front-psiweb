@@ -13,7 +13,7 @@
     v-dialogDrag
   >
     <el-container
-      :style="{maxHeight:'calc(100vh - 240px)'}"
+      :style="{maxHeight:'calc(100vh - 180px)'}"
       style="padding:0;"
       class="d-auto-y"
     >
@@ -116,8 +116,10 @@ export default {
     },
     //每次切换库房,刷新商品信息
     wmsChange() {
-      this.$refs.logisticsEdit.$refs.commdity.searchTable = {}
-      this.$refs.logisticsEdit.$refs.commdity.search()
+      if (this.$refs.logisticsEdit) {
+        this.$refs.logisticsEdit.$refs.commdity.searchTable = {}
+        this.$refs.logisticsEdit.$refs.commdity.search()
+      }
     },
     close() {
       this.$emit('update:visible', false)

@@ -166,7 +166,7 @@ export default {
           item.fieldList.push({ fieldVal: item1, fieldCode: item[item1] })
         })
       })
-      this.$api.seePsiWmsService.wmspickingorderBatchShipment({ businessCode: this.drawerData.pickingOrderCode, businessId: this.drawerData.id, putawayCommodityList: this.$refs.pickingSn.tableData })
+      this.$api.seePsiWmsService.wmspickingorderBatchShipment({ businessCode: this.drawerData.pickingOrderCode, businessId: this.drawerData.id, putawayCommodityList: this.$refs.pickingSn.tableData, businessType: 10 })
         .then(res => {
           this.close()
           this.$emit('reload')
