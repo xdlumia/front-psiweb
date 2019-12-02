@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 16:38:15
+ * @LastEditTime: 2019-12-02 18:11:03
  * @Description: 操作记录
 */
 <template>
@@ -51,17 +51,9 @@ export default {
     }
   },
   created() {
+    this.logQueryList(this.data.id)
   },
   watch: {
-    'data.id': {
-      handler(val) {
-        if (val) {
-          this.logQueryList(val)
-        }
-      },
-      deep: true,
-      immediate: true
-    }
   },
   methods: {
     logQueryList(id) {

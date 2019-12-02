@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-05 18:57:05
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 20:21:02
+ * @LastEditTime: 2019-12-02 18:26:11
  * @Description: 本项目用到的工具集合
  */
 const utils = {
@@ -63,6 +63,14 @@ const utils = {
           newArr[newIndex].children = [item]
         }
       }
+    })
+    return newArr
+  },
+  // 格式化商品信息
+  formatCommodity(data, children = 'children') {
+    let newArr = data.filter(v => !v.parCode)
+    newArr.forEach(item => {
+      newArr['children'] = data.filter(v => item.commodityCode = v.parentCommodityCode)
     })
     return newArr
   }
