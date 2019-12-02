@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 11:04:50
+ * @LastEditTime: 2019-12-02 11:20:44
  * @Description: 退货商品商品信息
 */
 <template>
@@ -84,15 +84,15 @@
           show-overflow-tooltip
         />
 
-        <el-table-column
+        <!-- <el-table-column
           prop="costAmount"
           min-width="80"
           label="销售成本"
           show-overflow-tooltip
-        />
+        /> -->
 
         <el-table-column
-          prop="salesNumber"
+          prop="commodityNumber"
           min-width="70"
           label="销售数量"
           show-overflow-tooltip
@@ -257,12 +257,22 @@ export default {
         })
     },
     sumTaxPrice(row, index) {
+      if (row.alterationNumber > row.commodityNumber) {
+        this.$message({
+          message: '退货商品数量不能大于销售数量',
+          type: 'info',
+          showClose: true,
+        });
+        row.alterationNumber = row.commodityNumber
+        return
+      }
+
       let taxRate = (row.taxRate || 100) / 100  ///税率
       let alterationNumber = row.alterationNumber || 1 //退货数量
       let alterationPrice = row.alterationPrice || 1 //销售单价
       // 税后销售单价  公式:销售单价 * (1-税率)
       row.taxPrice = alterationPrice * (1 - taxRate).toFixed(2)
-      // 销售税后总价  公式:税后销售单价 * 销售数量
+      // 销售税后总价  公式:税后销售单价 * 退货数量
       row.taxTotalAmount = (alterationNumber * row.taxPrice).toFixed(2)
 
     },
