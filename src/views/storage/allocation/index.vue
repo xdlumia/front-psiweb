@@ -19,7 +19,7 @@
       title="调拨单"
       @selection-change="selectionChange"
     >
-      <template v-slot:button>
+      <template v-slot:button> 
         <el-button
           type="primary"
           size='mini'

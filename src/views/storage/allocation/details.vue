@@ -134,6 +134,7 @@ export default {
 
     },
     reload() {
+      this.wmsallocationorderInfo()
       this.$emit('reload')
     }
   },

@@ -213,7 +213,7 @@ export default {
    */
   wmsallocationorderShipmentCommodityCheck: {
     url: '/wmsallocationorder/shipmentCommodityCheck',
-    methods: 'get',
+    methods: 'post',
     mock: isUseMock
   },
   /**
