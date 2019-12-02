@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 14:37:44
+ * @LastEditTime: 2019-12-02 14:56:48
  * @Description: 销售-报价单
  */
 <template>
@@ -79,6 +79,8 @@
     <quote-add
       :visible.sync="quoteCopyVisible"
       type="copy"
+      :rowData="rowData"
+      :code="rowData.quotationCode"
       @reload="$refs.table.reload()"
     ></quote-add>
     <!-- 合并生成出库单 所以rowData是多行数据 -->
@@ -155,10 +157,17 @@ export default {
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
-      if (type === 'mergeVisible' && !this.selectionData.length) {
+      if (type === 'mergeVisible' && this.selectionData.length < 2) {
         this.$message.error({
           showClose: true,
-          message: '请先选择数据'
+          message: '合并生成出库单最少选择两条数据'
+        })
+        return
+      }
+      if (type === 'quoteCopyVisible' && this.selectionData.length != 1) {
+        this.$message.error({
+          showClose: true,
+          message: '复制生成报价单只能选择一条数据'
         })
         return
       }
