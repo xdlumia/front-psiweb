@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 16:17:15
+ * @LastEditTime: 2019-12-02 18:34:54
  * @Description: 审核信息
 */
 <template>
@@ -55,7 +55,7 @@ export default {
   async mounted() {
     // 查询当前项共有多少节点
     // await this.queryProcessDefinitionSubTask()
-    await this.processtaskQueryProcessHistoryEntity()
+    // await this.processtaskQueryProcessHistoryEntity()
   },
   watch: {
     '$parent.data.id': {

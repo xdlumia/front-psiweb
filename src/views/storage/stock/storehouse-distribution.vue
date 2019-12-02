@@ -139,11 +139,6 @@
         @click="close"
         size="small"
       >关 闭</el-button>
-      <el-button
-        type="primary"
-        @click="close"
-        size="small"
-      >保 存</el-button>
     </span>
   </el-dialog>
 </template>
@@ -167,7 +162,6 @@ export default {
   data() {
     return {
       activeName: '',
-      tableData: [{ name: '写的假的' }]
     };
   },
   mounted() { },

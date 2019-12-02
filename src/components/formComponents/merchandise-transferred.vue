@@ -274,9 +274,9 @@ export default {
     commodityChoose(selected) {
       let allId = []
       this.upTableData.forEach((item) => {
-        allId.push(item.id)
+        allId.push(item.snCode + item.robotCode)
       })
-      let newArr = selected.filter(item => !allId.includes(item.id))
+      let newArr = selected.filter(item => !allId.includes(item.snCode + item.robotCode))
       if (newArr.length > 0) {
         newArr.forEach((item) => {
           this.upTableData.unshift(item)

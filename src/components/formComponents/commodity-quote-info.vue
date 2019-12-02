@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 10:04:13
+ * @LastEditTime: 2019-12-02 18:45:45
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -10,21 +10,31 @@
     class="commodity-quote-edit"
     title="商品信息"
   >
-    <d-table
+    <el-table
+      show-summary
+      sum-text='总计'
       border
-      style="height:250px"
-      api="seePsiSaleService.businesscommodityGetBusinessCommodityList"
-      :params="queryForm"
+      :summary-method="getSummaries"
+      :data="goodsData"
+      default-expand-all
+      :tree-props="{children: 'commonGoodConfigDetailsEntityList'}"
+      max-height="400"
+      ref="elTable"
+      row-key="id"
       size="mini"
-      :paging="false"
     >
       <el-table-column
-        label="商品编号"
         prop="commodityCode"
+        label="商品编号"
         min-width="150"
-        show-overflow-tooltip
-      />
-
+      >
+      </el-table-column>
+      <el-table-column
+        prop="goodsName"
+        label="商品名称"
+        min-width="150"
+      >
+      </el-table-column>
       <el-table-column
         label="商品图片"
         min-width="120"
@@ -39,15 +49,8 @@
       </el-table-column>
 
       <el-table-column
-        prop="goodsName"
-        label="商品名称"
-        min-width="110"
-        show-overflow-tooltip
-      />
-
-      <el-table-column
         label="商品类别"
-        min-width="80"
+        min-width="110"
         prop="categoryCode"
       >
         <template slot-scope="scope">
@@ -59,21 +62,60 @@
         label="商品分类"
         min-width="110"
         prop="className"
-      />
+      ></el-table-column>
+
+      <el-table-column
+        label="配置"
+        min-width="110"
+        prop="configName"
+      ></el-table-column>
 
       <el-table-column
         label="规格"
         min-width="110"
         prop="specOne"
-      />
+      ></el-table-column>
+
+      <el-table-column
+        label="销售参考价"
+        min-width="110"
+        prop="reference"
+      ></el-table-column>
+
+      <el-table-column
+        label="商品数量"
+        prop="commodityNumber"
+        min-width="110"
+      >
+      </el-table-column>
+
+      <el-table-column
+        label="税率%"
+        min-width="100"
+        prop="taxRate"
+      ></el-table-column>
+
+      <el-table-column
+        prop="discount"
+        label="折扣"
+        min-width="110"
+      >
+      </el-table-column>
+
+      <el-table-column
+        label="折后销售单价"
+        prop="discountSprice"
+        min-width="110"
+      >
+      </el-table-column>
 
       <el-table-column
         label="备注"
-        prop="note"
         min-width="110"
-      />
+      >
+      </el-table-column>
 
-    </d-table>
+    </el-table>
 
   </form-card>
 </template>
@@ -83,6 +125,7 @@ export default {
   props: ['data'],
   data() {
     return {
+      goodsData: [],
       queryForm: {
         busType: 1, // 1报价单 2请购单]
         putawayType: 0,
@@ -90,9 +133,17 @@ export default {
       },
     };
   },
+  created() {
+    this.businesscommodityGetBusinessCommodityList()
+  },
   methods: {
-
-
+    businesscommodityGetBusinessCommodityList() {
+      this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.queryForm)
+        .then(res => {
+          let data = res.data || []
+          this.goodsData = this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList')
+        })
+    },
     //算合计的
     getSummaries(param) {
       const { columns, data } = param;
