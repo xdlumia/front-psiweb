@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 19:49:50
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-02 16:51:34
  * @Description: 付款 新增流水 单据信息
 */
 <template>
@@ -65,7 +65,7 @@
             <el-select
               class="wfull"
               v-else-if="item.type =='select'"
-              :disabled="disabled || (item.prop == 'incomeType' && incomeType)"
+              :disabled="disabled || ((item.prop == 'incomeType' && incomeType)?true:false)"
               v-model="data[item.prop]"
               :placeholder="`请输入${item.label}`"
             >
