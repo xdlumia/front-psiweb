@@ -63,11 +63,12 @@
           label="供应商"
           name='orderSupplier'
         >
-          <orderSupplier
-            v-if="activeName == 'orderSupplier'"
-            :button="false"
-            :params="{page:1,limit:15,commodityCode:drawerData.commodityCode}"
-          ></orderSupplier>
+          <FullscreenWrap v-if="activeName == 'orderSupplier'">
+            <orderSupplier
+              :button="false"
+              :params="{page:1,limit:15,commodityCode:drawerData.commodityCode}"
+            ></orderSupplier>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>

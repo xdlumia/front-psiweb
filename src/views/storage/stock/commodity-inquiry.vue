@@ -43,7 +43,9 @@
               min-width="100"
               prop="categoryCode"
               show-overflow-tooltip
-            ></el-table-column>
+            >
+              <template slot-scope="scope"><span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span></template>
+            </el-table-column>
             <el-table-column
               label="商品分类"
               min-width="100"
@@ -125,11 +127,6 @@
         @click="close"
         size="small"
       >关 闭</el-button>
-      <el-button
-        type="primary"
-        @click="close"
-        size="small"
-      >保 存</el-button>
     </span>
   </el-dialog>
 </template>

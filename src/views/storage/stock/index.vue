@@ -9,6 +9,7 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
+      class="stockTable"
       @response='response'
       style="height:calc(100vh - 150px)"
       busType="48"
@@ -343,7 +344,7 @@ export default {
   border-bottom: none;
   float: left;
 }
-/deep/.d-table {
+/deep/.stockTable .d-table {
   width: calc(100% - 250px) !important;
   float: left;
 }

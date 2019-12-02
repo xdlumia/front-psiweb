@@ -343,10 +343,17 @@ export default {
     },
     //保存
     submit() {
+      //振兴入库
       this.$api.seePsiWmsService.wmsinventorydetailBatchPutaway({ businessCode: this.drawerData.purchaseCode, businessId: this.drawerData.id, putawayCommodityList: this.tableData, businessType: 32 })
         .then(res => {
-          this.close()
-          this.$emit('reload')
+          //龙哥算状态
+          this.$api.seePsiPurchaseService.purchasePutin({ purchaseCode: this.drawerData.purchaseCode })
+            .then(res => {
+              this.close()
+              this.$emit('reload')
+            })
+            .finally(() => {
+            })
         })
         .finally(() => {
 

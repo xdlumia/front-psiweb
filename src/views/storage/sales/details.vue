@@ -49,61 +49,67 @@
           label="拣货单"
           name="storagePicking"
         >
-          <storagePicking
-            v-if="activeName == 'storagePicking'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
-          ></storagePicking>
+          <FullscreenWrap v-if="activeName == 'storagePicking'">
+            <storagePicking
+              :button="false"
+              :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
+            ></storagePicking>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="组装任务"
           name="storageAssembly"
         >
-          <storageAssembly
-            v-if="activeName == 'storageAssembly'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
-          ></storageAssembly>
+          <FullscreenWrap v-if="activeName == 'storageAssembly'">
+            <storageAssembly
+              :button="false"
+              :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
+            ></storageAssembly>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="发货单"
           name="storageDeliver"
         >
-          <storageDeliver
-            v-if="activeName == 'storageDeliver'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
-          ></storageDeliver>
+          <FullscreenWrap v-if="activeName == 'storageDeliver'">
+            <storageDeliver
+              :button="false"
+              :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
+            ></storageDeliver>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="销售出库单"
           name="salesOutLibrary"
-        >>
-          <salesOutLibrary
-            v-if="activeName == 'salesOutLibrary'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
-          ></salesOutLibrary>
+        >
+          <FullscreenWrap v-if="activeName == 'salesOutLibrary'">
+            <salesOutLibrary
+              :button="false"
+              :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
+            ></salesOutLibrary>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="借入单"
           name="orderBorrow"
-        >>
-          <orderBorrow
-            v-if="activeName == 'orderBorrow'"
-            :button="false"
-            :params="{page:1,limit:15,borrowLoanType:0,relationCode:data.salesSheetCode}"
-          ></orderBorrow>
+        >
+          <FullscreenWrap v-if="activeName == 'orderBorrow'">
+            <orderBorrow
+              :button="false"
+              :params="{page:1,limit:15,borrowLoanType:0,relationCode:data.salesSheetCode}"
+            ></orderBorrow>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="应收账单"
           name="financeReceivable"
-        >>
-          <financeReceivable
-            :button="false"
-            :params="{page:1,limit:15,borrowLoanType:0,relationCode:data.salesSheetCode}"
-            v-if="activeName == 'financeReceivable'"
-          ></financeReceivable>
+        >
+          <FullscreenWrap v-if="activeName == 'financeReceivable'">
+            <financeReceivable
+              :button="false"
+              :params="{page:1,limit:15,borrowLoanType:0,relationCode:data.salesSheetCode}"
+            ></financeReceivable>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>

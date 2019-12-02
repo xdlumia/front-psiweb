@@ -106,8 +106,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              type='
-              index'
+              type='index'
               min-width="80"
               label="编号"
               show-overflow-tooltip
@@ -242,11 +241,6 @@ export default {
                     message: '当前商品已经扫够啦!'
                   })
                 }
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: '当前商品不在借出库商品列表内!'
-                })
               }
             })
           }

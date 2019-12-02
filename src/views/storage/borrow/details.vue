@@ -83,11 +83,13 @@
           label="借入借出单"
           name='orderBorrow'
         >
-          <orderBorrow
-            v-if="activeName == 'orderBorrow'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:drawerData.borrowLoanTaskCode}"
-          ></orderBorrow>
+          <FullscreenWrap v-if="activeName == 'orderBorrow'">
+            <orderBorrow
+              v-if="activeName == 'orderBorrow'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:drawerData.borrowLoanTaskCode}"
+            ></orderBorrow>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>

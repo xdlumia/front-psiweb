@@ -30,11 +30,13 @@
           label="销售单"
           name="storageSales"
         >
-          <storageSales
-            v-if="activeName == 'storageSales'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.shipmentsOrderCode}"
-          ></storageSales>
+          <FullscreenWrap v-if="activeName == 'storageSales'">
+            <storageSales
+              v-if="activeName == 'storageSales'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.shipmentsOrderCode}"
+            ></storageSales>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>

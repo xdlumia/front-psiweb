@@ -166,10 +166,6 @@
               <template slot-scope="scope"><span>{{scope.row.unit|dictionary('SC_JLDW')}}</span></template>
             </el-table-column>
           </el-table>
-        </form-card>
-
-        <!-- 机器号/SN码 -->
-        <form-card title='机器号/SN码记录'>
           <div class="mt10 mb10">
             <span class="b mt5">机器号/扫SN码</span>
             <el-input
@@ -179,7 +175,30 @@
               style="width:200px;"
               class="ml10 mt5"
             ></el-input>
+            <span class="fr d-text-black mr10 mt5">
+              <span>本次成功扫码 </span>
+              <span class="b d-text-red f16">{{codeNowNum || 0}}</span>
+              <span> 件，历史扫码 </span>
+              <span class="b d-text-green f16">{{codeHistoryNum}}</span>
+              <span> 件，还需扫码 </span>
+              <span class="b d-text-blue f16">{{codeAllNum - codeNowNum - (codeHistoryNum || 0)}}</span>
+              <span> 件</span>
+            </span>
           </div>
+        </form-card>
+
+        <!-- 机器号/SN码 -->
+        <form-card title='机器号/SN码记录'>
+          <!-- <div class="mt10 mb10">
+            <span class="b mt5">机器号/扫SN码</span>
+            <el-input
+              v-on:keyup.13.native="shipmentCommodityCheck"
+              v-model="snCode"
+              size="mini"
+              style="width:200px;"
+              class="ml10 mt5"
+            ></el-input>
+          </div> -->
           <el-table
             border
             size="mini"
@@ -202,8 +221,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              type='
-              index'
+              type='index'
               min-width="80"
               label="编号"
               show-overflow-tooltip
@@ -320,12 +338,26 @@ export default {
         waybillCode: "",//运单号
         logisticsFees: '',//物流费用
       },
+      codeNowNum: 0,//本次成功扫码
+      codeHistoryNum: 0,//历史扫码
+      codeAllNum: 0,//所有待扫码
     };
   },
   mounted() {
     this.commonserviceproviderList()
   },
+  created() {
+    this.getNum()
+  },
   methods: {
+    getNum() {
+      if (this.data.commodityShowList.length > 0) {
+        this.data.commodityShowList.forEach((item) => {
+          this.codeHistoryNum = this.codeHistoryNum + item.returnAccomplishNum
+          this.codeAllNum = this.codeAllNum + item.returnNum
+        })
+      }
+    },
     close() {
       this.$emit('close')
     },
@@ -361,6 +393,7 @@ export default {
               if (item.commodityCode == res.data.commodityCode) {
                 if (this.data.commodityShowList[index].returnAccomplishNum < this.data.commodityShowList[index].returnNum) {
                   this.data.commodityShowList[index].returnAccomplishNum++
+                  this.codeNowNum++
                   this.tableData.push(res.data)
                 } else {
                   this.$message({
@@ -369,12 +402,6 @@ export default {
                   })
                 }
               }
-              // else {
-              //   this.$message({
-              //     type: 'error',
-              //     message: '当前商品不在借出库商品列表内!'
-              //   })
-              // }
             })
           }
         })
@@ -387,6 +414,7 @@ export default {
       this.data.commodityShowList.forEach((item, index) => {
         if (item.commodityCode == scope.row.commodityCode) {
           this.data.commodityShowList[index].returnAccomplishNum--
+          this.codeNowNum--
         }
       })
     },

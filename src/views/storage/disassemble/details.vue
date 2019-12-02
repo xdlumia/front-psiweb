@@ -15,14 +15,6 @@
     width="990px"
   >
     <div>
-      <!-- options: [
-            { label: '全部', value: '' },
-            { label: '待拆卸', value: '1' },
-            { label: '部分拆卸', value: '2' },
-            { label: '完成拆卸', value: '3' },
-            { label: '未开始', value: '0' },
-            { label: '终止', value: '-1' },
-          ], -->
       <div class="drawer-header">
         <el-button
           v-if="detailForm.disassemblyTaskState == 0"
@@ -81,11 +73,13 @@
           label="拆卸单"
           name='orderUnpack'
         >
-          <orderUnpack
-            v-if="activeName == 'orderUnpack'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.disassemblyTaskCode}"
-          ></orderUnpack>
+          <FullscreenWrap v-if="activeName == 'orderUnpack'">
+            <orderUnpack
+              v-if="activeName == 'orderUnpack'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.disassemblyTaskCode}"
+            ></orderUnpack>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
       <hangUp
