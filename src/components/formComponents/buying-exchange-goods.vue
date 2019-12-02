@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 10:49:14
+ * @LastEditTime: 2019-12-02 09:05:12
  * @Description: 换货单换货商品 已绑定字段 1
 */  
 <template>
@@ -211,7 +211,7 @@ export default {
         ], this.exchangeType == 'in' ? [
           { label: '换入数量', key: 'swapInNum', fixed: true, width: 140, prop: 'swapInNum', },
           { label: '换入金额', key: 'swapInMoney', width: 140, prop: 'swapInMoney', },
-          { label: '换入库房', key: 'swapInWmsNames', fixed: true, width: 140, prop: 'swapInWmsNames', },
+          { label: '换入库房', key: 'swapOutWmsNames', fixed: true, width: 140, prop: 'swapOutWmsNames', },
         ] : [
           { label: '换出数量', key: 'swapOutNum', fixed: true, width: 140, prop: 'swapOutNum', },
           { label: '换出金额', key: 'swapOutMoney', width: 140, prop: 'swapOutMoney', },

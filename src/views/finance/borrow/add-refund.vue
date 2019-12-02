@@ -72,6 +72,7 @@ export default {
       loading: false,
       // 新增orEdit框内容
       form: {
+        borrowingCode:'',
         companySettlementId: '',//  结算账户id
         companySettlementInfo: '',// 示例：结算账户信息",
         repaymentAmount: '',//  还款金额
@@ -95,6 +96,7 @@ export default {
 
     // 保存表单数据
     saveHandle() {
+      this.form.borrowingCode = this.rowData.borrowingCode
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true

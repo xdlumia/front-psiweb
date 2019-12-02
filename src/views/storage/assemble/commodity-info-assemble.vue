@@ -233,10 +233,10 @@ export default {
         }
       })
       this.codes = []
+      // console.log(this.configList, 'this.configListthis.configListthis.configListthis.configList')
     },
     //表格查询数据懒加载
     load(tree, treeNode, resolve) {
-      console.log(tree, treeNode, 'loadloadloadloadload')
       this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName({ page: 1, limit: 50, commodityCode: tree.commodityCode })
         .then(res => {
           let list = res.data || []
@@ -260,7 +260,6 @@ export default {
         return item.configId == e
       })
       this.commodityChoose([list, 'select'], scope)
-
     },
     expand(row) {
       this.$set(row, 'expanded', !row.expanded);

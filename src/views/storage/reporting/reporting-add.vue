@@ -13,7 +13,8 @@
     v-dialogDrag
   >
     <el-container
-      style="padding:0;max-height:700px;"
+      :style="{maxHeight:'calc(100vh - 180px)'}"
+      style="padding:0;"
       class="d-auto-y"
     >
       <el-header
@@ -97,7 +98,7 @@ export default {
     return {
       activeName: '',
       addForm: {
-        commodityList: [],//商品列表
+        commodityList: [],//商品列表 
         type: 2,//类别（1-报溢 2-报损）
         wmsId: null,//库房id
         personInChargeId: '',//责任人id
@@ -115,8 +116,10 @@ export default {
     },
     //每次切换库房,刷新商品信息
     wmsChange() {
-      this.$refs.logisticsEdit.$refs.commdity.searchTable = {}
-      this.$refs.logisticsEdit.$refs.commdity.search()
+      if (this.$refs.logisticsEdit) {
+        this.$refs.logisticsEdit.$refs.commdity.searchTable = {}
+        this.$refs.logisticsEdit.$refs.commdity.search()
+      }
     },
     close() {
       this.$emit('update:visible', false)

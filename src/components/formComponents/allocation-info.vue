@@ -52,6 +52,7 @@
           size="mini"
         >
           <el-select
+            @change="changeWmsId"
             v-model="form.putawayWmsId"
             :disabled='disabled'
             placeholder="请选择"
@@ -224,6 +225,9 @@ export default {
         .finally(() => {
 
         })
+    },
+    changeWmsId() {
+      this.$emit('changeWmsId')
     },
     //请求服务商列表
     commonserviceproviderList() {

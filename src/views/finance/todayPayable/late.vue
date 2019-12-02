@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 16:51:47
+ * @LastEditTime: 2019-11-29 19:02:43
  * @Description: 滞纳金
 */
 <template>
@@ -72,7 +72,9 @@ export default {
         await this.$getApi(this.pageConfig.api.lateFee)(this.form);
         this.setEdit();
         this.close();
-      } catch (error) {}
+      } catch (error) {
+        console.log(error)
+      }
       this.loading = false;
     }
   }

@@ -14,9 +14,7 @@
   >
     <el-container>
       <el-main
-        :style="{
-                maxHeight:maxHeight+'px'
-            }"
+        :style="{maxHeight:'calc(100vh - 200px)'}"
         style="padding:0;"
       >
         <el-form
@@ -98,7 +96,7 @@ export default {
           assembleOrderCode: this.data.assembleOrderCode,
           note: this.form.note,
           assemblePerson: this.form.assemblePerson,
-          pickingPerson: this.form.assemblePerson
+          pickingPerson: this.form.pickingPerson
         })
           .then(res => {
             this.$emit('reload')

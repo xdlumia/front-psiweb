@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-29 16:13:14
+ * @LastEditTime: 2019-11-29 16:49:04
  * @Description: description
  -->
 <template>
@@ -60,21 +60,18 @@
       >发票冲红</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
-      <el-tab-pane label="详情" name="detail">
+      <el-tab-pane label="详情" name="detail" v-if="activeTab == 'detail' && !loading">
         <el-form disabled size="mini">
-          <approve-panel :data="detailForm"></approve-panel>
+          <approve-panel :busType="59" :id="detailForm.id" :data="detailForm"></approve-panel>
           <!-- 开票申请 -->
           <make-invoice-info :invoiceType="0" :data="detailForm" id="invoice" />
-          <make-buyer :data="detailForm" id="buyer" prefix="market" />
-          <make-buyer :data="detailForm" id="saler" prefix="purchase" />
-          <make-goods :data="detailForm" id="goods" />
-          <make-goods-card :data="detailForm" />
-          <extras-info :data="detailForm" id="extrasInfo" />
+          <make-buyer disabled :data="detailForm" id="buyer" prefix="market" />
+          <make-buyer disabled :data="detailForm" id="saler" prefix="purchase" />
+          <make-goods disabled :data="detailForm" id="goods" />
+          <make-goods-card disabled :data="detailForm" />
+          <extras-info disabled :data="detailForm" id="extrasInfo" />
         </el-form>
       </el-tab-pane>
-      <!-- <el-tab-pane label="应收账单">应收账单</el-tab-pane>
-      <el-tab-pane label="销售出库单">销售出库单</el-tab-pane>
-      <el-tab-pane label="费用单">费用单</el-tab-pane>-->
       <el-tab-pane
         :label="busInfo[detailForm.busType].title"
         :name="busInfo[detailForm.busType].listPage"
@@ -89,13 +86,6 @@
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <!-- <add
-      :visible.sync="showEdit"
-      ref="edit"
-      v-if="showEdit"
-      @refresh="refresh"
-      :detailForm="detailForm"
-    ></add>-->
     <billing
       :visible.sync="showBilling"
       ref="add"
@@ -153,12 +143,12 @@ export default {
       collectInvoiceVisible: false,
       showBilling: false,
       showEdit: false,
-      loading: false,
+      loading: true,
       showPop: false,
       detailForm: { state: '' },
       status: [
         { label: '状态', value: stateText[this.rowData.state] },
-        { label: '发票类型', value: this.rowData.invoiceTyepCode, dictName: 'CW_FP_LX' },
+        { label: '发票类型', value: this.rowData.invoiceTypeCode, dictName: 'CW_FP_LX' },
         { label: '商品金额', value: this.rowData.commodityTotalAmount },
         { label: '开票金额', value: this.rowData.invoiceAmount },
         { label: '购方名称', value: this.rowData.purchaseName }

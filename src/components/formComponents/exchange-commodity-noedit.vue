@@ -26,7 +26,7 @@
           api="seePumaidongService.collegeManagerList"
           :params="queryForm"
           class="college-main"
-          style="height:calc(100vh - 340px)"
+          max-height='300px'
           :tree-props="{children: 'id', hasChildren: 'id'}"
         >
           <el-table-column
@@ -137,7 +137,7 @@
           api="seePumaidongService.collegeManagerList"
           :params="queryForm"
           class="college-main mt15"
-          style="height:calc(100vh - 340px)"
+          max-height='300px'
           :tree-props="{children: 'id', hasChildren: 'id'}"
         >
           <el-table-column

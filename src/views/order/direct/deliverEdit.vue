@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 18:53:22
+ * @LastEditTime: 2019-11-29 20:31:01
  * @Description: 直发单发货
 */
 <template>
@@ -114,12 +114,18 @@ export default {
           code
         );
         let deliverGoodsStatus = data.reduce((data, item) => {
-          data[item.commodityCode] = true;
+          data[item.commodityCode] = item;
           return data;
         }, {});
         this.rowData.commodityEntityList.map(item => {
           if (!deliverGoodsStatus[item.commodityCode]) {
             data.push({ ...item });
+          } else {
+            Object.assign(deliverGoodsStatus[item.commodityCode], {
+              ...item,
+              directDeliverList:
+                deliverGoodsStatus[item.commodityCode].directDeliverList
+            });
           }
         });
         let delivers = [];
@@ -161,7 +167,8 @@ export default {
           delivers,
           directCode: code,
           flag: 0,
-          rowData: this.rowData
+          rowData: this.rowData,
+          deliverGoodsStatus
         });
         return {
           delivers,

@@ -14,9 +14,7 @@
   >
     <el-container>
       <el-main
-        :style="{
-                maxHeight:maxHeight+'px'
-            }"
+        :style="{maxHeight:'calc(100vh - 180px)'}"
         style="padding:0;"
       >
         <form-card title='拣货商品'>
@@ -168,7 +166,7 @@ export default {
           item.fieldList.push({ fieldVal: item1, fieldCode: item[item1] })
         })
       })
-      this.$api.seePsiWmsService.wmspickingorderBatchShipment({ businessCode: this.drawerData.pickingOrderCode, businessId: this.drawerData.id, putawayCommodityList: this.$refs.pickingSn.tableData })
+      this.$api.seePsiWmsService.wmspickingorderBatchShipment({ businessCode: this.drawerData.pickingOrderCode, businessId: this.drawerData.id, putawayCommodityList: this.$refs.pickingSn.tableData, businessType: 10 })
         .then(res => {
           this.close()
           this.$emit('reload')
@@ -177,6 +175,8 @@ export default {
 
         })
     }
+
+
   }
 };
 </script>

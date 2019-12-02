@@ -13,7 +13,8 @@
     v-dialogDrag
   >
     <el-container
-      style="padding:0;max-height:700px;"
+      :style="{maxHeight:'calc(100vh - 180px)'}"
+      style="padding:0;"
       class="d-auto-y"
     >
       <el-header

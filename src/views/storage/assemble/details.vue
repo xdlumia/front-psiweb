@@ -18,7 +18,7 @@
         <!-- {value == 0 ? '未开始' : value == 1 ? '待执行' : value == 2 ? '部分完成' : value == 3 ? '已完成' : value == -1 ? '终止' : '' -->
         <!-- && detailForm.generateOrder> 0  -->
         <el-button
-          v-if="detailForm.assembleOrderState !== 3 && detailForm.assembleOrderState !== -1"
+          v-if="detailForm.assembleOrderState !== 3 && detailForm.assembleOrderState !== -1 && detailForm.undistributedNum"
           type="primary"
           size='mini'
           @click="taskVisible = true"

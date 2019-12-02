@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 18:58:02
+ * @LastEditTime: 2019-11-30 14:28:14
  * @Description: 分摊信息
  */
 <template>
@@ -34,7 +34,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item
-            :rules="[{required:true,message:'必填项'}]"
+            :rules="[{required:true,message:'必填项',trigger:'blur'}]"
             label="未分摊费用金额"
             prop="unAmount"
           >
@@ -48,7 +48,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item
-            :rules="[{required:true,message:'必填项'}]"
+            :rules="[{required:true,message:'必填项',trigger:'blur'}]"
             label="本次分摊费用金额"
             prop="costAmount"
           >
@@ -63,7 +63,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item
-            :rules="[{required:true,message:'必填项'}]"
+            :rules="[{required:true,message:'必填项',trigger:'blur'}]"
             label="关联单据"
             prop="busType"
           >
@@ -221,7 +221,6 @@ export default {
     // 按钮功能操作
     eventHandle(type) {
       if (this.disabled) return
-      // 这里对象key用中文会不会有隐患? TODO
       let typeObj = {
         'financeFee': { comp: 'financeFee', title: `费用单` },
         ...this.options

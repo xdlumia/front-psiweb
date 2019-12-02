@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 18:25:58
+ * @LastEditTime: 2019-11-30 14:27:08
  * @Description: 客户管理-账单调整单
 */
 <template>
@@ -82,11 +82,9 @@ export default {
         adjustDate: '',// 调整时间
         apprpvalState: '',//审核状态
         attachList: [],// 示例：附件,
-        companyCode: '',// 示例：公司编码code,
-        deptTotalCode: '',// 示例：部门code,
         fbiiBusCode: '',// 示例：账单业务编号,
-        fbiiBusType: '',// 100000,
-        fbillId: '1232',// 100000,
+        fbiiBusType: '53',// 100000,
+        fbillId: '',// 100000,
         id: '',
         note: '',// 示例：备注,
       },
@@ -95,6 +93,14 @@ export default {
   computed: {
 
   },
+  watch: {
+    visible(val) {
+      if (val && this.type == 'add') {
+        this.form.fbillId = ''
+      }
+    }
+  },
+
   methods: {
     async getDetail() {
       if (this.code) {

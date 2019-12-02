@@ -26,7 +26,7 @@
         ref="table"
         :data='detailForm.commondityList'
         class="college-main"
-        style="height:calc(100vh - 340px)"
+        max-height='300px'
       >
         <el-table-column
           fixed

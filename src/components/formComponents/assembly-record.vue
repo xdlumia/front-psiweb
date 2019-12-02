@@ -92,10 +92,10 @@
           <form-card title='机器号/SN记录'>
             <d-table
               api="seePsiWmsService.wmsflowrecordList"
-              :params="{commodityCode:data.commodityCode,businessCode:drawerData.assembleOrderCode,page:1,limit:15}"
+              :params="{commodityCode:data.commodityCode,businessCode:drawerData.assembleTaskCode ? drawerData.assembleTaskCode : drawerData.assembleOrderCode,page:1,limit:15}"
               ref="companyTable"
               class="college-main"
-              style="height:calc(100vh - 340px)"
+              max-height='300px'
             >
               <el-table-column
                 type='index'
@@ -111,7 +111,7 @@
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">
-                  <span class="">{{scope.row.id}}</span>
+                  <span class="">{{scope.row.snCode}}</span>
                 </template>
               </el-table-column>
 

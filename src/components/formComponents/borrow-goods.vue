@@ -6,32 +6,81 @@
  * @Description: 借入/借出商品
 */  
 <template>
-  <form-card class="borrow-goods" title="借入/借出商品">
+  <form-card
+    class="borrow-goods"
+    title="借入/借出商品"
+  >
     <div slot="title">
       <span>借入/借出商品</span>
       <span class="fr">
         <span>
-          <el-link :underline="false" @click="fullscreen" type="primary">全屏显示</el-link>
+          <el-link
+            :underline="false"
+            @click="fullscreen"
+            type="primary"
+          >全屏显示</el-link>
         </span>
       </span>
     </div>
-    <el-table :data="data.commodityList||[]" max-height="400" ref="elTable" row-key="name" size="mini">
-      <el-table-column class-name="hide-children" fixed min-width="1" width="1"></el-table-column>
-      <el-table-column fixed min-width="40">
+    <el-table
+      :data="data.commodityList||[]"
+      max-height="400"
+      ref="elTable"
+      row-key="name"
+      size="mini"
+    >
+      <el-table-column
+        class-name="hide-children"
+        fixed
+        min-width="1"
+        width="1"
+      ></el-table-column>
+      <el-table-column
+        fixed
+        min-width="40"
+      >
         <template slot-scope="{row}">
-          <div class="expanded-icons d-text-gray" v-if="row.children&&row.children.length">
-            <span @click="expand(row)" class="el-icon-plus d-pointer" v-if="!row.expanded"></span>
-            <span @click="expand(row)" class="el-icon-minus d-pointer" v-else></span>
+          <div
+            class="expanded-icons d-text-gray"
+            v-if="row.children&&row.children.length"
+          >
+            <span
+              @click="expand(row)"
+              class="el-icon-plus d-pointer"
+              v-if="!row.expanded"
+            ></span>
+            <span
+              @click="expand(row)"
+              class="el-icon-minus d-pointer"
+              v-else
+            ></span>
           </div>
         </template>
       </el-table-column>
-      <el-table-column fixed label="借入数量" min-width="70" prop="borrowLoanNum">
+      <el-table-column
+        fixed
+        label="借入数量"
+        min-width="70"
+        prop="borrowLoanNum"
+      >
         <template slot-scope="{row}">
           <span>{{row.borrowLoanAccomplishNum}}/{{row.borrowLoanNum}}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed label="借入库房" min-width="120" prop="borrowWmsName" show-overflow-tooltip></el-table-column>
-      <el-table-column fixed label="机器号/SN码" min-width="100" prop="borrowLoanAccomplishNum" show-overflow-tooltip>
+      <el-table-column
+        fixed
+        label="借入库房"
+        min-width="120"
+        prop="borrowWmsName"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        fixed
+        label="机器号/SN码"
+        min-width="100"
+        prop="borrowLoanAccomplishNum"
+        show-overflow-tooltip
+      >
         <template slot-scope="{row}">
           <span
             @click="visible=true,currentCode=row.commodityCode,operationType=0"
@@ -39,13 +88,30 @@
           >{{row.borrowLoanAccomplishNum}}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed label="返还数量" min-width="70" prop="returnNum">
+      <el-table-column
+        fixed
+        label="返还数量"
+        min-width="70"
+        prop="returnNum"
+      >
         <template slot-scope="{row}">
           <span>{{row.returnAccomplishNum}}/{{row.returnNum}}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed label="返还库房" min-width="120" prop="returnWmsName" show-overflow-tooltip></el-table-column>
-      <el-table-column fixed label="机器号/SN码" min-width="100" prop="returnAccomplishNum" show-overflow-tooltip>
+      <el-table-column
+        fixed
+        label="返还库房"
+        min-width="120"
+        prop="returnWmsName"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        fixed
+        label="机器号/SN码"
+        min-width="100"
+        prop="returnAccomplishNum"
+        show-overflow-tooltip
+      >
         <template slot-scope="{row}">
           <span
             @click="visible=true,currentCode=row.commodityCode,operationType=1"
@@ -53,36 +119,88 @@
           >{{row.returnAccomplishNum}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="商品编号" min-width="130" prop="commodityCode">
+      <el-table-column
+        label="商品编号"
+        min-width="130"
+        prop="commodityCode"
+      >
         <template slot-scope="{row}">
           <div class="d-elip">
-            <el-link :underline="false" class="f12" type="primary" @click="showCommodityDetail=true,currentCommodityCode=row.commodityCode">{{row.commodityCode}}</el-link>
+            <el-link
+              :underline="false"
+              class="f12"
+              type="primary"
+              @click="showCommodityDetail=true,currentCommodityCode=row.commodityCode"
+            >{{row.commodityCode}}</el-link>
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="商品名称" min-width="100" prop="goodsName" show-overflow-tooltip></el-table-column>
-      <el-table-column label="商品图片" min-width="100" prop="title" show-overflow-tooltip>
+      <el-table-column
+        label="商品名称"
+        min-width="100"
+        prop="goodsName"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        label="商品图片"
+        min-width="100"
+        prop="title"
+        show-overflow-tooltip
+      >
         <template slot-scope="{row}">
-          <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
+          <el-image
+            :src="row.goodsPic"
+            class="d-center"
+            fit="fill"
+            style="width: 100px; height: 40px"
+          >
             <span slot="error">暂无图片</span>
           </el-image>
         </template>
       </el-table-column>
-      <el-table-column label="商品类别" min-width="80" prop="categoryCode" show-overflow-tooltip>
+      <el-table-column
+        label="商品类别"
+        min-width="80"
+        prop="categoryCode"
+        show-overflow-tooltip
+      >
         <template slot-scope="{row}">
           <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="商品分类" min-width="100" prop="className" show-overflow-tooltip></el-table-column>
-      <el-table-column label="配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
-      <el-table-column label="商品规格" min-width="140" prop="specOne" show-overflow-tooltip></el-table-column>
-      <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip>
+      <el-table-column
+        label="商品分类"
+        min-width="100"
+        prop="className"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        label="配置"
+        min-width="100"
+        prop="configName"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        label="商品规格"
+        min-width="140"
+        prop="specOne"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        label="单位"
+        min-width="80"
+        prop="unit"
+        show-overflow-tooltip
+      >
         <template slot-scope="{row}">
           <span>{{row.unit | dictionary('SC_JLDW')}}</span>
         </template>
       </el-table-column>
     </el-table>
-    <FullscreenElement :element="$refs.elTable" :visible.sync="showInFullscreen" />
+    <FullscreenElement
+      :element="$refs.elTable"
+      :visible.sync="showInFullscreen"
+    />
     <commodityRecordBorrow
       :params="{
       commodityCode:currentCode,
@@ -92,7 +210,11 @@
       :visible.sync="visible"
       v-if="visible"
     />
-    <CommodityDetail :code="currentCommodityCode" :visible.sync="showCommodityDetail" v-if="showCommodityDetail" />
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </form-card>
 </template>
 <script>

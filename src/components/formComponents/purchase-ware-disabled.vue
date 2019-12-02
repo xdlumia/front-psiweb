@@ -128,7 +128,7 @@
         @response="response"
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
+        max-height='300px'
       >
         <el-table-column
           fixed

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 16:18:32
+ * @LastEditTime: 2019-11-29 19:29:31
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -10,8 +10,8 @@
     <div slot="title">
       <span>收支流水</span>
       <span class="fr">
-        <el-link :underline="false" @click="showAdd=true,addIncoming()" class="mr10" type="primary" v-if="billAmount">+新建</el-link>
-        <el-link :underline="false" @click="showChooseIncoming=true" type="primary" v-if="billAmount">匹配</el-link>
+        <el-link :underline="false" @click="showAdd=true,addIncoming()" class="mr10" type="primary" v-if="!hide.includes('addIncoming')">+新建</el-link>
+        <el-link :underline="false" @click="showChooseIncoming=true" type="primary" v-if="!hide.includes('matchIncoming')">匹配</el-link>
       </span>
     </div>
     <el-table :data="recList" size="mini" v-loading="loading">
@@ -52,8 +52,8 @@
       }"
       :visible.sync="showMatchDialog"
       @change="submitMatch"
-      v-if="showMatchDialog"
       @reload="getRecList"
+      v-if="showMatchDialog"
     />
   </form-card>
 </template>
@@ -65,6 +65,10 @@ export default {
     Add
   },
   props: {
+    hide: {
+      type: Array,
+      default: () => []
+    },
     billId: [Number, String],
     billCode: [Number, String],
     api: {
@@ -173,7 +177,7 @@ export default {
           matchAmount: e
         });
         this.showMatchDialog = false;
-        this.getRecList()
+        this.getRecList();
       } catch (error) {
         console.error(error);
       }

@@ -19,10 +19,11 @@
       size="mini"
       v-model="selectGood"
     >
+      <!-- // 有Sn码的时候，商品code有可能是重复的，所以要snCode—+机器号作为唯一值 -->
       <el-option
-        :key="item.commodityCode"
+        :key="item.snCode"
         :label="type=='code'?item.commodityCode:item.goodsName"
-        :value="item.commodityCode"
+        :value="sn?(item.snCode+item.robotCode):item.commodityCode"
         v-for="(item,i) in options"
       >
         <el-row>
@@ -176,10 +177,16 @@ export default {
       this.$emit('response', data);
     },
     onSelect(e) {
-      const goods = this.options.filter(
+      const goods = !this.sn ? this.options.filter(
         item =>
           item.commodityCode == e && !this.codes.includes(item.commodityCode)
-      );
+      )
+        // 有Sn码的时候，商品code有可能是重复的，所以要snCode—+机器号作为唯一值
+        : this.options.filter(
+          item =>
+            (item.snCode + item.robotCode) == e
+        )
+
       if (goods.length) {
         this.$emit('choose', goods, 'select');
         if (this.autoClear) {

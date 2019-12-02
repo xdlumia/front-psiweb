@@ -13,10 +13,11 @@
     v-dialogDrag
   >
     <el-container
-      style="padding:0;max-height:700px;"
+      :style="{maxHeight:'calc(100vh - 240px)'}"
+      style="padding:0;"
       class="d-auto-y"
     >
-      <el-main style="padding:0;max-height:700px;">
+      <el-main style="padding:0;">
 
         <form-card title='商品信息'>
           <el-table
