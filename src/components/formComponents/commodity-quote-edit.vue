@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 14:47:01
+ * @LastEditTime: 2019-12-02 15:39:29
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -14,12 +14,12 @@
       <span>商品信息</span>
     </div>
     <el-table
-      default-expand-all
       show-summary
       sum-text='总计'
       border
       :summary-method="getSummaries"
       :data="data.businessCommoditySaveVoList"
+      :tree-props="{children: 'commonGoodConfigDetailsEntityList'}"
       max-height="400"
       ref="elTable"
       row-key="id"
@@ -32,10 +32,6 @@
       >
         <template slot-scope="scope">
           <span>
-            <!-- <i
-              class='el-icon-circle-plus f18 d-text-blue d-pointer'
-              @click="appand(scope)"
-            ></i> -->
             <i
               class='el-icon-remove f18 d-text-qgray ml5 d-pointer'
               @click="deleteInfo(scope)"
@@ -344,7 +340,7 @@ export default {
             return sum + curr
           }, 0)
         }
-        else if (['discountSprice', 'reference'].includes(col.property)) {
+        else if (['discountSprice'].includes(col.property)) {
           // 单价 * 数量
           const values = data.map(item => Number(item[col.property] || 0) * (item.commodityNumber || 0));
           sums[index] = values.reduce((sum, curr) => {

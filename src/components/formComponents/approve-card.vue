@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 15:17:18
+ * @LastEditTime: 2019-12-02 15:47:08
  * @Description: 审核小卡片
 */
 <template>
@@ -51,7 +51,8 @@ export default {
       return isOdd ? "fl" : "fr"
     },
     classStatus(data, index) {
-      if (data.taskName == '驳回') {
+      // taskState = 3是驳回 2通过
+      if (data.taskState == 3) {
         return 'error';
       }
       else {
