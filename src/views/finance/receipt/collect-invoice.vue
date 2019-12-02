@@ -6,85 +6,39 @@
  * @Description: 收票申请
 */
 <template>
-  <el-dialog
-    :visible="visible"
-    @close="close"
-    v-dialogDrag
-    v-loading="loading"
-    width="1000"
-  >
+  <el-dialog :visible="visible" @close="close" v-dialogDrag
+v-loading="loading" width="1000">
     <div slot="title">
       <span>{{invoiceType==1?'收票申请':'开票申请'}}</span>
       <span class="fr mr20">
-        <el-button
-          @click="save"
-          size="mini"
-          type="primary"
-        >保存</el-button>
-        <el-button
-          @click="close"
-          size="mini"
-        >关闭</el-button>
+        <el-button @click="save" size="mini" type="primary">保存</el-button>
+        <el-button @click="close" size="mini">关闭</el-button>
       </span>
     </div>
     <d-tabs style="max-height:calc(100vh - 130px)">
-      <d-tab-pane
-        label="发票信息"
-        name="invoice"
-      />
-      <d-tab-pane
-        label="购买方信息"
-        name="buyer"
-      />
-      <d-tab-pane
-        label="销售方信息"
-        name="saler"
-      />
-      <d-tab-pane
-        label="发票内容"
-        name="goods"
-      />
-      <d-tab-pane
-        label="其他信息"
-        name="extrasInfo"
-      />
+      <d-tab-pane label="发票信息" name="invoice" />
+      <d-tab-pane label="购买方信息" name="buyer" />
+      <d-tab-pane label="销售方信息" name="saler" />
+      <d-tab-pane label="发票内容" name="goods" />
+      <d-tab-pane label="其他信息" name="extrasInfo" />
       <div>
-        <el-form
-          :model="form"
-          class="p10"
-          ref="form"
-          size="mini"
-          v-if="isDataReady"
-        >
+        <el-form :model="form" class="p10" ref="form"
+size="mini" v-if="isDataReady">
           <make-invoice-info
             :invoiceType="invoiceType"
             :data="form"
             id="invoice"
             :hide="invoiceType==1?[]:['invoiceCoding','invoiceCode']"
           />
-          <make-buyer
-            :data="form"
-            id="buyer"
-            prefix="purchase"
-          />
-          <make-buyer
-            :data="form"
-            id="saler"
-            prefix="market"
-          />
-          <make-goods
-            :data="form"
-            id="goods"
-          />
+          <make-buyer :data="form" id="buyer" prefix="purchase" />
+          <make-buyer :data="form" id="saler" prefix="market" />
+          <make-goods :data="form" id="goods" />
           <make-goods-card :data="form" />
           <div class="f14 mt10 d-text-gray">
             <div>金额合计：{{totalInfo.amount.toFixed(2)}} 元</div>
             <div>价税合计：{{totalInfo.taxTotal.toFixed(2)}} 元</div>
           </div>
-          <extras-info
-            :data="form"
-            id="extrasInfo"
-          />
+          <extras-info :data="form" id="extrasInfo" />
         </el-form>
       </div>
     </d-tabs>
@@ -97,12 +51,12 @@ import CollectGoodsMixin from './collect-goods';
 export default {
   // 票据类型(1收票，0开票)
   props: ['invoiceType', 'id'],
-  mixins: [VisibleMixin,CollectGoodsMixin],
+  mixins: [VisibleMixin, CollectGoodsMixin],
   components: {},
   data() {
     return {
       form: {
-        invoiceDetailList: [], //发票列表
+        invoiceDetailList: [] // 发票列表
       },
       alwaysDropAndCopyForm: true// 在getDetail返回数据后，重新覆盖form
     };
@@ -112,7 +66,7 @@ export default {
       // prettier-ignore
       return (this.form.invoiceDetailList || []).reduce((data, item) => {
         // 金额合计：999.00
-        // 价税合计：1999.00 
+        // 价税合计：1999.00
         data.amount += +Number(+item.price * Number(item.quantity)).toFixed(2) || 0;
         data.taxTotal += +Number(+item.price * (1 + ((item.taxRate || 0) / 100)) * Number(item.quantity)).toFixed(2) || 0;
         return data;
@@ -155,12 +109,12 @@ export default {
     },
     async getDetail() {
       if (this.invoiceType != 0 && this.code) {
-        let { data } = this.$api.seePsiPurchaseService.purchasestockorderGetByCode(null, this.code);
+        const { data } = await this.$api.seePsiPurchaseService.purchasestockorderGetByCode(null, this.code);
         return data;
       }
       // 如果是收票
       else if (this.invoiceType == 0 && this.id) {
-        let { data } = this.$api.seePsiFinanceService.finvoicebillingInfo(null, this.id);
+        const { data } = await this.$api.seePsiFinanceService.finvoicebillingInfo(null, this.id);
         return data;
       } else if (this.rowData) return this.rowData;
     },
@@ -177,10 +131,10 @@ export default {
       // invoiceType = 0是开票 否则是收票
       this.form.type = this.invoiceType;
 
-      this.form.accountTotalAmount = 0; //合计税金
-      this.form.commodityTotalAmount = 0; //商品合计金额
-      this.form.invoiceAmount = 0; //票据金额
-      this.form.taxTotalAmount = 0; //税价合计金额
+      this.form.accountTotalAmount = 0; // 合计税金
+      this.form.commodityTotalAmount = 0; // 商品合计金额
+      this.form.invoiceAmount = 0; // 票据金额
+      this.form.taxTotalAmount = 0; // 税价合计金额
       let totalCount = 0;// 商品总数量
       // prettier-ignore
       this.form.invoiceDetailList.map(item => {
