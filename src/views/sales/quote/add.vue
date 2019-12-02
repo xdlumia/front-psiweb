@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 18:29:04
+ * @LastEditTime: 2019-12-02 19:18:38
  * @Description: file content
 */
 <template>
@@ -268,6 +268,7 @@ export default {
           copyParams.businessCommoditySaveVoList.forEach(item => {
             (item.commonGoodConfigDetailsEntityList || []).forEach(sub => {
               sub.parentCommodityCode = item.commodityCode
+              sub.putawayType = 0 //0=出库
             })
             item.putawayType = 0 //0=出库
           })
