@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:44:55
+ * @LastEditTime: 2019-12-02 10:15:19
  * @Description: 供应商编号
 */
 <template>
@@ -75,7 +75,7 @@
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <Edit :code="detail.code" :visible.sync="showEdit" @reload="$reload()" v-if="detail" />
+    <Edit :code="detail.code" :visible.sync="showEdit" @reload="setEdit(),$reload()" v-if="detail" />
   </sideDetail>
 </template>
 <script>
