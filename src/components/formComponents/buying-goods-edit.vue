@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 14:35:50
+ * @LastEditTime: 2019-12-02 15:21:43
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -27,11 +27,11 @@
         :data="recalcRowKey(data[fkey])"
         :expand-row-keys="expandRowKeys"
         :load="loadChildren"
-        maxHeight="calc(100% - 40px)"
         :summary-method="showSummary?getSummaries:null"
         :tree-props="{children: 'children', hasChildren: (sort||[]).includes('expanded')?'configName':'_children'}"
         border
         lazy
+        maxHeight="calc(100% - 40px)"
         ref="table"
         row-key="_rowKey"
         show-summary
@@ -237,8 +237,8 @@ export default {
     let columns = [
       { label: '商品编号', key: 'commodityCode', width: 160, prop: 'commodityCode' },
       { label: '商品图片', key: 'goodsPic', width: 120, prop: 'goodsPic' },
-      { label: '商品名称', key: 'goodsName', width: 100, prop: 'goodsName' },
-      { label: '库房', key: 'wsm', width: 100, prop: 'wsmName' },
+      { label: '商品名称', key: 'goodsName', width: 120, prop: 'goodsName', showOverflowTip: true },
+      { label: '库房', key: 'wsm', width: 100, prop: 'wsmName', showOverflowTip: true },
       { label: '商品类别', key: 'categoryCode', width: 80, prop: 'categoryCode', dictName: 'PSI_SP_KIND' },
       { label: '商品分类', key: 'className', width: 80, prop: 'className', },
       { label: '规格', key: 'specOne', width: 80, prop: 'specOne', showOverflowTip: true },
@@ -317,18 +317,18 @@ export default {
       ) {
         list.unshift(
           {
-            key: 'hideChildren',
-            fixed: true,
-            width: 1,
-            className: 'hide-children'
-          },
-          {
-            label: '',
-            fixed: true,
             key: 'expanded',
-            width: 40,
-            type: 'expanded'
+            fixed: true,
+            width: 60,
+            className: 'expanded'
           }
+          // {
+          //   label: '',
+          //   fixed: true,
+          //   key: 'expanded',
+          //   width: 40,
+          //   type: 'expanded'
+          // }
         );
       }
       return list;
@@ -402,10 +402,14 @@ export default {
       });
       return list || [];
     },
+    getExpandedState(row) {
+      let data = this.$refs.table.store.states.treeData;
+      return data[row._rowKey] && data[row._rowKey].expanded ? true : false;
+    },
     // 展开树
     expand(row, isExpand) {
       this.$nextTick(() => {
-        isExpand = typeof isExpand == 'boolean' ? isExpand : !row.expanded;
+        isExpand = typeof isExpand == 'boolean' ? isExpand : !this.getExpandedState(row);
         this.$set(row, 'expanded', isExpand);
         this.$refs.table.toggleRowExpansion(row, isExpand);
         if (isExpand && !row.children) {
