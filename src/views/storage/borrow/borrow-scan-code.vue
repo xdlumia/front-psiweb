@@ -25,9 +25,10 @@
               prop="name"
             >
               <el-select
+                disabled
                 style="width:30%"
                 class="wfull"
-                v-model="wmsId"
+                v-model="data.borrowWmsId"
                 placeholder="请选择"
               >
                 <el-option
@@ -59,7 +60,7 @@
               min-width="100"
             >
               <template slot-scope="scope">
-                <span>{{scope.row.borrowLoanAccomplishNum}}/{{scope.row.borrowLoanNum}}</span>
+                <span>{{scope.row.borrowLoanAccomplishNum + (item.timeNum || 0)}}/{{scope.row.borrowLoanNum}}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -290,7 +291,7 @@ export default {
     },
     //回车 入库
     shipmentCommodityCheck(item) {
-      this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: item.snCode, putawayCommodityList: this.tableData, categoryCode: item.categoryCode, commodityCode: item.commodityCode, wmsId: this.wmsId })
+      this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: item.snCode, putawayCommodityList: this.tableData, categoryCode: item.categoryCode, commodityCode: item.commodityCode, wmsId: this.data.borrowWmsId })
         .then(res => {
           if (res.data) {
             if ((item.borrowLoanNum - item.borrowLoanAccomplishNum - (item.timeNum || 0)) > 0) {
