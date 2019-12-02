@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-02 14:49:51
+ * @LastEditTime: 2019-12-02 14:55:06
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -96,7 +96,6 @@ export default {
               // this.form = data;
             }
           }
-          console.log(this.form)
         }
         if (this.afterDetailInit) this.afterDetailInit()
       } catch (error) { 
