@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 17:47:47
+ * @LastEditTime: 2019-12-02 18:42:20
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -157,7 +157,10 @@ export default {
         await this.$refs.addIncoming.$refs.form.validate();
         await this.$getApi(this.addApi)({
           ...this.$refs.addIncoming.form,
-          fbiiCode: this.billCode
+          fbiiCode: this.billCode,
+          matchState: 0,
+          unmatchAmount: this.$refs.addIncoming.form.incomeAmount,
+          matchedAmount: 0
         });
         this.$refs.addIncoming.setEdit();
         this.$refs.addIncoming.close();
@@ -167,7 +170,8 @@ export default {
       this.$refs.addIncoming.loading = false;
     },
     async chooseIncoming(data) {
-      this.unmatchData = data.unmatchAmount;
+      this.unmatchData =
+        data.matchState == 0 ? data.incomeAmount : data.unmatchAmount;
       this.showChooseIncoming = false;
       this.matchIncomingId = data.id;
       this.$nextTick(() => (this.showMatchDialog = true));

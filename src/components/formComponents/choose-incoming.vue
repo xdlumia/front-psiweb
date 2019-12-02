@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 16:41:56
+ * @LastEditTime: 2019-12-02 18:41:42
  * @Description: 选择流水
 */
 <template>
@@ -41,7 +41,10 @@
           <template slot-scope="{row}">{{row.matchedAmount||0}}</template>
         </el-table-column>
         <el-table-column label="未匹配金额" min-width="100" prop="unmatchAmount">
-          <template slot-scope="{row}">{{row.unmatchAmount||0}}</template>
+          <template slot-scope="{row}">
+            <span v-if="row.matchState==0">{{row.incomeAmount||0}}</span>
+            <span v-else>{{row.unmatchAmount||0}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="匹配状态" min-width="100">
           <template slot-scope="{row}">{{stateText[row.matchState]}}</template>
@@ -67,7 +70,7 @@ export default {
       default: () => ({
         page: 1,
         limit: 15,
-        matchState: ''
+        matchState: [0, 1]
       })
     }
   },
