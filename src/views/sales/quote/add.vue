@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 11:34:40
+ * @LastEditTime: 2019-12-02 14:44:38
  * @Description: file content
 */
 <template>
@@ -191,19 +191,22 @@ export default {
         })
         wholeListNotChoose = this.$$util.jsonFlatten(wholeListNotChoose)
         let quotationIds = this.$$util.jsonFlatten(wholeList).map(v => v.quotationId)
-        let params = {
-          ids: quotationIds,
-          page: 1,
-          limit: 999
-        }
-        let { data } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
+        // 有quotationIds 值的时候再查询
+        if (quotationIds.length) {
+          let params = {
+            ids: quotationIds,
+            page: 1,
+            limit: 999
+          }
+          let { data } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
 
-        let wholeListData = data || []
-        wholeListData = wholeListData.map(item => {
-          item.inventoryNumber = item.usableInventoryNum
-          item.reference = item.saleReferencePrice
-          return item
-        })
+          let wholeListData = data || []
+          wholeListData = wholeListData.map(item => {
+            item.inventoryNumber = item.usableInventoryNum
+            item.reference = item.saleReferencePrice
+            return item
+          })
+        }
         // 配件列表
         let fixingsList = []
         for (let key in this.form.KIND2List) {
