@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 15:54:29
+ * @LastEditTime: 2019-12-02 15:57:57
  * @Description: 审核小卡片
 */
 <template>
@@ -70,7 +70,7 @@ export default {
 .approve-wrap {
   overflow: hidden;
   .approve-item {
-    padding-bottom: 20px;
+    padding-bottom: 50px;
     width: 20%;
     position: relative;
     &::before,
