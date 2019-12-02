@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 10:29:15
+ * @LastEditTime: 2019-12-02 10:56:09
  * @Description: 退货商品商品信息
 */
 <template>
@@ -98,7 +98,7 @@
           show-overflow-tooltip
         />
         <el-table-column
-          prop="refundNumber"
+          prop="alterationNumber"
           min-width="100"
           label="退货商品数量"
           show-overflow-tooltip
@@ -106,7 +106,7 @@
           <template slot-scope="scope">
             <el-form-item
               class="mb0"
-              :prop="`businessCommoditySaveVoList.${scope.$index}.refundNumber`"
+              :prop="`businessCommoditySaveVoList.${scope.$index}.alterationNumber`"
               :rules="[{required:false},{type:'positiveNum'}]"
             >
               <el-input
@@ -114,7 +114,7 @@
                 @input="sumTaxPrice(scope.row,scope.$index)"
                 :disabled="disabled"
                 :show-word-limit="false"
-                v-model="scope.row.refundNumber"
+                v-model="scope.row.alterationNumber"
               />
             </el-form-item>
           </template>
@@ -128,7 +128,7 @@
           <template slot-scope="scope">
             <el-form-item
               class="mb0"
-              :prop="`businessCommoditySaveVoList.${scope.$index}.salesPrice`"
+              :prop="`businessCommoditySaveVoList.${scope.$index}.alterationPrice`"
               :rules="[{required:false},{type:'price'}]"
             >
               <el-input
@@ -136,7 +136,7 @@
                 @input="sumTaxPrice(scope.row, scope.$index)"
                 :disabled="disabled"
                 :show-word-limit="false"
-                v-model="scope.row.salesPrice"
+                v-model="scope.row.alterationPrice"
               ></el-input>
             </el-form-item>
           </template>
@@ -160,7 +160,7 @@
           show-overflow-tooltip
         />
         <el-table-column
-          prop="note"
+          prop="isTeardown"
           min-width="120"
           label="是否拆卸"
           show-overflow-tooltip
@@ -189,13 +189,17 @@
       </el-table>
     </form-card>
     <!-- 对退货的商品进行编辑 -->
-    <goodsChangeEdit :data="data"></goodsChangeEdit>
+    <goodsChangeEdit
+      v-if="from=='exchange'"
+      :data="data"
+    ></goodsChangeEdit>
   </div>
 </template>
 <script>
 import goodsChangeEdit from '@/components/formComponents/goods-exchange-edit.vue'
 export default {
   components: { goodsChangeEdit },
+  from: String,
   props: {
     data: {
       type: Object,
