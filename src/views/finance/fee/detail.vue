@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-27 18:36:21
+ * @LastEditTime: 2019-11-29 17:00:21
  * @Description: description
  -->
 <template>
@@ -56,14 +56,17 @@
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情" name="detail">
         <el-form disabled size="mini">
-          <approve-panel :data="detailForm"></approve-panel>
+          <approve-panel :id="detailForm.id" :busType="62" :data="detailForm"></approve-panel>
           <receiptsInfo :data="detailForm" :detail="true"></receiptsInfo>
           <extras-info :data="detailForm" id="extrasInfo" />
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="应收账单" name="receivable">
         <FullscreenWrap v-if="showDetailPage&&!loading&&activeTab=='receivable'">
-          <FinanceReceivable :button="false" :params="{page:1,limit:15,busCode:code,relationCode:code}" />
+          <FinanceReceivable
+            :button="false"
+            :params="{page:1,limit:15,busCode:code,relationCode:code}"
+          />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="应付账单" name="payable">
@@ -76,7 +79,10 @@
       </el-tab-pane>
       <el-tab-pane label="费用分摊单" name="cost">
         <FullscreenWrap v-if="showDetailPage&&!loading&&activeTab=='cost'">
-          <SalesApportion :button="false" :params="{page:1,limit:15,costCode:code,relationCode:code}" />
+          <SalesApportion
+            :button="false"
+            :params="{page:1,limit:15,costCode:code,relationCode:code}"
+          />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
