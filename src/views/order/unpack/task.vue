@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 09:06:33
+ * @LastEditTime: 2019-12-02 11:29:10
  * @Description: 拆卸任务单
 */
 <template>
@@ -112,10 +112,8 @@ export default {
         this.$set(item, 'maxdisassemblyNum', item.undistributedNum || 0);
         this.$set(item, 'disassemblyNum', item.undistributedNum || 0);
       });
-      console.log(this.form);
     },
     async save() {
-      console.log(this, this.form);
       await this.$refs.form.validate();
       let form = { ...this.form };
       form.commoditySaveVoList = form.commodityList.map(item => {
@@ -135,7 +133,6 @@ export default {
         this.close();
       } catch (error) {}
       this.loading = false;
-      console.log(form);
     }
   }
 };

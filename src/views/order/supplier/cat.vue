@@ -89,9 +89,6 @@ export default {
     };
   },
   methods: {
-    logData(e) {
-      console.log(e);
-    },
     close() {
       if (this.isModified) this.$emit('reload');
       this.$emit('update:visible', false);

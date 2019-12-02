@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 19:02:43
+ * @LastEditTime: 2019-12-02 11:30:13
  * @Description: 滞纳金
 */
 <template>
@@ -73,7 +73,7 @@ export default {
         this.setEdit();
         this.close();
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
       this.loading = false;
     }

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 17:48:17
+ * @LastEditTime: 2019-12-02 11:27:57
  * @Description: 采购-请购明细表
 */
 <template>
@@ -78,9 +78,6 @@ export default {
     };
   },
   methods: {
-    logData(e) {
-      console.log(e);
-    },
     close() {
       this.$emit('update:visible', false);
     }

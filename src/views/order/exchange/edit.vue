@@ -86,7 +86,6 @@ export default {
       };
     },
     async save() {
-      console.log(this.form);
       await this.$refs.form.validate();
       this.loading = true;
       try {

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 17:37:27
+ * @LastEditTime: 2019-12-02 11:27:10
  * @Description: 采购入库单的发货信息 1
 */
 <template>
@@ -122,7 +122,6 @@ export default {
   },
   methods: {
     async resetData() {
-      console.log('reset data', this.data);
       if (!this.data.logistics) this.$set(this.data, 'logistics', {});
       if (this.data.logistics.clientId) {
         // if(!this.disabled){
@@ -161,7 +160,6 @@ export default {
         this.$set(this.data.logistics, 'clientLinkman', clientInfo.linkManName);
         this.$set(this.data.logistics, 'clientPhone', clientInfo.phone);
         this.$set(this.data.logistics, 'clientAddress', clientInfo.address);
-        console.log(clientInfo);
       }
     },
     // 获取客户详情信息

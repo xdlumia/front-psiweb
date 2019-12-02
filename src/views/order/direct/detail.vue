@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 18:29:48
+ * @LastEditTime: 2019-12-02 11:28:09
  * @Description: 直发单详情
 */
 <template>
@@ -79,7 +79,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this);
   },
   methods: {
     async getDetail() {
@@ -102,7 +101,6 @@ export default {
         await this.$api.seePsiPurchaseService.purchasedirectLogicDelete({
           id: this.detail.id
         });
-        console.log('删除直发单');
         this.setEdit();
         this.close();
       } catch (error) {}

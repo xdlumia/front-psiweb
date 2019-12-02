@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 14:40:51
+ * @LastEditTime: 2019-12-02 11:30:22
  * @Description: 付款单
 */
 <template>
@@ -187,7 +187,6 @@ export default {
       this.$refs.tableView.reload();
     },
     async multiPay() {
-      console.log(this.$refs.tableView.selectionRow);
       let multi = this.$refs.tableView.selectionRow.filter(item =>
         [-1, 3].includes(item.state)
       );

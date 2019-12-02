@@ -95,9 +95,6 @@ export default {
   mounted() {
   },
   methods: {
-    logData(e) {
-      console.log(e);
-    },
     reload() {
       this.$refs.tableView.reload(1);
     }

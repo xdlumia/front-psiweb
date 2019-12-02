@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 17:37:50
+ * @LastEditTime: 2019-12-02 11:28:41
  * @Description: 采购入库单
 */
 <template>
@@ -254,7 +254,6 @@ export default {
         console.error(error);
       }
       this.loading = false;
-      console.log(this.form);
     }
   }
 };

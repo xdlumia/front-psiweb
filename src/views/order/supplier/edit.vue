@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 11:56:24
+ * @LastEditTime: 2019-12-02 11:28:51
  * @Description: 新增供应商
 */
 <template>
@@ -130,7 +130,6 @@ export default {
         data.productRange = data.productRange
           ? data.productRange.split(',')
           : [];
-        console.log(this);
         this.form = data;
       } catch (error) {}
       this.loading = false;
@@ -140,7 +139,6 @@ export default {
       this.loading = true;
       let data = Object.assign({}, this.form);
       data.productRange = data.productRange.join(',');
-      console.log(JSON.parse(JSON.stringify(data)));
       try {
         if (this.code || this.rowData) {
           await this.$api.seePsiCommonService.commonsupplierinfoUpdate(data);

@@ -126,9 +126,6 @@ export default {
     };
   },
   methods: {
-    logData(e) {
-      console.log(e);
-    },
     // 多选
     selectionChange(val) {
       this.$emit("selection-change", val);

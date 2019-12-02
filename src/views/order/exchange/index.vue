@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 15:02:23
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-02 11:28:18
  * @Description: 采购-换货单
 */
 <template>
@@ -108,9 +108,6 @@ export default {
     };
   },
   methods: {
-    logData(e) {
-      console.log(e);
-    },
     // 多选
     selectionChange(val) {
       this.$emit("selection-change", val);

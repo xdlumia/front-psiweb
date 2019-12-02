@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 09:05:12
+ * @LastEditTime: 2019-12-02 11:27:28
  * @Description: 换货单换货商品 已绑定字段 1
 */  
 <template>
@@ -177,7 +177,6 @@ export default {
   },
   mounted() {
     if (!this.data[this.fkey] || !this.data[this.fkey].length) {
-      console.log(this.fkey, this.data);
       this.data[this.fkey] = [
         {
           commodityCode: '',
@@ -290,7 +289,6 @@ export default {
       } else cb();
     },
     getData(data) {
-      console.log(data);
     },
     fullscreen() {
       this.showInFullscreen = true;
@@ -307,10 +305,8 @@ export default {
       });
       this.$set(row, 'children', children);
       this.expand(row, true);
-      console.log(row);
     },
     getScope(e) {
-      console.log(e);
     },
     chooseGoods(goods, row, info) {
       let index = info.index;

@@ -163,13 +163,6 @@ export default {
               });
           }
         });
-        console.log({
-          delivers,
-          directCode: code,
-          flag: 0,
-          rowData: this.rowData,
-          deliverGoodsStatus
-        });
         return {
           delivers,
           directCode: code,

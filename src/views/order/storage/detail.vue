@@ -297,7 +297,6 @@ export default {
       contract.purchasePutinCode = contract.putinCode;
       delete contract.id;
       delete contract.state;
-      console.log(contract);
       contract.source = '采购入库单';
       this.orderContractData = contract;
       this.showOrderContract = true;
@@ -329,7 +328,6 @@ export default {
             };
           })
       };
-      console.log(this.collectInvoiceData);
       this.showCollectInvoice = true;
     }
   }

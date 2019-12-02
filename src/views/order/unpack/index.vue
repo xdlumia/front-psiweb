@@ -145,7 +145,6 @@ export default {
         this.reload();
       } catch (e) {}
       this.loading = false;
-      console.log(changed);
     },
     reload() {
       this.$refs.tableView.reload(1);

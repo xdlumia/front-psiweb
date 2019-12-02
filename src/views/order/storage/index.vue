@@ -141,9 +141,6 @@ export default {
     selectionChange(val) {
       this.$emit("selection-change", val);
     },
-    logData(e) {
-      console.log(e);
-    },
     reload() {
       this.$refs.tableView.reload();
     },

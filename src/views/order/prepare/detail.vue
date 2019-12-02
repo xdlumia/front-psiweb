@@ -160,7 +160,6 @@ export default {
       } else if (this.rowData) return this.rowData;
     },
     reload() {
-      console.log('detail reload');
       this.setEdit();
       this.$reload();
     }

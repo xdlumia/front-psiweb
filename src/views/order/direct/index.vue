@@ -103,11 +103,7 @@ export default {
     };
   },
   methods: {
-    logData(e) {
-      console.log(e);
-    },
     open(value) {
-      console.log(value, 'open');
       this.showDetail = true;
       this.currentCode = value;
     },
