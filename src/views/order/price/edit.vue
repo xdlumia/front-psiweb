@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 17:57:25
+ * @LastEditTime: 2019-12-02 10:10:55
  * @Description: 销售和采购调价单
 */
 <template>
@@ -138,6 +138,7 @@ export default {
             adjustPriceDifference: this.calcAdjustPriceDifference(item),
             commodityCode: item.commodityCode,
             commodityId: item.commodityId,
+            originalPrice: item.inventoryPrice,
             repertoryCost: this.calcRepertoryCost(item)
           };
         }

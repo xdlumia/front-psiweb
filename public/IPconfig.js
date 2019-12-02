@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:29
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 17:35:38
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-02 11:03:22
  * @Description: ip配置文件
  */
 const apiUrl = '/apis/'
@@ -11,6 +11,7 @@ const apiUrl = '/apis/'
 
 // 以后新项目不用在此引入api
 const baseURL = {
+  login:apiUrl + 'system-service',
   systemService: apiUrl + 'system-service', // 角色，员工，部门
   seeContractService: apiUrl + 'see-baseinfo-service', // 合同服务韩延峰
 

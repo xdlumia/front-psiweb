@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:44:55
+ * @LastEditTime: 2019-12-02 10:55:23
  * @Description: 供应商编号
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`供应商编号 ${detail?detail.code:''}`"
+    :title="`${detail?detail.supplierName:'供应商编号'} ${detail?detail.code:''}`"
     :visible="showDetailPage"
     @close="close"
     v-loading="loading"
@@ -46,36 +46,36 @@
       </el-tab-pane>
       <el-tab-pane label="采购入库单" name="putin">
         <FullscreenWrap v-if="isDataReady&&tabStatus.putin">
-          <OrderStorage :button="false" :params="{page:1,limit:15,supplierId:detail.id,relationCode:detail.code}" />
+          <OrderStorage :button="false" :params="{page:1,limit:15,supplierId:detail.id}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="采购合同" name="orderContract">
         <FullscreenWrap v-if="isDataReady&&tabStatus.orderContract">
-          <ContractOrder :button="false" :params="{page:1,limit:15,supplierId:detail.id,relationCode:detail.code}" />
+          <ContractOrder :button="false" :params="{page:1,limit:15,supplierId:detail.id,supplierName:detail.supplierName}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="采购单" name="purchaseOrder">
         <FullscreenWrap v-if="isDataReady&&tabStatus.purchaseOrder">
-          <StoragePurchase :button="false" :params="{page:1,limit:15,supplierId:detail.id,relationCode:detail.code}" />
+          <StoragePurchase :button="false" :params="{page:1,limit:15,supplierId:detail.id}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="采购退货单" name="reject">
         <FullscreenWrap v-if="isDataReady&&tabStatus.reject">
-          <OrderReject :button="false" :params="{page:1,limit:15,supplierId:detail.id,relationCode:detail.code}" />
+          <OrderReject :button="false" :params="{page:1,limit:15,supplierId:detail.id}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="应付账单" name="payable">
         <FullscreenWrap v-if="isDataReady&&tabStatus.payable">
-          <FinancePayable :button="false" :params="{page:1,limit:15,clientId:detail.id,clientType:1,relationCode:detail.code}" />
+          <FinancePayable :button="false" :params="{page:1,limit:15,clientId:detail.id,clientType:1}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="发票记录" name="invoice">
         <FullscreenWrap v-if="isDataReady&&tabStatus.invoice">
-          <FinanceReceipt :button="false" :params="{page:1,limit:15,marketId:detail.id,relationCode:detail.code}" />
+          <FinanceReceipt :button="false" :params="{page:1,limit:15,marketId:detail.id}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <Edit :code="detail.code" :visible.sync="showEdit" @reload="$reload()" v-if="detail" />
+    <Edit :code="detail.code" :visible.sync="showEdit" @reload="setEdit(),$reload()" v-if="detail" />
   </sideDetail>
 </template>
 <script>
