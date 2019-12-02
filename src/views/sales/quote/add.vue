@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 14:44:38
+ * @LastEditTime: 2019-12-02 14:47:41
  * @Description: file content
 */
 <template>
@@ -198,9 +198,9 @@ export default {
             page: 1,
             limit: 999
           }
+          let wholeListData = []
           let { data } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
-
-          let wholeListData = data || []
+          wholeListData = data || []
           wholeListData = wholeListData.map(item => {
             item.inventoryNumber = item.usableInventoryNum
             item.reference = item.saleReferencePrice
