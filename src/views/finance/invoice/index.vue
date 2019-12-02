@@ -54,7 +54,7 @@
         <el-image
           v-if="column.columnFields=='goodsPic'"
           :src="row.goodsPic"
-          style="width: 40px;height:40px"
+          style="width: 80px;height:40px"
           fit="scale-down"
           :preview-src-list="[row.goodsPic]"
         >
@@ -69,14 +69,8 @@
             ></el-image>
           </div>
         </el-image>
-        <el-button
-          type="text"
-          v-else-if="column.columnFields=='busCode'"
-          @click="detail(row)"
-          style="padding:0"
-        >{{row.busCode}}</el-button>
         <span v-else-if="column.columnFields=='state'">{{stateText[row.state]}}</span>
-        <span v-else-if="column.columnFields=='invoiceTyepCode'">{{row.invoiceTyepCode | dictionary('CW_FP_LX')}}</span>
+        <span v-else-if="column.columnFields=='categoryCode'">{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
