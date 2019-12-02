@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 18:45:45
+ * @LastEditTime: 2019-12-02 18:46:38
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -24,18 +24,21 @@
       size="mini"
     >
       <el-table-column
+        show-overflow-tooltip
         prop="commodityCode"
         label="商品编号"
         min-width="150"
       >
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         prop="goodsName"
         label="商品名称"
         min-width="150"
       >
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="商品图片"
         min-width="120"
         show-overflow-tooltip
@@ -49,6 +52,7 @@
       </el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         label="商品类别"
         min-width="110"
         prop="categoryCode"
@@ -59,30 +63,35 @@
       </el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         label="商品分类"
         min-width="110"
         prop="className"
       ></el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         label="配置"
         min-width="110"
         prop="configName"
       ></el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         label="规格"
         min-width="110"
         prop="specOne"
       ></el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         label="销售参考价"
         min-width="110"
         prop="reference"
       ></el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         label="商品数量"
         prop="commodityNumber"
         min-width="110"
@@ -90,12 +99,14 @@
       </el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         label="税率%"
         min-width="100"
         prop="taxRate"
       ></el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         prop="discount"
         label="折扣"
         min-width="110"
@@ -103,6 +114,7 @@
       </el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         label="折后销售单价"
         prop="discountSprice"
         min-width="110"
@@ -110,6 +122,7 @@
       </el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         label="备注"
         min-width="110"
       >
