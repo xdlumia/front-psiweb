@@ -2,11 +2,11 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 17:18:41
+ * @LastEditTime: 2019-12-02 16:30:33
  * @Description: 业务设置-财务
  -->
 <template>
-  <div class v-loading="loading">
+  <div class v-loading="loading" style="min-width:1200px;">
     <div>
       <el-col :span="16">
         <h3 class="mt10 d-text-gray b">逾期滞纳金</h3>
@@ -26,7 +26,8 @@
           style="margin-top: 20px;"
           @click="save"
         >保存</el-button>
-        <el-button v-if="isEdit" size="small" style="margin-top: 20px;" @click="cancel">取消</el-button>
+        <el-button v-if="isEdit" size="small" style="margin-top: 20px;"
+@click="cancel">取消</el-button>
       </el-col>
     </div>
     <el-form
@@ -43,7 +44,8 @@
         </legend>
         <el-row>
           <el-col :span="24">
-            <el-button size="mini" type="primary" class="mb10 mt10" @click="addItem">+新增滞纳金方案</el-button>
+            <el-button size="mini" type="primary" class="mb10 mt10"
+@click="addItem">+新增滞纳金方案</el-button>
           </el-col>
         </el-row>
         <div v-for="(item, index) in financeConfigEntity.financeConfigList" :key="index">
@@ -55,7 +57,7 @@
                 :prop="'financeConfigList.' + index + '.overdueFineName'"
                 :rules="[{required:true,message:'请输入',trigger:'blur'},{ validator: validateName, trigger: 'blur' }]"
               >
-                <el-input v-model.trim="item.overdueFineName"></el-input>
+                <el-input :show-word-limit="false" v-model.trim="item.overdueFineName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="5">
@@ -83,14 +85,16 @@
               <el-form-item
                 label
                 :prop="'financeConfigList.' + index + '.overdueFineLimit'"
-                :rules="{required:true,message:'请输入',trigger:'blur'}"
+                :rules="[{required:true,message:'请输入',trigger:'blur'}, { validator: validateProporsion, trigger: 'change'}]"
               >
                 <div style="display:flex;">
                   <el-select v-model="item.limitType" class="mr5">
                     <el-option label="比例" :value="0"></el-option>
                     <el-option label="固定金额" :value="1"></el-option>
                   </el-select>
-                  <el-input v-model.trim="item.overdueFineLimit"></el-input>
+                  <el-input :show-word-limit="false" v-model.trim="item.overdueFineLimit">
+                    <div slot="append" v-if="!item.limitType">%</div>
+                  </el-input>
                 </div>
               </el-form-item>
             </el-col>
@@ -99,9 +103,9 @@
                 label="滞纳金上限"
                 label-width="95px"
                 :prop="'financeConfigList.' + index + '.overdueFineUpperLimit'"
-                :rules="{required:true,message:'请输入',trigger:'blur'}"
+                :rules="[{required:true,message:'请输入',trigger:'blur'}, { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '11位整数，2位小数', trigger: 'blur' }]"
               >
-                <el-input v-model.trim="item.overdueFineUpperLimit"></el-input>
+                <el-input :show-word-limit="false" v-model.trim="item.overdueFineUpperLimit"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="2" style="padding-top:2px;">
@@ -131,6 +135,27 @@ export default {
       }
       callback()
     }
+    const validateProporsion = (rule, value, callback) => {
+      const index = parseFloat(rule.field.match(/\.(.*?)\./)[1])
+      if (this.financeConfigEntity.financeConfigList[index].limitType) {
+        if (!/^\d{1,11}(\.\d{1,2})?$/.test(value)) {
+          callback(new Error('11位整数，2位小数'))
+        } else {
+          callback()
+        }
+      } else {
+        if (value > 100 || value < 0) {
+          callback(new Error('0-100，两位小数'))
+        } else if (Number(value) === 100) {
+          callback()
+        } else if (!/^\d{1,2}(\.\d{1,2})?$/.test(value)) {
+          callback(new Error('0-100，两位小数'))
+        } else {
+          callback()
+        }
+      }
+
+    }
     return {
       loading: false,
       isEdit: false,
@@ -138,7 +163,8 @@ export default {
       financeConfigEntity: {
         financeConfigList: []
       },
-      validateName
+      validateName,
+      validateProporsion
     }
   },
   components: {
