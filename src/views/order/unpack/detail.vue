@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 11:21:13
+ * @LastEditTime: 2019-12-02 09:36:52
  * @Description: 拆卸单
 */
 <template>
@@ -49,7 +49,12 @@
         type="danger"
         v-if="detail&&[2].includes(detail.disassemblyOrderState)"
       >终止</el-button>
-      <el-button @click="showTask=true" size="mini" type="primary" v-if="detail&&[2].includes(detail.disassemblyOrderState)">生成拆卸任务</el-button>
+      <el-button
+        @click="showTask=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&[2].includes(detail.disassemblyOrderState)&&detail.undistributedNum"
+      >生成拆卸任务</el-button>
       <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0].includes(detail.disassemblyOrderState)">编辑</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsdisassemblyorderLogicDelete',{
