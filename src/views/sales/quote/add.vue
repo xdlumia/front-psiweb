@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 11:34:40
+ * @LastEditTime: 2019-12-02 14:52:05
  * @Description: file content
 */
 <template>
@@ -14,7 +14,7 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{type=='add'?'新建报价单':`编辑:${code}`}}</span>
+      <span>{{type=='add'?'新建报价单':type=='copy'?`复制:${code}`:`编辑:${code}`}}</span>
       <div class="fr mr30">
         <el-button
           @click="$emit('update:visible', false)"
@@ -173,11 +173,19 @@ export default {
   },
   watch: {
     async steps(index) {
-
+      if (this.type != 'add' && index != 4) {
+        this.$message.error({
+          showClose: true,
+          message: '编辑和复制的时候只能操作当前步骤'
+        })
+        this.steps = 4
+        return
+      }
       if (index === 3) {
         // 确定配置信息的时候查询整机
         this.$refs.confirmInfo.commonquotationconfigdetailsListConfigByGoodName()
-      } else if (index === 4) {
+      }
+      else if (index === 4) {
         // 不挑选此配置整机数据
         let wholeListNotChoose = []
         // 整机数据
@@ -191,19 +199,22 @@ export default {
         })
         wholeListNotChoose = this.$$util.jsonFlatten(wholeListNotChoose)
         let quotationIds = this.$$util.jsonFlatten(wholeList).map(v => v.quotationId)
-        let params = {
-          ids: quotationIds,
-          page: 1,
-          limit: 999
+        let wholeListData = []
+        // 有quotationIds 值的时候再查询
+        if (quotationIds.length) {
+          let params = {
+            ids: quotationIds,
+            page: 1,
+            limit: 999
+          }
+          let { data } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
+          wholeListData = data || []
+          wholeListData = wholeListData.map(item => {
+            item.inventoryNumber = item.usableInventoryNum
+            item.reference = item.saleReferencePrice
+            return item
+          })
         }
-        let { data } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
-
-        let wholeListData = data || []
-        wholeListData = wholeListData.map(item => {
-          item.inventoryNumber = item.usableInventoryNum
-          item.reference = item.saleReferencePrice
-          return item
-        })
         // 配件列表
         let fixingsList = []
         for (let key in this.form.KIND2List) {
@@ -220,13 +231,6 @@ export default {
         // let
         // 第4步整合商品信息
         this.form.businessCommoditySaveVoList = [...wholeListData, ...fixingsList]
-      }
-      else if (this.type != 'add') {
-        this.$message.error({
-          showClose: true,
-          message: '编辑和复制的时候只能操作当前步骤'
-        })
-        this.steps = 4
       }
     },
   },

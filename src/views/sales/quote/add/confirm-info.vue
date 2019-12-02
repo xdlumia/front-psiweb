@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-19 17:26:02
+ * @LastEditTime: 2019-12-02 14:42:11
  * @Description: 确定配置信息
 */
 <template>
@@ -305,6 +305,8 @@ export default {
     },
     // 根据名称获取整机信息
     commonquotationconfigdetailsListConfigByGoodName() {
+      // 如果没有商品不查询
+      if (!this.data.KIND1Data.length) return
       const params = {
         // doodsName 如果查传的是'' 查的是全部 所以没有值得时候传 ' '
         goodsName: this.data.KIND1Data.map(v => v.name),

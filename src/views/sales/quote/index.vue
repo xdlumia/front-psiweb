@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 14:57:11
+ * @LastEditTime: 2019-12-02 14:56:48
  * @Description: 销售-报价单
  */
 <template>
@@ -33,7 +33,7 @@
         >合并生成出库单</el-button>
         <el-button
           size="mini"
-          @click="eventHandle('quoteAddVisible')"
+          @click="eventHandle('quoteCopyVisible')"
         >复制生成报价单</el-button>
       </template>
       <template slot-scope="{column,row,value}">
@@ -73,6 +73,14 @@
     <quote-add
       :visible.sync="quoteAddVisible"
       type="add"
+      @reload="$refs.table.reload()"
+    ></quote-add>
+    <!-- 新建 -->
+    <quote-add
+      :visible.sync="quoteCopyVisible"
+      type="copy"
+      :rowData="rowData"
+      :code="rowData.quotationCode"
       @reload="$refs.table.reload()"
     ></quote-add>
     <!-- 合并生成出库单 所以rowData是多行数据 -->
@@ -137,6 +145,7 @@ export default {
       quoteVisible: false,
       // 报价单新增
       quoteAddVisible: false,
+      quoteCopyVisible: false,
       // 报价单新增
       mergeVisible: false,
       // 出库单详情
@@ -148,10 +157,17 @@ export default {
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
-      if (type === 'mergeVisible' && !this.selectionData.length) {
+      if (type === 'mergeVisible' && this.selectionData.length < 2) {
         this.$message.error({
           showClose: true,
-          message: '请先选择数据'
+          message: '合并生成出库单最少选择两条数据'
+        })
+        return
+      }
+      if (type === 'quoteCopyVisible' && this.selectionData.length != 1) {
+        this.$message.error({
+          showClose: true,
+          message: '复制生成报价单只能选择一条数据'
         })
         return
       }
