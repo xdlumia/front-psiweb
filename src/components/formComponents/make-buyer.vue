@@ -195,6 +195,7 @@ export default {
           return true;
         }
       });
+      console.log(this.companyList)
     },
     async getServiceProvider() {
       let {
