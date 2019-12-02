@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 12:02:20
+ * @LastEditTime: 2019-12-02 16:46:36
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -32,7 +32,7 @@
       </el-table-column>
     </el-table>
     <!-- 收款0 付款1 -->
-    <Add :visible.sync="showAdd" code ref="addIncoming" v-if="showAdd" :incomeType='`${type}`' />
+    <Add :incomeType="`${type}`" :visible.sync="showAdd" code ref="addIncoming" v-if="showAdd" />
     <chooseIncoming
       :params="{
         page: 1,
@@ -148,14 +148,10 @@ export default {
       this.$refs.addIncoming.loading = true;
       try {
         await this.$refs.addIncoming.$refs.form.validate();
-        await this.$getApi(this.addApi)(
-          Object.assign(
-            {
-              fbiiCode: this.billCode
-            },
-            this.$refs.addIncoming.form
-          )
-        );
+        await this.$getApi(this.addApi)({
+          ...this.$refs.addIncoming.form,
+          fbiiCode: this.billCode
+        });
         this.$refs.addIncoming.setEdit();
         this.$refs.addIncoming.close();
       } catch (error) {}
