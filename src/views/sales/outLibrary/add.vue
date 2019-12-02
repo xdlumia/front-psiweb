@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 16:55:48
+ * @LastEditTime: 2019-12-02 19:40:41
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -219,7 +219,7 @@ export default {
           // rules 表单验证是否通过
           let api = 'salesshipmentUpdate' // 默认编辑更新
           // 新增保存
-          if (this.type === 'add') {
+          if (this.type === 'add' || this.type === 'merge') {
             api = 'salesshipmentSave'
             // 编辑保存
           }

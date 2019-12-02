@@ -2,13 +2,14 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 18:46:38
+ * @LastEditTime: 2019-12-02 19:37:09
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
   <form-card
     class="commodity-quote-edit"
     title="商品信息"
+    v-loading="loading"
   >
     <el-table
       show-summary
@@ -41,7 +42,6 @@
         show-overflow-tooltip
         label="商品图片"
         min-width="120"
-        show-overflow-tooltip
       >
         <template slot-scope="scope">
           <el-image
@@ -127,9 +127,7 @@
         min-width="110"
       >
       </el-table-column>
-
     </el-table>
-
   </form-card>
 </template>
 <script>
@@ -138,6 +136,7 @@ export default {
   props: ['data'],
   data() {
     return {
+      loading: false,
       goodsData: [],
       queryForm: {
         busType: 1, // 1报价单 2请购单]
@@ -147,14 +146,19 @@ export default {
     };
   },
   created() {
-    this.businesscommodityGetBusinessCommodityList()
+    this.businesscommodityGetBusinessCommodityList(this.data.quotationCode)
   },
   methods: {
-    businesscommodityGetBusinessCommodityList() {
+    businesscommodityGetBusinessCommodityList(quotationCode) {
+      this.queryForm.busCode = quotationCode || this.data.quotationCode
+      this.loading = true
       this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.queryForm)
         .then(res => {
           let data = res.data || []
           this.goodsData = this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList')
+        })
+        .finally(() => {
+          this.loading = false
         })
     },
     //算合计的

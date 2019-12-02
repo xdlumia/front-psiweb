@@ -2,13 +2,16 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 18:07:38
+ * @LastEditTime: 2019-12-02 20:01:34
  * @Description: 销售换货单详情-详情
 */
 <template>
   <div>
     <!-- 审核面板 -->
-    <approve-panel :data="data" />
+    <approve-panel
+      busType="18"
+      :data="data"
+    />
     <!-- 客户信息 -->
     <customer-info
       disabled
@@ -20,7 +23,7 @@
       :data="data"
     />
     <!-- 换入商品信息 -->
-    <goods-exchange-info
+    <goods-return-edit
       title="换入商品信息"
       disabled
       :params="{busType:1,putawayType:0}"

@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 11:58:25
+ * @LastEditTime: 2019-12-02 19:38:09
  * @Description: 报价单信息 编辑查看时使用
 */
 <template>
 
   <!-- 报价单信息 -->
-  <quotationInfo>
+  <quotationInfo v-loading="loading">
     <el-tabs
       slot="tabs"
       v-model="activeName"
@@ -34,8 +34,8 @@
         />
         <!-- 商品信息 -->
         <commodity-quote-info
-          v-if="Object.keys(detail).length"
           :data="detail"
+          ref="commodity"
           disabled
         />
         <!-- 报价有效期 -->
@@ -74,6 +74,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       activeName: this.options[0], // 数据源
       detail: {},
     }
@@ -100,8 +101,11 @@ export default {
         this.detail = this.quotationMap[this.activeName]
         return;
       }
+      this.loading = true
       let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.activeName })
       this.detail = data || {}
+      this.$refs.commodity.businesscommodityGetBusinessCommodityList(this.detail.quotationCode)
+      this.loading = false
     },
   }
 }
