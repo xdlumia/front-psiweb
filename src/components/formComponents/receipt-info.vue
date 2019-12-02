@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 16:51:34
+ * @LastEditTime: 2019-12-02 18:32:40
  * @Description: 付款 新增流水 单据信息
 */
 <template>
@@ -53,6 +53,7 @@
               :disabled="disabled"
               v-model="data[item.prop]"
               :placeholder="`请输入${item.label}`"
+              @change="onSettleAccountChange"
             >
               <el-option
                 v-for="(item, index) in settlementAccount"
@@ -168,6 +169,12 @@ export default {
       // { value: "balel"}
       cb([])
     },
+    onSettleAccountChange(){
+      let item = this.settlementAccount.find(item=>item.id==this.data.companySettlementId)
+      if(item){
+        this.$set(this.data,'companySettlementInfo',`${item.corporationName}${item.accountType}(${item.account})`)
+      }
+    }
   }
 
 

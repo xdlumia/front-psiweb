@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 17:56:51
+ * @LastEditTime: 2019-12-02 18:35:57
  * @Description: 付款单
 */
 <template>
@@ -182,11 +182,13 @@ export default {
         await this.$refs.addIncoming.$refs.form.validate();
         await this.$api.seePsiFinanceService.paybillPay({
           ...this.$refs.addIncoming.form,
-          fbiiCode: this.detail.billCode
+          fbiiCode: this.detail.billCode,
+          matchState:0,
+          unmatchAmount: this.$refs.addIncoming.form.incomeAmount,
+          matchedAmount: 0
         });
         this.$refs.addIncoming.setEdit();
         this.$refs.addIncoming.close();
-        this.setEdit();
       } catch (error) {}
       this.loading = false;
       this.$refs.addIncoming.loading = false;
