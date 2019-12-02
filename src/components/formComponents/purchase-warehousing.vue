@@ -347,7 +347,7 @@ export default {
       this.$api.seePsiWmsService.wmsinventorydetailBatchPutaway({ businessCode: this.drawerData.purchaseCode, businessId: this.drawerData.id, putawayCommodityList: this.tableData, businessType: 32 })
         .then(res => {
           //龙哥算状态
-          this.$api.seePsiPurchaseService.purchasePutin({ purchaseCode: this.drawerData.purchaseCode })
+          this.$api.seePsiPurchaseService.purchasePutin({ purchaseCode: this.drawerData.purchaseCode, id: this.drawerData.id })
             .then(res => {
               this.close()
               this.$emit('reload')
