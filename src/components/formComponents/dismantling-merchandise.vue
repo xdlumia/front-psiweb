@@ -128,7 +128,7 @@
     />
     <goods-unpack-record
       :params='{businessCode:data.disassemblyTaskCode,commodityCode:recCommodity[0].commodityCode}'
-      :commodityList="
+      :commodityList=" 
       recCommodity"
       :data='data'
       :visible.sync="showRec"

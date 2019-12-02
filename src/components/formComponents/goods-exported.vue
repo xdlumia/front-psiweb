@@ -25,7 +25,7 @@
         :params="{busCode:code,busType:5}"
         ref="companyTable"
         class="college-main"
-        style="max-height:300px"
+        style="height:250px"
         :tree-props="{children: 'id', hasChildren: 'id'}"
       >
         <el-table-column
@@ -73,11 +73,15 @@
         ></el-table-column>
         <el-table-column
           fixed
-          prop="isTeardown"
+          prop="isAssembly"
           min-width="100"
           label="是否组装"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.isAssembly == 0 ? '否' : '是'}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="goodsName"
           min-width="100"
@@ -138,7 +142,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+            <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
           </template>
         </el-table-column>
 

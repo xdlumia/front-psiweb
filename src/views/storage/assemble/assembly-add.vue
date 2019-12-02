@@ -106,7 +106,7 @@ export default {
       if (list.length < 1) {
         this.$message({
           type: 'error',
-          message: '请至少选择一个商品!'
+          message: '未选择商品或组装数量为空！'
         })
       } else {
         this.$api.seePsiWmsService.wmsassembleorderSave({ assembleCommoditySaveVoList: list, isSelfMotion: this.isSelfMotion, note: this.form.note, source: '新增' })

@@ -36,6 +36,7 @@
             <deliverInfo
               :data='detailForm.salesQuotationEntity'
               :disabled='true'
+              :hide="['note']"
             />
             <generateDeliver
               :visible.sync='orderStorageVisible'

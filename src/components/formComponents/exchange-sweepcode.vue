@@ -210,15 +210,15 @@
               class="ml10 mt5"
               v-model="snCode"
             ></el-input>
-            <!-- <span class="fr d-text-black mr10 mt5">
-          <span>本次成功扫码 </span>
-          <span class="b d-text-red f16">{{data.nowNum || 0}}</span>
-          <span> 件，历史扫码 </span>
-          <span class="b d-text-green f16">{{data.swapOutAccomplishNum || 0}}</span>
-          <span> 件，还需扫码 </span>
-          <span class="b d-text-blue f16">{{(data.swapOutNum - (data.swapOutAccomplishNum || 0) - (data.nowNum || 0)) || 0}}</span>
-          <span> 件</span>
-        </span> -->
+            <span class="fr d-text-black mr10 mt5">
+              <span>本次成功扫码 </span>
+              <span class="b d-text-red f16">{{outNowNum}}</span>
+              <span> 件，历史扫码 </span>
+              <span class="b d-text-green f16">{{outHistoryNum}}</span>
+              <span> 件，还需扫码 </span>
+              <span class="b d-text-blue f16">{{outTotalNum - outNowNum - outHistoryNum}}</span>
+              <span> 件</span>
+            </span>
           </div>
         </form-card>
 
@@ -368,15 +368,30 @@ export default {
       tableData: [],
       value: '',
       usableList: [],
-      wmsId: ''
+      wmsId: '',
+      outNowNum: 0,//换出库商品本次成功扫码
+      outHistoryNum: 0,//换出库商品历史扫码
+      outTotalNum: 0//换出库商品一共有多少件
     };
   },
   mounted() {
     this.commonwmsmanagerUsableList()
   },
+  created() {
+    this.getCalculation()
+  },
   methods: {
     close() {
       this.$emit('update:visible', false)
+    },
+    //进来先一顿计算
+    getCalculation() {
+      if (this.data.putoutCommodityList.length > 0) {
+        this.data.putoutCommodityList.forEach((item) => {
+          this.outHistoryNum = this.outHistoryNum + item.swapOutAccomplishNum
+          this.outTotalNum = this.outTotalNum + item.swapOutNum
+        })
+      }
     },
     //请求可用库房
     commonwmsmanagerUsableList() {
@@ -395,10 +410,11 @@ export default {
             this.data.putoutCommodityList.forEach((item) => {
               console.log(item, Number(item.swapOutAccomplishNum), 'itemitemitemitem')
               if (item.swapOutNum - Number(item.swapOutAccomplishNum) > 0) {
-                // if (item.commodityCode == res.data.commodityCode) {
-                item.swapOutAccomplishNum ? item.swapOutAccomplishNum++ : item.swapOutAccomplishNum = 1
-                this.tableData.push(res.data)
-                // }
+                if (item.commodityCode == res.data.commodityCode) {
+                  item.swapOutAccomplishNum ? item.swapOutAccomplishNum++ : item.swapOutAccomplishNum = 1
+                  this.outNowNum++
+                  this.tableData.push(res.data)
+                }
               } else {
                 this.$message({
                   type: 'error',
@@ -423,7 +439,7 @@ export default {
       } else {
         this.data.putinCommodityList.forEach((item, index) => {
           if (item.commodityCode == scope.row.commodityCode) {
-            item.swapInAccomplishNum--
+            item.nowNum--
           }
         })
       }
@@ -433,6 +449,7 @@ export default {
       if (this.wmsId) {
         if ((item.swapInNum - (item.swapInAccomplishNum || 0) - (item.nowNum || 0)) != 0) {
           // if ((item.singleNum || 0) * (this.data.accomplishDisassemblyNum || 0 + this.data.nowNum) > ((item.accomplishDisassemblyNum || 0) + (item.nowNum || 0))) {
+
           this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: item.snCode, commodityCode: item.commodityCode, putawayCommodityList: this.tableData, categoryCode: item.categoryCode, wmsId: this.wmsId })
             .then(res => {
               if (res.data) {
