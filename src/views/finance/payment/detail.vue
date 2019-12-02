@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 10:25:13
+ * @LastEditTime: 2019-12-02 17:56:51
  * @Description: 付款单
 */
 <template>
@@ -78,7 +78,7 @@
       </el-tab-pane>
     </el-tabs>
     <Apply :rowData="detail" :visible.sync="showApply" @reload="setEdit(),$reload()" v-if="showApply" />
-    <AddIncoming :incomeType="1" :visible.sync="showAddIncoming" code ref="addIncoming" v-if="showAddIncoming" />
+    <AddIncoming :visible.sync="showAddIncoming" code incomeType="1" ref="addIncoming" v-if="showAddIncoming" />
   </sideDetail>
 </template>
 <script>
@@ -180,16 +180,13 @@ export default {
       this.$refs.addIncoming.loading = true;
       try {
         await this.$refs.addIncoming.$refs.form.validate();
-        await this.$api.seePsiFinanceService.paybillPay(
-          Object.assign(
-            {
-              fbiiCode: this.detail.billCode
-            },
-            this.$refs.addIncoming.form
-          )
-        );
+        await this.$api.seePsiFinanceService.paybillPay({
+          ...this.$refs.addIncoming.form,
+          fbiiCode: this.detail.billCode
+        });
         this.$refs.addIncoming.setEdit();
         this.$refs.addIncoming.close();
+        this.setEdit();
       } catch (error) {}
       this.loading = false;
       this.$refs.addIncoming.loading = false;

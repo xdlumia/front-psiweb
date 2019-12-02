@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 19:30:25
+ * @LastEditTime: 2019-12-02 17:46:19
  * @Description: 今日应付账单
 */
 <template>
@@ -30,9 +30,10 @@
             :billCode="detail.billCode"
             :billId="detail.id"
             :data="detail"
+            :hide="detail.amount>0?[]:['addIncoming','matchIncoming']"
             :matchApi="pageConfig.api.matchIncoming"
             :type="pageConfig.type"
-            :hide="detail.amount>0?[]:['addIncoming','matchIncoming']"
+            @reload="setEdit(),$reload()"
           />
           <invoice-log :busCode="detail.busCode" :data="detail" :type="pageConfig.type" />
           <paybill-log :billId="detail.id" v-if="pageConfig.show.includes('paybillLog')" />

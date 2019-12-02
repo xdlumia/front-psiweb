@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 16:46:36
+ * @LastEditTime: 2019-12-02 17:47:47
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -22,7 +22,9 @@
           <span>{{row.createTime|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="收支状态" min-width="80" prop="incomeType" show-overflow-tooltip></el-table-column>
+      <el-table-column label="收支状态" min-width="80" prop="incomeType" show-overflow-tooltip>
+        <template slot-scope="{row}">{{row.incomeType==1?'付款':'收款'}}</template>
+      </el-table-column>
       <el-table-column label="流水金额" min-width="80" prop="incomeAmount" show-overflow-tooltip></el-table-column>
       <el-table-column label="该账单匹配金额" min-width="80" prop="matchAmount" show-overflow-tooltip></el-table-column>
       <el-table-column label="操作" min-width="80" prop="matchAmount" show-overflow-tooltip>
@@ -133,9 +135,14 @@ export default {
         center: true
       });
       this.loading = true;
-      await this.$getApi(this.api)({
-        id: row.id
-      });
+      try {
+        await this.$getApi(this.api)({
+          id: row.id
+        });
+        this.$emit('reload');
+      } catch (error) {
+        console.error(error);
+      }
       this.loading = false;
     },
     addIncoming() {
@@ -154,6 +161,7 @@ export default {
         });
         this.$refs.addIncoming.setEdit();
         this.$refs.addIncoming.close();
+        this.$emit('reload');
       } catch (error) {}
       this.loading = false;
       this.$refs.addIncoming.loading = false;
@@ -174,6 +182,7 @@ export default {
         });
         this.showMatchDialog = false;
         this.getRecList();
+        this.$emit('reload');
       } catch (error) {
         console.error(error);
       }
