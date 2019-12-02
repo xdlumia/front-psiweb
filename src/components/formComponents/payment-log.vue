@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 19:29:31
+ * @LastEditTime: 2019-12-02 12:02:20
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -31,7 +31,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <Add :visible.sync="showAdd" code ref="addIncoming" v-if="showAdd" />
+    <!-- 收款0 付款1 -->
+    <Add :visible.sync="showAdd" code ref="addIncoming" v-if="showAdd" :incomeType='`${type}`' />
     <chooseIncoming
       :params="{
         page: 1,
@@ -168,7 +169,6 @@ export default {
       this.$nextTick(() => (this.showMatchDialog = true));
     },
     async submitMatch(e) {
-      console.log(e);
       this.loading = true;
       try {
         await this.$getApi(this.matchApi)({
