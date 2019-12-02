@@ -56,10 +56,6 @@
           slot-scope="scope"
           class="d-relative"
         >
-          <!-- 报溢的话 需要选择库房以后再选 商品, 要传过去库房id, 商品是跟库库房来的 报损不需要 -->
-          <!--             v-if="addForm.wmsId"
-            :sn="addForm.type == 2 ? true : false"
-            :params="addForm.type == 2 ? {wmsId:addForm.wmsId} : {wmsId:''}" -->
           <commoditySelector
             :disabled='!!scope.row.quotationId'
             :codes="tableData.map(item=>item.commodityCode)"
@@ -224,7 +220,8 @@ export default {
       list.forEach((item, index) => {
         if (!this.codes.includes(item.commodityCode) && scope.row.commodityCode && type == 'select') {//区分非选择状态下的选择商品信息
           this.$set(this.tableData, scope.$index, item)
-          scope.row.configName = ''
+          scope.row.configName = this.configName
+          this.tableData[this.tableData.length - 1].configName = ''//清空最后一项
         } else if (!this.codes.includes(item.commodityCode)) {
           this.tableData.unshift(item)
           scope.row.configName = ''
@@ -233,7 +230,6 @@ export default {
         }
       })
       this.codes = []
-      // console.log(this.configList, 'this.configListthis.configListthis.configListthis.configList')
     },
     //表格查询数据懒加载
     load(tree, treeNode, resolve) {

@@ -29,13 +29,13 @@
           type="primary"
         >转移</el-button>
         <el-button
-          v-if="(detailForm.isHang == 0 || !detailForm.isHang) && detailForm.assembleTaskState != -1"
+          v-if="(detailForm.isHang == 0 || !detailForm.isHang) && detailForm.assembleTaskState != -1 && detailForm.assembleTaskState !== 3"
           @click="wmsdisassemblytaskHangTask"
           size="mini"
           type="primary"
         >挂起</el-button>
         <el-button
-          v-if="detailForm.isHang == 1 && detailForm.assembleTaskState != -1"
+          v-if="detailForm.isHang == 1 && detailForm.assembleTaskState != -1 && detailForm.assembleTaskState !== 3"
           @click="wmsassembletaskContinueTask"
           size="mini"
           type="primary"
