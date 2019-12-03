@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 17:54:29
+ * @LastEditTime: 2019-12-03 11:22:43
  * @Description: 促销管理
  -->
 <template>
@@ -69,7 +69,7 @@ export default {
       default: () => ({ page: 1, limit: 15 })
     }
   },
-  data () {
+  data() {
     return {
       rowData: null,
       code: null,
@@ -83,20 +83,20 @@ export default {
       filterOptions: [
         { label: '促销编号', prop: 'code', default: true },
         { label: '促销名称', prop: 'promotionName', default: true },
-        {          label: '状态',
-          prop: 'state',
-          type: 'select',
-          default: true,
-          options: [
-            { label: '全部', value: null },
-            { label: '启用', value: 0 },
-            { label: '停用', value: 1 }
-          ]
-        },
+        // {          label: '状态',
+        //   prop: 'state',
+        //   type: 'select',
+        //   default: true,
+        //   options: [
+        //     { label: '全部', value: null },
+        //     { label: '启用', value: 0 },
+        //     { label: '停用', value: 1 }
+        //   ]
+        // },
         { label: '促销时间', prop: 'BegTime', type: 'dateRange', default: true },
         { label: '促销目标', prop: 'promotionTarget', default: true },
         { label: '参与商品', prop: 'commodityNum', default: true },
-        { label: '参与人', prop: 'userNum', default: true },
+        { label: '参与人(人数)', prop: 'UserNum', type: 'numberrange', default: true },
         {
           label: '创建人',
           prop: 'creator',
@@ -108,19 +108,19 @@ export default {
       ]
     }
   },
-  mounted () {
+  mounted() {
   },
   components: {
     addPromotion,
     detail
   },
   methods: {
-    detail (row) {
+    detail(row) {
       this.rowData = row
       this.code = row.code
       this.showDetail = true
     },
-    commonwmsmanagerUpdateState (id, state) {
+    commonwmsmanagerUpdateState(id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -136,7 +136,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete (id) {
+    commonwmsmanagerLogicDelete(id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -152,10 +152,10 @@ export default {
         })
       })
     },
-    saveFacilitator () {
+    saveFacilitator() {
       this.$refs.addPromotion && this.$refs.addPromotion.commonserviceproviderSave()
     },
-    refresh () {
+    refresh() {
       this.visible = false
       this.$refs.table.reload()
     }
