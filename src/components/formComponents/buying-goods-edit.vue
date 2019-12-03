@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 15:23:47
+ * @LastEditTime: 2019-12-03 17:54:09
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -366,6 +366,9 @@ export default {
       isChild = ks.length > 1;
       let parentIndex = -1;
       let parent = top.filter(item => item.commodityCode == ks[0]);
+      if(!parent[0]){
+         isChild=false;
+      }
       let info = {
         isChild,
         parent: isChild ? parent[0] : null,
