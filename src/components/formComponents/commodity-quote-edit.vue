@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 18:46:46
+ * @LastEditTime: 2019-12-03 18:26:43
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -82,7 +82,6 @@
         show-overflow-tooltip
         label="商品图片"
         min-width="120"
-        show-overflow-tooltip
       >
         <template slot-scope="scope">
           <el-image
@@ -357,7 +356,7 @@ export default {
             return sum + curr
           }, 0)
         }
-        else if (['discountSprice'].includes(col.property)) {
+        else if (['discountSprice', 'reference'].includes(col.property)) {
           // 单价 * 数量
           const values = data.map(item => Number(item[col.property] || 0) * (item.commodityNumber || 0));
           sums[index] = values.reduce((sum, curr) => {

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 17:12:32
+ * @LastEditTime: 2019-12-03 18:12:08
  * @Description: 报价单详情
 */
 <template>
@@ -22,6 +22,7 @@
         >
           <el-button
             class="mr10"
+            :disabled="isDisabledButton(item.label)"
             @click="buttonsClick(item.label)"
             v-if="currStatusType[detail.state || 0].includes(item.label)"
             size="mini"
@@ -158,6 +159,18 @@ export default {
       if (this.code) {
         let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
         return data;
+      }
+    },
+    // 判断禁用的按钮
+    isDisabledButton(label) {
+      let procurementExpectedArrivalTime = this.rowData.procurementExpectedArrivalTime
+      // 采购预计到货时间为空 禁用采购审核时间
+      if (label == '生成请购单' && this.rowData.isPurchaseApply == 1) {
+        return true
+      } else if (label == '生成销售出库单' && this.rowData.shipmentCode) {
+        return true
+      } else {
+        return false
       }
     },
     buttonsClick(label) {
