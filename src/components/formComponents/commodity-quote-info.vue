@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 15:58:54
+ * @LastEditTime: 2019-12-03 16:17:28
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -19,9 +19,9 @@
       :data="goodsData"
       default-expand-all
       :tree-props="{children: 'commonGoodConfigDetailsEntityList'}"
+      row-key="id"
       max-height="400"
       ref="elTable"
-      row-key="id"
       size="mini"
     >
       <el-table-column

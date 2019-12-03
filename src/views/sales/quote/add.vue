@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 15:45:22
+ * @LastEditTime: 2019-12-03 16:22:55
  * @Description: file content
 */
 <template>
@@ -105,7 +105,7 @@ export default {
         KIND2Data: [], //临时存放第二步配件列表选中的数据
         KIND1List: [], //临时存放第三步整机列表选中的数据 数组存放
         KIND2List: {},//临时存放第三步配件列表选中的数据 对象存放
-        id: {},
+        id: '',
         apprpvalState: '', //审核状态
         attachList: [], //附件,
         companyAccountId: '', //公司发票信息
@@ -161,11 +161,7 @@ export default {
     }
   },
   created() {
-    if (this.type == 'add') {
-      this.steps = 1
-    } else {
-      this.steps = 4
-    }
+
   },
   mounted() {
     // this.initForm()
@@ -173,6 +169,22 @@ export default {
   computed: {
   },
   watch: {
+    visible(val) {
+      if (val) {
+        if (this.type == 'add') {
+          this.steps = 1
+          for (let key in this.form) {
+            if (this.form[key] instanceof Array) {
+              this.form[key] = []
+            } else {
+              this.form[key] = ""
+            }
+          }
+        } else {
+          this.steps = 4
+        }
+      }
+    },
     //  等detail加载完成 并且给form 对象赋值完成之后再加载商品数据
     'form.id': {
       handler(val) {
