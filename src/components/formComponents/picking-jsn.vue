@@ -44,8 +44,11 @@
                 min-width="140"
                 show-overflow-tooltip
               >
-                <template slot-scope="scope">
-                  <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+                <template slot-scope="{row}">
+                  <div
+                    @click="openCommodityDetail(row.commodityCode)"
+                    class="d-text-blue d-elip d-pointer"
+                  >{{row.commodityCode}}</div>
                 </template>
               </el-table-column>
 
@@ -173,10 +176,15 @@
         >关 闭</el-button>
       </span>
     </el-dialog>
-
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </div>
 </template>
 <script>
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 
 export default {
   props: {
@@ -188,6 +196,8 @@ export default {
     },
     data: {},//当前点击行数据
     drawerData: {},//当前详情的数据
+    showCommodityDetail: false,
+    currentCommodityCode: '',
   },
   data() {
     return {
@@ -198,6 +208,11 @@ export default {
   methods: {
     close() {
       this.$emit('update:visible', false)
+    },
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
     },
     response(res) {
       let tableData = res.data || []
@@ -212,7 +227,10 @@ export default {
         }
       })
     }
-  }
+  },
+  components: {
+    CommodityDetail
+  },
 };
 </script>
 <style lang="scss" scoped>

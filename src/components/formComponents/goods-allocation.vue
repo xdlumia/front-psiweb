@@ -144,7 +144,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.unit|dictionary('PSI_SP_KIND')}}</span>
+            <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
           </template>
         </el-table-column>
 
