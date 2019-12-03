@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 17:49:47
+ * @LastEditTime: 2019-12-03 18:41:12
  * @Description: 采购-直发单
 */
 <template>
@@ -75,27 +75,14 @@ export default {
         '2': '已完成',
         '3': '已终止'
       },
+      // prettier-ignore
       filterOptions: [
         { label: '直发单编号', prop: 'directCode', default: true },
         { label: '报价单编号', prop: 'quotationCode', default: true },
-        { label: '客户', prop: 'clientName' },
-        {
-          label: '销售预计发货时间',
-          prop: 'SaleDeliverTime',
-          type: 'dateRange',
-          default: true
-        },
-        {
-          label: '采购预计发货时间',
-          prop: 'PurchaseDeliverTime',
-          type: 'dateRange',
-          default: true
-        },
-        {
-          label: '单据执行人',
-          prop: 'personInChargeId',
-          type: 'employee'
-        },
+        { label: '客户', prop: 'clientName', default: true },
+        { label: '销售预计发货时间', prop: 'SaleDeliverTime', type: 'dateRange', default: true },
+        { label: '采购预计发货时间', prop: 'PurchaseDeliverTime', type: 'dateRange', default: true },
+        { label: '单据执行人', prop: 'personInChargeId', type: 'employee', default: true },
         { label: '合同创建人', prop: 'creator', type: 'employee' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '最小创建时间', prop: 'CreateTime', type: 'dateRange' }

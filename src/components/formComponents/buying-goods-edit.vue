@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 17:54:09
+ * @LastEditTime: 2019-12-03 18:22:47
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -362,12 +362,12 @@ export default {
       let top = this.data[this.fkey];
       let rowKey = this.realTopRowKey[row._rowKey] || row._rowKey;
       let isChild = rowKey != row.commodityCode;
-      let ks = rowKey.split('_');
+      let ks = String(rowKey || '').split('_');
       isChild = ks.length > 1;
       let parentIndex = -1;
       let parent = top.filter(item => item.commodityCode == ks[0]);
-      if(!parent[0]){
-         isChild=false;
+      if (!parent[0]) {
+        isChild = false;
       }
       let info = {
         isChild,

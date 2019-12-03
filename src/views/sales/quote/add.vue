@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 16:22:55
+ * @LastEditTime: 2019-12-03 21:15:50
  * @Description: file content
 */
 <template>
@@ -192,6 +192,7 @@ export default {
           this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList({ putawayType: 0, busType: 1, busCode: this.code })
             .then(res => {
               let data = res.data || []
+              // this.$set(this.form, 'businessCommoditySaveVoList', this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList'))
               this.form.businessCommoditySaveVoList = this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList')
             })
         }
@@ -235,6 +236,9 @@ export default {
           let { data } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
           wholeListData = data || []
           wholeListData = wholeListData.map(item => {
+            (item.commonGoodConfigDetailsEntityList || []).forEach(sub => {
+              sub.parentCommodityCode = item.commodityCode
+            })
             item.id = 'customId' + item.id
             item.inventoryNumber = item.usableInventoryNum
             item.reference = item.saleReferencePrice
@@ -271,7 +275,6 @@ export default {
     saveHandle() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.loading = true
           let params = Object.assign(this.form, this.params)
           let copyParams = JSON.parse(JSON.stringify(params))
 
@@ -285,7 +288,17 @@ export default {
             })
             item.putawayType = 0 //0=出库
           })
+          // 验证商品信息
+          if (copyParams.businessCommoditySaveVoList.every(item => !item.commodityNumber)) {
+            this.$message({
+              message: '商品信息的商品数量不能为空',
+              type: 'error',
+              showClose: true,
+            });
+            return
+          }
           copyParams.businessCommoditySaveVoList = this.$$util.jsonFlatten(copyParams.businessCommoditySaveVoList, 'commonGoodConfigDetailsEntityList')
+          this.loading = true
           // rules 表单验证是否通过
           let api = 'salesquotationSave' // 默认编辑更新
           // 新增保存

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 19:40:41
+ * @LastEditTime: 2019-12-03 18:56:59
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -195,7 +195,7 @@ export default {
           this.form.totalAmount = data.totalAmount || 0
           this.form.totalCostAmount = data.totalCostAmount || 0
           this.form.totalNumber = data.totalNumber || 0
-          this.form.shipmentFinanceSaveVoList[0].payAmount = this.form.totalCostAmount
+          this.form.shipmentFinanceSaveVoList[0].payAmount = this.form.totalAmount
         })
     },
     async getDetail() {
@@ -209,8 +209,22 @@ export default {
     saveHandle() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.loading = true
+          // 最大不能超过销售单总金额
+          const values = this.form.shipmentFinanceSaveVoList.map(item => Number(item.payAmount || 0));
+          let tatal = values.reduce((sum, curr) => {
+            const val = Number(curr)
+            return sum + curr
+          }, 0)
+          if (tatal != this.form.totalAmount) {
+            this.$message({
+              message: '所有账期的付款金额不能大于或小于总价',
+              type: 'error',
+              showClose: true,
+            });
+            return
+          }
 
+          this.loading = true
           if (this.type == 'merge') {
             this.form.quotationIds = this.rowData.map(item => item.id)
           } else if (this.type == 'add') {

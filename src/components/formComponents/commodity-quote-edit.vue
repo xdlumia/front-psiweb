@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 18:46:46
+ * @LastEditTime: 2019-12-03 20:42:56
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -19,7 +19,6 @@
       border
       :summary-method="getSummaries"
       :data="data.businessCommoditySaveVoList"
-      default-expand-all
       :tree-props="{children: 'commonGoodConfigDetailsEntityList'}"
       max-height="400"
       ref="elTable"
@@ -49,6 +48,7 @@
         <template
           slot-scope="scope"
           class="d-relative"
+          v-if="!scope.row.parentCommodityCode"
         >
           <!-- 报溢的话 需要选择库房以后再选 商品, 要传过去库房id, 商品是跟库库房来的 报损不需要 -->
           <commoditySelector
@@ -69,6 +69,7 @@
         <template
           slot-scope="scope"
           class="d-relative"
+          v-if="!scope.row.parentCommodityCode"
         >
           <commoditySelector
             :wmsId="data.type == 2 ? data.wmsId : null"
@@ -82,7 +83,6 @@
         show-overflow-tooltip
         label="商品图片"
         min-width="120"
-        show-overflow-tooltip
       >
         <template slot-scope="scope">
           <el-image
@@ -137,6 +137,7 @@
         prop="commodityNumber"
         min-width="110"
       >
+        <!-- :prop="`businessCommoditySaveVoList.${scope.$index}.commodityNumber`" -->
         <template slot-scope="scope">
           <el-form-item
             class="mb0"
@@ -144,6 +145,7 @@
           >
             <el-input
               size="mini"
+              :disabled="!!scope.row.parentCommodityCode"
               @input="numberChange(scope.row)"
               placeholder="请输入商品数量"
               v-model="scope.row.commodityNumber"
@@ -164,11 +166,16 @@
         label="折扣"
         min-width="110"
       >
-        <template slot-scope="scope">
+        <!-- :prop="`businessCommoditySaveVoList.${scope.$index}.discount`" -->
+        <template
+          slot-scope="scope"
+          v-if="!scope.row.parentCommodityCode"
+        >
           <el-form-item
             class="mb0"
             :rules="[{required:true},{type:'positiveNum'}]"
           >
+
             <el-input
               size="mini"
               @input="numberChange(scope.row)"
@@ -185,7 +192,11 @@
         prop="discountSprice"
         min-width="110"
       >
-        <template slot-scope="scope">
+        <!-- :prop="`businessCommoditySaveVoList.${scope.$index}.discountSprice`" -->
+        <template
+          slot-scope="scope"
+          v-if="!scope.row.parentCommodityCode"
+        >
           <el-form-item
             class="mb0"
             :rules="[{required:true},{type:'price'}]"
@@ -205,7 +216,10 @@
         label="备注"
         min-width="110"
       >
-        <template slot-scope="scope">
+        <template
+          slot-scope="scope"
+          v-if="!scope.row.parentCommodityCode"
+        >
           <el-form-item class="mb0">
             <el-input
               size="mini"
@@ -220,7 +234,10 @@
         label="是否直发"
         min-width="110"
       >
-        <template slot-scope="scope">
+        <template
+          slot-scope="scope"
+          v-if="!scope.row.parentCommodityCode"
+        >
           <el-switch
             :active-value="1"
             :inactive-value="0"
@@ -234,7 +251,10 @@
         label="是否组装"
         min-width="110"
       >
-        <template slot-scope="scope">
+        <template
+          slot-scope="scope"
+          v-if="!scope.row.parentCommodityCode"
+        >
           <el-switch
             :active-value="1"
             :inactive-value="0"
@@ -311,7 +331,6 @@ export default {
       value: '',
       ceIndex: '',
       visibleData: {
-
       },
       visible: false,
     };
@@ -321,7 +340,8 @@ export default {
     commodityChoose(e, scope) {
       let [list] = e[0]
       let type = e[1]
-      this.data.businessCommoditySaveVoList[scope.$index].commodityCode = ''
+      let index = this.data.businessCommoditySaveVoList.findIndex(item => item.id == scope.row.id)
+      this.data.businessCommoditySaveVoList[index].commodityCode = ''
       this.data.businessCommoditySaveVoList.forEach((item) => {
         if (item.commodityCode) {
           this.codes.push(item.commodityCode)
@@ -329,12 +349,13 @@ export default {
       })
       if (!this.codes.includes(list.commodityCode)) {
         list.reference = list.saleReferencePrice //销售参考价
-        this.$set(this.data.businessCommoditySaveVoList, scope.$index, { ...addRowData, ...list })
+        this.$set(this.data.businessCommoditySaveVoList, index, { ...addRowData, ...list })
         this.codes = []
       }
     },
     // 添加商品
     addCommodity() {
+      addRowData.id = `add${this.data.businessCommoditySaveVoList.length + 1}`
       this.data.businessCommoditySaveVoList.push(addRowData)
     },
     //算合计的
@@ -357,7 +378,7 @@ export default {
             return sum + curr
           }, 0)
         }
-        else if (['discountSprice'].includes(col.property)) {
+        else if (['discountSprice', 'reference'].includes(col.property)) {
           // 单价 * 数量
           const values = data.map(item => Number(item[col.property] || 0) * (item.commodityNumber || 0));
           sums[index] = values.reduce((sum, curr) => {
@@ -375,10 +396,10 @@ export default {
       });
       return sums;
     },
-    expand(row) {
-      this.$set(row, 'expanded', !row.expanded);
-      this.$refs.elTable.toggleRowExpansion(row, row.expanded);
-    },
+    // expand(row) {
+    //   this.$set(row, 'expanded', !row.expanded);
+    //   this.$refs.elTable.toggleRowExpansion(row, row.expanded);
+    // },
     fullscreen() {
       this.showInFullscreen = true;
     },
@@ -388,8 +409,9 @@ export default {
     //   this.data.businessCommoditySaveVoList.push({})
     // },
     //点击删除当前行
-    deleteInfo(row) {
-      this.data.businessCommoditySaveVoList.splice(row.$index, 1)
+    deleteInfo(scope) {
+      let index = this.data.businessCommoditySaveVoList.findIndex(item => item.id == scope.row.id)
+      this.data.businessCommoditySaveVoList.splice(index, 1)
     },
     // 商品数量和折扣修改
     numberChange(row) {
@@ -425,6 +447,11 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+tr.el-table__row.el-table__row--level-1 {
+  background: #f7f7f7;
+}
+</style>
 <style lang="scss" scoped>
 .commodity-quote-edit {
   .el-form-item--mini.el-form-item {

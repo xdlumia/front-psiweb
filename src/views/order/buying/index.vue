@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 17:50:08
+ * @LastEditTime: 2019-12-03 17:59:20
  * @Description: 采购-请购单
 */
 <template>
@@ -98,7 +98,7 @@ export default {
         { label: '报价单编号', prop: 'quotationCode', default: true },
         { label: '销售要求到货时间', prop: 'SaleArrivalTime', type: 'dateRange', default: true },
         { label: '采购预计到货时间', prop: 'PurchaseArrivalTime', type: 'dateRange', default: true },
-        { label: '单据执行人', prop: 'personInChargeId', type: 'employee' },
+        { label: '单据执行人', prop: 'personInChargeId', type: 'employee', default: true },
         { label: '创建人', prop: 'creator', type: 'employee' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }

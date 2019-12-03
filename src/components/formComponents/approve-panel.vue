@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 10:07:28
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-03 19:50:16
  * @Description: 审核信息
 */
 <template>
@@ -55,12 +55,12 @@ export default {
   async mounted() {
     // 查询当前项共有多少节点
     // await this.queryProcessDefinitionSubTask()
-    if(this.id&&this.busType){
+    if (this.id && this.busType) {
       await this.processtaskQueryProcessHistoryEntity()
     }
   },
   watch: {
-    '$parent.data.id': {
+    '$parent.data': {
       handler(val) {
         if (val) {
           this.processtaskQueryProcessHistoryEntity()
@@ -98,9 +98,7 @@ export default {
             this.progressData = res.data || []
           })
       }
-
     }
-
   }
 };
 </script>

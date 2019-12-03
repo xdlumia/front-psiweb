@@ -2,19 +2,24 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 15:03:07
+ * @LastEditTime: 2019-12-03 19:04:02
  * @Description: file content
 */
 <template>
   <div>
-    <baseInfo
-      disabled
-      :data="data"
-    />
-    <invoiceInfo
-      disabled
-      :data="data"
-    />
+    <el-form
+      size="small"
+      :model="data"
+    >
+      <baseInfo
+        disabled
+        :data="data"
+      />
+      <invoiceInfo
+        disabled
+        :data="data"
+      />
+    </el-form>
   </div>
 </template>
 <script>
