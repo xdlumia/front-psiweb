@@ -2,15 +2,17 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 20:02:15
+ * @LastEditTime: 2019-12-03 17:54:49
  * @Description: 销售换货单详情
 */
 <template>
   <div>
     <side-detail
       :title="`销售换货单:${code}`"
-      :visible.sync="showPop"
+      :visible.sync="showDetailPage"
       width="920px"
+      :status="status"
+      @close="close"
     >
       <div slot="button">
         <!-- 操作按钮 -->
@@ -123,6 +125,14 @@ export default {
       },
       activeName: 'detail',
       form: {},
+      stateText: {
+        '-1': '新建',
+        '0': '审核中',
+        '1': '待完成',
+        '2': '部分完成',
+        '3': '已完成',
+        '4': '已驳回',
+      },
     }
   },
   computed: {

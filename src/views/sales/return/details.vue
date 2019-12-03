@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 18:54:46
+ * @LastEditTime: 2019-12-03 17:56:50
  * @Description: 销售出库单详情
 */
 <template>
@@ -130,6 +130,14 @@ export default {
       },
       activeName: 'detail',
       form: {},
+      stateText: {
+        '-1': '新建',
+        '0': '审核中',
+        '1': '待完成',
+        '2': '部分完成',
+        '3': '已完成',
+        '4': '已驳回',
+      },
     }
   },
 
