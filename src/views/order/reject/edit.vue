@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 11:18:29
+ * @LastEditTime: 2019-12-03 11:27:04
  * @Description: 采购退货单
 */
 <template>
@@ -52,7 +52,12 @@ import VisibleMixin from '@/utils/visibleMixin';
 export default {
   mixins: [VisibleMixin],
   components: {},
-  props: {},
+  props: {
+    from: {
+      type: String,
+      default: '新建'
+    }
+  },
   computed: {},
   data() {
     return {
@@ -78,6 +83,7 @@ export default {
         return data;
       }, this.form);
       this.form.alterationAmount = this.rejectAmount;
+      this.form.source = this.from || '新建';
       try {
         if (this.isEdit) {
           await this.$api.seePsiPurchaseService.purchasealterationUpdate(
