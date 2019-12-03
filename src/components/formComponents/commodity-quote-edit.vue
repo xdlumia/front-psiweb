@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 18:30:40
+ * @LastEditTime: 2019-12-03 18:42:21
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -167,6 +167,7 @@
         <template slot-scope="scope">
           <el-form-item
             class="mb0"
+            :prop="`businessCommoditySaveVoList.${scope.$index}.discount`"
             :rules="[{required:true},{type:'positiveNum'}]"
           >
             <el-input
@@ -188,6 +189,7 @@
         <template slot-scope="scope">
           <el-form-item
             class="mb0"
+            :prop="`businessCommoditySaveVoList.${scope.$index}.discountSprice`"
             :rules="[{required:true},{type:'price'}]"
           >
             <el-input
