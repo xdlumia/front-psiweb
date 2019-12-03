@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 17:44:48
+ * @LastEditTime: 2019-12-03 18:05:58
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -65,7 +65,7 @@ export default {
       else {
         if (!this.stateText) {
           this.$message({
-            message: '当前详情页没有设置stateText状态值,不知道是啥的问王晓冬',
+            message: '当前引用详情页没有设置stateText状态值,不知道是啥的问王晓冬',
             type: 'error',
             showClose: true,
           });
@@ -116,8 +116,6 @@ export default {
     // 检查可见状态
     checkVisible() { },
     async $checkVisible() {
-      console.log(1111);
-
       if (this.checkVisible) this.checkVisible()
       if (this.visible) {
         this.showDetailPage = true;
