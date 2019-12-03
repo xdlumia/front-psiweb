@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 19:38:09
+ * @LastEditTime: 2019-12-03 10:49:54
  * @Description: 报价单信息 编辑查看时使用
 */
 <template>
@@ -64,13 +64,11 @@
   </quotationInfo>
 </template>
 <script>
-import quoteDetail from '../quote/quoteDetails/detail'
-import { log } from 'util'
+
 export default {
   //options 其实就是 quotationids
   props: ['options', 'quotationMap'],
   components: {
-    quoteDetail
   },
   data() {
     return {
@@ -104,7 +102,7 @@ export default {
       this.loading = true
       let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.activeName })
       this.detail = data || {}
-      this.$refs.commodity.businesscommodityGetBusinessCommodityList(this.detail.quotationCode)
+      // this.$refs.commodity.businesscommodityGetBusinessCommodityList(this.detail.quotationCode)
       this.loading = false
     },
   }
