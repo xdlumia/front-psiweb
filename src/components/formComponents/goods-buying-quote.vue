@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 19:38:02
+ * @LastEditTime: 2019-12-03 21:30:33
  * @Description: 生成请购单商品信息
 */
 <template>
@@ -163,7 +163,8 @@ export default {
           this.tableData = res.data || []
           // 清空商品数量
           this.data.commodityList = []
-          data.forEach(item => {
+          this.tableData = this.$$util.formatCommodity(data)
+          this.tableData.forEach(item => {
             // 商品数量-总库存大于0的商品才生成请购单
             let commodityNumber = (item.commodityNumber || 0) - (item.inventoryNumber || 0)
             if (commodityNumber > 0) {
@@ -172,7 +173,6 @@ export default {
               this.data.commodityList.push(item)
             }
           })
-          this.tableData = this.$$util.formatCommodity(data)
         })
     },
     // 自定义账单金额数据
