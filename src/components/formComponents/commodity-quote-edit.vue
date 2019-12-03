@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 18:42:21
+ * @LastEditTime: 2019-12-03 19:25:04
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -49,6 +49,7 @@
         <template
           slot-scope="scope"
           class="d-relative"
+          v-if="!scope.row.parentCommodityCode"
         >
           <!-- 报溢的话 需要选择库房以后再选 商品, 要传过去库房id, 商品是跟库库房来的 报损不需要 -->
           <commoditySelector
@@ -69,6 +70,7 @@
         <template
           slot-scope="scope"
           class="d-relative"
+          v-if="!scope.row.parentCommodityCode"
         >
           <commoditySelector
             :wmsId="data.type == 2 ? data.wmsId : null"
@@ -136,14 +138,15 @@
         prop="commodityNumber"
         min-width="110"
       >
+        <!-- :prop="`businessCommoditySaveVoList.${scope.$index}.commodityNumber`" -->
         <template slot-scope="scope">
           <el-form-item
             class="mb0"
-            :prop="`businessCommoditySaveVoList.${scope.$index}.commodityNumber`"
             :rules="[{required:true},{type:'positiveNum'}]"
           >
             <el-input
               size="mini"
+              :disabled="scope.row.parentCommodityCode"
               @input="numberChange(scope.row)"
               placeholder="请输入商品数量"
               v-model="scope.row.commodityNumber"
@@ -164,10 +167,13 @@
         label="折扣"
         min-width="110"
       >
-        <template slot-scope="scope">
+        <!-- :prop="`businessCommoditySaveVoList.${scope.$index}.discount`" -->
+        <template
+          slot-scope="scope"
+          v-if="!scope.row.parentCommodityCode"
+        >
           <el-form-item
             class="mb0"
-            :prop="`businessCommoditySaveVoList.${scope.$index}.discount`"
             :rules="[{required:true},{type:'positiveNum'}]"
           >
             <el-input
@@ -186,10 +192,13 @@
         prop="discountSprice"
         min-width="110"
       >
-        <template slot-scope="scope">
+        <!-- :prop="`businessCommoditySaveVoList.${scope.$index}.discountSprice`" -->
+        <template
+          slot-scope="scope"
+          v-if="!scope.row.parentCommodityCode"
+        >
           <el-form-item
             class="mb0"
-            :prop="`businessCommoditySaveVoList.${scope.$index}.discountSprice`"
             :rules="[{required:true},{type:'price'}]"
           >
             <el-input
@@ -207,7 +216,10 @@
         label="备注"
         min-width="110"
       >
-        <template slot-scope="scope">
+        <template
+          slot-scope="scope"
+          v-if="!scope.row.parentCommodityCode"
+        >
           <el-form-item class="mb0">
             <el-input
               size="mini"
@@ -222,7 +234,10 @@
         label="是否直发"
         min-width="110"
       >
-        <template slot-scope="scope">
+        <template
+          slot-scope="scope"
+          v-if="!scope.row.parentCommodityCode"
+        >
           <el-switch
             :active-value="1"
             :inactive-value="0"
@@ -236,7 +251,10 @@
         label="是否组装"
         min-width="110"
       >
-        <template slot-scope="scope">
+        <template
+          slot-scope="scope"
+          v-if="!scope.row.parentCommodityCode"
+        >
           <el-switch
             :active-value="1"
             :inactive-value="0"
@@ -427,6 +445,11 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+tr.el-table__row.el-table__row--level-1 {
+  background: #f5f7fb;
+}
+</style>
 <style lang="scss" scoped>
 .commodity-quote-edit {
   .el-form-item--mini.el-form-item {

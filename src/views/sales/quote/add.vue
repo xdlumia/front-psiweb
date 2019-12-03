@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 16:22:55
+ * @LastEditTime: 2019-12-03 19:18:53
  * @Description: file content
 */
 <template>
@@ -192,6 +192,7 @@ export default {
           this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList({ putawayType: 0, busType: 1, busCode: this.code })
             .then(res => {
               let data = res.data || []
+              // this.$set(this.form, 'businessCommoditySaveVoList', this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList'))
               this.form.businessCommoditySaveVoList = this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList')
             })
         }
@@ -285,6 +286,15 @@ export default {
             })
             item.putawayType = 0 //0=出库
           })
+          // 验证商品信息
+          if (copyParams.businessCommoditySaveVoList.every(item => !tem.commodityNumber)) {
+            this.$message({
+              message: '商品信息不能为空',
+              type: 'error',
+              showClose: true,
+            });
+            return
+          }
           copyParams.businessCommoditySaveVoList = this.$$util.jsonFlatten(copyParams.businessCommoditySaveVoList, 'commonGoodConfigDetailsEntityList')
           // rules 表单验证是否通过
           let api = 'salesquotationSave' // 默认编辑更新
