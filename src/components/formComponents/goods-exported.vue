@@ -79,7 +79,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.isAssembly == 0 ? '否' : '是'}}</span>
+            <span>{{scope.row.isAssembly == 0 ? '否' : scope.row.isAssembly == 1 ? '是' : ''}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -168,7 +168,7 @@
     </form-card>
   </div>
 </template>
-<script>
+<script> 
 import commodityPicking from '@/components/formComponents/commodity-picking'
 import FullscreenElement from '@/components/fullscreen-element';
 import machineSn from '@/components/formComponents/machine-sn'
@@ -194,7 +194,6 @@ export default {
     getTableVisible(row) {
       this.dialogVisible = true
       this.rowData = row
-      console.log(this.rowData, 'this.rowDatathis.rowDatathis.rowDatathis.rowData')
     },
     fullscreen() {
       this.showInFullscreen = true;
