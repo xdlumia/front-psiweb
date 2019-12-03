@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 18:05:58
+ * @LastEditTime: 2019-12-03 22:13:42
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -63,7 +63,7 @@ export default {
     status() {
       if (!this.getDetail) return [];
       else {
-        if (!this.stateText) {
+        if (!this.stateText && process.env.NODE_ENV != 'production') {
           this.$message({
             message: '当前引用详情页没有设置stateText状态值,不知道是啥的问王晓冬',
             type: 'error',

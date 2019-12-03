@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 17:56:00
+ * @LastEditTime: 2019-12-03 22:08:19
  * @Description: 销售出库单详情
 */
 <template>
@@ -158,6 +158,16 @@ export default {
         { label: '收回合同', type: 'primary', authCode: '' },
         { label: '追加合同附件', type: 'primary', authCode: '' },
       ],
+      stateText: {
+        '-1': '新建',
+        '0': '审核中',
+        '1': '请购处理',
+        '2': '回收合同',
+        '3': '已通过',
+        '4': '完成',
+        '5': '驳回',
+        '6': '终止',
+      },
       /**
        * 根据当前状态判断显示哪些按钮
        */
@@ -192,16 +202,6 @@ export default {
       returnAddVisible: false,
       exchangeAddVisible: false,
       collectInvoiceVisible: false, //开票申请
-      stateText: {
-        '-1': '新建',
-        '0': '审核中',
-        '1': '请购处理',
-        '2': '回收合同',
-        '3': '已通过',
-        '4': '完成',
-        '5': '驳回',
-        '6': '终止',
-      },
 
     }
   },
