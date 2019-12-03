@@ -17,7 +17,7 @@
     <div>
       <div class="drawer-header">
         <el-button
-          v-if="drawerData.swapState != 4"
+          v-if="detailForm.swapState != 4"
           @click="exchangeVisible=true"
           size="mini"
           type="primary"
@@ -109,7 +109,7 @@
         v-if="exchangeVisible"
         :data='detailForm'
         @reload='reload'
-        :allData='drawerData'
+        :allData='detailForm'
       />
     </div>
   </SideDetail>
@@ -155,7 +155,7 @@ export default {
       this.$api.seePsiWmsService.wmsswaptaskGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
-          this.status[0].value = this.state[this.drawerData.swapState]
+          this.status[0].value = this.state[res.data.swapState]
           this.status[1].value = res.data.createTime
           this.status[2].value = res.data.creatorName
           this.status[3].value = res.data.deptName

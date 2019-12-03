@@ -31,6 +31,7 @@
               prop="name"
             >
               <el-select
+                :disabled="!!wmsId"
                 style="width:30%"
                 class="wfull"
                 v-model="wmsId"
@@ -376,11 +377,24 @@ export default {
   },
   mounted() {
     this.commonwmsmanagerUsableList()
+    this.getLastWmId()
   },
   created() {
     this.getCalculation()
   },
   methods: {
+    //查询上一次选择的仓库，下一次不能更改
+    getLastWmId() {
+      this.$api.seePsiWmsService.wmsflowrecordList({ page: 1, limit: 2, commodityCode: this.data.putinCommodityList[0].commodityCode, businessCode: this.data.swapOrderCode })
+        .then(res => {
+          let list = res.data || []
+          this.wmsId = list.length > 0 ? list[0].wmsId : ''
+          console.log(this.wmsId, 'this.wmsIdthis.wmsIdthis.wmsId')
+        })
+        .finally(() => {
+
+        })
+    },
     close() {
       this.$emit('update:visible', false)
     },
