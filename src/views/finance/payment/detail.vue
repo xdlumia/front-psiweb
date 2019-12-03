@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 18:35:57
+ * @LastEditTime: 2019-12-03 16:04:56
  * @Description: 付款单
 */
 <template>
@@ -169,7 +169,7 @@ export default {
         Object.assign(this.$refs.addIncoming.form, {
           incomeAmount: this.detail.amount,
           accountDate: +new Date(),
-          oppositeAccount: this.detail.accountName,
+          // oppositeAccount: this.detail.accountName,
           accountPhone: this.detail.linkmanPhone
         });
         this.$refs.addIncoming.saveHandle = () => this.saveIncoming();
