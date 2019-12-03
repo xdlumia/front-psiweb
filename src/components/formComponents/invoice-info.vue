@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 16:17:59
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-03 15:46:30
  * @Description: 发票信息 1
  */
 <template>
@@ -83,7 +83,7 @@ export default {
         { label: '发票抬头', prop: 'invoiceTitle', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }] },
         { label: '纳税人识别号', prop: 'taxpayersNum', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }], },
         { label: '注册地址', prop: 'registerAddres', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }], },
-        { label: '注册电话', prop: 'registerPhone', type: 'input', rules: [{ required: true && !this.disabled, }, { type: 'phone' }], },
+        { label: '注册电话', prop: 'registerPhone', type: 'input', rules: [{ required: true && !this.disabled, }, { type: 'phone', trigger: 'blur' }], },
         { label: '开户银行', prop: 'accountBank', type: 'input', rules: { required: true && !this.disabled, trigger: 'blur' }, },
         { label: '开户行账号', prop: 'bankAccount', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }, { type: 'bankCard' }], },
       ],

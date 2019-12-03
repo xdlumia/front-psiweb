@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 15:09:10
+ * @LastEditTime: 2019-12-03 15:54:37
  * @Description: 销售-客户管理
  */
 <template>
@@ -46,8 +46,6 @@
         <span v-else-if="column.columnFields=='source'">{{value | dictionary('PSI_KHGL_LY')}}</span>
         <!-- 客户级别 -->
         <span v-else-if="column.columnFields=='grade'">{{value | dictionary('PSI_KH_KHJB')}}</span>
-        <!-- 创建时间 -->
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
