@@ -14,10 +14,10 @@
       >
         <el-form-item
           :rules="[ 
-                    {required:true,message:'请选择盘点库房'}
+                    {required:true,message:'请选择盘点库房', trigger: 'change'}
                 ]"
           label="盘点库房"
-          prop
+          prop='wmsId'
           size="mini"
         >
           <el-select
@@ -44,10 +44,10 @@
         <el-form-item
           style="wfull"
           :rules="[ 
-                    {required:true,message:'请选择盘点人'}
+                    {required:true,message:'请选择盘点人', trigger: 'change'}
                 ]"
           label="盘点人"
-          prop
+          prop='creatorName'
           size="mini"
         >
           <employees-chosen
@@ -72,10 +72,10 @@
       >
         <el-form-item
           :rules="[ 
-                    {required:true,message:'请选择盘点类型'}
+                    {required:true,message:'请选择盘点类型', trigger: 'change'}
                 ]"
           label="盘点类型"
-          prop
+          prop='type'
           size="mini"
         >
           <el-select

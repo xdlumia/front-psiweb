@@ -14,10 +14,10 @@
       >
         <el-form-item
           :rules="[ 
-                    {required:true,message:'请选择调拨方式'}
+                    {required:true,message:'请选择调拨方式',trigger:'change'}
                 ]"
           label="调拨方式"
-          prop
+          prop='allocationType'
           size="mini"
         >
           <el-select
@@ -45,10 +45,10 @@
       >
         <el-form-item
           :rules="[ 
-                    {required:true,message:'请选择调入库房'}
+                    {required:true,message:'请选择调入库房',trigger:'change'}
                 ]"
           label="调入库房"
-          prop
+          prop='putawayWmsId'
           size="mini"
         >
           <el-select
@@ -75,8 +75,9 @@
       >
         <el-form-item
           :rules="[ 
-                    {required:true,message:'请选择服务商名称'}
+                    {required:true,message:'请选择服务商名称',trigger:'change'}
                 ]"
+          prop='facilitatorId'
           label="服务商名称"
           maxlength="32"
           size="mini"
@@ -105,9 +106,10 @@
       >
         <el-form-item
           :rules="[ 
-                    {required:true,message:'请选择服务类型'}
+                    {required:true,message:'请选择服务类型',trigger:'change'}
                 ]"
           label="服务类型"
+          prop='serveType'
           maxlength="32"
           size="mini"
         >
@@ -134,9 +136,10 @@
       >
         <el-form-item
           :rules="[ 
-                    {required:true,message:'请输入运单编号'}
+                    {required:true,message:'请输入运单编号',trigger:'blur'}
                 ]"
           label="运单编号"
+          prop='waybillCode'
           maxlength="32"
           size="mini"
         >
@@ -154,10 +157,12 @@
       >
         <el-form-item
           :rules="[ 
-                    {required:true,message:'请输入物流费用'}
+                    {required:true,message:'请输入物流费用',trigger:'blur'},
+                    {type:'price'}
                 ]"
           label="物流费用"
           maxlength="32"
+          prop='logisticsFees'
           size="mini"
         >
           <el-input

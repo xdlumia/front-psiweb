@@ -72,6 +72,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="商品名称"
         min-width="110"
         prop="goodsName"
@@ -109,6 +110,7 @@
         prop="specOne"
       ></el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="备注"
         min-width="120"
         prop="note"
