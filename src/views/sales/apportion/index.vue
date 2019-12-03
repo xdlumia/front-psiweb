@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 18:40:52
+ * @LastEditTime: 2019-12-03 16:38:54
  * @Description: 销售-费用分摊单
  */
 <template>
@@ -34,11 +34,11 @@
           class="d-text-blue d-pointer"
           @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
-        <!-- 销售出库单编号 -->
+        <!-- 费用单单编号 -->
         <span
           v-else-if="column.columnFields == 'costCode'"
           class="d-text-blue d-pointer"
-          @click="eventHandle('outLibVisible',row)"
+          @click="eventHandle('feeVisible',row)"
         > {{value}}</span>
         <span v-else>{{value}}</span>
       </template>
@@ -52,12 +52,12 @@
       :code="rowData.costApportionCode"
       @reload="this.$refs.table.reload()"
     />
-    <!-- 销售出库单详情 -->
-    <feeDetails
+    <!-- 费用单详情 -->
+    <feeDetail
       v-if="feeVisible"
       :visible.sync="feeVisible"
       :rowData="rowData"
-      :code="rowData.salesShipmentCode"
+      :code="rowData.costCode"
       @reload="$refs.table.reload()"
     />
     <!-- 新增分摊-->
@@ -71,8 +71,8 @@
 </template>
 <script>
 import add from './add' // 新增分摊
-import detail from './details' //客户详情
-import feeDetail from './details' //客户详情
+import detail from './details' //详情
+import feeDetail from '@/views/finance/fee/detail' //费用单详情
 let filterList = [
   // { label: '客户编号', prop: 'title', default: true, type: 'text' },
   // { label: '客户名称', prop: 'city', default: true, type: 'text' },
@@ -83,7 +83,7 @@ let filterList = [
   // { label: '提交时间', prop: 'messageType3', default: true, type: 'daterange', },
 ]
 export default {
-  name: 'return',
+  name: 'salesApportion',
   components: {
     add,
     detail,

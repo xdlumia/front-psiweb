@@ -79,7 +79,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.isAssembly == 0 ? '否' : '是'}}</span>
+            <span>{{scope.row.isAssembly == 0 ? '否' : scope.row.isAssembly == 1 ? '是' : ''}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -158,7 +158,19 @@
         v-dialogDrag
       >
         <commodityPicking :data='rowData' />
-        <machineSn :data='rowData' />
+        <machineSn
+          :data='rowData'
+          :detailForm='detailForm'
+        />
+        <span
+          slot="footer"
+          class="dialog-footer"
+        >
+          <el-button
+            @click="dialogVisible = false"
+            size="small"
+          >关 闭</el-button>
+        </span>
       </el-dialog>
       <CommodityDetail
         :code="currentCommodityCode"
@@ -168,7 +180,7 @@
     </form-card>
   </div>
 </template>
-<script>
+<script> 
 import commodityPicking from '@/components/formComponents/commodity-picking'
 import FullscreenElement from '@/components/fullscreen-element';
 import machineSn from '@/components/formComponents/machine-sn'
@@ -194,7 +206,6 @@ export default {
     getTableVisible(row) {
       this.dialogVisible = true
       this.rowData = row
-      console.log(this.rowData, 'this.rowDatathis.rowDatathis.rowDatathis.rowData')
     },
     fullscreen() {
       this.showInFullscreen = true;
@@ -208,5 +219,8 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+/deep/.el-dialog__footer {
+  text-align: center !important;
+}
 </style>

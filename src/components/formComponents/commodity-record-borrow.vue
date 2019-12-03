@@ -24,7 +24,7 @@
               api="seePsiWmsService.wmsflowrecordList"
               class="college-main"
               ref="companyTable"
-              style="height:500px;"
+              style="height:350px;"
             >
               <el-table-column
                 label="SN码"

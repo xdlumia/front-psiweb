@@ -183,7 +183,7 @@
           label="单位"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">{{scope.row.unit | dictionary('PMD_RM_SHI_YONG_HY')}}</template>
+          <template slot-scope="scope">{{scope.row.unit | dictionary('SC_JLDW')}}</template>
         </el-table-column>
       </el-table>
     </form-card>

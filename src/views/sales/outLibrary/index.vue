@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 15:18:58
+ * @LastEditTime: 2019-12-03 16:41:34
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -29,7 +29,7 @@
 
         <!-- 采购预计到货时间 -->
         <span
-          v-if="column.columnFields=='procurementExpectedArrivalTime'"
+          v-else-if="column.columnFields=='procurementExpectedArrivalTime'"
           class="d-pointer"
           :class="row.salesRequireArrivalTime && row.procurementExpectedArrivalTime>row.salesRequireArrivalTime?'d-text-red':''"
           @click="eventHandle('detailVisible',row)"

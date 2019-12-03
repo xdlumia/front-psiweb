@@ -5,13 +5,12 @@
  * @Last Modified time: 2019-10-28 13:52:05
  * @Description: 库房  销售单 详情组件 出库商品弹出框 机器号/SN码
  */
-//  :params="{commodityCode:data.commodityCode,businessCode:data.pickingOrderCode,page:1,limit:15}"
 <template>
   <div>
     <form-card title='机器号/SN码'>
       <d-table
-        api="seePsiWmsService."
-        :params="{commodityCode:data.commodityCode,businessCode:data.pickingOrderCode,page:1,limit:15}"
+        api="seePsiWmsService.wmsflowrecordList"
+        :params="{commodityCode:data.commodityCode,businessCode:detailForm.salesSheetCode,page:1,limit:15}"
         ref="companyTable"
         class="college-main"
         max-height='300px'
@@ -79,7 +78,7 @@
 </template>
 <script>
 export default {
-  props: ['data'],
+  props: ['data', 'detailForm'],
   data() {
     return {
     }
@@ -91,5 +90,8 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+/deep/.el-dialog__footer {
+  text-align: center !important;
+}
 </style>

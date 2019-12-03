@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 18:24:09
+ * @LastEditTime: 2019-12-03 16:48:30
  * @Description: 今日应付账单
 */
 <template>
@@ -31,7 +31,7 @@
             :billCode="detail.billCode"
             :billId="detail.id"
             :data="detail"
-            :hide="detail.amount>0?[]:['addIncoming','matchIncoming']"
+            :hide="detail.amount>0&&pageConfig.type==0?[]:['addIncoming','matchIncoming']"
             :matchApi="pageConfig.api.matchIncoming"
             :type="pageConfig.type"
             @reload="setEdit(),$reload()"

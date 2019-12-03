@@ -110,7 +110,7 @@ export default {
         logisticsFees: '',//物流费用
         note: '',//备注
         serviceGrade: '',
-        wmsCommodityIdList: [],//调出库房商品ids
+        wmsCommodityIdList: [],//调出库房商品ids 
         wmsNames: [],//庫房名稱
         source: '新增',
       }
