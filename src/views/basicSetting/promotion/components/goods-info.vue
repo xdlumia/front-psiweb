@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 17:45:14
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 15:35:08
+ * @LastEditTime: 2019-12-03 16:56:57
  * @Description: 商品信息
  -->
 <template>
@@ -96,13 +96,13 @@ export default {
     }
   },
   methods: {
-    choose (goods, type) {
+    choose (goods) {
       this.goods = goods
       console.log(goods)
       this.data.commonPromotionCommodityDetailsEntities = goods.map(item => {
         return {
-          commodityId: item.id,
-          commodityCode: item.commodityCode
+          commodityId: item.goodId || item.id,
+          commodityCode: item.commodityCode || item.goodsCode
         }
       })
       this.data.commodityNum = goods.length
