@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 15:29:14
+ * @LastEditTime: 2019-12-03 16:37:19
  * @Description: 促销管理
  -->
 <template>
@@ -81,8 +81,8 @@ export default {
       },
       editId: null,
       stateText: {
-        0: '启用',
-        1: '停用',
+        0: '已启用',
+        1: '已停用',
         2: '已过期'
       },
       filterOptions: [

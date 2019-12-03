@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 15:35:37
+ * @LastEditTime: 2019-12-03 16:37:30
  * @Description: 目标管理
  -->
 <template>
@@ -69,7 +69,7 @@ export default {
       default: () => ({ page: 1, limit: 15 })
     }
   },
-  data() {
+  data () {
     return {
       rowData: null,
       code: null,
@@ -80,8 +80,8 @@ export default {
         page: 1
       },
       stateText: {
-        0: '启用',
-        1: '停用',
+        0: '已启用',
+        1: '已停用',
         2: '已过期'
       },
       editId: null,
@@ -112,19 +112,19 @@ export default {
       ]
     }
   },
-  mounted() {
+  mounted () {
   },
   components: {
     addObjective,
     detail
   },
   methods: {
-    detail(row) {
+    detail (row) {
       this.rowData = row
       this.code = row.code
       this.showDetail = true
     },
-    commonwmsmanagerUpdateState(id, state) {
+    commonwmsmanagerUpdateState (id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -140,7 +140,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete(id) {
+    commonwmsmanagerLogicDelete (id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -156,10 +156,10 @@ export default {
         })
       })
     },
-    saveFacilitator() {
+    saveFacilitator () {
       this.$refs.addObjective && this.$refs.addObjective.commonserviceproviderSave()
     },
-    refresh() {
+    refresh () {
       this.visible = false
       this.$refs.table.reload()
     }
