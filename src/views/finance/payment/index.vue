@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 14:08:18
+ * @LastEditTime: 2019-12-03 15:56:35
  * @Description: 付款单
 */
 <template>
@@ -197,11 +197,13 @@ export default {
         this.loading = true;
         try {
           await this.$api.seePsiFinanceService.paybillBatchPaymentApply({
-            apprpvalNode: this.form.apprpvalNode,
+            apprpvalNode: null,
             ids: multi.map(item => item.id),
             processType: 'psi_payment'
           });
-        } catch (error) {}
+        } catch (error) {
+          console.error(error)
+        }
         this.loading = false;
       } else {
         this.$message({

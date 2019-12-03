@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:28:41
+ * @LastEditTime: 2019-12-03 16:14:21
  * @Description: 采购入库单
 */
 <template>
@@ -198,7 +198,8 @@ export default {
           .filter(item => item.waitPurchaseNumber)
           .map(item => {
             item.purchasePrice = item.costAmount;
-            item.maxcommodityNumber = item.commodityNumber;
+            item.commodityNumber = item.waitPurchaseNumber;
+            item.maxcommodityNumber = item.waitPurchaseNumber;
             return item;
           });
         if (this.from == '请购单') {
