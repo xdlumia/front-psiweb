@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 19:51:42
+ * @LastEditTime: 2019-12-03 10:26:02
  * @Description: 退货商品商品信息
 */
 <template>
@@ -34,6 +34,9 @@
         size="mini"
         border
         :data="data.businessCommoditySaveVoList || []"
+        default-expand-all
+        :tree-props="{children: 'children'}"
+        row-key="id"
         ref="table"
       >
         <el-table-column
@@ -248,7 +251,7 @@ export default {
       this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.params)
         .then(res => {
           let data = res.data || []
-          this.data.businessCommoditySaveVoList = data
+          this.data.businessCommoditySaveVoList = this.$$util.formatCommodity(data)
           // this.data.exChangeCommodityList 是临时数据 存放换货后的数据
           if (this.data.exChangeCommodityList) {
             this.data.exChangeCommodityList = JSON.parse(JSON.stringify(data))

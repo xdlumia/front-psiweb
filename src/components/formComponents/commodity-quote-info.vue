@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 19:37:09
+ * @LastEditTime: 2019-12-03 11:27:41
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -146,7 +146,16 @@ export default {
     };
   },
   created() {
-    this.businesscommodityGetBusinessCommodityList(this.data.quotationCode)
+    // this.businesscommodityGetBusinessCommodityList(this.data.quotationCode)
+  },
+  watch: {
+    'data.quotationCode': {
+      handler(val) {
+        if (val) {
+          this.businesscommodityGetBusinessCommodityList(this.data.quotationCode)
+        }
+      }
+    }
   },
   methods: {
     businesscommodityGetBusinessCommodityList(quotationCode) {
