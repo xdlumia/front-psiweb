@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 10:35:28
+ * @LastEditTime: 2019-12-03 18:27:38
  * @Description: 拆卸商品编辑页面
 */  
 <template>
@@ -248,9 +248,10 @@ export default {
     },
     add(row, info) {
       let i = info.index;
-      let parent = row.$parent || this.data.commodityList;
+      let parent = info.parentArray;
       parent.splice(i + 1, 0, {
-        _rowKey: +new Date()
+        commodityCode: '',
+        _rowKey: ''
       });
     },
     del(row, info) {
