@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:30:13
+ * @LastEditTime: 2019-12-03 14:43:26
  * @Description: 滞纳金
 */
 <template>
@@ -12,14 +12,15 @@
       <span class="fr mr20"></span>
     </div>
     <div>
-      <el-form :model="form" v-if="form&&showEditPage">
+      <el-form :model="form" ref="form" v-if="form&&showEditPage">
         <form-card>
           <el-row :gutter="10">
             <el-col :span="12">
               <el-form-item
                 :rules="[
                     {required:true,message:'必填项'},
-                    {type:'price'}
+                    {type:'price'},
+                    {validator:checkLateAmount}
                 ]"
                 label="滞纳金"
                 size="mini"
@@ -58,6 +59,14 @@ export default {
   },
   mounted() {},
   methods: {
+    checkLateAmount(rule, value, cb) {
+      value = parseFloat(value) || 0;
+      if (value <= 0) {
+        cb(new Error('滞纳金必须大于0'));
+      } else {
+        cb();
+      }
+    },
     getDetail() {
       if (this.rowData) {
         return {
@@ -67,13 +76,14 @@ export default {
       }
     },
     async save() {
+      await this.$refs.form.validate();
       this.loading = true;
       try {
         await this.$getApi(this.pageConfig.api.lateFee)(this.form);
         this.setEdit();
         this.close();
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
       this.loading = false;
     }
