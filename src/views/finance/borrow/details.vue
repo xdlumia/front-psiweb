@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 16:49:32
+ * @LastEditTime: 2019-12-03 17:00:51
  * @Description: 详情
 <template>
   <div>
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state|| 0].includes(item.label)"
+            v-if="currStatusType[detail.state || 0].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -87,6 +87,7 @@ export default {
         '0': ['删除', '还款'], // 未还清
         '1': ['删除'], // 已还清
       },
+      stateText: { 0: '未结清', 1: '已结清' }
     }
   },
 

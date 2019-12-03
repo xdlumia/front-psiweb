@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-02 14:55:06
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-03 16:58:31
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -27,8 +27,8 @@ export default {
       closeTimer: null,
       alwaysDropAndCopyForm: false,
       isDataReady: false,// 是否数据准备完毕，可以渲染视图了
-      activeTab:'',// 页签
-      tabStatus:{} // 页签状态
+      activeTab: '',// 页签
+      tabStatus: {} // 页签状态
     }
   },
   watch: {
@@ -36,8 +36,8 @@ export default {
       this.$checkVisible();
     },
     // 监听页签切换，改变状态，为true开始渲染
-    activeTab(){
-      this.$set(this.tabStatus,this.activeTab,true)
+    activeTab() {
+      this.$set(this.tabStatus, this.activeTab, true)
     }
   },
   mounted() {
@@ -47,7 +47,7 @@ export default {
       try {
         statusList = this.$parent.$refs.table.statusList
         statusList.forEach(item => {
-          if (item.name != '全部') {
+          if (item.name != '全部' && !Object.keys(this.stateText).length) {
             this.stateText[item.state || item.approvalState] = item.name
           }
         })
@@ -81,7 +81,7 @@ export default {
         if (data) {
           data = JSON.parse(JSON.stringify(data))
           this.detail = data || {}
-          if (this.alwaysDropAndCopyForm&&data) this.form = data;
+          if (this.alwaysDropAndCopyForm && data) this.form = data;
           else {
             // this.rowData = data || {}
             if (this.form && this.type == 'edit') {
@@ -98,7 +98,7 @@ export default {
           }
         }
         if (this.afterDetailInit) this.afterDetailInit()
-      } catch (error) { 
+      } catch (error) {
         console.error(error)
       }
       this.isDataReady = true;
