@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 19:18:53
+ * @LastEditTime: 2019-12-03 19:26:18
  * @Description: file content
 */
 <template>
@@ -287,7 +287,7 @@ export default {
             item.putawayType = 0 //0=出库
           })
           // 验证商品信息
-          if (copyParams.businessCommoditySaveVoList.every(item => !tem.commodityNumber)) {
+          if (copyParams.businessCommoditySaveVoList.every(item => !item.commodityNumber)) {
             this.$message({
               message: '商品信息不能为空',
               type: 'error',

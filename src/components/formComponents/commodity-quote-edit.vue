@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 19:25:04
+ * @LastEditTime: 2019-12-03 19:28:26
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -146,7 +146,7 @@
           >
             <el-input
               size="mini"
-              :disabled="scope.row.parentCommodityCode"
+              :disabled="!!scope.row.parentCommodityCode"
               @input="numberChange(scope.row)"
               placeholder="请输入商品数量"
               v-model="scope.row.commodityNumber"
@@ -447,7 +447,7 @@ export default {
 </script>
 <style lang="scss">
 tr.el-table__row.el-table__row--level-1 {
-  background: #f5f7fb;
+  background: #f7f7f7;
 }
 </style>
 <style lang="scss" scoped>
