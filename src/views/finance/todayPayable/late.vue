@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 14:43:26
+ * @LastEditTime: 2019-12-03 14:56:04
  * @Description: 滞纳金
 */
 <template>
@@ -22,6 +22,7 @@
                     {type:'price'},
                     {validator:checkLateAmount}
                 ]"
+                prop="lateFeeAmount"
                 label="滞纳金"
                 size="mini"
               >
@@ -61,6 +62,7 @@ export default {
   methods: {
     checkLateAmount(rule, value, cb) {
       value = parseFloat(value) || 0;
+      console.log(value);
       if (value <= 0) {
         cb(new Error('滞纳金必须大于0'));
       } else {
