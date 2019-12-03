@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-30 14:17:30
+ * @LastEditTime: 2019-12-03 09:36:30
  * @Description: 账单调整
  */
 <template>
@@ -170,7 +170,7 @@ export default {
       }
       if (this.data.adjustAmount > this.sumAmount) {
         this.$message({
-          message: `本次分摊费用金额不能大于${this.sumAmount}`,
+          message: `本次调整金额不能大于${this.sumAmount}`,
           type: 'error',
           showClose: true,
         });
