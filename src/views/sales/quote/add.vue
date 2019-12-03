@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 20:15:52
+ * @LastEditTime: 2019-12-03 20:52:51
  * @Description: file content
 */
 <template>
@@ -275,7 +275,7 @@ export default {
     saveHandle() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.loading = true
+
           let params = Object.assign(this.form, this.params)
           let copyParams = JSON.parse(JSON.stringify(params))
 
@@ -298,7 +298,9 @@ export default {
             });
             return
           }
+
           copyParams.businessCommoditySaveVoList = this.$$util.jsonFlatten(copyParams.businessCommoditySaveVoList, 'commonGoodConfigDetailsEntityList')
+          this.loading = true
           // rules 表单验证是否通过
           let api = 'salesquotationSave' // 默认编辑更新
           // 新增保存
