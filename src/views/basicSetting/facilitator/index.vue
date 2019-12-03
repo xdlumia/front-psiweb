@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 10:25:09
+ * @LastEditTime: 2019-12-03 15:24:03
  * @Description: 服务商
  -->
 <template>
@@ -66,7 +66,7 @@ export default {
       default: () => ({ page: 1, limit: 15 })
     }
   },
-  data () {
+  data() {
     return {
       rowData: null,
       code: null,
@@ -80,7 +80,7 @@ export default {
       filterOptions: [
         { label: '服务商编号', prop: 'code', default: true },
         { label: '服务商名称', prop: 'fuzzyServiceName', default: true },
-        {          label: '状态',
+        { label: '状态',
           prop: 'state',
           type: 'select',
           default: true,
@@ -98,24 +98,24 @@ export default {
           type: 'employee',
           default: true
         },
-        { label: '创建部门', prop: 'deptName', type: 'dept', default: true },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange', default: true }
       ]
     }
   },
-  mounted () {
+  mounted() {
   },
   components: {
     addFacilitator,
     detail
   },
   methods: {
-    detail (row) {
+    detail(row) {
       this.rowData = row
       this.code = row.code
       this.showDetail = true
     },
-    commonwmsmanagerUpdateState (id, state) {
+    commonwmsmanagerUpdateState(id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -131,7 +131,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete (id) {
+    commonwmsmanagerLogicDelete(id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -147,10 +147,10 @@ export default {
         })
       })
     },
-    saveFacilitator () {
+    saveFacilitator() {
       this.$refs.addFacilitator && this.$refs.addFacilitator.commonserviceproviderSave()
     },
-    refresh () {
+    refresh() {
       this.visible = false
       this.$refs.table.reload()
     }

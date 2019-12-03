@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 19:04:22
+ * @LastEditTime: 2019-12-03 16:12:19
  * @Description: 生成请购单商品信息
 */
 <template>
@@ -14,6 +14,9 @@
         size="mini"
         border
         :data="tableData"
+        default-expand-all
+        :tree-props="{children: 'children'}"
+        row-key="id"
         ref="table"
       >
         <el-table-column
@@ -156,10 +159,11 @@ export default {
     businesscommodityGetBusinessCommodityList() {
       this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.params)
         .then(res => {
+          let data = res.data || []
           this.tableData = res.data || []
           // 清空商品数量
           this.data.commodityList = []
-          this.tableData.forEach(item => {
+          data.forEach(item => {
             // 商品数量-总库存大于0的商品才生成请购单
             let commodityNumber = (item.commodityNumber || 0) - (item.inventoryNumber || 0)
             if (commodityNumber > 0) {
@@ -167,6 +171,7 @@ export default {
               item.commodityNumber = commodityNumber
               this.data.commodityList.push(item)
             }
+            this.tableData = this.$$util.formatCommodity(data)
           })
         })
     },

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 18:51:34
+ * @LastEditTime: 2019-12-03 16:04:41
  * @Description: 客户详情
 */
 <template>
@@ -186,7 +186,7 @@ export default {
             });
         });
       }
-      // 如果是 编辑/生成销售出库单/生成请购单 等操作返回方法在首页index里操作
+
       else if (label == '编辑' || label == '新建报价单') {
         if (label == '编辑') {
           this.editVisible = true

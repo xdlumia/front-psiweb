@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 17:39:28
+ * @LastEditTime: 2019-12-03 16:02:27
  * @Description: 采购单详情
 */
 <template>
@@ -61,7 +61,11 @@
     <OrderStorageAdd :joinCode="code" :visible.sync="orderStorageVisible" @reload="setEdit(),$reload()" from="请购单" />
     <addBorrowIn
       :rowData="{
-        commodityList:detail.commodityList.filter(a=>a.waitPurchaseNumber>0),
+        commodityList:detail.commodityList.filter(a=>a.waitPurchaseNumber>0).map(a=>({
+          ...a,
+          commodityNumber:a.waitPurchaseNumber,
+          maxcommodityNumber:a.waitPurchaseNumber,
+        })),
         borrowLoanType:0,
         businessCode :detail.purchaseApplyCode,
         businessType:1

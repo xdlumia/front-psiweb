@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 19:46:11
+ * @LastEditTime: 2019-12-03 15:57:44
  * @Description: 报价单详情
 */
 <template>
@@ -26,7 +26,6 @@
     />
     <!-- 商品信息 -->
     <commodity-quote-info
-      v-if="data.quotationCode"
       disabled
       :data="data"
     />
