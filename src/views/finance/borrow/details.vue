@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 16:06:25
+ * @LastEditTime: 2019-12-03 16:49:32
  * @Description: 详情
 <template>
   <div>
@@ -10,7 +10,7 @@
       :title="`借款单编号:${code}`"
       :visible.sync="showDetailPage"
       width="920px"
-      :status="status"
+      :status="statusArr"
       @close="close"
     >
       <div class="drawer-header">
@@ -44,13 +44,14 @@
           :data="detail"
         />
         <!-- 还款记录 -->
-        <repayment-history 
-        :params="{
+        <repayment-history
+          :params="{
           limit: 20,
           page: 1,
           borrowingCode: this.rowData.borrowingCode, //借款单编号
         }"
-        :data="detail" />
+          :data="detail"
+        />
       </el-form>
     </side-detail>
     <!-- 还款 -->
@@ -90,7 +91,18 @@ export default {
   },
 
   computed: {
-
+    statusArr() {
+      if (!this.getDetail) return [];
+      else {
+        return [
+          { label: '状态', value: this.stateText[this.detail.state] },
+          { label: '借款人', value: this.detail.borrower },
+          { label: '借款金额(元)', value: this.detail.borrowingAmount },
+          { label: '借款日期', value: this.detail.borrowTime, isTime: true },
+          { label: '结算账户', value: this.detail.companySettlementInfo }
+        ];
+      }
+    }
   },
   created() {
 
