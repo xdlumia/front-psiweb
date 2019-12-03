@@ -29,13 +29,13 @@
           type="primary"
         >返还</el-button>
         <el-button
-          v-if="drawerData.borrowLoanState == 2 || drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 9"
+          v-if="(drawerData.borrowLoanState == 2 || drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 9) && (inNum < inAllNum)"
           @click="backVisible=true,isComponents = 'borrowScanCode',dialogData.title='借入扫码-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
         >借入扫码</el-button>
         <el-button
-          v-if="drawerData.borrowLoanState == 3 || drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 8"
+          v-if="(drawerData.borrowLoanState == 3 || drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 8) && (inNum < inAllNum)"
           @click="backVisible=true,isComponents = 'lendScanCode',dialogData.title='借出扫码-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
@@ -119,6 +119,8 @@ export default {
         title: ''
       },
       activeName: '',
+      inNum: 0,
+      inAllNum: 0,
       state: {
         2: '待借入',
         3: '待借出',
@@ -167,11 +169,21 @@ export default {
           this.status[3].value = res.data.deptName
           this.status[4].value = res.data.source
           this.detailForm.commodityList = this.detailForm.commodityShowList || [];
+          if (res.data.commodityShowList.length > 0) {
+            this.init(res.data.commodityShowList)
+          }
+
         })
         .finally(() => {
 
         })
     },
+    init(list) {
+      list.forEach((item) => {
+        this.inNum = this.inNum + (item.borrowLoanAccomplishNum || 0)
+        this.inAllNum = this.inAllNum + (item.borrowLoanNum || 0)
+      })
+    }
   }
 }
 </script>

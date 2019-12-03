@@ -29,9 +29,9 @@
           class="d-text-blue d-pointer"
           @click="getDetailVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='pickingState'">{{value == 0 ? '待拣货' : value == 1 ? '部分拣货' : value == 2 ? '完成拣货' : value == -1 ? '终止' : ''}}</span>
-        <span v-else-if="column.columnFields=='assemblyState'">{{value == 0 ? '未开始' : value == 1 ? '待组装':value == 2 ? '部分组装':value == 3 ? '完后组装':value == -1 ? '终止':''}}</span>
-        <span v-else-if="column.columnFields=='deliverState'">{{value == 0 ? '待发货' : value == 1 ? '完成发货' : value == 2 ? '终止' : ''}}</span>
+        <span v-else-if="column.columnFields=='pickingState'">{{value == 0 ? '待拣货' : value == 1 ? '部分拣货' : value == 2 ? '完成拣货' : value == -1 ? '终止' : '-'}}</span>
+        <span v-else-if="column.columnFields=='assemblyState'">{{value == 0 ? '未开始' : value == 1 ? '待组装':value == 2 ? '部分组装':value == 3 ? '完后组装':value == -1 ? '终止':'-'}}</span>
+        <span v-else-if="column.columnFields=='deliverState'">{{value == 0 ? '待发货' : value == 1 ? '完成发货' : value == 2 ? '终止' : '-'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
@@ -91,8 +91,6 @@ export default {
         title: '',
         component: 'Details'
       },
-      activeName: '',
-      status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38' }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
       filterOptions: [
         { label: '销售出库单编号', prop: 'shipmentCode', default: true },
         {
