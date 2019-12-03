@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 11:08:30
+ * @LastEditTime: 2019-12-03 14:50:26
  * @Description: 生成合同
 */
 <template>
@@ -102,9 +102,7 @@
               :data="form"
             />
           </el-form>
-
         </d-tabs>
-
       </div>
     </el-dialog>
     <contractPreview
