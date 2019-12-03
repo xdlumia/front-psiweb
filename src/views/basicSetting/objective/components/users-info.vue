@@ -40,7 +40,7 @@
             v-if="data.commonPromotionGoalPersonnelEntities && data.commonPromotionGoalPersonnelEntities.length"
           >
             <el-form-item
-              :rules="[{required: true,message:'请输入',trigger: 'blur'},{ pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }]"
+              :rules="[{required: true,message:'请输入',trigger: 'blur'},{ pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }]"
               :prop="'commonPromotionGoalPersonnelEntities.' + $index + '.money'"
             >
               <el-input v-model="data.commonPromotionGoalPersonnelEntities[$index].money"></el-input>

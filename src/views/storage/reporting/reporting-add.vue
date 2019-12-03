@@ -41,6 +41,7 @@
       </el-header>
       <el-main style="padding:0;max-height:700px;">
         <el-form
+          ref='addForm'
           :model="addForm"
           class="p10"
         >
@@ -102,6 +103,7 @@ export default {
         type: 2,//类别（1-报溢 2-报损）
         wmsId: null,//库房id
         personInChargeId: '',//责任人id
+        leaderName: '',//
         note: '',//备注
         totalCostPrice: '',//成本金额总计
         taxInclusiveTotalCostPrice: '',//含税成本金额总计
@@ -126,16 +128,21 @@ export default {
     },
     //点一下保存
     submit() {
-      this.$api.seePsiWmsService.wmsreportinglossesSave(this.addForm)
-        .then(res => {
-          this.close()
-          this.$emit("reload")
-          console.log('ahahahahha')
-        })
-        .finally(() => {
+      this.$refs['addForm'].validate((valid) => {
+        if (valid) {
+          this.$api.seePsiWmsService.wmsreportinglossesSave(this.addForm)
+            .then(res => {
+              this.close()
+              this.$emit("reload")
+            })
+            .finally(() => {
 
-        })
-
+            })
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      })
     }
   }
 };

@@ -91,10 +91,10 @@
               <el-col :span="8">
                 <el-form-item
                   label="物流费用"
-                  prop="name"
+                  prop="logisticsFees"
                   :rules="[
               { required: false, message: '', trigger: 'blur' },
-              { type: 'price', message: '', trigger: 'blur' },
+              { type:'price'},
             ]"
                 >
                   <el-input
@@ -152,6 +152,7 @@
               label="商品名称"
               min-width="110"
               prop="goodsName"
+              show-overflow-tooltip
             ></el-table-column>
             <el-table-column
               label="商品规格"

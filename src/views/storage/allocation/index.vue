@@ -19,7 +19,7 @@
       title="调拨单"
       @selection-change="selectionChange"
     >
-      <template v-slot:button> 
+      <template v-slot:button>
         <el-button
           type="primary"
           size='mini'
@@ -36,7 +36,7 @@
         <span v-else-if="column.columnFields=='allocationType'">{{value == 1 ? '内调' : '外调'}}</span>
         <span v-else>{{value}}</span>
       </template>
-    </TableView> 
+    </TableView>
     <Details
       @reload='reload'
       ref='details'

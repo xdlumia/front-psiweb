@@ -149,8 +149,7 @@ export default {
   },
   methods: {
     close() {
-      this.backVisible = false
-
+      // this.backVisible = false
       this.$emit('update:visible', false)
     },
     reload() {

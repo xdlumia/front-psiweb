@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-31 14:35:08
+ * @LastEditTime: 2019-12-03 10:38:29
  * @Description: 业务设置-销售
  -->
 <template>
@@ -38,7 +38,7 @@
         </legend>
         <el-form-item>
           <el-col :span="14">
-            <span>【报价单】的“折后销售单价”小于“销售参考价”时，不能保存生成报价单</span>
+            <span>【报价单】的“折后销售单价”大于等于“销售参考价”时，不用进行审核，自动通过</span>
           </el-col>
           <el-col :span="6">
             <el-switch
@@ -60,6 +60,8 @@
               size="mini"
               controls-position="right"
               :min="1"
+              :max="999"
+              :precision="0"
               setp="1"
             ></el-input-number>天
           </el-col>
@@ -111,7 +113,7 @@
 
 <script type='text/ecmascript-6'>
 export default {
-  data() {
+  data () {
     return {
       loading: false,
       isEdit: false,
@@ -126,11 +128,11 @@ export default {
   },
   components: {
   },
-  mounted() {
+  mounted () {
     this.commonsystemconfigInfo()
   },
   methods: {
-    save() {
+    save () {
       const params = {
         configType: 1,
         configJson: JSON.stringify(this.sellEntity)
@@ -138,7 +140,7 @@ export default {
       this.commonsystemconfigSave(params)
     },
     // 保存接口
-    commonsystemconfigSave(params) {
+    commonsystemconfigSave (params) {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigSave(params).finally(() => {
         this.commonsystemconfigInfo()
@@ -146,18 +148,18 @@ export default {
         this.isEdit = false
       })
     },
-    cancel() {
+    cancel () {
       this.isEdit = false
       this.handleDefault()
     },
     // 处理返回数据
-    handleDefault() {
+    handleDefault () {
       Object.keys(this.sellEntity).forEach(key => {
         this.sellEntity[key] = this.tempObj[key] || this.sellEntity[key]
       })
     },
     // 获取详情
-    commonsystemconfigInfo() {
+    commonsystemconfigInfo () {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigInfo(null, 1).then(res => {
         this.tempObj = JSON.parse(res.data.configJson)

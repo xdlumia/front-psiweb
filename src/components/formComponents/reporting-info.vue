@@ -14,10 +14,10 @@
       >
         <el-form-item
           :rules="[ 
-                    {required:true,message:'请选择类型'}
+                    {required:true,message:'请选择类型', trigger: 'change'}
                 ]"
           label="类型"
-          prop
+          prop='type'
           size="mini"
         >
           <el-select
@@ -47,10 +47,10 @@
       >
         <el-form-item
           :rules="[ 
-                    {required:true,message:'请选择库房'}
+                    {required:true,message:'请选择库房', trigger: 'change'}
                 ]"
           label="出库/入库库房"
-          prop
+          prop='wmsId'
           size="mini"
         >
           <el-select
@@ -77,10 +77,10 @@
         <el-form-item
           style="wfull"
           :rules="[ 
-                    {required:true,message:'请选择责任人'}
+                    {required:true,message:'请选择责任人', trigger: 'change'}
                 ]"
           label="责任人"
-          prop
+          prop='leaderName'
           size="mini"
         >
 
@@ -90,8 +90,6 @@
           :closeOnSelect="false"
           @input="choose" -->
           <employees-chosen
-            v-model="employee"
-            :disabled='disabled'
             :multiple="false"
             :closeOnSelect="false"
             @input="choose"
@@ -161,9 +159,10 @@ export default {
       this.usableList = data || []
     },
     //选择人员
-    choose() {
-      this.addForm.leaderName = this.employee.employeeName
-      this.addForm.personInChargeId = this.employee.userId
+    choose(value) {
+      console.log(value, 'value')
+      this.addForm.leaderName = value.employeeName
+      this.addForm.personInChargeId = value.userId
     },
     //在报损的情况下每次切换库房,需要重新请求当前商品
     wmsChange() {

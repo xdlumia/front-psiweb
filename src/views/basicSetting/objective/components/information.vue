@@ -10,7 +10,7 @@
     <el-row :gutter="40" type="flex" justify="space-between">
       <el-col :span="12">
         <el-form-item label="目标名称" prop="promotionName">
-          <el-input v-model="data.promotionName"></el-input>
+          <el-input v-model.trim="data.promotionName"></el-input>
         </el-form-item>
       </el-col>
       <el-col :span="12">

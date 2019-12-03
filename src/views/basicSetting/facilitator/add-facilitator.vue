@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-09 11:18:31
+ * @LastEditTime: 2019-12-03 10:24:10
  * @Description: 新增服务商
  -->
 <template>
@@ -60,7 +60,7 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     return {
       facilitatorForm: {
         id: '',
@@ -75,6 +75,13 @@ export default {
         trade: '',
         source: '',
         address: '',
+        invoiceTitle: '',
+        taxpayersNum: '',
+        registerAddres: '',
+        registerPhone: '',
+        accountBank: '',
+        bankAccount: '',
+        note: '',
         attachList: []
       },
       facilitatorFormRule: {
@@ -96,15 +103,15 @@ export default {
     information
   },
   computed: {
-    maxHeight () {
+    maxHeight() {
       return window.innerHeight - 130;
     }
   },
-  mounted () {
+  mounted() {
     this.facilitatorForm = Object.assign(this.facilitatorForm, this.detailForm)
   },
   methods: {
-    commonserviceproviderSave () {
+    commonserviceproviderSave() {
       this.$refs.facilitatorForm.validate(valid => {
         if (valid) {
           this.loading = true

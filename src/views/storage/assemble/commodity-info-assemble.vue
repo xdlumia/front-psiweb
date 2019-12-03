@@ -122,12 +122,15 @@
           slot-scope="scope"
           class="d-relative"
         >
-          <el-input
+          <el-input-number
             v-if="scope.row.commodityCode && !scope.row.quotationId"
             size="mini"
             v-model="scope.row.num"
+            :controls='false'
+            :min='0'
+            :precision="0"
             placeholder="请输入"
-          ></el-input>
+          ></el-input-number>
           <span v-else>{{scope.row.commodityNum}}</span>
         </template>
       </el-table-column>

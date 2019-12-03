@@ -95,7 +95,7 @@
               :params="{commodityCode:data.commodityCode,businessCode:drawerData.assembleTaskCode ? drawerData.assembleTaskCode : drawerData.assembleOrderCode,page:1,limit:15}"
               ref="companyTable"
               class="college-main"
-              max-height='300px'
+              style=" height:200px"
             >
               <el-table-column
                 type='index'
