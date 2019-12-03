@@ -57,7 +57,7 @@
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span>{{scope.row.putinNumber || 0}}/{{scope.row.commodityNumber}}</span>
+                <span>{{(scope.row.putinNumber || 0)+tableData.length}}/{{scope.row.commodityNumber}}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -148,7 +148,7 @@
             :data="tableData"
             ref="companyTable"
             class="college-main"
-            max-height="200"
+            max-height="200px"
             :tree-props="{children: 'id', hasChildren: 'id'}"
           >
             <el-table-column
@@ -298,7 +298,7 @@ export default {
     //回车机器号和SN码
     shipmentCommodityCheck() {
       if (this.wmsId) {
-        if ((this.rowData.commodityNumber - (this.rowData.putinNumber || 0) - this.tableData.length) != 0) {
+        if ((this.rowData.commodityNumber - (this.rowData.putinNumber || 0) - this.tableData.length) >= 0) {
           this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: this.snCode, commodityCode: this.rowData.commodityCode, putawayCommodityList: this.tableData, categoryCode: this.rowData.categoryCode, wmsId: this.wmsId })
             .then(res => {
               if (res.data) {
