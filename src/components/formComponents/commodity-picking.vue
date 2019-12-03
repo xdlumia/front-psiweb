@@ -17,29 +17,36 @@
       >
         <el-table-column
           fixed
-          prop="shipmentsNumber"
+          prop="pickingNumber"
           min-width="100"
           label="拣货数量"
           show-overflow-tooltip
         ></el-table-column>
-        <!-- <el-table-column
+        <el-table-column
           fixed
           prop="commodityCode"
           label="商品编号"
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
           </template>
-        </el-table-column> -->
+        </el-table-column>
         <el-table-column
           fixed
           prop="categoryCode"
           min-width="100"
           label="商品类别"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           fixed
           prop="className"
@@ -65,31 +72,45 @@
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.specOne}}</span>
-          </template>
         </el-table-column>
         <el-table-column
           prop="unit"
           min-width="80"
           label="单位"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+          </template>
+        </el-table-column>
       </el-table>
     </form-card>
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </div>
 </template>
 <script>
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 export default {
   props: ['data'],
   data() {
     return {
+      showCommodityDetail: false,
+      currentCommodityCode: '',
     }
   },
   methods: {
-    //点击机器号和SN码
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
   },
   components: {
+    CommodityDetail
   },
 }
 </script>

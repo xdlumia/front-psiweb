@@ -12,7 +12,7 @@
       class="borrow-goods-info mt10 d-auto-y"
     >
       <form-card
-        v-for="(item,index) of dialogData.allocationCommodityList"
+        v-for="(item,index) of [...dialogData.allocationCommodityList]"
         :key="index"
         class="borrow-goods-info mt10"
         title="机器号/SN"

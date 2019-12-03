@@ -17,7 +17,10 @@
     <div>
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
-          <el-form>
+          <el-form
+            :model="detailForm"
+            ref="detailForm"
+          >
             <reportingInfo
               :disabled='true'
               :addForm='detailForm'

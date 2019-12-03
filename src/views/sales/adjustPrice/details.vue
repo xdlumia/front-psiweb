@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 18:48:16
+ * @LastEditTime: 2019-12-03 17:19:30
  * @Description: 账单调整详情
 */
 <template>
@@ -117,6 +117,11 @@ export default {
       activeName: 'detail',
       form: {},
       editVisible: false,
+      stateText: {
+        '0': '新建',
+        '1': '审核中',
+        '2': '通过',
+      },
     }
   },
   computed: {
