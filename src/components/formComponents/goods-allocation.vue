@@ -21,6 +21,7 @@
         </span>
       </div>
       <el-table
+        ref='companyTable'
         border
         size='mini'
         :data="form.allocationCommodityList"

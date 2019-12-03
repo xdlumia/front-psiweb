@@ -40,6 +40,7 @@
     <Details
       @reload='reload'
       ref='details'
+      :code='drawerData.allocationOrderCode'
       :drawerData='drawerData'
       :visible.sync='tableVisible'
       v-if="tableVisible"
@@ -173,8 +174,7 @@ export default {
     //点击打开右侧边栏
     getTableVisible(data) {
       this.tableVisible = true
-      this.drawerData.title = '调拨单-' + data.allocationOrderCode
-      this.drawerData.code = data.allocationOrderCode
+      this.drawerData = data
       // this.$refs.details.wmsallocationorderInfo()
     },
     reload() {

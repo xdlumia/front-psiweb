@@ -260,7 +260,7 @@ export default {
         .then(res => {
           if (res.data) {
             let arr = this.downTableData.filter((item) => {
-              return item.id == res.data.id
+              return item.commodityCode == res.data.commodityCode
             })
             // if (arr.length == 0) {
             this.doSth(res.data)
@@ -280,17 +280,16 @@ export default {
     //每次扫码,对应上边的
     doSth(data) {
       this.dialogData.allocationCommodityList.forEach((item) => {
-        // item.inAccomplishNum = 0
         if (item.commodityCode == data.commodityCode) {
-          // if (Number(item.inAccomplishNum) < Number(item.num)) {//数量还不够的时候可以继续扫
-          item.inAccomplishNum++
-          this.downTableData.push(data)
-          // } else {
-          //   this.$message({
-          //     type: 'info',
-          //     message: '扫过喽'
-          //   })
-          // }
+          if (Number(item.inAccomplishNum) < Number(item.num)) {//数量还不够的时候可以继续扫
+            item.inAccomplishNum++
+            this.downTableData.push(data)
+          } else {
+            this.$message({
+              type: 'error',
+              message: '当前商品调入数量已满！'
+            })
+          }
         }
       })
     },

@@ -11,7 +11,7 @@
     :status="status"
     :visible="visible"
     @close="close"
-    :title="drawerData.title"
+    :title="`调拨单-${code}`"
     width="990px"
   >
     <div>
@@ -34,7 +34,10 @@
       </div>
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
-          <el-form>
+          <el-form
+            :model="detailForm"
+            ref="detailForm"
+          >
             <allocationInfo
               :disabled='true'
               :form='detailForm'
@@ -70,7 +73,7 @@ import SideDetail from '@/components/side-detail';
 import scanOutCode from './scan-out-code';
 import scanInCode from './scan-in-code';
 export default {
-  props: ['drawerData', 'visible'],
+  props: ['drawerData', 'visible', 'code'],
   data() {
     return {
       status: [{ label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
@@ -100,7 +103,7 @@ export default {
     },
     //查看调拨单详情
     wmsallocationorderInfo() {
-      this.$api.seePsiWmsService.wmsallocationorderInfo(null, this.drawerData.code)
+      this.$api.seePsiWmsService.wmsallocationorderInfo(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = res.data.createTime
