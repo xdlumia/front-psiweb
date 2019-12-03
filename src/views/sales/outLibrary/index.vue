@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 16:41:34
+ * @LastEditTime: 2019-12-03 21:57:03
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -38,7 +38,7 @@
         <span v-else-if="column.columnFields=='isContract'">{{value?'有':'无'}}</span>
 
         <!-- 有无合同 -->
-        <span v-else-if="column.columnFields=='contractTemplate'">{{value}}</span>
+        <span v-else-if="column.columnFields=='contractTemplate'">{{value==1?'非标准':value==0?'标准':''}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
