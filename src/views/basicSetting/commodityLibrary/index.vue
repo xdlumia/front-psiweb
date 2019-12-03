@@ -2,23 +2,52 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 17:36:30
+ * @LastEditTime: 2019-12-03 18:20:36
  * @Description: 商品管理
  -->
 <template>
   <!-- 物品管理 -->
   <div class>
     <div class="d-content d-main">
-      <div class="goods-top">
+      <div
+        class="goods-top"
+        style="display:flex;justify-content: space-between;align-items: center"
+      >
         <span class="f18 lh50 b">商品库</span>
-        <el-button
-          v-if="authorityButtons.includes('decorate_goods_mgr_1001')"
-          size="mini"
-          type="primary"
-          @click="handleAddGood('goodsAdd','add')"
-          style="margin-right:5px;margin-top:10px;"
-          class="fr mr5 mt10"
-        >添加</el-button>
+        <div style="display: flex;align-items: center;">
+          <el-button
+            v-if="authorityButtons.includes('decorate_goods_mgr_1001')"
+            size="mini"
+            type="primary"
+            @click="handleAddGood('goodsAdd','add')"
+            style="margin-right:5px;margin-top:10px;"
+            class="mr5 mt10"
+          >添加</el-button>
+          <el-popover
+            class="mr5 mt10"
+            placement="bottom"
+            v-model="filterPopover"
+            trigger="click"
+            width="250"
+          >
+            <el-link
+              :underline="false"
+              @click="filterPopover = false"
+              class="el-icon-close close fr"
+              style="margin-top:2px;"
+              title="关闭"
+            ></el-link>
+            <dFilter v-model="goodsForm" :options="filterOptions" @change="getGoodsList" />
+            <el-button
+              size="mini"
+              class="tool-item"
+              slot="reference"
+              title="筛选"
+              icon="iconfont icon-filter"
+              style="padding:5px;"
+            ></el-button>
+          </el-popover>
+        </div>
       </div>
       <div class="goods-wrapper">
         <div class="ba mr5 mt10 p10" style="flex:0 0 240px;box-sizing: border-box;">
@@ -192,6 +221,7 @@ import addGood from './add-good'
 export default {
   data() {
     return {
+      filterPopover: false,
       noPic: require('@/assets/img/no-pic.png'),
       copy: false,
       copycode: null,
@@ -205,6 +235,11 @@ export default {
         value: 'id',
         label: 'className'
       },
+      filterOptions: [
+        { label: '商品编码', prop: 'goodsCode', default: true },
+        { label: '商品名称', prop: 'goodsName', default: true },
+        { label: '商品规格', prop: 'goodsSpec', default: true }
+      ],
       currentPage1: 5,
       buildDrapDown: false,
       value: '',

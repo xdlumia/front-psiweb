@@ -44,7 +44,7 @@
           <upload-file
             :disabled="!canEditable"
             :limit="{
-            type:['doc','pdf','xls','ppt','docx','xlsx','pptx','zip','rar'],
+            type:['doc','pdf','xls','ppt','docx','xlsx','pptx','zip','rar','jpg'],
           }"
             @uploadSuccess="uploadFile"
             list-type="text"

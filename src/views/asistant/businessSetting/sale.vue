@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 10:38:29
+ * @LastEditTime: 2019-12-03 21:25:33
  * @Description: 业务设置-销售
  -->
 <template>
@@ -26,7 +26,8 @@
           style="margin-top: 20px;"
           @click="save"
         >保存</el-button>
-        <el-button v-if="isEdit" size="small" style="margin-top: 20px;" @click="cancel">取消</el-button>
+        <el-button v-if="isEdit" size="small" style="margin-top: 20px;"
+@click="cancel">取消</el-button>
       </el-col>
     </div>
     <el-form size="small" :model="sellEntity" :disabled="!isEdit">
@@ -113,26 +114,26 @@
 
 <script type='text/ecmascript-6'>
 export default {
-  data () {
+  data() {
     return {
       loading: false,
       isEdit: false,
       tempObj: null,
       sellEntity: {
-        quotationState: 1,
+        quotationState: 0,
         quotationTime: 15,
-        stockOutState: 1,
-        stockStandardState: 1
+        stockOutState: 0,
+        stockStandardState: 0
       }
     }
   },
   components: {
   },
-  mounted () {
+  mounted() {
     this.commonsystemconfigInfo()
   },
   methods: {
-    save () {
+    save() {
       const params = {
         configType: 1,
         configJson: JSON.stringify(this.sellEntity)
@@ -140,7 +141,7 @@ export default {
       this.commonsystemconfigSave(params)
     },
     // 保存接口
-    commonsystemconfigSave (params) {
+    commonsystemconfigSave(params) {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigSave(params).finally(() => {
         this.commonsystemconfigInfo()
@@ -148,18 +149,18 @@ export default {
         this.isEdit = false
       })
     },
-    cancel () {
+    cancel() {
       this.isEdit = false
       this.handleDefault()
     },
     // 处理返回数据
-    handleDefault () {
+    handleDefault() {
       Object.keys(this.sellEntity).forEach(key => {
         this.sellEntity[key] = this.tempObj[key] || this.sellEntity[key]
       })
     },
     // 获取详情
-    commonsystemconfigInfo () {
+    commonsystemconfigInfo() {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigInfo(null, 1).then(res => {
         this.tempObj = JSON.parse(res.data.configJson)
