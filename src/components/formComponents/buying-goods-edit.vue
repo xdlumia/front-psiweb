@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 15:21:43
+ * @LastEditTime: 2019-12-03 15:23:47
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -254,13 +254,13 @@ export default {
       { label: '退货数量', key: 'alterationNumberRate', width: 140, prop: 'alterationNumber', showOverflowTip: true, },
       { label: '退货单价', key: 'alterationPrice', width: 80, prop: 'alterationPrice', type: 'input', showOverflowTip: true, rules: [{ required: true }, { type: 'price' }] },
       { label: '税率', key: 'taxRate', width: 60, prop: 'taxRate', format: a => a ? `${a}%` : '-' },
-      {        label: '含税总价', key: 'preTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+      { label: '含税总价', key: 'preTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + (taxRate / 100)) * commodityNumber) || 0).toFixed(2)
       },
-      {        label: '含税总价', key: 'purchasePreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+      { label: '含税总价', key: 'purchasePreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + (taxRate / 100)) * commodityNumber) || 0).toFixed(2)
       },
-      {        label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+      { label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { alterationPrice, taxRate, alterationNumber }) => +Number((alterationPrice * (1 + (taxRate / 100)) * alterationNumber) || 0).toFixed(2)
       },
       { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber', type: 'number', showOverflowTip: true, },
@@ -271,10 +271,10 @@ export default {
     return {
       showInFull: false,
       columns,
-      fakeId: 1,
       expandRowKeys: [],
       showCommodityDetail: false,
-      currentCommodityCode: ''
+      currentCommodityCode: '',
+      realTopRowKey: {}
     };
   },
   computed: {
@@ -360,8 +360,9 @@ export default {
     // 获取父级信息
     getParentInfo(row) {
       let top = this.data[this.fkey];
-      let isChild = row._rowKey != row.commodityCode;
-      let ks = row._rowKey.split('_');
+      let rowKey = this.realTopRowKey[row._rowKey] || row._rowKey;
+      let isChild = rowKey != row.commodityCode;
+      let ks = rowKey.split('_');
       isChild = ks.length > 1;
       let parentIndex = -1;
       let parent = top.filter(item => item.commodityCode == ks[0]);
@@ -385,13 +386,16 @@ export default {
     // 生成树列表需要的rowkey
     recalcRowKey(list, pk = '') {
       (list || []).map(item => {
+        let key = item.commodityCode || fakeId++;
+        let rowKey = key;
+        if (!pk) {
+          rowKey = `${key}-${fakeId++}`;
+          this.realTopRowKey[rowKey] = key;
+        }
         this.$set(
           item,
           '_rowKey',
-          String(
-            item._rowKey ||
-              [pk, item.commodityCode || fakeId++].filter(a => a).join('_')
-          )
+          String(item._rowKey || [pk, rowKey].filter(a => a).join('_'))
         );
         if (pk) {
           this.$set(item, '$parentCode', pk);
@@ -404,12 +408,14 @@ export default {
     },
     getExpandedState(row) {
       let data = this.$refs.table.store.states.treeData;
-      return data[row._rowKey] && data[row._rowKey].expanded ? true : false;
+      let rowKey = this.realTopRowKey[row._rowKey] || row._rowKey;
+      return data[rowKey] && data[rowKey].expanded ? true : false;
     },
     // 展开树
     expand(row, isExpand) {
       this.$nextTick(() => {
-        isExpand = typeof isExpand == 'boolean' ? isExpand : !this.getExpandedState(row);
+        isExpand =
+          typeof isExpand == 'boolean' ? isExpand : !this.getExpandedState(row);
         this.$set(row, 'expanded', isExpand);
         this.$refs.table.toggleRowExpansion(row, isExpand);
         if (isExpand && !row.children) {
