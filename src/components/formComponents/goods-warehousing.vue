@@ -37,7 +37,7 @@
         >
           <template slot-scope="scope">
             <el-button
-              :disabled='Number(scope.row.putinNumber) == scope.row.commodityNumber'
+              :disabled='Number(scope.row.putinNumber) >= scope.row.commodityNumber'
               type="primary"
               size="mini"
               @click="changeWareVisible(scope)"
