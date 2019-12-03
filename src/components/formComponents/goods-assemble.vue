@@ -8,11 +8,23 @@
 <template>
   <div>
     <form-card title='组装商品'>
+      <div slot="title">
+        <span>组装商品</span>
+        <span class="fr">
+          <span>
+            <el-link
+              :underline="false"
+              @click="fullscreen"
+              type="primary"
+            >全屏显示</el-link>
+          </span>
+        </span>
+      </div>
       <el-table
         :data="data.commodityList"
         border
         size="mini"
-        ref="companyTable"
+        ref="table"
         class="college-main"
         style="max-height:340px"
         row-key="commodityCode"
@@ -23,6 +35,7 @@
           min-width="50"
         ></el-table-column>
         <el-table-column
+          v-if="(data.assembleTaskState == 1 || data.assembleTaskState == 2) && data.isHang==0"
           fixed
           prop="title"
           label="操作"
@@ -58,7 +71,11 @@
           min-width="100"
           label="可用数量"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.usableNum || '-'}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           fixed
           prop="accomplishNum"
@@ -88,8 +105,11 @@
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
           </template>
         </el-table-column>
 
@@ -124,11 +144,11 @@
         ></el-table-column>
         <el-table-column
           min-width="80"
-          label="单位"
+          label="备注"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+            <span>{{scope.row.note}}</span>
           </template>
         </el-table-column>
 
@@ -147,10 +167,21 @@
       :visible.sync='dialogVisible'
       v-if="dialogVisible"
     />
+    <FullscreenElement
+      :element="$refs.table"
+      :visible.sync="showInFullscreen"
+    />
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </div>
 </template>
 <script>
 import commodityAssemblyEdit from './commodity-assembly-edit'
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
+import FullscreenElement from '@/components/fullscreen-element';
 import assemblyRecord from './assembly-record'
 export default {
   props: ['data', 'drawerData'],
@@ -160,19 +191,28 @@ export default {
       dialogData: {},
       rowData: {},
       assemblyVisible: false,//组装弹窗
+      showInFullscreen: false,
+      showCommodityDetail: false,
+      currentCommodityCode: '',
       tableData: [{ cityName: '假的' }]
     }
   },
   methods: {
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
+    fullscreen() {
+      this.showInFullscreen = true;
+    },
     //点击SN码
     changeRecord(scope) {
-      console.log(scope.row)
       this.dialogVisible = true;
       this.dialogData = scope.row
     },
     //点击组装
     changeAssemblyVisible(row) {
-      console.log(row, 'rowrowrow')
       this.rowData = row
       this.assemblyVisible = true
     },
@@ -182,7 +222,9 @@ export default {
   },
   components: {
     commodityAssemblyEdit,
-    assemblyRecord
+    assemblyRecord,
+    FullscreenElement,
+    CommodityDetail
   },
 }
 </script>

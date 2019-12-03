@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 10:16:00
+ * @LastEditTime: 2019-12-03 14:50:26
  * @Description: 生成合同
 */
 <template>
@@ -12,7 +12,6 @@
       width="920px"
       @close="close"
       v-dialogDrag
-      v-loading="loading"
     >
       <!-- 确定按钮 -->
       <div slot="title">
@@ -103,9 +102,7 @@
               :data="form"
             />
           </el-form>
-
         </d-tabs>
-
       </div>
     </el-dialog>
     <contractPreview
@@ -143,7 +140,9 @@ export default {
         fieldList: [], // 示例：自定义字段,
         shipmentCode: this.rowData.shipmentCode, // 销售出库单编号,
         templateId: '', // 100000,
-        templateName: '' // 100000
+        templateName: '', // 100000
+        id: '',
+        note: '',
       },
       // 模板信息
       templateData: {},
@@ -157,11 +156,35 @@ export default {
   mounted() {
     // 获取合同模板
     this.getTemplateList(2)
+
+  },
+  watch: {
+    visible(val) {
+      if (val && this.type == 'editContract') {
+        console.log(22);
+
+        this.getByShipmentCode()
+      }
+    }
   },
   computed: {
 
   },
   methods: {
+    getByShipmentCode() {
+      this.$api.seePsiContractService.contractsalesGetByShipmentCode(null, this.code)
+        .then(res => {
+          let data = res.data || {}
+          for (let key in this.form) {
+            if (this.form[key] instanceof Array) {
+              this.form[key] = data[key] || []
+            } else {
+              this.form[key] = data[key] || ''
+            }
+          }
+        })
+    },
+
     // 获取合同模板
     getTemplateList(params) {
       this.$api.seeBaseinfoService.templateList(null, params).then(res => {
@@ -192,7 +215,7 @@ export default {
     },
     // 保存表单数据
     saveHandle() {
-
+      this.form.shipmentCode = this.rowData.shipmentCode // 销售出库单编号,
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true

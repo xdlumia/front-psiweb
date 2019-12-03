@@ -392,7 +392,7 @@ export default {
           }, 0)).toFixed(2);
         }
       })
-      this.addForm.totalCostPrice = sums[sums.length - 2] || 0
+      this.addForm.totalCostPrice = sums[sums.length - 3] || 0
       this.addForm.taxInclusiveTotalCostPrice = sums[sums.length - 1] || 0
       return sums;
     },

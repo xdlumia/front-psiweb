@@ -27,7 +27,7 @@
         ref="companyTable"
         row-key="commodityCode"
         class="college-main"
-        style="max-height:300px"
+        max-height="200"
         :tree-props="{children: 'childrenCommodityList'}"
       >
         <el-table-column
@@ -46,18 +46,26 @@
         </el-table-column>
         <el-table-column
           fixed
-          prop="pickingNum"
+          prop="pickingAccomplishNum"
           min-width="100"
           label="拣货数量"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.pickingAccomplishNum || 0}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           fixed
           prop="usableNum"
           min-width="100"
           label="可用数量"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.usableNum || 0}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           fixed
           prop="accomplishNum"
@@ -86,8 +94,11 @@
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
           </template>
         </el-table-column>
 
@@ -138,13 +149,18 @@
         :visible.sync='dialogVisible'
         v-if="dialogVisible"
       />
+      <CommodityDetail
+        :code="currentCommodityCode"
+        :visible.sync="showCommodityDetail"
+        v-if="showCommodityDetail"
+      />
     </form-card>
   </div>
 </template>
 <script>
 import FullscreenElement from '@/components/fullscreen-element';
 import assemblyRecord from './assembly-record'
-
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 export default {
   props: ['data', 'drawerData'],
   data() {
@@ -152,23 +168,29 @@ export default {
       tableData: [{ cityName: 1 }],
       dialogVisible: false,
       dialogData: {},
+      showCommodityDetail: false,
+      currentCommodityCode: '',
       showInFullscreen: false
     }
   },
   methods: {
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
     fullscreen() {
       this.showInFullscreen = true;
     },
     //点击SN码
     changeRecord(scope) {
-      console.log(scope.row)
       this.dialogVisible = true;
       this.dialogData = scope.row
     }
   },
   components: {
     FullscreenElement,
-    assemblyRecord
+    assemblyRecord,
+    CommodityDetail
   },
 }
 </script>

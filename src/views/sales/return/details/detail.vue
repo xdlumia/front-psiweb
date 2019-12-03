@@ -2,13 +2,16 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 19:25:52
+ * @LastEditTime: 2019-12-02 19:57:03
  * @Description: 销售出库单详情-详情
 */
 <template>
   <div>
     <!-- 审核面板 -->
-    <approve-panel :data="data" />
+    <approve-panel
+      busType="17"
+      :data="data"
+    />
     <!-- 客户信息 -->
     <customer-info
       disabled

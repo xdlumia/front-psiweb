@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:38:43
+ * @LastEditTime: 2019-12-02 11:29:58
  * @Description: 销售合同
 */
 <template>
@@ -80,9 +80,6 @@ export default {
     };
   },
   methods: {
-    logData(e) {
-      console.log(e);
-    },
     reload() {
       this.$refs.tableView.reload(1);
     }

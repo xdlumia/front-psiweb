@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:45:14
+ * @LastEditTime: 2019-12-02 09:36:52
  * @Description: 拆卸单
 */
 <template>
@@ -28,6 +28,7 @@
         @click="$submission('seePsiWmsService.wmsdisassemblyorderPassApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
+          busCode:detail.disassemblyOrderCode
         },'通过')"
         size="mini"
         type="primary"
@@ -48,7 +49,12 @@
         type="danger"
         v-if="detail&&[2].includes(detail.disassemblyOrderState)"
       >终止</el-button>
-      <el-button @click="showTask=true" size="mini" type="primary" v-if="detail&&[2].includes(detail.disassemblyOrderState)">生成拆卸任务</el-button>
+      <el-button
+        @click="showTask=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&[2].includes(detail.disassemblyOrderState)&&detail.undistributedNum"
+      >生成拆卸任务</el-button>
       <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0].includes(detail.disassemblyOrderState)">编辑</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsdisassemblyorderLogicDelete',{
@@ -69,21 +75,24 @@
       </el-tab-pane>
       <el-tab-pane label="拆卸任务" name="unpack">
         <FullscreenWrap v-if="isDataReady&&tabStatus.unpack">
-          <StorageDisassemble :button="false" :params="{page:1,limit:15,disassemblyOrderCode:detail.disassemblyOrderCode,relationCode:detail.disassemblyOrderCode}" />
+          <StorageDisassemble
+            :button="false"
+            :params="{page:1,limit:15,disassemblyOrderCode:detail.disassemblyOrderCode,relationCode:detail.disassemblyOrderCode}"
+          />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
     <Task
       :rowData="{
         disassemblyOrderCode:detail.disassemblyOrderCode,
-        commodityList:detail.commodityList.filter(item=>((item.disassemblyNum || 0) - (item.accomplishDisassemblyNum || 0))>0)
+        commodityList:detail.commodityList.filter(item=>(item.undistributedNum || 0)>0)
       }"
       :visible.sync="showTask"
-      @reload="setEdit(),getDetail()"
+      @reload="setEdit(),$reload()"
       source="拆卸单"
       v-if="showTask"
     />
-    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" v-if="showEdit" />
   </sideDetail>
 </template>
 <script>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:43:48
+ * @LastEditTime: 2019-12-03 13:41:15
  * @Description: 采购退货单
 */
 <template>
@@ -37,6 +37,7 @@
         @click="$submission('seePsiPurchaseService.purchasealterationPassApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
+          busCode:detail.alterationCode
         },'通过')"
         size="mini"
         type="primary"
@@ -58,7 +59,13 @@
         type="primary"
         v-if="detail&&[0,5].includes(detail.state)"
       >删除</el-button>
-      <el-button @click="showScanGoods=true" size="mini" type="primary" v-if="detail&&[2,3].includes(detail.state)">退货扫码</el-button>
+      <el-button
+        :disabled="canReject"
+        @click="showScanGoods=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&[2,3].includes(detail.state)"
+      >退货扫码</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
@@ -84,7 +91,7 @@
             disabled
             id="commodityInfo"
           />
-          <orderStorageBill :data="detail" :hide="['isBillFee']" :type="1" disabled id="billInfo" />
+          <orderStorageBill :data="detail" :hide="['isBillFee']" :type="1" disabled feeDetailCode="ZD_DY_LX-4-2" id="billInfo" />
           <customInfo :data="detail" busType="31" disabled id="customInfo"></customInfo>
           <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
         </el-form>
@@ -96,7 +103,7 @@
       </el-tab-pane>
       <el-tab-pane label="采购单" name="order">
         <FullscreenWrap v-if="isDataReady&&tabStatus.order">
-          <StoragePurchase :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode,relationCode:detail.alterationCode}" />
+          <StoragePurchase :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="应收账单" name="recieve">
@@ -105,13 +112,15 @@
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" />
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" />
     <scanGoods
+      :id="detail.id"
       :rowData="{
-      businessCode: detail.alterationCode,
-      commodityList: detail.commodityList
-    }"
+        businessCode: detail.alterationCode,
+        commodityList: detail.commodityList
+      }"
       :visible.sync="showScanGoods"
+      @reload="setEdit(),$reload()"
       v-if="showScanGoods"
     />
   </sideDetail>
@@ -145,6 +154,15 @@ export default {
   },
   mounted() {},
   watch: {},
+  computed: {
+    canReject() {
+      if (!this.detail) return false;
+      // ${row.returenNumber||0}/${row.alterationNumber||0}
+      return !this.detail.commodityList.some(
+        item => item.returenNumber < item.alterationNumber
+      );
+    }
+  },
   methods: {
     async getDetail() {
       if (this.code) {

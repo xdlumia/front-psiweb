@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 14:50:30
+ * @LastEditTime: 2019-12-03 17:05:08
  * @Description: 促销详情
  -->
 <template>
@@ -10,7 +10,7 @@
     :status="status"
     :visible.sync="showPop"
     @close="$emit('update:visible',false)"
-    :title="'促销编号：' + code"
+    :title="'目标编号：' + code"
     width="990px"
     v-loading="loading"
   >

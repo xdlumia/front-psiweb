@@ -37,6 +37,7 @@
         >
           <template slot-scope="scope">
             <el-button
+              :disabled='Number(scope.row.putinNumber) >= scope.row.commodityNumber'
               type="primary"
               size="mini"
               @click="changeWareVisible(scope)"
@@ -49,9 +50,9 @@
           label="入库数量"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">{{scope.row.putinNumber}}/{{scope.row.commodityNumber}}</template>
+          <template slot-scope="scope">{{scope.row.putinNumber || 0}}/{{scope.row.commodityNumber}}</template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           fixed
           prop="teardownNumber"
           min-width="100"
@@ -59,7 +60,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">{{scope.row.teardownNumber}}/{{scope.row.commodityNumber}}</template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           label="机器号/SN码"
           min-width="140"
@@ -69,7 +70,7 @@
             <span
               class="d-text-blue"
               @click="changeWareDisabledVisible(scope)"
-            >{{scope.row.putinNumber}}{{scope.row.commodityNumber}}</span>
+            >{{scope.row.putinNumber || 0}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -89,8 +90,11 @@
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -152,11 +156,17 @@
       :drawerData='drawerData'
       v-if="wareDisabledVisible"
     />
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </div>
 </template> 
 <script>
 import FullscreenElement from '@/components/fullscreen-element';
 import purchaseWarehousing from './purchase-warehousing'
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 import purchaseWareDisabled from './purchase-ware-disabled'
 
 export default {
@@ -166,6 +176,8 @@ export default {
       dialogVisible: false,
       showInFullscreen: false,
       wareDisabledVisible: false,
+      showCommodityDetail: false,
+      currentCommodityCode: '',
       wareVisible: false,
       dialogData: {
       },
@@ -173,6 +185,11 @@ export default {
     }
   },
   methods: {
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
     fullscreen() {
       this.showInFullscreen = true;
     },
@@ -193,7 +210,8 @@ export default {
   components: {
     purchaseWarehousing,
     FullscreenElement,
-    purchaseWareDisabled
+    purchaseWareDisabled,
+    CommodityDetail
   },
 }
 </script>

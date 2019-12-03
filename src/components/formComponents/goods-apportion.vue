@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 19:38:02
- * @Description: 生成请购单商品信息
+ * @LastEditTime: 2019-11-29 16:21:34
+ * @Description: 新增费用分摊单商品信息
 */
 <template>
   <div>
@@ -13,11 +13,9 @@
         :summary-method="getSummaries"
         size="mini"
         border
-        :data="tableData"
-        default-expand-all
-        :tree-props="{children: 'children'}"
-        row-key="id"
+        :data="data"
         ref="table"
+        maxHeight="350px"
       >
         <el-table-column
           prop="commodityCode"
@@ -61,12 +59,6 @@
           show-overflow-tooltip
         />
         <el-table-column
-          prop="note"
-          min-width="120"
-          label="备注"
-          show-overflow-tooltip
-        />
-        <el-table-column
           prop="specOne"
           min-width="80"
           label="规格"
@@ -88,13 +80,6 @@
         />
 
         <el-table-column
-          min-width="100"
-          label="退货单价"
-          prop="salesPrice"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
           prop="taxRate"
           min-width="70"
           label="税率%"
@@ -110,7 +95,7 @@
         <el-table-column
           prop="inventoryNumber"
           min-width="120"
-          label="总库存"
+          label="分摊后总价"
           show-overflow-tooltip
         />
 
@@ -122,10 +107,7 @@
 <script>
 export default {
   props: {
-    data: {
-      type: Object,
-      default: () => ({})
-    },
+    data: Array,
     params: {
       type: Object,
       default: () => ({})
@@ -134,10 +116,7 @@ export default {
       default: '商品信息',
       type: String
     },
-    disabled: {
-      default: false,
-      type: Boolean
-    },
+    goodsApi: String,
   },
   data() {
     return {
@@ -150,20 +129,20 @@ export default {
     }
   },
   created() {
-    this.businesscommodityGetBusinessCommodityList()
+
   },
   watch: {
 
   },
   methods: {
-    businesscommodityGetBusinessCommodityList() {
-      this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.params)
+    businesscommodityGetBusinessCommodityList(params) {
+      let api = this.goodsApi.split(',')
+      this.$api[api[0]][api[1]](params)
         .then(res => {
-          let data = res.data || []
           this.tableData = res.data || []
           // 清空商品数量
           this.data.commodityList = []
-          data.forEach(item => {
+          this.tableData.forEach(item => {
             // 商品数量-总库存大于0的商品才生成请购单
             let commodityNumber = (item.commodityNumber || 0) - (item.inventoryNumber || 0)
             if (commodityNumber > 0) {
@@ -172,7 +151,6 @@ export default {
               this.data.commodityList.push(item)
             }
           })
-          this.tableData = this.$$util.formatCommodity(data)
         })
     },
     // 自定义账单金额数据

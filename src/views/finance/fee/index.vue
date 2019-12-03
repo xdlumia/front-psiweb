@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-18 09:05:08
+ * @LastEditTime: 2019-11-29 13:58:20
  * @Description: 销售-销售退货单
  */
 <template>
@@ -17,6 +17,7 @@
       api="seePsiFinanceService.fcostList"
       exportApi="seePsiFinanceService.fcostExport"
       :params="Object.assign(queryForm,params)"
+      @selection-change="selectionChange"
       :filterOptions="filterOptions"
     >
       <template slot="top-filter">
@@ -30,8 +31,14 @@
             <span style="line-height:28px;">结算账户：</span>
           </el-col>
           <el-col :span="18">
-            <el-select size="mini" v-model="queryForm.companySettlementId">
-              <el-option value label="全部"></el-option>
+            <el-select
+              size="mini"
+              v-model="queryForm.companySettlementId"
+            >
+              <el-option
+                value
+                label="全部"
+              ></el-option>
               <el-option
                 v-for="(item, index) in settlementAccount"
                 :key="index"
@@ -65,8 +72,12 @@
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <add :visible.sync="visible" ref="addQuotation" v-if="visible"
-@refresh="$refs.table.reload"></add>
+    <add
+      :visible.sync="visible"
+      ref="addQuotation"
+      v-if="visible"
+      @refresh="$refs.table.reload"
+    ></add>
     <detail
       @refresh="$refs.table.reload(queryForm.page)"
       v-if="showDetail"
@@ -83,7 +94,7 @@ import add from './add'
 import detail from './detail'
 
 const filterOptions = [
-  { label: '账单状态',
+  {    label: '账单状态',
     prop: 'settleStatus',
     type: 'select',
     default: true,
@@ -182,6 +193,10 @@ export default {
       this.rowData = row
       this.code = row.costCode
       this.showDetail = true
+    },
+    // 多选
+    selectionChange(val) {
+      this.$emit("selection-change", val);
     },
     // 按钮功能操作
     eventHandle(type, row) {

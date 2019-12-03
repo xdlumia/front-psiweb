@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-22 16:39:19
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 11:54:36
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-03 14:04:36
  * @Description: 关联业务辅助
  */
 
@@ -120,15 +120,37 @@ export default {
           listPage: 'OrderExchange',
           codeFilterKey: 'swapOrderCode',
           title: '采购换货单'
+        },
+        7: null,
+        // 调拨单
+        8: {
+          stateText: { "1": "待调拨", "2": "部分调拨", "3": "完成调拨", "-1": "终止" },
+          detailPage: () => import('@/views/storage/allocation/details.vue'),
+          listPage: 'StorageAllocation',
+          codeFilterKey: 'allocationOrderCode',
+          title: '调拨单'
+        },
+        // 借入借出单
+        9: {
+          stateText: { "0": "新建", "1": "审核中", "2": "待借入", "3": "待借出", "4": "部分借入", "5": "部分借出", "6": "待归还", "7": "待返还", "8": "部分返还", "9": "部分归还", "10": "完成返还", "11": "完成归还", "12": "已驳回", "-1": "终止" },
+          detailPage: () => import('@/views/order/borrow/detail.vue'),
+          listPage: 'OrderBorrow',
+          codeFilterKey: 'borrowLoanCode',
+          title: '借入借出单'
         }
       }
     }
   },
   methods: {
     openBusPage(row) {
+      if (!this.hasBusPage(row)) return
       this.currentBusCode = row.busCode
       this.currentBusType = row.busType
       this.$nextTick(() => (this.showBusDetail = true))
+    },
+    hasBusPage(row) {
+      let page = this.busInfo[row.busType]
+      return page ? true : false
     }
   }
 }

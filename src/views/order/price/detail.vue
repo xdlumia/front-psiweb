@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 15:58:30
+ * @LastEditTime: 2019-12-02 16:19:41
  * @Description: 采购调价单
 */
 <template>
@@ -69,8 +69,8 @@
         <el-form :model="detail" v-if="detail&&visible">
           <buying-goods-edit
             :customColumns="[
-                { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140, },
-                { label:'库存成本(税前)',key:'inventoryPrice',prop:'inventoryPrice',width:140, },
+                { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140,format:(a,b)=>Number(b.purchaseAverage||b.inventoryPrice).toFixed(2) },
+                { label:'库存成本(税前)',key:'inventoryPrice',prop:'inventoryPrice',width:140,format:(a,b)=>b.originalPrice||Number(b.repertoryCost-b.adjustPriceMoney).toFixed(2) },
                 { label:'调整金额',key:'adjustPriceMoney',prop:'adjustPriceMoney',width:120, format:(a,b)=>b.adjustPriceMoney||0 },
                 { label:'调整后库存成本(税前)',key:'repertoryCost',prop:'repertoryCost',width:140,
                   format:(a,b)=>b.repertoryCost||0
@@ -91,7 +91,7 @@
         </el-form>
       </el-tab-pane>
     </el-tabs>
-    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" v-if="showEdit" />
   </sideDetail>
 </template>
 <script>
@@ -110,9 +110,25 @@ export default {
       stateText: {
         '0': '新建',
         '1': '审核中',
-        '2': '通过'
+        '2': '通过',
+        '3': '驳回',
+        '4': '撤销'
       }
     };
+  },
+  computed: {
+    status() {
+      if (!this.detail) return [];
+      else {
+        return [
+          { label: '状态', value: this.stateText[this.detail.state] },
+          { label: '单据创建人', value: this.detail.creatorName },
+          { label: '创建部门', value: this.detail.deptName },
+          { label: '创建时间', value: this.detail.createTime, isTime: true },
+          { label: '调价类型', value: '采购调价' }
+        ];
+      }
+    }
   },
   watch: {},
   methods: {

@@ -21,7 +21,7 @@
       :data="tableData"
       max-height="400"
       ref="elTable"
-      row-key="id"
+      :row-key="addForm.type == 1 ? 'commodityCode' : 'snCode'"
       :load="load"
       lazy
       size="mini"
@@ -232,23 +232,41 @@ export default {
     };
   },
   methods: {
+
     //选择商品
     commodityChoose(e, scope) {
       let list = e[0]
       let type = e[1]
-      this.tableData.forEach((item) => {
-        if (item.commodityCode) {
-          this.codes.push(item.commodityCode)
-        }
-      })
-      list.forEach((item) => {
-        if (!this.codes.includes(item.commodityCode) && scope.row.commodityCode && type == 'select') {//区分非选择状态下的选择商品信息
-          this.$set(this.tableData, scope.$index, item)
-        } else if (!this.codes.includes(item.commodityCode)) {
-          this.tableData.unshift(item)
-        }
-      })
-      this.codes = []
+      if (this.addForm.type == 1) {
+        this.tableData.forEach((item) => {
+          if (item.commodityCode) {
+            this.codes.push(item.commodityCode)
+          }
+        })
+        list.forEach((item) => {
+          if (!this.codes.includes(item.commodityCode) && scope.row.commodityCode && type == 'select') {//区分非选择状态下的选择商品信息
+            this.$set(this.tableData, scope.$index, item)
+          } else if (!this.codes.includes(item.commodityCode)) {
+            this.tableData.unshift(item)
+          }
+        })
+        this.codes = []
+      } else {
+        let codeList = []
+        this.tableData.forEach((item) => {
+          if (item.snCode || item.robotCode) {
+            codeList.push(item.snCode + item.robotCode)
+          }
+        })
+        list.forEach((item) => {
+          // 有Sn码的时候，商品code有可能是重复的，所以要snCode—+机器号作为唯一值
+          if (!codeList.includes((item.snCode + item.robotCode)) && scope.row.snCode && type == 'select') {//区分非选择状态下的选择商品信息
+            this.$set(this.tableData, scope.$index, item)
+          } else if (!codeList.includes((item.snCode + item.robotCode))) {
+            this.tableData.unshift(item)
+          }
+        })
+      }
     },
     //表格查询数据懒加载
     load(tree, treeNode, resolve) {
@@ -286,7 +304,6 @@ export default {
             }
           }, 0);
         }
-        console.log(column, 'columncolumncolumncolumncolumncolumncolumn')
         if (column.property == 'taxInclusiveTotalCostPrice') {
           const values = data.map((item) => {
             if (item.commodityInfoList && item.commodityInfoList.length > 0) {
@@ -303,7 +320,7 @@ export default {
           }, 0)).toFixed(2);
         }
       })
-      this.addForm.totalCostPrice = sums[sums.length - 2] || 0
+      this.addForm.totalCostPrice = sums[sums.length - 3] || 0
       this.addForm.taxInclusiveTotalCostPrice = sums[sums.length - 1] || 0
       return sums;
     },

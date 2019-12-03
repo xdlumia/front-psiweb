@@ -21,6 +21,7 @@
         </span>
       </div>
       <el-table
+        ref='companyTable'
         border
         size='mini'
         :data="form.allocationCommodityList"
@@ -94,8 +95,11 @@
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
           </template>
         </el-table-column>
 
@@ -140,7 +144,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.unit|dictionary('PSI_SP_KIND')}}</span>
+            <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
           </template>
         </el-table-column>
 
@@ -154,11 +158,17 @@
       :visible.sync='dialogVisible'
       :form='tpForm'
     />
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </div>
 </template>
 
 <script>
 import outGoodsRecord from './out-goods-record'
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 import FullscreenElement from '@/components/fullscreen-element';
 export default {
   props: {
@@ -175,6 +185,8 @@ export default {
     return {
       dialogVisible: false,
       showInFullscreen: false,
+      showCommodityDetail: false,
+      currentCommodityCode: '',
       tpForm: {
         commodityCode: '',
         businessCode: '',
@@ -184,6 +196,11 @@ export default {
     }
   },
   methods: {
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
     fullscreen() {
       this.showInFullscreen = true;
     },
@@ -200,7 +217,8 @@ export default {
   },
   components: {
     outGoodsRecord,
-    FullscreenElement
+    FullscreenElement,
+    CommodityDetail
   },
 }
 </script>

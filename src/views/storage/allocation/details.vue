@@ -9,9 +9,9 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="close"
-    :title="drawerData.title"
+    :title="`调拨单-${code}`"
     width="990px"
   >
     <div>
@@ -34,7 +34,10 @@
       </div>
       <el-tabs class="wfull hfull tabs-view">
         <el-tab-pane label="详情">
-          <el-form>
+          <el-form
+            :model="detailForm"
+            ref="detailForm"
+          >
             <allocationInfo
               :disabled='true'
               :form='detailForm'
@@ -70,10 +73,10 @@ import SideDetail from '@/components/side-detail';
 import scanOutCode from './scan-out-code';
 import scanInCode from './scan-in-code';
 export default {
-  props: ['drawerData', 'visible'],
+  props: ['drawerData', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       backVisible: false,
       isComponents: '',
       dialogData: {
@@ -100,14 +103,13 @@ export default {
     },
     //查看调拨单详情
     wmsallocationorderInfo() {
-      this.$api.seePsiWmsService.wmsallocationorderInfo(null, this.drawerData.code)
+      this.$api.seePsiWmsService.wmsallocationorderInfo(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
           this.status[0].value = res.data.createTime
           this.status[1].value = res.data.creatorName
           this.status[2].value = res.data.deptName
           this.status[3].value = res.data.source
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 
@@ -135,6 +137,7 @@ export default {
 
     },
     reload() {
+      this.wmsallocationorderInfo()
       this.$emit('reload')
     }
   },

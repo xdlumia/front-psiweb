@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-05 18:57:05
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-07 20:21:02
+ * @LastEditTime: 2019-12-03 19:45:04
  * @Description: 本项目用到的工具集合
  */
 const utils = {
@@ -64,6 +64,38 @@ const utils = {
         }
       }
     })
+    return newArr
+  },
+  // 格式化商品信息
+  formatCommodity(data, children = 'children') {
+    // 父级数据对象
+    let parentObj = {}
+    let childrenData = []// 获取子项数据
+    data.forEach(item => {
+      // 如果没有parentCommodityCode 就是父级
+      if (!item.parentCommodityCode && item.commodityCode) {
+        parentObj[item.commodityCode] = item
+      } else {
+        childrenData.push(item)
+      }
+    })
+    console.log(parentObj);
+    console.log(childrenData);
+
+    childrenData.forEach(item => {
+      // 把parentCommodityCode有值的数据添加到子项里
+      if (item.parentCommodityCode) {
+        if (parentObj[item.parentCommodityCode][children]) {
+          parentObj[item.parentCommodityCode][children].push(item)
+        } else {
+          parentObj[item.parentCommodityCode][children] = [item]
+        }
+      }
+    })
+    let newArr = []
+    for (let key in parentObj) {
+      newArr.push(parentObj[key])
+    }
     return newArr
   }
 

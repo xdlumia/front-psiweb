@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:44:22
+ * @LastEditTime: 2019-12-03 11:21:33
  * @Description: 采购入库单
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`采购入库单 ${detail?detail.putinCode:''}`"
+    :title="`采购入库单 ${detail?(detail.putinCode||''):''}`"
     :visible.sync="showDetailPage"
     @close="close"
     v-loading="loading"
@@ -61,11 +61,18 @@
         type="danger"
         v-if="detail&&[0,5].includes(detail.state)"
       >删除</el-button>
-      <el-button @click="showReject=true" size="mini" type="primary" v-if="detail&&[3,4].includes(detail.state)">退货</el-button>
+      <el-button
+        :disabled="!(canReject&&detail.isAlteration)"
+        @click="showReject=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&[3,4].includes(detail.state)"
+      >退货</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinShutdown',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
+          busCode:detail.putinCode
         },'终止')"
         size="mini"
         type="danger"
@@ -80,7 +87,16 @@
         <el-form :model="detail" size="mini" v-if="detail">
           <supplierInfo :data="detail" disabled id="supplierInfo" />
           <companyInfo :data="detail" disabled id="companyInfo" />
-          <arrivalInfo :data="detail" :hide="detail.source=='备货单'?['saleTime']:[]" disabled id="arrivalInfo" v-if="detail.source!='直发单'" />
+          <arrivalInfo
+            :data="detail"
+            :hide="detail.source=='备货单'?['saleTime']:[]"
+            :labels="detail.source=='直发单'?{
+              saleTime:'销售预计发货时间'
+            }:{}"
+            disabled
+            id="arrivalInfo"
+            v-if="detail.source!='直发单'"
+          />
           <buyingDeliverInfo :data="detail" disabled id="deliverInfo" ref="deliverInfo" v-else />
           <buying-goods-edit
             :data="detail"
@@ -101,6 +117,7 @@
             disabled
             fkey="additionalCommodityList"
             priceKey="purchasePrice"
+            title="附加商品"
             v-if="detail.source=='请购单'"
           />
           <buyingPaymentLate :data="detail" disabled id="paymentLate" />
@@ -147,18 +164,19 @@
     </el-tabs>
     <OrderRejectEdit
       :params="{
-      putinCode:detail.putinCode,
-      companyAccountId:detail.companyAccountId,
-      companySettlementId:detail.companySettlementId,
-      supplierId:detail.supplierId,
-      commodityList:[].concat(detail.commodityList||[],detail.additionalCommodityList||[])
-    }"
+        putinCode:detail.putinCode,
+        companyAccountId:detail.companyAccountId,
+        companySettlementId:detail.companySettlementId,
+        supplierId:detail.supplierId,
+        commodityList:[].concat(detail.commodityList||[],detail.additionalCommodityList||[]).filter(item=>(item.commodityNumber-(item.returenNumber||0)))
+      }"
       :visible.sync="showReject"
+      @reload="setEdit(),$reload()"
       v-if="detail"
     />
     <orderContract :rowData="orderContractData" :visible.sync="showOrderContract" v-if="showOrderContract" />
-    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
-    <CollectInvoiceDialog :invoiceType="0" :rowData="collectInvoiceData" :visible.sync="showCollectInvoice" v-if="showCollectInvoice" />
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" v-if="showEdit" />
+    <CollectInvoiceDialog :invoiceType="1" :rowData="collectInvoiceData" :visible.sync="showCollectInvoice" v-if="showCollectInvoice" />
   </sideDetail>
 </template>
 <script>
@@ -193,6 +211,21 @@ export default {
       collectInvoiceData: null,
       showCollectInvoice: false
     };
+  },
+  computed: {
+    // 是否可以退货
+    canReject() {
+      if (!this.detail) return false;
+      return []
+        .concat(
+          this.detail.commodityList || [],
+          this.detail.additionalCommodityList || []
+        )
+        .filter(item => item.commodityNumber - (item.returenNumber || 0) > 0)
+        .length
+        ? true
+        : false;
+    }
   },
   methods: {
     async getDetail() {
@@ -270,7 +303,6 @@ export default {
       contract.purchasePutinCode = contract.putinCode;
       delete contract.id;
       delete contract.state;
-      console.log(contract);
       contract.source = '采购入库单';
       this.orderContractData = contract;
       this.showOrderContract = true;
@@ -280,9 +312,11 @@ export default {
       this.collectInvoiceData = {
         type: 0,
         busCode: this.detail.putinCode,
-        busType: 30,
+        busType: 4,
         purchaseId: this.detail.companySettlementId,
+        purchaseType: 3,
         marketId: this.detail.supplierId,
+        marketType: 1,
         invoiceDetailList: []
           .concat(
             this.detail.commodityList || [],
@@ -300,7 +334,6 @@ export default {
             };
           })
       };
-      console.log(this.collectInvoiceData);
       this.showCollectInvoice = true;
     }
   }

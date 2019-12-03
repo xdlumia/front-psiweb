@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 15:16:33
+ * @LastEditTime: 2019-12-02 11:29:48
  * @Description: 其他合同
 */
 <template>
@@ -54,9 +54,7 @@ export default {
       default: false
     }
   },
-  computed: {
-    
-  },
+  computed: {},
   data() {
     return {
       tmp: '',
@@ -145,12 +143,11 @@ export default {
         this.templateData.name = this.form.contractName || '其他合同';
         this.templateData.context = data;
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
       this.loading = false;
     },
     async save() {
-      console.log({ ...this.form });
       if (!this.form.templateId) {
         return this.$message({
           message: '请选择合同模板',
@@ -164,7 +161,9 @@ export default {
         await this.$api.seePsiContractService.contractSave(this.form);
         this.setEdit();
         this.close();
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      }
       this.loading = false;
     }
   }

@@ -2,17 +2,24 @@
  * @Author: 赵伦
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-19 18:13:14
+ * @LastEditTime: 2019-12-03 10:36:26
  * @Description: 换退货商品扫码卡片 
 */
 <template>
   <div class="reject-scan-goods" v-loading="loading">
     <!-- 商品列表 -->
     <buying-goods-edit
+      :customColumns="[
+        { label: '退货商品数量', key: 'alterationNumber', width: 140, prop: 'alterationNumber', showOverflowTip: true, 
+          format:(a,row)=>`${row.returenNumber||0}/${row.alterationNumber||0}`
+        },
+      ]"
       :data="data"
       :show="[
-        'commodityCode','goodsName','wsm','categoryCode','className','specOne','configName','alterationNumberRate','unit','!formTitle'
+        'commodityCode','goodsName','wsm','categoryCode','className','specOne','configName','unit','!formTitle'
       ]"
+      :showSummary="false"
+      :sort="['alterationNumber']"
       disabled
     />
     <div class="mt10 mb20">
@@ -24,7 +31,7 @@
         <span>件，历史扫码</span>
         <span class="b d-text-green">{{status.historyNum||0}}</span>
         <span>件，还需扫码</span>
-        <span class="b d-text-blue">{{status.allNum||0-status.historyNum||0-status.current||0}}</span>
+        <span class="b d-text-blue">{{(status.allNum||0)-(status.historyNum||0)-(status.current||0)}}</span>
         <span>件</span>
       </span>
     </div>
@@ -81,7 +88,7 @@ export default {
       inputSN: '',
       loading: false,
       status: {
-        current: '',
+        current: 0,
         allNum: 0,
         historyNum: 0
       },
@@ -119,13 +126,19 @@ export default {
       this.loading = false;
     },
     async getScanStatus() {
-      let {
-        data
-      } = await this.$api.seePsiPurchaseService.purchasealterationStatWms(
-        null,
-        this.data.businessCode
-      );
-      this.status = data || {};
+      // let {
+      //   data
+      // } = await this.$api.seePsiPurchaseService.purchasealterationStatWms(
+      //   null,
+      //   this.data.businessCode
+      // );
+      // this.status = data || {};
+      this.data.commodityList.reduce((data, item) => {
+        // ${row.returenNumber||0}/${row.alterationNumber||0}
+        data.allNum += item.alterationNumber;
+        data.historyNum += item.returenNumber;
+        return data;
+      }, this.status);
     },
     async checkSN(e) {
       e.preventDefault();
@@ -149,15 +162,28 @@ export default {
           commodity &&
           !this.data.putawayCommodityList.some(
             item =>
-              item.snCode == data.snCode || item.robotCode == data.robotCode
+              (item.snCode && item.snCode == data.snCode) ||
+              (item.robotCode && item.robotCode == data.robotCode)
           )
         ) {
-          if (!this.data.putawayCommodityList) {
-            this.$set(this.data, 'putawayCommodityList', []);
+          if (commodity.alterationNumber > commodity.returenNumber) {
+            if (!this.data.putawayCommodityList) {
+              this.$set(this.data, 'putawayCommodityList', []);
+            }
+            let putawayData = { ...commodity, ...data };
+            delete putawayData.id;
+            this.data.putawayCommodityList.push(putawayData);
+            this.putawayCommodityList.push(putawayData);
+            this.$forceUpdate();
+            commodity.returenNumber = (commodity.returenNumber || 0) + 1;
+            this.status.current = (this.status.current || 0) + 1;
+          } else {
+            this.$message({
+              message: '该商品退货数量已到上限，不能退货',
+              type: 'warning',
+              showClose: true
+            });
           }
-          this.data.putawayCommodityList.push({ ...commodity, ...data });
-          this.putawayCommodityList.push({ ...commodity, ...data });
-          this.$forceUpdate();
         }
       } catch (error) {}
       this.inputSN = '';
@@ -168,6 +194,10 @@ export default {
       let i = this.data.putawayCommodityList.indexOf(row);
       this.data.putawayCommodityList.splice(i, 1);
       this.putawayCommodityList.splice(i, 1);
+      this.status.current--;
+      this.data.commodityList.find(
+        item => item.commodityCode == row.commodityCode
+      ).returenNumber--;
       this.$forceUpdate();
     }
   }

@@ -14,10 +14,8 @@
     v-dialogDrag
   >
     <el-container>
-      <el-main 
-        :style="{ 
-                maxHeight:maxHeight+'px'
-            }"
+      <el-main
+        :style="{maxHeight:'calc(100vh - 240px)'}"
         style="padding:0;"
       >
         <el-form
@@ -93,7 +91,10 @@ export default {
     returnList(arr) {
       let list = []
       arr.forEach((item) => {
-        if (Object.keys(item).length > 0) {
+        // if (Object.values(item).length > 0) {
+        //   list.push(item)
+        // }
+        if (item.num) {
           list.push(item)
         }
       })
@@ -105,7 +106,7 @@ export default {
       if (list.length < 1) {
         this.$message({
           type: 'error',
-          message: '请至少选择一个商品!'
+          message: '未选择商品或组装数量为空！'
         })
       } else {
         this.$api.seePsiWmsService.wmsassembleorderSave({ assembleCommoditySaveVoList: list, isSelfMotion: this.isSelfMotion, note: this.form.note, source: '新增' })

@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="close"
     :title="`组装任务-${detailForm.assembleTaskCode}`"
     width="990px"
@@ -17,26 +17,31 @@
     <div>
       <div class="drawer-header">
         <el-button
+          v-if="detailForm.assembleTaskState == 0 && detailForm.assembleTaskState !=-1"
           @click="wmsassembletaskStart"
           size="mini"
           type="primary"
         >确认收到并开始</el-button>
         <el-button
+          v-if="detailForm.assembleTaskState !== -1 && detailForm.assembleTaskState !== 3"
           @click="wmsassembletaskTransferTask"
           size="mini"
           type="primary"
         >转移</el-button>
         <el-button
+          v-if="(detailForm.isHang == 0 || !detailForm.isHang) && detailForm.assembleTaskState != -1 && detailForm.assembleTaskState !== 3"
           @click="wmsdisassemblytaskHangTask"
           size="mini"
           type="primary"
         >挂起</el-button>
         <el-button
+          v-if="detailForm.isHang == 1 && detailForm.assembleTaskState != -1 && detailForm.assembleTaskState !== 3"
           @click="wmsassembletaskContinueTask"
           size="mini"
           type="primary"
         >继续</el-button>
         <el-button
+          v-if="(detailForm.assembleTaskState == 1 || detailForm.assembleTaskState == 2) && detailForm.isHang==0 && detailForm.assembleTaskState != -1"
           @click="goodsVisible=true"
           size="mini"
           type="primary"
@@ -64,11 +69,13 @@
           label="组装单"
           name="storageAssemble"
         >
-          <storageAssemble
-            :button="false"
-            v-if="activeName == 'storageAssemble'"
-            :params="{page:1,limit:15,relationCode:detailForm.assembleTaskCode}"
-          ></storageAssemble>
+          <FullscreenWrap v-if="activeName == 'storageAssemble'">
+            <storageAssemble
+              :button="false"
+              v-if="activeName == 'storageAssemble'"
+              :params="{page:1,limit:15,relationCode:detailForm.assembleTaskCode}"
+            ></storageAssemble>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -79,6 +86,7 @@
     />
     <hangUp
       :visible.sync='hangVisible'
+      v-if="hangVisible"
       :data="detailForm"
       @reload="reload"
     />
@@ -97,7 +105,7 @@ export default {
   props: ['data', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '组装状态', value: '待组装' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '组装状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       transferVisible: false,//转移
       hangVisible: false,//挂起
       goodsVisible: false,//组装
@@ -129,12 +137,11 @@ export default {
       this.$api.seePsiWmsService.wmsassembletaskGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
-          this.status[0].value = this.state[res.data.assembleOrderState]
+          this.status[0].value = this.state[res.data.assembleTaskState]
           this.status[1].value = res.data.createTime
           this.status[2].value = res.data.creatorName
           this.status[3].value = res.data.deptName
           this.status[4].value = res.data.source
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 
@@ -156,7 +163,7 @@ export default {
       }).then(() => {
         this.$api.seePsiWmsService.wmsassembletaskStart(null, this.data.id)
           .then(res => {
-            this.$emit('reload')
+            this.reload()
           })
           .finally(() => {
 
@@ -183,9 +190,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiWmsService.wmsassembletaskContinueTask({ id: this.detailForm.id })
+        this.$api.seePsiWmsService.wmsassembletaskContinueTask({ id: this.detailForm.id, isHang: 0 })
           .then(res => {
-            this.$emit('reload')
+            this.reload()
           })
           .finally(() => {
 

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:29
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 19:50:22
+ * @LastEditTime: 2019-12-03 17:31:44
  * @Description: ip配置文件
  */
 const apiUrl = '/apis/'
@@ -11,6 +11,7 @@ const apiUrl = '/apis/'
 
 // 以后新项目不用在此引入api
 const baseURL = {
+	login: apiUrl + 'system-service',
 	systemService: apiUrl + 'system-service', // 角色，员工，部门
 	seeContractService: apiUrl + 'see-baseinfo-service', // 合同服务韩延峰
 
@@ -27,10 +28,10 @@ const baseURL = {
 	seeGoodsService: apiUrl + 'see-goods-service', //
 	seePsiWmsService: apiUrl + 'see-psi-wms-service',
 	seePsiReportService: apiUrl + 'see-psi-report-service',
-	// seePsiFinanceService: 'http://10.168.1.230:9215' // 欢欢本地
+	// seePsiFinanceService: 'http://10.168.1.230:9215', // 欢欢本地
 	seePsiFinanceService: apiUrl + 'see-psi-finance-service', // 财务
 	seePsiSaleService: apiUrl + 'see-psi-sale-service' // 销售
-	// seePsiSaleService: 'http://10.168.1.230:9208 ' // 销售 欢欢本地
+	// seePsiSaleService: 'http://10.168.1.230:9209' // 销售 欢欢本地
 }
 window.g = {
 	ApiUrl: baseURL

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 16:06:25
+ * @LastEditTime: 2019-12-03 17:00:51
  * @Description: 详情
 <template>
   <div>
@@ -10,7 +10,7 @@
       :title="`借款单编号:${code}`"
       :visible.sync="showDetailPage"
       width="920px"
-      :status="status"
+      :status="statusArr"
       @close="close"
     >
       <div class="drawer-header">
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state|| 0].includes(item.label)"
+            v-if="currStatusType[detail.state || 0].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -44,7 +44,14 @@
           :data="detail"
         />
         <!-- 还款记录 -->
-        <repayment-history :data="detail" />
+        <repayment-history
+          :params="{
+          limit: 20,
+          page: 1,
+          borrowingCode: this.rowData.borrowingCode, //借款单编号
+        }"
+          :data="detail"
+        />
       </el-form>
     </side-detail>
     <!-- 还款 -->
@@ -80,11 +87,23 @@ export default {
         '0': ['删除', '还款'], // 未还清
         '1': ['删除'], // 已还清
       },
+      stateText: { 0: '未结清', 1: '已结清' }
     }
   },
 
   computed: {
-
+    statusArr() {
+      if (!this.getDetail) return [];
+      else {
+        return [
+          { label: '状态', value: this.stateText[this.detail.state] },
+          { label: '借款人', value: this.detail.borrower },
+          { label: '借款金额(元)', value: this.detail.borrowingAmount },
+          { label: '借款日期', value: this.detail.borrowTime, isTime: true },
+          { label: '结算账户', value: this.detail.companySettlementInfo }
+        ];
+      }
+    }
   },
   created() {
 

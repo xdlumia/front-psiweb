@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 16:13:28
+ * @LastEditTime: 2019-12-03 16:41:34
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -16,6 +16,7 @@
       title="销售出库单"
       api="seePsiSaleService.salesshipmentList"
       exportApi="seePsiSaleService.salesshipmentExport"
+      @selection-change="selectionChange"
       :params="Object.assign(queryForm,params)"
     >
       <template slot-scope="{column,row,value}">
@@ -25,6 +26,14 @@
           class="d-text-blue d-pointer"
           @click="eventHandle('detailVisible',row)"
         >{{value}}</span>
+
+        <!-- 采购预计到货时间 -->
+        <span
+          v-else-if="column.columnFields=='procurementExpectedArrivalTime'"
+          class="d-pointer"
+          :class="row.salesRequireArrivalTime && row.procurementExpectedArrivalTime>row.salesRequireArrivalTime?'d-text-red':''"
+          @click="eventHandle('detailVisible',row)"
+        >{{value}} </span>
         <!-- 有无合同 -->
         <span v-else-if="column.columnFields=='isContract'">{{value?'有':'无'}}</span>
 
@@ -84,6 +93,7 @@ export default {
       // 当前行数据
       rowData: {},
       detailVisible: false, // 出库单详情
+      multipleSelection: [],
     };
   },
   methods: {
@@ -93,8 +103,10 @@ export default {
       this[type] = true
       return
     },
-
-
+    // 多选
+    selectionChange(val) {
+      this.$emit("selection-change", val);
+    },
   }
 };
 </script>

@@ -49,13 +49,7 @@
         class="wfull hfull tabs-view"
         v-model="activeName"
       >
-        <!-- <el-tab-pane
-          label="成本明细"
-          name='1'
-        >
-          <el-form>
-          </el-form>
-        </el-tab-pane> -->
+
         <el-tab-pane
           label="商品明细表"
           name='1'
@@ -69,11 +63,12 @@
           label="供应商"
           name='orderSupplier'
         >
-          <orderSupplier
-            v-if="activeName == 'orderSupplier'"
-            :button="false"
-            :params="{page:1,limit:15,commodityCode:drawerData.commodityCode}"
-          ></orderSupplier>
+          <FullscreenWrap v-if="activeName == 'orderSupplier'">
+            <orderSupplier
+              :button="false"
+              :params="{page:1,limit:15,commodityCode:drawerData.commodityCode}"
+            ></orderSupplier>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -94,7 +89,7 @@ export default {
   props: ['drawerData', 'visible'],
   data() {
     return {
-      status: [{ label: '创建时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '创建时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '来源', value: '-' }],
       backVisible: false,
       isComponents: '',
       activeName: '1',

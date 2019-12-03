@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="$emit('update:visible',false)"
     :title="`采购单-${drawerData.purchaseCode}`"
     width="990px"
@@ -27,7 +27,7 @@
           <el-form>
             <purchaseBase :data="detailForm" />
             <purchaseReceivingInfo :data="detailForm" />
-            <goodsWarehousing
+            <goodsWarehousing 
               @reload='reload'
               :data="detailForm"
               :drawerData="drawerData"
@@ -38,31 +38,37 @@
           label="拆卸任务"
           name="storageDisassemble"
         >
-          <storageDisassemble
-            v-if="activeName == 'storageDisassemble'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
-          ></storageDisassemble>
+          <FullscreenWrap v-if="activeName == 'storageDisassemble'">
+            <storageDisassemble
+              v-if="activeName == 'storageDisassemble'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
+            ></storageDisassemble>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="采购入库单"
           name="orderStorage"
         >
-          <orderStorage
-            v-if="activeName == 'orderStorage'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
-          ></orderStorage>
+          <FullscreenWrap v-if="activeName == 'orderStorage'">
+            <orderStorage
+              v-if="activeName == 'orderStorage'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
+            ></orderStorage>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="应付账单"
           name="financePayable"
         >
-          <financePayable
-            v-if="activeName == 'financePayable'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
-          ></financePayable>
+          <FullscreenWrap v-if="activeName == 'financePayable'">
+            <financePayable
+              v-if="activeName == 'financePayable'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
+            ></financePayable>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -78,7 +84,7 @@ export default {
   props: ['drawerData', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '入库状态', value: '待入库' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '入库状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       detailForm: {},
       activeName: ''
     };
@@ -98,7 +104,7 @@ export default {
       this.$api.seePsiPurchaseService.purchaseGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
-          this.status[0].value = this.detailForm.putinState == 0 ? '待入库' : this.detailForm.putinState == 1 ? '部分完成' : this.detailForm.putinState == 2 ? '完成入库' : this.detailForm.putinState == 3 ? '终止' : '全部'
+          this.status[0].value = this.detailForm.putinState == 0 ? '待入库' : this.detailForm.putinState == 1 ? '部分完成' : this.detailForm.putinState == 2 ? '完成入库' : this.detailForm.putinState == 3 ? '终止' : '-'
           this.status[1].value = this.detailForm.createTime
           this.status[2].value = this.detailForm.creatorName
           this.status[3].value = this.detailForm.deptName

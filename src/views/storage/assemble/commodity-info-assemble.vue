@@ -56,10 +56,6 @@
           slot-scope="scope"
           class="d-relative"
         >
-          <!-- 报溢的话 需要选择库房以后再选 商品, 要传过去库房id, 商品是跟库库房来的 报损不需要 -->
-          <!--             v-if="addForm.wmsId"
-            :sn="addForm.type == 2 ? true : false"
-            :params="addForm.type == 2 ? {wmsId:addForm.wmsId} : {wmsId:''}" -->
           <commoditySelector
             :disabled='!!scope.row.quotationId'
             :codes="tableData.map(item=>item.commodityCode)"
@@ -120,18 +116,21 @@
       <el-table-column
         label="组装数量"
         min-width="150"
-        prop="allocationNum"
+        prop="num"
       >
         <template
           slot-scope="scope"
           class="d-relative"
         >
-          <el-input
+          <el-input-number
             v-if="scope.row.commodityCode && !scope.row.quotationId"
             size="mini"
-            v-model="scope.row.allocationNum"
+            v-model="scope.row.num"
+            :controls='false'
+            :min='0'
+            :precision="0"
             placeholder="请输入"
-          ></el-input>
+          ></el-input-number>
           <span v-else>{{scope.row.commodityNum}}</span>
         </template>
       </el-table-column>
@@ -224,7 +223,8 @@ export default {
       list.forEach((item, index) => {
         if (!this.codes.includes(item.commodityCode) && scope.row.commodityCode && type == 'select') {//区分非选择状态下的选择商品信息
           this.$set(this.tableData, scope.$index, item)
-          scope.row.configName = ''
+          scope.row.configName = this.configName
+          this.tableData[this.tableData.length - 1].configName = ''//清空最后一项
         } else if (!this.codes.includes(item.commodityCode)) {
           this.tableData.unshift(item)
           scope.row.configName = ''
@@ -236,7 +236,6 @@ export default {
     },
     //表格查询数据懒加载
     load(tree, treeNode, resolve) {
-      console.log(tree, treeNode, 'loadloadloadloadload')
       this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName({ page: 1, limit: 50, commodityCode: tree.commodityCode })
         .then(res => {
           let list = res.data || []
@@ -260,7 +259,6 @@ export default {
         return item.configId == e
       })
       this.commodityChoose([list, 'select'], scope)
-
     },
     expand(row) {
       this.$set(row, 'expanded', !row.expanded);

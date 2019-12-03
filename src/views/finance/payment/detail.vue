@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:40:50
+ * @LastEditTime: 2019-12-03 16:04:56
  * @Description: 付款单
 */
 <template>
@@ -46,7 +46,13 @@
         type="primary"
         v-if="detail&&[1].includes(detail.state)"
       >复核通过</el-button>
-      <el-button @click="showAddIncoming=true,addIncoming()" size="mini" type="primary" v-if="detail&&[2].includes(detail.state)">付款</el-button>
+      <!-- :billAmount="+(Number(detail.billTotalAmount-detail.factAmount)||0).toFixed(2)" -->
+      <el-button
+        @click="showAddIncoming=true,addIncoming()"
+        size="mini"
+        type="primary"
+        v-if="detail&&[2].includes(detail.state)&&+Number(detail.billTotalAmount-detail.factAmount).toFixed(2)"
+      >付款</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
@@ -72,7 +78,7 @@
       </el-tab-pane>
     </el-tabs>
     <Apply :rowData="detail" :visible.sync="showApply" @reload="setEdit(),$reload()" v-if="showApply" />
-    <AddIncoming :incomeType="1" :visible.sync="showAddIncoming" code ref="addIncoming" v-if="showAddIncoming" />
+    <AddIncoming :visible.sync="showAddIncoming" code incomeType="1" ref="addIncoming" v-if="showAddIncoming" />
   </sideDetail>
 </template>
 <script>
@@ -125,7 +131,7 @@ export default {
           },
           { label: '总应付金额', value: this.detail.billTotalAmount },
           { label: '实付金额', value: this.detail.factAmount },
-          { label: '付款方', value: this.detail.accountName }
+          { label: '收款方', value: this.detail.accountName }
         ];
       }
     }
@@ -163,7 +169,7 @@ export default {
         Object.assign(this.$refs.addIncoming.form, {
           incomeAmount: this.detail.amount,
           accountDate: +new Date(),
-          oppositeAccount: this.detail.accountName,
+          // oppositeAccount: this.detail.accountName,
           accountPhone: this.detail.linkmanPhone
         });
         this.$refs.addIncoming.saveHandle = () => this.saveIncoming();
@@ -171,18 +177,21 @@ export default {
     },
     async saveIncoming() {
       this.loading = true;
+      this.$refs.addIncoming.loading = true;
       try {
         await this.$refs.addIncoming.$refs.form.validate();
-        await this.$api.seePsiFinanceService.paybillPay(
-          Object.assign(
-            {
-              fbiiCode: this.detail.billCode
-            },
-            this.$refs.addIncoming.form
-          )
-        );
+        await this.$api.seePsiFinanceService.paybillPay({
+          ...this.$refs.addIncoming.form,
+          fbiiCode: this.detail.billCode,
+          matchState:0,
+          unmatchAmount: this.$refs.addIncoming.form.incomeAmount,
+          matchedAmount: 0
+        });
+        this.$refs.addIncoming.setEdit();
+        this.$refs.addIncoming.close();
       } catch (error) {}
       this.loading = false;
+      this.$refs.addIncoming.loading = false;
     }
   }
 };

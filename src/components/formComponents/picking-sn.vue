@@ -142,16 +142,25 @@ export default {
     this.commonsystemconfigInfo()
   },
   methods: {
-    //回车机器号和SN码
+    //回车机器号和SN码 
     shipmentCommodityCheck() {
-      this.$api.seePsiWmsService.wmspickingorderShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData })
+      this.$api.seePsiWmsService.wmspickingorderShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData, businessCode: this.data.pickingOrderCode, })
         .then(res => {
           if (res.data) {
-            this.tableData.push(res.data)
+
             let Index = this.data.commodityList.findIndex((item) => {
               return item.commodityCode == res.data.commodityCode
             })
-            this.data.commodityList[Index].pickingAccomplishNum++
+            if (Number(this.data.commodityList[Index].pickingAccomplishNum) < this.data.commodityList[Index].pickingNum) {
+              this.tableData.push(res.data)
+              this.data.commodityList[Index].pickingAccomplishNum++
+            } else {
+              this.$message({
+                message: `商品 ${this.data.commodityList[Index].goodsName} 拣货数量大于待拣数量！`,
+                type: 'error',
+                showClose: true,
+              });
+            }
           }
           this.snCode = ''
         })

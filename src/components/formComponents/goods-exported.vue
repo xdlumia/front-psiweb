@@ -2,7 +2,7 @@
  * @Author: 徐贺 
  * @Date: 2019-10-25 15:24:18 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-10-28 14:02:43 
+ * @Last Modified time: 2019-10-28 14:02:43  
  * @Description: 库房  销售单 详情组件 出库商品
  */
 <template>
@@ -25,16 +25,16 @@
         :params="{busCode:code,busType:5}"
         ref="companyTable"
         class="college-main"
-        style="max-height:300px"
+        style="height:250px"
         :tree-props="{children: 'id', hasChildren: 'id'}"
       >
-        <el-table-column
+        <!-- <el-table-column
           fixed
           prop="shipmentsNumber"
           min-width="100"
           label="发货数量"
           show-overflow-tooltip
-        ></el-table-column>
+        ></el-table-column> -->
         <el-table-column
           fixed
           prop="pickingNumber"
@@ -64,20 +64,24 @@
             >{{scope.row.snCode}}</span>
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           fixed
           prop="alterationNumber"
           min-width="100"
           label="出库数量"
           show-overflow-tooltip
-        ></el-table-column>
+        ></el-table-column> -->
         <el-table-column
           fixed
-          prop="isTeardown"
+          prop="isAssembly"
           min-width="100"
           label="是否组装"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.isAssembly == 0 ? '否' : scope.row.isAssembly == 1 ? '是' : ''}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="goodsName"
           min-width="100"
@@ -96,8 +100,11 @@
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -107,7 +114,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -135,7 +142,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.unit|dictionary('SC_JLDW')}}</span>
+            <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
           </template>
         </el-table-column>
 
@@ -151,30 +158,54 @@
         v-dialogDrag
       >
         <commodityPicking :data='rowData' />
-        <machineSn :data='rowData' />
+        <machineSn
+          :data='rowData'
+          :detailForm='detailForm'
+        />
+        <span
+          slot="footer"
+          class="dialog-footer"
+        >
+          <el-button
+            @click="dialogVisible = false"
+            size="small"
+          >关 闭</el-button>
+        </span>
       </el-dialog>
+      <CommodityDetail
+        :code="currentCommodityCode"
+        :visible.sync="showCommodityDetail"
+        v-if="showCommodityDetail"
+      />
     </form-card>
   </div>
 </template>
-<script>
+<script> 
 import commodityPicking from '@/components/formComponents/commodity-picking'
 import FullscreenElement from '@/components/fullscreen-element';
 import machineSn from '@/components/formComponents/machine-sn'
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 export default {
   props: ['detailForm', 'code'],
   data() {
     return {
       rowData: {},
       dialogVisible: false,
-      showInFullscreen: false
+      showInFullscreen: false,
+      showCommodityDetail: false,
+      currentCommodityCode: '',
     }
   },
   methods: {
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
     //点击机器号和SN码
     getTableVisible(row) {
       this.dialogVisible = true
       this.rowData = row
-      console.log(this.rowData, 'this.rowDatathis.rowDatathis.rowDatathis.rowData')
     },
     fullscreen() {
       this.showInFullscreen = true;
@@ -183,9 +214,13 @@ export default {
   components: {
     commodityPicking,
     machineSn,
-    FullscreenElement
+    FullscreenElement,
+    CommodityDetail
   },
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+/deep/.el-dialog__footer {
+  text-align: center !important;
+}
 </style>

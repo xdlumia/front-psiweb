@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 11:21:55
+ * @LastEditTime: 2019-12-03 16:28:09
  * @Description: 付款申请
 */
 <template>
@@ -71,7 +71,7 @@ export default {
       try {
         await this.$api.seePsiFinanceService.paybillPaymentApply({
           apprpvalNode: this.form.apprpvalNode,
-          id: this.form.id,
+          ids: [this.form.id],
           processType: 'psi_payment'
         });
         this.setEdit();

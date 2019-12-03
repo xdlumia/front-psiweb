@@ -2,41 +2,18 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 19:45:20
+ * @LastEditTime: 2019-12-03 19:50:16
  * @Description: 审核信息
 */
 <template>
   <form-card title="审核信息">
-    <div class="h20">
-      <el-link
-        :underline="false"
-        @click="showHis=!showHis"
-        class="fr"
-        type="primary"
-      >{{showHis?'返回':'历史记录'}}</el-link>
-    </div>
-    <div
-      class="progress-list"
-      v-if="!showHis"
-    >
+    <div class="progress-list">
       <ApproveCard :progress="progressData" />
-    </div>
-    <div
-      class="progress-list"
-      v-else
-    >
-      <ApproveCard
-        v-for="(item,index) of this.hisData"
-        :key="index"
-        :currProgress="item"
-        :progress="progressData"
-      />
     </div>
   </form-card>
 </template>
 <script>
 import ApproveCard from './approve-card';
-import layoutVue from '../layout.vue';
 
 const busType = {
   '29': 'psi_purchase_stock', //	备货单	采购
@@ -72,35 +49,36 @@ export default {
   data() {
     return {
       showHis: false, // 是否查看历史状态
-      progressData: [
-        {
-          taskName: '', // 任务节点名称
-          taskCode: '', // 任务节点码
-          taskStatus: '', // 任务节状态
-          approvalName: '', // 审核人 add
-          createTime: '', // 审核时间 add
-          type: '' // 任务类型
-        }
-      ], // 当前流程节点
-      hisData: [] // 历史审核数据
+      progressData: [], // 当前流程节点
     };
   },
   async mounted() {
     // 查询当前项共有多少节点
-    await this.queryProcessDefinitionSubTask()
-    await this.processtaskQueryProcessHistoryEntity()
+    // await this.queryProcessDefinitionSubTask()
+    if (this.id && this.busType) {
+      await this.processtaskQueryProcessHistoryEntity()
+    }
+  },
+  watch: {
+    '$parent.data': {
+      handler(val) {
+        if (val) {
+          this.processtaskQueryProcessHistoryEntity()
+        }
+      }
+    }
   },
   methods: {
-    // 查询当前项共有多少节点
-    async queryProcessDefinitionSubTask() {
-      const params = {
-        typeArray: [busType[this.busType]]
-      }
-      const { data } = await this.$api.seeWorkflowService.processdefinitionQueryProcessDefinitionSubTask(params)
-      this.progressData = data
-    },
+    // // 查询当前项共有多少节点
+    // async queryProcessDefinitionSubTask() {
+    //   const params = {
+    //     typeArray: [busType[this.busType]]
+    //   }
+    //   const { data } = await this.$api.seeWorkflowService.processdefinitionQueryProcessDefinitionSubTask(params)
+    //   this.progressData = data
+    // },
     // 查询历史操作
-    async processtaskQueryProcessHistoryEntity() {
+    processtaskQueryProcessHistoryEntity() {
       if (!this.busType) {
         this.$message({
           message: '当前审核信息没有传递busType参数',
@@ -112,15 +90,15 @@ export default {
       }
       const params = {
         processType: busType[this.busType],
-        businessId: this.id || this.$parent.rowData.id // 一般详情都会传rowData 当前行操作数据 里面有id
+        businessId: this.id || this.$parent.rowData.id || this.$parent.data.id// 一般详情都会传rowData 当前行操作数据 里面有id
       }
-      const { data } = await this.$api.seeWorkflowService.processtaskQueryProcessHistoryEntity(params)
-      this.hisData = data || []
-      // 历史记录的最后一个节点就是当前节点
-      const lastHis = this.hisData[this.hisData.length - 1]
-
+      if (this.id || this.$parent.rowData.id || this.$parent.data.id) {
+        this.$api.seeWorkflowService.processtaskQueryProcessHistoryEntity(params)
+          .then(res => {
+            this.progressData = res.data || []
+          })
+      }
     }
-
   }
 };
 </script>

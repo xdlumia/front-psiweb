@@ -13,7 +13,8 @@
     v-dialogDrag
   >
     <el-container
-      style="padding:0;max-height:700px;"
+      :style="{maxHeight:'calc(100vh - 180px)'}"
+      style="padding:0;"
       class="d-auto-y"
     >
       <el-header
@@ -40,6 +41,7 @@
       </el-header>
       <el-main style="padding:0;max-height:700px;">
         <el-form
+          ref='addform'
           :model="addform"
           class="p10"
         >
@@ -128,32 +130,36 @@ export default {
     },
     //点一下保存
     submit() {
-      this.$confirm('该库房暂未锁定,锁定后才可以进行盘点(抽盘只锁定抽盘商品库存)', '提示', {
-        confirmButtonText: '一键锁定',
-        cancelButtonText: '暂不盘点',
-        type: 'warning'
-      }).then(() => {
-        if (this.addform.type == 2) {
-          this.addform.commodityCodeList = this.returnList(this.$refs.inventory.tableData)
+      this.$refs['addform'].validate((valid) => {
+        if (valid) {
+          this.$confirm('该库房暂未锁定,锁定后才可以进行盘点(抽盘只锁定抽盘商品库存)', '提示', {
+            confirmButtonText: '一键锁定',
+            cancelButtonText: '暂不盘点',
+            type: 'warning'
+          }).then(() => {
+            if (this.addform.type == 2) {
+              this.addform.commodityCodeList = this.returnList(this.$refs.inventory.tableData)
+            } else {
+              this.addform.commodityCodeList = []
+            }
+            this.$api.seePsiWmsService.wmsblitemSave(this.addform)
+              .then(res => {
+                this.$emit('reload')
+                this.close()
+              })
+              .finally(() => {
+              })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消'
+            });
+          })
         } else {
-          this.addform.commodityCodeList = []
+          console.log('error submit!!');
+          return false;
         }
-        this.$api.seePsiWmsService.wmsblitemSave(this.addform)
-          .then(res => {
-            this.$emit('reload')
-            this.close()
-          })
-          .finally(() => {
-          })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消'
-        });
       })
-
-
-
     }
   }
 };

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 11:56:47
+ * @LastEditTime: 2019-12-03 13:41:40
  * @Description: 采购退货扫码
 */
 <template>
@@ -30,7 +30,9 @@ import VisibleMixin from '@/utils/visibleMixin';
 export default {
   mixins: [VisibleMixin],
   components: {},
-  props: {},
+  props: {
+    id: [Number, String]
+  },
   data() {
     return {
       alwaysDropAndCopyForm: true // 在getDetail返回数据后，重新覆盖form
@@ -42,7 +44,6 @@ export default {
       return this.rowData;
     },
     async save() {
-      console.log(this.form);
       await this.$refs.form.validate();
       if (
         !this.form.putawayCommodityList ||
@@ -62,6 +63,10 @@ export default {
         } = await this.$api.seePsiWmsService.wmsinventorydetailBatchShipment(
           form
         );
+        await this.$api.seePsiPurchaseService.purchasealterationPutout({
+          alterationCode: this.rowData.businessCode,
+          id: this.id
+        });
         this.setEdit();
         this.close();
       } catch (error) {

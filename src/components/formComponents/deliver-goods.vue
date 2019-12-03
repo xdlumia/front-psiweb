@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 15:04:59
+ * @LastEditTime: 2019-12-02 11:44:11
  * @Description: 商品发货信息
 */  
 <template>
@@ -10,8 +10,8 @@
     <div slot="title">
       <span>商品发货信息</span>
     </div>
-    <el-table :data="data.delivers" ref="elTable" row-key="name" size="mini" style="height:100%;">
-      <el-table-column class-name="hide-children" min-width="1" width="1"></el-table-column>
+    <el-table :data="data.delivers" max-height="600px" ref="elTable" row-key="name" size="mini">
+      <!-- <el-table-column class-name="hide-children" min-width="1" width="1"></el-table-column>
       <el-table-column min-width="60">
         <template slot-scope="{row}">
           <div class="expanded-icons d-text-gray" v-if="row.children&&row.children.length">
@@ -19,10 +19,10 @@
             <span @click="expand(row)" class="el-icon-minus d-pointer" v-else></span>
           </div>
         </template>
-      </el-table-column>
+      </el-table-column>-->
       <el-table-column label="商品编号" min-width="200" prop="title" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="d-text-blue">{{row.commodityCode}}</span>
+          <span class="d-text-blue" v-if="!row.fake">{{row.commodityCode}}</span>
         </template>
       </el-table-column>
       <el-table-column label="商品图片" min-width="100" prop="goodsPic" show-overflow-tooltip>
@@ -47,14 +47,14 @@
       <el-table-column label="配置" min-width="80" prop="configName" show-overflow-tooltip></el-table-column>
       <el-table-column label="备注" min-width="200" prop="note"></el-table-column>
       <el-table-column label="数量" min-width="70" prop="commodityNumber"></el-table-column>
-      <el-table-column label="序列号" min-width="200" prop="snCode">
+      <el-table-column fixed="right" label="序列号" min-width="200" prop="snCode">
         <template slot-scope="{row,$index}">
           <el-form-item :prop="`delivers.${$index}.deliverInfo.snCode`">
             <el-input size="mini" v-model="row.deliverInfo.snCode"></el-input>
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="订单号" min-width="200" prop="orderCode">
+      <el-table-column fixed="right" label="订单号" min-width="200" prop="orderCode">
         <template slot-scope="{row,$index}">
           <el-form-item :prop="`delivers.${$index}.deliverInfo.orderCode`">
             <el-input size="mini" v-model="row.deliverInfo.orderCode"></el-input>

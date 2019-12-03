@@ -14,7 +14,7 @@
         :data="data.commodityList"
         ref="companyTable"
         row-key="commodityCode"
-        style="max-height:300px"
+        max-height="300"
         :tree-props="{children: 'childrenCommodityList'}"
       >
         <el-table-column
@@ -30,7 +30,7 @@
             slot-scope="scope"
             v-if="scope.row.childrenCommodityList"
           >
-            <span>{{scope.row.allocationNum || 0}}</span>
+            <span>{{scope.row.undistributedNum || 0}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -44,6 +44,7 @@
             v-if="scope.row.childrenCommodityList"
           >
             <el-input-number
+              :disabled="!scope.row.undistributedNum || scope.row.undistributedNum == '0'"
               class="wfull"
               size='mini'
               v-model="scope.row.num"

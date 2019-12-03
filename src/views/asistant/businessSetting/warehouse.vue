@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-25 14:24:04
+ * @LastEditTime: 2019-12-03 10:13:47
  * @Description: 业务设置-库房
  -->
 <template>
@@ -26,14 +26,10 @@
           style="margin-top: 20px;"
           @click="save"
         >保存</el-button>
-        <el-button
-v-if="isEdit" size="small" style="margin-top: 20px;"
-@click="cancel">取消</el-button>
+        <el-button v-if="isEdit" size="small" style="margin-top: 20px;" @click="cancel">取消</el-button>
       </el-col>
     </div>
-    <el-form
-size="small" :model="warehouseEntity" :disabled="!isEdit"
-label-width="190px">
+    <el-form size="small" :model="warehouseEntity" :disabled="!isEdit" label-width="190px">
       <fieldset class="d-fieldset mb20">
         <legend>
           <i class="d-round12 d-circle d-bg-blue"></i>
@@ -53,10 +49,12 @@ label-width="190px">
         <el-col :span="16">
           <el-form-item label="每人自动分配:">
             <el-input-number
-              v-model="warehouseEntity.disassemblynNum"
+              v-model.number="warehouseEntity.disassemblynNum"
               size="mini"
               controls-position="right"
               :min="1"
+              :max="999"
+              :precision="0"
               setp="1"
             ></el-input-number>台
             <span class="f12 pb10" style="color: #999">说明：优先分配最少拆卸数量最少的拆卸人，如数量相同则默认分配</span>
@@ -125,6 +123,8 @@ label-width="190px">
               size="mini"
               controls-position="right"
               :min="1"
+              :max="999"
+              :precision="0"
               setp="1"
             ></el-input-number>台
             <span class="f12 pb10" style="color: #999">说明：优先分配最少拆卸数量最少的拆卸人，如数量相同则默认分配</span>
@@ -168,7 +168,7 @@ label-width="190px">
         </div>
       </fieldset>
 
-      <el-col :span="24">
+      <!-- <el-col :span="24">
         <h3 class="mt10 mb10 d-text-gray b">组装任务设置</h3>
       </el-col>
       <fieldset class="d-fieldset mb20">
@@ -188,7 +188,7 @@ label-width="190px">
             ></el-switch>
           </el-form-item>
         </el-col>
-      </fieldset>
+      </fieldset>-->
       <el-col :span="24">
         <h3 class="mt10 mb10 d-text-gray b">换货单设置</h3>
       </el-col>
@@ -251,7 +251,7 @@ label-width="190px">
 
 <script type='text/ecmascript-6'>
 export default {
-  data() {
+  data () {
     return {
       loading: false,
       isEdit: false,
@@ -272,11 +272,11 @@ export default {
   },
   components: {
   },
-  mounted() {
+  mounted () {
     this.commonsystemconfigInfo()
   },
   methods: {
-    save() {
+    save () {
       const params = {
         configType: 2,
         configJson: JSON.stringify(this.warehouseEntity)
@@ -284,7 +284,7 @@ export default {
       this.commonsystemconfigSave(params)
     },
     // 保存接口
-    commonsystemconfigSave(params) {
+    commonsystemconfigSave (params) {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigSave(params).finally(() => {
         this.commonsystemconfigInfo()
@@ -292,17 +292,17 @@ export default {
         this.isEdit = false
       })
     },
-    cancel() {
+    cancel () {
       this.isEdit = false
       this.handleDefault()
     },
     // 处理返回数据
-    handleDefault() {
+    handleDefault () {
       Object.keys(this.warehouseEntity).forEach(key => {
         this.warehouseEntity[key] = this.tempObj[key] || this.warehouseEntity[key]
       })
     },
-    commonsystemconfigInfo() {
+    commonsystemconfigInfo () {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigInfo(null, 2).then(res => {
         this.tempObj = JSON.parse(res.data.configJson)

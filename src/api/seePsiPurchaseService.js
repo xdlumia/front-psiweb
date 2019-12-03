@@ -3,12 +3,21 @@
 const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = false;
 /**
-* @date 2019-11-26
+* @date 2019-12-03
 * @host 39.99.132.95:9205
 */
 export default {
     __mockAddress: MOCK_ADDRESS,
 
+    /**
+     * @tag job-controller
+     * @description execute
+     */
+    jobExecute: {
+        url: '/job/execute',
+        methods: 'post',
+        mock: isUseMock
+    },
     /**
      * @tag process-event-controller
      * @description allListenerConfig
@@ -79,6 +88,15 @@ export default {
     purchasePrint: {
         url: '/purchase/print',
         methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购单
+     * @description 采购入库
+     */
+    purchasePutin: {
+        url: '/purchase/putin',
+        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -178,6 +196,15 @@ export default {
     purchasealterationPrint: {
         url: '/purchasealteration/print',
         methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 采购退货单
+     * @description 退货出库
+     */
+    purchasealterationPutout: {
+        url: '/purchasealteration/putout',
+        methods: 'post',
         mock: isUseMock
     },
     /**

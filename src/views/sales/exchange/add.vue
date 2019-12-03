@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 18:43:24
+ * @LastEditTime: 2019-12-03 11:43:52
  * @Description: 生成销售换货单
 */
 <template>
@@ -60,7 +60,8 @@
         <goods-return-edit
           :options="rowData.quotationCodes || []"
           :data="form"
-          :params="{busType: 1, putawayType: 1,}"
+          from="exchange"
+          :params="{busType: 1, putawayType: 0,}"
           id="goodsChangeEdit"
         />
         <!-- 账期信息 -->
@@ -208,7 +209,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (!this.form.shipmentFinanceSaveVoList.length) {
           this.$message({
-            message: '请添加账期信息',
+            message: '请添加其他费用',
             type: 'error',
             showClose: true,
           });

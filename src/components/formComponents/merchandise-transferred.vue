@@ -183,13 +183,15 @@
           label="单位"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">{{scope.row.unit | dictionary('PMD_RM_SHI_YONG_HY')}}</template>
+          <template slot-scope="scope">{{scope.row.unit | dictionary('SC_JLDW')}}</template>
         </el-table-column>
       </el-table>
     </form-card>
     <commodityChoose
       sn
+      :params='{wmsId: form.putawayWmsId}'
       :visible.sync='chooseVisible'
+      v-if="chooseVisible"
       @choose='commodityChoose'
     />
   </div>
@@ -239,6 +241,12 @@ export default {
   },
   mounted() { },
   methods: {
+    //库房切换，清空下边扫过的码，因为只能扫库房里面的东西
+    changeWmsId() {
+      this.upTableData = []
+      this.downTableData = []
+      this.snCode = ''
+    },
     handleClick({ label, name }) {
       this.activeName = '';
     },
@@ -266,9 +274,9 @@ export default {
     commodityChoose(selected) {
       let allId = []
       this.upTableData.forEach((item) => {
-        allId.push(item.id)
+        allId.push(item.snCode + item.robotCode)
       })
-      let newArr = selected.filter(item => !allId.includes(item.id))
+      let newArr = selected.filter(item => !allId.includes(item.snCode + item.robotCode))
       if (newArr.length > 0) {
         newArr.forEach((item) => {
           this.upTableData.unshift(item)
@@ -280,7 +288,7 @@ export default {
     getCommodityBySnCode() {
       if (this.form.putawayWmsId) {
         if (this.snCode) {
-          this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.form.id, commodityList: this.upTableData, })
+          this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.form.id, commodityList: this.upTableData, wmsId: this.form.putawayWmsId })
             .then(res => {
               if (res.data) {
                 let arr = this.upTableData.filter((item) => {

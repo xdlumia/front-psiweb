@@ -29,7 +29,7 @@
           class="d-text-blue d-pointer"
           @click="getdisassemblyVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='disassemblyTaskState'">{{value == 0 ? '未开始' : value == 1 ? '待拆卸' : value == 2 ? '部分拆卸' : value == 3 ? '完成拆卸' : '全部'}}</span>
+        <span v-else-if="column.columnFields=='disassemblyTaskState'">{{value == 0 ? '未开始' : value == 1 ? '待拆卸' : value == 2 ? '部分拆卸' : value == 3 ? '完成拆卸' : value == -1 ? '终止' : '-'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>

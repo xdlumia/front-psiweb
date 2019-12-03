@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:43:13
+ * @LastEditTime: 2019-11-29 11:20:10
  * @Description: 换货单
 */
 <template>
@@ -37,6 +37,7 @@
         @click="$submission('seePsiWmsService.wmsswaporderPassApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
+          busCode:detail.swapOrderCode
         },'通过')"
         size="mini"
         type="primary"
@@ -69,7 +70,7 @@
           <exchange-info :data="detail" disabled id="exchangeInfo" />
           <buying-exchange-goods :data="detail" disabled exchangeType="in" id="inGoods" />
           <buying-exchange-goods :data="detail" disabled exchangeType="out" id="outGoods" />
-          <orderStorageBill :data="detail" :hide="['isBillFee']" :type="3" disabled id="billInfo" />
+          <orderStorageBill :data="detail" :hide="['isBillFee']" :type="3" disabled feeDetailCode="ZD_DY_LX-4-3" id="billInfo" />
           <customInfo :data="detail" busType="1" disabled id="customInfo"></customInfo>
           <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
         </el-form>
@@ -90,7 +91,7 @@
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" v-if="showEdit" />
     <exchange-sweepcode :rowData="getExchangeGoods()" :visible.sync="showExchangeGoods" v-if="showExchangeGoods" />
   </sideDetail>
 </template>

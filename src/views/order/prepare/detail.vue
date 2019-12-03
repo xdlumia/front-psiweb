@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 16:38:43
+ * @LastEditTime: 2019-12-03 10:11:18
  * @Description: 备货单详情
 */
 <template>
@@ -38,6 +38,7 @@
         @click="$submission('seePsiPurchaseService.purchasestockorderPassApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
+          busCode:detail.stockCode
         },'通过')"
         size="mini"
         type="primary"
@@ -62,10 +63,11 @@
         v-if="detail&&[0,5].includes(detail.state)"
       >删除</el-button>
       <el-button
+        :disabled="!(waitBuyingNumber>0)"
         @click="showAddOrderStorage=true"
         size="mini"
         type="primary"
-        v-if="waitBuyingNumber>0&&detail&&[2,3].includes(detail.state)"
+        v-if="detail&&[2,3].includes(detail.state)"
       >采购</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
@@ -104,7 +106,7 @@
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <addOrderStorage :joinCode="code" :visible.sync="showAddOrderStorage" from="备货单" />
+    <addOrderStorage :joinCode="code" :visible.sync="showAddOrderStorage" @reload="setEdit(),$reload()" from="备货单" />
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="reload" type="edit" v-if="showEdit&&detail" />
   </sideDetail>
 </template>
@@ -159,7 +161,6 @@ export default {
       } else if (this.rowData) return this.rowData;
     },
     reload() {
-      console.log('detail reload');
       this.setEdit();
       this.$reload();
     }

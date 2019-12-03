@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 15:54:34
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-03 18:05:58
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -23,12 +23,12 @@ export default {
       showDetailPage: false,
       showEditPage: false,
       loading: false,// 加载中
-      stateText: {},
+      stateText: null,
       closeTimer: null,
       alwaysDropAndCopyForm: false,
       isDataReady: false,// 是否数据准备完毕，可以渲染视图了
-      activeTab:'',// 页签
-      tabStatus:{} // 页签状态
+      activeTab: '',// 页签
+      tabStatus: {} // 页签状态
     }
   },
   watch: {
@@ -36,23 +36,24 @@ export default {
       this.$checkVisible();
     },
     // 监听页签切换，改变状态，为true开始渲染
-    activeTab(){
-      this.$set(this.tabStatus,this.activeTab,true)
+    activeTab() {
+      this.$set(this.tabStatus, this.activeTab, true)
     }
   },
   mounted() {
     this.$checkVisible();
-    if (this.type !== 'add' && this.type !== 'edit') {
-      let statusList
-      try {
-        statusList = this.$parent.$refs.table.statusList
-        statusList.forEach(item => {
-          if (item.name != '全部') {
-            this.stateText[item.state || item.approvalState] = item.name
-          }
-        })
-      } catch (error) { }
-    }
+    // 添加列表里的状态 只能是当前列表的详情页.如果是列表页调用别的详情页就挂了. 所以 stateText 还要自己设置
+    // if (this.type !== 'add' && this.type !== 'edit') {
+    //   let statusList
+    //   try {
+    //     statusList = this.$parent.$refs.table.statusList
+    //     statusList.forEach(item => {
+    //       if (item.name != '全部' && !Object.keys(this.stateText).length) {
+    //         this.stateText[item.state || item.approvalState] = item.name
+    //       }
+    //     })
+    //   } catch (error) { }
+    // }
 
   },
   computed: {
@@ -62,6 +63,14 @@ export default {
     status() {
       if (!this.getDetail) return [];
       else {
+        if (!this.stateText) {
+          this.$message({
+            message: '当前引用详情页没有设置stateText状态值,不知道是啥的问王晓冬',
+            type: 'error',
+            showClose: true,
+          });
+          this.stateText = {}
+        }
         return [
           { label: '状态', value: this.stateText[this.detail.state] },
           { label: '单据创建人', value: this.detail.creatorName },
@@ -81,7 +90,7 @@ export default {
         if (data) {
           data = JSON.parse(JSON.stringify(data))
           this.detail = data || {}
-          if (this.alwaysDropAndCopyForm&&data) this.form = data;
+          if (this.alwaysDropAndCopyForm && data) this.form = data;
           else {
             // this.rowData = data || {}
             if (this.form && this.type == 'edit') {
@@ -98,7 +107,9 @@ export default {
           }
         }
         if (this.afterDetailInit) this.afterDetailInit()
-      } catch (error) { }
+      } catch (error) {
+        console.error(error)
+      }
       this.isDataReady = true;
       this.loading = false;
     },

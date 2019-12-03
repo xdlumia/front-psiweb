@@ -2,25 +2,27 @@
  * @Author: web.王晓冬
  * @Date: 2019-06-18 17:34:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 11:44:25
+ * @LastEditTime: 2019-11-28 10:12:14
  * @Description: 验证过文件
  */
 
-// 验证正则
-import Schema from 'async-validator'
+
+import Schema from 'async-validator';
+
 const verify = {
-  // 税率验证
-  taxRate: (rule, value, callback) => {
+  // 正整数
+  taxRate(_rule, value, callback) {
+    // /^\d+(?=\.{0,1}\d+$|$)/
     var reg = /^(?:[1-9]?\d|100)$/
-    if (!reg.test(value)) {
+    if (!value || reg.test(value)) {
+      callback();
+    } else {
       callback(new Error('只能输入0-100的整数'));
     }
-    else {
-      callback();
-    }
   }
-}
-for (const key of Object.keys(verify)) {
+};
+
+for (let key of Object.keys(verify)) {
   Schema.register(key, verify[key])
 }
 

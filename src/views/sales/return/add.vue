@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-20 19:26:02
+ * @LastEditTime: 2019-12-03 15:09:09
  * @Description: 生成销售退货单
 */
 <template>
@@ -57,7 +57,8 @@
         />
         <!-- 退换货商品 -->
         <goods-return-edit
-          :params="{busType: 1, putawayType: 1,}"
+          from="return"
+          :params="{busType: 1, putawayType: 0,}"
           :data="form"
           :options="rowData.quotationCodes || []"
           id="goodsChangeEdit"
@@ -120,30 +121,30 @@ export default {
         attachList: [],//附件,
         businessCommoditySaveVoList: [ //商品信息
           {
-            alterationNumber: '',//9,
-            alterationPrice: '',//98765432109876.12,
-            apportionmentAmount: '',//98765432109876.12,
+            alterationNumber: '',//	退换商品数量(出入数量)
+            alterationPrice: '',//实际退/换单价
+            apportionmentAmount: '',// 分摊后金额
             busCode: '',//业务编号,
             busType: '',//9,
             commodityCode: '',//商品编号,
-            commodityNumber: '',//9,
-            costAmount: '',//98765432109876.12,
-            discount: '',//98765432109876.12,
-            discountSprice: '',//98765432109876.12,
-            isAssembly: '',//9,
-            isDirect: '',//9,
+            commodityNumber: '',//商品数量
+            costAmount: '',//采购/销售成本金额
+            discount: '',//折扣
+            discountSprice: '',//折后单价
+            isAssembly: '',//是否组装
+            isDirect: '',//是否直发
             isTeardown: '',//是否拆卸
             note: '',//备注,
-            parentCommodityCode: '',//100000,
-            pickingNumber: '',//9,
-            preTaxAmount: '',//98765432109876.12,
-            putawayType: '',//9,
-            reference: '',//98765432109876.12,
-            salesPrice: '',//98765432109876.12,
-            shipmentsNumber: '',//9,
+            parentCommodityCode: '',//父商品code
+            pickingNumber: '',//拣货数量
+            preTaxAmount: '',//含税总价
+            putawayType: '',//库存类型(出库/入库),
+            reference: '',//参考价
+            salesPrice: '',//销售单价
+            shipmentsNumber: '',//发货数量,
             snCode: '',//SN码,
-            taxPrice: '',//98765432109876.12,
-            taxTotalAmount: '',//98765432109876.12
+            taxPrice: '',//税后退货单价
+            taxTotalAmount: '',//税后退货总价
           }
         ],
         clientId: '',//100000,
@@ -200,7 +201,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (!this.form.shipmentFinanceSaveVoList.length) {
           this.$message({
-            message: '请添加账期信息',
+            message: '请添加其他费用信息',
             type: 'error',
             showClose: true,
           });
@@ -216,7 +217,12 @@ export default {
             api = 'salesreturnedSave'
             // 编辑保存
           }
-          this.$api.seePsiSaleService[api](this.form)
+          let copyParams = JSON.parse(JSON.stringify(this.form))
+          copyParams.businessCommoditySaveVoList = this.$$util.jsonFlatten(copyParams.businessCommoditySaveVoList, 'commonGoodConfigDetailsEntityList')
+          copyParams.businessCommoditySaveVoList.forEach(item => {
+            item.putawayType = 1 //1入库
+          })
+          this.$api.seePsiSaleService[api](copyParams)
             .then(res => {
               this.close()
               this.setEdit()

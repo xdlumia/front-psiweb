@@ -8,7 +8,7 @@
 <template>
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="$emit('update:visible',false)"
     :title="'拣货单-'+ drawerData.pickingOrderCode"
     width="990px"
@@ -18,6 +18,7 @@
     <div>
       <div class="drawer-header">
         <el-button
+          v-if="detailForm.state !== 2 && detailForm.state !== -1"
           @click="orderStorageVisible=true"
           size="mini"
           type="primary"
@@ -44,11 +45,13 @@
           label="销售单"
           name="storageSales"
         >
-          <storageSales
-            v-if="activeName == 'storageSales'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.pickingOrderCode}"
-          ></storageSales>
+          <FullscreenWrap v-if="activeName == 'storageSales'">
+            <storageSales
+              v-if="activeName == 'storageSales'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.pickingOrderCode}"
+            ></storageSales>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -63,7 +66,7 @@ export default {
   props: ['drawerData', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '拣货状态', value: '待拣货' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '拣货状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       detailForm: {},
       activeName: '',
       orderStorageVisible: false
@@ -89,13 +92,13 @@ export default {
           this.status[2].value = this.drawerData.creatorName
           this.status[3].value = this.drawerData.deptName
           this.status[4].value = this.detailForm.source
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 
         })
     },
     reload() {
+      this.wmspickingorderInfo()
       this.$emit('reload')
     }
   }

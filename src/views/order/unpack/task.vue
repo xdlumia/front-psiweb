@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 16:24:53
+ * @LastEditTime: 2019-12-02 11:29:10
  * @Description: 拆卸任务单
 */
 <template>
@@ -24,6 +24,7 @@
           'commodityCode','goodsName','categoryCode','className','specOne','configName','noteText','!add','!fullscreen'
         ]"
         :showSummary="false"
+        :sort="['expanded']"
         title="拆卸信息"
       >
         <template slot="disassemblyNum" slot-scope="{row,info,formProp}">
@@ -107,16 +108,12 @@ export default {
     },
     afterDetailInit() {
       this.form.commodityList.map(item => {
-        this.$set(
-          item,
-          'maxdisassemblyNum',
-          (item.disassemblyNum || 0) - (item.accomplishDisassemblyNum || 0)
-        );
+        delete item.expanded;
+        this.$set(item, 'maxdisassemblyNum', item.undistributedNum || 0);
+        this.$set(item, 'disassemblyNum', item.undistributedNum || 0);
       });
-      console.log(this.form);
     },
     async save() {
-      console.log(this.form);
       await this.$refs.form.validate();
       let form = { ...this.form };
       form.commoditySaveVoList = form.commodityList.map(item => {
@@ -136,7 +133,6 @@ export default {
         this.close();
       } catch (error) {}
       this.loading = false;
-      console.log(form);
     }
   }
 };

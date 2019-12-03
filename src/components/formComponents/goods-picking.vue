@@ -8,11 +8,23 @@
 <template>
   <div>
     <form-card title='拣货商品'>
+      <div slot="title">
+        <span>拣货商品</span>
+        <span class="fr">
+          <span>
+            <el-link
+              :underline="false"
+              @click="fullscreen"
+              type="primary"
+            >全屏显示</el-link>
+          </span>
+        </span>
+      </div>
       <el-table
         border
         size='mini'
         :data='data.commodityList'
-        ref="companyTable"
+        ref="table"
         class="college-main"
         style="max-height:300px"
       >
@@ -60,8 +72,11 @@
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
           </template>
         </el-table-column>
 
@@ -113,26 +128,50 @@
       :data='row'
       :drawerData='data'
     />
+    <FullscreenElement
+      :element="$refs.table"
+      :visible.sync="showInFullscreen"
+    />
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </div>
 </template>
 <script>
 import pickingJsn from './picking-jsn'
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
+import FullscreenElement from '@/components/fullscreen-element';
 export default {
   props: ['data'],
   data() {
     return {
       dialogVisible: false,
-      row: {}
+      row: {},
+      showCommodityDetail: false,
+      currentCommodityCode: '',
+      showInFullscreen: false
     }
   },
   methods: {
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
     changeDialog(row) {
       this.row = row
       this.dialogVisible = true
+    },
+    fullscreen() {
+      this.showInFullscreen = true;
     }
   },
   components: {
-    pickingJsn
+    pickingJsn,
+    FullscreenElement,
+    CommodityDetail
   },
 }
 </script>

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 19:22:14
+ * @LastEditTime: 2019-12-03 18:56:59
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -15,7 +15,7 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{type=='add'?'生成销售出库单':`编辑:${code}`}}</span>
+      <span>{{type=='edit'?'`编辑:${code}`':'生成销售出库单'}}</span>
       <div class="fr mr30">
         <el-button
           type="primary"
@@ -58,7 +58,10 @@
           :data="form"
         />
         <!-- 报价单信息 -->
-        <quote-info :options="quoteCodes" />
+        <quote-info
+          v-if="quoteCodes && quoteCodes.length"
+          :options="quoteCodes"
+        />
         <!-- 收款滞纳金 -->
         <payment-late-sales
           id="paymentLateSales"
@@ -115,11 +118,11 @@ export default {
         attachList: [], // 附件",
         clientId: '', // 100000,
         contractTemplate: '', // 9,
-        deptTotalCode: '', // 部门code",
         fieldList: [], // 自定义字段",
         isContract: '', // 有无合同,
-        lateFeesId: '', // 收款滞纳金id
+        lateFeesInfo: '', // 收款滞纳金id
         note: '', // 备注",
+        paymentTypeCode: '',// 账单类型
         procurementExpectedArrivalTime: '', // 采购预计到货时间
         quotationIds: [], // 报价单ids
         salesExpectedShipmentsTime: '', // 销售预计发货时间
@@ -130,17 +133,16 @@ export default {
             busType: '', // 9,
             feeDetailCode: '', // 费用明细",
             feeTypeCode: '', // 费用类型",
-            isBillFee: '', // 是否直接生成应收付,
-            payAmount: '', // 付款金额
-            payTime: '', // 付款时间
+            isBillFee: 1, // 是否直接生成应收付,
+            payAmount: 0, // 付款金额
+            payTime: new Date().getTime(), // 付款时间
             paymenDays: '第1期', // 账期",
             paymentType: '', // 9
           }
         ],
-        source: '', // 来源",
-        state: '', // 9,
-        totalAmount: '', // 98765432109876.12,
-        totalNumber: '', //
+        totalAmount: '', // 销售单总金额
+        totalCostAmount: '', //销售参考价总金额
+        totalNumber: '', //销售单总数量
       },
     }
   },
@@ -152,22 +154,50 @@ export default {
   },
   computed: {
     quoteCodes() {
-
+      let quotationCodes = null
       // 如果是编辑 详情数据里会带多个quotationCodes
       if (this.type == 'edit') {
-        return this.detail.quotationCodes
+        quotationCodes = this.detail.quotationCodes
       }
       // 如果是合并 那操作的是出库单的数据 rowData 一定是多个数据.
       else if (this.type == 'merge') {
-        return this.rowData.map(item => item.quotationCode)
+        quotationCodes = this.rowData.map(item => item.quotationCode)
       }
       //  如果是新增 那操作的是出库单的数据 是一条数据
       else if (this.type == 'add') {
-        return [this.rowData].map(item => item.quotationCode)
+        quotationCodes = [this.rowData].map(item => item.quotationCode)
       }
+      return quotationCodes
     },
   },
+  watch: {
+    visible(val) {
+      if (val && this.type == 'add') {
+        this.$nextTick(() => {
+          let ids = null
+          if (this.type == 'merge') {
+            ids = this.rowData.map(item => item.id)
+          }
+          else if (this.type == 'add') {
+            ids = [this.rowData].map(item => item.id)
+          }
+          this.salesshipmentGetAddShipemtAmount(ids)
+        })
+      }
+    }
+  },
   methods: {
+    // 根据报价单id，计算获取销售出库单金额数据
+    salesshipmentGetAddShipemtAmount(ids) {
+      this.$api.seePsiSaleService.salesshipmentGetAddShipemtAmount({ quotationIds: ids })
+        .then(res => {
+          let data = res.data || {}
+          this.form.totalAmount = data.totalAmount || 0
+          this.form.totalCostAmount = data.totalCostAmount || 0
+          this.form.totalNumber = data.totalNumber || 0
+          this.form.shipmentFinanceSaveVoList[0].payAmount = this.form.totalAmount
+        })
+    },
     async getDetail() {
       if (this.code) {
         let { data } = await this.$api.seePsiSaleService.salesshipmentGetInfoByCode({ shipmentCode: this.code })
@@ -179,8 +209,22 @@ export default {
     saveHandle() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.loading = true
+          // 最大不能超过销售单总金额
+          const values = this.form.shipmentFinanceSaveVoList.map(item => Number(item.payAmount || 0));
+          let tatal = values.reduce((sum, curr) => {
+            const val = Number(curr)
+            return sum + curr
+          }, 0)
+          if (tatal != this.form.totalAmount) {
+            this.$message({
+              message: '所有账期的付款金额不能大于或小于总价',
+              type: 'error',
+              showClose: true,
+            });
+            return
+          }
 
+          this.loading = true
           if (this.type == 'merge') {
             this.form.quotationIds = this.rowData.map(item => item.id)
           } else if (this.type == 'add') {
@@ -189,7 +233,7 @@ export default {
           // rules 表单验证是否通过
           let api = 'salesshipmentUpdate' // 默认编辑更新
           // 新增保存
-          if (this.type === 'add') {
+          if (this.type === 'add' || this.type === 'merge') {
             api = 'salesshipmentSave'
             // 编辑保存
           }

@@ -10,8 +10,7 @@
     <d-table
       size="small"
       api="seePsiFinanceService.frepaymentrecordList"
-      :params="queryForm"
-      v-if="queryForm.borrowingCode"
+      :params="params"
       style="max-height:350px"
     >
       <el-table-column
@@ -36,6 +35,10 @@ export default {
   mixins: [],
   components: {},
   props: {
+    params: {
+      type: Object,
+      default: () => ({})
+    },
     data: {
       type: Object,
       default: () => ({})
@@ -59,11 +62,6 @@ export default {
         { label: '流水凭证号', prop: 'serialNumber', width: '120', },
         { label: '录入人', prop: 'creator', width: '120', },
       ],
-      queryForm: {
-        limit: 20,
-        page: 1,
-        borrowingCode: this.data.borrowingCode, //借款单编号
-      }
     };
   },
   watch: {

@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 10:21:39
+ * @LastEditTime: 2019-12-03 16:37:30
  * @Description: 目标管理
  -->
 <template>
@@ -29,7 +29,7 @@
           @click="detail(scope.row)"
           style="padding:0"
         >{{scope.row.code}}</el-button>
-        <span v-else-if="column.columnFields=='state'">{{scope.row.state ? '停用' : '启用'}}</span>
+        <span v-else-if="column.columnFields=='state'">{{stateText[scope.row.state]}}</span>
         <span
           v-else-if="column.columnFields=='begTime'"
         >{{scope.row.begTime|timeToStr('YYYY-MM-DD hh:mm:ss')}}-{{scope.row.endTime|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
@@ -79,30 +79,35 @@ export default {
         limit: 15,
         page: 1
       },
+      stateText: {
+        0: '已启用',
+        1: '已停用',
+        2: '已过期'
+      },
       editId: null,
       filterOptions: [
         { label: '目标编号', prop: 'code', default: true },
         { label: '目标名称', prop: 'promotionName', default: true },
-        {          label: '状态',
-          prop: 'state',
-          type: 'select',
-          default: true,
-          options: [
-            { label: '全部', value: null },
-            { label: '启用', value: 0 },
-            { label: '停用', value: 1 }
-          ]
-        },
+        // {          label: '状态',
+        //   prop: 'state',
+        //   type: 'select',
+        //   default: true,
+        //   options: [
+        //     { label: '全部', value: null },
+        //     { label: '启用', value: 0 },
+        //     { label: '停用', value: 1 }
+        //   ]
+        // },
         { label: '目标时间', prop: 'BegTime', default: true, type: 'dateRange' },
-        { label: '目标金额', prop: 'sumMoney', default: true },
-        { label: '参与人数', prop: 'sumUserNum', default: true },
+        { label: '目标金额', prop: 'SumMoney', type: 'numberrange', default: true },
+        { label: '参与人数', prop: 'SumUserNum', type: 'numberrange', default: true },
         {
           label: '创建人',
           prop: 'creator',
           type: 'employee',
           default: true
         },
-        { label: '创建部门', prop: 'deptName', type: 'dept', default: true },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange', default: true }
       ]
     }

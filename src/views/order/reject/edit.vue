@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 11:45:54
+ * @LastEditTime: 2019-12-03 11:27:04
  * @Description: 采购退货单
 */
 <template>
@@ -38,8 +38,8 @@
             :summaryMethod="getSummarys"
             id="commodityInfo"
           />
-          <orderStorageBill :data="form" :hide="['isBillFee']" :max="rejectAmount" :type="1" id="billInfo" />
-          <customInfo :data="form" id="customInfo" busType="31"></customInfo>
+          <orderStorageBill :data="form" :hide="['isBillFee']" :max="rejectAmount" :type="1" feeDetailCode="ZD_DY_LX-4-2" id="billInfo" />
+          <customInfo :data="form" busType="31" id="customInfo"></customInfo>
           <extrasInfo :data="form" id="extrasInfo"></extrasInfo>
         </el-form>
       </div>
@@ -52,14 +52,17 @@ import VisibleMixin from '@/utils/visibleMixin';
 export default {
   mixins: [VisibleMixin],
   components: {},
-  props: {},
-  computed: {
-    
+  props: {
+    from: {
+      type: String,
+      default: '新建'
+    }
   },
+  computed: {},
   data() {
     return {
       rejectAmount: 0,
-      alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
+      alwaysDropAndCopyForm: true // 在getDetail返回数据后，重新覆盖form
     };
   },
   mounted() {},
@@ -80,6 +83,7 @@ export default {
         return data;
       }, this.form);
       this.form.alterationAmount = this.rejectAmount;
+      this.form.source = this.from || '新建';
       try {
         if (this.isEdit) {
           await this.$api.seePsiPurchaseService.purchasealterationUpdate(
@@ -111,7 +115,9 @@ export default {
       if (form.commodityList && form.commodityList.length) {
         form.commodityList.map(item => {
           item.alterationPrice = item.costAmount;
-          item.alterationNumber = item.commodityNumber;
+          item.alterationNumber =
+            item.commodityNumber - (item.returenNumber || 0);
+          item.maxalterationNumber = item.alterationNumber;
         });
       }
       return form;

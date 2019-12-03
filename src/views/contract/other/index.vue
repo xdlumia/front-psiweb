@@ -79,9 +79,6 @@ export default {
     };
   },
   methods: {
-    logData(e) {
-      console.log(e);
-    },
     reload() {
       this.$refs.tableView.reload(1);
     }

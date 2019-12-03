@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-08 16:54:17
+ * @LastEditTime: 2019-11-29 10:45:33
  * @Description: 新增目标
  -->
 <template>
@@ -13,7 +13,7 @@
       v-dialogDrag
       :show-close="false"
       width="1000px"
-      title="新增库房"
+      title="期初库存"
     >
       <div slot="title" style="display:flex;">
         <h3 style="flex:1;text-align:center;">期初库存</h3>
@@ -22,7 +22,8 @@
           <el-button size="mini" @click="$emit('update:visible', false)">关闭</el-button>
         </div>
       </div>
-      <el-form ref="beginnForm" size="mini" :model="beginnForm" :rules="beginnFormRule">
+      <el-form ref="beginnForm" size="mini" :model="beginnForm"
+:rules="beginnFormRule">
         <form-card title="期初信息">
           <el-row :gutter="40">
             <el-col :span="8">
@@ -53,7 +54,8 @@
             </el-col>
           </el-row>
         </form-card>
-        <losses-code ref="lossesCode" :data="beginnForm" :rowData="rowData" :wmsName="wmsName"></losses-code>
+        <losses-code ref="lossesCode" :data="beginnForm" :rowData="rowData"
+:wmsName="wmsName"></losses-code>
       </el-form>
       <!-- <add-facilitator ref="addFacilitator" :editId="editId" v-if="visible" @refresh="refresh"></add-facilitator> -->
     </el-dialog>
@@ -91,12 +93,12 @@ export default {
         wmsId: { required: true, message: '请选择', trigger: 'change' },
         promotionTarget: [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         commonPromotionGoalPersonnelEntities: { required: true, message: '请选择', trigger: 'change' },
         originalPriceAdjustment: [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ]
       },
       loading: false

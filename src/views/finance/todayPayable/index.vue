@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 18:42:11
+ * @LastEditTime: 2019-12-03 14:08:32
  * @Description: 今日应付账单
 */
 <template>
@@ -30,7 +30,7 @@
         <span v-else-if="['feeDetailCode','feeTypeCode'].includes(prop)">
           <span>{{value|dictionary('ZD_DY_LX')}}</span>
         </span>
-        <span v-else-if="prop=='overSate'">
+        <span v-else-if="prop=='overState'">
           <span>{{overText[value||0]}}</span>
         </span>
         <span v-else-if="prop=='settleStatus'">
@@ -38,7 +38,7 @@
         </span>
         <span v-else-if="prop=='busCode'">
           <!-- 关联单据编号 -->
-          <el-link :underline="false" @click="openBusPage(row)" class="f12" type="primary">{{value}}</el-link>
+          <el-link :type="hasBusPage(row)?'primary':'info'" :underline="false" @click="openBusPage(row)" class="f12">{{value}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>
@@ -80,6 +80,7 @@ export default {
       // prettier-ignore
       default: () => [
         { label: '账单编号', prop: 'billCode', default: true },
+        { label: '关联单据编号', prop: 'busCode', default: true },
         { label: '账单状态', prop: 'settleStatus', default: true, type:'select', options:[
           {label:'全部',value:'',},
           {label:'未结清',value:'0',},
@@ -99,7 +100,6 @@ export default {
         { label: '应付/收金额', prop: 'Amount', type: 'numberRange', default: true },
         { label: '实收/付金额', prop: 'FactAmount', type: 'numberRange', default: true },
         { label: '应收/付日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
-        { label: '关联单据编号', prop: 'busCode' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '生成时间', prop: 'CreateTime', type: 'dateRange' },
         { label: '创建人', prop: 'creator', type: 'employee' },
@@ -110,7 +110,7 @@ export default {
       default: () => ({
         title: '今日应付账单',
         busType: '51',
-        // 票据类型(0收票，1开票)
+        // 票据类型(1收票，0开票)
         // 账单类型（0收款 1付款）
         type: 1,
         api: {

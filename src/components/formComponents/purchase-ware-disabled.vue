@@ -19,11 +19,11 @@
     >
       <div class='wfull d-flex'>
         <span class='mr10 mt5'>入库仓库</span>
-        <span class='mr10 mt5'>这里是库房名称,字段没对</span>
+        <span class='mr10 mt5'>{{wmsName}}</span>
         <!-- <el-select
           :disabled="true"
           size='small'
-          v-model="value"
+          v-model="value" 
           placeholder="请选择"
         >
           <el-option
@@ -66,8 +66,11 @@
           min-width="160"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span>{{scope.row.commodityCode}}</span>
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -125,9 +128,10 @@
       <d-table
         api="seePsiWmsService.wmsflowrecordList"
         :params="{page:1,limit:20,commodityCode:dialogData.commodityCode,businessCode:drawerData.purchaseCode}"
+        @response="response"
         ref="companyTable"
         class="college-main"
-        style="height:calc(100vh - 340px)"
+        style="height:200px"
       >
         <el-table-column
           fixed
@@ -196,12 +200,19 @@
         size="small"
       >保 存</el-button>
     </span>
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </el-dialog>
 </template>
 <script>
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 
 export default {
   components: {
+    CommodityDetail
   },
   props: {
     visible: {
@@ -223,6 +234,9 @@ export default {
     return {
       activeName: '',
       usableList: [],
+      showCommodityDetail: false,
+      currentCommodityCode: '',
+      wmsName: '',
       tableData: [],
       formInline: {
         user: ''
@@ -236,6 +250,14 @@ export default {
     },
     close() {
       this.$emit('update:visible', false)
+    },
+    response(res) {
+      this.wmsName = res.data[0].wmsName || '-'
+    },
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
     },
     //请求可用库房
     commonwmsmanagerUsableList() {

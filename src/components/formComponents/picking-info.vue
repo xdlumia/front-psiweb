@@ -7,7 +7,7 @@
  */
 <template>
   <div>
-    <form-card title='发货信息'>
+    <form-card title='基本信息'>
       <el-row>
         <el-col :span="20">
           <div class="d-text-black">拣货人</div>

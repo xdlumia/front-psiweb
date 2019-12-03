@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="close"
     :title="'换货任务-'+drawerData.swapTaskCode"
     width="990px"
@@ -17,6 +17,7 @@
     <div>
       <div class="drawer-header">
         <el-button
+          v-if="drawerData.swapState != 4"
           @click="exchangeVisible=true"
           size="mini"
           type="primary"
@@ -58,41 +59,49 @@
           label="应收账单"
           name='financeReceivable'
         >
-          <financeReceivable
-            v-if="activeName == 'financeReceivable'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
-          ></financeReceivable>
+          <FullscreenWrap v-if="activeName == 'financeReceivable'">
+            <financeReceivable
+              v-if="activeName == 'financeReceivable'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
+            ></financeReceivable>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="应付账单"
           name='financePayable'
         >
-          <financePayable
-            v-if="activeName == 'financePayable'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
-          ></financePayable>
+          <FullscreenWrap v-if="activeName == 'financePayable'">
+            <financePayable
+              v-if="activeName == 'financePayable'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
+            ></financePayable>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="待开票"
           name='financeBilling'
         >
-          <financeBilling
-            v-if="activeName == 'financeBilling'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
-          ></financeBilling>
+          <FullscreenWrap v-if="activeName == 'financeBilling'">
+            <financeBilling
+              v-if="activeName == 'financeBilling'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
+            ></financeBilling>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="待收票"
           name='financeReceipt'
         >
-          <financeReceipt
-            v-if="activeName == 'financeReceipt'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
-          ></financeReceipt>
+          <FullscreenWrap v-if="activeName == 'financeReceipt'">
+            <financeReceipt
+              v-if="activeName == 'financeReceipt'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
+            ></financeReceipt>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
       <exchangeSweepcode
@@ -116,7 +125,7 @@ export default {
   props: ['drawerData', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '换货状态', value: '2019-9-21 10:04:38' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '换货状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       exchangeVisible: false,
       dialogData: {
         title: '换货扫码UAVBFUSBDFU',
@@ -157,7 +166,6 @@ export default {
           this.detailForm.putoutCommodityList.map(item => {
             item.commodityCode = item.swapOutCommodityCode;
           });
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 18:17:23
+ * @LastEditTime: 2019-12-03 18:22:47
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -27,10 +27,11 @@
         :data="recalcRowKey(data[fkey])"
         :expand-row-keys="expandRowKeys"
         :load="loadChildren"
-        :style="{height:showInFull?'calc(100% - 40px)':''}"
         :summary-method="showSummary?getSummaries:null"
-        :tree-props="{children: 'children', hasChildren: (sort||[]).includes('expanded')?'configName':'children'}"
+        :tree-props="{children: 'children', hasChildren: (sort||[]).includes('expanded')?'configName':'_children'}"
+        border
         lazy
+        maxHeight="calc(100% - 40px)"
         ref="table"
         row-key="_rowKey"
         show-summary
@@ -53,7 +54,13 @@
               <div @click="openCommodityDetail(row.commodityCode)" class="d-text-blue d-elip d-pointer">{{row.commodityCode}}</div>
             </template>
             <template v-else-if="item.key=='goodsPic'">
-              <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
+              <el-image
+                :preview-src-list="row.goodsPic?[row.goodsPic]:[]"
+                :src="row.goodsPic"
+                class="d-center"
+                fit="contain"
+                style="width: 100px; height: 40px"
+              >
                 <span slot="error">暂无图片</span>
               </el-image>
             </template>
@@ -229,9 +236,9 @@ export default {
     // format               定义format函数，会传值进去并显示返回数据 Function(value,row)
     let columns = [
       { label: '商品编号', key: 'commodityCode', width: 160, prop: 'commodityCode' },
-      { label: '商品图片', key: 'goodsPic', width: 100, prop: 'goodsPic' },
-      { label: '商品名称', key: 'goodsName', width: 100, prop: 'goodsName' },
-      { label: '库房', key: 'wsm', width: 100, prop: 'wsmName' },
+      { label: '商品图片', key: 'goodsPic', width: 120, prop: 'goodsPic' },
+      { label: '商品名称', key: 'goodsName', width: 120, prop: 'goodsName', showOverflowTip: true },
+      { label: '库房', key: 'wsm', width: 100, prop: 'wsmName', showOverflowTip: true },
       { label: '商品类别', key: 'categoryCode', width: 80, prop: 'categoryCode', dictName: 'PSI_SP_KIND' },
       { label: '商品分类', key: 'className', width: 80, prop: 'className', },
       { label: '规格', key: 'specOne', width: 80, prop: 'specOne', showOverflowTip: true },
@@ -247,13 +254,13 @@ export default {
       { label: '退货数量', key: 'alterationNumberRate', width: 140, prop: 'alterationNumber', showOverflowTip: true, },
       { label: '退货单价', key: 'alterationPrice', width: 80, prop: 'alterationPrice', type: 'input', showOverflowTip: true, rules: [{ required: true }, { type: 'price' }] },
       { label: '税率', key: 'taxRate', width: 60, prop: 'taxRate', format: a => a ? `${a}%` : '-' },
-      {        label: '含税总价', key: 'preTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+      { label: '含税总价', key: 'preTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + (taxRate / 100)) * commodityNumber) || 0).toFixed(2)
       },
-      {        label: '含税总价', key: 'purchasePreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+      { label: '含税总价', key: 'purchasePreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + (taxRate / 100)) * commodityNumber) || 0).toFixed(2)
       },
-      {        label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+      { label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { alterationPrice, taxRate, alterationNumber }) => +Number((alterationPrice * (1 + (taxRate / 100)) * alterationNumber) || 0).toFixed(2)
       },
       { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber', type: 'number', showOverflowTip: true, },
@@ -264,10 +271,10 @@ export default {
     return {
       showInFull: false,
       columns,
-      fakeId: 1,
       expandRowKeys: [],
       showCommodityDetail: false,
-      currentCommodityCode: ''
+      currentCommodityCode: '',
+      realTopRowKey: {}
     };
   },
   computed: {
@@ -310,18 +317,18 @@ export default {
       ) {
         list.unshift(
           {
-            key: 'hideChildren',
-            fixed: true,
-            width: 1,
-            className: 'hide-children'
-          },
-          {
-            label: '',
-            fixed: true,
             key: 'expanded',
-            width: 40,
-            type: 'expanded'
+            fixed: true,
+            width: 60,
+            className: 'expanded'
           }
+          // {
+          //   label: '',
+          //   fixed: true,
+          //   key: 'expanded',
+          //   width: 40,
+          //   type: 'expanded'
+          // }
         );
       }
       return list;
@@ -353,11 +360,15 @@ export default {
     // 获取父级信息
     getParentInfo(row) {
       let top = this.data[this.fkey];
-      let isChild = row._rowKey != row.commodityCode;
-      let ks = row._rowKey.split('_');
+      let rowKey = this.realTopRowKey[row._rowKey] || row._rowKey;
+      let isChild = rowKey != row.commodityCode;
+      let ks = String(rowKey || '').split('_');
       isChild = ks.length > 1;
       let parentIndex = -1;
       let parent = top.filter(item => item.commodityCode == ks[0]);
+      if (!parent[0]) {
+        isChild = false;
+      }
       let info = {
         isChild,
         parent: isChild ? parent[0] : null,
@@ -378,13 +389,16 @@ export default {
     // 生成树列表需要的rowkey
     recalcRowKey(list, pk = '') {
       (list || []).map(item => {
+        let key = item.commodityCode || fakeId++;
+        let rowKey = key;
+        if (!pk) {
+          rowKey = `${key}-${fakeId++}`;
+          this.realTopRowKey[rowKey] = key;
+        }
         this.$set(
           item,
           '_rowKey',
-          String(
-            item._rowKey ||
-              [pk, item.commodityCode || fakeId++].filter(a => a).join('_')
-          )
+          String(item._rowKey || [pk, rowKey].filter(a => a).join('_'))
         );
         if (pk) {
           this.$set(item, '$parentCode', pk);
@@ -395,10 +409,16 @@ export default {
       });
       return list || [];
     },
+    getExpandedState(row) {
+      let data = this.$refs.table.store.states.treeData;
+      let rowKey = this.realTopRowKey[row._rowKey] || row._rowKey;
+      return data[rowKey] && data[rowKey].expanded ? true : false;
+    },
     // 展开树
     expand(row, isExpand) {
       this.$nextTick(() => {
-        isExpand = typeof isExpand == 'boolean' ? isExpand : !row.expanded;
+        isExpand =
+          typeof isExpand == 'boolean' ? isExpand : !this.getExpandedState(row);
         this.$set(row, 'expanded', isExpand);
         this.$refs.table.toggleRowExpansion(row, isExpand);
         if (isExpand && !row.children) {
@@ -525,6 +545,15 @@ export default {
     }
     .el-table__row {
       height: 54px;
+    }
+    .el-image {
+      .el-image-viewer__close {
+        .el-icon-circle-close {
+          color: #fff;
+          background-color: #67686c;
+          border-radius: 50%;
+        }
+      }
     }
   }
 }

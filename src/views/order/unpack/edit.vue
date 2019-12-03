@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 11:56:10
+ * @LastEditTime: 2019-12-02 11:29:00
  * @Description: 拆卸单
 */
 <template>
@@ -52,9 +52,6 @@ export default {
       return {
         commodityList: []
       };
-    },
-    afterDetailInit() {
-      // console.log('afterDetailInit', this.form);
     },
     getCommodityInfo({
       children,
@@ -109,7 +106,6 @@ export default {
         }, form);
         delete form.commodityList;
         form.source = this.source || '新建';
-        console.log(form);
         if (this.isEdit) {
           await this.$api.seePsiWmsService.wmsdisassemblyorderUpdate(form);
         } else {

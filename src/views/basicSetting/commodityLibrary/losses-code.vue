@@ -32,7 +32,11 @@
         <el-table-column label="商品名称" min-width="110" prop="name"></el-table-column>
         <el-table-column label="商品配置" min-width="110" prop="configName"></el-table-column>
         <el-table-column label="商品规格" min-width="110" prop="specOne"></el-table-column>
-        <el-table-column label="单位" min-width="80" prop="unit"></el-table-column>
+        <el-table-column label="单位" min-width="80" prop="unit">
+          <template slot-scope="{row}">
+            {{row.unit | dictionary('SC_JLDW')}}
+          </template>
+        </el-table-column>
       </el-table>
       <div class="mt10 mb10">
         <span class="b mt5">机器号/扫SN码</span>
@@ -151,6 +155,7 @@ export default {
       this.$api.seePsiWmsService['wmsinventorydetailPutawayCommodityCheck'](params)
         .then(res => {
           res.data ? this.tableData.push(res.data) : ''
+          this.snCode = ''
         })
         .finally(() => {
 

@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-25 10:12:19
+ * @LastEditTime: 2019-12-03 17:58:55
  * @Description: 新增商品
  -->
 <template>
@@ -48,12 +48,12 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="商品名称" prop="name">
-              <el-input v-model="goodForm.name" :maxlenght="15"></el-input>
+              <el-input v-model.trim="goodForm.name" :maxlenght="15"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="商品规格" prop="values[0].specOne">
-              <el-input v-model="goodForm.values[0].specOne" :maxlenght="15"></el-input>
+              <el-input v-model.trim="goodForm.values[0].specOne" :maxlenght="15"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -108,27 +108,30 @@
         <el-row :gutter="40">
           <el-col :span="8">
             <el-form-item label="库存成本价" prop="values[0].inventoryPrice">
-              <el-input @change="inventoryPriceChange" v-model="goodForm.values[0].inventoryPrice"></el-input>
+              <el-input
+                @change="inventoryPriceChange"
+                v-model.trim="goodForm.values[0].inventoryPrice"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="销售参考价" prop="values[0].saleReferencePrice">
               <el-input
                 @change="saleReferencePriceChange"
-                v-model="goodForm.values[0].saleReferencePrice"
+                v-model.trim="goodForm.values[0].saleReferencePrice"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="毛利率" prop="values[0].profitRate">
-              <el-input @change="profitRateChange" v-model="goodForm.values[0].profitRate">
+              <el-input @change="profitRateChange" v-model.trim="goodForm.values[0].profitRate">
                 <template slot="append">%</template>
               </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="商品税率" prop="values[0].taxRate">
-              <el-input v-model="goodForm.values[0].taxRate" disabled>
+              <el-input v-model.trim="goodForm.values[0].taxRate" disabled>
                 <template slot="append">%</template>
               </el-input>
             </el-form-item>
@@ -138,13 +141,21 @@
       <form-card title="库存预警">
         <el-row :gutter="40">
           <el-col :span="8">
-            <el-form-item label="最低库存量" prop="values[0].minInventoryNum">
-              <el-input v-model="goodForm.values[0].minInventoryNum"></el-input>
+            <el-form-item
+              label="最低库存量"
+              prop="values[0].minInventoryNum"
+              :rules="{validator: validateMinInventoryNum, trigger: 'blur'}"
+            >
+              <el-input v-model.trim="goodForm.values[0].minInventoryNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="最高库存量" prop="values[0].maxInventoryNum">
-              <el-input v-model="goodForm.values[0].maxInventoryNum"></el-input>
+            <el-form-item
+              label="最高库存量"
+              prop="values[0].maxInventoryNum"
+              :rules="{validator: validateMaxInventoryNum, trigger: 'blur'}"
+            >
+              <el-input v-model.trim="goodForm.values[0].maxInventoryNum"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -225,8 +236,32 @@ export default {
       default: false
     }
   },
-  data() {
+  data () {
+    const validateMinInventoryNum = (rule, value, callback) => {
+      // if (!/^\d{1,11}(\.\d{1,2})?$/.test(value)) {
+      //   callback(new Error('11位整数，2位小数'))
+      // } else
+      if (parseFloat(value) > parseFloat(this.goodForm.values[0].maxInventoryNum)) {
+        callback(new Error('最低库存量不能大于最高库存量'))
+      } else {
+        // this.$refs.goodForm.validateField('values[0].maxInventoryNum')
+        callback()
+      }
+    }
+    const validateMaxInventoryNum = (rule, value, callback) => {
+      // if (!/^\d{1,11}(\.\d{1,2})?$/.test(value)) {
+      //   callback(new Error('11位整数，2位小数'))
+      // } else
+      if (parseFloat(value) < parseFloat(this.goodForm.values[0].minInventoryNum)) {
+        callback(new Error('最高库存量不能小于最低库存量'))
+      } else {
+        // this.$refs.goodForm.validateField('values[0].minInventoryNum')
+        callback()
+      }
+    }
     return {
+      validateMinInventoryNum,
+      validateMaxInventoryNum,
       loading: false,
       firstClassList: [],
       goodForm: {
@@ -266,27 +301,27 @@ export default {
         'values[0].specOne': { required: true, message: '请输入', trigger: 'blur' },
         'values[0].inventoryPrice': [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         'values[0].profitRate': [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         'values[0].taxRate': { required: true, message: '请输入', trigger: 'blur' },
         'values[0].saleReferencePrice': [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         'values[0].isEnable': { required: true, message: '请选择', trigger: 'change' },
         'values[0].warehouseId': { required: true, message: '请选择', trigger: 'change' },
         'values[0].originalInventoryNum': [{ required: true, message: '请输入', trigger: 'blur' }, { pattern: /^\d{1,11}?$/, message: '请输入正整数', trigger: 'blur' }],
         'values[0].originalPrice': [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         'values[0].originalPriceAdjustment': [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         'values[0].minInventoryNum': { pattern: /^\d{1,11}?$/, message: '请输入正整数', trigger: 'blur' },
         'values[0].maxInventoryNum': { pattern: /^\d{1,11}?$/, message: '请输入正整数', trigger: 'blur' }
@@ -297,24 +332,24 @@ export default {
   components: {
   },
   computed: {
-    secondClassList() {
+    secondClassList () {
       const temp = this.firstClassList.find(item => item.id === this.goodForm.firstClassId)
       return temp ? temp.children : []
     },
-    openingInventory() {
+    openingInventory () {
       const { originalPrice, originalPriceAdjustment, originalInventoryNum } = this.goodForm.values[0] || {}
       return { originalPrice, originalPriceAdjustment, originalInventoryNum }
     }
 
   },
-  mounted() {
+  mounted () {
     this.commonwmsmanagerUsableList()
     if (this.code) {
       this.getGoodsDetailV2(this.code)
     }
   },
   methods: {
-    getGoodsDetailV2(code) {
+    getGoodsDetailV2 (code) {
       this.goodForm = Object.assign(this.goodForm, {})
       this.$api.seeGoodsService.getGoodsDetailV2({ code }).then(res => {
         this.isDetail = true
@@ -325,26 +360,26 @@ export default {
         this.$emit('update', this.goodForm)
       })
     },
-    inventoryPriceChange() {
+    inventoryPriceChange () {
       const temp = this.goodForm.values[0]
       if (temp.saleReferencePrice) {
         this.goodForm.values[0].profitRate = ((temp.saleReferencePrice / temp.inventoryPrice - 1) * 100).toFixed(2)
       }
     },
-    saleReferencePriceChange() {
+    saleReferencePriceChange () {
       const temp = this.goodForm.values[0]
       this.goodForm.values[0].profitRate = ((temp.saleReferencePrice / this.goodForm.values[0].inventoryPrice - 1) * 100).toFixed(2)
     },
-    profitRateChange() {
+    profitRateChange () {
       const temp = this.goodForm.values[0]
       this.goodForm.values[0].saleReferencePrice = ((Number(temp.saleReferencePrice / 100) + 1) * this.goodForm.values[0].inventoryPrice).toFixed(2)
     },
-    commonwmsmanagerUsableList() {
+    commonwmsmanagerUsableList () {
       this.$api.seePsiWmsService.commonwmsmanagerUsableList().then(res => {
         this.warehouseList = res.data
       })
     },
-    saveGood() {
+    saveGood () {
       this.$refs.goodForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -356,7 +391,7 @@ export default {
       })
     },
     // 获取分类列表
-    getGoodsClass() {
+    getGoodsClass () {
       this.$api.seeGoodsService.getGoodsClass({ categoryCode: this.goodForm.categoryCode }).then(res => {
         this.firstClassList = res.data
         if (!this.isDetail) {
@@ -365,14 +400,14 @@ export default {
         this.isDetail = false
       })
     },
-    handleGoodPrice() {
+    handleGoodPrice () {
       const temp = this.goodForm.values[0]
       this.goodForm.values[0].profitRate = temp.saleReferencePrice / temp.inventoryPrice - 1
     }
   },
   watch: {
     'goodForm.categoryCode': {
-      handler: function(newValue) {
+      handler: function (newValue) {
         if (!this.isDetail) {
           this.goodForm.firstClassId = null
         }
@@ -380,20 +415,20 @@ export default {
       }
     },
     'goodForm.firstClassId': {
-      handler: function(newValue) {
+      handler: function (newValue) {
         if (!this.isDetail) {
           this.goodForm.classId = null
         }
       }
     },
     'goodForm.classId': {
-      handler: function(newValue) {
+      handler: function (newValue) {
         const temp = this.secondClassList.find(item => item.id === newValue)
         this.goodForm.values[0].taxRate = temp ? temp.taxRate : this.goodForm.values[0].taxRate
       }
     },
     'openingInventory': {
-      handler: function(newValue) {
+      handler: function (newValue) {
         const temp = this.goodForm.values[0]
         temp.originalAmount = temp.originalPrice * temp.originalInventoryNum
         temp.originalCostDifference = (temp.originalPrice - temp.originalPriceAdjustment) * temp.originalInventoryNum

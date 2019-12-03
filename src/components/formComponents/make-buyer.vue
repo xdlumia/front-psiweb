@@ -1,51 +1,33 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-22 09:38:51
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 20:20:11
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-11-29 16:33:33
  * @Description: 销售方/购买方信息 已绑定 1
 */ 
 <template>
   <form-card :title="title">
     <el-row :gutter="10">
       <el-col :span="8">
-        <el-form-item
-          :prop="`${prefix}Id`"
-          :rules="[{required:true}]"
-          label="名称"
-        >
+        <el-form-item :prop="`${prefix}Id`" :rules="[{required:true}]" label="名称">
           <el-select
             :disabled="disabled"
             :loading="searching"
             :placeholder="`请选择`"
-            :remote="from=='本公司'?false:true"
+            :remote="[3,2].includes(type)?false:true"
             :remote-method="searchCompany"
             @change="companyChange"
             class="wfull"
             filterable
             v-model="data[`${prefix}Id`]"
           >
-            <el-option
-              :key="index"
-              :label="item.name"
-              :value="item.id"
-              v-for="(item,index) in companyList"
-            ></el-option>
+            <el-option :key="index" :label="item.name" :value="item.id" v-for="(item,index) in companyList"></el-option>
           </el-select>
         </el-form-item>
       </el-col>
-      <el-col
-        :key="index"
-        :span="item.span || 8"
-        v-for="(item,index) of formItems"
-      >
+      <el-col :key="index" :span="item.span || 8" v-for="(item,index) of formItems">
         <el-form-item :label="item.label">
-          <el-input
-            :disabled="true"
-            :placeholder="`请输入${item.label}`"
-            v-if="item.type =='input'"
-            v-model.trim="currentCompany[item.prop]"
-          />
+          <el-input :disabled="true" :placeholder="`请输入${item.label}`" v-if="item.type =='input'" v-model.trim="currentCompany[item.prop]" />
           <el-select
             :disabled="true"
             :placeholder="`请输入${item.label}`"
@@ -53,12 +35,7 @@
             v-else-if="item.type =='select'"
             v-model="currentCompany[item.prop]"
           >
-            <el-option
-              :key="item.code"
-              :label="item.content"
-              :value="item.code"
-              v-for="item in dictionaryOptions(item.dicName)"
-            />
+            <el-option :key="item.code" :label="item.content" :value="item.code" v-for="item in dictionaryOptions(item.dicName)" />
           </el-select>
           <el-date-picker
             :disabled="true"
@@ -94,17 +71,9 @@ export default {
         return [];
       }
     },
-    from: {
-      type: String,
-      default: '本公司' // 客户 供应商
-    },
     prefix: {
       type: String,
       default: 'purchase'
-    },
-    title: {
-      type: String,
-      default: '购买方信息'
     }
   },
   data() {
@@ -127,6 +96,18 @@ export default {
   computed: {
     formItems() {
       return this.items.filter(item => !this.hide.includes(item.prop));
+    },
+    type() {
+      if (this.data) {
+        return this.data[`${this.prefix}Type`];
+      } else return 3;
+    },
+    title() {
+      if (this.prefix == 'purchase') {
+        return '购买方信息';
+      } else {
+        return '销售方信息';
+      }
     }
   },
   mounted() {
@@ -135,15 +116,17 @@ export default {
   methods: {
     init() {
       let id = this.data[`${this.prefix}Id`];
-      if (this.from == '本公司') {
+      if (this.type == 3) {
         this.getCompany();
-      } else if (this.from == '供应商') {
+      } else if (this.type == 2) {
+        this.getServiceProvider();
+      } else if (this.type == 1) {
         if (id) {
           this.getSupplierInfo(id);
         } else {
           this.getSuppliers();
         }
-      } else if (this.from == '客户') {
+      } else if (this.type == 0) {
         if (id) {
           this.getClientInfo(id);
         } else {
@@ -163,7 +146,7 @@ export default {
     async searchCompany(words = '') {
       this.searching = true;
       try {
-        if (this.from == '客户') {
+        if (this.type == 0) {
           await this.getClients(words);
         } else {
           await this.getSuppliers(words);
@@ -205,6 +188,33 @@ export default {
           );
         })
       );
+      this.companyList.some(item => {
+        if (item.id == this.data[`${this.prefix}Id`]) {
+          this.currentCompany = item;
+          this.$set(this.data, `${this.prefix}Name`, item.name);
+          return true;
+        }
+      });
+      console.log(this.companyList)
+    },
+    async getServiceProvider() {
+      let {
+        data
+      } = await this.$api.seePsiCommonService.commonserviceproviderList({
+        page: 1,
+        limit: 1000
+      });
+      this.companyList = (data || []).map(item => {
+        return {
+          id: item.id,
+          name: item.serviceName,
+          taxNo: item.taxpayersNum,
+          address: item.registerAddres,
+          phone: item.registerPhone,
+          bankName: item.accountBank,
+          bankAccount: item.bankAccount
+        };
+      });
       this.companyList.some(item => {
         if (item.id == this.data[`${this.prefix}Id`]) {
           this.currentCompany = item;
@@ -261,7 +271,7 @@ export default {
       this.companyList = (data || []).map(item => {
         return {
           id: item.id,
-          name: item.companyName,
+          name: item.clientName,
           taxNo: item.taxpayersNum,
           address: item.registerAddres,
           phone: item.registerPhone,
@@ -277,7 +287,7 @@ export default {
       );
       let info = {
         id: data.id,
-        name: data.companyName,
+        name: data.clientName,
         taxNo: data.taxpayersNum,
         address: data.registerAddres,
         phone: data.registerPhone,
@@ -287,6 +297,7 @@ export default {
       this.companyList = [info];
       this.currentCompany = info;
       this.$set(this.data, `${this.prefix}Name`, info.name);
+      console.log(this);
     }
   }
 };

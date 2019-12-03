@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 18:50:15
+ * @LastEditTime: 2019-11-29 19:01:45
  * @Description: 客户管理-新增分摊
 */
 <template>
@@ -37,7 +37,7 @@
       label-position="top"
     >
 
-      <d-tabs :style="{maxHeight:'calc(100vh - 180px)'}">
+      <d-tabs :style="{maxHeight:'calc(100vh - 110px)'}">
         <d-tab-pane
           v-for="(val,key) of tabs"
           :key="key"
@@ -48,11 +48,6 @@
         <apportion-info
           :data="form"
           id="apportionInfo"
-        />
-        <!-- 商品信息 -->
-        <commodity-info
-          :data="form"
-          id="commodityInfo"
         />
         <!-- 备注信息 -->
         <extras-info
@@ -108,41 +103,47 @@ export default {
             taxTotalAmount: '', //98765432109876.12
           }
         ],
-        companyCode: '', //"公司编码code",
-        costAmount: '', //98765432109876.12,
+        costAmount: '', //采购/销售成本金额
+        unAmount: '',
         costApportionCode: '', //"分摊单编号",
-        costCode: '', //"100000",
-        deptCode: '', //"部门code",
-        isDelete: '', //9,
+        costCode: '', //费用单编号
+        busCode: '',
+        busType: '',
         note: '', //"备注",
-        shipmentCode: '', //"100000",
         state: '', //9
-
       },
     }
   },
   computed: {
 
   },
+  watch: {
+    visible(val) {
+      if (val && this.add == 'edit') {
+        this.form.businessCommoditySaveVoList = []
+      }
+    }
+  },
+  created() {
+
+  },
   methods: {
     // 保存表单数据
     saveHandle() {
       this.$refs.form.validate(valid => {
-
         if (valid) {
           this.loading = true
-          this.form.quotationIds = this.rowDatas.map(item => item.id)
           // rules 表单验证是否通过
-          let api = 'salesshipmentUpdate' // 默认编辑更新
+          let api = 'salescostapportionUpdate' // 默认编辑更新
           // 新增保存
           if (this.type === 'add') {
-            api = 'salesshipmentSave'
+            api = 'salescostapportionSave'
             // 编辑保存
           }
           this.$api.seePsiSaleService[api](this.form)
             .then(res => {
-              this.close()
               this.setEdit()
+              this.close()
             })
             .finally(() => {
               this.loading = false

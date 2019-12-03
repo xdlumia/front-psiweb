@@ -39,14 +39,15 @@
         <span v-else-if="column.columnFields=='operation'">
           <span class="elTableDragDefault el-icon-rank f20 ml10"></span>
           <el-button
+            :disabled='row.generateOrder == 1'
             class="ml15"
             size="mini"
             type="primary"
             @click="roof(row)"
           >置顶</el-button>
         </span>
-        <span v-else-if="column.columnFields=='assembleOrderState'">{{value == 0 ? '未开始' : value == 1 ? '待执行' : value == 2 ? '部分完成' : value == 3 ? '已完成' : '终止'}}</span>
-        <span v-else-if="column.columnFields=='pickingState'">{{value == 0 ? '待拣货' : value == 1 ? '部分拣货' : value == 2 ? '完成拣货' : '终止'}}</span>
+        <span v-else-if="column.columnFields=='assembleOrderState'">{{value == 0 ? '未开始' : value == 1 ? '待执行' : value == 2 ? '部分完成' : value == 3 ? '已完成' : value == -1 ? '终止' : '-'}}</span>
+        <span v-else-if="column.columnFields=='pickingState'">{{value == 0 ? '待拣货' : value == 1 ? '部分拣货' : value == 2 ? '完成拣货' : value == -1 ? '终止' : '-'}}</span>
         <span v-else>{{value}}</span>
       </template>
 
@@ -214,12 +215,13 @@ export default {
         return isChanged;
       });
       let [a, b] = changed;
+
       this.loading = true;
       try {
-        if (a.sequence && b.sequence) {
-          await this.$api.seePsiWmsService.wmsdisassemblyorderUpdatesSquence([
-            { id: a.id, sequence: b.sequence },
-            { id: b.id, sequence: a.sequence }
+        if (a.generateOrder && b.generateOrder) {
+          await this.$api.seePsiWmsService.wmsassembleorderUpdatesSquence([
+            { id: a.id, sequence: b.generateOrder },
+            { id: b.id, sequence: a.generateOrder }
           ]);
         }
         this.reload();

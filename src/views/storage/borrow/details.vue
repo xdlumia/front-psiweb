@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="close"
     :title="'借入借出任务-'+code"
     width="990px"
@@ -18,7 +18,7 @@
       <div class="drawer-header">
         <el-button
           v-if="drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 6 || drawerData.borrowLoanState == 9"
-          @click="backVisible=true,isComponents = 'borrowPayback',dialogData.title='借入归还-UYGVUOUY'"
+          @click="backVisible=true,isComponents = 'borrowPayback',dialogData.title='借入归还-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
         >归还</el-button>
@@ -35,7 +35,7 @@
           type="primary"
         >借入扫码</el-button>
         <el-button
-          v-if="drawerData.borrowLoanState == 3 || drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 10"
+          v-if="drawerData.borrowLoanState == 3 || drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 8"
           @click="backVisible=true,isComponents = 'lendScanCode',dialogData.title='借出扫码-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
@@ -83,11 +83,13 @@
           label="借入借出单"
           name='orderBorrow'
         >
-          <orderBorrow
-            v-if="activeName == 'orderBorrow'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:drawerData.borrowLoanTaskCode}"
-          ></orderBorrow>
+          <FullscreenWrap v-if="activeName == 'orderBorrow'">
+            <orderBorrow
+              v-if="activeName == 'orderBorrow'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:drawerData.borrowLoanTaskCode}"
+            ></orderBorrow>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -107,7 +109,7 @@ export default {
   props: ['drawerData', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '借入/借出状态', value: '待归还/待返还' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '借入/借出状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       backVisible: false,
       lendVisible: false,
       borrowVisible: false,
@@ -147,11 +149,11 @@ export default {
   },
   methods: {
     close() {
-      this.backVisible = false
-
+      // this.backVisible = false
       this.$emit('update:visible', false)
     },
     reload() {
+      this.wmsallocationorderInfo()
       this.$emit('reload')
     },
     //查看调拨单详情
@@ -164,7 +166,6 @@ export default {
           this.status[2].value = res.data.creatorName
           this.status[3].value = res.data.deptName
           this.status[4].value = res.data.source
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
           this.detailForm.commodityList = this.detailForm.commodityShowList || [];
         })
         .finally(() => {

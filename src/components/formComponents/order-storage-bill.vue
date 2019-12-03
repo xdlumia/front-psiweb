@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 14:32:36
+ * @LastEditTime: 2019-11-29 11:13:02
  * @Description: 账单信息
 */
 <template>
@@ -54,18 +54,26 @@
             size="mini"
             style="margin-bottom:0;"
           >
-            <el-input :disabled="disabled" class="wfull" placeholder="请输入" size="mini" v-model="row.payAmount"></el-input>
+            <el-input
+              :disabled="disabled||!$index"
+              @change="checkPayAmount"
+              class="wfull"
+              placeholder="请输入"
+              size="mini"
+              v-model="row.payAmount"
+            ></el-input>
           </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="60" v-if="!disabled">
         <template slot-scope="{$index}">
-          <el-link :underline="false" @click="remove($index)" class="el-icon-remove f20"></el-link>
+          <el-link :underline="false" @click="remove($index)" class="el-icon-remove f20" v-if="$index"></el-link>
         </template>
       </el-table-column>
     </el-table>
-    <div class="wfull ac">
-      <el-form-item :rules="financeListRule" class="ac pt5" prop="financeList"></el-form-item>
+    <div class="wfull ac mt10">
+      <span class="d-text-red f14">{{errorTip||''}}</span>
+      <el-form-item :rules="financeListRule" class="ac pt5 d-hide" prop="financeList"></el-form-item>
     </div>
     <div @click="addBill" class="mt10 el-icon-circle-plus-outline d-pointer" v-if="!disabled">增加账期</div>
   </form-card>
@@ -86,32 +94,43 @@ export default {
       default: 0 // 0 付款金额 1 收款金额
     },
     disabled: Boolean,
-    max: Number
+    max: Number,
+    feeTypeCode: {
+      type: String,
+      default: 'ZD_DY_LX-4'
+    },
+    feeDetailCode: {
+      type: String,
+      default: 'ZD_DY_LX-4-1'
+    }
   },
   data() {
     return {
       financeListRule: [
         {
           validator: (rule, value, cb) => {
-            let max = Number(this.max) || 0;
+            let max = +(Number(this.max) || 0).toFixed(2);
             let now = Number(this.billTotalAmount) || 0;
             if (!this.data.financeList || !this.data.financeList.length) {
-              cb(new Error('请填写账单信息'));
+              return cb(new Error((this.errorTip = '请填写账单信息')));
             }
             if (max) {
               if (now != max) {
                 return cb(
                   new Error(
-                    '账单总金额须为商品总金额之和,当前总和' + max + '元'
+                    (this.errorTip =
+                      '账单总金额须为商品总金额之和,当前总和' + max + '元')
                   )
                 );
               }
             }
+            this.errorTip = '';
             cb();
           }
         }
       ],
-      billTotalAmount: 0
+      billTotalAmount: 0,
+      errorTip: ''
     };
   },
   computed: {
@@ -138,9 +157,26 @@ export default {
       handler() {
         this.resetBillData();
       }
+    },
+    max() {
+      this.checkPayAmount();
     }
   },
   methods: {
+    checkPayAmount() {
+      let sum = 0;
+      let list = this.data.financeList || [];
+      if (list.length) {
+        list.map((item, i) => {
+          if (i > 0) {
+            sum += Number(item.payAmount) || 0;
+          }
+        });
+        if (sum < this.max) {
+          list[0].payAmount = +Number(this.max - sum).toFixed(2);
+        }
+      }
+    },
     resetBillData() {
       if (
         this.data &&
@@ -149,6 +185,7 @@ export default {
         this.$set(this.data, 'financeList', []);
         this.addBill();
       }
+      this.checkPayAmount();
     },
     // 自定义账单金额数据
     getSummaries(param) {
@@ -172,13 +209,15 @@ export default {
       this.data.financeList.push({
         isBillFee: 0,
         payAmount: '',
-        payTime: '',
+        payTime: this.data.financeList.length ? '' : +new Date(),
         paymenDays: ''
       });
       this.resetPaymentName();
     },
     resetPaymentName() {
       this.data.financeList.map((item, i) => {
+        item.feeTypeCode = this.feeTypeCode;
+        item.feeDetailCode = this.feeDetailCode;
         item.paymenDays = `第${i + 1}期`;
       });
     },

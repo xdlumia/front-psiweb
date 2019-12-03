@@ -26,7 +26,7 @@
         <span
           v-else-if="column.columnFields=='assembleOrderCode'"
           class="d-text-blue d-pointer"
-          @click="getassembleVisible(row)"
+          @click="getassembleVisible(row)" 
         >{{value}}</span>
         <span v-else-if="column.columnFields=='assembleTaskState'">{{state[value]}}</span>
         <span v-else-if="column.columnFields=='pickingState'">{{pickingState[value]}}</span>
@@ -34,6 +34,7 @@
       </template>
     </TableView>
     <Details
+      @reload='reload'
       :code="drawerData.assembleTaskCode"
       :data='drawerData'
       :visible.sync='tableVisible'
@@ -49,7 +50,7 @@
 </template>
 <script>
 /**
- * 采购-请购单
+ * 采购-请购单 
  */
 import TableView from '@/components/tableView';
 import assembleDetails from '@/views/storage/assemble/details.vue';
@@ -61,7 +62,7 @@ export default {
     assembleDetails
   },
   props: {
-    // 是否显示按钮
+    // 是否显示按钮 
     button: {
       type: Boolean,
       default: true
@@ -170,6 +171,9 @@ export default {
     getTableVisible(data) {
       this.tableVisible = true
       this.drawerData = data
+    },
+    reload() {
+      this.$refs.allTable.reload()
     },
     //打开组装单详情
     getassembleVisible(row) {

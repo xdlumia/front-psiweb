@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="close"
     :title="`拆卸任务-${detailForm.disassemblyTaskCode}`"
     width="990px"
@@ -17,21 +17,25 @@
     <div>
       <div class="drawer-header">
         <el-button
+          v-if="detailForm.disassemblyTaskState == 0"
           @click="wmsdisassemblytaskStart"
           size="mini"
           type="primary"
         >确认收到并开始</el-button>
         <el-button
+          v-if="(detailForm.disassemblyTaskState == 1 || detailForm.disassemblyTaskState == 2) && detailForm.isHang==0"
           @click="disassembleVisible =true"
           size="mini"
           type="primary"
         >拆卸</el-button>
         <el-button
+          v-if="detailForm.isHang == 0"
           @click="wmsdisassemblytaskHangTask"
           size="mini"
           type="primary"
         >挂起</el-button>
         <el-button
+          v-if="detailForm.isHang == 1"
           @click="wmsdisassemblytaskContinueTask"
           size="mini"
           type="primary"
@@ -43,7 +47,10 @@
       >
         <el-tab-pane label="详情">
           <el-form>
-            <dismantlingMerchandise :data="detailForm" />
+            <dismantlingMerchandise
+              :data="detailForm"
+              @reload="reload"
+            />
             <form-card
               class="choose-man"
               title="人员分配"
@@ -66,11 +73,13 @@
           label="拆卸单"
           name='orderUnpack'
         >
-          <orderUnpack
-            v-if="activeName == 'orderUnpack'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.disassemblyTaskCode}"
-          ></orderUnpack>
+          <FullscreenWrap v-if="activeName == 'orderUnpack'">
+            <orderUnpack
+              v-if="activeName == 'orderUnpack'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.disassemblyTaskCode}"
+            ></orderUnpack>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
       <hangUp
@@ -82,6 +91,7 @@
       <disassembleGoodsChoose
         :visible.sync='disassembleVisible'
         :data="detailForm"
+        @reload='reload'
         @close='disassembleVisible = false'
       />
     </div>
@@ -97,7 +107,7 @@ export default {
   props: ['drawerData', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '拆卸状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '拆卸状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       hangVisible: false,
       generateVisible: false,
       disassembleVisible: false,
@@ -141,6 +151,7 @@ export default {
       this.$emit('update:visible', false)
     },
     reload() {
+      this.wmsallocationorderInfo()
       this.$emit('reload')
     },
     //确认并开始拆卸任务
@@ -152,6 +163,7 @@ export default {
       }).then(() => {
         this.$api.seePsiWmsService.wmsdisassemblytaskStart(null, this.drawerData.id)
           .then(res => {
+            this.wmsallocationorderInfo()
             this.$emit('reload')
           })
           .finally(() => {
@@ -170,24 +182,25 @@ export default {
     },
     //继续
     wmsdisassemblytaskContinueTask() {
-      // this.$confirm('是否继续拆卸任务?', '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(() => {
-      this.$api.seePsiWmsService.wmsdisassemblytaskContinueTask({ id: this.detailForm.id })
-        .then(res => {
-          this.$emit('reload')
-        })
-        .finally(() => {
+      this.$confirm('是否继续拆卸任务?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api.seePsiWmsService.wmsdisassemblytaskContinueTask({ id: this.detailForm.id, isHang: 0 })
+          .then(res => {
+            this.wmsallocationorderInfo()
+            this.$emit('reload')
+          })
+          .finally(() => {
 
-        })
-      // }).catch(() => {
-      //   this.$message({
-      //     type: 'info',
-      //     message: '已取消'
-      //   });
-      // })
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      })
 
     }
   },

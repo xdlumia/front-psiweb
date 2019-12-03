@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:41:29
+ * @LastEditTime: 2019-11-29 11:19:50
  * @Description: 借入借出详情
 */
 <template>
@@ -37,6 +37,7 @@
         @click="$submission('seePsiWmsService.wmsborrowloanorderPassApproval',{
           apprpvalNode:detail.apprpvalNode,
           id:detail.id,
+          busCode:detail.borrowLoanCode
         },'通过')"
         size="mini"
         type="primary"
@@ -75,7 +76,7 @@
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),getDetail()" type="edit" v-if="showEdit" />
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" v-if="showEdit" />
   </sideDetail>
 </template>
 <script>

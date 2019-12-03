@@ -8,7 +8,7 @@
 <template>
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="$emit('update',false)"
     :title="'发货单-'+drawerData.shipmentsOrderCode"
     width="990px"
@@ -30,11 +30,13 @@
           label="销售单"
           name="storageSales"
         >
-          <storageSales
-            v-if="activeName == 'storageSales'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.shipmentsOrderCode}"
-          ></storageSales>
+          <FullscreenWrap v-if="activeName == 'storageSales'">
+            <storageSales
+              v-if="activeName == 'storageSales'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.shipmentsOrderCode}"
+            ></storageSales>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -48,7 +50,7 @@ export default {
   props: ['drawerData', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '生成时间', value: '', isTime: true }, { label: '单据创建人', value: '' }, { label: '创建部门', value: '' }, { label: '来源', value: '' }],
+      status: [{ label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       detailForm: {},
       activeName: ''
     };

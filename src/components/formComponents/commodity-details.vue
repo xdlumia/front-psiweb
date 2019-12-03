@@ -8,12 +8,23 @@
 <template>
   <div>
     <form-card title='商品明细'>
+      <div slot="title">
+        <span>商品明细</span>
+        <span class="fr">
+          <span>
+            <el-link
+              :underline="false"
+              @click="fullscreen"
+              type="primary"
+            >全屏显示</el-link>
+          </span>
+        </span>
+      </div>
       <d-table
         api="seePsiWmsService.wmsflowrecordList"
         :params="{page:1,limit:20,commodityCode:drawerData.commodityCode,operation:0}"
-        ref="companyTable"
-        class="college-main"
-        style="height:calc(100vh - 340px)"
+        ref="table"
+        style="height: calc(100vh - 350px);"
       >
         <el-table-column
           type='index'
@@ -109,10 +120,15 @@
           show-overflow-tooltip
         ></el-table-column>
       </d-table>
+      <FullscreenElement
+        :element="$refs.table"
+        :visible.sync="showInFullscreen"
+      />
     </form-card>
   </div>
 </template>
 <script>
+import FullscreenElement from '@/components/fullscreen-element';
 export default {
   props: ['drawerData'],
   data() {
@@ -122,12 +138,17 @@ export default {
         page: 1,
         limit: 20
       },
+      showInFullscreen: false,
       dialogVisible: false,
     }
   },
   methods: {
+    fullscreen() {
+      this.showInFullscreen = true;
+    },
   },
   components: {
+    FullscreenElement
   },
 }
 </script>

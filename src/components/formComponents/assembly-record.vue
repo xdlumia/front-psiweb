@@ -40,8 +40,11 @@
                 min-width="140"
                 show-overflow-tooltip
               >
-                <template slot-scope="scope">
-                  <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+                <template slot-scope="{row}">
+                  <div
+                    @click="openCommodityDetail(row.commodityCode)"
+                    class="d-text-blue d-elip d-pointer"
+                  >{{row.commodityCode}}</div>
                 </template>
               </el-table-column>
 
@@ -92,10 +95,10 @@
           <form-card title='机器号/SN记录'>
             <d-table
               api="seePsiWmsService.wmsflowrecordList"
-              :params="{commodityCode:data.commodityCode,businessCode:drawerData.assembleOrderCode,page:1,limit:15}"
+              :params="{commodityCode:data.commodityCode,businessCode:drawerData.assembleTaskCode ? drawerData.assembleTaskCode : drawerData.assembleOrderCode,page:1,limit:15}"
               ref="companyTable"
               class="college-main"
-              style="height:calc(100vh - 340px)"
+              style=" height:200px"
             >
               <el-table-column
                 type='index'
@@ -111,7 +114,7 @@
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">
-                  <span class="">{{scope.row.id}}</span>
+                  <span class="">{{scope.row.snCode}}</span>
                 </template>
               </el-table-column>
 
@@ -173,9 +176,16 @@
         >关 闭</el-button>
       </span>
     </el-dialog>
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </div>
 </template>
 <script>
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
+
 export default {
   props: {
     visible: {
@@ -193,6 +203,8 @@ export default {
       tableData: Array(12)
         .fill('')
         .map(() => ({ name: '' })),
+      showCommodityDetail: false,
+      currentCommodityCode: '',
       // 查询表单
       queryForm: {
         title: '', // 标题
@@ -208,8 +220,16 @@ export default {
   methods: {
     close() {
       this.$emit('update:visible', false)
-    }
-  }
+    },
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
+    },
+  },
+  components: {
+    CommodityDetail
+  },
 };
 </script>
 <style lang="scss" scoped>

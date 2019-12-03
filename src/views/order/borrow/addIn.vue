@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 19:31:33
+ * @LastEditTime: 2019-12-02 11:27:50
  * @Description: 新增借入单
 */
 <template>
@@ -79,7 +79,6 @@ export default {
     };
   },
   mounted() {
-    console.log('borrow add in', this);
   },
   methods: {
     getDetail() {

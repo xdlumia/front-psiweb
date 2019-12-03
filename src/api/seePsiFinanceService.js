@@ -3,7 +3,7 @@
 const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = false;
 /**
-* @date 2019-11-22
+* @date 2019-12-03
 * @host 39.99.132.95:9215
 */
 export default {
@@ -43,6 +43,15 @@ export default {
     fbillExport: {
         url: '/fbill/export',
         methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 账单
+     * @description 供应商账单统计
+     */
+    fbillGetGysFbillStatistics: {
+        url: '/fbill/getGysFbillStatistics',
+        methods: 'get',
         mock: isUseMock
     },
     /**
@@ -123,6 +132,15 @@ export default {
      */
     fbillUpdate: {
         url: '/fbill/update',
+        methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 账单
+     * @description 根据code修改
+     */
+    fbillUpdateByBusCode: {
+        url: '/fbill/updateByBusCode',
         methods: 'post',
         mock: isUseMock
     },
@@ -272,6 +290,15 @@ export default {
     },
     /**
      * @tag 借款单
+     * @description 逻辑删除
+     */
+    fborrowingLogicDelete: {
+        url: '/fborrowing/logicDelete',
+        methods: 'delete',
+        mock: isUseMock
+    },
+    /**
+     * @tag 借款单
      * @description 保存
      */
     fborrowingSave: {
@@ -353,6 +380,15 @@ export default {
     },
     /**
      * @tag 费用单
+     * @description 逻辑删除
+     */
+    fcostLogicDelete: {
+        url: '/fcost/logicDelete',
+        methods: 'delete',
+        mock: isUseMock
+    },
+    /**
+     * @tag 费用单
      * @description 审核通过
      */
     fcostPassApproval: {
@@ -394,6 +430,24 @@ export default {
     fcostUpdate: {
         url: '/fcost/update',
         methods: 'post',
+        mock: isUseMock
+    },
+    /**
+     * @tag 财务任务
+     * @description 收票逾期处理
+     */
+    financeJobCalculateInvoiceReceivaOver: {
+        url: '/financeJob/calculateInvoiceReceivaOver',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 财务任务
+     * @description 账单逾期处理
+     */
+    financeJobCalculateOverDays: {
+        url: '/financeJob/calculateOverDays',
+        methods: 'get',
         mock: isUseMock
     },
     /**
@@ -533,38 +587,11 @@ export default {
     },
     /**
      * @tag 票据表
-     * @description 审核
-     */
-    finvoiceApproval: {
-        url: '/finvoice/approval',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
-     * @tag 票据表
-     * @description 作废
-     */
-    finvoiceCancellation: {
-        url: '/finvoice/cancellation',
-        methods: 'post',
-        mock: isUseMock
-    },
-    /**
-     * @tag 票据表
      * @description 删除
      */
     finvoiceDelete: {
         url: '/finvoice/delete',
         methods: 'delete',
-        mock: isUseMock
-    },
-    /**
-     * @tag 票据表
-     * @description 导出
-     */
-    finvoiceExport: {
-        url: '/finvoice/export',
-        methods: 'post',
         mock: isUseMock
     },
     /**
@@ -578,11 +605,29 @@ export default {
     },
     /**
      * @tag 票据表
+     * @description 根据业务code，验证票据是否存在
+     */
+    finvoiceIsFinvoice: {
+        url: '/finvoice/isFinvoice',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 票据表
      * @description 获取列表
      */
     finvoiceList: {
         url: '/finvoice/list',
         methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 票据表
+     * @description 逻辑删除
+     */
+    finvoiceLogicDelete: {
+        url: '/finvoice/logicDelete',
+        methods: 'delete',
         mock: isUseMock
     },
     /**

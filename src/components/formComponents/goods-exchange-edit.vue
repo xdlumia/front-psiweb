@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 10:26:23
+ * @LastEditTime: 2019-12-02 14:16:31
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -24,17 +24,11 @@
       row-key="name"
       size="mini"
     >
-      <!-- <el-table-column
-        class-name="hide-children"
-        min-width="1"
-        width="1"
-      ></el-table-column> -->
       <el-table-column
         label="操作"
         min-width="80"
         prop="name"
       >
-        <!-- v-if='scope.row.noChildren' v-if='scope.row.commodityCode'-->
         <template slot-scope="scope">
           <span>
             <!-- <i

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:01:34
+ * @LastEditTime: 2019-12-03 18:17:15
  * @Description: 付款单
 */
 <template>
@@ -32,19 +32,15 @@
         <span v-else-if="['feeDetailCode','feeTypeCode'].includes(prop)">
           <span>{{value|dictionary('ZD_DY_LX')}}</span>
         </span>
-        <span v-else-if="prop=='overSate'">
+        <span v-else-if="prop=='overState'">
           <span>{{overText[value||0]}}</span>
         </span>
         <span v-else-if="prop=='settleStatus'">
           <span>{{settleText[value]}}</span>
         </span>
-        <span v-else-if="prop=='busState'">
-          <!-- 关联单据状态 -->
-          <span>{{busInfo[row.busType]?busInfo[row.busType].stateText[value]:''}}</span>
-        </span>
         <span v-else-if="prop=='busCode'">
           <!-- 关联单据编号 -->
-          <el-link :underline="false" @click="openBusPage(row)" class="f12" type="primary">{{value}}</el-link>
+          <el-link :type="hasBusPage(row)?'primary':'info'" :underline="false" @click="openBusPage(row)" class="f12">{{value}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>
@@ -100,6 +96,7 @@ export default {
       // prettier-ignore
       filterOptions: [
         { label: '付款单编号', prop: 'billCode', default: true },
+        { label: '关联单据编号', prop: 'busCode', default: true },
         { label: '账单状态', prop: 'settleStatus', default: true, type:'select', options:[
           {label:'全部',value:'',},
           {label:'未结清',value:'0',},
@@ -119,7 +116,6 @@ export default {
         { label: '应付/收金额', prop: 'Amount', type: 'numberRange', default: true },
         { label: '实收/付金额', prop: 'FactAmount', type: 'numberRange', default: true },
         { label: '应收/付日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
-        { label: '关联单据编号', prop: 'busCode' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '生成时间', prop: 'CreateTime', type: 'dateRange' },
         { label: '创建人', prop: 'creator', type: 'employee' },
@@ -187,7 +183,6 @@ export default {
       this.$refs.tableView.reload();
     },
     async multiPay() {
-      console.log(this.$refs.tableView.selectionRow);
       let multi = this.$refs.tableView.selectionRow.filter(item =>
         [-1, 3].includes(item.state)
       );
@@ -202,11 +197,14 @@ export default {
         this.loading = true;
         try {
           await this.$api.seePsiFinanceService.paybillBatchPaymentApply({
-            apprpvalNode: this.form.apprpvalNode,
+            apprpvalNode: null,
             ids: multi.map(item => item.id),
             processType: 'psi_payment'
           });
-        } catch (error) {}
+          this.reload()
+        } catch (error) {
+          console.error(error)
+        }
         this.loading = false;
       } else {
         this.$message({

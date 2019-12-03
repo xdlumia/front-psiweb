@@ -17,6 +17,7 @@
       api="seePsiWmsService.wmsallocationorderList"
       :params="params"
       title="调拨单"
+      @selection-change="selectionChange"
     >
       <template v-slot:button>
         <el-button
@@ -39,6 +40,7 @@
     <Details
       @reload='reload'
       ref='details'
+      :code='drawerData.allocationOrderCode'
       :drawerData='drawerData'
       :visible.sync='tableVisible'
       v-if="tableVisible"
@@ -172,8 +174,7 @@ export default {
     //点击打开右侧边栏
     getTableVisible(data) {
       this.tableVisible = true
-      this.drawerData.title = '调拨单-' + data.allocationOrderCode
-      this.drawerData.code = data.allocationOrderCode
+      this.drawerData = data
       // this.$refs.details.wmsallocationorderInfo()
     },
     reload() {
@@ -185,6 +186,10 @@ export default {
     },
     update() {
       this.drawerData.tableVisible = false
+    },
+    // 多选
+    selectionChange(val) {
+      this.$emit("selection-change", val);
     },
     //请求可用库房
     commonwmsmanagerUsableList() {

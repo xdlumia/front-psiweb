@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 18:55:41
+ * @LastEditTime: 2019-12-03 17:06:56
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -10,7 +10,7 @@
       :title="`流水编号:${code}`"
       :visible.sync="showDetailPage"
       width="920px"
-      :status="status"
+      :status="statusArr"
       @close="close"
     >
       <div class="drawer-header">
@@ -61,21 +61,29 @@
           style="height:calc(100vh - 200px)"
           :is="activeName"
         ></components>
-
       </el-form>
     </side-detail>
+    <!-- 开票申请 -->
+    <collectInvoice
+      :visible.sync="editVisible"
+      :rowData="rowData"
+      type="edit"
+      :invoiceType="0"
+    />
 
   </div>
 </template>
 <script>
 import VisibleMixin from '@/utils/visibleMixin';
 import detail from './details/detail' //详情
+import collectInvoice from './collect-invoice' //详情
 import { log } from 'util';
 export default {
   mixins: [VisibleMixin],
   props: ['id'],
   components: {
-    detail
+    detail,
+    collectInvoice
   },
   data() {
     return {
@@ -105,11 +113,28 @@ export default {
       },
       activeName: 'detail',
       editVisible: false,
+      stateText: {
+        '-1': '新建',
+        '0': '审核中',
+        '1': '已驳回',
+        '2': '已收票',
+      }
     }
   },
 
   computed: {
-
+    statusArr() {
+      if (!this.getDetail) return [];
+      else {
+        return [
+          { label: '状态', value: this.stateText[this.detail.state] },
+          { label: '发票类型', value: this.detail.invoiceTypeCode, dictName: 'CW_FP_LX' },
+          { label: '商品金额(元)', value: this.detail.commodityTotalAmount },
+          { label: '收票金额', value: this.detail.invoiceAmount },
+          { label: '销售方名称', value: this.detail.marketName }
+        ];
+      }
+    }
   },
   created() {
 

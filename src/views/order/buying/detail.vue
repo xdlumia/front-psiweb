@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:41:57
+ * @LastEditTime: 2019-12-03 16:02:27
  * @Description: 采购单详情
 */
 <template>
@@ -15,8 +15,8 @@
     width="990px"
   >
     <template slot="button">
-      <el-button @click="orderStorageVisible=true" size="mini" type="primary" v-if="waitBuyingNumber>0">采购</el-button>
-      <el-button @click="addBorrowInVisible=true" size="mini" type="primary" v-if="waitBuyingNumber>0">借入</el-button>
+      <el-button :disabled="!(waitBuyingNumber>0)" @click="orderStorageVisible=true" size="mini" type="primary">采购</el-button>
+      <el-button :disabled="!(waitBuyingNumber>0)" @click="addBorrowInVisible=true" size="mini" type="primary">借入</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
@@ -61,10 +61,15 @@
     <OrderStorageAdd :joinCode="code" :visible.sync="orderStorageVisible" @reload="setEdit(),$reload()" from="请购单" />
     <addBorrowIn
       :rowData="{
-      commodityList:detail.commodityList.filter(a=>a.waitPurchaseNumber>0),
-      borrowLoanType:0,
-      salesSheetCode:detail.purchaseApplyCode
-    }"
+        commodityList:detail.commodityList.filter(a=>a.waitPurchaseNumber>0).map(a=>({
+          ...a,
+          commodityNumber:a.waitPurchaseNumber,
+          maxcommodityNumber:a.waitPurchaseNumber,
+        })),
+        borrowLoanType:0,
+        businessCode :detail.purchaseApplyCode,
+        businessType:1
+      }"
       :visible.sync="addBorrowInVisible"
       @reload="setEdit(),$reload()"
       from="请购单"

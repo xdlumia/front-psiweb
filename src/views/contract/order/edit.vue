@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 11:44:56
+ * @LastEditTime: 2019-12-02 11:29:27
  * @Description: 采购合同
 */
 <template>
@@ -86,14 +86,12 @@ export default {
     };
   },
   mounted() {
-    console.log(this);
   },
   methods: {
     getDetail() {
       if (this.code) {
       } else if (this.rowData) {
         this.rowData.logistics = this.rowData.shipmentsLogistics;
-        console.log(this.rowData);
         return this.rowData;
       }
     },
@@ -116,7 +114,7 @@ export default {
         this.setEdit();
         this.close();
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
       this.loading = false;
     },
@@ -140,7 +138,7 @@ export default {
         this.templateData.name = '采购合同';
         this.templateData.context = data;
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
       this.loading = false;
     }

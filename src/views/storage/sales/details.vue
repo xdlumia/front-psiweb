@@ -9,7 +9,7 @@
 
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="$emit('update:visible',false)"
     :title="'销售单-' + data.salesSheetCode"
     width="990px"
@@ -36,6 +36,7 @@
             <deliverInfo
               :data='detailForm.salesQuotationEntity'
               :disabled='true'
+              :hide="['note']"
             />
             <generateDeliver
               :visible.sync='orderStorageVisible'
@@ -48,61 +49,67 @@
           label="拣货单"
           name="storagePicking"
         >
-          <storagePicking
-            v-if="activeName == 'storagePicking'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
-          ></storagePicking>
+          <FullscreenWrap v-if="activeName == 'storagePicking'">
+            <storagePicking
+              :button="false"
+              :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
+            ></storagePicking>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="组装任务"
           name="storageAssembly"
         >
-          <storageAssembly
-            v-if="activeName == 'storageAssembly'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
-          ></storageAssembly>
+          <FullscreenWrap v-if="activeName == 'storageAssembly'">
+            <storageAssembly
+              :button="false"
+              :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
+            ></storageAssembly>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="发货单"
           name="storageDeliver"
         >
-          <storageDeliver
-            v-if="activeName == 'storageDeliver'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
-          ></storageDeliver>
+          <FullscreenWrap v-if="activeName == 'storageDeliver'">
+            <storageDeliver
+              :button="false"
+              :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
+            ></storageDeliver>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="销售出库单"
           name="salesOutLibrary"
-        >>
-          <salesOutLibrary
-            v-if="activeName == 'salesOutLibrary'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
-          ></salesOutLibrary>
+        >
+          <FullscreenWrap v-if="activeName == 'salesOutLibrary'">
+            <salesOutLibrary
+              :button="false"
+              :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
+            ></salesOutLibrary>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="借入单"
           name="orderBorrow"
-        >>
-          <orderBorrow
-            v-if="activeName == 'orderBorrow'"
-            :button="false"
-            :params="{page:1,limit:15,borrowLoanType:0,relationCode:data.salesSheetCode}"
-          ></orderBorrow>
+        >
+          <FullscreenWrap v-if="activeName == 'orderBorrow'">
+            <orderBorrow
+              :button="false"
+              :params="{page:1,limit:15,borrowLoanType:0,relationCode:data.salesSheetCode}"
+            ></orderBorrow>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="应收账单"
           name="financeReceivable"
-        >>
-          <financeReceivable
-            :button="false"
-            :params="{page:1,limit:15,borrowLoanType:0,relationCode:data.salesSheetCode}"
-            v-if="activeName == 'financeReceivable'"
-          ></financeReceivable>
+        >
+          <FullscreenWrap v-if="activeName == 'financeReceivable'">
+            <financeReceivable
+              :button="false"
+              :params="{page:1,limit:15,borrowLoanType:0,relationCode:data.salesSheetCode}"
+            ></financeReceivable>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -120,7 +127,7 @@ export default {
   props: ['data', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '出库状态', value: '待出库' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '发货状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       orderStorageVisible: false,
       detailForm: {},
       activeName: '',
@@ -146,10 +153,9 @@ export default {
           this.detailForm = res.data || {}
           this.status[0].value = this.detailForm.deliverState == 0 ? '待发货' : this.detailForm.deliverState == 1 ? '完成发货' : this.detailForm.deliverState == 2 ? '终止' : ''
           this.status[1].value = this.detailForm.createTime
-          this.status[2].value = this.detailForm.creator
+          this.status[2].value = this.detailForm.creatorName
           this.status[3].value = this.detailForm.deptName
           this.status[4].value = this.detailForm.source
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 

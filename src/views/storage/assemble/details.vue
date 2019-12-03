@@ -8,20 +8,24 @@
 <template>
   <SideDetail
     :status="status"
-    :visible.sync="visible"
+    :visible="visible"
     @close="$emit('update:visible',false)"
     :title="`组装单-${detailForm.assembleOrderCode}`"
     width="990px"
   >
     <div>
       <div class="drawer-header">
+        <!-- {value == 0 ? '未开始' : value == 1 ? '待执行' : value == 2 ? '部分完成' : value == 3 ? '已完成' : value == -1 ? '终止' : '' -->
+        <!-- && detailForm.generateOrder> 0  -->
         <el-button
+          v-if="detailForm.assembleOrderState !== 3 && detailForm.assembleOrderState !== -1 && detailForm.undistributedNum"
           type="primary"
           size='mini'
           @click="taskVisible = true"
         >
           生成拣货单和组装任务</el-button>
         <el-button
+          v-if="detailForm.assembleOrderState !== 2 && detailForm.assembleOrderState !== 3 && detailForm.assembleOrderState !== -1"
           type="primary"
           size='mini'
           :visible='addVisible'
@@ -54,31 +58,34 @@
           label="拣货单"
           name="storagePicking"
         >
-          <storagePicking
-            v-if="activeName == 'storagePicking'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
-          ></storagePicking>
+          <FullscreenWrap v-if="activeName == 'storagePicking'">
+            <storagePicking
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
+            ></storagePicking>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="组装任务"
           name="storageAssembly"
         >
-          <storageAssembly
-            v-if="activeName == 'storageAssembly'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
-          ></storageAssembly>
+          <FullscreenWrap v-if="activeName == 'storageAssembly'">
+            <storageAssembly
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
+            ></storageAssembly>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="销售单"
           name="storageSales"
         >
-          <storageSales
-            v-if="activeName == 'storageSales'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
-          ></storageSales>
+          <FullscreenWrap v-if="activeName == 'storageSales'">
+            <storageSales
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
+            ></storageSales>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -93,7 +100,7 @@ export default {
   props: ['data', 'visible', 'code'],
   data() {
     return {
-      status: [{ label: '组装状态', value: '待拆卸' }, { label: '生成时间', value: '2019-9-21 10:04:38', isTime: true }, { label: '单据创建人', value: '张三' }, { label: '创建部门', value: '库房部' }, { label: '来源', value: '销售单' }],
+      status: [{ label: '组装状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       taskVisible: false,
       addVisible: false,
       activeName: '',
@@ -127,13 +134,13 @@ export default {
           this.status[2].value = res.data.creatorName
           this.status[3].value = res.data.deptName
           this.status[4].value = res.data.source
-          console.log(this.detailForm, 'this.detailFormthis.detailFormthis.detailForm')
         })
         .finally(() => {
 
         })
     },
     reload() {
+      this.wmsassembleorderInfo()
       this.$emit('reload')
     },
     fStop() {

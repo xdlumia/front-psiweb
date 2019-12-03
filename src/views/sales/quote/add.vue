@@ -2,19 +2,19 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 16:35:07
+ * @LastEditTime: 2019-12-03 19:26:18
  * @Description: file content
 */
 <template>
   <el-dialog
     :visible.sync="showDetailPage"
-    width="920px"
+    width="1120px"
     @close="close"
     v-dialogDrag
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{type=='add'?'新建报价单':`编辑:${code}`}}</span>
+      <span>{{type=='add'?'新建报价单':type=='copy'?`复制:${code}`:`编辑:${code}`}}</span>
       <div class="fr mr30">
         <el-button
           @click="$emit('update:visible', false)"
@@ -105,10 +105,11 @@ export default {
         KIND2Data: [], //临时存放第二步配件列表选中的数据
         KIND1List: [], //临时存放第三步整机列表选中的数据 数组存放
         KIND2List: {},//临时存放第三步配件列表选中的数据 对象存放
-        id: {},
+        id: '',
         apprpvalState: '', //审核状态
         attachList: [], //附件,
         companyAccountId: '', //公司发票信息
+        registerPhone: '',
         companySettlementId: '', //公司结算账户
         businessCommoditySaveVoList: [ //商品信息合集
           // {
@@ -155,15 +156,12 @@ export default {
         taxRate: '', //税率
         totalNumber: '', //总计数量,
         totalSalesAmount: '', //总计销售价
+        totalCostAmount: '',//  销售参考价总计
       }
     }
   },
   created() {
-    if (this.type == 'add') {
-      this.steps = 1
-    } else {
-      this.steps = 4
-    }
+
   },
   mounted() {
     // this.initForm()
@@ -171,12 +169,49 @@ export default {
   computed: {
   },
   watch: {
+    visible(val) {
+      if (val) {
+        if (this.type == 'add') {
+          this.steps = 1
+          for (let key in this.form) {
+            if (this.form[key] instanceof Array) {
+              this.form[key] = []
+            } else {
+              this.form[key] = ""
+            }
+          }
+        } else {
+          this.steps = 4
+        }
+      }
+    },
+    //  等detail加载完成 并且给form 对象赋值完成之后再加载商品数据
+    'form.id': {
+      handler(val) {
+        if (val && this.type == 'edit') {
+          this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList({ putawayType: 0, busType: 1, busCode: this.code })
+            .then(res => {
+              let data = res.data || []
+              // this.$set(this.form, 'businessCommoditySaveVoList', this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList'))
+              this.form.businessCommoditySaveVoList = this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList')
+            })
+        }
+      }
+    },
     async steps(index) {
-
+      if (this.type != 'add' && index != 4) {
+        this.$message.error({
+          showClose: true,
+          message: '编辑和复制的时候只能操作当前步骤'
+        })
+        this.steps = 4
+        return
+      }
       if (index === 3) {
         // 确定配置信息的时候查询整机
         this.$refs.confirmInfo.commonquotationconfigdetailsListConfigByGoodName()
-      } else if (index === 4) {
+      }
+      else if (index === 4 && this.type == 'add') {
         // 不挑选此配置整机数据
         let wholeListNotChoose = []
         // 整机数据
@@ -190,31 +225,39 @@ export default {
         })
         wholeListNotChoose = this.$$util.jsonFlatten(wholeListNotChoose)
         let quotationIds = this.$$util.jsonFlatten(wholeList).map(v => v.quotationId)
-        let params = {
-          ids: quotationIds,
-          page: 1,
-          limit: 999
+        let wholeListData = []
+        // 有quotationIds 值的时候再查询
+        if (quotationIds.length) {
+          let params = {
+            ids: quotationIds,
+            page: 1,
+            limit: 999
+          }
+          let { data } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
+          wholeListData = data || []
+          wholeListData = wholeListData.map(item => {
+            item.id = 'customId' + item.id
+            item.inventoryNumber = item.usableInventoryNum
+            item.reference = item.saleReferencePrice
+            return item
+          })
         }
-        let { data } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
-        let wholeListData = data || []
         // 配件列表
         let fixingsList = []
         for (let key in this.form.KIND2List) {
           // 扁平化数据
           const flattenData = this.$$util.jsonFlatten(this.form.KIND2List[key])
           fixingsList = fixingsList.concat(flattenData)
+          fixingsList = fixingsList.map(item => {
+            item.inventoryNumber = item.usableInventoryNum
+            item.reference = item.saleReferencePrice
+            return item
+          })
         }
 
         // let
         // 第4步整合商品信息
         this.form.businessCommoditySaveVoList = [...wholeListData, ...fixingsList]
-      }
-      else if (this.type != 'add') {
-        this.$message.error({
-          showClose: true,
-          message: '编辑和复制的时候只能操作当前步骤'
-        })
-        this.steps = 4
       }
     },
   },
@@ -235,13 +278,24 @@ export default {
 
           delete copyParams.KIND1Data
           delete copyParams.KIND2Data
-          copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.map(item => {
+
+          copyParams.businessCommoditySaveVoList.forEach(item => {
+            (item.commonGoodConfigDetailsEntityList || []).forEach(sub => {
+              sub.parentCommodityCode = item.commodityCode
+              sub.putawayType = 0 //0=出库
+            })
             item.putawayType = 0 //0=出库
-            return item
           })
-          // copyParams.businessCommoditySaveVoList.forEach(item => {
-          //   item.parentCommodityCode = item.commodityCode
-          // })
+          // 验证商品信息
+          if (copyParams.businessCommoditySaveVoList.every(item => !item.commodityNumber)) {
+            this.$message({
+              message: '商品信息不能为空',
+              type: 'error',
+              showClose: true,
+            });
+            return
+          }
+          copyParams.businessCommoditySaveVoList = this.$$util.jsonFlatten(copyParams.businessCommoditySaveVoList, 'commonGoodConfigDetailsEntityList')
           // rules 表单验证是否通过
           let api = 'salesquotationSave' // 默认编辑更新
           // 新增保存
