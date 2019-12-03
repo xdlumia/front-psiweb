@@ -158,7 +158,19 @@
         v-dialogDrag
       >
         <commodityPicking :data='rowData' />
-        <machineSn :data='rowData' />
+        <machineSn
+          :data='rowData'
+          :detailForm='detailForm'
+        />
+        <span
+          slot="footer"
+          class="dialog-footer"
+        >
+          <el-button
+            @click="dialogVisible = false"
+            size="small"
+          >关 闭</el-button>
+        </span>
       </el-dialog>
       <CommodityDetail
         :code="currentCommodityCode"
@@ -207,5 +219,8 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+/deep/.el-dialog__footer {
+  text-align: center !important;
+}
 </style>

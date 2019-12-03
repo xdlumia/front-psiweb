@@ -66,8 +66,11 @@
           min-width="160"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <span>{{scope.row.commodityCode}}</span>
+          <template slot-scope="{row}">
+            <div
+              @click="openCommodityDetail(row.commodityCode)"
+              class="d-text-blue d-elip d-pointer"
+            >{{row.commodityCode}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -197,12 +200,19 @@
         size="small"
       >保 存</el-button>
     </span>
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </el-dialog>
 </template>
 <script>
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 
 export default {
   components: {
+    CommodityDetail
   },
   props: {
     visible: {
@@ -224,6 +234,8 @@ export default {
     return {
       activeName: '',
       usableList: [],
+      showCommodityDetail: false,
+      currentCommodityCode: '',
       wmsName: '',
       tableData: [],
       formInline: {
@@ -241,6 +253,11 @@ export default {
     },
     response(res) {
       this.wmsName = res.data[0].wmsName || '-'
+    },
+    // 打开商品详情
+    openCommodityDetail(code) {
+      this.showCommodityDetail = true;
+      this.currentCommodityCode = code;
     },
     //请求可用库房
     commonwmsmanagerUsableList() {
