@@ -26,10 +26,10 @@
           <el-table-column
             label="调入数量"
             min-width="100"
-            prop="total"
+            prop="num"
           >
             <template slot-scope="scope">
-              <span>{{Number(scope.row.accomplishNum)}}/{{item.total}}</span>
+              <span>{{Number(scope.row.inAccomplishNum)}}/{{item.num}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -280,10 +280,10 @@ export default {
     //每次扫码,对应上边的
     doSth(data) {
       this.dialogData.allocationCommodityList.forEach((item) => {
-        // item.accomplishNum = 0
+        // item.inAccomplishNum = 0
         if (item.commodityCode == data.commodityCode) {
-          // if (Number(item.accomplishNum) < Number(item.total)) {//数量还不够的时候可以继续扫
-          item.accomplishNum++
+          // if (Number(item.inAccomplishNum) < Number(item.num)) {//数量还不够的时候可以继续扫
+          item.inAccomplishNum++
           this.downTableData.push(data)
           // } else {
           //   this.$message({
@@ -299,7 +299,7 @@ export default {
       this.downTableData.splice(scope.$index, 1)
       this.dialogData.allocationCommodityList.forEach((item) => {
         if (item.commodityCode == scope.row.commodityCode) {
-          item.accomplishNum--
+          item.inAccomplishNum--
         }
       })
     },
@@ -315,7 +315,8 @@ export default {
           })
       } else {
         this.$message({
-          type: 'info',
+          type: 'error',
+          showClose: true,
           message: '请至少扫一个商品'
         })
       }

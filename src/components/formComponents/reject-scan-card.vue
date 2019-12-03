@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 10:52:45
+ * @LastEditTime: 2019-12-03 10:36:26
  * @Description: 换退货商品扫码卡片 
 */
 <template>
@@ -170,8 +170,10 @@ export default {
             if (!this.data.putawayCommodityList) {
               this.$set(this.data, 'putawayCommodityList', []);
             }
-            this.data.putawayCommodityList.push({ ...commodity, ...data });
-            this.putawayCommodityList.push({ ...commodity, ...data });
+            let putawayData = { ...commodity, ...data };
+            delete putawayData.id;
+            this.data.putawayCommodityList.push(putawayData);
+            this.putawayCommodityList.push(putawayData);
             this.$forceUpdate();
             commodity.returenNumber = (commodity.returenNumber || 0) + 1;
             this.status.current = (this.status.current || 0) + 1;
@@ -192,6 +194,10 @@ export default {
       let i = this.data.putawayCommodityList.indexOf(row);
       this.data.putawayCommodityList.splice(i, 1);
       this.putawayCommodityList.splice(i, 1);
+      this.status.current--;
+      this.data.commodityList.find(
+        item => item.commodityCode == row.commodityCode
+      ).returenNumber--;
       this.$forceUpdate();
     }
   }

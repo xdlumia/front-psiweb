@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-22 18:38:27
+ * @LastEditTime: 2019-12-02 18:41:42
  * @Description: 选择流水
 */
 <template>
@@ -34,11 +34,20 @@
         </el-table-column>
         <el-table-column label="对方账号" min-width="120" prop="oppositeAccount"></el-table-column>
         <el-table-column label="备注" min-width="100" prop="note"></el-table-column>
-        <el-table-column label="流水金额" min-width="100" prop="incomeAmount"></el-table-column>
-        <el-table-column label="已匹配金额" min-width="100" prop="matchedAmount"></el-table-column>
-        <el-table-column label="未匹配金额" min-width="100" prop="unmatchAmount"></el-table-column>
+        <el-table-column label="流水金额" min-width="100" prop="incomeAmount">
+          <template slot-scope="{row}">{{row.incomeAmount||0}}</template>
+        </el-table-column>
+        <el-table-column label="已匹配金额" min-width="100" prop="matchedAmount">
+          <template slot-scope="{row}">{{row.matchedAmount||0}}</template>
+        </el-table-column>
+        <el-table-column label="未匹配金额" min-width="100" prop="unmatchAmount">
+          <template slot-scope="{row}">
+            <span v-if="row.matchState==0">{{row.incomeAmount||0}}</span>
+            <span v-else>{{row.unmatchAmount||0}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="匹配状态" min-width="100">
-          <template slot-scope="{row}">{{row.matchState}}</template>
+          <template slot-scope="{row}">{{stateText[row.matchState]}}</template>
         </el-table-column>
       </d-table>
     </div>
@@ -61,7 +70,7 @@ export default {
       default: () => ({
         page: 1,
         limit: 15,
-        matchState: ''
+        matchState: [0, 1]
       })
     }
   },
@@ -69,7 +78,12 @@ export default {
   data() {
     return {
       current: '',
-      list: []
+      list: [],
+      stateText: {
+        '0': '未匹配',
+        '1': '部分匹配',
+        '2': '已匹配'
+      }
     };
   },
   mounted() {},

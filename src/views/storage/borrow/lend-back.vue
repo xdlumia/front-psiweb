@@ -59,7 +59,7 @@
               min-width="100"
             >
               <template slot-scope="scope">
-                <span>{{scope.row.returnAccomplishNum}}/{{scope.row.returnNum}}</span>
+                <span>{{scope.row.returnAccomplishNum + (item.timeNum || 0)}}/{{scope.row.returnNum}}</span>
               </template>
             </el-table-column>
             <el-table-column

@@ -2,14 +2,18 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-23 16:13:57
+ * @LastEditTime: 2019-12-02 18:11:03
  * @Description: 操作记录
 */
 <template>
   <div>
     <el-timeline>
+      <div
+        class="d-text-gray"
+        v-if="!logData.length"
+      >暂无操作记录</div>
       <el-timeline-item
-        v-for="(item,index) of 6"
+        v-for="(item,index) of logData"
         timestamp="2018/4/12"
         placement="top"
         :key="index"
@@ -36,9 +40,32 @@ export default {
 
   },
   props: {
-    // data: {
-    //   type: Array
-    // }
+    data: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  data() {
+    return {
+      logData: []
+    }
+  },
+  created() {
+    this.logQueryList(this.data.id)
+  },
+  watch: {
+  },
+  methods: {
+    logQueryList(id) {
+      let params = {
+        businessId: id,
+        businessType: '20', // 报价单
+      }
+      this.$api.operlogService.logQueryList(params)
+        .then(res => {
+          this.logData = res.data || []
+        })
+    }
   },
   beforeDestroy() {
   }

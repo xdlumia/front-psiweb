@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 14:52:05
+ * @LastEditTime: 2019-12-02 19:18:38
  * @Description: file content
 */
 <template>
@@ -172,6 +172,18 @@ export default {
   computed: {
   },
   watch: {
+    //  等detail加载完成 并且给form 对象赋值完成之后再加载商品数据
+    'form.id': {
+      handler(val) {
+        if (val && this.type == 'edit') {
+          this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList({ putawayType: 0, busType: 1, busCode: this.code })
+            .then(res => {
+              let data = res.data || []
+              this.form.businessCommoditySaveVoList = this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList')
+            })
+        }
+      }
+    },
     async steps(index) {
       if (this.type != 'add' && index != 4) {
         this.$message.error({
@@ -185,7 +197,7 @@ export default {
         // 确定配置信息的时候查询整机
         this.$refs.confirmInfo.commonquotationconfigdetailsListConfigByGoodName()
       }
-      else if (index === 4) {
+      else if (index === 4 && this.type == 'add') {
         // 不挑选此配置整机数据
         let wholeListNotChoose = []
         // 整机数据
@@ -210,6 +222,7 @@ export default {
           let { data } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
           wholeListData = data || []
           wholeListData = wholeListData.map(item => {
+            item.id = 'customId' + item.id
             item.inventoryNumber = item.usableInventoryNum
             item.reference = item.saleReferencePrice
             return item
@@ -251,13 +264,15 @@ export default {
 
           delete copyParams.KIND1Data
           delete copyParams.KIND2Data
-          copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.map(item => {
+
+          copyParams.businessCommoditySaveVoList.forEach(item => {
+            (item.commonGoodConfigDetailsEntityList || []).forEach(sub => {
+              sub.parentCommodityCode = item.commodityCode
+              sub.putawayType = 0 //0=出库
+            })
             item.putawayType = 0 //0=出库
-            return item
           })
-          // copyParams.businessCommoditySaveVoList.forEach(item => {
-          //   item.parentCommodityCode = item.commodityCode
-          // })
+          copyParams.businessCommoditySaveVoList = this.$$util.jsonFlatten(copyParams.businessCommoditySaveVoList, 'commonGoodConfigDetailsEntityList')
           // rules 表单验证是否通过
           let api = 'salesquotationSave' // 默认编辑更新
           // 新增保存

@@ -2,33 +2,46 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 10:04:13
+ * @LastEditTime: 2019-12-02 19:37:09
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
   <form-card
     class="commodity-quote-edit"
     title="商品信息"
+    v-loading="loading"
   >
-    <d-table
+    <el-table
+      show-summary
+      sum-text='总计'
       border
-      style="height:250px"
-      api="seePsiSaleService.businesscommodityGetBusinessCommodityList"
-      :params="queryForm"
+      :summary-method="getSummaries"
+      :data="goodsData"
+      default-expand-all
+      :tree-props="{children: 'commonGoodConfigDetailsEntityList'}"
+      max-height="400"
+      ref="elTable"
+      row-key="id"
       size="mini"
-      :paging="false"
     >
       <el-table-column
-        label="商品编号"
-        prop="commodityCode"
-        min-width="150"
         show-overflow-tooltip
-      />
-
+        prop="commodityCode"
+        label="商品编号"
+        min-width="150"
+      >
+      </el-table-column>
       <el-table-column
+        show-overflow-tooltip
+        prop="goodsName"
+        label="商品名称"
+        min-width="150"
+      >
+      </el-table-column>
+      <el-table-column
+        show-overflow-tooltip
         label="商品图片"
         min-width="120"
-        show-overflow-tooltip
       >
         <template slot-scope="scope">
           <el-image
@@ -39,15 +52,9 @@
       </el-table-column>
 
       <el-table-column
-        prop="goodsName"
-        label="商品名称"
-        min-width="110"
         show-overflow-tooltip
-      />
-
-      <el-table-column
         label="商品类别"
-        min-width="80"
+        min-width="110"
         prop="categoryCode"
       >
         <template slot-scope="scope">
@@ -56,25 +63,71 @@
       </el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         label="商品分类"
         min-width="110"
         prop="className"
-      />
+      ></el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
+        label="配置"
+        min-width="110"
+        prop="configName"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
         label="规格"
         min-width="110"
         prop="specOne"
-      />
+      ></el-table-column>
 
       <el-table-column
-        label="备注"
-        prop="note"
+        show-overflow-tooltip
+        label="销售参考价"
         min-width="110"
-      />
+        prop="reference"
+      ></el-table-column>
 
-    </d-table>
+      <el-table-column
+        show-overflow-tooltip
+        label="商品数量"
+        prop="commodityNumber"
+        min-width="110"
+      >
+      </el-table-column>
 
+      <el-table-column
+        show-overflow-tooltip
+        label="税率%"
+        min-width="100"
+        prop="taxRate"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="discount"
+        label="折扣"
+        min-width="110"
+      >
+      </el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        label="折后销售单价"
+        prop="discountSprice"
+        min-width="110"
+      >
+      </el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        label="备注"
+        min-width="110"
+      >
+      </el-table-column>
+    </el-table>
   </form-card>
 </template>
 <script>
@@ -83,6 +136,8 @@ export default {
   props: ['data'],
   data() {
     return {
+      loading: false,
+      goodsData: [],
       queryForm: {
         busType: 1, // 1报价单 2请购单]
         putawayType: 0,
@@ -90,9 +145,22 @@ export default {
       },
     };
   },
+  created() {
+    this.businesscommodityGetBusinessCommodityList(this.data.quotationCode)
+  },
   methods: {
-
-
+    businesscommodityGetBusinessCommodityList(quotationCode) {
+      this.queryForm.busCode = quotationCode || this.data.quotationCode
+      this.loading = true
+      this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.queryForm)
+        .then(res => {
+          let data = res.data || []
+          this.goodsData = this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList')
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
     //算合计的
     getSummaries(param) {
       const { columns, data } = param;

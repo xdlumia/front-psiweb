@@ -409,17 +409,17 @@ export default {
           if (res.data) {
             this.data.putoutCommodityList.forEach((item) => {
               console.log(item, Number(item.swapOutAccomplishNum), 'itemitemitemitem')
-              if (item.swapOutNum - Number(item.swapOutAccomplishNum) > 0) {
-                if (item.commodityCode == res.data.commodityCode) {
+              if (item.commodityCode == res.data.commodityCode) {
+                if (item.swapOutNum - Number(item.swapOutAccomplishNum) > 0) {
                   item.swapOutAccomplishNum ? item.swapOutAccomplishNum++ : item.swapOutAccomplishNum = 1
                   this.outNowNum++
                   this.tableData.push(res.data)
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: '当前商品待出库数量已为0!'
+                  })
                 }
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: '当前商品待出库数量已为0!'
-                })
               }
             })
           }
@@ -434,6 +434,7 @@ export default {
         this.data.putoutCommodityList.forEach((item, index) => {
           if (item.commodityCode == scope.row.commodityCode) {
             item.swapOutAccomplishNum--
+            this.outNowNum--
           }
         })
       } else {

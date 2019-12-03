@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 11:20:24
+ * @LastEditTime: 2019-12-03 10:11:18
  * @Description: 备货单详情
 */
 <template>
@@ -63,10 +63,11 @@
         v-if="detail&&[0,5].includes(detail.state)"
       >删除</el-button>
       <el-button
+        :disabled="!(waitBuyingNumber>0)"
         @click="showAddOrderStorage=true"
         size="mini"
         type="primary"
-        v-if="waitBuyingNumber>0&&detail&&[2,3].includes(detail.state)"
+        v-if="detail&&[2,3].includes(detail.state)"
       >采购</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">

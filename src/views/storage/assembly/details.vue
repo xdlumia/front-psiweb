@@ -69,11 +69,13 @@
           label="组装单"
           name="storageAssemble"
         >
-          <storageAssemble
-            :button="false"
-            v-if="activeName == 'storageAssemble'"
-            :params="{page:1,limit:15,relationCode:detailForm.assembleTaskCode}"
-          ></storageAssemble>
+          <FullscreenWrap v-if="activeName == 'storageAssemble'">
+            <storageAssemble
+              :button="false"
+              v-if="activeName == 'storageAssemble'"
+              :params="{page:1,limit:15,relationCode:detailForm.assembleTaskCode}"
+            ></storageAssemble>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>

@@ -124,7 +124,7 @@ export default {
     handleClick({ label, name }) {
       this.activeName = '';
     },
-    //库房切换，下边选择的东西清空掉
+    //库房切换，下边选择的东西清空掉 
     changeWmsId() {
       this.$refs.logisticsEdit.changeWmsId()
     },
@@ -137,7 +137,6 @@ export default {
         if (valid) {
           let arr = this.$refs.logisticsEdit.upTableData || []
           this.allForm.wmsCommodityList = arr
-          console.log(arr, 'arrarrarrarrarrarr')
           // arr.forEach((item) => {
           //   this.allForm.wmsNames.push(item.name)
           // })

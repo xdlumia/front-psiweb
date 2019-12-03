@@ -24,7 +24,7 @@
         :rules="[  
               {required:true,message:'必填项',trigger: 'input',}
           ]"
-        label="选择组装人"
+        label="转移给："
         prop="pickingPerson"
         size="mini"
       >

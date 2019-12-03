@@ -38,31 +38,37 @@
           label="拆卸任务"
           name="storageDisassemble"
         >
-          <storageDisassemble
-            v-if="activeName == 'storageDisassemble'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
-          ></storageDisassemble>
+          <FullscreenWrap v-if="activeName == 'storageDisassemble'">
+            <storageDisassemble
+              v-if="activeName == 'storageDisassemble'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
+            ></storageDisassemble>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="采购入库单"
           name="orderStorage"
         >
-          <orderStorage
-            v-if="activeName == 'orderStorage'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
-          ></orderStorage>
+          <FullscreenWrap v-if="activeName == 'orderStorage'">
+            <orderStorage
+              v-if="activeName == 'orderStorage'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
+            ></orderStorage>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="应付账单"
           name="financePayable"
         >
-          <financePayable
-            v-if="activeName == 'financePayable'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
-          ></financePayable>
+          <FullscreenWrap v-if="activeName == 'financePayable'">
+            <financePayable
+              v-if="activeName == 'financePayable'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
+            ></financePayable>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -98,7 +104,7 @@ export default {
       this.$api.seePsiPurchaseService.purchaseGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
-          this.status[0].value = this.detailForm.putinState == 0 ? '待入库' : this.detailForm.putinState == 1 ? '部分完成' : this.detailForm.putinState == 2 ? '完成入库' : this.detailForm.putinState == 3 ? '终止' : '全部'
+          this.status[0].value = this.detailForm.putinState == 0 ? '待入库' : this.detailForm.putinState == 1 ? '部分完成' : this.detailForm.putinState == 2 ? '完成入库' : this.detailForm.putinState == 3 ? '终止' : '-'
           this.status[1].value = this.detailForm.createTime
           this.status[2].value = this.detailForm.creatorName
           this.status[3].value = this.detailForm.deptName

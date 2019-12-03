@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-22 18:43:50
+ * @LastEditTime: 2019-12-02 16:43:13
  * @Description: 匹配
 */
 <template>
@@ -32,8 +32,8 @@
           </el-row>
         </form-card>
         <div class="mt10">
-          <div>账单未结清金额：{{bill.billAmount}}</div>
-          <div>流水未匹配金额：{{bill.unmatch}}</div>
+          <div>账单未结清金额：{{bill.billAmount||0}}</div>
+          <div>流水未匹配金额：{{bill.unmatch||0}}</div>
         </div>
       </el-form>
     </div>
@@ -72,7 +72,7 @@ export default {
       ) {
         cb();
       } else {
-        cb(new Error('匹配金额需大于0并且小于等于未结清金额或者未匹配金额'));
+        cb(new Error('匹配金额需大于0并且小于等于未结清金额和未匹配金额'));
       }
     },
     async save() {

@@ -28,13 +28,13 @@
         style="height:250px"
         :tree-props="{children: 'id', hasChildren: 'id'}"
       >
-        <el-table-column
+        <!-- <el-table-column
           fixed
           prop="shipmentsNumber"
           min-width="100"
           label="发货数量"
           show-overflow-tooltip
-        ></el-table-column>
+        ></el-table-column> -->
         <el-table-column
           fixed
           prop="pickingNumber"
@@ -64,13 +64,13 @@
             >{{scope.row.snCode}}</span>
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           fixed
           prop="alterationNumber"
           min-width="100"
           label="出库数量"
           show-overflow-tooltip
-        ></el-table-column>
+        ></el-table-column> -->
         <el-table-column
           fixed
           prop="isAssembly"
@@ -114,7 +114,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
+            <span>{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</span>
           </template>
         </el-table-column>
         <el-table-column

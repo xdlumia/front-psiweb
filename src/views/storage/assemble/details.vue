@@ -58,31 +58,34 @@
           label="拣货单"
           name="storagePicking"
         >
-          <storagePicking
-            v-if="activeName == 'storagePicking'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
-          ></storagePicking>
+          <FullscreenWrap v-if="activeName == 'storagePicking'">
+            <storagePicking
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
+            ></storagePicking>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="组装任务"
           name="storageAssembly"
         >
-          <storageAssembly
-            v-if="activeName == 'storageAssembly'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
-          ></storageAssembly>
+          <FullscreenWrap v-if="activeName == 'storageAssembly'">
+            <storageAssembly
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
+            ></storageAssembly>
+          </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
           label="销售单"
           name="storageSales"
         >
-          <storageSales
-            v-if="activeName == 'storageSales'"
-            :button="false"
-            :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
-          ></storageSales>
+          <FullscreenWrap v-if="activeName == 'storageSales'">
+            <storageSales
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.assembleOrderCode}"
+            ></storageSales>
+          </FullscreenWrap>
         </el-tab-pane>
       </el-tabs>
     </div>

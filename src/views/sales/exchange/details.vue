@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 18:53:22
+ * @LastEditTime: 2019-12-02 20:02:15
  * @Description: 销售换货单详情
 */
 <template>
   <div>
     <side-detail
-      title="销售退货单"
+      :title="`销售换货单:${code}`"
       :visible.sync="showPop"
       width="920px"
     >

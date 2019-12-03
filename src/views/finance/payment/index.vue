@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:30:22
+ * @LastEditTime: 2019-12-02 18:10:35
  * @Description: 付款单
 */
 <template>
@@ -37,10 +37,6 @@
         </span>
         <span v-else-if="prop=='settleStatus'">
           <span>{{settleText[value]}}</span>
-        </span>
-        <span v-else-if="prop=='busState'">
-          <!-- 关联单据状态 -->
-          <span>{{busInfo[row.busType]?busInfo[row.busType].stateText[value]:''}}</span>
         </span>
         <span v-else-if="prop=='busCode'">
           <!-- 关联单据编号 -->

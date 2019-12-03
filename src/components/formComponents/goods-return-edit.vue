@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 11:20:44
+ * @LastEditTime: 2019-12-02 19:51:42
  * @Description: 退货商品商品信息
 */
 <template>
@@ -199,8 +199,8 @@
 import goodsChangeEdit from '@/components/formComponents/goods-exchange-edit.vue'
 export default {
   components: { goodsChangeEdit },
-  from: String,
   props: {
+    from: String,
     data: {
       type: Object,
       default: () => ({})
@@ -271,7 +271,7 @@ export default {
       let alterationNumber = row.alterationNumber || 1 //退货数量
       let alterationPrice = row.alterationPrice || 1 //销售单价
       // 税后销售单价  公式:销售单价 * (1-税率)
-      row.taxPrice = alterationPrice * (1 - taxRate).toFixed(2)
+      row.taxPrice = (alterationPrice * (1 - taxRate)).toFixed(2)
       // 销售税后总价  公式:税后销售单价 * 退货数量
       row.taxTotalAmount = (alterationNumber * row.taxPrice).toFixed(2)
 
@@ -290,9 +290,11 @@ export default {
             return sum + curr
           }, 0).toFixed(2)
         }
+        //获取税后总价
+        if (col.property == 'taxTotalAmount') {
+          this.data.shouldRefundAmount = sums[index]
+        }
       });
-      //获取税后总价
-      this.data.shouldRefundAmount = sums[13]
       return sums
     },
   },

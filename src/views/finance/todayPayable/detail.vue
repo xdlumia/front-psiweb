@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 19:30:25
+ * @LastEditTime: 2019-12-02 18:24:09
  * @Description: 今日应付账单
 */
 <template>
@@ -16,6 +16,7 @@
   >
     <template slot="button">
       <el-button @click="showLateAmount=true" size="mini" type="primary">滞纳金</el-button>
+      <el-button @click="showLog=true" size="mini" type="primary">操作记录</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
@@ -30,9 +31,10 @@
             :billCode="detail.billCode"
             :billId="detail.id"
             :data="detail"
+            :hide="detail.amount>0?[]:['addIncoming','matchIncoming']"
             :matchApi="pageConfig.api.matchIncoming"
             :type="pageConfig.type"
-            :hide="detail.amount>0?[]:['addIncoming','matchIncoming']"
+            @reload="setEdit(),$reload()"
           />
           <invoice-log :busCode="detail.busCode" :data="detail" :type="pageConfig.type" />
           <paybill-log :billId="detail.id" v-if="pageConfig.show.includes('paybillLog')" />
@@ -54,17 +56,22 @@
       </el-tab-pane>
     </el-tabs>
     <Late :pageConfig="pageConfig" :rowData="detail" :visible.sync="showLateAmount" @reload="setEdit(),$reload()" v-if="showLateAmount" />
+    <OperateLog :params="{
+      businessId:detail.id
+    }" :visible.sync="showLog" v-if="showLog" />
   </sideDetail>
 </template>
 <script>
 import VisibleMixin from '@/utils/visibleMixin';
 import BusMixin from '@/views/finance/payment/busMixin';
 import Late from './late';
+import OperateLog from './operateLog';
 
 export default {
   mixins: [VisibleMixin, BusMixin],
   components: {
-    Late
+    Late,
+    OperateLog
   },
   props: {
     pageConfig: Object
@@ -73,6 +80,7 @@ export default {
     return {
       showApply: false,
       showLateAmount: false,
+      showLog: false,
       stateText: {
         '0': '审核中',
         '1': '待复核',

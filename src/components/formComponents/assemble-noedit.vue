@@ -183,7 +183,6 @@ export default {
     },
     //点击SN码
     changeRecord(scope) {
-      console.log(scope.row)
       this.dialogVisible = true;
       this.dialogData = scope.row
     }

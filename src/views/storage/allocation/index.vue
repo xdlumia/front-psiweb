@@ -36,7 +36,7 @@
         <span v-else-if="column.columnFields=='allocationType'">{{value == 1 ? '内调' : '外调'}}</span>
         <span v-else>{{value}}</span>
       </template>
-    </TableView> 
+    </TableView>
     <Details
       @reload='reload'
       ref='details'
