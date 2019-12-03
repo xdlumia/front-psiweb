@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 17:31:26
+ * @LastEditTime: 2019-12-03 10:41:01
  * @Description: 新增促销
  -->
 <template>
@@ -22,7 +22,8 @@
           <el-button size="mini" @click="$emit('update:visible', false)">关闭</el-button>
         </div>
       </div>
-      <el-form ref="promotionForm" size="mini" :model="promotionForm" :rules="promotionFormRule">
+      <el-form ref="promotionForm" size="mini" :model="promotionForm"
+:rules="promotionFormRule">
         <d-tabs :style="{maxHeight: maxHeight + 'px'}">
           <d-tab-pane label="促销信息" name="information"></d-tab-pane>
           <d-tab-pane label="参与商品" name="goodsInfo"></d-tab-pane>
@@ -72,14 +73,16 @@ export default {
         userNum: '',
         datetimerange: [],
         commonPromotionCommodityDetailsEntities: [],
-        commonPromotionPersonnelEntities: []
+        commonPromotionPersonnelEntities: [],
+        note: '',
+        attachList: []
       },
       promotionFormRule: {
         promotionName: { required: true, message: '请输入', trigger: 'blur' },
         datetimerange: { required: true, message: '请选择', trigger: 'change' },
         promotionTarget: [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         commonPromotionPersonnelEntities: { required: true, message: '请选择', trigger: 'change' },
         commonPromotionCommodityDetailsEntities: { required: true, message: '请选择', trigger: 'change' }

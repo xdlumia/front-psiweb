@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-08 14:29:53
+ * @LastEditTime: 2019-12-03 10:40:08
  * @Description: 新增目标
  -->
 <template>
@@ -56,7 +56,7 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
       objectiveForm: {
         id: '',
@@ -66,14 +66,16 @@ export default {
         sumMoney: '',
         sumUserNum: '',
         datetimerange: [],
-        commonPromotionGoalPersonnelEntities: []
+        commonPromotionGoalPersonnelEntities: [],
+        note: '',
+        attachList: []
       },
       objectiveFormRule: {
         promotionName: { required: true, message: '请输入', trigger: 'blur' },
         datetimerange: { required: true, message: '请选择', trigger: 'change' },
         promotionTarget: [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         commonPromotionGoalPersonnelEntities: { required: true, message: '请选择', trigger: 'change' }
       },
@@ -85,15 +87,15 @@ export default {
     usersInfo
   },
   computed: {
-    maxHeight() {
+    maxHeight () {
       return window.innerHeight - 130;
     }
   },
-  mounted() {
+  mounted () {
     this.objectiveForm = Object.assign(this.objectiveForm, this.detailForm)
   },
   methods: {
-    commonpromotiongoalSave() {
+    commonpromotiongoalSave () {
       this.$refs.objectiveForm.validate(valid => {
         if (valid) {
           this.loading = true

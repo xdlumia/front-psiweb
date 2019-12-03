@@ -266,27 +266,27 @@ export default {
         'values[0].specOne': { required: true, message: '请输入', trigger: 'blur' },
         'values[0].inventoryPrice': [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         'values[0].profitRate': [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         'values[0].taxRate': { required: true, message: '请输入', trigger: 'blur' },
         'values[0].saleReferencePrice': [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         'values[0].isEnable': { required: true, message: '请选择', trigger: 'change' },
         'values[0].warehouseId': { required: true, message: '请选择', trigger: 'change' },
         'values[0].originalInventoryNum': [{ required: true, message: '请输入', trigger: 'blur' }, { pattern: /^\d{1,11}?$/, message: '请输入正整数', trigger: 'blur' }],
         'values[0].originalPrice': [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         'values[0].originalPriceAdjustment': [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         'values[0].minInventoryNum': { pattern: /^\d{1,11}?$/, message: '请输入正整数', trigger: 'blur' },
         'values[0].maxInventoryNum': { pattern: /^\d{1,11}?$/, message: '请输入正整数', trigger: 'blur' }

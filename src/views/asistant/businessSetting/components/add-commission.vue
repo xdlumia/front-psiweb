@@ -61,7 +61,7 @@ export default {
         employeeId: { required: true, message: '请选择', trigger: 'change' },
         basePay: [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入正整数，小数点后两位', trigger: 'blur' }
+          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         commission: [{ required: true, message: '请输入', trigger: 'blur' }, {
           validator: (rule, value, callback) => {

@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 17:45:14
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 18:11:19
+ * @LastEditTime: 2019-12-03 10:44:47
  * @Description: 商品信息
  -->
 <template>
@@ -25,9 +25,10 @@
         default-expand-all
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
-        <el-table-column label="商品编号" prop="goodsCode" width="200px" show-overflow-tooltip>
+        <el-table-column label="商品编号" prop="commodityCode" width="200px"
+show-overflow-tooltip>
           <template slot-scope="{row}">
-            <span class="d-text-blue">{{row.goodsCode}}</span>
+            <span class="d-text-blue">{{row.commodityCode}}</span>
           </template>
         </el-table-column>
         <el-table-column label="商品图片" widht="60px" align="center">
@@ -102,7 +103,7 @@ export default {
       this.data.commonPromotionCommodityDetailsEntities = goods.map(item => {
         return {
           commodityId: type ? item.goodId : item.id,
-          commodityCode: item.goodsCode
+          commodityCode: item.commodityCode
         }
       })
       this.data.commodityNum = goods.length
