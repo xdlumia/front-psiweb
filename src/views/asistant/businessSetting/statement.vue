@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-05 17:37:15
+ * @LastEditTime: 2019-12-03 21:24:39
  * @Description: 业务设置-报表 promotion
  -->
 <template>
@@ -53,7 +53,7 @@
 <script type='text/ecmascript-6'>
 import addCommission from './components/add-commission'
 export default {
-  data() {
+  data () {
     return {
       visible: false,
       isEdit: false,
@@ -69,7 +69,7 @@ export default {
     addCommission
   },
   methods: {
-    deleteOne(id) {
+    deleteOne (id) {
       this.$confirm(`是否删除`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -85,17 +85,17 @@ export default {
         });
       });
     },
-    refresh() {
+    refresh () {
       this.visible = false
       this.$refs.commissionTable.reload(1)
     },
-    save() {
+    save () {
 
     },
-    cancel() {
+    cancel () {
 
     },
-    restoreDefault() {
+    restoreDefault () {
 
     }
   }
