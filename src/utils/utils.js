@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-05 18:57:05
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 16:03:42
+ * @LastEditTime: 2019-12-03 19:45:04
  * @Description: 本项目用到的工具集合
  */
 const utils = {
@@ -79,10 +79,13 @@ const utils = {
         childrenData.push(item)
       }
     })
+    console.log(parentObj);
+    console.log(childrenData);
+
     childrenData.forEach(item => {
       // 把parentCommodityCode有值的数据添加到子项里
       if (item.parentCommodityCode) {
-        if (item.parentCommodityCode && parentObj[item.parentCommodityCode][children]) {
+        if (parentObj[item.parentCommodityCode][children]) {
           parentObj[item.parentCommodityCode][children].push(item)
         } else {
           parentObj[item.parentCommodityCode][children] = [item]

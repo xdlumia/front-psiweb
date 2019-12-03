@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 16:12:19
+ * @LastEditTime: 2019-12-03 19:38:02
  * @Description: 生成请购单商品信息
 */
 <template>
@@ -171,8 +171,8 @@ export default {
               item.commodityNumber = commodityNumber
               this.data.commodityList.push(item)
             }
-            this.tableData = this.$$util.formatCommodity(data)
           })
+          this.tableData = this.$$util.formatCommodity(data)
         })
     },
     // 自定义账单金额数据

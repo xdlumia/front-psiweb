@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 18:12:08
+ * @LastEditTime: 2019-12-03 19:48:25
  * @Description: 报价单详情
 */
 <template>
@@ -14,7 +14,10 @@
       :status="status"
       @close="close"
     >
-      <div slot="button">
+      <div
+        slot="button"
+        v-if="Object.keys(detail).length"
+      >
         <!-- 操作按钮 -->
         <span
           v-for="(item,index) of buttons"
@@ -163,11 +166,11 @@ export default {
     },
     // 判断禁用的按钮
     isDisabledButton(label) {
-      let procurementExpectedArrivalTime = this.rowData.procurementExpectedArrivalTime
+      let procurementExpectedArrivalTime = this.detail.procurementExpectedArrivalTime
       // 采购预计到货时间为空 禁用采购审核时间
-      if (label == '生成请购单' && this.rowData.isPurchaseApply == 1) {
+      if (label == '生成请购单' && this.detail.isPurchaseApply == 1) {
         return true
-      } else if (label == '生成销售出库单' && this.rowData.shipmentCode) {
+      } else if (label == '生成销售出库单' && this.detail.shipmentCode) {
         return true
       } else {
         return false
