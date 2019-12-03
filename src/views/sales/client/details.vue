@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 16:04:41
+ * @LastEditTime: 2019-12-03 17:21:00
  * @Description: 客户详情
 */
 <template>
@@ -135,6 +135,10 @@ export default {
       form: {},
       editVisible: false,
       addQuotoVisible: false,
+      stateText: {
+        '0': '启用中',
+        '1': '停用中',
+      },
     }
   },
   computed: {

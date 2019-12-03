@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 19:45:43
+ * @LastEditTime: 2019-12-03 17:12:32
  * @Description: 报价单详情
 */
 <template>
@@ -114,6 +114,13 @@ export default {
         { label: '生成请购单', type: 'primary', authCode: '' },
         { label: '终止', authCode: '' }
       ],
+      stateText: {
+        '-1': '新建',
+        '0': '审核中',
+        '1': '已通过',
+        '2': '已驳回',
+        '3': '完成',
+      },
       /**
        * 根据当前状态判断显示哪些按钮
        */
