@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 18:42:20
+ * @LastEditTime: 2019-12-03 14:21:17
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -15,7 +15,7 @@
       </span>
     </div>
     <el-table :data="recList" size="mini" v-loading="loading">
-      <el-table-column label="流水号" min-width="80" prop="fbillId" show-overflow-tooltip></el-table-column>
+      <el-table-column label="流水号" min-width="80" prop="serialNumber" show-overflow-tooltip></el-table-column>
       <el-table-column label="对方名称" min-width="80" prop="oppositeAccount" show-overflow-tooltip></el-table-column>
       <el-table-column label="提交时间" min-width="100" prop="createTime" show-overflow-tooltip>
         <template slot-scope="{row}">

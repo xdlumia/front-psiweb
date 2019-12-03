@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 18:10:35
+ * @LastEditTime: 2019-12-03 14:08:18
  * @Description: 付款单
 */
 <template>
@@ -40,7 +40,7 @@
         </span>
         <span v-else-if="prop=='busCode'">
           <!-- 关联单据编号 -->
-          <el-link :underline="false" @click="openBusPage(row)" class="f12" type="primary">{{value}}</el-link>
+          <el-link :type="hasBusPage(row)?'primary':'info'" :underline="false" @click="openBusPage(row)" class="f12">{{value}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>

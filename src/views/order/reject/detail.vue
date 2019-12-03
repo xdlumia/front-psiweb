@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 10:48:41
+ * @LastEditTime: 2019-12-03 13:41:15
  * @Description: 采购退货单
 */
 <template>
@@ -114,6 +114,7 @@
     </el-tabs>
     <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" />
     <scanGoods
+      :id="detail.id"
       :rowData="{
         businessCode: detail.alterationCode,
         commodityList: detail.commodityList
