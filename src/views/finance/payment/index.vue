@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 15:56:35
+ * @LastEditTime: 2019-12-03 18:17:15
  * @Description: 付款单
 */
 <template>
@@ -201,6 +201,7 @@ export default {
             ids: multi.map(item => item.id),
             processType: 'psi_payment'
           });
+          this.reload()
         } catch (error) {
           console.error(error)
         }
