@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 16:46:45
+ * @LastEditTime: 2019-12-03 17:06:56
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -10,7 +10,7 @@
       :title="`流水编号:${code}`"
       :visible.sync="showDetailPage"
       width="920px"
-      :status="status"
+      :status="statusArr"
       @close="close"
     >
       <div class="drawer-header">
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state=-1|| 0].includes(item.label)"
+            v-if="currStatusType[detail.state|| 0].includes(item.label)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -113,11 +113,28 @@ export default {
       },
       activeName: 'detail',
       editVisible: false,
+      stateText: {
+        '-1': '新建',
+        '0': '审核中',
+        '1': '已驳回',
+        '2': '已收票',
+      }
     }
   },
 
   computed: {
-
+    statusArr() {
+      if (!this.getDetail) return [];
+      else {
+        return [
+          { label: '状态', value: this.stateText[this.detail.state] },
+          { label: '发票类型', value: this.detail.invoiceTypeCode, dictName: 'CW_FP_LX' },
+          { label: '商品金额(元)', value: this.detail.commodityTotalAmount },
+          { label: '收票金额', value: this.detail.invoiceAmount },
+          { label: '销售方名称', value: this.detail.marketName }
+        ];
+      }
+    }
   },
   created() {
 

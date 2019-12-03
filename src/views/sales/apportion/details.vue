@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 18:48:33
+ * @LastEditTime: 2019-12-03 17:20:02
  * @Description: 费用分摊单详情
 */
 <template>
@@ -111,6 +111,11 @@ export default {
       activeName: 'detailDetail',
       form: {},
       editVisible: false,
+      stateText: {
+        '-1': '新建',
+        '0': '审核中',
+        '1': '已分摊',
+      },
     }
   },
   computed: {

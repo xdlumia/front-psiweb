@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 14:21:17
+ * @LastEditTime: 2019-12-03 16:48:52
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -29,7 +29,7 @@
       <el-table-column label="该账单匹配金额" min-width="80" prop="matchAmount" show-overflow-tooltip></el-table-column>
       <el-table-column label="操作" min-width="80" prop="matchAmount" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <el-button @click="del(row)" size="mini" type="danger">删除</el-button>
+          <el-button @click="del(row)" size="mini" type="danger" v-if="!hide.includes('delIncoming')">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

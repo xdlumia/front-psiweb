@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 17:47:32
+ * @LastEditTime: 2019-12-03 16:45:09
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -10,7 +10,6 @@
       :title="`流水编号:${code}`"
       :visible.sync="showDetailPage"
       width="920px"
-      :status="status"
       @close="close"
     >
       <div class="drawer-header">
