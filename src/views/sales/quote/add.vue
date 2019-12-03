@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 20:52:51
+ * @LastEditTime: 2019-12-03 21:15:50
  * @Description: file content
 */
 <template>
@@ -275,7 +275,6 @@ export default {
     saveHandle() {
       this.$refs.form.validate(valid => {
         if (valid) {
-
           let params = Object.assign(this.form, this.params)
           let copyParams = JSON.parse(JSON.stringify(params))
 
@@ -292,13 +291,12 @@ export default {
           // 验证商品信息
           if (copyParams.businessCommoditySaveVoList.every(item => !item.commodityNumber)) {
             this.$message({
-              message: '商品信息不能为空',
+              message: '商品信息的商品数量不能为空',
               type: 'error',
               showClose: true,
             });
             return
           }
-
           copyParams.businessCommoditySaveVoList = this.$$util.jsonFlatten(copyParams.businessCommoditySaveVoList, 'commonGoodConfigDetailsEntityList')
           this.loading = true
           // rules 表单验证是否通过
