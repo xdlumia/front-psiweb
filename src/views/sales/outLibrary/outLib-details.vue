@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 16:46:57
+ * @LastEditTime: 2019-12-03 14:56:10
  * @Description: 销售出库单详情
 */
 <template>
@@ -25,6 +25,7 @@
         >
           <el-button
             class="mr10"
+            :disabled="isDisabledButton(item.label)"
             @click="buttonsClick(item.label)"
             v-if="isShowButton(item.label)"
             size="small"
@@ -204,6 +205,17 @@ export default {
 
   },
   methods: {
+    // 判断禁用的按钮
+    isDisabledButton(label) {
+      let procurementExpectedArrivalTime = this.rowData.procurementExpectedArrivalTime
+      // 采购预计到货时间为空 禁用采购审核时间
+      if (label == '审核采购时间' && !procurementExpectedArrivalTime) {
+        return true
+      } else {
+        return false
+      }
+    },
+    // 判断显示的按钮
     isShowButton(label) {
       let state = this.detail.state || 0
       let nodes = (this.detail.apprpvalNode || '').split(',')
@@ -218,7 +230,7 @@ export default {
       }
 
     },
-    buttonsClick(label) {
+    async buttonsClick(label) {
       // 需要弹出操作功能
       let labelObj = {
         '编辑': 'editVisible',
@@ -230,6 +242,18 @@ export default {
       }
       // 需要弹出操作的功能
       if (labelObj.hasOwnProperty(label)) {
+        if (label == '生成退货单' || label == '生成换货单') {
+          // 退换货的时候判断是否生成票据.如果已经生成不能再退货换货
+          let { data } = await this.$api.seePsiFinanceService.finvoiceIsFinvoice({ busCode: this.code })
+          if (data == true) {
+            this.$message({
+              message: `已经生成票据不能${label}`,
+              type: 'error',
+              showClose: true,
+            });
+            return
+          }
+        }
         let visible = labelObj[label]
         this[visible] = true
       }
