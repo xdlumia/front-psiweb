@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 17:21:00
+ * @LastEditTime: 2019-12-03 17:49:56
  * @Description: 客户详情
 */
 <template>
@@ -10,9 +10,10 @@
     <side-detail
       destroy-on-close
       :title="`客户详情:${rowData.code}`"
-      :visible.sync="showPop"
+      :visible.sync="showDetailPage"
+      @close="close"
       width="920px"
-      :status="status"
+      :status="statusArr"
     >
       <div slot="button">
         <!-- 操作按钮 -->
@@ -55,6 +56,7 @@
             style="height:calc(100vh - 200px)"
             :is="activeName"
             :code="code"
+            :data="detail || {}"
             :params="{relationCode:code}"
             :rowData="rowData"
             :button="false"
@@ -93,7 +95,6 @@ export default {
     clientAdd,
     quoteAdd
   },
-  props: ['visible', 'rowData', 'code'],
   data() {
     return {
       loading: false,
@@ -142,36 +143,42 @@ export default {
     }
   },
   computed: {
-    showPop: {
-      get() {
-        return this.visible
-      },
-      set(val) {
-        this.$emit('update:visible', false)
+    statusArr() {
+      if (!this.getDetail) return [];
+      else {
+        return [
+          { label: '状态', value: this.stateText[this.detail.state] },
+          { label: '单据创建人', value: this.detail.creatorName },
+          { label: '创建部门', value: this.detail.deptName },
+          { label: '创建时间', value: this.detail.createTime, isTime: true },
+          { label: '来源', value: this.detail.source, dictName: 'PSI_KHGL_LY' }
+        ];
       }
     }
   },
   mounted() {
-
   },
   watch: {
-    visible(val) {
-      if (val) {
 
-      }
-    }
   },
   methods: {
+    // 获取详情信息
+    async getDetail() {
+      if (this.code) {
+        let { data } = await this.$api.seePsiCommonService.commonclientinfoInfoBycode(null, this.code)
+        return data;
+      }
+    },
     buttonsClick(label) {
       // handleConfirm里的按钮操作是需要二次确认的
       let handleConfirm = ['停用', '启用', '删除']
       if (handleConfirm.includes(label)) {
-        // api对象
-        let apiObj = {
-          '停用': 'customcolumnInfo',
-          '启用': 'customcolumnInfo',
-          '删除': 'customcolumnInfo',
-        }
+        // // api对象
+        // let apiObj = {
+        //   '停用': 'customcolumnInfo',
+        //   '启用': 'customcolumnInfo',
+        //   '删除': 'customcolumnInfo',
+        // }
         this.$confirm(`是否${label}?`, "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -203,9 +210,7 @@ export default {
       }
     },
   },
-  watch: {
-    visible(val) { }
-  },
+
   beforeDestroy() {
   }
 }
