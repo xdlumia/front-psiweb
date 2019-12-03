@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 19:18:38
+ * @LastEditTime: 2019-12-03 15:45:22
  * @Description: file content
 */
 <template>
@@ -109,6 +109,7 @@ export default {
         apprpvalState: '', //审核状态
         attachList: [], //附件,
         companyAccountId: '', //公司发票信息
+        registerPhone: '',
         companySettlementId: '', //公司结算账户
         businessCommoditySaveVoList: [ //商品信息合集
           // {
