@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 17:45:14
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 10:44:47
+ * @LastEditTime: 2019-12-03 15:35:08
  * @Description: 商品信息
  -->
 <template>
@@ -25,10 +25,9 @@
         default-expand-all
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
-        <el-table-column label="商品编号" prop="commodityCode" width="200px"
-show-overflow-tooltip>
+        <el-table-column label="商品编号" prop="commodityCode" width="200px" show-overflow-tooltip>
           <template slot-scope="{row}">
-            <span class="d-text-blue">{{row.commodityCode}}</span>
+            <span class="d-text-blue">{{row.commodityCode || row.goodsCode}}</span>
           </template>
         </el-table-column>
         <el-table-column label="商品图片" widht="60px" align="center">
@@ -73,7 +72,7 @@ export default {
     },
     detail: Boolean
   },
-  data() {
+  data () {
     return {
       loading: false,
       goods: []
@@ -81,14 +80,14 @@ export default {
   },
   components: {
   },
-  mounted() {
+  mounted () {
     if (this.data.id) {
       this.commonpromotioncommoditydetailsList(this.data.id)
     }
   },
   watch: {
     'data.id': {
-      handler: function(newValue) {
+      handler: function (newValue) {
         if (newValue) {
           this.commonpromotioncommoditydetailsList(newValue)
 
@@ -97,18 +96,18 @@ export default {
     }
   },
   methods: {
-    choose(goods, type) {
+    choose (goods, type) {
       this.goods = goods
       console.log(goods)
       this.data.commonPromotionCommodityDetailsEntities = goods.map(item => {
         return {
-          commodityId: type ? item.goodId : item.id,
+          commodityId: item.id,
           commodityCode: item.commodityCode
         }
       })
       this.data.commodityNum = goods.length
     },
-    commonpromotioncommoditydetailsList(promotionId) {
+    commonpromotioncommoditydetailsList (promotionId) {
       this.loading = true
       this.$api.seePsiCommonService.commonpromotioncommoditydetailsList({ promotionId }).then(res => {
         this.choose(res.data, true)
