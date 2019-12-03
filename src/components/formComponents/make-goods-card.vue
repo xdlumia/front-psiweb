@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-22 13:41:33
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 15:28:51
+ * @LastEditTime: 2019-12-03 13:49:05
  * @Description: 发票商品 自定义商品
 */
 <template>
@@ -78,7 +78,7 @@ export default {
         { label: '数量', prop: 'quantity', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'positiveNum' }, { validator: this.checkQuantity }] },
         { label: '单价', prop: 'price', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'price' }] },
         { label: '金额', prop: 'beforeTaxAmount', type: 'show', format: (a) => +Number(+a.price * +a.quantity).toFixed(2) || 0 },
-        { label: '税率(%)', prop: 'taxRate', type: 'input', rules: [{ required: true, trigger: 'blur' }, { validator: this.checkTax }] },
+        { label: '税率(%)', prop: 'taxRate', type: 'input', rules: [{ required: true, trigger: 'blur' },{type:'taxRate'}, { validator: this.checkTax }] },
         { label: '税额', prop: 'taxAmount', type: 'show', format: (a) => +Number(+a.price * (+a.taxRate / 100) * +a.quantity).toFixed(2) || 0 },
       ]
     };
