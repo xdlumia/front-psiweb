@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 19:20:02
+ * @LastEditTime: 2019-12-04 19:24:10
  * @Description: 确定配置信息
 */
 <template>
@@ -68,7 +68,7 @@
           <el-table-column label="操作" min-width="120" v-if="!item.disabled">
             <template slot-scope="scope">
               <el-checkbox
-                :disabled="!(avaliableConfig(item).indexOf(scope.row.quotationId)>=0)"
+                :disabled="!(avaliableConfig(item).indexOf(`${scope.row.commodityCode}-${scope.row.commodityNum}`)>=0)"
                 :label="scope.row.commodityCode"
                 @change="checkOther(item)"
                 v-model="scope.row.checked"
@@ -195,8 +195,9 @@ export default {
     avaliableConfig(item) {
       if (!item) return [];
       return (
-        this.getCurrentConfig(item).map(item =>
-          parseInt(item.split('-').pop())
+        this.getCurrentConfig(item).reduce(
+          (keys, key) => keys.concat(this.configList[key] || []),
+          []
         ) || []
       );
     },
