@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 16:14:42
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-04 11:43:42
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -40,6 +40,11 @@ ElementUI.Input.render = (function (old) {
     return old.apply(this, arguments)
   }
 })(ElementUI.Input.render)
+
+// 禁用按钮双击事件冒泡
+ElementUI.Button.mounted = function(){
+  this.$el.ondblclick=e=>e.stopPropagation()
+}
 
 
 // 公共组件

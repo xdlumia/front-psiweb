@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 11:13:02
+ * @LastEditTime: 2019-12-04 11:26:39
  * @Description: 账单信息
 */
 <template>
@@ -13,7 +13,7 @@
           <span>第{{$index+1}}期</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="付款时间" min-width="140" prop="payTime" show-overflow-tooltip>
+      <el-table-column align="center" :label="type==1?'收款时间':'付款时间'" min-width="140" prop="payTime" show-overflow-tooltip>
         <template slot-scope="{row,$index}">
           <el-form-item
             :prop="`financeList.${$index}.payTime`"

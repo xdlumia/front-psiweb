@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-25 17:37:54
+ * @LastEditTime: 2019-12-04 14:01:48
  * @Description: 商品供应分类表
 */
 <template>
@@ -24,7 +24,6 @@
           <span v-if="prop=='code'">
             <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
           </span>
-          <span v-else-if="prop=='createTime'">{{value|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
           <span v-else-if="prop=='state'">
             <span v-if="value==0">启用</span>
             <span v-else>禁用</span>

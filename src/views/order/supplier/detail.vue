@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 10:03:25
+ * @LastEditTime: 2019-12-04 14:00:25
  * @Description: 供应商编号
 */
 <template>
@@ -21,7 +21,7 @@
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <el-form :model="detail" v-if="detail">
+        <el-form :model="detail" size="mini" v-if="detail">
           <form-card title="往来账款">
             <el-row>
               <el-col :span="8">

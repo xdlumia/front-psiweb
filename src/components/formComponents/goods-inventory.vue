@@ -50,7 +50,7 @@
               v-if='data.blitemState !== 2 && data.blitemState !== -1'
               @click="clickCode(scope)"
               class="d-text-blue d-absolute f14 b d-pointer"
-              style='right:15px;z-index:200;top:8px;'
+              style='right:20px;z-index:200;top:8px;'
             >码</i>
           </template>
         </el-table-column>
