@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 20:54:18
+ * @LastEditTime: 2019-12-04 21:22:25
  * @Description: 退货商品商品信息
 */
 <template>
@@ -270,7 +270,7 @@ export default {
     sumTaxPrice(row, index) {
       if (row.alterationNumber > row.actionableNumber) {
         this.$message({
-          message: `退货商品数量超过${row.actionableNumber}`,
+          message: `退货商品数量超过${row.actionableNumber},不能退货`,
           type: 'info',
           showClose: true,
         });
