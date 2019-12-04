@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 19:42:14
+ * @LastEditTime: 2019-12-04 19:56:00
  * @Description: 分摊信息
  */
 <template>
@@ -184,6 +184,10 @@ export default {
   },
   computed: {
     tableData() {
+      this.goodsTableData.map(item => {
+        item.apportionmentAmount = ((item.preTaxAmount || 0) / this.data.costAmount) * item.preTaxAmount
+        return item
+      })
       this.data.businessCommoditySaveVoList = this.goodsTableData
       return this.goodsTableData
     }
