@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 19:57:03
+ * @LastEditTime: 2019-12-04 17:49:42
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -23,8 +23,7 @@
       :data="data"
     />
     <!-- 退货商品信息 -->
-    <goods-return-edit
-      :options="[data.quotationCode]"
+    <goods-return-info
       :data="data"
       disabled
     />
