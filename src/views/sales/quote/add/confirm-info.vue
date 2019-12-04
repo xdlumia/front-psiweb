@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 14:42:11
+ * @LastEditTime: 2019-12-04 10:10:16
  * @Description: 确定配置信息
 */
 <template>
@@ -89,7 +89,7 @@
           size="mini"
           max-height="350px"
           :data="item.children"
-          :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+          :tree-props="{children: 'children'}"
           row-key="id"
           default-expand-all
           border

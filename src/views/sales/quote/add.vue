@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 21:15:50
+ * @LastEditTime: 2019-12-04 10:23:04
  * @Description: file content
 */
 <template>
@@ -224,7 +224,7 @@ export default {
           }
         })
         wholeListNotChoose = this.$$util.jsonFlatten(wholeListNotChoose)
-        let quotationIds = this.$$util.jsonFlatten(wholeList).map(v => v.quotationId)
+        let quotationIds = this.$$util.jsonFlatten(wholeList).filter(v => v.checked).map(v => v.quotationId)
         let wholeListData = []
         // 有quotationIds 值的时候再查询
         if (quotationIds.length) {
