@@ -2,17 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-14 10:09:47
+ * @LastEditTime: 2019-12-04 11:00:39
  * @Description: 借入借出信息 已绑定字段 1
  */
 <template>
   <form-card :title="data.borrowLoanType==1?'借出信息':'借入信息'">
     <el-row :gutter="10">
-      <el-col
-        :key="index"
-        :span="item.span || 8"
-        v-for="(item,index) of formItems"
-      >
+      <el-col :key="index" :span="item.span || 8" v-for="(item,index) of formItems">
         <el-form-item
           :label="item.label"
           :prop="`${item.prop}`"
@@ -61,12 +57,7 @@
             v-else-if="item.type=='serviceProvider'"
             v-model="data[item.prop]"
           >
-            <el-option
-              :key="item.id"
-              :label="item.serviceName"
-              :value="item.id"
-              v-for="item in serviceOptions"
-            />
+            <el-option :key="item.id" :label="item.serviceName" :value="item.id" v-for="item in serviceOptions" />
           </el-select>
           <el-select
             :disabled="disabled"
@@ -77,12 +68,7 @@
             v-else-if="item.type=='borrowwms'"
             v-model="data[item.prop]"
           >
-            <el-option
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-              v-for="item in wmsOptions"
-            />
+            <el-option :key="item.id" :label="item.name" :value="item.id" v-for="item in wmsOptions" />
           </el-select>
           <el-date-picker
             :disabled="disabled"
@@ -121,16 +107,16 @@ export default {
   data() {
     // prettier-ignore
     let formItems = [
-      {        label: '借入类型', prop: 'borrowLoanType', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [
-          { code: 0, content: '借入' },
-          { code: 1, content: '借出' },
-        ]      },
+      { label: '借入类型', prop: 'borrowLoanType', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [
+        { code: 0, content: '借入' },
+        { code: 1, content: '借出' },
+      ] },
       { label: '借出方', prop: 'outSide', type: 'input', rules: [{ required: true, },], borrowType: 1, },
       { label: '借入库房', prop: 'borrowWmsId', type: 'borrowwms', rules: [{ required: true, },], borrowType: 0, },
       { label: '借入方', prop: 'debtor', type: 'input', rules: [{ required: true, },], borrowType: 0, },
-      { label: '服务商名称', prop: 'serviceProviderId', type: 'serviceProvider', rules: [{ required: true, },], },
-      { label: '服务类型', prop: 'serveType', type: 'select', dictName: 'PSI_FWS_FWLX', exclude: 'serviceFilter', rules: [{ required: true, },], },
-      { label: '运单号', prop: 'waybillCode', type: 'input', rules: [{ required: true, },], },
+      { label: '服务商名称', prop: 'serviceProviderId', type: 'serviceProvider', rules: [{ validator:this.checkServiceInfo },], },
+      { label: '服务类型', prop: 'serveType', type: 'select', dictName: 'PSI_FWS_FWLX', exclude: 'serviceFilter', rules: [{ validator:this.checkServiceInfo },], },
+      { label: '运单号', prop: 'waybillCode', type: 'input', rules: [{ validator:this.checkServiceInfo },], },
       { label: '物流费用', prop: 'logisticsFees', type: 'input', rules: [{ type: 'price' }], },
       { label: '返回时间', prop: 'returnTime', type: 'date', },
       { label: '备注', span: 24, prop: 'note', type: 'textarea', },
@@ -163,6 +149,17 @@ export default {
     this.getWMS();
   },
   methods: {
+    checkServiceInfo(rule, value, cb) {
+      if (this.data.logisticsFees && parseFloat(this.data.logisticsFees) > 0) {
+        if (value) {
+          cb();
+        } else {
+          cb(new Error('此处是必填项'));
+        }
+      } else {
+        cb();
+      }
+    },
     async getServiceInfo() {
       if (!this.data || !this.data.serviceProviderId) {
         this.getServiceProvider();

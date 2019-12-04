@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 09:53:58
+ * @LastEditTime: 2019-12-04 10:36:35
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -361,9 +361,12 @@ export default {
     getParentInfo(row) {
       let top = this.data[this.fkey];
       let rowKey = this.realTopRowKey[row._rowKey] || row._rowKey;
-      let isChild = rowKey != row.commodityCode;
+      let isChild = row.$parentCode ? true : false;
       let ks = String(rowKey || '').split('_');
-      isChild = ks.length > 1;
+      if (ks && ks[0]) {
+        let sub = ks[0].split('-');
+        if (sub.length) ks[0] = sub[0];
+      }
       let parentIndex = -1;
       let parent = top.filter(item => item.commodityCode == ks[0]);
       if (!parent[0]) {
@@ -496,7 +499,7 @@ export default {
         costAmount: 'inventoryPrice',
         inventoryNumber: 'usableInventoryNum'
       };
-      
+
       let nGood = { ...good };
       delete nGood.id;
       Object.keys(target).map(key => {
