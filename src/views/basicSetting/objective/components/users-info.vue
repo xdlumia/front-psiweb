@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 17:45:14
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-08 15:26:05
+ * @LastEditTime: 2019-12-04 15:03:59
  * @Description: 商品信息
  -->
 <template>
@@ -53,7 +53,7 @@
       <h3>
         合计：参与人数
         <span class="d-text-blue">{{employee.length}}</span>人，目标金额
-        <span class="d-text-blue">{{sumMoney}}</span>元
+        <span class="d-text-blue">{{sumMoney.toFixed(2)}}</span>元
       </h3>
     </div>
   </div>
@@ -70,7 +70,7 @@ export default {
     },
     detail: Boolean
   },
-  data() {
+  data () {
     return {
       loading: false,
       employee: []
@@ -79,21 +79,21 @@ export default {
   components: {
   },
   computed: {
-    sumMoney() {
+    sumMoney () {
       const sum = (this.data.commonPromotionGoalPersonnelEntities || []).reduce((val, item) => {
         return val + parseFloat(item.money)
       }, 0)
       return sum
     }
   },
-  mounted() {
+  mounted () {
     if (this.data.id) {
       this.commonpromotiongoalpersonnelList(this.data.id)
     }
   },
   watch: {
     'data.id': {
-      handler: function(newValue) {
+      handler: function (newValue) {
         if (newValue) {
           this.commonpromotiongoalpersonnelList(newValue)
         }
@@ -101,7 +101,7 @@ export default {
     }
   },
   methods: {
-    choose(users) {
+    choose (users) {
       this.employee = users
       this.data.commonPromotionGoalPersonnelEntities = users.map(item => {
         return {
@@ -111,7 +111,7 @@ export default {
       })
       this.data.sumUserNum = users.length
     },
-    commonpromotiongoalpersonnelList(promotionId) {
+    commonpromotiongoalpersonnelList (promotionId) {
       this.loading = true
       this.$api.seePsiCommonService.commonpromotiongoalpersonnelList({ promotionId }).then(res => {
         this.choose(res.data)

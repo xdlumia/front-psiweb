@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-30 14:28:14
+ * @LastEditTime: 2019-12-04 15:25:11
  * @Description: 分摊信息
  */
 <template>
