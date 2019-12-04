@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 21:22:43
+ * @LastEditTime: 2019-12-04 22:31:27
  * @Description: 生成销售退货单
 */
 <template>
@@ -200,15 +200,6 @@ export default {
     saveHandle() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          if (!this.form.shipmentFinanceSaveVoList.length) {
-            this.$message({
-              message: '请添加其他费用信息',
-              type: 'error',
-              showClose: true,
-            });
-            return
-          }
-
           // rules 表单验证是否通过
           let api = 'salesreturnedUpdate' // 默认编辑更新
           // 新增保存
@@ -222,10 +213,10 @@ export default {
           copyParams.businessCommoditySaveVoList.forEach(item => {
             item.putawayType = 1 //1入库
           })
-          if (copyParams.businessCommoditySaveVoList.some(item => !item.alterationNumber || !item.alterationPrice)) {
+          if (copyParams.businessCommoditySaveVoList.some(item => !item.commodityNumber || !item.alterationPrice)) {
             this.$message({
               message: '商品的退货数量和单价没有填写或当前没有可退货商品',
-              type: 'info',
+              type: 'error',
               showClose: true,
             });
             return

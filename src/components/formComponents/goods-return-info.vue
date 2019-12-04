@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 18:24:14
+ * @LastEditTime: 2019-12-04 21:45:49
  * @Description: 退货商品商品信息
 */
 <template>
@@ -162,6 +162,10 @@ export default {
       type: Object,
       default: () => ({})
     },
+    form: {
+      type: Object,
+      default: () => ({})
+    },
     title: {
       default: '退货商品信息',
       type: String
@@ -205,7 +209,7 @@ export default {
         }
         //获取税后总价
         if (col.property == 'taxTotalAmount') {
-          this.data.shouldRefundAmount = sums[index]
+          this.form.shouldRefundAmount = sums[index]
         }
       });
       return sums
