@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 20:41:29
+ * @LastEditTime: 2019-12-04 20:51:32
  * @Description: 确定配置信息
 */
 <template>
@@ -158,7 +158,9 @@ export default {
           sums[0] = '总计';
         } else sums[index] = '';
       });
-      sums[sums.length-1] = configName?'':'未确定配置'
+      if(!row.disabled){
+        sums[sums.length-1] = configName?'':'未确定配置'
+      }
       return sums;
     },
     getCurrentConfig(row) {
