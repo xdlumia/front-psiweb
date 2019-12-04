@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 19:24:10
+ * @LastEditTime: 2019-12-04 19:44:22
  * @Description: 确定配置信息
 */
 <template>
@@ -124,7 +124,7 @@ export default {
   },
   methods: {
     getSummary(row, param) {
-      let allConfigGoods = this.getAllConfigGoods(row);
+      let { allConfigGoods } = this.getAllConfigGoods(row);
       let { columns } = param;
       const sums = [];
       columns.forEach((col, index) => {
@@ -161,15 +161,18 @@ export default {
       return sums;
     },
     getCurrentConfig(row) {
-      let configs = [];
+      let configs = Object.keys(this.configList).filter(key => {
+        let keys = key.split('-');
+        keys.pop();
+        if (keys.join('-') == row.configGoodName) {
+          return true;
+        } else return false;
+      });
       let children = this.flatten(row.children);
       let checkeds = children.filter(item => {
-        if (!configs.includes(`${row.configGoodName}-${item.quotationId}`)) {
-          configs.push(`${row.configGoodName}-${item.quotationId}`);
-        }
         return item.checked;
       });
-      return configs.filter(
+      let selectedConfigs = configs.filter(
         key =>
           !checkeds.some(
             item =>
@@ -178,6 +181,7 @@ export default {
               )
           )
       );
+      return selectedConfigs;
     },
     checkOther(row) {
       let children = this.flatten(row.children);
@@ -205,10 +209,11 @@ export default {
       let children = this.flatten(row.children);
       let configs = this.getCurrentConfig(row);
       let allConfigGoods = [];
+      let config = '';
       if (configs && configs.length >= 1) {
         configs.some(config => {
           let configList = JSON.parse(
-            JSON.stringify(this.configList[configs[0]] || [])
+            JSON.stringify(this.configList[config] || [])
           );
           let selectedGoods = children.filter(item => item.checked);
           let selectedConfigList = selectedGoods.map(
@@ -222,11 +227,15 @@ export default {
             );
           if (isFullMatch) {
             allConfigGoods = selectedGoods;
+            config = config;
           }
           return isFullMatch;
         });
       }
-      return allConfigGoods;
+      return {
+        config,
+        allConfigGoods
+      };
     },
     flatten(data) {
       let all = [];
