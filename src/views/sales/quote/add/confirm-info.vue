@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 18:57:16
+ * @LastEditTime: 2019-12-04 19:01:37
  * @Description: 确定配置信息
 */
 <template>
@@ -127,7 +127,7 @@ export default {
       let children = this.flatten(row.children);
       let configs = this.getCurrentConfig(row);
       let allConfigGoods = [];
-      if (configs && configs.length == 1) {
+      if (configs && configs.length >= 1) {
         allConfigGoods = children.filter(item =>
           (this.configList[configs[0]] || []).includes(
             `${item.commodityCode}-${item.commodityNum}`
@@ -349,7 +349,9 @@ export default {
           });
         }
       }
-      this.data.KIND1List.map((item, i) => this.chooseNotConfig(item, i));
+      this.data.KIND1List.map((item, i) => {
+        item.disabled&&this.chooseNotConfig(item, i)
+      });
       // 清空整机选择
       // 第一层的chilrder是必选并且不能修改的类型
       // 并且默认选中
