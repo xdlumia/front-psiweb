@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 11:21:33
+ * @LastEditTime: 2019-12-04 11:15:59
  * @Description: 采购入库单
 */
 <template>
@@ -203,6 +203,7 @@ export default {
       stateText: {
         '0': '新建',
         '1': '审核中',
+        '2': '销售确认',
         '3': '已通过',
         '4': '已完成',
         '5': '已驳回',
