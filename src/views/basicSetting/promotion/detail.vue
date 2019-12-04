@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 14:50:42
+ * @LastEditTime: 2019-12-04 16:35:23
  * @Description: 促销详情
  -->
 <template>
@@ -21,8 +21,7 @@
         type="danger"
         @click="commonpromotionUpdate(rowData.id, 1)"
       >停用</el-button>
-      <el-button v-else size="mini" type="primary"
-@click="commonpromotionUpdate(rowData.id, 0)">启用</el-button>
+      <el-button v-else size="mini" type="primary" @click="commonpromotionUpdate(rowData.id, 0)">启用</el-button>
       <el-button size="mini" type="primary" @click="showEdit = true">编辑</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
@@ -77,51 +76,56 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     return {
       showEdit: false,
       loading: false,
       showPop: false,
       detailForm: {},
-      status: [
-        { label: '促销名称', value: this.rowData.promotionName },
-        { label: '状态', value: this.rowData.state ? '停用' : '启用' },
-        { label: '创建人', value: this.rowData.creatorName },
-        { label: '部门', value: this.rowData.deptName },
-        { label: '创建时间', value: this.rowData.createTime, isTime: true }
-      ]
+      status: [],
+      stateText: {
+        0: '已启用',
+        1: '已停用',
+        2: '已过期'
+      }
     }
   },
-  mounted() {
+  mounted () {
     this.checkVisible();
     this.commonpromotionInfoBycode()
   },
   watch: {
-    visible() {
+    visible () {
       this.checkVisible();
     }
   },
   methods: {
-    refresh() {
+    refresh () {
       this.commonpromotionInfoBycode()
       this.$emit('refresh')
     },
-    checkVisible() {
+    checkVisible () {
       this.showPop = this.visible;
     },
-    commonpromotionInfoBycode() {
+    commonpromotionInfoBycode () {
       this.loading = true
       this.$api.seePsiCommonService.commonpromotionInfoBycode(null, this.code).then(res => {
-        this.detailForm = res.data || {}
+        this.detailForm = res.data
         this.detailForm.datetimerange = [res.data.begTime, res.data.endTime]
-        this.status[0].value = res.data.promotionName
+        this.status = [
+          { label: '促销名称', value: this.detailForm.promotionName },
+          { label: '状态', value: this.stateText[this.detailForm.state] },
+          { label: '创建人', value: this.detailForm.creatorName },
+          { label: '部门', value: this.detailForm.deptName },
+          { label: '创建时间', value: this.detailForm.createTime, isTime: true }
+        ]
         this.$refs.goodsInfo.commonpromotioncommoditydetailsList(this.rowData.id)
         this.$refs.usersInfo.commonpromotionpersonnelList(this.rowData.id)
       }).finally(() => {
         this.loading = false
       })
     },
-    commonpromotionUpdate(id, state) {
+    commonpromotionUpdate (id, state) {
       this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

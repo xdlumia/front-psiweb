@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 10:10:48
+ * @LastEditTime: 2019-12-04 16:37:05
  * @Description: description
  -->
 <template>
@@ -100,13 +100,7 @@ export default {
       showDetailPage: false,
       detailForm: {},
       totalAmount: {},
-      status: [
-        { label: '状态', value: this.rowData.state ? '停用' : '启用' },
-        { label: '服务商创建人', value: this.rowData.creatorName },
-        { label: '创建部门', value: this.rowData.deptName },
-        { label: '创建时间', value: this.rowData.createTime, isTime: true },
-        { label: '来源', value: this.rowData.source, dictName: 'PSI_KHGL_LY' }
-      ]
+      status: []
     }
   },
   mounted () {
@@ -131,7 +125,14 @@ export default {
       this.$api.seePsiCommonService.commonserviceproviderInfoBycode(null, this.code).then(res => {
         this.detailForm = res.data || {}
         this.detailForm.serviceTypeList = res.data.serviceType.split(',')
-        this.status[0].value = res.data.state ? '停用' : '启用'
+        this.status = [
+          { label: '状态', value: this.detailForm.state ? '已停用' : '已启用' },
+          { label: '服务商创建人', value: this.detailForm.creatorName },
+          { label: '创建部门', value: this.detailForm.deptName },
+          { label: '创建时间', value: this.detailForm.createTime, isTime: true },
+          { label: '来源', value: this.detailForm.source, dictName: 'PSI_KHGL_LY' }
+        ]
+
         this.fbillGetClientFbillStatistics()
       }).finally(() => {
         this.loading = false

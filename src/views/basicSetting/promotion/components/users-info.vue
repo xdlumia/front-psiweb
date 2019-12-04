@@ -74,7 +74,6 @@ export default {
   },
   methods: {
     choose(users) {
-      console.log(users)
       this.employee = users
       this.data.commonPromotionPersonnelEntities = users.map(item => {
         return {
