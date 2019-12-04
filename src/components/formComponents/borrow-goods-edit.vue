@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 11:14:41
+ * @LastEditTime: 2019-12-04 09:42:34
  * @Description: 借入/借出商品编辑页面
 */  
 <template>
@@ -10,7 +10,7 @@
     <div slot="title">
       <span>借入/借出商品</span>
     </div>
-    <el-table :data="data.commodityList" max-height="400" ref="elTable" row-key="name" size="mini">
+    <el-table :data="data.commodityList" max-height="400" ref="elTable" row-key="commodityCode" size="mini">
       <el-table-column class-name="hide-children" min-width="1" width="1"></el-table-column>
       <el-table-column label="操作" min-width="70" prop="name">
         <template slot-scope="{$index}">
