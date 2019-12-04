@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-21 17:19:37
+ * @LastEditTime: 2019-12-04 17:00:42
  * @Description: 新增报价单
  -->
 <template>
@@ -22,8 +22,7 @@
           <el-button size="mini" @click="$emit('update:visible', false)">关闭</el-button>
         </div>
       </div>
-      <el-form ref="invoiceForm" size="mini" :model="invoiceForm"
-:rules="invoiceFormRule">
+      <el-form ref="invoiceForm" size="mini" :model="invoiceForm" :rules="invoiceFormRule">
         <form-card title="发票信息">
           <el-row :gutter="10">
             <el-col :span="8">
@@ -74,7 +73,7 @@
             </el-col>
             <el-col :span="24">
               <el-form-item label="作废备注">
-                <el-input type="textarea" v-model="invoiceForm.increaseNumber" :maxlength="3"></el-input>
+                <el-input type="textarea" v-model="invoiceForm.note"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -95,14 +94,15 @@ export default {
       default: false
     }
   },
-  data() {
+  data () {
     return {
       invoiceForm: {
         id: '',
         checked: false,
         cancellationNum: 1,
         incomeCodeList: [0],
-        invoiceTypeCode: ''
+        invoiceTypeCode: '',
+        note: ''
       },
       quoteList: [],
       invoiceFormRule: {
@@ -116,7 +116,7 @@ export default {
   components: {
   },
   watch: {
-    watchVal(newValue, oldValue) {
+    watchVal (newValue, oldValue) {
       if (newValue.cancellationNum < this.invoiceForm.incomeCodeList.length) {
         this.invoiceForm.incomeCodeList.splice(newValue.cancellationNum)
       }
@@ -124,44 +124,43 @@ export default {
         this.handlerIncomeCodeList()
       }
     },
-    startIncomeCode(newValue, oldValue) {
+    startIncomeCode (newValue, oldValue) {
       if (newValue !== oldValue && this.invoiceForm.checked) {
         this.handlerIncomeCodeList()
       }
     }
   },
   computed: {
-    maxHeight() {
+    maxHeight () {
       return window.innerHeight - 130;
     },
-    numberList() {
+    numberList () {
       return Array.from({ length: this.invoiceForm.cancellationNum }, (item, index) => index)
     },
     // 数量和连号改变
-    watchVal() {
+    watchVal () {
       const { cancellationNum, checked } = this.invoiceForm
       return { cancellationNum, checked }
     },
-    startIncomeCode() {
+    startIncomeCode () {
       return this.invoiceForm.incomeCodeList[0]
     }
   },
-  mounted() {
+  mounted () {
     this.finvoicedatumList()
   },
   methods: {
-    handlerIncomeCodeList() {
+    handlerIncomeCodeList () {
       this.invoiceForm.incomeCodeList = this.numberList.map((item, index) => {
         return parseFloat(this.invoiceForm.incomeCodeList[0] || 0) + index
       })
     },
-    finvoicedatumList() {
+    finvoicedatumList () {
       this.$api.seePsiFinanceService.finvoicedatumList({ page: 1, limit: 999 }).then(res => {
-        console.log(res)
         this.quoteList = res.data
       })
     },
-    finvoicebillingCancellation() {
+    finvoicebillingCancellation () {
       this.$refs.invoiceForm.validate(valid => {
         if (valid) {
           this.loading = true
