@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 17:03:23
+ * @LastEditTime: 2019-12-04 10:03:25
  * @Description: 供应商编号
 */
 <template>
@@ -135,9 +135,10 @@ export default {
     async getStatistics() {
       let {
         data
-      } = await this.$api.seePsiFinanceService.fbillGetGysFbillStatistics({
+      } = await this.$api.seePsiFinanceService.fbillGetClientFbillStatistics({
         clientType: 1,
-        clientId: this.detail.id
+        clientId: this.detail.id,
+        billType: 1
       });
       this.statistic = data;
     },

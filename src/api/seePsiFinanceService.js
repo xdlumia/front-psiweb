@@ -3,7 +3,7 @@
 const MOCK_ADDRESS = ''; // 禁用easymock
 const isUseMock = false;
 /**
-* @date 2019-12-03
+* @date 2019-12-04
 * @host 39.99.132.95:9215
 */
 export default {
@@ -47,10 +47,10 @@ export default {
     },
     /**
      * @tag 账单
-     * @description 供应商账单统计
+     * @description 客户账单统计
      */
-    fbillGetGysFbillStatistics: {
-        url: '/fbill/getGysFbillStatistics',
+    fbillGetClientFbillStatistics: {
+        url: '/fbill/getClientFbillStatistics',
         methods: 'get',
         mock: isUseMock
     },
