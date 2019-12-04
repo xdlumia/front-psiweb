@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 18:27:38
+ * @LastEditTime: 2019-12-04 11:50:40
  * @Description: 拆卸商品编辑页面
 */  
 <template>
@@ -151,6 +151,7 @@ export default {
         }, 0);
         if (row.purchaseUnivalence != total) {
           // prettier-ignore
+          this.expand(row,true)
           return cb(new Error(`整机单价${row.purchaseUnivalence || 0}等于配件价格和数量总和,当前总和${total}`));
         }
       }
