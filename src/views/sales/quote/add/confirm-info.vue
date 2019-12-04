@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 19:01:37
+ * @LastEditTime: 2019-12-04 19:20:02
  * @Description: 确定配置信息
 */
 <template>
@@ -124,16 +124,7 @@ export default {
   },
   methods: {
     getSummary(row, param) {
-      let children = this.flatten(row.children);
-      let configs = this.getCurrentConfig(row);
-      let allConfigGoods = [];
-      if (configs && configs.length >= 1) {
-        allConfigGoods = children.filter(item =>
-          (this.configList[configs[0]] || []).includes(
-            `${item.commodityCode}-${item.commodityNum}`
-          )
-        );
-      }
+      let allConfigGoods = this.getAllConfigGoods(row);
       let { columns } = param;
       const sums = [];
       columns.forEach((col, index) => {
@@ -209,6 +200,33 @@ export default {
         ) || []
       );
     },
+    getAllConfigGoods(row) {
+      let children = this.flatten(row.children);
+      let configs = this.getCurrentConfig(row);
+      let allConfigGoods = [];
+      if (configs && configs.length >= 1) {
+        configs.some(config => {
+          let configList = JSON.parse(
+            JSON.stringify(this.configList[configs[0]] || [])
+          );
+          let selectedGoods = children.filter(item => item.checked);
+          let selectedConfigList = selectedGoods.map(
+            item => `${item.commodityCode}-${item.commodityNum}`
+          );
+          let isFullMatch = ![]
+            .concat(configList, selectedConfigList)
+            .some(
+              key =>
+                !(configList.includes(key) && selectedConfigList.includes(key))
+            );
+          if (isFullMatch) {
+            allConfigGoods = selectedGoods;
+          }
+          return isFullMatch;
+        });
+      }
+      return allConfigGoods;
+    },
     flatten(data) {
       let all = [];
       data.map(item => {
@@ -241,7 +259,6 @@ export default {
         return item;
       });
       this.$set(this.data.KIND1List, index, item);
-      console.log(this.data.KIND1List);
     },
     // 选中项目
     checkboxChange(row, index) {
@@ -320,7 +337,6 @@ export default {
           newJson[item.configGoodName].push(item);
         }
       });
-      console.log(newJson, data, this.data.KIND1Data);
       let Kind1DataList = this.data.KIND1Data.reduce(
         (data, item) => ({ ...data, [item.name]: false }),
         {}
@@ -329,7 +345,6 @@ export default {
       for (const key in newJson) {
         const childrenData = newJson[key];
         Kind1DataList[key] = true;
-        console.log(childrenData, newJson);
         // $$util.formatChildren 相同类型的数据格式化成children格式
         this.data.KIND1List.push({
           configGoodName: key,
@@ -350,7 +365,7 @@ export default {
         }
       }
       this.data.KIND1List.map((item, i) => {
-        item.disabled&&this.chooseNotConfig(item, i)
+        item.disabled && this.chooseNotConfig(item, i);
       });
       // 清空整机选择
       // 第一层的chilrder是必选并且不能修改的类型

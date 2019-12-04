@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 18:34:34
+ * @LastEditTime: 2019-12-04 19:02:22
  * @Description: file content
 */
 <template>
@@ -165,7 +165,6 @@ export default {
   },
   mounted() {
     // this.initForm()
-    console.log(this)
   },
   computed: {
   },
