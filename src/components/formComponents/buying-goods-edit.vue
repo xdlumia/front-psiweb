@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 10:36:35
+ * @LastEditTime: 2019-12-04 14:08:24
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -368,7 +368,9 @@ export default {
         if (sub.length) ks[0] = sub[0];
       }
       let parentIndex = -1;
-      let parent = top.filter(item => item.commodityCode == ks[0]);
+      let parent = top.filter(
+        item => item.commodityCode == ks[0] && item._rowKey == row.$parentCode
+      );
       if (!parent[0]) {
         isChild = false;
       }
