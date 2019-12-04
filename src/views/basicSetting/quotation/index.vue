@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 16:35:52
+ * @LastEditTime: 2019-12-04 16:45:56
  * @Description: 报价单配置
  -->
 <template>
@@ -12,7 +12,7 @@
       :filter="true"
       :filterOptions="filterOptions"
       :busType="35"
-      title="报价单管理"
+      title="报价单配置库"
       api="seePsiCommonService.commonquotationconfigList"
       :params="Object.assign(queryForm, params)"
       exportApi="seePsiCommonService.commonquotationconfigExport"

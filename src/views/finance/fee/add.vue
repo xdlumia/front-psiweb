@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-20 18:31:31
+ * @LastEditTime: 2019-12-04 17:04:27
  * @Description: 新增费用单
  -->
 <template>
@@ -22,8 +22,7 @@
           <el-button size="mini" @click="$emit('update:visible', false)">关闭</el-button>
         </div>
       </div>
-      <el-form ref="costSheetForm" size="mini" :model="costSheetForm"
-:rules="costSheetFormRule">
+      <el-form ref="costSheetForm" size="mini" :model="costSheetForm" :rules="costSheetFormRule">
         <d-tabs :style="{maxHeight: maxHeight + 'px'}">
           <d-tab-pane label="基本信息" name="receiptsInfo"></d-tab-pane>
           <d-tab-pane label="费用信息" name="goodsInfo"></d-tab-pane>
@@ -53,7 +52,7 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
       costSheetForm: {
         id: '',
@@ -70,13 +69,16 @@ export default {
         companySettlementInfo: '',
         companyCode: '', //
         bankAccount: '',
-        phone: ''
+        phone: '',
+        attachList: []
       },
       costSheetFormRule: {
-        amount: { required: true, message: '请输入', trigger: 'blur' },
+        amount: [{ required: true, message: '请输入', trigger: 'blur' },
+        { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
+        ],
         bankAccount: { required: true, message: '请输入', trigger: 'blur' },
         chargeDate: { required: true, message: '请输入', trigger: 'change' },
-        clientId: { required: true, message: '请输入', trigger: 'change' },
+        clientId: { required: true, message: '请选择', trigger: 'change' },
         costType: { required: true, message: '请输入', trigger: 'change' },
         feeDetailCode: { required: true, message: '请输入', trigger: 'change' },
         feeTypeCode: { required: true, message: '请输入', trigger: 'change' },
@@ -90,15 +92,15 @@ export default {
     costInfo
   },
   computed: {
-    maxHeight() {
+    maxHeight () {
       return window.innerHeight - 130;
     }
   },
-  mounted() {
+  mounted () {
     this.costSheetForm = Object.assign(this.costSheetForm, this.detailForm)
   },
   methods: {
-    fcostSave() {
+    fcostSave () {
       this.$refs.costSheetForm.validate(valid => {
         if (valid) {
           this.loading = true
