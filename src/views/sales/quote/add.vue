@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 19:40:40
+ * @LastEditTime: 2019-12-04 19:46:04
  * @Description: file content
 */
 <template>
@@ -289,6 +289,8 @@ export default {
             item.putawayType = 0 //0=出库
             // 销售总价
             item.preTaxAmount = (item.reference || 0) * (item.commodityNumber || 0)
+            // 销售单价
+            item.salesPrice = item.salesPrice || 0
           })
           // 验证商品信息
           if (copyParams.businessCommoditySaveVoList.every(item => !item.commodityNumber)) {

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 19:29:21
+ * @LastEditTime: 2019-12-04 19:42:14
  * @Description: 分摊信息
  */
 <template>
@@ -276,8 +276,8 @@ export default {
       this.dialogData.visible = false
     },
     getCommodityList() {
-      this.loading = true
       if (!this.data.busCode) return
+      this.loading = true
       // 换货单，借入借出单，调拨单，本期不拉取商品信息。 所有retrun
       if (this.data.busType == 0) {  //销售出库单
         this.$api.seePsiSaleService.salesshipmentGetShipmentCommodity({ code: this.data.busCode })
