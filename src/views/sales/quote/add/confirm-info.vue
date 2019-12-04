@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 18:48:03
+ * @LastEditTime: 2019-12-04 18:57:16
  * @Description: 确定配置信息
 */
 <template>
@@ -147,7 +147,7 @@ export default {
             ).toFixed(2) || '-';
         } else if (['saleReferencePrice'].includes(col.property)) {
           if (row.disabled) {
-            sums[index] = row.children[0].saleReferencePrice;
+            sums[index] = (row.children[0] || {}).saleReferencePrice || '-';
           } else {
             sums[index] =
               +Number(
@@ -320,9 +320,16 @@ export default {
           newJson[item.configGoodName].push(item);
         }
       });
+      console.log(newJson, data, this.data.KIND1Data);
+      let Kind1DataList = this.data.KIND1Data.reduce(
+        (data, item) => ({ ...data, [item.name]: false }),
+        {}
+      );
       // let newArr = []
       for (const key in newJson) {
         const childrenData = newJson[key];
+        Kind1DataList[key] = true;
+        console.log(childrenData, newJson);
         // $$util.formatChildren 相同类型的数据格式化成children格式
         this.data.KIND1List.push({
           configGoodName: key,
@@ -333,6 +340,16 @@ export default {
           children: this.$$util.formatChildren(childrenData, 'className')
         });
       }
+      for (let key in Kind1DataList) {
+        if (!Kind1DataList[key]) {
+          this.data.KIND1List.push({
+            configGoodName: key,
+            disabled: true,
+            children: []
+          });
+        }
+      }
+      this.data.KIND1List.map((item, i) => this.chooseNotConfig(item, i));
       // 清空整机选择
       // 第一层的chilrder是必选并且不能修改的类型
       // 并且默认选中
