@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 10:26:02
+ * @LastEditTime: 2019-12-04 16:34:00
  * @Description: 退货商品商品信息
 */
 <template>
@@ -239,6 +239,7 @@ export default {
       handler(val) {
         this.$nextTick(() => {
           this.params.busCode = this.data.quotationCode
+          if (!this.params.busCode) return
           this.businesscommodityGetBusinessCommodityList()
         })
       },
@@ -246,17 +247,20 @@ export default {
       immediate: true
     }
   },
+  created() {
+    this.businesscommodityGetBusinessCommodityList()
+  },
   methods: {
     businesscommodityGetBusinessCommodityList() {
       this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.params)
         .then(res => {
           let data = res.data || []
-          this.data.businessCommoditySaveVoList = this.$$util.formatCommodity(data)
+          this.data.businessCommoditySaveVoList = res.data || []
+          this.$set(this.data, 'businessCommoditySaveVoList', this.$$util.formatCommodity(data))
           // this.data.exChangeCommodityList 是临时数据 存放换货后的数据
           if (this.data.exChangeCommodityList) {
             this.data.exChangeCommodityList = JSON.parse(JSON.stringify(data))
           }
-
         })
     },
     sumTaxPrice(row, index) {
