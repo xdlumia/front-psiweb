@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 20:42:38
+ * @LastEditTime: 2019-12-04 22:11:49
  * @Description: file content
 */
 <template>
@@ -21,7 +21,7 @@
           size="mini"
         >取 消</el-button>
         <el-button
-          @click="steps++"
+          @click="changeStep"
           type="primary"
           v-if="steps < 4"
           size="mini"
@@ -225,7 +225,7 @@ export default {
         })
         wholeListNotChoose = this.$$util.jsonFlatten(wholeListNotChoose)
         let quotationIds = this.form.KIND1List.map(item => this.$refs.confirmInfo.findSelectedConfig(item)).filter(a => a)
-        let wholeListData = [].concat(wholeListNotChoose)
+        let wholeListData = []
         // 有quotationIds 值的时候再查询
         if (quotationIds.length) {
           let params = {
@@ -260,11 +260,28 @@ export default {
 
         // let
         // 第4步整合商品信息
-        this.form.businessCommoditySaveVoList = [...wholeListData, ...fixingsList]
+        this.form.businessCommoditySaveVoList = [...wholeListData, ...wholeListNotChoose, ...fixingsList]
       }
     },
   },
   methods: {
+    changeStep(){
+      if(this.steps==3){
+        if(this.form.KIND1List.filter(a=>!a.disabled).some(item=>{
+          return !this.$refs.confirmInfo.findSelectedConfig(item)
+        })){
+          return this.$message({
+            message:'请选择整机配置',
+            showClose:true,
+            type:'warning'
+          })
+        }else{
+          this.steps++
+        }
+      }else{
+        this.steps++
+      }
+    },
     async getDetail() {
       if (this.code) {
         let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })

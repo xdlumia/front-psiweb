@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-10-31 18:18:20
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-04 22:18:21
  * @Description: 操作步骤条
  * @params: data: Arrar 标题名称
  * @params: v-model: Number 当前步骤 
@@ -19,9 +19,9 @@
     <div class="steps">
       <div
         class="step"
-        :class="{active:value >= index+1}"
+        :class="[index<value?'d-pointer':'',value >= index+1?'active':'']"
         :key="index"
-        @click="stepClick(index)"
+        @click="index<value?stepClick(index):''"
         v-for="(item,index) of data"
       ><span class="icon">
           <i

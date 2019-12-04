@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:44:55
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-07 14:36:17
+ * @LastEditTime: 2019-12-04 19:14:33
  * @Description: 商品分类
  -->
 <template>
@@ -145,7 +145,8 @@
             <span class="el-icon-warning f30 fl" style="color:#e6a23c;"></span>
             <span class="ml10 fl">分类新增成功后，不可更改及删除，请仔细核实分类信息！</span>
           </div>-->
-          <el-form ref="form" :model="form" label-width="100px" :rules="rules" class="mt20">
+          <el-form ref="form" :model="form" label-width="100px"
+:rules="rules" class="mt20">
             <el-form-item size="small" label="选择类别" prop="categoryCode">
               <!-- <el-input placeholder="请输入分类名称" v-model="form.categoryCode"></el-input> -->
               <d-select
@@ -314,7 +315,7 @@ export default {
       this.istype = null
       this.dialogVisible = true
       // this.$refs.form && this.$refs.form.resetFields()
-      this.form = Object.assign(this.form, {
+      this.form = Object.assign({}, {
         id: null,
         categoryCode: '',
         taxRate: '',
