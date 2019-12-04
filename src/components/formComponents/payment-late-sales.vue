@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 11:49:48
+ * @LastEditTime: 2019-12-04 15:32:54
  * @Description: 收款滞纳金
  */
 <template>
@@ -10,7 +10,7 @@
     <el-row :gutter="10">
       <el-col :span="8">
         <el-form-item
-          :rules="{ required: true, }"
+          :rules="{ required: true,trigger: 'blur' }"
           label="滞纳金方案"
           prop="lateFeesInfo"
         >
