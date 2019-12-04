@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 20:48:06
+ * @LastEditTime: 2019-12-04 20:54:18
  * @Description: 退货商品商品信息
 */
 <template>
@@ -240,7 +240,7 @@ export default {
         this.$nextTick(() => {
           this.params.busCode = this.data.quotationCode
           if (!this.params.busCode) return
-          this.businesscommodityQueryMayCommodity()
+          this.salesquotationQueryMayCommodity()
         })
       },
       deep: true,
@@ -248,11 +248,11 @@ export default {
     }
   },
   created() {
-    this.businesscommodityQueryMayCommodity()
+    this.salesquotationQueryMayCommodity()
   },
   methods: {
-    businesscommodityQueryMayCommodity() {
-      this.$api.seePsiSaleService.businesscommodityQueryMayCommodity({ quotaionCode: this.data.quotationCode })
+    salesquotationQueryMayCommodity() {
+      this.$api.seePsiSaleService.salesquotationQueryMayCommodity({ quotaionCode: this.data.quotationCode })
         .then(res => {
           let data = res.data || []
           this.data.businessCommoditySaveVoList = res.data || []
