@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 18:24:14
- * @Description: 退货商品商品信息
+ * @LastEditTime: 2019-12-04 18:42:52
+ * @Description: 换货商品商品信息
 */
 <template>
   <div>
@@ -20,18 +20,21 @@
         ref="table"
       >
         <el-table-column
+          fixed
           prop="commodityCode"
           min-width="100"
           label="商品编号"
           show-overflow-tooltip
         />
         <el-table-column
+          fixed
           prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         />
         <el-table-column
+          fixed
           prop="goodsPic"
           min-width="100"
           label="商品图片"
@@ -49,6 +52,7 @@
           </template>
         </el-table-column>
         <el-table-column
+          fixed
           prop="categoryCode"
           min-width="80"
           label="商品类别"
@@ -59,6 +63,7 @@
           </template>
         </el-table-column>
         <el-table-column
+          fixed
           prop="alterationNumber"
           min-width="80"
           label="退货数量"
@@ -126,10 +131,17 @@
           label="税后总价"
           show-overflow-tooltip
         />
+
         <el-table-column
-          prop="isTeardown"
+          prop="note"
           min-width="120"
-          label="是否拆卸"
+          label="备注"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          prop="isDirect"
+          min-width="120"
+          label="是否直发"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
@@ -137,15 +149,35 @@
               :disabled="disabled"
               :active-value="1"
               :inactive-value="0"
-              v-model="scope.row.isTeardown"
+              v-model="scope.row.isDirect"
             ></el-switch>
           </template>
-
         </el-table-column>
         <el-table-column
-          prop="note"
+          prop="isAssembly"
           min-width="120"
-          label="备注"
+          label="是否组装"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <el-switch
+              :disabled="disabled"
+              :active-value="1"
+              :inactive-value="0"
+              v-model="scope.row.isAssembly"
+            ></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="reference"
+          min-width="120"
+          label="销售参考价"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          prop="recentDiscountSprice"
+          min-width="120"
+          label="最近参考价"
           show-overflow-tooltip
         />
       </el-table>
