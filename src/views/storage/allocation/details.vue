@@ -17,13 +17,13 @@
     <div>
       <div class="drawer-header">
         <el-button
-          v-if="detailForm.allocationOrderState == 2"
+          v-if="detailForm.allocationOrderState == 2 && detailForm.allocationOrderState != -1"
           @click="backVisible=true,isComponents = 'scanInCode',dialogData.title = '调入扫码'"
           size="mini"
           type="primary"
         >调入扫码</el-button>
         <el-button
-          v-if="outNum < outAllNum"
+          v-if="(outNum < outAllNum) && detailForm.allocationOrderState != -1"
           @click="backVisible=true,isComponents = 'scanOutCode',dialogData.title = '调出扫码'"
           size="mini"
           type="primary"
@@ -50,12 +50,12 @@
             <el-dialog
               :visible.sync="backVisible"
               :title="dialogData.title"
+              v-if="backVisible"
               v-dialogDrag
             >
               <components
                 @reload='reload'
-                v-if="backVisible"
-                :dialogData='detailForm'
+                :dialogData='data'
                 :is='isComponents'
                 :visible.sync="backVisible"
               >
@@ -126,6 +126,7 @@ export default {
           if (this.detailForm.allocationCommodityList && this.detailForm.allocationCommodityList.length > 0) {
             this.getNum(this.detailForm.allocationCommodityList)
           }
+          this.data = JSON.parse(JSON.stringify(this.detailForm))
         })
         .finally(() => {
 
@@ -140,6 +141,7 @@ export default {
       }).then(() => {
         this.$api.seePsiWmsService.wmsallocationorderUpdateOrderState({ allocationOrderState: '-1', id: this.detailForm.id })
           .then(res => {
+            this.reload()
           })
           .finally(() => {
 

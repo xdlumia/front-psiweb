@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 19:44:22
+ * @LastEditTime: 2019-12-04 20:41:29
  * @Description: 确定配置信息
 */
 <template>
@@ -124,7 +124,7 @@ export default {
   },
   methods: {
     getSummary(row, param) {
-      let { allConfigGoods } = this.getAllConfigGoods(row);
+      let { allConfigGoods,configName } = this.getAllConfigGoods(row);
       let { columns } = param;
       const sums = [];
       columns.forEach((col, index) => {
@@ -158,6 +158,7 @@ export default {
           sums[0] = '总计';
         } else sums[index] = '';
       });
+      sums[sums.length-1] = configName?'':'未确定配置'
       return sums;
     },
     getCurrentConfig(row) {
@@ -205,11 +206,17 @@ export default {
         ) || []
       );
     },
+    findSelectedConfig(item){
+      let {configName} = this.getAllConfigGoods(item)
+      if(configName){
+        return configName.split('-').pop()
+      }
+    },
     getAllConfigGoods(row) {
       let children = this.flatten(row.children);
       let configs = this.getCurrentConfig(row);
       let allConfigGoods = [];
-      let config = '';
+      let configName = '';
       if (configs && configs.length >= 1) {
         configs.some(config => {
           let configList = JSON.parse(
@@ -227,13 +234,13 @@ export default {
             );
           if (isFullMatch) {
             allConfigGoods = selectedGoods;
-            config = config;
+            configName = config;
           }
           return isFullMatch;
         });
       }
       return {
-        config,
+        configName,
         allConfigGoods
       };
     },
