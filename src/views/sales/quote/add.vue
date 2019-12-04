@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 19:46:04
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-04 20:42:38
  * @Description: file content
 */
 <template>
@@ -224,7 +224,7 @@ export default {
           }
         })
         wholeListNotChoose = this.$$util.jsonFlatten(wholeListNotChoose)
-        let quotationIds = this.form.KIND1List.map(item => this.$refs.confirmInfo.avaliableConfig(item)[0]).filter(a => a)
+        let quotationIds = this.form.KIND1List.map(item => this.$refs.confirmInfo.findSelectedConfig(item)).filter(a => a)
         let wholeListData = [].concat(wholeListNotChoose)
         // 有quotationIds 值的时候再查询
         if (quotationIds.length) {
