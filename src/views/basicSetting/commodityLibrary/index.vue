@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 10:23:07
+ * @LastEditTime: 2019-12-04 15:39:16
  * @Description: 商品管理
  -->
 <template>
@@ -83,6 +83,7 @@
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button
+                  v-if="!scope.row.configId"
                   type="text"
                   @click="copycode = scope.row.goodsCode,copy=true,visible = true"
                 >复制新增</el-button>

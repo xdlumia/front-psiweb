@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 14:23:37
+ * @LastEditTime: 2019-12-04 16:35:52
  * @Description: 报价单配置
  -->
 <template>
@@ -20,7 +20,7 @@
       <template v-slot:filter>自定义筛选列</template>
       <!-- 自定义按钮功能 -->
       <template v-slot:button>
-        <el-button size="mini" type="primary" @click="editId = null,visible = true">新增报价单</el-button>
+        <el-button size="mini" type="primary" @click="editId = null,visible = true">新增</el-button>
       </template>
       <template slot-scope="{column,row,value,scope}">
         <el-button
@@ -29,7 +29,7 @@
           @click="detail(scope.row)"
           style="padding:0"
         >{{scope.row.code}}</el-button>
-        <span v-else-if="column.columnFields=='state'">{{scope.row.state ? '停用' : '启用'}}</span>
+        <span v-else-if="column.columnFields=='state'">{{scope.row.state ? '已停用' : '已启用'}}</span>
         <span v-else>{{value}}</span>
       </template>
       <el-table-column label="www"></el-table-column>
