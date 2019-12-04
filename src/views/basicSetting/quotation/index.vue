@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-26 10:30:16
+ * @LastEditTime: 2019-12-04 14:23:37
  * @Description: 报价单配置
  -->
 <template>
@@ -66,7 +66,7 @@ export default {
       default: () => ({ page: 1, limit: 15 })
     }
   },
-  data () {
+  data() {
     return {
       rowData: null,
       code: null,
@@ -81,16 +81,6 @@ export default {
         { label: '配置编号', prop: 'code', default: true },
         { label: '商品名称', prop: 'goodsName', default: true },
         { label: '配置名称', prop: 'quotationName', default: true },
-        {          label: '状态',
-          prop: 'state',
-          type: 'select',
-          default: true,
-          options: [
-            { label: '全部', value: null },
-            { label: '启用', value: 0 },
-            { label: '停用', value: 1 }
-          ]
-        },
         {
           label: '创建人',
           prop: 'creator',
@@ -102,19 +92,19 @@ export default {
       ]
     }
   },
-  mounted () {
+  mounted() {
   },
   components: {
     addQuotation,
     detail
   },
   methods: {
-    detail (row) {
+    detail(row) {
       this.rowData = row
       this.code = row.code
       this.showDetail = true
     },
-    commonwmsmanagerUpdateState (id, state) {
+    commonwmsmanagerUpdateState(id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -130,7 +120,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete (id) {
+    commonwmsmanagerLogicDelete(id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -146,10 +136,10 @@ export default {
         })
       })
     },
-    saveFacilitator () {
+    saveFacilitator() {
       this.$refs.addQuotation && this.$refs.addQuotation.commonserviceproviderSave()
     },
-    refresh () {
+    refresh() {
       this.visible = false
       this.$refs.table.reload()
     }
