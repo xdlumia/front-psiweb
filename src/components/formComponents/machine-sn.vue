@@ -8,12 +8,14 @@
 <template>
   <div>
     <form-card title='机器号/SN码'>
+      <!-- data.isAssembly == 1 代表组装  组装 是入库  operation   -0入库    -1出库-->
       <d-table
         api="seePsiWmsService.wmsflowrecordList"
-        :params="{commodityCode:data.commodityCode,businessCode:detailForm.salesSheetCode,page:1,limit:15}"
+        :params="{commodityCode:data.commodityCode,businessCode:detailForm.salesSheetCode,page:1,limit:15,operation:data.isAssembly == 1 ? 0 : 1}"
         ref="companyTable"
+        @response='response'
         class="college-main"
-        max-height='300px'
+        style="height:200px"
       >
         <el-table-column
           fixed
@@ -45,28 +47,33 @@
           </template>
         </el-table-column>
         <el-table-column
-          fixed
-          prop="cityName"
-          min-width="100"
-          label="自定义项"
+          v-for="(item,index) of custom"
+          :key="index"
+          min-width="150"
+          :label="item"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row[item]}}</span>
+          </template>
+        </el-table-column>
+        <!-- v-if="data.isAssembly == 1" -->
         <el-table-column
           fixed
           prop="wmsName"
           min-width="100"
-          label="拣货库房"
+          :label="data.isAssembly == 1 ? '组装库房' : '拣货库房'"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           prop="operator"
           min-width="100"
-          label="拣货人"
+          :label="data.isAssembly == 1 ? '组装人' : '拣货人'"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           prop="createTime"
-          label="拣货时间"
+          :label="data.isAssembly == 1 ? '组装时间' : '拣货时间'"
           min-width="140"
           show-overflow-tooltip
         >
@@ -81,10 +88,23 @@ export default {
   props: ['data', 'detailForm'],
   data() {
     return {
+      custom: []
     }
   },
   methods: {
-    //点击机器号和SN码
+    response(res) {
+      let tableData = res.data || []
+      tableData.forEach((item) => {
+        if (item.fieldList.length > 0) {
+          item.fieldList.forEach((item1) => {
+            item[item1.fieldVal] = item1.fieldCode
+            if (!this.custom.includes(item1.fieldVal)) {
+              this.custom.push(item1.fieldVal)
+            }
+          })
+        }
+      })
+    }
   },
   components: {
   },

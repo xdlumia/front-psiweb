@@ -20,14 +20,22 @@
           </span>
         </span>
       </div>
-      <d-table
-        api="seePsiSaleService.businesscommodityGetBusinessCommodityList"
-        :params="{busCode:code,busType:5}"
+      <!-- api="seePsiWmsService.wmsassembleorderGetBySalesSheetCode"
+        :params="code" -->
+      <el-table
+        :data="tableData"
+        border
+        size='mini'
         ref="companyTable"
         class="college-main"
-        style="height:250px"
-        :tree-props="{children: 'id', hasChildren: 'id'}"
+        max-height='250px'
+        row-key="commodityCode"
+        :tree-props="{children: 'childrenCommodityList'}"
       >
+        <el-table-column
+          fixed
+          min-width="50"
+        ></el-table-column>
         <!-- <el-table-column
           fixed
           prop="shipmentsNumber"
@@ -37,7 +45,7 @@
         ></el-table-column> -->
         <el-table-column
           fixed
-          prop="pickingNumber"
+          prop="pickingNum"
           min-width="100"
           label="拣货数量"
           show-overflow-tooltip
@@ -49,7 +57,11 @@
           label="总组装数量"
           width="100"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.accomplishNum===null ? '-' : scope.row.accomplishNum }}/{{scope.row.allocationNum===null ? '-' : scope.row.allocationNum }}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           fixed
           prop="snCode"
@@ -61,7 +73,7 @@
             <span
               @click="getTableVisible(scope.row)"
               class="d-text-blue"
-            >{{scope.row.snCode}}</span>
+            >{{scope.row.isAssembly == 1 ? scope.row.accomplishNum : scope.row.pickingNum}}</span>
           </template>
         </el-table-column>
         <!-- <el-table-column
@@ -146,7 +158,7 @@
           </template>
         </el-table-column>
 
-      </d-table>
+      </el-table>
       <FullscreenElement
         :element="$refs.companyTable"
         :visible.sync="showInFullscreen"
@@ -155,6 +167,7 @@
         title="机器号/SN码记录"
         :visible.sync="dialogVisible"
         width="600"
+        v-if="dialogVisible"
         v-dialogDrag
       >
         <commodityPicking :data='rowData' />
@@ -189,6 +202,7 @@ export default {
   props: ['detailForm', 'code'],
   data() {
     return {
+      tableData: [],
       rowData: {},
       dialogVisible: false,
       showInFullscreen: false,
@@ -196,7 +210,17 @@ export default {
       currentCommodityCode: '',
     }
   },
+  created() {
+    this.getTableData()
+  },
   methods: {
+    getTableData() {
+      this.$api.seePsiWmsService.wmsassembleorderGetBySalesSheetCode(null, this.code)
+        .then(res => {
+          this.tableData = res.data || []
+          console.log(this.tableData, 'this.tableDatathis.tableDatathis.tableDatathis.tableData')
+        })
+    },
     // 打开商品详情
     openCommodityDetail(code) {
       this.showCommodityDetail = true;
@@ -204,8 +228,10 @@ export default {
     },
     //点击机器号和SN码
     getTableVisible(row) {
-      this.dialogVisible = true
-      this.rowData = row
+      if (row.accomplishNum != null || row.pickingNum != null) {
+        this.dialogVisible = true
+        this.rowData = row
+      }
     },
     fullscreen() {
       this.showInFullscreen = true;

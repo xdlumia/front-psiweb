@@ -17,7 +17,7 @@
       selection
       ref='allTable'
       api="seePsiWmsService.wmsinventoryList"
-      exportApi="seePsiWmsService.commonwmsmanagerExport"
+      exportApi="seePsiWmsService.wmsinventoryExport"
       :params="params"
       title="库存查询"
     >

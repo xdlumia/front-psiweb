@@ -89,7 +89,7 @@ export default {
   props: ['drawerData', 'visible'],
   data() {
     return {
-      status: [{ label: '创建时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '来源', value: '-' }],
+      status: [{ label: '创建时间', value: '-', isTime: true }, { label: '创建人', value: '-' }, { label: '来源', value: '-', dictName: 'SP_SOURCE_FROM' }],
       backVisible: false,
       isComponents: '',
       activeName: '1',
@@ -113,8 +113,8 @@ export default {
     },
     init() {
       this.status[0].value = this.drawerData.createTime
-      // this.status[1].value = this.drawerData.creatorName
-      // this.status[2].value = this.drawerData.creatorName
+      this.status[1].value = this.drawerData.creatorName
+      this.status[2].value = this.drawerData.source
     }
   }
 }
