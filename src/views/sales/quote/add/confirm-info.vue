@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 18:25:47
+ * @LastEditTime: 2019-12-04 18:48:03
  * @Description: 确定配置信息
 */
 <template>
@@ -43,11 +43,13 @@
       <div slot="body">
         <el-table
           :data="item.children"
+          :summary-method="getSummary.bind(this,item)"
           :tree-props="{children: 'children'}"
           border
           default-expand-all
           max-height="350px"
           row-key="id"
+          show-summary
           size="mini"
         >
           <el-table-column label="商品分类" prop="className" width="130"></el-table-column>
@@ -121,6 +123,52 @@ export default {
     }
   },
   methods: {
+    getSummary(row, param) {
+      let children = this.flatten(row.children);
+      let configs = this.getCurrentConfig(row);
+      let allConfigGoods = [];
+      if (configs && configs.length == 1) {
+        allConfigGoods = children.filter(item =>
+          (this.configList[configs[0]] || []).includes(
+            `${item.commodityCode}-${item.commodityNum}`
+          )
+        );
+      }
+      let { columns } = param;
+      const sums = [];
+      columns.forEach((col, index) => {
+        if (['commodityNum'].includes(col.property)) {
+          let prop = col.property;
+          sums[index] =
+            +Number(
+              allConfigGoods
+                .map(item => Number(item[prop]) || 0)
+                .reduce((sum, item) => sum + item, 0)
+            ).toFixed(2) || '-';
+        } else if (['saleReferencePrice'].includes(col.property)) {
+          if (row.disabled) {
+            sums[index] = row.children[0].saleReferencePrice;
+          } else {
+            sums[index] =
+              +Number(
+                allConfigGoods
+                  .map(
+                    item =>
+                      +Number(
+                        item.saleReferencePrice *
+                          (1 + 0 / 100) *
+                          item.commodityNum || 0
+                      ).toFixed(2)
+                  )
+                  .reduce((sum, item) => sum + item, 0)
+              ).toFixed(2) || '-';
+          }
+        } else if (index == 1) {
+          sums[0] = '总计';
+        } else sums[index] = '';
+      });
+      return sums;
+    },
     getCurrentConfig(row) {
       let configs = [];
       let children = this.flatten(row.children);
@@ -193,6 +241,7 @@ export default {
         return item;
       });
       this.$set(this.data.KIND1List, index, item);
+      console.log(this.data.KIND1List);
     },
     // 选中项目
     checkboxChange(row, index) {
