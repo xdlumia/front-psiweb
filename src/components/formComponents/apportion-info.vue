@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 15:25:11
+ * @LastEditTime: 2019-12-04 19:29:21
  * @Description: 分摊信息
  */
 <template>
@@ -112,8 +112,9 @@
       </el-row>
     </form-card>
     <goods-apportion
+      v-loading="loading"
       ref="goodsTable"
-      :data="data.businessCommoditySaveVoList"
+      :data="tableData"
     />
     <!-- 新增 / 编辑 弹出框-->
     <el-dialog
@@ -161,8 +162,8 @@ export default {
   },
   data() {
     return {
+      loading: false,
       sumAmount: 0, //总金额
-
       //dialog弹出框
       dialogData: {
         visible: false,
@@ -182,13 +183,18 @@ export default {
     }
   },
   computed: {
-
+    tableData() {
+      this.data.businessCommoditySaveVoList = this.goodsTableData
+      return this.goodsTableData
+    }
   },
   watch: {
     'data.busType': {
       handler(val) {
+        this.goodsTableData = []
         if (val) {
           this.dialogData.title = this.options[val].title
+          this.getCommodityList()
         }
       }
     }
@@ -265,40 +271,56 @@ export default {
           '4': 'swapOrderCode',
         }
         this.data.busCode = rowData[codeObj[this.data.busType]]
-
-        if (this.data.busType == 0) {
-          this.$api.seePsiSaleService.salesshipmentGetShipmentCommodity({ code: this.data.busCode })
-            .then(res => {
-              this.data.businessCommoditySaveVoList = res.data || []
-            })
-        }
-        else if (this.data.busType == 1) {
-          this.$api.seePsiPurchaseService.purchaseputinGetByCode(null, this.data.busCode)
-            .then(res => {
-              this.data.businessCommoditySaveVoList = (res.data || {}).commodityList
-            })
-        }
-        else if (this.data.busType == 2) {
-          this.$api.seePsiWmsService.wmsallocationorderInfo(null, this.data.busCode)
-            .then(res => {
-              this.data.businessCommoditySaveVoList = (res.data || {}).allocationCommodityList
-            })
-        }
-        else if (this.data.busType == 3) {
-          this.$api.seePsiWmsService.wmsborrowloanorderGetByCode(null, this.data.busCode)
-            .then(res => {
-              this.data.businessCommoditySaveVoList = (res.data || {}).commodityShowList
-            })
-        }
-        else if (this.data.busType == 4) {
-          this.$api.seePsiWmsService.wmsswaporderGetByCode(null, this.data.busCode)
-            .then(res => {
-              let data = res.data || {}
-              this.data.businessCommoditySaveVoList = [...data.putinCommodityList, ...putoutCommodityList]
-            })
-        }
+        this.getCommodityList()
       }
       this.dialogData.visible = false
+    },
+    getCommodityList() {
+      this.loading = true
+      if (!this.data.busCode) return
+      // 换货单，借入借出单，调拨单，本期不拉取商品信息。 所有retrun
+      if (this.data.busType == 0) {  //销售出库单
+        this.$api.seePsiSaleService.salesshipmentGetShipmentCommodity({ code: this.data.busCode })
+          .then(res => {
+            this.goodsTableData = res.data || []
+            this.loading = false
+          })
+      }
+      else if (this.data.busType == 1) { //采购入库单
+        this.$api.seePsiPurchaseService.purchaseputinGetByCode(null, this.data.busCode)
+          .then(res => {
+            this.goodsTableData = (res.data || {}).commodityList
+            this.loading = false
+          })
+      }
+      else if (this.data.busType == 2) { //调拨单
+        this.goodsTableData = []
+        return
+        this.$api.seePsiWmsService.wmsallocationorderInfo(null, this.data.busCode)
+          .then(res => {
+            this.goodsTableData = (res.data || {}).allocationCommodityList
+            this.loading = false
+          })
+      }
+      else if (this.data.busType == 3) { //借出借入单
+        this.goodsTableData = []
+        return
+        this.$api.seePsiWmsService.wmsborrowloanorderGetByCode(null, this.data.busCode)
+          .then(res => {
+            this.goodsTableData = (res.data || {}).commodityShowList
+            this.loading = false
+          })
+      }
+      else if (this.data.busType == 4) { //换货单
+        this.goodsTableData = []
+        return
+        this.$api.seePsiWmsService.wmsswaporderGetByCode(null, this.data.busCode)
+          .then(res => {
+            let data = res.data || {}
+            this.goodsTableData = [...data.putinCommodityList, ...putoutCommodityList]
+            this.loading = false
+          })
+      }
     }
   },
   components: {
