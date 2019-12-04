@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 21:49:38
+ * @LastEditTime: 2019-12-04 22:39:34
  * @Description: 确定配置信息
 */
 <template>
@@ -70,7 +70,7 @@
               <el-checkbox
                 :disabled="!(avaliableConfig(item).indexOf(`${scope.row.commodityCode}-${scope.row.commodityNum}`)>=0)"
                 :label="scope.row.commodityCode"
-                @change="checkOther(item)"
+                @change="checkOther(item,$event)"
                 v-model="scope.row.checked"
               >{{&nbsp;}}</el-checkbox>
             </template>
@@ -186,18 +186,20 @@ export default {
       );
       return selectedConfigs;
     },
-    checkOther(row) {
-      // let children = this.flatten(row.children);
-      // let configs = this.getCurrentConfig(row);
-      // if (configs && configs.length == 1) {
-      //   children
-      //     .filter(item =>
-      //       this.configList[configs[0]].includes(
-      //         `${item.commodityCode}-${item.commodityNum}`
-      //       )
-      //     )
-      //     .map(item => (item.checked = true));
-      // }
+    checkOther(row,e) {
+      if(e){
+        let children = this.flatten(row.children);
+        let configs = this.getCurrentConfig(row);
+        if (configs && configs.length == 1) {
+          children
+            .filter(item =>
+              this.configList[configs[0]].includes(
+                `${item.commodityCode}-${item.commodityNum}`
+              )
+            )
+            .map(item => (item.checked = true));
+        }
+      }
     },
     avaliableConfig(item) {
       if (!item) return [];
