@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 18:22:47
+ * @LastEditTime: 2019-12-04 09:53:58
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -496,11 +496,13 @@ export default {
         costAmount: 'inventoryPrice',
         inventoryNumber: 'usableInventoryNum'
       };
+      
       let nGood = { ...good };
       delete nGood.id;
       Object.keys(target).map(key => {
         nGood[key] = target[key] ? good[target[key]] : '';
       });
+      nGood[this.priceKey] = nGood.costAmount;
       return nGood;
     },
     // 头部选择
