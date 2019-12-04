@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 18:20:36
+ * @LastEditTime: 2019-12-04 10:23:07
  * @Description: 商品管理
  -->
 <template>
@@ -182,9 +182,11 @@ show-overflow-tooltip>
           <el-pagination
             class="mt10 ac"
             @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
             :current-page.sync="goodsForm.page"
             :page-size="goodsForm.limit"
-            layout="total, prev, pager, next"
+            :page-sizes="[10, 20, 30, 40]"
+            layout="total, sizes, prev, pager, next, jumper"
             :total="total"
           ></el-pagination>
         </div>
@@ -391,6 +393,11 @@ export default {
       this.popupRight.tlite = '导入物品'
     },
     handleCurrentChange(val) { // 分页点击
+      this.goodsForm.page = val
+      this.getGoodsList()
+    },
+    handleSizeChange(val) {
+      this.goodsForm.limit = val
       this.getGoodsList()
     },
     deleteGoodsList() { // 批量删除

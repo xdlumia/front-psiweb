@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 17:58:55
+ * @LastEditTime: 2019-12-04 09:58:53
  * @Description: 新增商品
  -->
 <template>
@@ -236,7 +236,7 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     const validateMinInventoryNum = (rule, value, callback) => {
       // if (!/^\d{1,11}(\.\d{1,2})?$/.test(value)) {
       //   callback(new Error('11位整数，2位小数'))
@@ -274,6 +274,7 @@ export default {
         unit: '',
         columns: '规格',
         brand: 'psi',
+        sourceFromCode: 'SP_SOURCE_FROM-1',
         values: [{
           goodsPic: '',
           inventoryPrice: '',
@@ -332,24 +333,24 @@ export default {
   components: {
   },
   computed: {
-    secondClassList () {
+    secondClassList() {
       const temp = this.firstClassList.find(item => item.id === this.goodForm.firstClassId)
       return temp ? temp.children : []
     },
-    openingInventory () {
+    openingInventory() {
       const { originalPrice, originalPriceAdjustment, originalInventoryNum } = this.goodForm.values[0] || {}
       return { originalPrice, originalPriceAdjustment, originalInventoryNum }
     }
 
   },
-  mounted () {
+  mounted() {
     this.commonwmsmanagerUsableList()
     if (this.code) {
       this.getGoodsDetailV2(this.code)
     }
   },
   methods: {
-    getGoodsDetailV2 (code) {
+    getGoodsDetailV2(code) {
       this.goodForm = Object.assign(this.goodForm, {})
       this.$api.seeGoodsService.getGoodsDetailV2({ code }).then(res => {
         this.isDetail = true
@@ -360,26 +361,26 @@ export default {
         this.$emit('update', this.goodForm)
       })
     },
-    inventoryPriceChange () {
+    inventoryPriceChange() {
       const temp = this.goodForm.values[0]
       if (temp.saleReferencePrice) {
         this.goodForm.values[0].profitRate = ((temp.saleReferencePrice / temp.inventoryPrice - 1) * 100).toFixed(2)
       }
     },
-    saleReferencePriceChange () {
+    saleReferencePriceChange() {
       const temp = this.goodForm.values[0]
       this.goodForm.values[0].profitRate = ((temp.saleReferencePrice / this.goodForm.values[0].inventoryPrice - 1) * 100).toFixed(2)
     },
-    profitRateChange () {
+    profitRateChange() {
       const temp = this.goodForm.values[0]
       this.goodForm.values[0].saleReferencePrice = ((Number(temp.saleReferencePrice / 100) + 1) * this.goodForm.values[0].inventoryPrice).toFixed(2)
     },
-    commonwmsmanagerUsableList () {
+    commonwmsmanagerUsableList() {
       this.$api.seePsiWmsService.commonwmsmanagerUsableList().then(res => {
         this.warehouseList = res.data
       })
     },
-    saveGood () {
+    saveGood() {
       this.$refs.goodForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -391,7 +392,7 @@ export default {
       })
     },
     // 获取分类列表
-    getGoodsClass () {
+    getGoodsClass() {
       this.$api.seeGoodsService.getGoodsClass({ categoryCode: this.goodForm.categoryCode }).then(res => {
         this.firstClassList = res.data
         if (!this.isDetail) {
@@ -400,14 +401,14 @@ export default {
         this.isDetail = false
       })
     },
-    handleGoodPrice () {
+    handleGoodPrice() {
       const temp = this.goodForm.values[0]
       this.goodForm.values[0].profitRate = temp.saleReferencePrice / temp.inventoryPrice - 1
     }
   },
   watch: {
     'goodForm.categoryCode': {
-      handler: function (newValue) {
+      handler: function(newValue) {
         if (!this.isDetail) {
           this.goodForm.firstClassId = null
         }
@@ -415,20 +416,20 @@ export default {
       }
     },
     'goodForm.firstClassId': {
-      handler: function (newValue) {
+      handler: function(newValue) {
         if (!this.isDetail) {
           this.goodForm.classId = null
         }
       }
     },
     'goodForm.classId': {
-      handler: function (newValue) {
+      handler: function(newValue) {
         const temp = this.secondClassList.find(item => item.id === newValue)
         this.goodForm.values[0].taxRate = temp ? temp.taxRate : this.goodForm.values[0].taxRate
       }
     },
     'openingInventory': {
-      handler: function (newValue) {
+      handler: function(newValue) {
         const temp = this.goodForm.values[0]
         temp.originalAmount = temp.originalPrice * temp.originalInventoryNum
         temp.originalCostDifference = (temp.originalPrice - temp.originalPriceAdjustment) * temp.originalInventoryNum

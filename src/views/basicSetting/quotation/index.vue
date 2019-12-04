@@ -97,7 +97,7 @@ export default {
           type: 'employee',
           default: true
         },
-        { label: '创建部门', prop: 'deptName', type: 'dept', default: true },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange', default: true }
       ]
     }

@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 21:24:39
+ * @LastEditTime: 2019-12-04 09:44:51
  * @Description: 业务设置-报表 promotion
  -->
 <template>
@@ -35,7 +35,9 @@
       >
         <el-table-column label="提成员工名称" prop="employeeName"></el-table-column>
         <el-table-column label="底薪" prop="basePay"></el-table-column>
-        <el-table-column label="提成比例" prop="commission"></el-table-column>
+        <el-table-column label="提成比例" prop="commission">
+          <template slot-scope="{row}">{{row.commission}}%</template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="editId = scope.row.id,visible = true">编辑</el-button>
