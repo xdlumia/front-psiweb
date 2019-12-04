@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 10:10:16
+ * @LastEditTime: 2019-12-04 11:48:44
  * @Description: 确定配置信息
 */
 <template>
@@ -149,6 +149,7 @@
                 :checked="scope.row.checked"
                 :label="scope.row.commodityCode"
               >{{&nbsp;}}</el-checkbox>
+              {{scope.row.quotationId}}
             </template>
           </el-table-column>
         </el-table>
@@ -233,6 +234,8 @@ export default {
       if (checkedCods.length) {
         // 获取交际quotationIds
         let quotationIds = this.idsContract(flattenData, checkedCods)
+        console.log(quotationIds);
+
         // 根据quotationIds 过滤数据
         let filterData = flattenData.filter(v => quotationIds.includes(v.quotationId))
         let framtData = this.$$util.formatChildren(filterData, 'className')
