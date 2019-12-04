@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 16:21:55
+ * @LastEditTime: 2019-12-04 17:41:15
  * @Description: 报价单详情
 */
 <template>
@@ -77,7 +77,7 @@
       :visible.sync="outLibAddVisible"
       type="add"
       :rowData="rowData"
-      @reload="close()"
+      @reload="setEdit(),close()"
     />
     <!-- 生成请购单 -->
     <buyingAdd
@@ -85,7 +85,7 @@
       :params="{quotationCode:rowData.quotationCode}"
       type="add"
       :rowData="rowData"
-      @reload="close()"
+      @reload="setEdit(),close()"
     />
   </div>
 </template>
