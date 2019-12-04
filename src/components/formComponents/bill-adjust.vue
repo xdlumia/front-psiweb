@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 09:36:30
+ * @LastEditTime: 2019-12-04 17:16:46
  * @Description: 账单调整
  */
 <template>
@@ -22,7 +22,7 @@
               <el-input
                 :disabled="true"
                 placeholder="请输入"
-                v-model="data.fbiiBusCode"
+                v-model="data.fbillCode"
               >
                 <el-button
                   slot="append"
@@ -94,6 +94,7 @@
         class="add-fee"
         :more="false"
         :button="false"
+        :params="{busType:0}"
         :column="false"
         @selection-change="selectionChange"
         :is="dialogData.component"
@@ -189,7 +190,10 @@ export default {
       };
       let [rowData] = this.multipleSelection
       this.data.fbillId = rowData.id
-      this.data.fbiiBusCode = rowData.billCode
+      this.data.fbillCode = rowData.billCode
+
+      this.data.fbiiBusCode = rowData.busCode
+      this.data.fbiiBusType = rowData.busType
       this.data.adjustBeforAmount = rowData.amount
       this.sumAmount = rowData.amount
       this.dialogData.visible = false

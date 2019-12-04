@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 18:58:24
+ * @LastEditTime: 2019-12-04 16:48:37
  * @Description: 账期信息
  */
 <template>
@@ -12,6 +12,7 @@
       prop="paymentTypeCode"
     >
       <el-select
+        size="mini"
         :disabled="disabled"
         v-model="data.paymentTypeCode"
       >

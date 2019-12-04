@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 16:39:53
+ * @LastEditTime: 2019-12-04 17:03:19
  * @Description: 销售-账单调整单
  */
 <template>
@@ -56,7 +56,7 @@
       v-if="outLibVisible"
       :visible.sync="outLibVisible"
       :rowData="rowData"
-      :code="rowData.salesShipmentCode"
+      :code="rowData.fbiiBusCode"
       @reload="$refs.table.reload()"
     />
     <!-- 新增分摊-->

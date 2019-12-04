@@ -2,38 +2,18 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 16:34:00
+ * @LastEditTime: 2019-12-04 18:12:47
  * @Description: 退货商品商品信息
 */
 <template>
   <div>
-    <form-card :title="true">
-      <div slot="title">
-        <span>{{title}}</span>
-        <span class="f14 ml30">
-          报价单:
-          <el-select
-            size="mini"
-            :disabled="disabled"
-            v-model="data.quotationCode"
-          >
-            <el-option
-              v-for="item in options"
-              :key="item"
-              :label="item"
-              :value="item"
-            >
-            </el-option>
-          </el-select>
-        </span>
-
-      </div>
+    <form-card :title="title">
       <el-table
         show-summary
         :summary-method="getSummaries"
         size="mini"
         border
-        :data="data.businessCommoditySaveVoList || []"
+        :data="data.commodityEntityList || []"
         default-expand-all
         :tree-props="{children: 'children'}"
         row-key="id"
@@ -45,7 +25,6 @@
           label="商品编号"
           show-overflow-tooltip
         />
-
         <el-table-column
           prop="goodsName"
           min-width="100"
@@ -57,7 +36,18 @@
           min-width="100"
           label="商品图片"
           show-overflow-tooltip
-        />
+        >
+          <template slot-scope="scope">
+            <el-image
+              :src="scope.row.goodsPic"
+              class="d-center"
+              fit="contain"
+              style="width: 100px; height: 40px"
+            >
+              <span slot="error">暂无图片</span>
+            </el-image>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="categoryCode"
           min-width="80"
@@ -66,6 +56,16 @@
         >
           <template slot-scope="scope">
             {{scope.row.categoryCode | dictionary('PSI_SP_KIND')}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="alterationNumber"
+          min-width="80"
+          label="退货数量"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span class="d-text-blue">{{scope.row.alterationNumber}}/{{scope.row.commodityNumber}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -87,12 +87,12 @@
           show-overflow-tooltip
         />
 
-        <!-- <el-table-column
-          prop="costAmount"
+        <el-table-column
+          prop="inventoryPrice"
           min-width="80"
           label="销售成本"
           show-overflow-tooltip
-        /> -->
+        />
 
         <el-table-column
           prop="commodityNumber"
@@ -100,49 +100,13 @@
           label="销售数量"
           show-overflow-tooltip
         />
-        <el-table-column
-          prop="alterationNumber"
-          min-width="100"
-          label="退货商品数量"
-          show-overflow-tooltip
-        >
-          <template slot-scope="scope">
-            <el-form-item
-              class="mb0"
-              :prop="`businessCommoditySaveVoList.${scope.$index}.alterationNumber`"
-              :rules="[{required:false},{type:'positiveNum'}]"
-            >
-              <el-input
-                size="mini"
-                @input="sumTaxPrice(scope.row,scope.$index)"
-                :disabled="disabled"
-                :show-word-limit="false"
-                v-model="scope.row.alterationNumber"
-              />
-            </el-form-item>
-          </template>
-        </el-table-column>
 
         <el-table-column
+          prop="alterationPrice"
           min-width="100"
           label="退货单价"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
-            <el-form-item
-              class="mb0"
-              :prop="`businessCommoditySaveVoList.${scope.$index}.alterationPrice`"
-              :rules="[{required:false},{type:'price'}]"
-            >
-              <el-input
-                size="mini"
-                @input="sumTaxPrice(scope.row, scope.$index)"
-                :disabled="disabled"
-                :show-word-limit="false"
-                v-model="scope.row.alterationPrice"
-              ></el-input>
-            </el-form-item>
-          </template>
         </el-table-column>
         <el-table-column
           prop="taxRate"
@@ -199,9 +163,9 @@
   </div>
 </template>
 <script>
-import goodsChangeEdit from '@/components/formComponents/goods-exchange-edit.vue'
+// import goodsChangeEdit from '@/components/formComponents/goods-exchange-edit.vue'
 export default {
-  components: { goodsChangeEdit },
+  components: {},
   props: {
     from: String,
     data: {
@@ -225,8 +189,6 @@ export default {
   },
   data() {
     return {
-      tableData: [],
-      quotationCode: this.options[0] || '',
       // queryFrom: {
       //   busType: 1, // 1报价单 2请购单]
       //   putawayType: 1,
@@ -235,54 +197,12 @@ export default {
     }
   },
   watch: {
-    'data.quotationCode': {
-      handler(val) {
-        this.$nextTick(() => {
-          this.params.busCode = this.data.quotationCode
-          if (!this.params.busCode) return
-          this.businesscommodityGetBusinessCommodityList()
-        })
-      },
-      deep: true,
-      immediate: true
-    }
+
   },
   created() {
-    this.businesscommodityGetBusinessCommodityList()
+
   },
   methods: {
-    businesscommodityGetBusinessCommodityList() {
-      this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.params)
-        .then(res => {
-          let data = res.data || []
-          this.data.businessCommoditySaveVoList = res.data || []
-          this.$set(this.data, 'businessCommoditySaveVoList', this.$$util.formatCommodity(data))
-          // this.data.exChangeCommodityList 是临时数据 存放换货后的数据
-          if (this.data.exChangeCommodityList) {
-            this.data.exChangeCommodityList = JSON.parse(JSON.stringify(data))
-          }
-        })
-    },
-    sumTaxPrice(row, index) {
-      if (row.alterationNumber > row.commodityNumber) {
-        this.$message({
-          message: '退货商品数量不能大于销售数量',
-          type: 'info',
-          showClose: true,
-        });
-        row.alterationNumber = row.commodityNumber
-        return
-      }
-
-      let taxRate = (row.taxRate || 100) / 100  ///税率
-      let alterationNumber = row.alterationNumber || 1 //退货数量
-      let alterationPrice = row.alterationPrice || 1 //销售单价
-      // 税后销售单价  公式:销售单价 * (1-税率)
-      row.taxPrice = (alterationPrice * (1 - taxRate)).toFixed(2)
-      // 销售税后总价  公式:税后销售单价 * 退货数量
-      row.taxTotalAmount = (alterationNumber * row.taxPrice).toFixed(2)
-
-    },
     // 自定义账单金额数据
     getSummaries(param) {
       const { columns, data } = param;

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 16:08:36
+ * @LastEditTime: 2019-12-04 16:14:35
  * @Description: 销售-报价单
  */
 <template>
@@ -163,6 +163,7 @@ export default {
             showClose: true,
             message: '当前选中的数据里有已经生成过出库单'
           })
+          return
         }
         this.$message.error({
           showClose: true,

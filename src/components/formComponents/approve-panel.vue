@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 19:50:16
+ * @LastEditTime: 2019-12-04 16:24:28
  * @Description: 审核信息
 */
 <template>
@@ -54,7 +54,7 @@ export default {
   },
   async mounted() {
     // 查询当前项共有多少节点
-    // await this.queryProcessDefinitionSubTask()
+
     if (this.id && this.busType) {
       await this.processtaskQueryProcessHistoryEntity()
     }
@@ -69,14 +69,7 @@ export default {
     }
   },
   methods: {
-    // // 查询当前项共有多少节点
-    // async queryProcessDefinitionSubTask() {
-    //   const params = {
-    //     typeArray: [busType[this.busType]]
-    //   }
-    //   const { data } = await this.$api.seeWorkflowService.processdefinitionQueryProcessDefinitionSubTask(params)
-    //   this.progressData = data
-    // },
+
     // 查询历史操作
     processtaskQueryProcessHistoryEntity() {
       if (!this.busType) {
