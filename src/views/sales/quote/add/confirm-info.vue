@@ -1,155 +1,76 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 11:48:44
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-04 18:25:47
  * @Description: 确定配置信息
 */
 <template>
   <div v-loading="loading">
-    <div
-      class="ac mt20"
-      v-if="!data.KIND1Data.length && !data.KIND2Data.length"
-    >请先选择产品</div>
+    <div class="ac mt20" v-if="!data.KIND1Data.length && !data.KIND2Data.length">请先选择产品</div>
     <!-- 配件列表 -->
-    <quotationInfo
-      v-for="(val,key,index) of KIND2List"
-      :key="index"
-      :title="`${index+1}.商品名称:${key}`"
-    >
+    <quotationInfo :key="index" :title="`${index+1}.商品名称:${key}`" v-for="(val,key,index) of KIND2List">
       <div slot="body">
-        <el-table
-          size="mini"
-          max-height="350px"
-          :data="val"
-          ref="kind2"
-          border
-        >
-          <el-table-column
-            prop="secondClassName"
-            label="商品分类"
-            width="130"
-          >
-          </el-table-column>
-          <el-table-column
-            show-overflow-tooltip
-            label="编号"
-            min-width="100"
-          >
+        <el-table :data="val" border max-height="350px" ref="kind2" size="mini">
+          <el-table-column label="商品分类" prop="secondClassName" width="130"></el-table-column>
+          <el-table-column label="编号" min-width="100" show-overflow-tooltip>
             <template slot-scope="scope">
               <span class="d-text-blue">{{scope.row.goodsCode}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="商品名称"
-            min-width="80"
-          >
-          </el-table-column>
-          <el-table-column
-            label="商品类别"
-            min-width="70"
-          >
+          <el-table-column label="商品名称" min-width="80" prop="name"></el-table-column>
+          <el-table-column label="商品类别" min-width="70">
             <template>配件</template>
           </el-table-column>
-          <el-table-column
-            prop="specOne"
-            min-width="80"
-            label="商品规格"
-          />
-          <el-table-column
-            prop="saleReferencePrice"
-            width="90"
-            label="销售参考价"
-          />
+          <el-table-column label="商品规格" min-width="80" prop="specOne" />
+          <el-table-column label="销售参考价" prop="saleReferencePrice" width="90" />
         </el-table>
       </div>
     </quotationInfo>
     <!-- 整机列表信息 -->
     <quotationInfo
-      v-for="(item,index) of data.KIND1List"
       :key="KIND2Length+index"
       :title="`${KIND2Length+index+1}商品名称:${item.configGoodName}`"
+      v-for="(item,index) of data.KIND1List"
     >
       <!-- <el-button
         slot="title"
         size="mini"
         v-if="item.disabled"
         @click="resetConfig(item,index)"
-      >重置</el-button> -->
-      <el-button
-        slot="title"
-        type="primary"
-        v-if="!item.disabled"
-        size="mini"
-        @click="chooseNotConfig(item,index)"
-      >不选择此配置</el-button>
+      >重置</el-button>-->
+      <el-button @click="chooseNotConfig(item,index)" size="mini" slot="title" type="primary" v-if="!item.disabled">不选择此配置</el-button>
       <div slot="body">
         <el-table
-          size="mini"
-          max-height="350px"
           :data="item.children"
           :tree-props="{children: 'children'}"
-          row-key="id"
-          default-expand-all
           border
+          default-expand-all
+          max-height="350px"
+          row-key="id"
+          size="mini"
         >
-          <el-table-column
-            prop="className"
-            label="商品分类"
-            width="130"
-          >
-          </el-table-column>
-          <el-table-column
-            show-overflow-tooltip
-            label="商品编号"
-            min-width="100"
-          >
+          <el-table-column label="商品分类" prop="className" width="130"></el-table-column>
+          <el-table-column label="商品编号" min-width="100" show-overflow-tooltip>
             <template slot-scope="scope">
               <span class="d-text-blue">{{scope.row.commodityCode}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="goodsName"
-            label="商品名称"
-            min-width="80"
-          >
-          </el-table-column>
-          <el-table-column
-            label="商品类别"
-            min-width="70"
-          >
+          <el-table-column label="商品名称" min-width="80" prop="goodsName"></el-table-column>
+          <el-table-column label="商品类别" min-width="70">
             <template>整机</template>
           </el-table-column>
-          <el-table-column
-            prop="specOne"
-            min-width="80"
-            label="商品规格"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="commodityNum"
-            min-width="80"
-            label="商品数量"
-          />
-          <el-table-column
-            prop="saleReferencePrice"
-            width="90"
-            label="销售参考价"
-          >
-          </el-table-column>
-          <el-table-column
-            label="操作"
-            min-width="120"
-            v-if="!item.disabled"
-          >
+          <el-table-column label="商品规格" min-width="80" prop="specOne"></el-table-column>
+          <el-table-column label="商品数量" min-width="80" prop="commodityNum" />
+          <el-table-column label="销售参考价" prop="saleReferencePrice" width="90"></el-table-column>
+          <el-table-column label="操作" min-width="120" v-if="!item.disabled">
             <template slot-scope="scope">
               <el-checkbox
-                @change="checkboxChange(scope.row,index)"
-                :checked="scope.row.checked"
+                :disabled="!(avaliableConfig(item).indexOf(scope.row.quotationId)>=0)"
                 :label="scope.row.commodityCode"
+                @change="checkOther(item)"
+                v-model="scope.row.checked"
               >{{&nbsp;}}</el-checkbox>
-              {{scope.row.quotationId}}
             </template>
           </el-table-column>
         </el-table>
@@ -158,8 +79,8 @@
   </div>
 </template>
 <script>
-import quotationInfo from '@/components/formComponents/quotation-info'
-import { log } from 'util'
+import quotationInfo from '@/components/formComponents/quotation-info';
+import { log } from 'util';
 export default {
   props: {
     data: {
@@ -173,35 +94,83 @@ export default {
   data() {
     return {
       loading: false,
+      configList: {},
       wholeCacheList: [] // 存放根据nama查出来的整机配置信息
-    }
+    };
   },
-  created() {
-
-  },
-  mounted() {
-  },
+  created() {},
+  mounted() {},
   computed: {
     KIND2Length() {
-      return Object.keys(this.KIND2List).length
+      return Object.keys(this.KIND2List).length;
     },
     KIND2List() {
-      const newJson = {}
+      const newJson = {};
       this.data.KIND2Data.forEach(item => {
         // 把分类名称当做key  如果没有当前key 创建当前key 并赋值为空数组
         if (!newJson.hasOwnProperty(item.name)) {
-          newJson[item.name] = [item]
+          newJson[item.name] = [item];
         }
         // 如果当前有key 那一定有子项.children
         else {
-          newJson[item.name].push(item)
+          newJson[item.name].push(item);
         }
-      })
-      this.data.KIND2List = newJson
-      return newJson
+      });
+      this.data.KIND2List = newJson;
+      return newJson;
     }
   },
   methods: {
+    getCurrentConfig(row) {
+      let configs = [];
+      let children = this.flatten(row.children);
+      let checkeds = children.filter(item => {
+        if (!configs.includes(`${row.configGoodName}-${item.quotationId}`)) {
+          configs.push(`${row.configGoodName}-${item.quotationId}`);
+        }
+        return item.checked;
+      });
+      return configs.filter(
+        key =>
+          !checkeds.some(
+            item =>
+              !(this.configList[key] || []).includes(
+                `${item.commodityCode}-${item.commodityNum}`
+              )
+          )
+      );
+    },
+    checkOther(row) {
+      let children = this.flatten(row.children);
+      let configs = this.getCurrentConfig(row);
+      if (configs && configs.length == 1) {
+        children
+          .filter(item =>
+            this.configList[configs[0]].includes(
+              `${item.commodityCode}-${item.commodityNum}`
+            )
+          )
+          .map(item => (item.checked = true));
+      }
+    },
+    avaliableConfig(item) {
+      if (!item) return [];
+      return (
+        this.getCurrentConfig(item).map(item =>
+          parseInt(item.split('-').pop())
+        ) || []
+      );
+    },
+    flatten(data) {
+      let all = [];
+      data.map(item => {
+        all.push(item);
+        if (item.children && item.children.length) {
+          all = all.concat(this.flatten(item.children));
+        }
+      });
+      return all;
+    },
     // resetConfig(item, index) {
     //   const deepCopy = JSON.parse(JSON.stringify(this.wholeCacheList[index]))
     //   this.$set(this.data.KIND1List, index, deepCopy)
@@ -211,37 +180,44 @@ export default {
       let params = {
         categoryCode: 'PSI_SP_KIND-1',
         name: item.configGoodName
-      }
-      let { data } = await this.$api.seeGoodsService.getGoodsByNameForJXC(params)
-      item.disabled = true
-
+      };
+      let { data } = await this.$api.seeGoodsService.getGoodsByNameForJXC(
+        params
+      );
+      item.disabled = true;
 
       item.children = (data || []).map(item => {
-        item.goodsName = item.name
-        item.commodityCode = item.goodsCode
-        item.quotationIds = item.configId
-        return item
-      })
-      this.$set(this.data.KIND1List, index, item)
+        item.goodsName = item.name;
+        item.commodityCode = item.goodsCode;
+        item.quotationIds = item.configId;
+        return item;
+      });
+      this.$set(this.data.KIND1List, index, item);
     },
     // 选中项目
     checkboxChange(row, index) {
-      row.checked = !row.checked
+      row.checked = !row.checked;
       // 扁平化数据
-      const flattenData = this.$$util.jsonFlatten(this.data.KIND1List[index].children)
+      const flattenData = this.$$util.jsonFlatten(
+        this.data.KIND1List[index].children
+      );
       // 获取选中数据的code
-      let checkedCods = flattenData.filter(v => v.checked).map(v => v.commodityCode)
+      let checkedCods = flattenData
+        .filter(v => v.checked)
+        .map(v => v.commodityCode);
       if (checkedCods.length) {
         // 获取交际quotationIds
-        let quotationIds = this.idsContract(flattenData, checkedCods)
-        console.log(quotationIds);
+        let quotationIds = this.idsContract(flattenData, checkedCods);
+        // console.log(quotationIds);
 
         // 根据quotationIds 过滤数据
-        let filterData = flattenData.filter(v => quotationIds.includes(v.quotationId))
-        let framtData = this.$$util.formatChildren(filterData, 'className')
-        this.$set(this.data.KIND1List[index], 'children', framtData)
+        let filterData = flattenData.filter(v =>
+          quotationIds.includes(v.quotationId)
+        );
+        let framtData = this.$$util.formatChildren(filterData, 'className');
+        this.$set(this.data.KIND1List[index], 'children', framtData);
       } else {
-        row = JSON.parse(JSON.stringify(this.wholeCacheList[index]))
+        row = JSON.parse(JSON.stringify(this.wholeCacheList[index]));
       }
     },
     // 查出交际的ids
@@ -251,40 +227,53 @@ export default {
         let ids = [];
         for (let i = 0; i < array.length; i++) {
           if (array[i].commodityCode == choose[j]) {
-            ids.push(array[i].quotationId)
+            ids.push(array[i].quotationId);
           }
         }
         if (tempids.length) {
-          tempids = [].concat(tempids, ids).filter(item => tempids.includes(item) && ids.includes(item))
+          tempids = []
+            .concat(tempids, ids)
+            .filter(item => tempids.includes(item) && ids.includes(item));
         } else {
-          tempids = ids
+          tempids = ids;
         }
       }
 
-      tempids = tempids.filter((item, i) => tempids.indexOf(item) == i)
+      tempids = tempids.filter((item, i) => tempids.indexOf(item) == i);
       return tempids;
     },
     // 格式化列表数据
     filterKIND1List(data) {
-      this.data.KIND1List = []
+      this.data.KIND1List = [];
+      let configList = {};
+      let configKeys = {};
       /**
        * 名称:newJson
        * 数据格式:{key:[]}
        */
-      const newJson = {}
+      const newJson = {};
       data.forEach(item => {
+        item.checked = false;
+        let configKey = `${item.configGoodName}-${item.quotationId}`;
+        configList[configKey] = configList[configKey] || [];
+        configList[configKey].push(
+          `${item.commodityCode}-${item.commodityNum}`
+        );
+        let configItemKey = `${item.configGoodName}-${item.commodityCode}-${item.commodityNum}`;
         // 把分类名称当做key  如果没有当前key 创建当前key 并赋值为空数组
         if (!newJson.hasOwnProperty(item.configGoodName)) {
-          newJson[item.configGoodName] = [item]
+          configKeys[configItemKey] = true;
+          newJson[item.configGoodName] = [item];
         }
         // 如果当前有key 那一定有子项.children
-        else {
-          newJson[item.configGoodName].push(item)
+        else if (!configKeys[configItemKey]) {
+          configKeys[configItemKey] = true;
+          newJson[item.configGoodName].push(item);
         }
-      })
+      });
       // let newArr = []
       for (const key in newJson) {
-        const childrenData = newJson[key]
+        const childrenData = newJson[key];
         // $$util.formatChildren 相同类型的数据格式化成children格式
         this.data.KIND1List.push({
           configGoodName: key,
@@ -293,7 +282,7 @@ export default {
            * className 根据 className格式化成children数据
            */
           children: this.$$util.formatChildren(childrenData, 'className')
-        })
+        });
       }
       // 清空整机选择
       // 第一层的chilrder是必选并且不能修改的类型
@@ -304,28 +293,29 @@ export default {
       //   })
       // })
       // 缓存列表 方便重置
-      this.wholeCacheList = JSON.parse(JSON.stringify(this.data.KIND1List))
+      this.wholeCacheList = JSON.parse(JSON.stringify(this.data.KIND1List));
+      this.configList = configList;
     },
     // 根据名称获取整机信息
     commonquotationconfigdetailsListConfigByGoodName() {
       // 如果没有商品不查询
-      if (!this.data.KIND1Data.length) return
+      if (!this.data.KIND1Data.length) return;
       const params = {
         // doodsName 如果查传的是'' 查的是全部 所以没有值得时候传 ' '
         goodsName: this.data.KIND1Data.map(v => v.name),
         page: 1,
         limit: 100
-      }
-      this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(params)
+      };
+      this.$api.seePsiCommonService
+        .commonquotationconfigdetailsListConfigByGoodName(params)
         .then(res => {
           // 给整机数据换成新数据
-          const data = res.data || []
-          this.filterKIND1List(data)
-        })
+          const data = res.data || [];
+          this.filterKIND1List(data);
+        });
     }
-
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 </style>
