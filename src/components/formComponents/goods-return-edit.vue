@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 16:34:00
+ * @LastEditTime: 2019-12-04 20:48:06
  * @Description: 退货商品商品信息
 */
 <template>
@@ -240,7 +240,7 @@ export default {
         this.$nextTick(() => {
           this.params.busCode = this.data.quotationCode
           if (!this.params.busCode) return
-          this.businesscommodityGetBusinessCommodityList()
+          this.businesscommodityQueryMayCommodity()
         })
       },
       deep: true,
@@ -248,14 +248,18 @@ export default {
     }
   },
   created() {
-    this.businesscommodityGetBusinessCommodityList()
+    this.businesscommodityQueryMayCommodity()
   },
   methods: {
-    businesscommodityGetBusinessCommodityList() {
-      this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.params)
+    businesscommodityQueryMayCommodity() {
+      this.$api.seePsiSaleService.businesscommodityQueryMayCommodity({ quotaionCode: this.data.quotationCode })
         .then(res => {
           let data = res.data || []
           this.data.businessCommoditySaveVoList = res.data || []
+          this.data.businessCommoditySaveVoList.map(item => {
+            item.alterationNumber = item.actionableNumber
+          })
+
           this.$set(this.data, 'businessCommoditySaveVoList', this.$$util.formatCommodity(data))
           // this.data.exChangeCommodityList 是临时数据 存放换货后的数据
           if (this.data.exChangeCommodityList) {
@@ -264,13 +268,13 @@ export default {
         })
     },
     sumTaxPrice(row, index) {
-      if (row.alterationNumber > row.commodityNumber) {
+      if (row.alterationNumber > row.actionableNumber) {
         this.$message({
-          message: '退货商品数量不能大于销售数量',
+          message: `退货商品数量超过${row.actionableNumber}`,
           type: 'info',
           showClose: true,
         });
-        row.alterationNumber = row.commodityNumber
+        row.alterationNumber = row.actionableNumber
         return
       }
 
@@ -290,16 +294,32 @@ export default {
       columns.forEach((col, index) => {
         if (index == 0) {
           sums[index] = '总价'
-        } else if (col.property == 'taxPrice' || col.property == 'taxTotalAmount') {
+        } else if (['taxPrice', 'taxTotalAmount', 'alterationNumber', 'commodityNumber'].includes(col.property)) {
           const values = data.map(item => Number(item[col.property] || 0));
-          sums[index] = values.reduce((sum, curr) => {
-            const val = Number(curr)
-            return sum + curr
-          }, 0).toFixed(2)
+          if (['alterationNumber', 'commodityNumber'].includes(col.property)) {
+            sums[index] = values.reduce((sum, curr) => {
+              const val = Number(curr)
+              return sum + curr
+            }, 0)
+          } else {
+            sums[index] = values.reduce((sum, curr) => {
+              const val = Number(curr)
+              return sum + curr
+            }, 0).toFixed(2)
+          }
+
         }
         //获取税后总价
         if (col.property == 'taxTotalAmount') {
           this.data.shouldRefundAmount = sums[index]
+        }
+        //获取销售数量
+        if (col.property == 'commodityNumber') {
+          this.data.salesNumber = sums[index]
+        }
+        //获取退货数量
+        if (col.property == 'alterationNumber') {
+          this.data.totalRefundNumber = sums[index]
         }
       });
       return sums

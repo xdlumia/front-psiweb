@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 19:56:00
+ * @LastEditTime: 2019-12-04 20:02:52
  * @Description: 分摊信息
  */
 <template>
@@ -280,21 +280,20 @@ export default {
       this.dialogData.visible = false
     },
     getCommodityList() {
+      console.log(this.data.busType);
+
       if (!this.data.busCode) return
-      this.loading = true
       // 换货单，借入借出单，调拨单，本期不拉取商品信息。 所有retrun
       if (this.data.busType == 0) {  //销售出库单
         this.$api.seePsiSaleService.salesshipmentGetShipmentCommodity({ code: this.data.busCode })
           .then(res => {
             this.goodsTableData = res.data || []
-            this.loading = false
           })
       }
       else if (this.data.busType == 1) { //采购入库单
         this.$api.seePsiPurchaseService.purchaseputinGetByCode(null, this.data.busCode)
           .then(res => {
             this.goodsTableData = (res.data || {}).commodityList
-            this.loading = false
           })
       }
       else if (this.data.busType == 2) { //调拨单
@@ -303,7 +302,6 @@ export default {
         this.$api.seePsiWmsService.wmsallocationorderInfo(null, this.data.busCode)
           .then(res => {
             this.goodsTableData = (res.data || {}).allocationCommodityList
-            this.loading = false
           })
       }
       else if (this.data.busType == 3) { //借出借入单
@@ -312,7 +310,6 @@ export default {
         this.$api.seePsiWmsService.wmsborrowloanorderGetByCode(null, this.data.busCode)
           .then(res => {
             this.goodsTableData = (res.data || {}).commodityShowList
-            this.loading = false
           })
       }
       else if (this.data.busType == 4) { //换货单
@@ -322,7 +319,6 @@ export default {
           .then(res => {
             let data = res.data || {}
             this.goodsTableData = [...data.putinCommodityList, ...putoutCommodityList]
-            this.loading = false
           })
       }
     }

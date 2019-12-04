@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 15:09:09
+ * @LastEditTime: 2019-12-04 20:38:11
  * @Description: 生成销售退货单
 */
 <template>
@@ -155,7 +155,7 @@ export default {
         note: '',//备注,
         payTime: '',//1572403069457,
         quotationCode: (this.rowData.quotationCodes || [])[0] || '',//默认取报价单编号第一个,
-        refundNumber: '',//9,
+        refundNumber: '0',//9,
         salesNumber: '',//9,
         salesShipmentCode: '',//销售出库单编号,
         shipmentFinanceSaveVoList: [
@@ -217,6 +217,7 @@ export default {
             api = 'salesreturnedSave'
             // 编辑保存
           }
+          this.form.salesShipmentCode = this.rowData.shipmentCode
           let copyParams = JSON.parse(JSON.stringify(this.form))
           copyParams.businessCommoditySaveVoList = this.$$util.jsonFlatten(copyParams.businessCommoditySaveVoList, 'commonGoodConfigDetailsEntityList')
           copyParams.businessCommoditySaveVoList.forEach(item => {
