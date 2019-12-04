@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 19:01:45
+ * @LastEditTime: 2019-12-04 15:45:44
  * @Description: 客户管理-新增分摊
 */
 <template>
@@ -142,6 +142,7 @@ export default {
           }
           this.$api.seePsiSaleService[api](this.form)
             .then(res => {
+
               this.setEdit()
               this.close()
             })
