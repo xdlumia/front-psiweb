@@ -17,16 +17,19 @@
     <div>
       <div class="drawer-header">
         <el-button
+          v-if="detailForm.allocationOrderState == 2"
           @click="backVisible=true,isComponents = 'scanInCode',dialogData.title = '调入扫码'"
           size="mini"
           type="primary"
         >调入扫码</el-button>
         <el-button
+          v-if="outNum < outAllNum"
           @click="backVisible=true,isComponents = 'scanOutCode',dialogData.title = '调出扫码'"
           size="mini"
           type="primary"
         >调出扫码</el-button>
         <el-button
+          v-if="detailForm.allocationOrderState == 1"
           @click="wmsallocationorderUpdateOrderState('-1')"
           size="mini"
           type="primary"
@@ -84,7 +87,9 @@ export default {
       },
       detailForm: {
 
-      }
+      },
+      outNum: 0,//目前调出数量的和
+      outAllNum: 0,//所有应该调出的数量和
     };
   },
   components: {
@@ -101,6 +106,14 @@ export default {
     close() {
       this.$emit('update:visible', false)
     },
+    getNum(list) {
+      this.outNum = 0
+      this.outAllNum = 0
+      list.forEach((item) => {
+        this.outNum = this.outNum + (item.outAccomplishNum || 0)
+        this.outAllNum = this.outAllNum + (item.num || 0)
+      })
+    },
     //查看调拨单详情
     wmsallocationorderInfo() {
       this.$api.seePsiWmsService.wmsallocationorderInfo(null, this.code)
@@ -110,6 +123,9 @@ export default {
           this.status[1].value = res.data.creatorName
           this.status[2].value = res.data.deptName
           this.status[3].value = res.data.source
+          if (this.detailForm.allocationCommodityList && this.detailForm.allocationCommodityList.length > 0) {
+            this.getNum(this.detailForm.allocationCommodityList)
+          }
         })
         .finally(() => {
 
