@@ -7,21 +7,23 @@
 */
 <template>
   <div class="d-relative">
-    <el-input
-      :disabled="disabled"
-      :loading="loading"
-      popper-class="custom-goods-selector"
-      readonly=""
-      size="mini"
-      v-model="selectName"
-      class="wfull"
-      :show-word-limit="false"
-    ></el-input>
-    <i
-      @click="openDialog"
-      class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"
-      v-if="!disabled"
-    ></i>
+    <div @click="openDialog">
+      <el-input
+        :disabled="disabled"
+        :loading="loading"
+        popper-class="custom-goods-selector"
+        readonly
+        size="mini"
+        v-model="selectName"
+        class="wfull"
+        :show-word-limit="false"
+      ></el-input>
+      <i
+        @click.stop="openDialog"
+        class="el-icon-plus d-text-blue d-absolute f18 b d-pointer select-icon"
+        v-if="!disabled"
+      ></i>
+    </div>
     <otherNameList :visible.sync="showCommodityGoods" @choose="choose" v-if="showCommodityGoods" />
   </div>
 </template>
@@ -54,7 +56,7 @@ export default {
     },
     disabled: Boolean
   },
-  data() {
+  data () {
     return {
       showCommodityGoods: false,
       selectName: '',
@@ -64,21 +66,21 @@ export default {
       searchTable: {}
     };
   },
-  mounted() {
+  mounted () {
     if (this.value) {
       this.selectName = this.value;
     }
   },
   watch: {
-    value() {
+    value () {
       this.selectName = this.value || '';
     }
   },
   methods: {
-    openDialog() {
+    openDialog () {
       this.showCommodityGoods = true;
     },
-    choose(e) {
+    choose (e) {
       if (e.length) {
         this.selectName = e[0].companyName || e[0].supplierName || e[0].serviceName
         this.$emit('choose', e, 'choose');

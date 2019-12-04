@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 15:09:09
+ * @LastEditTime: 2019-12-04 21:22:43
  * @Description: 生成销售退货单
 */
 <template>
@@ -120,32 +120,32 @@ export default {
         alterationCode: '',//退换货编号,
         attachList: [],//附件,
         businessCommoditySaveVoList: [ //商品信息
-          {
-            alterationNumber: '',//	退换商品数量(出入数量)
-            alterationPrice: '',//实际退/换单价
-            apportionmentAmount: '',// 分摊后金额
-            busCode: '',//业务编号,
-            busType: '',//9,
-            commodityCode: '',//商品编号,
-            commodityNumber: '',//商品数量
-            costAmount: '',//采购/销售成本金额
-            discount: '',//折扣
-            discountSprice: '',//折后单价
-            isAssembly: '',//是否组装
-            isDirect: '',//是否直发
-            isTeardown: '',//是否拆卸
-            note: '',//备注,
-            parentCommodityCode: '',//父商品code
-            pickingNumber: '',//拣货数量
-            preTaxAmount: '',//含税总价
-            putawayType: '',//库存类型(出库/入库),
-            reference: '',//参考价
-            salesPrice: '',//销售单价
-            shipmentsNumber: '',//发货数量,
-            snCode: '',//SN码,
-            taxPrice: '',//税后退货单价
-            taxTotalAmount: '',//税后退货总价
-          }
+          // {
+          //   alterationNumber: '',//	退换商品数量(出入数量)
+          //   alterationPrice: '',//实际退/换单价
+          //   apportionmentAmount: '',// 分摊后金额
+          //   busCode: '',//业务编号,
+          //   busType: '',//9,
+          //   commodityCode: '',//商品编号,
+          //   commodityNumber: '',//商品数量
+          //   costAmount: '',//采购/销售成本金额
+          //   discount: '',//折扣
+          //   discountSprice: '',//折后单价
+          //   isAssembly: '',//是否组装
+          //   isDirect: '',//是否直发
+          //   isTeardown: '',//是否拆卸
+          //   note: '',//备注,
+          //   parentCommodityCode: '',//父商品code
+          //   pickingNumber: '',//拣货数量
+          //   preTaxAmount: '',//含税总价
+          //   putawayType: '',//库存类型(出库/入库),
+          //   reference: '',//参考价
+          //   salesPrice: '',//销售单价
+          //   shipmentsNumber: '',//发货数量,
+          //   snCode: '',//SN码,
+          //   taxPrice: '',//税后退货单价
+          //   taxTotalAmount: '',//税后退货总价
+          // }
         ],
         clientId: '',//100000,
         companyAccountId: '',//100000,
@@ -155,7 +155,7 @@ export default {
         note: '',//备注,
         payTime: '',//1572403069457,
         quotationCode: (this.rowData.quotationCodes || [])[0] || '',//默认取报价单编号第一个,
-        refundNumber: '',//9,
+        refundNumber: '0',//9,
         salesNumber: '',//9,
         salesShipmentCode: '',//销售出库单编号,
         shipmentFinanceSaveVoList: [
@@ -199,17 +199,16 @@ export default {
     // 保存表单数据
     saveHandle() {
       this.$refs.form.validate(valid => {
-        if (!this.form.shipmentFinanceSaveVoList.length) {
-          this.$message({
-            message: '请添加其他费用信息',
-            type: 'error',
-            showClose: true,
-          });
-          return
-        }
-
         if (valid) {
-          this.loading = true
+          if (!this.form.shipmentFinanceSaveVoList.length) {
+            this.$message({
+              message: '请添加其他费用信息',
+              type: 'error',
+              showClose: true,
+            });
+            return
+          }
+
           // rules 表单验证是否通过
           let api = 'salesreturnedUpdate' // 默认编辑更新
           // 新增保存
@@ -217,11 +216,21 @@ export default {
             api = 'salesreturnedSave'
             // 编辑保存
           }
+          this.form.salesShipmentCode = this.rowData.shipmentCode
           let copyParams = JSON.parse(JSON.stringify(this.form))
           copyParams.businessCommoditySaveVoList = this.$$util.jsonFlatten(copyParams.businessCommoditySaveVoList, 'commonGoodConfigDetailsEntityList')
           copyParams.businessCommoditySaveVoList.forEach(item => {
             item.putawayType = 1 //1入库
           })
+          if (copyParams.businessCommoditySaveVoList.some(item => !item.alterationNumber || !item.alterationPrice)) {
+            this.$message({
+              message: '商品的退货数量和单价没有填写或当前没有可退货商品',
+              type: 'info',
+              showClose: true,
+            });
+            return
+          }
+          this.loading = true
           this.$api.seePsiSaleService[api](copyParams)
             .then(res => {
               this.close()
