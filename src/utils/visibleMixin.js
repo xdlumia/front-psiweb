@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 10:50:21
+ * @LastEditTime: 2019-12-04 15:13:48
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -63,14 +63,14 @@ export default {
     status() {
       if (!this.getDetail) return [];
       else {
-        // if (!this.stateText && process.env.NODE_ENV != 'production') {
-        //   this.$message({
-        //     message: '当前引用详情页没有设置stateText状态值,不知道是啥的问王晓冬',
-        //     type: 'error',
-        //     showClose: true,
-        //   });
-        //   this.stateText = {}
-        // }
+        if (!this.stateText) {
+          // this.$message({
+          //   message: '当前引用详情页没有设置stateText状态值,不知道是啥的问王晓冬',
+          //   type: 'error',
+          //   showClose: true,
+          // });
+          this.stateText = {}
+        }
         return [
           { label: '状态', value: this.stateText[this.detail.state] },
           { label: '单据创建人', value: this.detail.creatorName },
