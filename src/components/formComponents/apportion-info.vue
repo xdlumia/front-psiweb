@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 20:02:52
+ * @LastEditTime: 2019-12-05 11:13:59
  * @Description: 分摊信息
  */
 <template>
@@ -125,7 +125,7 @@
     >
       <components
         v-if="dialogData.visible"
-        class="add-fee"
+        class="dialog"
         :status="false"
         :more="false"
         :button="false"
@@ -328,11 +328,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-/deep/.add-fee .main-content {
-  height: calc(100vh - 159px);
-}
 </style>
 <style lang="scss">
+.dialog .main-content {
+  height: calc(100vh - 159px);
+}
 .not-disabled-class .el-input.is-disabled .el-input__inner {
   background-color: #fff;
   cursor: pointer;

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 10:45:25
+ * @LastEditTime: 2019-12-05 11:04:41
  * @Description: 销售出库单详情
 */
 <template>
@@ -25,7 +25,6 @@
         >
           <el-button
             class="mr10"
-            :disabled="isDisabledButton(item.label)"
             @click="buttonsClick(item.label)"
             v-if="isShowButton(item.label)"
             size="small"
@@ -113,8 +112,9 @@
       :invoiceType="0"
       :code="code"
     />
+    <!-- 采购审核时间 -->
     <approvalTime
-      :visible.sync="collectInvoiceVisible"
+      :visible.sync="timeApprovalVisible"
       :rowData="detail"
       :invoiceType="0"
       :code="code"
@@ -129,7 +129,7 @@ import addContract from './add-contract' //合同新增
 import returnAdd from '../return/add' //退货单新增
 import exchangeAdd from '../exchange/add' //换货单新增
 import collectInvoice from '@/views/finance/receipt/collect-invoice' //开票申请
-import approvalTime from './babb' //审核采购时间
+import approvalTime from './approvalTime' //审核采购时间
 
 import detail from './outLibDetails/detail' //详情
 import VisibleMixin from '@/utils/visibleMixin';
@@ -295,12 +295,6 @@ export default {
           '审核通过': {
             api: 'seePsiSaleService.salesshipmentPassApproval',
             data: { ...params, apprpvalNode: 'psi_sales_outlibrary_07' },
-            needNote: null
-          },
-
-          '审核采购时间': {
-            api: 'seePsiSaleService.salesshipmentPurchaseTimeApproval',
-            data: { ...params, apprpvalNode: 'psi_sales_outlibrary_12' },
             needNote: null
           },
 

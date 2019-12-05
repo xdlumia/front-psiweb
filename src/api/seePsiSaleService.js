@@ -423,7 +423,13 @@ export default {
   salesquotationQueryMayCommodity: {
     'url': '/salesquotation/queryMayCommodity',
     'mock': false,
-    'methods': 'get'
+    'methods': 'post'
+  },
+
+  // 查询报价单可退换货商品
+  salesquotationQueryMayCommodity: {
+    'url': '/salesquotation/queryMayCommodity',
+    'mock': false
   },
 
   // 驳回
@@ -615,12 +621,6 @@ export default {
   /* =============销售单end=========== */
 
   /* =============销售出库单start=========== */
-  // 根据code获取出库单商品
-  salesshipmentBusinessCommodityEntity: {
-    'url': '/salesshipment/BusinessCommodityEntity',
-    'mock': false
-  },
-
   // 审核
   salesshipmentApproval: {
     'url': '/salesshipment/approval',
@@ -689,6 +689,12 @@ export default {
   // 获取列表
   salesshipmentList: {
     'url': '/salesshipment/list',
+    'mock': false
+  },
+
+  // 根据code采购入库单列表
+  salesshipmentListByShipmentCode: {
+    'url': '/salesshipment/listByShipmentCode',
     'mock': false
   },
 
