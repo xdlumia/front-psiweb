@@ -46,13 +46,14 @@
           class="p10"
         >
           <inventoryInfo
+            @changeRecord='changeRecord'
             ref="deliverEdit"
             :addform='addform'
           />
         </el-form>
         <inventoryCommodities
           v-if="addform.type == 2"
-          ref="inventory"
+          ref="changeRecord"
           :addform='addform'
         />
       </el-main>
@@ -128,6 +129,13 @@ export default {
       })
       return list
     },
+    //库房 切换，清空下边的已选商品
+    changeRecord() {
+      if (this.addform.type == 2) {
+        this.$refs.changeRecord.changeRecord()
+      }
+
+    },
     //点一下保存
     submit() {
       this.$refs['addform'].validate((valid) => {
@@ -138,7 +146,7 @@ export default {
             type: 'warning'
           }).then(() => {
             if (this.addform.type == 2) {
-              this.addform.commodityCodeList = this.returnList(this.$refs.inventory.tableData)
+              this.addform.commodityCodeList = this.returnList(this.$refs.changeRecord.tableData)
             } else {
               this.addform.commodityCodeList = []
             }

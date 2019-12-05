@@ -165,6 +165,7 @@ export default {
     },
     //库房改变
     changeRecord() {
+      this.$emit("changeRecord")
       setTimeout(() => {
         this.$root.$emit('loadSearch')
       })
