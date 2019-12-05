@@ -26,7 +26,7 @@
         >
           生成拣货单和组装任务</el-button>
         <el-button
-          v-if="detailForm.assembleOrderState !== 2 && detailForm.assembleOrderState !== 3 && detailForm.assembleOrderState !== -1"
+          v-if="detailForm.assembleOrderState !== 3 && detailForm.assembleOrderState !== -1"
           type="primary"
           size='mini'
           :visible='addVisible'
@@ -152,7 +152,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiWmsService.wmsassembleorderTermination(null, this.detailForm.id)
+        this.$api.seePsiWmsService.wmsassembleorderTermination(null, this.detailForm.assembleOrderCode)
           .then(res => {
             this.reload()
             this.wmsassembleorderInfo()

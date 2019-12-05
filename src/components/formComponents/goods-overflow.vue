@@ -9,7 +9,7 @@
   <div>
     <form-card title='报溢商品'>
       <div slot="title">
-        <span>组装商品</span>
+        <span>{{drawerData.type == 1 ? '报溢商品' : '报损商品'}}</span>
         <span class="fr">
           <span>
             <el-link
@@ -26,20 +26,30 @@
         ref="table"
         :data='detailForm.commondityList'
         class="college-main"
+        :load="load"
+        row-key="commodityCode"
+        lazy
         max-height='300px'
+        :tree-props="{children: 'children', hasChildren: 'configId'}"
       >
+        <el-table-column
+          fixed
+          min-width="50"
+          prop="name"
+        >
+        </el-table-column>
         <el-table-column
           fixed
           prop="num"
           min-width="100"
-          label="报溢数量"
+          :label="detailForm.type == 1 ? '报溢数量' : '报损数量'"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           fixed
           prop="wmsName"
           min-width="100"
-          label="入库库房"
+          :label="detailForm.type == 1 ? '入库库房' : '出库库房'"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
@@ -141,6 +151,7 @@
     </form-card>
     <overflowSn
       :visible.sync='dialogVisible'
+      :data='detailForm'
       :form={commodityCode:rowData.commodityCode,businessCode:drawerData.reportingLossesCode,page:1,limit:20}
     />
     <FullscreenElement
@@ -192,7 +203,18 @@ export default {
     getRowData(row) {
       this.rowData = row
       this.dialogVisible = true
-    }
+    },
+    //表格查询数据懒加载
+    load(tree, treeNode, resolve) {
+      this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName({ page: 1, limit: 50, commodityCode: tree.commodityCode })
+        .then(res => {
+          let list = res.data || []
+          resolve(list)
+        })
+        .finally(() => {
+          treeNode.loading = false
+        })
+    },
   },
   components: {
     overflowSn,

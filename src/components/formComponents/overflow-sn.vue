@@ -12,7 +12,7 @@
       :visible.sync="visible"
       v-if="visible"
       @close='close'
-      title="报溢商品记录"
+      :title="data.type == 1 ? '报溢商品记录' : '报损商品记录'"
       v-dialogDrag
     >
       <el-container>
@@ -23,7 +23,7 @@
               :params="form"
               ref="companyTable"
               class="college-main"
-              max-height='300px'
+              style="height:250px"
             >
               <el-table-column
                 type="index"
@@ -55,19 +55,19 @@
               <el-table-column
                 prop="wmsName"
                 min-width="100"
-                label="调出库房"
+                :label="data.type == 1 ? '入库库房' : '出库库房'"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
                 prop="operator"
                 min-width="100"
-                label="调拨人"
+                :label="data.type == 1 ? '入库人' : '出库人'"
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column
                 prop="createTime"
                 min-width="100"
-                label="调拨时间"
+                :label="data.type == 1 ? '入库时间' : '出库时间'"
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
@@ -117,11 +117,11 @@ export default {
     },
     form: {
 
-    }
+    },
+    data: {}
   },
   data() {
     return {
-      data: '',
       tableData: Array(12)
         .fill('')
         .map(() => ({ name: '' })),
