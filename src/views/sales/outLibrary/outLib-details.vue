@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 20:53:25
+ * @LastEditTime: 2019-12-05 11:57:38
  * @Description: 销售出库单详情
 */
 <template>
@@ -69,7 +69,7 @@
     <!-- 编辑 -->
     <add
       :visible.sync="editVisible"
-      :rowData="rowData"
+      :rowData="detail"
       type="edit"
       :params="{salesShipmentCode:code}"
       :code="code"
@@ -77,7 +77,7 @@
     <!-- 生成合同 -->
     <addContract
       :visible.sync="addContractVisible"
-      :rowData="rowData"
+      :rowData="detail"
       type="addContract"
       :params="{salesShipmentCode:code}"
       :code="code"
@@ -85,7 +85,7 @@
     <!-- 追加合同 -->
     <addContract
       :visible.sync="editContractVisible"
-      :rowData="rowData"
+      :rowData="detail"
       type="editContract"
       :params="{salesShipmentCode:code}"
       :code="code"
@@ -93,7 +93,7 @@
     <!-- 生成换货单 -->
     <exchangeAdd
       :visible.sync="exchangeAddVisible"
-      :rowData="rowData"
+      :rowData="detail"
       type="add"
       :params="{salesShipmentCode:code}"
       :code="code"
@@ -101,7 +101,7 @@
     <!-- 生成退货单 -->
     <returnAdd
       :visible.sync="returnAddVisible"
-      :rowData="rowData"
+      :rowData="detail"
       type="add"
       :params="{salesShipmentCode:code}"
       :code="code"
@@ -109,10 +109,18 @@
     <!-- 开票申请 -->
     <collectInvoice
       :visible.sync="collectInvoiceVisible"
-      :rowData="rowData"
+      :rowData="detail"
       :invoiceType="0"
       :code="code"
     />
+    <!-- 采购审核时间 -->
+    <approvalTime
+      :visible.sync="timeApprovalVisible"
+      :rowData="detail"
+      :invoiceType="0"
+      :code="code"
+    >
+    </approvalTime>
   </div>
 </template>
 <script>
@@ -122,6 +130,7 @@ import addContract from './add-contract' //合同新增
 import returnAdd from '../return/add' //退货单新增
 import exchangeAdd from '../exchange/add' //换货单新增
 import collectInvoice from '@/views/finance/receipt/collect-invoice' //开票申请
+import approvalTime from './approvalTime' //审核采购时间
 
 import detail from './outLibDetails/detail' //详情
 import VisibleMixin from '@/utils/visibleMixin';
@@ -133,7 +142,8 @@ export default {
     addContract,
     returnAdd,
     exchangeAdd,
-    collectInvoice
+    collectInvoice,
+    approvalTime
   },
 
   data() {
@@ -202,6 +212,7 @@ export default {
       returnAddVisible: false,
       exchangeAddVisible: false,
       collectInvoiceVisible: false, //开票申请
+      timeApprovalVisible: false, //审核采购时间
 
     }
   },
@@ -217,9 +228,10 @@ export default {
   methods: {
     // 判断禁用的按钮
     isDisabledButton(label) {
-      let procurementExpectedArrivalTime = this.rowData.procurementExpectedArrivalTime
       // 采购预计到货时间为空 禁用采购审核时间
-      if (label == '审核采购时间' && !procurementExpectedArrivalTime) {
+      if (label == '审核采购时间' && !this.detail.procurementExpectedArrivalTime) {
+        return true
+      } else if (label == '编辑合同' && this.detail.isContract) {
         return true
       } else {
         return false
@@ -249,6 +261,7 @@ export default {
         '生成退货单': 'returnAddVisible',
         '生成换货单': 'exchangeAddVisible',
         '开票申请': 'collectInvoiceVisible',
+        '审核采购时间': 'timeApprovalVisible'
       }
       // 需要弹出操作的功能
       if (labelObj.hasOwnProperty(label)) {
@@ -284,12 +297,6 @@ export default {
           '审核通过': {
             api: 'seePsiSaleService.salesshipmentPassApproval',
             data: { ...params, apprpvalNode: 'psi_sales_outlibrary_07' },
-            needNote: null
-          },
-
-          '审核采购时间': {
-            api: 'seePsiSaleService.salesshipmentPurchaseTimeApproval',
-            data: { ...params, apprpvalNode: 'psi_sales_outlibrary_12' },
             needNote: null
           },
 

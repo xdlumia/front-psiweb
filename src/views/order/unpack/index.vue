@@ -6,7 +6,10 @@
  * @Description: 采购-拆卸单
 */
 <template>
-  <div class="buying-requisition-page wfull hfull" v-loading="loading">
+  <div
+    class="buying-requisition-page wfull hfull"
+    v-loading="loading"
+  >
     <TableView
       :filterOptions="filterOptions"
       :params="Object.assign(defaultParams,params)"
@@ -20,23 +23,50 @@
       <template slot="button">
         <!-- <span>自动分配：</span>
         <el-switch class="mr10" v-model="switchValue"></el-switch>-->
-        <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
+        <el-button
+          @click="showEdit=true"
+          size="mini"
+          type="primary"
+        >新增</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
         <span v-else-if="prop=='operation'">
-          <span class="elTableDragDefault el-icon-rank f20" v-if="row.sequence>0"></span>
-          <el-button @click="setTop(row)" class="ml10" size="mini" type="primary" v-if="row.sequence>0">置顶</el-button>
+          <span
+            class="elTableDragDefault el-icon-rank f20"
+            v-if="row.sequence>0"
+          ></span>
+          <el-button
+            @click="setTop(row)"
+            class="ml10"
+            size="mini"
+            type="primary"
+            v-if="row.sequence>0"
+          >置顶</el-button>
         </span>
         <span v-else-if="prop=='disassemblyOrderState'">{{stateText[value]}}</span>
         <span v-else-if="prop=='disassemblyOrderCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link
+            :underline="false"
+            @click="showDetail=true,currentCode=value"
+            class="f12"
+            type="primary"
+          >{{value}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload()" v-if="showDetail" />
-    <Edit :visible.sync="showEdit" @reload="reload()" v-if="showEdit" />
+    <Detail
+      :code="currentCode"
+      :visible.sync="showDetail"
+      @reload="reload()"
+      v-if="showDetail"
+    />
+    <Edit
+      :visible.sync="showEdit"
+      @reload="reload()"
+      v-if="showEdit"
+    />
   </div>
 </template>
 <script>
@@ -85,15 +115,15 @@ export default {
       },
       // prettier-ignore
       filterOptions: [
-          { label: '拆卸单编号', prop: 'disassemblyOrderCode', default:true, },
-          { label: '任务数量', prop: 'TaskNum', type: 'numberRange', int: true, default:true, },
-          { label: '未分配数量', prop: 'UndistributedNum', type: 'numberRange', int: true, default:true, },
-          { label: '未拆卸数量', prop: 'NoDisassemblyNum', type: 'numberRange', int: true, default:true, },
-          { label: '已拆卸数量', prop: 'AccomplishDisassemblyNum', type: 'numberRange', int: true, default:true, },
-          { label: '生成顺序', prop: 'Sequence', type: 'numberRange', int: true, default:true, },
-          { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
-          { label: '创建人', prop: 'creator', type: 'employee' },
-          { label: '创建时间', prop: 'CreateTime', type: 'dateRange' },
+        { label: '拆卸单编号', prop: 'disassemblyOrderCode', default: true, },
+        { label: '任务数量', prop: 'TaskNum', type: 'numberRange', int: true, default: true, },
+        { label: '未分配数量', prop: 'UndistributedNum', type: 'numberRange', int: true, default: true, },
+        { label: '未拆卸数量', prop: 'NoDisassemblyNum', type: 'numberRange', int: true, default: true, },
+        { label: '已拆卸数量', prop: 'AccomplishDisassemblyNum', type: 'numberRange', int: true, default: true, },
+        { label: '生成顺序', prop: 'Sequence', type: 'numberRange', int: true, default: true, },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
+        { label: '创建人', prop: 'creator', type: 'employee' },
+        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' },
       ]
     };
   },
@@ -134,6 +164,7 @@ export default {
         return isChanged;
       });
       let [a, b] = changed;
+      console.log([a, b])
       this.loading = true;
       try {
         if (a.sequence && b.sequence) {
@@ -143,7 +174,7 @@ export default {
           ]);
         }
         this.reload();
-      } catch (e) {}
+      } catch (e) { }
       this.loading = false;
     },
     reload() {

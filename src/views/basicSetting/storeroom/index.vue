@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-27 14:21:33
+ * @LastEditTime: 2019-12-05 10:56:47
  * @Description: 库房管理
  -->
 <template>
@@ -69,7 +69,8 @@
           <el-button size="mini" @click="visible=false">关闭</el-button>
         </div>
       </div>
-      <add-store-room ref="addStoreRoom" :editId="editId" v-if="visible" @refresh="refresh"></add-store-room>
+      <add-store-room ref="addStoreRoom" :editId="editId" v-if="visible"
+@refresh="refresh"></add-store-room>
     </el-dialog>
   </div>
 </template>
@@ -89,7 +90,7 @@ export default {
       default: () => ({ page: 1, limit: 15 })
     }
   },
-  data () {
+  data() {
     return {
       visible: false,
       queryForm: {
@@ -119,7 +120,7 @@ export default {
         },
         {
           label: '创建人',
-          prop: 'creatorName',
+          prop: 'creator',
           type: 'employee',
           default: true
         },
@@ -128,13 +129,13 @@ export default {
       ]
     }
   },
-  mounted () {
+  mounted() {
   },
   components: {
     addStoreRoom
   },
   methods: {
-    commonwmsmanagerUpdateState (id, state) {
+    commonwmsmanagerUpdateState(id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -150,7 +151,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete (id) {
+    commonwmsmanagerLogicDelete(id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -166,10 +167,10 @@ export default {
         })
       })
     },
-    saveStoreRoom () {
+    saveStoreRoom() {
       this.$refs.addStoreRoom && this.$refs.addStoreRoom.commonwmsmanagerSave()
     },
-    refresh () {
+    refresh() {
       this.visible = false
       this.$refs.table.reload()
     }

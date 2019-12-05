@@ -53,7 +53,7 @@
           <template slot-scope="scope">{{scope.row.putinNumber || 0}}/{{scope.row.commodityNumber}}</template>
         </el-table-column>
         <!-- <el-table-column
-          fixed
+          fixed 
           prop="teardownNumber"
           min-width="100"
           label="拆卸数量"

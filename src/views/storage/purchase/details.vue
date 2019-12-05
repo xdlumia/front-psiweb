@@ -10,8 +10,9 @@
   <SideDetail
     :status="status"
     :visible="visible"
+    v-loading="loading"
     @close="$emit('update:visible',false)"
-    :title="`采购单-${drawerData.purchaseCode}`"
+    :title="`采购单-${code}`"
     width="990px"
   >
     <!-- class="d-auto-y"
@@ -27,7 +28,7 @@
           <el-form>
             <purchaseBase :data="detailForm" />
             <purchaseReceivingInfo :data="detailForm" />
-            <goodsWarehousing 
+            <goodsWarehousing
               @reload='reload'
               :data="detailForm"
               :drawerData="drawerData"
@@ -86,7 +87,8 @@ export default {
     return {
       status: [{ label: '入库状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       detailForm: {},
-      activeName: ''
+      activeName: '',
+      loading: false
     };
   },
   components: {
@@ -101,6 +103,7 @@ export default {
   methods: {
     // 查看详情
     wmsallocationorderInfo() {
+      this.loading = true
       this.$api.seePsiPurchaseService.purchaseGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
@@ -111,7 +114,7 @@ export default {
           this.status[4].value = this.detailForm.source
         })
         .finally(() => {
-
+          this.loading = false
         })
     },
     reload() {

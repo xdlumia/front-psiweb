@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 21:40:56
+ * @LastEditTime: 2019-12-05 10:53:59
  * @Description: 商品管理
  -->
 <template>
@@ -37,7 +37,11 @@
               style="margin-top:2px;"
               title="关闭"
             ></el-link>
-            <dFilter v-model="goodsForm" :options="filterOptions" @change="goodsForm.page=1,getGoodsList()" />
+            <dFilter
+              v-model="goodsForm"
+              :options="filterOptions"
+              @change="goodsForm.page=1,getGoodsList()"
+            />
             <el-button
               size="mini"
               class="tool-item"
@@ -89,8 +93,7 @@
                 >复制新增</el-button>
               </template>
             </el-table-column>
-            <el-table-column
-align="center" label="商品编号" min-width="160"
+            <el-table-column align="center" label="商品编号" min-width="160"
 show-overflow-tooltip>
               <template slot-scope="scope">
                 <span
@@ -187,7 +190,7 @@ show-overflow-tooltip>
             @size-change="handleSizeChange"
             :current-page.sync="goodsForm.page"
             :page-size="goodsForm.limit"
-            :page-sizes="[10, 20, 30, 40]"
+            :page-sizes="[15, 20, 30, 40]"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
           ></el-pagination>
@@ -195,8 +198,7 @@ show-overflow-tooltip>
       </div>
     </div>
 
-    <el-dialog
-:visible.sync="visible" title v-dialogDrag
+    <el-dialog :visible.sync="visible" title v-dialogDrag
 :show-close="false" width="1000px">
       <div slot="title" style="display:flex;">
         <h3 style="flex:1;text-align:center;">新增商品</h3>
@@ -205,8 +207,7 @@ show-overflow-tooltip>
           <el-button size="mini" @click="visible=false">关闭</el-button>
         </div>
       </div>
-      <add-good
-@refresh="refresh" v-if="visible" ref="addGood"
+      <add-good @refresh="refresh" v-if="visible" ref="addGood"
 :code="copycode" :copy="copy"></add-good>
     </el-dialog>
     <detail

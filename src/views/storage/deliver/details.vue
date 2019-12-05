@@ -10,7 +10,8 @@
     :status="status"
     :visible="visible"
     @close="$emit('update',false)"
-    :title="'发货单-'+drawerData.shipmentsOrderCode"
+    v-loading='loading'
+    :title="'发货单-'+detailForm.shipmentsOrderCode"
     width="990px"
   >
     <div>
@@ -52,7 +53,8 @@ export default {
     return {
       status: [{ label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       detailForm: {},
-      activeName: ''
+      activeName: '',
+      loading: true
     };
   },
   components: {
@@ -66,6 +68,7 @@ export default {
   methods: {
     //查看调拨单详情
     wmsallocationorderInfo() {
+      this.loading = true
       this.$api.seePsiWmsService.wmsshipmentsorderGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
@@ -75,7 +78,7 @@ export default {
           this.status[3].value = res.data.source
         })
         .finally(() => {
-
+          this.loading = false
         })
     },
   }
