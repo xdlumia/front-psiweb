@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 22:39:34
+ * @LastEditTime: 2019-12-05 15:07:02
  * @Description: 确定配置信息
 */
 <template>
@@ -167,7 +167,7 @@ export default {
       let configs = Object.keys(this.configList).filter(key => {
         let keys = key.split('-');
         keys.pop();
-        if (keys.join('-') == row.configGoodName) {
+        if (keys.join('-') == row.goodsCode) {
           return true;
         } else return false;
       });
@@ -266,7 +266,8 @@ export default {
     async chooseNotConfig(item, index) {
       let params = {
         categoryCode: 'PSI_SP_KIND-1',
-        name: item.configGoodName
+        // name: item.configGoodName,
+        goodsCode: item.goodsCode
       };
       let { data } = await this.$api.seeGoodsService.getGoodsByNameForJXC(
         params
@@ -277,6 +278,7 @@ export default {
         item.goodsName = item.name;
         item.commodityCode = item.goodsCode;
         item.quotationIds = item.configId;
+        item.reference = item.saleReferencePrice
         return item;
       });
       this.$set(this.data.KIND1List, index, item);
@@ -334,6 +336,7 @@ export default {
       this.data.KIND1List = [];
       let configList = {};
       let configKeys = {};
+      let keyNames = {}
       /**
        * 名称:newJson
        * 数据格式:{key:[]}
@@ -341,25 +344,28 @@ export default {
       const newJson = {};
       data.forEach(item => {
         item.checked = false;
-        let configKey = `${item.configGoodName}-${item.quotationId}`;
+        let configKey = `${item.configGoodCode}-${item.quotationId}`;
         configList[configKey] = configList[configKey] || [];
         configList[configKey].push(
           `${item.commodityCode}-${item.commodityNum}`
         );
-        let configItemKey = `${item.configGoodName}-${item.commodityCode}-${item.commodityNum}`;
+        let configItemKey = `${item.configGoodCode}-${item.commodityCode}-${item.commodityNum}`;
         // 把分类名称当做key  如果没有当前key 创建当前key 并赋值为空数组
-        if (!newJson.hasOwnProperty(item.configGoodName)) {
+        if (!newJson.hasOwnProperty(item.configGoodCode)) {
           configKeys[configItemKey] = true;
-          newJson[item.configGoodName] = [item];
+          newJson[item.configGoodCode] = [item];
         }
         // 如果当前有key 那一定有子项.children
         else if (!configKeys[configItemKey]) {
           configKeys[configItemKey] = true;
-          newJson[item.configGoodName].push(item);
+          newJson[item.configGoodCode].push(item);
         }
       });
       let Kind1DataList = this.data.KIND1Data.reduce(
-        (data, item) => ({ ...data, [item.name]: false }),
+        (data, item) => {
+          keyNames[item.goodsCode]=item.name;
+          return { ...data, [item.goodsCode]: false }
+        },
         {}
       );
       // let newArr = []
@@ -368,7 +374,8 @@ export default {
         Kind1DataList[key] = true;
         // $$util.formatChildren 相同类型的数据格式化成children格式
         this.data.KIND1List.push({
-          configGoodName: key,
+          goodsCode: key,
+          configGoodName: keyNames[key],
           /**
            *  childrenData 数组数据
            * className 根据 className格式化成children数据
@@ -379,7 +386,8 @@ export default {
       for (let key in Kind1DataList) {
         if (!Kind1DataList[key]) {
           this.data.KIND1List.push({
-            configGoodName: key,
+            goodsCode: key,
+            configGoodName: keyNames[key],
             disabled: true,
             children: []
           });
@@ -399,7 +407,6 @@ export default {
       // 缓存列表 方便重置
       this.wholeCacheList = JSON.parse(JSON.stringify(this.data.KIND1List));
       this.configList = configList;
-      console.log(this)
     },
     // 根据名称获取整机信息
     commonquotationconfigdetailsListConfigByGoodName() {
@@ -407,7 +414,7 @@ export default {
       if (!this.data.KIND1Data.length) return;
       const params = {
         // doodsName 如果查传的是'' 查的是全部 所以没有值得时候传 ' '
-        goodsName: this.data.KIND1Data.map(v => v.name),
+        codes: this.data.KIND1Data.map(v => v.goodsCode),
         page: 1,
         limit: 100
       };
