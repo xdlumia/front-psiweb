@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 18:10:54
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-05 21:44:20
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -161,6 +161,10 @@ export default {
           commodityCode: row.commodityCode
         }
       );
+      data.map(item=>{
+        item.reference = item.saleReferencePrice
+        item.discountSprice=''
+      })
       cb(data);
     },
     //算合计的

@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 16:57:05
+ * @LastEditTime: 2019-12-05 21:33:56
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -145,7 +145,9 @@
         <template slot-scope="scope">
           <el-form-item
             class="mb0"
-            :rules="[{required:true},{type:'positiveNum'}]"
+            :rules="[{required:true},{type:'positiveNum'},{validator:checkCommodityNumber}]"
+            :prop="getProp(scope.row,'commodityNumber')"
+            v-if="!scope.row.parentCommodityCode"
           >
             <el-input
               size="mini"
@@ -177,7 +179,8 @@
         >
           <el-form-item
             class="mb0"
-            :rules="[{required:true},{type:'positiveNum'}]"
+            :rules="[{required:true},{validator:checkDiscount}]"
+            :prop="getProp(scope.row,'discount')"
           >
 
             <el-input
@@ -204,6 +207,7 @@
           <el-form-item
             class="mb0"
             :rules="[{required:true},{type:'price'}]"
+            :prop="getProp(scope.row,'discountSprice')"
           >
             <el-input
               size="mini"
@@ -340,6 +344,22 @@ export default {
     };
   },
   methods: {
+    checkCommodityNumber(rule,value,cb){
+      if(value>0) cb();
+      else cb(new Error('数量至少为1'))
+    },
+    checkDiscount(rule,value,cb){
+      let num = +(Number(value)||0)
+      let twoNum = num.toFixed(2)
+      if(num>=0&&num<=1&&/^(([1-9]{1}\d*)|(0{1}))(\.\d{0,2})?$/.test(String(value))){
+          cb();
+      }else cb(new Error('折扣区间[0-1],且保留两位小数'))
+    },
+    getProp(row,prop){
+      let i=this.data.businessCommoditySaveVoList.indexOf(row)
+      if(i<0) return;
+      else return `businessCommoditySaveVoList.${i}.${prop}`
+    },
     //选择商品
     commodityChoose(e, scope) {
       let [list] = e[0]
@@ -433,7 +453,7 @@ export default {
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
       // 折扣价格  公式:税前金额  * (1-税率) * 折扣
-      row.discountSprice = (reference * (1 - taxRate) * discount).toFixed(2)
+      row.discountSprice = +(reference * (1 - taxRate) * discount).toFixed(2)||0
     },
     discountSpriceChange(row) {
       let reference = row.reference || 0   //销售参考价
