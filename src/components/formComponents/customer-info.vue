@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 10:16:55
+ * @LastEditTime: 2019-12-05 15:45:38
  * @Description: 客户信息 1  //传入 data:{clientId:'1'} 会自动查询详情
  */
 <template>
@@ -25,11 +25,8 @@
             :disabled="disabled"
             v-if="item.type==='select'"
             placeholder="请输入客户名称选择"
-            :remote-method="getClinent"
             class="wfull mr5"
             filterable
-            remote
-            reserve-keyword
             v-model="data.clientId"
           >
             <el-option
@@ -110,16 +107,13 @@ export default {
       deep: true
     }
   },
+  created() {
+    this.getClinent()
+  },
   methods: {
-    async getClinent(words) {
-      if (words) {
-        let { data } = await this.$api.seePsiCommonService.commonclientinfoQueryList({
-          fuzzyNameOrCode: words,
-        });
-        this.clientOptions = data || []
-      } else {
-        this.clientOptions = [];
-      }
+    async getClinent() {
+      let { data } = await this.$api.seePsiCommonService.commonclientinfoQueryList();
+      this.clientOptions = data || []
     },
     // 获取客户详情信息
     commonclientinfoInfo(id) {
@@ -131,7 +125,6 @@ export default {
       this.$api.seePsiCommonService.commonclientinfoInfo(null, id)
         .then(res => {
           this.clientInfo = res.data || {}
-          this.clientOptions = [this.clientInfo];
         })
         .finally(() => {
           this.loading = false

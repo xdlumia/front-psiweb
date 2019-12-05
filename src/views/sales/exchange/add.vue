@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 14:52:03
+ * @LastEditTime: 2019-12-05 15:27:20
  * @Description: 生成销售换货单
 */
 <template>
@@ -203,14 +203,6 @@ export default {
     // 保存表单数据
     saveHandle() {
       this.$refs.form.validate(valid => {
-        if (!this.form.shipmentFinanceSaveVoList.length) {
-          this.$message({
-            message: '请添加其他费用',
-            type: 'error',
-            showClose: true,
-          });
-          return
-        }
         if (!valid) {
           // 把退货和换货产品合并
           this.form.businessCommoditySaveVoList.map(item => item.putawayType = 0) // 退货入库
