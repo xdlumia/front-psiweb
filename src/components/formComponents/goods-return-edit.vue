@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 14:47:12
+ * @LastEditTime: 2019-12-05 15:11:56
  * @Description: 退货商品商品信息
 */
 <template>
@@ -41,7 +41,7 @@
         ref="table"
       >
         <el-table-column
-          min-width="50"
+          min-width="80"
           label="操作"
         >
           <template slot-scope="scope">
@@ -71,7 +71,14 @@
           min-width="100"
           label="商品图片"
           show-overflow-tooltip
-        />
+        >
+          <template slot-scope="scope">
+            <el-image
+              style="width: 90px; height: 40px"
+              :src="scope.row.goodsPic"
+            />
+          </template>
+        </el-table-column>
         <el-table-column
           prop="categoryCode"
           min-width="80"
@@ -123,7 +130,7 @@
           <template slot-scope="scope">
             <el-form-item
               class="mb0"
-              :prop="`businessCommoditySaveVoList.${scope.$index}.commodityNumber`"
+              :prop="'businessCommoditySaveVoList.' + scope.$index + '.commodityNumber'"
               :rules="[{required:false},{type:'positiveNum'}]"
             >
               <el-input
@@ -143,9 +150,9 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
+            <!-- :prop="`businessCommoditySaveVoList.${scope.$index}.alterationPrice`" -->
             <el-form-item
               class="mb0"
-              :prop="`businessCommoditySaveVoList.${scope.$index}.alterationPrice`"
               :rules="[{required:false},{type:'price'}]"
             >
               <el-input
@@ -240,7 +247,6 @@ export default {
   data() {
     return {
       tableData: [],
-      quotationCode: this.options[0] || '',
       // queryFrom: {
       //   busType: 1, // 1报价单 2请购单]
       //   putawayType: 1,
@@ -251,11 +257,8 @@ export default {
   watch: {
     'data.quotationCode': {
       handler(val) {
-        this.$nextTick(() => {
-          this.params.busCode = this.data.quotationCode
-          if (!this.params.busCode) return
-          this.salesquotationQueryMayCommodity()
-        })
+        if (!val) return
+        this.salesquotationQueryMayCommodity()
       },
       deep: true,
       immediate: true
