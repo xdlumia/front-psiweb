@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 16:28:23
+ * @LastEditTime: 2019-12-05 20:56:50
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -433,6 +433,7 @@ export default {
       });
     },
     async loadChildren(row, node, cb) {
+      if(row.children) return cb(row.children);
       let {
         data
       } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(

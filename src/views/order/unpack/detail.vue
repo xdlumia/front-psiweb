@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 09:36:52
+ * @LastEditTime: 2019-12-05 20:49:44
  * @Description: 拆卸单
 */
 <template>
@@ -148,6 +148,7 @@ export default {
           item.children = item.childrenCommodityList;
           delete item.childrenCommodityList;
         });
+        console.log(data)
         return data;
       } else if (this.rowData) {
         return this.rowData;
