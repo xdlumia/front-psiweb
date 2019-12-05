@@ -2,17 +2,14 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 14:16:31
+ * @LastEditTime: 2019-12-05 14:43:40
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
   <form-card
     class="commodity-quote-edit"
-    title="商品信息"
+    title="换出商品信息"
   >
-    <div slot="title">
-      <span>商品信息</span>
-    </div>
     <el-table
       show-summary
       sum-text='总计'
@@ -347,27 +344,39 @@ export default {
     getSummaries(param) {
       const { columns, data } = param;
       const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = '总计';
-          return;
+      columns.forEach((col, index) => {
+        if (index == 0) {
+          sums[index] = '总价'
         }
-        if (column.property == 'inventoryPrice') {
-          const values = data.map((item) => {
-            if (item.commodityInfoList && item.commodityInfoList.length > 0) {
-              return Number(item.inventoryPrice) * Number(item.commodityInfoList.length)
-            }
-          });
-          sums[index] = values.reduce((prev, curr) => {
-            const value = Number(curr);
-            if (!isNaN(value)) {
-              return prev + curr;
-            } else {
-              return prev;
-            }
-          }, 0);
+        /**
+         * discountSprice 折后销售价 
+         * commodityNumber 数量
+         * reference 销售参考价
+         */
+        else if (['commodityNumber'].includes(col.property)) {
+          const values = data.map(item => Number(item[col.property] || 0));
+          sums[index] = values.reduce((sum, curr) => {
+            const val = Number(curr)
+            return sum + curr
+          }, 0)
         }
-      })
+        else if (['discountSprice', 'reference'].includes(col.property)) {
+          // 单价 * 数量
+          const values = data.map(item => Number(item[col.property] || 0) * (item.commodityNumber || 0));
+          sums[index] = values.reduce((sum, curr) => {
+            const val = Number(curr)
+            return sum + curr
+          }, 0).toFixed(2)
+        }
+        if (col.property == 'commodityNumber') {
+          this.data.totalExchangeNumber = sums[index] //总计数量,
+        }
+        // else if (col.property == 'reference') {
+        //   this.data.totalCostAmount = sums[index]//  销售参考价总计
+        // } else if (col.property == 'discountSprice') {
+        //   this.data.totalSalesAmount = sums[index]// //总计销售价
+        // }
+      });
       return sums;
     },
     expand(row) {

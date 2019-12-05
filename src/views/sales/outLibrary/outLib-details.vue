@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 11:57:38
+ * @LastEditTime: 2019-12-05 15:06:11
  * @Description: 销售出库单详情
 */
 <template>
@@ -92,6 +92,7 @@
     />
     <!-- 生成换货单 -->
     <exchangeAdd
+      v-if="exchangeAddVisible"
       :visible.sync="exchangeAddVisible"
       :rowData="detail"
       type="add"
@@ -100,6 +101,7 @@
     />
     <!-- 生成退货单 -->
     <returnAdd
+      v-if="returnAddVisible"
       :visible.sync="returnAddVisible"
       :rowData="detail"
       type="add"
@@ -108,6 +110,7 @@
     />
     <!-- 开票申请 -->
     <collectInvoice
+      v-if="collectInvoiceVisible"
       :visible.sync="collectInvoiceVisible"
       :rowData="detail"
       :invoiceType="0"
@@ -117,8 +120,6 @@
     <approvalTime
       :visible.sync="timeApprovalVisible"
       :rowData="detail"
-      :invoiceType="0"
-      :code="code"
     >
     </approvalTime>
   </div>

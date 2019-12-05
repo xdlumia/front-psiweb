@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 22:31:27
+ * @LastEditTime: 2019-12-05 15:11:04
  * @Description: 生成销售退货单
 */
 <template>
@@ -58,7 +58,6 @@
         <!-- 退换货商品 -->
         <goods-return-edit
           from="return"
-          :params="{busType: 1, putawayType: 0,}"
           :data="form"
           :options="rowData.quotationCodes || []"
           id="goodsChangeEdit"

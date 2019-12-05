@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 11:43:52
+ * @LastEditTime: 2019-12-05 14:52:03
  * @Description: 生成销售换货单
 */
 <template>
@@ -30,7 +30,6 @@
       </div>
     </div>
     <el-form
-      v-if="visible"
       ref="form"
       size="small"
       :model="form"
@@ -58,10 +57,9 @@
         />
         <!-- 退换货商品 -->
         <goods-return-edit
-          :options="rowData.quotationCodes || []"
-          :data="form"
           from="exchange"
-          :params="{busType: 1, putawayType: 0,}"
+          :data="form"
+          :options="rowData.quotationCodes || []"
           id="goodsChangeEdit"
         />
         <!-- 账期信息 -->
@@ -177,12 +175,10 @@ export default {
           //   paymentType: '',//9
           // }
         ],
-        shouldRefundAmount: '',//98765432109876.12,
-        source: '',//来源,
-        state: '',//9,
-        totalExchangeNumber: '',//9,
-        totalRefundAmount: '',//98765432109876.12,
-        totalRefundNumber: '',//9
+        shouldRefundAmount: '',//
+        totalExchangeNumber: '',//换货总数量
+        totalRefundAmount: '',//总计退货价格
+        totalRefundNumber: '',//退货总数量
       }
     }
   },
@@ -217,6 +213,8 @@ export default {
         }
         if (!valid) {
           // 把退货和换货产品合并
+          this.form.businessCommoditySaveVoList.map(item => item.putawayType = 0) // 退货入库
+          this.form.exChangeCommodityList.map(item => item.putawayType = 1) //换货入库
           this.form.businessCommoditySaveVoList = this.form.businessCommoditySaveVoList.concat(this.form.exChangeCommodityList)
           this.form.businessCommoditySaveVoList.map(v => v.busCode = this.form.quotationCode)
           this.loading = true
