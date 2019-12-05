@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 16:43:43
+ * @LastEditTime: 2019-12-05 17:37:46
  * @Description: file content
 */
 <template>
@@ -188,7 +188,7 @@ export default {
     //  等detail加载完成 并且给form 对象赋值完成之后再加载商品数据
     'form.id': {
       handler(val) {
-        if (val && this.type == 'edit') {
+        if (val && this.type == 'edit' && this.form.id) {
           this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList({ putawayType: 0, busType: 1, busCode: this.code })
             .then(res => {
               let data = res.data || []
@@ -287,6 +287,7 @@ export default {
     },
     async getDetail() {
       if (this.code) {
+        this.form.id=''
         let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
         return data;
       }
