@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 11:20:07
+ * @LastEditTime: 2019-12-05 11:23:24
  * @Description: 审核采购时间
 */
 <template>
@@ -10,6 +10,7 @@
     <el-dialog
       :visible.sync="showEditPage"
       width="920px"
+      title="采购入库单"
       @close="close"
       v-dialogDrag
       v-loading="loading"
