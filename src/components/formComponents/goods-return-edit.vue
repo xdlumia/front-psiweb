@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 18:20:36
+ * @LastEditTime: 2019-12-05 21:29:39
  * @Description: 退货商品商品信息
 */
 <template>
@@ -34,9 +34,10 @@
         :summary-method="getSummaries"
         size="mini"
         border
-        :data="data.businessCommoditySaveVoList || []"
-        default-expand-all
-        :tree-props="{children: 'children'}"
+        :data="returnTableData || []"
+        lazy
+        :load="loadChildren"
+        :tree-props="{hasChildren:'configId'}"
         row-key="id"
         ref="table"
       >
@@ -47,7 +48,7 @@
           <template slot-scope="scope">
             <el-button
               type="text"
-              class="el-icon-remove f20"
+              class="el-icon-remove f18"
               @click="del(scope.row)"
             ></el-button>
           </template>
@@ -57,14 +58,27 @@
           min-width="100"
           label="商品编号"
           show-overflow-tooltip
-        />
-
+        >
+          <template
+            slot-scope="scope"
+            v-if="scope.row.categoryCode == 'PSI_SP_KIND-1'"
+          >
+            {{scope.row.commodityCode}}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
-        />
+        >
+          <template
+            slot-scope="scope"
+            v-if="scope.row.categoryCode == 'PSI_SP_KIND-1'"
+          >
+            {{scope.row.goodsName}}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="goodsPic"
           min-width="100"
@@ -126,7 +140,10 @@
           label="退货商品数量"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
+          <template
+            slot-scope="scope"
+            v-if="scope.row.categoryCode == 'PSI_SP_KIND-1'"
+          >
             <el-form-item
               class="mb0"
               :prop="'businessCommoditySaveVoList.' + scope.$index + '.commodityNumber'"
@@ -149,7 +166,10 @@
           label="退货单价"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
+          <template
+            slot-scope="scope"
+            v-if="scope.row.categoryCode == 'PSI_SP_KIND-1'"
+          >
             <el-form-item
               class="mb0"
               :prop="`businessCommoditySaveVoList.${scope.$index}.alterationPrice`"
@@ -189,7 +209,10 @@
           label="是否拆卸"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
+          <template
+            slot-scope="scope"
+            v-if="scope.row.categoryCode == 'PSI_SP_KIND-1'"
+          >
             <el-form-item
               class="mb0"
               prop="isTeardown"
@@ -221,6 +244,7 @@
 </template>
 <script>
 import goodsChangeEdit from '@/components/formComponents/goods-exchange-edit.vue'
+import { watch } from 'fs'
 export default {
   components: { goodsChangeEdit },
   props: {
@@ -246,7 +270,7 @@ export default {
   },
   data() {
     return {
-      tableData: [],
+      returnTableData: [],
       // queryFrom: {
       //   busType: 1, // 1报价单 2请购单]
       //   putawayType: 1,
@@ -264,25 +288,35 @@ export default {
       immediate: true
     }
   },
+  computed: {},
   created() {
 
   },
   methods: {
+    async loadChildren(row, node, cb) {
+      let { data } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
+        { commodityCode: row.commodityCode }
+      );
+      cb(data);
+    },
     // 删除退货
     del(row) {
       let index = this.data.businessCommoditySaveVoList.findIndex(item => item.id == row.id)
       this.data.businessCommoditySaveVoList.splice(index, 1)
+      // this.returnTableData.splice(index, 1)
     },
     salesquotationQueryMayCommodity() {
       this.$api.seePsiSaleService.salesquotationQueryMayCommodity({ quotaionCode: this.data.quotationCode })
         .then(res => {
           let data = res.data || []
           this.data.businessCommoditySaveVoList = data
-          // this.$set(this.data, 'businessCommoditySaveVoList', data)
           this.data.businessCommoditySaveVoList.map(item => {
             item.customNumber = item.commodityNumber
             item.commodityNumber = item.actionableNumber
           })
+          // 直接使用this.data.businessCommoditySaveVoList数据响应不过来
+          this.returnTableData = this.data.businessCommoditySaveVoList
+
           // this.data.exChangeCommodityList 是临时数据 存放换货后的数据
           if (this.data.exChangeCommodityList) {
             this.data.exChangeCommodityList = []
