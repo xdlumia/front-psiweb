@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 11:15:59
+ * @LastEditTime: 2019-12-05 15:49:57
  * @Description: 采购入库单
 */
 <template>
@@ -66,7 +66,7 @@
         @click="showReject=true"
         size="mini"
         type="primary"
-        v-if="detail&&[3,4].includes(detail.state)"
+        v-if="detail&&[3,4].includes(detail.state)&&detail.source!='直发单'"
       >退货</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinShutdown',{

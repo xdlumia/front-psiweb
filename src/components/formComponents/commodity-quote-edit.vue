@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 15:09:08
+ * @LastEditTime: 2019-12-05 16:57:05
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -385,10 +385,10 @@ export default {
         else if (['discountSprice', 'reference'].includes(col.property)) {
           // 单价 * 数量
           const values = data.map(item => Number(item[col.property] || 0) * (item.commodityNumber || 0));
-          sums[index] = values.reduce((sum, curr) => {
+          sums[index] = +Number(values.reduce((sum, curr) => {
             const val = Number(curr)
             return sum + curr
-          }, 0)
+          }, 0)).toFixed(2)
         }
         if (col.property == 'commodityNumber') {
           this.data.totalNumber = sums[index] //总计数量,

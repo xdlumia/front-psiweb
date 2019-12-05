@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 10:59:17
+ * @LastEditTime: 2019-12-05 16:43:43
  * @Description: file content
 */
 <template>
@@ -321,7 +321,10 @@ export default {
             });
             return
           }
-          copyParams.businessCommoditySaveVoList = this.$$util.jsonFlatten(copyParams.businessCommoditySaveVoList, 'commonGoodConfigDetailsEntityList')
+          copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.map(item=>{
+            delete item.commonGoodConfigDetailsEntityList
+            return item;
+          })
           this.loading = true
           // rules 表单验证是否通过
           let api = 'salesquotationSave' // 默认编辑更新

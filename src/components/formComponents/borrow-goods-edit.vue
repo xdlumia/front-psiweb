@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 10:41:08
+ * @LastEditTime: 2019-12-05 16:29:19
  * @Description: 借入/借出商品编辑页面
 */  
 <template>
@@ -89,7 +89,7 @@ export default {
       if(this.data){
         columns = [
           { label:'操作', key:'actions', width:120, prop:'actions',slot:'actions' },
-          { label:'商品编号', key:'commodityCodes', width:140, prop:'commodityCode',slot:'commodityCode',showOverflowTip:true },
+          { label:'商品编号', key:'commodityCodes', width:220, prop:'commodityCode',slot:'commodityCode',showOverflowTip:true },
           { label:'商品名称', key:'goodsNames', width:140, prop:'goodsName',slot:'goodsName',showOverflowTip:true },
           { label:this.data.borrowLoanType==1?'借出数量':'借入数量', key:'borrowLoanNum', width:100, prop:'borrowLoanNum',slot:'borrowLoanNum'},
         ]

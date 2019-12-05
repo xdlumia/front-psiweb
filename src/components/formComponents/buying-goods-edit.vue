@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 14:08:24
+ * @LastEditTime: 2019-12-05 16:28:23
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -235,7 +235,7 @@ export default {
     // dictName             如有该值表明是业务字典
     // format               定义format函数，会传值进去并显示返回数据 Function(value,row)
     let columns = [
-      { label: '商品编号', key: 'commodityCode', width: 160, prop: 'commodityCode' },
+      { label: '商品编号', key: 'commodityCode', width: 220, prop: 'commodityCode' },
       { label: '商品图片', key: 'goodsPic', width: 120, prop: 'goodsPic' },
       { label: '商品名称', key: 'goodsName', width: 120, prop: 'goodsName', showOverflowTip: true },
       { label: '库房', key: 'wsm', width: 100, prop: 'wsmName', showOverflowTip: true },
