@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 18:46:03
+ * @LastEditTime: 2019-12-05 21:17:34
  * @Description: 其他费用
  */
 <template>
@@ -76,11 +76,10 @@
 import { watch } from 'fs';
 let formItems = [
   // 客户名称编辑的时候使用clientId显示的时候使用clientName
-  // TODO 费用明细 字典值还没有随便取的
   { label: '费用类型', prop: 'feeTypeCode', type: 'select', options: [], dicName: "ZD_DY_LX", rules: [{ required: true, trigger: 'blur' }], },
   { label: '费用明细', prop: 'feeDetailCode', type: 'select', rules: [{ required: true, trigger: 'blur' }], },
-  { label: '金额', prop: 'payAmount', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
-  { label: '付款时间', prop: 'payTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
+  { label: '金额', prop: 'payAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'price' }], },
+  { label: '付款时间', prop: 'payTime', type: 'date', rules: [{ required: true, trigger: 'blur' }], },
 ]
 export default {
   props: {
@@ -121,6 +120,9 @@ export default {
       }
     },
     addBill() {
+      if (!this.data.shipmentFinanceSaveVoList) {
+        this.data.shipmentFinanceSaveVoList = []
+      }
       this.data.shipmentFinanceSaveVoList.push({
         // busCode: '',//业务编号,
         // busType: '',//9,
