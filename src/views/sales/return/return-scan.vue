@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 19:23:15
+ * @LastEditTime: 2019-12-05 19:21:25
  * @Description: 退货扫码
 */
 
@@ -41,10 +41,7 @@
       <!-- 库房列表 -->
       <warehouse-list :data="form" />
       <!-- 退换出入库商品 -->
-      <goods-in-warehousing
-        :params="{ busCode: rowData.quotationCode, busType: 1 }"
-        :data="form"
-      />
+      <goods-in-warehousing :data="form" />
     </el-form>
   </el-dialog>
 </template> 
@@ -74,7 +71,7 @@ export default {
         businessType: '',//0,
         returnScanData: [], //临时数据 退货记录
         exchangeScanData: [], //临时数据 换货记录
-        putawayCommodityList: [
+        putawayCommodityList: [ //出入库商品信息
           // {
           //   commodityCode: '',//"示例：商品编号",
           //   operation: '',//0,入库0
@@ -88,14 +85,26 @@ export default {
     }
   },
   created() {
+    this.getDetail()
   },
   methods: {
+    // 获取商品信息
+    getDetail() {
+      if (this.code) {
+        this.$api.seePsiSaleService.salesreturnedGetInfoByCode({ code: this.code })
+          .then(res => {
+            let data = res.data || {}
+            this.form.putawayCommodityList = data.commodityEntityList
+          })
+      }
+    },
     //保存
     saveHandle() {
-      this.form.businessCode = this.code
-      this.form.businessId = this.rowData.id
-      this.form.putawayCommodityList = [...this.form.returnScanData, ...this.form.exchangeScanData]
-      this.form.alterationCommodityVoList = this.form.putawayCommodityList.map(item => {
+      let copyParams = JSON.parse(JSON.stringify(this.form))
+      copyParams.businessCode = this.code
+      copyParams.businessId = this.rowData.id
+      copyParams.putawayCommodityList = [...copyParams.returnScanData, ...copyParams.exchangeScanData]
+      copyParams.alterationCommodityVoList = copyParams.putawayCommodityList.map(item => {
         return {
           alterationCode: this.code,//"示例：退换货单code",
           alterationNumber: item.scanNumber,//退货数量/扫码次数
@@ -107,7 +116,7 @@ export default {
       if (this.from == 'exchange') {
         api = 'salesreturnedScanExchange'
       }
-      this.$api.seePsiSaleService[api](this.form)
+      this.$api.seePsiSaleService[api](copyParams)
         .then(res => {
           this.setEdit()
           this.close()

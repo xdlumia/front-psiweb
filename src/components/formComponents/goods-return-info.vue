@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 21:45:49
+ * @LastEditTime: 2019-12-05 18:13:35
  * @Description: 退货商品商品信息
 */
 <template>
@@ -14,8 +14,9 @@
         size="mini"
         border
         :data="data || []"
-        default-expand-all
-        :tree-props="{children: 'children'}"
+        lazy
+        :load="loadChildren"
+        :tree-props="{hasChildren:'configId'}"
         row-key="id"
         ref="table"
       >
@@ -193,6 +194,12 @@ export default {
 
   },
   methods: {
+    async loadChildren(row, node, cb) {
+      let { data } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
+        { commodityCode: row.commodityCode }
+      );
+      cb(data);
+    },
     // 自定义账单金额数据
     getSummaries(param) {
       const { columns, data } = param;

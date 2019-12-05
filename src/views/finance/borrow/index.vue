@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 19:00:27
+ * @LastEditTime: 2019-12-05 17:57:50
  * @Description: 销售-借款单
  */
 <template>
@@ -17,7 +17,6 @@
       api="seePsiFinanceService.fborrowingList"
       exportApi="seePsiFinanceService.fborrowingExport"
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
     >
       <template slot="top-filter">
         <bill-account-selector v-model="queryForm.companySettlementId" />

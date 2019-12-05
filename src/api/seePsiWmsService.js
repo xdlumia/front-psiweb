@@ -1740,6 +1740,15 @@ export default {
   runlogCompressAndDownload: {
     'url': '/ws/runlog/compressAndDownload',
     'mock': false
+  },
+  /* =============库房业务同步接口start=========== */
+  // 库房业务设置同步
+  wmsBusinessSynchConfig: {
+    'url': '/wmsBusiness/synchConfig',
+    'mock': false,
+    'methods': 'post',
+    config: { showMsg: false }
   }
+  /* =============库房业务同步接口end=========== */
   /* =============文件压缩下载（日志和配置文件）end=========== */
 }

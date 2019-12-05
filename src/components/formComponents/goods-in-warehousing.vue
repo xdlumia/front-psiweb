@@ -4,10 +4,10 @@
     <form-card title='退入库商品'>
       <div
         class="ac d-text-gray"
-        v-if="!goodsData.length"
+        v-if="!data.putawayCommodityList.length"
       >无商品信息</div>
       <div
-        v-for="(item,index) of goodsData.filter(v=>v.putawayType==1)"
+        v-for="(item,index) of data.putawayCommodityList.filter(v=>v.putawayType==1)"
         :key="index"
       >
         <el-table
@@ -120,7 +120,7 @@
       v-if="from=='exchange'"
     >
       <div
-        v-for="(item,index) of goodsData.filter(v=>v.putawayType==0)"
+        v-for="(item,index) of data.putawayCommodityList.filter(v=>v.putawayType==0)"
         :key="index"
       >
         <el-table
@@ -366,21 +366,13 @@ export default {
   },
   data() {
     return {
-      goodsData: [], //商品列表
     };
   },
   mounted() {
-    this.businesscommodityGetBusinessCommodityList()
+
   },
   methods: {
-    businesscommodityGetBusinessCommodityList() {
-      this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.params)
-        .then(res => {
-          let data = res.data || []
-          // parentCommodityCode 只展示有父级商品code的产品
-          this.goodsData = data.filter(item => !item.parentCommodityCode)
-        })
-    },
+
     //回车机器号和SN码
     commodityCheck(item, type) {
       if (!this.data.wmsId) {
@@ -437,7 +429,7 @@ export default {
       let row = scope.row
       let index = this.data[`${row.fromType}ScanData`].findIndex(v => v.id = row.id)
       this.data[`${row.fromType}ScanData`].splice(index, 1)
-      let item = this.goodsData.find(item => item.id == row.id)
+      let item = this.data.putawayCommodityList.find(item => item.id == row.id)
       // 本次扫码次数
       item.scanNumber--
       item.commodityNumber++

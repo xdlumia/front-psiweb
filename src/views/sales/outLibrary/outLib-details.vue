@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 15:06:11
+ * @LastEditTime: 2019-12-05 17:36:53
  * @Description: 销售出库单详情
 */
 <template>
@@ -54,7 +54,7 @@
         </el-tabs>
         <components
           ref="detail"
-          :params="{relationCode:code}"
+          :params="activeName == 'contractSale'? {shipmentCode:code}:{relationCode:code}"
           :code="this.code"
           :rowData="rowData"
           :data="detail || {}"
@@ -193,6 +193,7 @@ export default {
         '6': ['生成退货单'] //已终止
       },
       // tabs 组件名称对应的label名称
+      //1
       tabs: {
         detail: '详情',
         salesQuote: '报价单',
@@ -200,7 +201,7 @@ export default {
         salesReturn: '销售退货单',
         salesExchange: '销售换货单',
         financeReceivable: '应收账单',
-        financeQuote: '发票记录',
+        financeBilling: '发票记录',
         salesApportion: '费用分摊单'
       },
 
@@ -309,7 +310,7 @@ export default {
           '驳回': {
             api: 'seePsiSaleService.salesshipmentReject',
             data: params,
-            needNote: null
+            needNote: true
           },
           '合同完善': {
             api: 'seePsiSaleService.salesshipmentPassContractApproval',

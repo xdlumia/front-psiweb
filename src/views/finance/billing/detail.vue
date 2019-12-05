@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-02 15:25:55
+ * @LastEditTime: 2019-12-05 16:18:48
  * @Description: description
  -->
 <template>
@@ -60,8 +60,8 @@
       >发票冲红</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
-      <el-tab-pane label="详情" name="detail" v-if="activeTab == 'detail' && !loading">
-        <el-form disabled size="mini">
+      <el-tab-pane label="详情" name="detail">
+        <el-form disabled size="mini" v-if="activeTab == 'detail' && !loading">
           <approve-panel :busType="59" :id="detailForm.id" :data="detailForm"></approve-panel>
           <!-- 开票申请 -->
           <make-invoice-info :invoiceType="0" :data="detailForm" id="invoice" />

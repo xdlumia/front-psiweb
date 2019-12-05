@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 19:52:17
+ * @LastEditTime: 2019-12-05 18:56:17
  * @Description: 新增费用分摊单商品信息
 */
 <template>
@@ -14,6 +14,9 @@
         size="mini"
         border
         :data="data"
+        lazy
+        :load="loadChildren"
+        :tree-props="{hasChildren:'configId'}"
         ref="table"
         maxHeight="350px"
       >
@@ -128,7 +131,12 @@ export default {
 
   },
   methods: {
-
+    async loadChildren(row, node, cb) {
+      let { data } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
+        { commodityCode: row.commodityCode }
+      );
+      cb(data);
+    },
     // 自定义账单金额数据
     getSummaries(param) {
       const { columns, data } = param;

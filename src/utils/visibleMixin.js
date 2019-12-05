@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 16:00:40
+ * @LastEditTime: 2019-12-05 20:10:32
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -93,7 +93,7 @@ export default {
           if (this.alwaysDropAndCopyForm && data) this.form = data;
           else {
             // this.rowData = data || {}
-            if (this.form && this.type == 'edit') {
+            if (this.form && this.type == 'edit' || this.type == 'copy') {
               for (let key in this.form) {
                 if (this.form[key] instanceof Array) {
                   this.form[key] = data[key] || []

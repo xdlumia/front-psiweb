@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 15:27:20
+ * @LastEditTime: 2019-12-05 18:46:20
  * @Description: 生成销售换货单
 */
 <template>
@@ -47,11 +47,13 @@
 
         <!-- 客户信息 -->
         <customerInfo
+          disabled
           id="customerInfo"
           :data="form"
         />
         <!-- 公司信息 -->
         <companyInfo
+          disabled
           id="companyInfo"
           :data="form"
         />
@@ -147,10 +149,10 @@ export default {
           //   taxTotalAmount:'',//98765432109876.12
           // }
         ],
-        clientId: '',//100000,
-        companyAccountId: '',//100000,
+        clientId: this.rowData.clientId,//100000,
+        companyAccountId: this.rowData.companyAccountId,//100000,
         companyCode: '',//公司编码code,
-        companySettlementId: '',//100000,
+        companySettlementId: this.rowData.companySettlementId,//100000,
         deptTotalCode: '',//部门code,
         exchangeNumber: '',//9,
         fieldList: [],//自定义字段,
@@ -204,11 +206,22 @@ export default {
     saveHandle() {
       this.$refs.form.validate(valid => {
         if (!valid) {
+          // 获取销售出库单编号
+          this.form.salesShipmentCode = this.rowData.shipmentCode
           // 把退货和换货产品合并
           this.form.businessCommoditySaveVoList.map(item => item.putawayType = 0) // 退货入库
           this.form.exChangeCommodityList.map(item => item.putawayType = 1) //换货入库
           this.form.businessCommoditySaveVoList = this.form.businessCommoditySaveVoList.concat(this.form.exChangeCommodityList)
           this.form.businessCommoditySaveVoList.map(v => v.busCode = this.form.quotationCode)
+
+          if (copyParams.businessCommoditySaveVoList.some(item => !item.commodityNumber || !item.alterationPrice)) {
+            this.$message({
+              message: '商品的退货数量和单价没有填写或当前没有可退货商品',
+              type: 'error',
+              showClose: true,
+            });
+            return
+          }
           this.loading = true
           // rules 表单验证是否通过
           let api = 'salesexchangeUpdate' // 默认编辑更新

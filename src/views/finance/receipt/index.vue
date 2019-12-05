@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 18:47:01
+ * @LastEditTime: 2019-12-05 17:52:23
  * @Description: 销售-待收票
  */
 <template>
@@ -55,6 +55,16 @@
           v-if="column.columnFields=='invoiceCode'"
           @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
+
+        <span v-else-if="column.columnFields=='busCode'">
+          <!-- 关联单据编号 -->
+          <el-link
+            :type="hasBusPage(row)?'primary':'info'"
+            :underline="false"
+            @click="openBusPage(row)"
+            class="f12"
+          >{{value}}</el-link>
+        </span>
         <!-- 关联单据号 -->
         <span
           class="d-text-blue"
@@ -75,15 +85,23 @@
       :id="rowData.id"
       @reload="$refs.table.reload()"
     />
+    <component
+      :code="currentBusCode"
+      :is="busInfo[currentBusType].detailPage"
+      :visible.sync="showBusDetail"
+      @reload="$refs.table.reload()"
+      v-if="showBusDetail"
+    />
   </div>
 </template>
 <script>
 import detail from './details' //详情
 import invoiceMixin from '../invoice-mixins'
+import BusMixin from '@/views/finance/payment/busMixin.js';
 
 export default {
   name: 'financeIncome',
-  mixins: [invoiceMixin],
+  mixins: [invoiceMixin, BusMixin],
   components: {
     detail
   },
