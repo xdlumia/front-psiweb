@@ -70,7 +70,7 @@ export default {
       default: () => ({
         page: 1,
         limit: 15,
-        matchState: [0, 1]
+        matchStateList: [0,1],
       })
     }
   },

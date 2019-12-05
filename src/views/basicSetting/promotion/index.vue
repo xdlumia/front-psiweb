@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 16:37:19
+ * @LastEditTime: 2019-12-05 10:05:29
  * @Description: 促销管理
  -->
 <template>
@@ -69,7 +69,7 @@ export default {
       default: () => ({ page: 1, limit: 15 })
     }
   },
-  data() {
+  data () {
     return {
       rowData: null,
       code: null,
@@ -100,7 +100,7 @@ export default {
         // },
         { label: '促销时间', prop: 'BegTime', type: 'dateRange', default: true },
         { label: '促销目标', prop: 'PromotionTarget', type: 'numberrange', default: true },
-        { label: '参与商品', prop: 'commodityNum', default: true },
+        { label: '参与商品', prop: 'CommodityNum', type: 'numberrange', default: true },
         { label: '参与人(人数)', prop: 'UserNum', type: 'numberrange', default: true },
         {
           label: '创建人',
@@ -113,19 +113,19 @@ export default {
       ]
     }
   },
-  mounted() {
+  mounted () {
   },
   components: {
     addPromotion,
     detail
   },
   methods: {
-    detail(row) {
+    detail (row) {
       this.rowData = row
       this.code = row.code
       this.showDetail = true
     },
-    commonwmsmanagerUpdateState(id, state) {
+    commonwmsmanagerUpdateState (id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -141,7 +141,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete(id) {
+    commonwmsmanagerLogicDelete (id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -157,10 +157,10 @@ export default {
         })
       })
     },
-    saveFacilitator() {
+    saveFacilitator () {
       this.$refs.addPromotion && this.$refs.addPromotion.commonserviceproviderSave()
     },
-    refresh() {
+    refresh () {
       this.visible = false
       this.$refs.table.reload()
     }

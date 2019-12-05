@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 16:48:52
+ * @LastEditTime: 2019-12-05 15:13:39
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -39,7 +39,7 @@
       :params="{
         page: 1,
         limit: 15,
-        matchState: '',
+        matchStateList: [0,1],
         incomeType: type
       }"
       :visible.sync="showChooseIncoming"

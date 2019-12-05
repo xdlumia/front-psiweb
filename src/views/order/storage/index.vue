@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 11:15:50
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-05 11:07:50
  * @Description: 采购-采购入库单
 */
 <template>
@@ -11,7 +11,8 @@
       :filterOptions="filterOptions"
       :params="Object.assign(defaultParams,params)"
       @selection-change="selectionChange"
-      api="seePsiPurchaseService.purchaseputinList"
+      :api="api"
+      :filter="filter"
       busType="30"
       exportApi="seePsiPurchaseService.purchaseputinExport"
       ref="tableView"
@@ -19,18 +20,48 @@
     >
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='putinCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link
+            :underline="false"
+            @click="showDetail=true,currentCode=value"
+            class="f12"
+            type="primary"
+          >{{value}}</el-link>
         </span>
         <span v-else-if="prop=='joinCode'">
-          <el-link :underline="false" @click="openJoin(row)" class="f12" type="primary">{{value}}</el-link>
+          <el-link
+            :underline="false"
+            @click="openJoin(row)"
+            class="f12"
+            type="primary"
+          >{{value}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
-    <OrderBuyingDetail :code="joinCode" :visible.sync="joinDetail.buying" @reload="reload" v-if="joinDetail.buying" />
-    <OrderDirectDetail :code="joinCode" :visible.sync="joinDetail.direct" @reload="reload" v-if="joinDetail.direct" />
-    <OrderPrepareDetail :code="joinCode" :visible.sync="joinDetail.prepare" @reload="reload" v-if="joinDetail.prepare" />
+    <Detail
+      :code="currentCode"
+      :visible.sync="showDetail"
+      @reload="reload"
+      v-if="showDetail"
+    />
+    <OrderBuyingDetail
+      :code="joinCode"
+      :visible.sync="joinDetail.buying"
+      @reload="reload"
+      v-if="joinDetail.buying"
+    />
+    <OrderDirectDetail
+      :code="joinCode"
+      :visible.sync="joinDetail.direct"
+      @reload="reload"
+      v-if="joinDetail.direct"
+    />
+    <OrderPrepareDetail
+      :code="joinCode"
+      :visible.sync="joinDetail.prepare"
+      @reload="reload"
+      v-if="joinDetail.prepare"
+    />
   </div>
 </template>
 <script>
@@ -54,6 +85,14 @@ export default {
     button: {
       type: Boolean,
       default: true
+    },
+    filter: {
+      type: Boolean,
+      default: true
+    },
+    api: {
+      type: String,
+      default: 'seePsiPurchaseService.purchaseputinList'
     },
     // 在当做组件引用的时候替换的参数
     params: {
@@ -106,7 +145,7 @@ export default {
       ]
     };
   },
-  mounted() {},
+  mounted() { },
   methods: {
     // 多选
     selectionChange(val) {

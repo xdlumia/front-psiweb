@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 17:41:09
+ * @LastEditTime: 2019-12-05 11:25:48
  * @Description: 新增转账单
 */
 <template>
@@ -54,7 +54,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :rules="{required:true}"
+            :rules="[{required:true},{type:'price'}]"
             prop="amount"
             label="转账金额"
           >

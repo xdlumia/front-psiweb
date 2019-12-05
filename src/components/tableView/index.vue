@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 20:24:30
+ * @LastEditTime: 2019-12-05 11:09:56
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -67,8 +67,8 @@
       @column="columnHandle"
       @clear-filter="clearFilter"
       :title="title"
-      :filter="this.filter"
-      :moreButton="this.moreButton"
+      :filter="filter"
+      :moreButton="moreButton"
       :column="this.column"
       :statusData="statusList"
       :staData="staList"
@@ -324,7 +324,7 @@ export default {
     // 返回的自定义列数据
     columnHandle(cols) {
       //  自定添加筛选
-      if (!this.filterOptions) {
+      if (this.filter && !this.filterOptions) {
         let filterOptions = []
         cols.forEach(item => {
           // 过滤状态不用添加到筛选里的类型

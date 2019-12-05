@@ -11,6 +11,7 @@
     :status="status"
     :visible="visible"
     @close="close"
+    v-loading="loading"
     :title="`组装任务-${detailForm.assembleTaskCode}`"
     width="990px"
   >
@@ -134,6 +135,7 @@ export default {
   methods: {
     //查看详情
     wmsassembleorderInfo() {
+      this.loading = true
       this.$api.seePsiWmsService.wmsassembletaskGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
@@ -144,7 +146,7 @@ export default {
           this.status[4].value = res.data.source
         })
         .finally(() => {
-
+          this.loading = false
         })
     },
     reload() {

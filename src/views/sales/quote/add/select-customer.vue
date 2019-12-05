@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 17:29:08
+ * @LastEditTime: 2019-12-05 15:47:25
  * @Description: 选择客户
 */
 <template>
@@ -11,12 +11,9 @@
       <el-select
         size="small"
         placeholder="请输入客户编号或名称"
-        :remote-method="getClinent"
         class="wfull mr5"
         filterable
         @change="commonclientinfoInfo"
-        remote
-        reserve-keyword
         v-model="data.clientId"
       >
         <el-option
@@ -89,32 +86,26 @@ export default {
     }
   },
   created() {
-
+    this.getClinent()
   },
   mounted() {
 
   },
   watch: {
 
-    // 'data.clientId': {
-    //   handler(val) {
-    //     if (val) {
-    //       this.commonclientinfoInfo()
-    //     }
-    //   },
-    //   immediate: true,
-    // }
+    'data.clientId': {
+      handler(val) {
+        if (val) {
+          this.commonclientinfoInfo()
+        }
+      },
+      immediate: true,
+    }
   },
   methods: {
     async getClinent(words) {
-      if (words) {
-        let { data } = await this.$api.seePsiCommonService.commonclientinfoQueryList({
-          fuzzyNameOrCode: words,
-        });
-        this.clientOptions = data || []
-      } else {
-        this.clientOptions = [];
-      }
+      let { data } = await this.$api.seePsiCommonService.commonclientinfoQueryList();
+      this.clientOptions = data || []
     },
     // 获取客户详情信息
     commonclientinfoInfo() {

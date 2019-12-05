@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-22 16:39:19
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 14:04:36
+ * @LastEditTime: 2019-12-05 15:21:48
  * @Description: 关联业务辅助
  */
 
@@ -137,6 +137,14 @@ export default {
           listPage: 'OrderBorrow',
           codeFilterKey: 'borrowLoanCode',
           title: '借入借出单'
+        },
+        // 借入借出任务
+        10: {
+          stateText: { "2": "待借入", "3": "待借出", "4": "部分借入", "5": "部分借出", "6": "待归还", "7": "待返还", "8": "部分返还", "9": "部分归还", "10": "完成返还", "11": "完成归还", "null": "全部", "-1": "终止" },
+          detailPage: () => import('@/views/storage/borrow/details.vue'),
+          listPage: 'StorageBorrow',
+          codeFilterKey: 'borrowLoanTaskCode',
+          title: '借入借出任务'
         }
       }
     }

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 16:14:35
+ * @LastEditTime: 2019-12-05 11:33:43
  * @Description: 销售-报价单
  */
 <template>
@@ -157,19 +157,22 @@ export default {
   methods: {
     // 按钮功能操作
     eventHandle(type, row) {
-      if (type === 'mergeVisible' && this.selectionData.length < 2) {
-        if (this.selectionData.some(item => item.shipmentCode)) {
+      if (type === 'mergeVisible') {
+        if (!this.selectionData.length) {
           this.$message.error({
             showClose: true,
-            message: '当前选中的数据里有已经生成过出库单'
+            message: '合并生成出库单最少选择两条数据'
           })
           return
         }
-        this.$message.error({
-          showClose: true,
-          message: '合并生成出库单最少选择两条数据'
-        })
-        return
+        if (this.selectionData.some(item => item.shipmentCode)) {
+          this.$message.error({
+            showClose: true,
+            message: '选中项有已经生成过出库单的数据'
+          })
+          return
+        }
+
       }
       if (type === 'quoteCopyVisible' && this.selectionData.length != 1) {
         this.$message.error({

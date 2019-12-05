@@ -2,11 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 22:35:18
+ * @LastEditTime: 2019-12-05 15:25:48
  * @Description: 退货商品商品信息
 */
 <template>
   <div>
+
     <form-card :title="true">
       <div slot="title">
         <span>{{title}}</span>
@@ -40,16 +41,14 @@
         ref="table"
       >
         <el-table-column
-          min-width="50"
+          min-width="80"
           label="操作"
         >
           <template slot-scope="scope">
-            <el-button
-              type="text"
-              icon="el-icon-remove"
-              @click="data.businessCommoditySaveVoList.splice(scope.$index,1)"
-            ></el-button>
-
+            <i
+              class="el-icon-remove"
+              @click="delete(scope.row)"
+            ></i>
           </template>
         </el-table-column>
         <el-table-column
@@ -70,7 +69,14 @@
           min-width="100"
           label="商品图片"
           show-overflow-tooltip
-        />
+        >
+          <template slot-scope="scope">
+            <el-image
+              style="width: 90px; height: 40px"
+              :src="scope.row.goodsPic"
+            />
+          </template>
+        </el-table-column>
         <el-table-column
           prop="categoryCode"
           min-width="80"
@@ -122,7 +128,7 @@
           <template slot-scope="scope">
             <el-form-item
               class="mb0"
-              :prop="`businessCommoditySaveVoList.${scope.$index}.commodityNumber`"
+              :prop="'businessCommoditySaveVoList.' + scope.$index + '.commodityNumber'"
               :rules="[{required:false},{type:'positiveNum'}]"
             >
               <el-input
@@ -239,7 +245,6 @@ export default {
   data() {
     return {
       tableData: [],
-      quotationCode: this.options[0] || '',
       // queryFrom: {
       //   busType: 1, // 1报价单 2请购单]
       //   putawayType: 1,
@@ -250,11 +255,8 @@ export default {
   watch: {
     'data.quotationCode': {
       handler(val) {
-        this.$nextTick(() => {
-          this.params.busCode = this.data.quotationCode
-          if (!this.params.busCode) return
-          this.salesquotationQueryMayCommodity()
-        })
+        if (!val) return
+        this.salesquotationQueryMayCommodity()
       },
       deep: true,
       immediate: true
@@ -264,17 +266,21 @@ export default {
     this.salesquotationQueryMayCommodity()
   },
   methods: {
+    // 删除退货
+    delete(row) {
+      let index = this.data.businessCommoditySaveVoList.findIndex(item => item.id == row.id)
+      this.data.businessCommoditySaveVoList.splice(index, 1)
+    },
     salesquotationQueryMayCommodity() {
       this.$api.seePsiSaleService.salesquotationQueryMayCommodity({ quotaionCode: this.data.quotationCode })
         .then(res => {
           let data = res.data || []
-          data.map(item => {
+          this.data.businessCommoditySaveVoList = data
+          // this.$set(this.data, 'businessCommoditySaveVoList', data)
+          this.data.businessCommoditySaveVoList.map(item => {
             item.customNumber = item.commodityNumber
             item.commodityNumber = item.actionableNumber
           })
-          // this.data.businessCommoditySaveVoList = data
-
-          this.$set(this.data, 'businessCommoditySaveVoList', this.$$util.formatCommodity(data))
           // this.data.exChangeCommodityList 是临时数据 存放换货后的数据
           if (this.data.exChangeCommodityList) {
             this.data.exChangeCommodityList = JSON.parse(JSON.stringify(data))

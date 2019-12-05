@@ -17,25 +17,25 @@
     <div>
       <div class="drawer-header">
         <el-button
-          v-if="drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 6 || drawerData.borrowLoanState == 9"
+          v-if="detailForm.borrowLoanState == 4 || detailForm.borrowLoanState == 6 || detailForm.borrowLoanState == 9"
           @click="backVisible=true,isComponents = 'borrowPayback',dialogData.title='借入归还-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
         >归还</el-button>
         <el-button
-          v-if="drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 7 || drawerData.borrowLoanState == 8"
+          v-if="detailForm.borrowLoanState == 5 || detailForm.borrowLoanState == 7 || detailForm.borrowLoanState == 8"
           @click="backVisible=true,isComponents = 'lendBack',dialogData.title='借出返还-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
         >返还</el-button>
         <el-button
-          v-if="(drawerData.borrowLoanState == 2 || drawerData.borrowLoanState == 4 || drawerData.borrowLoanState == 9) && (inNum < inAllNum)"
+          v-if="(detailForm.borrowLoanState == 2 || detailForm.borrowLoanState == 4 || detailForm.borrowLoanState == 9) && (inNum < inAllNum)"
           @click="backVisible=true,isComponents = 'borrowScanCode',dialogData.title='借入扫码-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
         >借入扫码</el-button>
         <el-button
-          v-if="(drawerData.borrowLoanState == 3 || drawerData.borrowLoanState == 5 || drawerData.borrowLoanState == 8) && (inNum < inAllNum)"
+          v-if="(detailForm.borrowLoanState == 3 || detailForm.borrowLoanState == 5 || detailForm.borrowLoanState == 8) && (inNum < inAllNum)"
           @click="backVisible=true,isComponents = 'lendScanCode',dialogData.title='借出扫码-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
@@ -87,7 +87,7 @@
             <orderBorrow
               v-if="activeName == 'orderBorrow'"
               :button="false"
-              :params="{page:1,limit:15,relationCode:drawerData.borrowLoanTaskCode}"
+              :params="{page:1,limit:15,relationCode:detailForm.borrowLoanTaskCode}"
             ></orderBorrow>
           </FullscreenWrap>
         </el-tab-pane>

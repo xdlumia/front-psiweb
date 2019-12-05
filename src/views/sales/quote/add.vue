@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 22:11:49
+ * @LastEditTime: 2019-12-05 10:59:17
  * @Description: file content
 */
 <template>
@@ -252,6 +252,9 @@ export default {
           const flattenData = this.$$util.jsonFlatten(this.form.KIND2List[key])
           fixingsList = fixingsList.concat(flattenData)
           fixingsList = fixingsList.map(item => {
+            item.commodityCode = item.goodsCode
+            item.goodsName = item.name; 
+            item.className = item.secondClassName
             item.inventoryNumber = item.usableInventoryNum
             item.reference = item.saleReferencePrice
             return item

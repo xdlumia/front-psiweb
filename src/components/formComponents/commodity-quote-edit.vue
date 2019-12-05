@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 20:42:56
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-05 15:09:08
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -108,7 +108,11 @@
         label="商品分类"
         min-width="110"
         prop="className"
-      ></el-table-column>
+      >
+      <template slot-scope="{row}">
+        <span>{{row.className||row.secondClassName}}</span>
+      </template>
+      </el-table-column>
 
       <el-table-column
         show-overflow-tooltip
