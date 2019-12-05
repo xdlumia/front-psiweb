@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 17:16:28
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-05 18:10:54
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -16,10 +16,10 @@
       sum-text='总计'
       border
       :summary-method="getSummaries"
-      :data="goodsData"
+      :data="data.commodityEntityList"
       lazy
       :load="loadChildren"
-      :tree-props="{children: 'commonGoodConfigDetailsEntityList',hasChildren:'configId'}"
+      :tree-props="{hasChildren:'configId'}"
       row-key="id"
       max-height="400"
       ref="elTable"
@@ -150,13 +150,7 @@ export default {
     // this.businesscommodityGetBusinessCommodityList(this.data.quotationCode)
   },
   watch: {
-    'data.quotationCode': {
-      handler(val) {
-        if (val) {
-          this.businesscommodityGetBusinessCommodityList(this.data.quotationCode)
-        }
-      }
-    }
+
   },
   methods: {
     async loadChildren(row, node, cb) {
@@ -168,18 +162,6 @@ export default {
         }
       );
       cb(data);
-    },
-    businesscommodityGetBusinessCommodityList(quotationCode) {
-      this.queryForm.busCode = quotationCode || this.data.quotationCode
-      this.loading = true
-      this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.queryForm)
-        .then(res => {
-          let data = res.data || []
-          this.goodsData = this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList')
-        })
-        .finally(() => {
-          this.loading = false
-        })
     },
     //算合计的
     getSummaries(param) {
