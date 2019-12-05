@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 21:31:20
+ * @LastEditTime: 2019-12-05 21:33:56
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -453,7 +453,7 @@ export default {
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
       // 折扣价格  公式:税前金额  * (1-税率) * 折扣
-      row.discountSprice = (reference * (1 - taxRate) * discount).toFixed(2)
+      row.discountSprice = +(reference * (1 - taxRate) * discount).toFixed(2)||0
     },
     discountSpriceChange(row) {
       let reference = row.reference || 0   //销售参考价
