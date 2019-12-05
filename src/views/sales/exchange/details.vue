@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 17:54:49
+ * @LastEditTime: 2019-12-05 21:54:36
  * @Description: 销售换货单详情
 */
 <template>
@@ -148,7 +148,7 @@ export default {
   methods: {
     async getDetail() {
       if (this.code) {
-        let { data } = await this.$api.seePsiSaleService.salesalterationsheetGetInfoByCode({ code: this.code })
+        let { data } = await this.$api.seePsiSaleService.salesexchangeGetInfoByCode({ code: this.code })
         return data;
       }
     },
@@ -164,27 +164,27 @@ export default {
         }
         let apiObj = {
           '提交审核': {
-            api: 'seePsiSaleService.salesalterationsheetSubmitApproval',
+            api: 'seePsiSaleService.salesexchangeSubmitApproval',
             data: { ...params, ...{} },
             needNote: null
           },
           '审核通过': {
-            api: 'seePsiSaleService.salesalterationsheetPassApproval',
+            api: 'seePsiSaleService.salesexchangePassApproval',
             data: { ...params, ...{} },
             needNote: null
           },
           '撤销审核': {
-            api: 'seePsiSaleService.salesalterationsheetCancel',
+            api: 'seePsiSaleService.salesexchangeCancel',
             data: { ...params, ...{} },
             needNote: null
           },
           '驳回': {
-            api: 'seePsiSaleService.salesalterationsheetReject',
+            api: 'seePsiSaleService.salesexchangeReject',
             data: { ...params, ...{} },
             needNote: null
           },
           '删除': {
-            api: 'seePsiSaleService.salesalterationsheetLogicDelete',
+            api: 'seePsiSaleService.salesexchangeLogicDelete',
             data: { ...params, ...{} },
             needNote: null
           }

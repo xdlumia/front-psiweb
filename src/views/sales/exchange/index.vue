@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 17:16:34
+ * @LastEditTime: 2019-12-05 21:55:18
  * @Description: 销售-销售换货单
  */
 <template>
@@ -41,7 +41,7 @@
       :visible.sync="exchangeVisible"
       :rowData="rowData"
       :code="rowData.alterationCode"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
     <!-- 销售出库单 -->
     <outLibDetails
@@ -49,7 +49,7 @@
       :visible.sync="outLibVisible"
       :rowData="rowData"
       :code="rowData.salesShipmentCode"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
   </div>
 </template>
