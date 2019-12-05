@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 11:22:15
+ * @LastEditTime: 2019-12-05 11:57:38
  * @Description: 销售出库单详情
 */
 <template>
@@ -228,11 +228,10 @@ export default {
   methods: {
     // 判断禁用的按钮
     isDisabledButton(label) {
-      let procurementExpectedArrivalTime = this.rowData.procurementExpectedArrivalTime
       // 采购预计到货时间为空 禁用采购审核时间
-      if (label == '审核采购时间' && !procurementExpectedArrivalTime) {
+      if (label == '审核采购时间' && !this.detail.procurementExpectedArrivalTime) {
         return true
-      } else if (label == '编辑合同' && false) {
+      } else if (label == '编辑合同' && this.detail.isContract) {
         return true
       } else {
         return false
