@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 18:17:15
+ * @LastEditTime: 2019-12-05 18:22:05
  * @Description: 付款单
 */
 <template>
@@ -32,8 +32,13 @@
         <span v-else-if="['feeDetailCode','feeTypeCode'].includes(prop)">
           <span>{{value|dictionary('ZD_DY_LX')}}</span>
         </span>
+        <!-- 0: '未逾期',
+        1: '已逾期'-->
         <span v-else-if="prop=='overState'">
           <span>{{overText[value||0]}}</span>
+        </span>
+        <span v-else-if="prop=='payEndDate'">
+          <span>{{value}}</span>
         </span>
         <span v-else-if="prop=='settleStatus'">
           <span>{{settleText[value]}}</span>
@@ -146,6 +151,10 @@ export default {
     this.getFeeDetailCodeList();
   },
   methods: {
+    // 是否即将逾期
+    isNearOver(date) {
+      return +new Date(date) - 7 * 24 * 60 * 60 * 1000 <= +new Date();
+    },
     // prettier-ignore
     async getFeeDetailCodeList() {
       let dicList = JSON.parse(JSON.stringify(this.dictionaryOptions('ZD_DY_LX')))
@@ -201,9 +210,9 @@ export default {
             ids: multi.map(item => item.id),
             processType: 'psi_payment'
           });
-          this.reload()
+          this.reload();
         } catch (error) {
-          console.error(error)
+          console.error(error);
         }
         this.loading = false;
       } else {
