@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-12 17:02:36
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-05 11:18:42
  * @Description: 整机列表 和 配件列表  私有组件 你们用不了 
 */
 <template>
@@ -14,7 +14,7 @@
       v-if="title=='整机列表'"
       :data="kind1List"
       border
-      row-key="name"
+      row-key="goodsCode"
       @selection-change="selectionChange"
       default-expand-all
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
@@ -65,9 +65,10 @@
         show-overflow-tooltip
         label="编号"
         min-width="180"
+        prop="goodsCode"
       >
         <template slot-scope="scope">
-          <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+          <span class="d-text-blue">{{scope.row.goodsCode}}</span>
         </template>
       </el-table-column>
       <el-table-column
