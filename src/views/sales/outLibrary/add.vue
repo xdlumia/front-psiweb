@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 18:41:17
+ * @LastEditTime: 2019-12-05 19:04:55
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -42,6 +42,7 @@
           :label="val"
           :name="key"
         />
+        <!-- 人员分配 -->
         <choose-assembly
           :hide="['note','assemblePerson']"
           id="choose-assembly"
