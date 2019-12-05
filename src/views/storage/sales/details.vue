@@ -11,7 +11,7 @@
     :status="status"
     :visible="visible"
     @close="$emit('update:visible',false)"
-    :title="'销售单-' + data.salesSheetCode"
+    :title="'销售单-' + detailForm.salesSheetCode"
     width="990px"
   >
     <div>
@@ -31,7 +31,7 @@
             <goodsExported
               v-if='detailForm'
               :detailForm='detailForm'
-              :code='data.salesSheetCode'
+              :code='code'
             />
             <deliverInfo
               :data='detailForm.salesQuotationEntity'
@@ -107,7 +107,7 @@
           <FullscreenWrap v-if="activeName == 'financeReceivable'">
             <financeReceivable
               :button="false"
-              :params="{page:1,limit:15,borrowLoanType:0,relationCode:data.salesSheetCode}"
+              :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
             ></financeReceivable>
           </FullscreenWrap>
         </el-tab-pane>

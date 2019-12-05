@@ -300,6 +300,12 @@ export default {
   /* =============库房组装商品清单end=========== */
 
   /* =============库房组装单start=========== */
+  // 自动分配组装任务
+  wmsassembleorderAutomaticAllocation: {
+    'url': '/wmsassembleorder/automaticAllocation',
+    'mock': false
+  },
+
   // 删除
   wmsassembleorderDelete: {
     'url': '/wmsassembleorder/delete',

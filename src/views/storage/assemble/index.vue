@@ -14,6 +14,7 @@
       selection
       ref='allTable'
       :params="params"
+      @response="onTableData"
       exportApi="seePsiWmsService.wmsassembleorderExport"
       api="seePsiWmsService.wmsassembleorderList"
       title="组装单"
@@ -24,6 +25,12 @@
           <el-switch v-model="isSelfMotion">
           </el-switch>
         </div> -->
+        <!-- 触发自动分配任务  人家又不要了  我暂时不删 防止反悔 -->
+        <!-- <el-button
+          type="primary"
+          size='mini'
+          @click="automaticReload()"
+        >刷新</el-button> -->
         <el-button
           type="primary"
           size='mini'
@@ -178,6 +185,11 @@ export default {
     this.$refs.allTable.$refs.table.$on('dragEnd', this.onDrag);
   },
   methods: {
+    onTableData(e) {
+      (e.data || []).map((item, i) => {
+        item.$index = i;
+      });
+    },
     //点击打开右侧边栏
     getTableVisible(data) {
       this.tableVisible = true
@@ -186,6 +198,17 @@ export default {
     reload() {
       this.$refs.allTable.reload()
     },
+    //点击刷新按钮，走自动分配
+    // 触发自动分配任务  人家又不要了  我暂时不删 防止反悔
+    // automaticReload() {
+    //   this.$api.seePsiWmsService.wmsassembleorderAutomaticAllocation()
+    //     .then(res => {
+    //       this.reload()
+    //     })
+    //     .finally(() => {
+
+    //     })
+    // },
     //置顶
     roof(row) {
       this.$confirm('确认置顶当前组装单吗?', '提示', {
@@ -215,8 +238,6 @@ export default {
         return isChanged;
       });
       let [a, b] = changed;
-
-      this.loading = true;
       try {
         if (a.generateOrder && b.generateOrder) {
           await this.$api.seePsiWmsService.wmsassembleorderUpdatesSquence([
@@ -226,7 +247,6 @@ export default {
         }
         this.reload();
       } catch (e) { }
-      this.loading = false;
     },
   }
 };
