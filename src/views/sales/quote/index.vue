@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 18:27:04
+ * @LastEditTime: 2019-12-05 20:09:31
  * @Description: 销售-报价单
  */
 <template>
@@ -75,7 +75,7 @@
       type="add"
       @reload="$refs.table.reload()"
     ></quote-add>
-    <!-- 新建 -->
+    <!-- 复制 -->
     <quote-add
       :visible.sync="quoteCopyVisible"
       type="copy"
@@ -174,11 +174,16 @@ export default {
         }
 
       }
-      if (type === 'quoteCopyVisible' && this.selectionData.length != 1) {
-        this.$message.error({
-          showClose: true,
-          message: '复制生成报价单只能选择一条数据'
-        })
+      if (type === 'quoteCopyVisible') {
+        if (this.selectionData.length != 1) {
+          this.$message.error({
+            showClose: true,
+            message: '复制生成报价单只能选择一条数据'
+          })
+          return
+        }
+        this.rowData = this.selectionData[0]
+        this[type] = true
         return
       }
       this.rowData = row ? row : {}

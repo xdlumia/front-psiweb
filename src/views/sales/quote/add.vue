@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 17:37:46
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-05 20:18:17
  * @Description: file content
 */
 <template>
@@ -111,6 +111,7 @@ export default {
         companyAccountId: '', //公司发票信息
         registerPhone: '',
         companySettlementId: '', //公司结算账户
+        commodityEntityList: [],
         businessCommoditySaveVoList: [ //商品信息合集
           // {
           //   alterationNumber: '', //退换商品数量(出入数量),
@@ -188,13 +189,10 @@ export default {
     //  等detail加载完成 并且给form 对象赋值完成之后再加载商品数据
     'form.id': {
       handler(val) {
-        if (val && this.type == 'edit' && this.form.id) {
-          this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList({ putawayType: 0, busType: 1, busCode: this.code })
-            .then(res => {
-              let data = res.data || []
-              // this.$set(this.form, 'businessCommoditySaveVoList', this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList'))
-              this.form.businessCommoditySaveVoList = this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList')
-            })
+        if (val && (this.type == 'edit' || this.type == 'copy') && this.form.id) {
+          // this.form.businessCommoditySaveVoList = this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList')
+          this.form.businessCommoditySaveVoList = this.form.commodityEntityList
+
         }
       }
     },
@@ -253,7 +251,7 @@ export default {
           fixingsList = fixingsList.concat(flattenData)
           fixingsList = fixingsList.map(item => {
             item.commodityCode = item.goodsCode
-            item.goodsName = item.name; 
+            item.goodsName = item.name;
             item.className = item.secondClassName
             item.inventoryNumber = item.usableInventoryNum
             item.reference = item.saleReferencePrice
@@ -268,26 +266,26 @@ export default {
     },
   },
   methods: {
-    changeStep(){
-      if(this.steps==3){
-        if(this.form.KIND1List.filter(a=>!a.disabled).some(item=>{
+    changeStep() {
+      if (this.steps == 3) {
+        if (this.form.KIND1List.filter(a => !a.disabled).some(item => {
           return !this.$refs.confirmInfo.findSelectedConfig(item)
-        })){
+        })) {
           return this.$message({
-            message:'请选择整机配置',
-            showClose:true,
-            type:'warning'
+            message: '请选择整机配置',
+            showClose: true,
+            type: 'warning'
           })
-        }else{
+        } else {
           this.steps++
         }
-      }else{
+      } else {
         this.steps++
       }
     },
     async getDetail() {
       if (this.code) {
-        this.form.id=''
+        this.form.id = ''
         let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
         return data;
       }
@@ -322,7 +320,7 @@ export default {
             });
             return
           }
-          copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.map(item=>{
+          copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.map(item => {
             delete item.commonGoodConfigDetailsEntityList
             return item;
           })
