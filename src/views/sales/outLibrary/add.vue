@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 18:16:35
+ * @LastEditTime: 2019-12-05 18:41:17
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -177,13 +177,12 @@ export default {
           let ids = null
           if (this.type == 'merge') {
             ids = this.rowData.map(item => item.id)
+            this.salesshipmentGetAddShipemtAmount(ids)
           }
           else if (this.type == 'add') {
             ids = [this.rowData].map(item => item.id)
-          } else if (this.type == 'edit') {
-            return
+            this.salesshipmentGetAddShipemtAmount(ids)
           }
-          this.salesshipmentGetAddShipemtAmount(ids)
         })
       }
     }

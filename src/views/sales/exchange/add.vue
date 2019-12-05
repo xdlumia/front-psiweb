@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 17:01:14
+ * @LastEditTime: 2019-12-05 18:46:20
  * @Description: 生成销售换货单
 */
 <template>
@@ -47,11 +47,13 @@
 
         <!-- 客户信息 -->
         <customerInfo
+          disabled
           id="customerInfo"
           :data="form"
         />
         <!-- 公司信息 -->
         <companyInfo
+          disabled
           id="companyInfo"
           :data="form"
         />
@@ -147,10 +149,10 @@ export default {
           //   taxTotalAmount:'',//98765432109876.12
           // }
         ],
-        clientId: '',//100000,
-        companyAccountId: '',//100000,
+        clientId: this.rowData.clientId,//100000,
+        companyAccountId: this.rowData.companyAccountId,//100000,
         companyCode: '',//公司编码code,
-        companySettlementId: '',//100000,
+        companySettlementId: this.rowData.companySettlementId,//100000,
         deptTotalCode: '',//部门code,
         exchangeNumber: '',//9,
         fieldList: [],//自定义字段,
