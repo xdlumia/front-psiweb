@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 21:19:53
+ * @LastEditTime: 2019-12-05 21:30:55
  * @Description: 审核信息
 */
 <template>
@@ -59,7 +59,7 @@ export default {
     }
   },
   watch: {
-    '$parent.data': {
+    '$parent.data.state': {
       handler(val) {
         if (val) {
           this.processtaskQueryProcessHistoryEntity()

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 21:00:15
+ * @LastEditTime: 2019-12-05 21:51:21
  * @Description: 销售出库单详情
 */
 <template>
@@ -14,7 +14,10 @@
       :status="status"
       @close="close"
     >
-      <div class="drawer-header">
+      <div
+        slot="button"
+        v-if="Object.keys(detail).length"
+      >
         <!-- 操作按钮 -->
         <span
           v-for="(item,index) of buttons"
@@ -31,6 +34,8 @@
         </span>
 
       </div>
+      <!-- 客户信息 -->
+
       <el-form
         ref="form"
         size="mini"
@@ -46,19 +51,20 @@
             :label="val"
             :name="key"
           >
-            <components
-              ref="detail"
-              :code="code"
-              :rowData="rowData"
-              :data="detail || {}"
-              class="d-auto-y"
-              :params="{relationCode:code}"
-              :button="false"
-              style="height:calc(100vh - 200px)"
-              :is="activeName"
-            />
           </el-tab-pane>
         </el-tabs>
+
+        <components
+          ref="detail"
+          :code="code"
+          :rowData="rowData"
+          :data="detail || {}"
+          class="d-auto-y"
+          :params="{relationCode:code}"
+          :button="false"
+          style="height:calc(100vh - 200px)"
+          :is="activeName"
+        />
 
       </el-form>
     </side-detail>

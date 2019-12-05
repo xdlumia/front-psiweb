@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 15:45:38
+ * @LastEditTime: 2019-12-05 21:51:45
  * @Description: 客户信息 1  //传入 data:{clientId:'1'} 会自动查询详情
  */
 <template>
@@ -108,6 +108,7 @@ export default {
     }
   },
   created() {
+
     this.getClinent()
   },
   methods: {
