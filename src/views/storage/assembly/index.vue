@@ -26,7 +26,7 @@
         <span
           v-else-if="column.columnFields=='assembleOrderCode'"
           class="d-text-blue d-pointer"
-          @click="getassembleVisible(row)" 
+          @click="getassembleVisible(row)"
         >{{value}}</span>
         <span v-else-if="column.columnFields=='assembleTaskState'">{{state[value]}}</span>
         <span v-else-if="column.columnFields=='pickingState'">{{pickingState[value]}}</span>
@@ -126,7 +126,7 @@ export default {
           ],
           default: true
         },
-        { label: '商品名称', prop: 'commodityNames', default: true },
+        { label: '商品名称', prop: 'goodsName', default: true },
         {
           label: '组装数量',
           prop: 'AssembleNum',

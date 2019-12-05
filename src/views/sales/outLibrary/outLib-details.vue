@@ -193,6 +193,7 @@ export default {
         '6': ['生成退货单'] //已终止
       },
       // tabs 组件名称对应的label名称
+      //1
       tabs: {
         detail: '详情',
         salesQuote: '报价单',
@@ -200,7 +201,7 @@ export default {
         salesReturn: '销售退货单',
         salesExchange: '销售换货单',
         financeReceivable: '应收账单',
-        financeQuote: '发票记录',
+        financeBilling: '发票记录',
         salesApportion: '费用分摊单'
       },
 
