@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 16:58:52
+ * @LastEditTime: 2019-12-05 18:20:36
  * @Description: 退货商品商品信息
 */
 <template>
@@ -285,7 +285,7 @@ export default {
           })
           // this.data.exChangeCommodityList 是临时数据 存放换货后的数据
           if (this.data.exChangeCommodityList) {
-            this.data.exChangeCommodityList = JSON.parse(JSON.stringify(data))
+            this.data.exChangeCommodityList = []
           }
         })
     },
