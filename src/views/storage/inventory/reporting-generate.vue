@@ -138,6 +138,8 @@
           <div slot="title">
             <span>商品信息</span>
           </div>
+
+          <!-- :tree-props="{children: 'commodityInfoList'}" -->
           <el-table
             show-summary
             sum-text='总计'
@@ -146,7 +148,7 @@
             :data="tableData"
             max-height="400"
             ref="elTable"
-            row-key="name"
+            row-key="commodityCode"
             size="mini"
           >
             <el-table-column min-width="50">
@@ -325,7 +327,6 @@ export default {
     getDetail() {
       this.$api.seePsiWmsService.wmsblitemGenerateReportingOrder({ id: this.data.id, type: this.type })
         .then(res => {
-          console.log(res, 'resresresresresresresresresresresresresresresresresres')
           this.tableData = res.data || []
         })
         .finally(() => {

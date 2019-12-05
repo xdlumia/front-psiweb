@@ -30,10 +30,10 @@
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">
-                  <span>{{scope.row.accomplishNum || 0}}/{{scope.row.allocationNum || 0}}</span>
+                  <span>{{scope.row.accomplishNum || 0}}</span>
                 </template>
               </el-table-column>
-
+              <!-- /{{scope.row.allocationNum || 0}} -->
               <el-table-column
                 prop="commodityCode"
                 label="商品编号"
@@ -106,6 +106,17 @@
                 label="编号"
                 show-overflow-tooltip
               ></el-table-column>
+              <!-- 组装全是入库,状态直接写死 -->
+              <el-table-column
+                prop="title"
+                label="状态"
+                min-width="100"
+                show-overflow-tooltip
+              >
+                <template slot-scope="">
+                  <span>组装入库</span>
+                </template>
+              </el-table-column>
 
               <el-table-column
                 prop="title"

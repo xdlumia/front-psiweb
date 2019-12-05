@@ -7,6 +7,7 @@
  */
 <template>
   <SideDetail
+    v-loading="loading"
     :status="status"
     :visible="visible"
     @close="$emit('update:visible',false)"
@@ -103,6 +104,7 @@ export default {
       status: [{ label: '组装状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       taskVisible: false,
       addVisible: false,
+      loading: false,
       activeName: '',
       state: {
         '-1': '终止',
@@ -126,6 +128,7 @@ export default {
   methods: {
     //查看详情
     wmsassembleorderInfo() {
+      this.loading = true
       this.$api.seePsiWmsService.wmsassembleorderGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
@@ -136,7 +139,7 @@ export default {
           this.status[4].value = res.data.source
         })
         .finally(() => {
-
+          this.loading = false
         })
     },
     reload() {

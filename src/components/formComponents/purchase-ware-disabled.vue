@@ -56,7 +56,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.putinNumber}}/{{scope.row.commodityNumber}}</span>
+            <span>{{scope.row.putinNumber || 0}}/{{scope.row.commodityNumber}}</span>
           </template>
         </el-table-column>
         <el-table-column

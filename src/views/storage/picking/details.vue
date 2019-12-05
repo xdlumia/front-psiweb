@@ -9,8 +9,9 @@
   <SideDetail
     :status="status"
     :visible="visible"
+    v-loading="loading"
     @close="$emit('update:visible',false)"
-    :title="'拣货单-'+ drawerData.pickingOrderCode"
+    :title="'拣货单-'+ detailForm.pickingOrderCode"
     width="990px"
   >
     <!-- class="d-auto-y"
@@ -69,6 +70,7 @@ export default {
       status: [{ label: '拣货状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       detailForm: {},
       activeName: '',
+      loading: false,
       orderStorageVisible: false
     };
   },
@@ -84,6 +86,7 @@ export default {
   methods: {
     //查看拣货单详情 
     wmspickingorderInfo() {
+      this.loading = true
       this.$api.seePsiWmsService.wmspickingorderGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
@@ -94,7 +97,7 @@ export default {
           this.status[4].value = this.detailForm.source
         })
         .finally(() => {
-
+          this.loading = false
         })
     },
     reload() {
