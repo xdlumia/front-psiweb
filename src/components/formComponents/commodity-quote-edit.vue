@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 21:28:43
+ * @LastEditTime: 2019-12-05 21:31:20
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -147,6 +147,7 @@
             class="mb0"
             :rules="[{required:true},{type:'positiveNum'},{validator:checkCommodityNumber}]"
             :prop="getProp(scope.row,'commodityNumber')"
+            v-if="!scope.row.parentCommodityCode"
           >
             <el-input
               size="mini"
