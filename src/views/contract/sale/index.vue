@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:29:58
+ * @LastEditTime: 2019-12-05 17:25:06
  * @Description: 销售合同
 */
 <template>
@@ -14,6 +14,7 @@
       busType="25"
       exportApi="seePsiContractService.contractsalesExport"
       title="销售合同"
+      ref="tableView"
     >
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
