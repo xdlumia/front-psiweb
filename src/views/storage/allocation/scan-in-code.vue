@@ -308,7 +308,7 @@ export default {
         this.$api.seePsiWmsService.wmsallocationorderBatchSsave({ putawayCommodityList: this.downTableData, businessCode: this.dialogData.allocationOrderCode, businessId: this.dialogData.id, })
           .then(res => {
             this.close()
-            this.$reload()
+            this.$emit('reload')
           })
           .finally(() => {
           })

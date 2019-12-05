@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 19:26:18
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-04 22:11:49
  * @Description: file content
 */
 <template>
@@ -21,7 +21,7 @@
           size="mini"
         >取 消</el-button>
         <el-button
-          @click="steps++"
+          @click="changeStep"
           type="primary"
           v-if="steps < 4"
           size="mini"
@@ -224,7 +224,7 @@ export default {
           }
         })
         wholeListNotChoose = this.$$util.jsonFlatten(wholeListNotChoose)
-        let quotationIds = this.$$util.jsonFlatten(wholeList).map(v => v.quotationId)
+        let quotationIds = this.form.KIND1List.map(item => this.$refs.confirmInfo.findSelectedConfig(item)).filter(a => a)
         let wholeListData = []
         // 有quotationIds 值的时候再查询
         if (quotationIds.length) {
@@ -236,6 +236,9 @@ export default {
           let { data } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(params)
           wholeListData = data || []
           wholeListData = wholeListData.map(item => {
+            (item.commonGoodConfigDetailsEntityList || []).forEach(sub => {
+              sub.parentCommodityCode = item.commodityCode
+            })
             item.id = 'customId' + item.id
             item.inventoryNumber = item.usableInventoryNum
             item.reference = item.saleReferencePrice
@@ -257,11 +260,28 @@ export default {
 
         // let
         // 第4步整合商品信息
-        this.form.businessCommoditySaveVoList = [...wholeListData, ...fixingsList]
+        this.form.businessCommoditySaveVoList = [...wholeListData, ...wholeListNotChoose, ...fixingsList]
       }
     },
   },
   methods: {
+    changeStep(){
+      if(this.steps==3){
+        if(this.form.KIND1List.filter(a=>!a.disabled).some(item=>{
+          return !this.$refs.confirmInfo.findSelectedConfig(item)
+        })){
+          return this.$message({
+            message:'请选择整机配置',
+            showClose:true,
+            type:'warning'
+          })
+        }else{
+          this.steps++
+        }
+      }else{
+        this.steps++
+      }
+    },
     async getDetail() {
       if (this.code) {
         let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
@@ -272,7 +292,6 @@ export default {
     saveHandle() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.loading = true
           let params = Object.assign(this.form, this.params)
           let copyParams = JSON.parse(JSON.stringify(params))
 
@@ -285,17 +304,22 @@ export default {
               sub.putawayType = 0 //0=出库
             })
             item.putawayType = 0 //0=出库
+            // 销售总价
+            item.preTaxAmount = (item.reference || 0) * (item.commodityNumber || 0)
+            // 销售单价
+            item.salesPrice = item.salesPrice || 0
           })
           // 验证商品信息
           if (copyParams.businessCommoditySaveVoList.every(item => !item.commodityNumber)) {
             this.$message({
-              message: '商品信息不能为空',
+              message: '商品信息的商品数量不能为空',
               type: 'error',
               showClose: true,
             });
             return
           }
           copyParams.businessCommoditySaveVoList = this.$$util.jsonFlatten(copyParams.businessCommoditySaveVoList, 'commonGoodConfigDetailsEntityList')
+          this.loading = true
           // rules 表单验证是否通过
           let api = 'salesquotationSave' // 默认编辑更新
           // 新增保存

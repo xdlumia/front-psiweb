@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 10:13:47
+ * @LastEditTime: 2019-12-04 10:29:10
  * @Description: 业务设置-库房
  -->
 <template>
@@ -47,7 +47,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="16">
-          <el-form-item label="每人自动分配:">
+          <el-form-item label="每单每人自动分配:">
             <el-input-number
               v-model.number="warehouseEntity.disassemblynNum"
               size="mini"
@@ -117,7 +117,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="16">
-          <el-form-item label="每人自动分配:">
+          <el-form-item label="每单每人自动分配:">
             <el-input-number
               v-model="warehouseEntity.assembleNum"
               size="mini"
@@ -127,7 +127,7 @@
               :precision="0"
               setp="1"
             ></el-input-number>台
-            <span class="f12 pb10" style="color: #999">说明：优先分配最少拆卸数量最少的拆卸人，如数量相同则默认分配</span>
+            <span class="f12 pb10" style="color: #999">说明：优先分配最少组装数量最少的组装人，如数量相同则默认分配</span>
           </el-form-item>
         </el-col>
       </fieldset>
@@ -259,11 +259,11 @@ export default {
       employee: null,
       warehouseEntity: {
         assembleNum: 0,
-        assembleState: 1,
-        assembleTaskState: 1,
-        disassemblyState: 1,
+        assembleState: 0,
+        assembleTaskState: 0,
+        disassemblyState: 0,
         disassemblynNum: 0,
-        exchangeState: 1,
+        exchangeState: 0,
         pickingOrdersConfigArray: [],
         disassemblyUserId: [],
         assembleUserId: []
@@ -301,6 +301,7 @@ export default {
       Object.keys(this.warehouseEntity).forEach(key => {
         this.warehouseEntity[key] = this.tempObj[key] || this.warehouseEntity[key]
       })
+      console.log(this.warehouseEntity)
     },
     commonsystemconfigInfo () {
       this.loading = true

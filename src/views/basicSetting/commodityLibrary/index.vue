@@ -2,23 +2,52 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 17:36:30
+ * @LastEditTime: 2019-12-04 21:40:56
  * @Description: 商品管理
  -->
 <template>
   <!-- 物品管理 -->
   <div class>
     <div class="d-content d-main">
-      <div class="goods-top">
+      <div
+        class="goods-top"
+        style="display:flex;justify-content: space-between;align-items: center"
+      >
         <span class="f18 lh50 b">商品库</span>
-        <el-button
-          v-if="authorityButtons.includes('decorate_goods_mgr_1001')"
-          size="mini"
-          type="primary"
-          @click="handleAddGood('goodsAdd','add')"
-          style="margin-right:5px;margin-top:10px;"
-          class="fr mr5 mt10"
-        >添加</el-button>
+        <div style="display: flex;align-items: center;">
+          <el-button
+            v-if="authorityButtons.includes('decorate_goods_mgr_1001')"
+            size="mini"
+            type="primary"
+            @click="handleAddGood('goodsAdd','add')"
+            style="margin-right:5px;margin-top:10px;"
+            class="mr5 mt10"
+          >添加</el-button>
+          <el-popover
+            class="mr5 mt10"
+            placement="bottom"
+            v-model="filterPopover"
+            trigger="click"
+            width="250"
+          >
+            <el-link
+              :underline="false"
+              @click="filterPopover = false"
+              class="el-icon-close close fr"
+              style="margin-top:2px;"
+              title="关闭"
+            ></el-link>
+            <dFilter v-model="goodsForm" :options="filterOptions" @change="goodsForm.page=1,getGoodsList()" />
+            <el-button
+              size="mini"
+              class="tool-item"
+              slot="reference"
+              title="筛选"
+              icon="iconfont icon-filter"
+              style="padding:5px;"
+            ></el-button>
+          </el-popover>
+        </div>
       </div>
       <div class="goods-wrapper">
         <div class="ba mr5 mt10 p10" style="flex:0 0 240px;box-sizing: border-box;">
@@ -54,12 +83,14 @@
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button
+                  v-if="!scope.row.configId"
                   type="text"
                   @click="copycode = scope.row.goodsCode,copy=true,visible = true"
                 >复制新增</el-button>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="商品编号" min-width="160"
+            <el-table-column
+align="center" label="商品编号" min-width="160"
 show-overflow-tooltip>
               <template slot-scope="scope">
                 <span
@@ -153,16 +184,19 @@ show-overflow-tooltip>
           <el-pagination
             class="mt10 ac"
             @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
             :current-page.sync="goodsForm.page"
             :page-size="goodsForm.limit"
-            layout="total, prev, pager, next"
+            :page-sizes="[10, 20, 30, 40]"
+            layout="total, sizes, prev, pager, next, jumper"
             :total="total"
           ></el-pagination>
         </div>
       </div>
     </div>
 
-    <el-dialog :visible.sync="visible" title v-dialogDrag
+    <el-dialog
+:visible.sync="visible" title v-dialogDrag
 :show-close="false" width="1000px">
       <div slot="title" style="display:flex;">
         <h3 style="flex:1;text-align:center;">新增商品</h3>
@@ -171,7 +205,8 @@ show-overflow-tooltip>
           <el-button size="mini" @click="visible=false">关闭</el-button>
         </div>
       </div>
-      <add-good @refresh="refresh" v-if="visible" ref="addGood"
+      <add-good
+@refresh="refresh" v-if="visible" ref="addGood"
 :code="copycode" :copy="copy"></add-good>
     </el-dialog>
     <detail
@@ -192,6 +227,7 @@ import addGood from './add-good'
 export default {
   data() {
     return {
+      filterPopover: false,
       noPic: require('@/assets/img/no-pic.png'),
       copy: false,
       copycode: null,
@@ -205,6 +241,11 @@ export default {
         value: 'id',
         label: 'className'
       },
+      filterOptions: [
+        { label: '商品编码', prop: 'goodsCode', default: true },
+        { label: '商品名称', prop: 'goodsName', default: true },
+        { label: '商品规格', prop: 'goodsSpec', default: true }
+      ],
       currentPage1: 5,
       buildDrapDown: false,
       value: '',
@@ -356,6 +397,11 @@ export default {
       this.popupRight.tlite = '导入物品'
     },
     handleCurrentChange(val) { // 分页点击
+      this.goodsForm.page = val
+      this.getGoodsList()
+    },
+    handleSizeChange(val) {
+      this.goodsForm.limit = val
       this.getGoodsList()
     },
     deleteGoodsList() { // 批量删除

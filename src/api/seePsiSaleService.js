@@ -34,6 +34,20 @@ export default {
     'mock': false,
     'methods': 'post'
   },
+
+  // 批量保存
+  businessrelationSaveBatchBusinessRelation: {
+    'url': '/businessrelation/saveBatchBusinessRelation',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 保存
+  businessrelationSaveBusinessRelation: {
+    'url': '/businessrelation/saveBusinessRelation',
+    'mock': false,
+    'methods': 'post'
+  },
   /* =============单据业务商品表end=========== */
 
   /* =============业务单账期表start=========== */
@@ -405,6 +419,13 @@ export default {
     'mock': false
   },
 
+  // 查询报价单可退换货商品
+  salesquotationQueryMayCommodity: {
+    'url': '/salesquotation/queryMayCommodity',
+    'mock': false,
+    'methods': 'get'
+  },
+
   // 驳回
   salesquotationReject: {
     'url': '/salesquotation/reject',
@@ -539,6 +560,13 @@ export default {
     'methods': 'delete'
   },
 
+  // 发货
+  salessheetDeliverGoods: {
+    'url': '/salessheet/deliverGoods',
+    'mock': false,
+    'methods': 'post'
+  },
+
   // 导出
   salessheetExport: {
     'url': '/salessheet/export',
@@ -588,8 +616,8 @@ export default {
 
   /* =============销售出库单start=========== */
   // 根据code获取出库单商品
-  salesshipmentGetShipmentCommodity: {
-    'url': '/salesshipment/getShipmentCommodity',
+  salesshipmentBusinessCommodityEntity: {
+    'url': '/salesshipment/BusinessCommodityEntity',
     'mock': false
   },
 
@@ -636,6 +664,12 @@ export default {
   // 根据code查看详细信息
   salesshipmentGetInfoByCode: {
     'url': '/salesshipment/getInfoByCode',
+    'mock': false
+  },
+
+  // 根据code获取出库单商品
+  salesshipmentGetShipmentCommodity: {
+    'url': '/salesshipment/getShipmentCommodity',
     'mock': false
   },
 

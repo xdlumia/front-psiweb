@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 18:58:24
+ * @LastEditTime: 2019-12-04 21:15:21
  * @Description: 账期信息
  */
 <template>
@@ -12,6 +12,7 @@
       prop="paymentTypeCode"
     >
       <el-select
+        size="mini"
         :disabled="disabled"
         v-model="data.paymentTypeCode"
       >
@@ -146,8 +147,6 @@ export default {
     'data.paymentTypeCode': {
       handler(val) {
         // 如果是现结
-        console.log(val);
-
         if (val === 'PSI_SALE_JZFS-2') {
           this.data.shipmentFinanceSaveVoList = [{
             feeDetailCode: '', // 费用明细",

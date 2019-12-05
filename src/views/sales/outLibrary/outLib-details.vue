@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 17:56:00
+ * @LastEditTime: 2019-12-04 20:53:25
  * @Description: 销售出库单详情
 */
 <template>
@@ -155,9 +155,19 @@ export default {
         { label: '编辑合同', type: 'primary', authCode: '' },
         { label: '合同完善', type: 'primary', authCode: '' },
         { label: '审核采购时间', type: 'primary', authCode: '' },
-        { label: '收回合同', type: 'primary', authCode: '' },
+        { label: '合同收回', type: 'primary', authCode: '' },
         { label: '追加合同附件', type: 'primary', authCode: '' },
       ],
+      stateText: {
+        '-1': '新建',
+        '0': '审核中',
+        '1': '请购处理',
+        '2': '回收合同',
+        '3': '已通过',
+        '4': '完成',
+        '5': '驳回',
+        '6': '终止',
+      },
       /**
        * 根据当前状态判断显示哪些按钮
        */
@@ -165,7 +175,7 @@ export default {
         '-1': ['提交审核', '编辑', '删除', '生成合同'], // 新建
         '0': ['撤销审核', '审核通过', '驳回', '合同完善', '追加合同附件'], //审核中
         '1': ['审核采购时间', '追加合同附件'], //请购处理
-        '2': ['收回合同', '追加合同附件'], //合同收回
+        '2': ['合同收回', '追加合同附件'], //合同收回
         '3': ['终止', '生成退货单', '生成换货单', '追加合同附件'], //已通过
         '4': ['生成退货单', '生成换货单', '开票申请', '追加合同附件'], //已完成
         '5': ['提交审核', '编辑', '删除', '编辑合同'], //已驳回
@@ -192,16 +202,6 @@ export default {
       returnAddVisible: false,
       exchangeAddVisible: false,
       collectInvoiceVisible: false, //开票申请
-      stateText: {
-        '-1': '新建',
-        '0': '审核中',
-        '1': '请购处理',
-        '2': '回收合同',
-        '3': '已通过',
-        '4': '完成',
-        '5': '驳回',
-        '6': '终止',
-      },
 
     }
   },
@@ -308,7 +308,7 @@ export default {
             data: { ...params, apprpvalNode: 'psi_sales_outlibrary_10' },
             needNote: null
           },
-          '收回合同': {
+          '合同收回': {
             api: 'seePsiSaleService.salesshipmentWithdrawApproval',
             data: { ...params, apprpvalNode: 'psi_sales_outlibrary_13' },
             needNote: null

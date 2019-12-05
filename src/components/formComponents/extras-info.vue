@@ -3,16 +3,18 @@
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
  * @LastEditTime: 2019-11-21 10:18:11
- * @Description: 备注信息 字段已绑定 1 
+ * @Description: 备注信息 字段已绑定 1
 */
 <template>
   <form-card title="备注信息">
     <div slot="title">
       <span>备注信息</span>
       <span class="fr" v-if="canModify">
-        <el-link :underline="false" @click="startEdit" type="primary" v-if="!isEdit">编辑</el-link>
+        <el-link :underline="false" @click="startEdit" type="primary"
+v-if="!isEdit">编辑</el-link>
         <span v-else>
-          <el-link :underline="false" @click="save" class="mr10" type="primary">保存</el-link>
+          <el-link :underline="false" @click="save" class="mr10"
+type="primary">保存</el-link>
           <el-link :underline="false" @click="cancel" type="primary">取消</el-link>
         </span>
       </span>
@@ -44,14 +46,18 @@
           <upload-file
             :disabled="!canEditable"
             :limit="{
-            type:['doc','pdf','xls','ppt','docx','xlsx','pptx','zip','rar'],
+            type:['doc','pdf','xls','ppt','docx','xlsx','pptx','zip','rar','jpg'],
           }"
             @uploadSuccess="uploadFile"
             list-type="text"
           >
             <div class="al">
               <!-- 产品刘晨辉说，附件最多上传10个 -->
-              <el-button size="mini" type="primary" v-if="canEditable && (data.attachList || []).length<10">点击上传</el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                v-if="canEditable && (data.attachList || []).length<10"
+              >点击上传</el-button>
               <div :key="item.url" v-for="(item,i) of data.attachList || []">
                 <span class="el-icon-document"></span>
                 <span
@@ -73,7 +79,7 @@
       <!-- <el-col :span="24" v-if="needUpload">
         <el-form-item label="附件文件名称清单" size="mini">
           <div class="wfull d-clear">
-            <el-row :gutter="10"> 
+            <el-row :gutter="10">
               <el-col :span="2" class="ar">
                 <span>1.</span>
               </el-col>

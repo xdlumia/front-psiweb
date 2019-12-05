@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-27 18:36:58
+ * @LastEditTime: 2019-12-04 16:37:05
  * @Description: description
  -->
 <template>
@@ -36,20 +36,20 @@
             <el-row>
               <el-col :span="8">
                 <span class="b mr10">应付欠款</span>
-                <span>9999元</span>
+                <span>{{totalAmount.totalArrearsAmount}}元</span>
               </el-col>
               <el-col :span="8">
                 <span class="b mr10">预付款</span>
-                <span>9999元</span>
+                <span>{{totalAmount.totalPredictAmount}}元</span>
               </el-col>
             </el-row>
           </form-card>
           <!-- 基本信息 -->
-          <information :data="detailForm"></information>
+          <information disabled :data="detailForm"></information>
           <!-- 发票信息 -->
-          <invoice-info :data="detailForm" />
+          <invoice-info disabled :data="detailForm" />
           <!-- 备注信息 -->
-          <extras-info :data="detailForm" />
+          <extras-info disabled :data="detailForm" />
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="应付账单" name="payable">
@@ -99,13 +99,8 @@ export default {
       loading: false,
       showDetailPage: false,
       detailForm: {},
-      status: [
-        { label: '状态', value: this.rowData.state ? '停用' : '启用' },
-        { label: '服务商创建人', value: this.rowData.creatorName },
-        { label: '创建部门', value: this.rowData.deptName },
-        { label: '创建时间', value: this.rowData.createTime, isTime: true },
-        { label: '来源', value: this.rowData.source, dictName: 'PSI_KHGL_LY' }
-      ]
+      totalAmount: {},
+      status: []
     }
   },
   mounted () {
@@ -130,9 +125,27 @@ export default {
       this.$api.seePsiCommonService.commonserviceproviderInfoBycode(null, this.code).then(res => {
         this.detailForm = res.data || {}
         this.detailForm.serviceTypeList = res.data.serviceType.split(',')
-        this.status[0].value = res.data.state ? '停用' : '启用'
+        this.status = [
+          { label: '状态', value: this.detailForm.state ? '已停用' : '已启用' },
+          { label: '服务商创建人', value: this.detailForm.creatorName },
+          { label: '创建部门', value: this.detailForm.deptName },
+          { label: '创建时间', value: this.detailForm.createTime, isTime: true },
+          { label: '来源', value: this.detailForm.source, dictName: 'PSI_KHGL_LY' }
+        ]
+
+        this.fbillGetClientFbillStatistics()
       }).finally(() => {
         this.loading = false
+      })
+    },
+    fbillGetClientFbillStatistics () {
+      this.$api.seePsiFinanceService.fbillGetClientFbillStatistics({
+        clientType: 2,
+        clientId: this.detailForm.id,
+        billType: 1
+      }).then(res => {
+        console.log(res.data)
+        this.totalAmount = res.data
       })
     },
     commonserviceproviderUpdate (id, state) {

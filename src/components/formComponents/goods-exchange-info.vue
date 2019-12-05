@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 21:30:33
- * @Description: 生成请购单商品信息
+ * @LastEditTime: 2019-12-04 18:42:52
+ * @Description: 换货商品商品信息
 */
 <template>
   <div>
@@ -13,32 +13,46 @@
         :summary-method="getSummaries"
         size="mini"
         border
-        :data="tableData"
+        :data="data || []"
         default-expand-all
         :tree-props="{children: 'children'}"
         row-key="id"
         ref="table"
       >
         <el-table-column
+          fixed
           prop="commodityCode"
           min-width="100"
           label="商品编号"
           show-overflow-tooltip
         />
-
         <el-table-column
+          fixed
           prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
         />
         <el-table-column
+          fixed
           prop="goodsPic"
           min-width="100"
           label="商品图片"
           show-overflow-tooltip
-        />
+        >
+          <template slot-scope="scope">
+            <el-image
+              :src="scope.row.goodsPic"
+              class="d-center"
+              fit="contain"
+              style="width: 100px; height: 40px"
+            >
+              <span slot="error">暂无图片</span>
+            </el-image>
+          </template>
+        </el-table-column>
         <el-table-column
+          fixed
           prop="categoryCode"
           min-width="80"
           label="商品类别"
@@ -46,6 +60,17 @@
         >
           <template slot-scope="scope">
             {{scope.row.categoryCode | dictionary('PSI_SP_KIND')}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          fixed
+          prop="alterationNumber"
+          min-width="80"
+          label="退货数量"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span class="d-text-blue">{{scope.row.alterationNumber}}/{{scope.row.commodityNumber}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -61,12 +86,6 @@
           show-overflow-tooltip
         />
         <el-table-column
-          prop="note"
-          min-width="120"
-          label="备注"
-          show-overflow-tooltip
-        />
-        <el-table-column
           prop="specOne"
           min-width="80"
           label="规格"
@@ -74,23 +93,23 @@
         />
 
         <el-table-column
-          prop="salesPrice"
+          prop="inventoryPrice"
           min-width="80"
-          label="销售单价"
+          label="销售成本"
           show-overflow-tooltip
         />
 
         <el-table-column
           prop="commodityNumber"
           min-width="70"
-          label="商品数量"
+          label="销售数量"
           show-overflow-tooltip
         />
 
         <el-table-column
+          prop="alterationPrice"
           min-width="100"
           label="退货单价"
-          prop="salesPrice"
           show-overflow-tooltip
         >
         </el-table-column>
@@ -100,48 +119,94 @@
           label="税率%"
           show-overflow-tooltip
         />
-
         <el-table-column
-          prop="preTaxAmount"
+          prop="taxPrice"
           min-width="120"
-          label="含税总价"
+          label="税后退货单价"
           show-overflow-tooltip
         />
         <el-table-column
-          prop="inventoryNumber"
+          prop="taxTotalAmount"
           min-width="120"
-          label="总库存"
+          label="税后总价"
           show-overflow-tooltip
         />
 
+        <el-table-column
+          prop="note"
+          min-width="120"
+          label="备注"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          prop="isDirect"
+          min-width="120"
+          label="是否直发"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <el-switch
+              :disabled="disabled"
+              :active-value="1"
+              :inactive-value="0"
+              v-model="scope.row.isDirect"
+            ></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="isAssembly"
+          min-width="120"
+          label="是否组装"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <el-switch
+              :disabled="disabled"
+              :active-value="1"
+              :inactive-value="0"
+              v-model="scope.row.isAssembly"
+            ></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="reference"
+          min-width="120"
+          label="销售参考价"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          prop="recentDiscountSprice"
+          min-width="120"
+          label="最近参考价"
+          show-overflow-tooltip
+        />
       </el-table>
     </form-card>
-
   </div>
 </template>
 <script>
 export default {
+  components: {},
   props: {
-    data: {
-      type: Object,
-      default: () => ({})
-    },
+    from: String,
+    data: Array,
     params: {
       type: Object,
       default: () => ({})
     },
     title: {
-      default: '商品信息',
+      default: '退货商品信息',
       type: String
     },
     disabled: {
       default: false,
       type: Boolean
     },
+    // 销售单编号列表下拉
+    options: Array
   },
   data() {
     return {
-      tableData: [],
       // queryFrom: {
       //   busType: 1, // 1报价单 2请购单]
       //   putawayType: 1,
@@ -149,32 +214,13 @@ export default {
       // }
     }
   },
-  created() {
-    this.businesscommodityGetBusinessCommodityList()
-  },
   watch: {
 
   },
+  created() {
+
+  },
   methods: {
-    businesscommodityGetBusinessCommodityList() {
-      this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.params)
-        .then(res => {
-          let data = res.data || []
-          this.tableData = res.data || []
-          // 清空商品数量
-          this.data.commodityList = []
-          this.tableData = this.$$util.formatCommodity(data)
-          this.tableData.forEach(item => {
-            // 商品数量-总库存大于0的商品才生成请购单
-            let commodityNumber = (item.commodityNumber || 0) - (item.inventoryNumber || 0)
-            if (commodityNumber > 0) {
-              // 生成请购单商品数量是 请求过来的商品数量-总库存数量
-              item.commodityNumber = commodityNumber
-              this.data.commodityList.push(item)
-            }
-          })
-        })
-    },
     // 自定义账单金额数据
     getSummaries(param) {
       const { columns, data } = param;
@@ -182,12 +228,16 @@ export default {
       columns.forEach((col, index) => {
         if (index == 0) {
           sums[index] = '总价'
-        } else if (col.property == 'commodityNumber' || col.property == 'preTaxAmount') {
+        } else if (col.property == 'taxPrice' || col.property == 'taxTotalAmount') {
           const values = data.map(item => Number(item[col.property] || 0));
           sums[index] = values.reduce((sum, curr) => {
             const val = Number(curr)
             return sum + curr
-          }, 0)
+          }, 0).toFixed(2)
+        }
+        //获取税后总价
+        if (col.property == 'taxTotalAmount') {
+          this.data.shouldRefundAmount = sums[index]
         }
       });
       return sums

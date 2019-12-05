@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 14:56:48
+ * @LastEditTime: 2019-12-04 16:14:35
  * @Description: 销售-报价单
  */
 <template>
@@ -158,6 +158,13 @@ export default {
     // 按钮功能操作
     eventHandle(type, row) {
       if (type === 'mergeVisible' && this.selectionData.length < 2) {
+        if (this.selectionData.some(item => item.shipmentCode)) {
+          this.$message.error({
+            showClose: true,
+            message: '当前选中的数据里有已经生成过出库单'
+          })
+          return
+        }
         this.$message.error({
           showClose: true,
           message: '合并生成出库单最少选择两条数据'

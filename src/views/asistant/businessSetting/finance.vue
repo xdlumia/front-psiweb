@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-02 16:30:33
+ * @LastEditTime: 2019-12-03 21:27:08
  * @Description: 业务设置-财务
  -->
 <template>
@@ -26,8 +26,7 @@
           style="margin-top: 20px;"
           @click="save"
         >保存</el-button>
-        <el-button v-if="isEdit" size="small" style="margin-top: 20px;"
-@click="cancel">取消</el-button>
+        <el-button v-if="isEdit" size="small" style="margin-top: 20px;" @click="cancel">取消</el-button>
       </el-col>
     </div>
     <el-form
@@ -44,8 +43,7 @@
         </legend>
         <el-row>
           <el-col :span="24">
-            <el-button size="mini" type="primary" class="mb10 mt10"
-@click="addItem">+新增滞纳金方案</el-button>
+            <el-button size="mini" type="primary" class="mb10 mt10" @click="addItem">+新增滞纳金方案</el-button>
           </el-col>
         </el-row>
         <div v-for="(item, index) in financeConfigEntity.financeConfigList" :key="index">
@@ -103,9 +101,11 @@
                 label="滞纳金上限"
                 label-width="95px"
                 :prop="'financeConfigList.' + index + '.overdueFineUpperLimit'"
-                :rules="[{required:true,message:'请输入',trigger:'blur'}, { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '11位整数，2位小数', trigger: 'blur' }]"
+                :rules="[{required:true,message:'请输入',trigger:'blur'}, { validator: validateProporsion, trigger: 'blur'}]"
               >
-                <el-input :show-word-limit="false" v-model.trim="item.overdueFineUpperLimit"></el-input>
+                <el-input :show-word-limit="false" v-model.trim="item.overdueFineUpperLimit">
+                  <div slot="append" v-if="!item.limitType">%</div>
+                </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="2" style="padding-top:2px;">
@@ -126,7 +126,7 @@
 
 <script type='text/ecmascript-6'>
 export default {
-  data() {
+  data () {
     const validateName = (rule, value, callback) => {
       const result = this.financeConfigEntity.financeConfigList.filter(item => item.overdueFineName === value)
       if (result.length > 1) {
@@ -169,11 +169,11 @@ export default {
   },
   components: {
   },
-  mounted() {
+  mounted () {
     this.commonsystemconfigInfo()
   },
   methods: {
-    addItem() {
+    addItem () {
       this.financeConfigEntity.financeConfigList.push({
         limitType: 0,
         overdueFineInterval: 0,
@@ -182,7 +182,7 @@ export default {
         overdueFineUpperLimit: ''
       })
     },
-    save() {
+    save () {
       this.$refs.financeConfigEntity.validate(valid => {
         if (valid) {
           const params = {
@@ -194,7 +194,7 @@ export default {
       })
     },
     // 保存接口
-    commonsystemconfigSave(params) {
+    commonsystemconfigSave (params) {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigSave(params).finally(() => {
         this.commonsystemconfigInfo()
@@ -202,17 +202,17 @@ export default {
         this.isEdit = false
       })
     },
-    cancel() {
+    cancel () {
       this.isEdit = false
       this.handleDefault()
     },
     // 处理返回数据
-    handleDefault() {
+    handleDefault () {
       Object.keys(this.financeConfigEntity).forEach(key => {
         this.financeConfigEntity[key] = this.tempObj[key] || this.financeConfigEntity[key]
       })
     },
-    commonsystemconfigInfo() {
+    commonsystemconfigInfo () {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigInfo(null, 3).then(res => {
         this.tempObj = JSON.parse(res.data.configJson)

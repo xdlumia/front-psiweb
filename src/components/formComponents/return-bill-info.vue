@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-19 08:48:44
+ * @LastEditTime: 2019-12-04 22:05:56
  * @Description:  退货单账期信息 账期费用
  */
 <template>
@@ -23,7 +23,7 @@
             v-if="item.type =='date'"
             value-format="timestamp"
             :disabled='disabled'
-            v-model="form[item.prop]"
+            v-model="data[item.prop]"
             :placeholder="`请选择${item.label}`"
           />
           <el-input
@@ -43,8 +43,8 @@
 let formItems = [
   // 客户名称编辑的时候使用clientId显示的时候使用clientName
   { label: '应退金额', prop: 'shouldRefundAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
-  { label: '实退金额', prop: 'actualRefundAmount', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
-  { label: '付款时间', prop: 'payTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
+  { label: '实退金额', prop: 'actualRefundAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
+  { label: '付款时间', prop: 'payTime', type: 'date', rules: [{ required: true, trigger: 'blur' }], },
 ]
 export default {
   props: {

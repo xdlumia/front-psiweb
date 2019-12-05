@@ -7,7 +7,7 @@
  */
 <template>
   <div>
-    <form-card title='商品拣货'>
+    <form-card :title="data.isAssembly == 1 ? '商品组装' : '商品拣货'">
       <el-table
         border
         size='mini'
@@ -16,8 +16,22 @@
         class="college-main"
       >
         <el-table-column
+          v-if="data.isAssembly == 1"
           fixed
-          prop="pickingNumber"
+          align="left"
+          prop="taxTotalAmount"
+          label="总组装数量"
+          width="100"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.accomplishNum===null ? '-' : scope.row.accomplishNum }}/{{scope.row.allocationNum===null ? '-' : scope.row.allocationNum }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="data.isAssembly == 0"
+          fixed
+          prop="pickingNum"
           min-width="100"
           label="拣货数量"
           show-overflow-tooltip

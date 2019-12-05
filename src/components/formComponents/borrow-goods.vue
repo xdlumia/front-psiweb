@@ -2,205 +2,37 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 15:36:20
+ * @LastEditTime: 2019-12-04 10:54:39
  * @Description: 借入/借出商品
 */  
 <template>
-  <form-card
-    class="borrow-goods"
-    title="借入/借出商品"
-  >
-    <div slot="title">
-      <span>借入/借出商品</span>
-      <span class="fr">
-        <span>
-          <el-link
-            :underline="false"
-            @click="fullscreen"
-            type="primary"
-          >全屏显示</el-link>
-        </span>
-      </span>
-    </div>
-    <el-table
-      :data="data.commodityList||[]"
-      max-height="400"
-      ref="elTable"
-      row-key="name"
-      size="mini"
-    >
-      <el-table-column
-        class-name="hide-children"
-        fixed
-        min-width="1"
-        width="1"
-      ></el-table-column>
-      <el-table-column
-        fixed
-        min-width="40"
-      >
-        <template slot-scope="{row}">
-          <div
-            class="expanded-icons d-text-gray"
-            v-if="row.children&&row.children.length"
-          >
-            <span
-              @click="expand(row)"
-              class="el-icon-plus d-pointer"
-              v-if="!row.expanded"
-            ></span>
-            <span
-              @click="expand(row)"
-              class="el-icon-minus d-pointer"
-              v-else
-            ></span>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column
-        fixed
-        label="借入数量"
-        min-width="70"
-        prop="borrowLoanNum"
-      >
-        <template slot-scope="{row}">
-          <span>{{row.borrowLoanAccomplishNum}}/{{row.borrowLoanNum}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        fixed
-        label="借入库房"
-        min-width="120"
-        prop="borrowWmsName"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        fixed
-        label="机器号/SN码"
-        min-width="100"
-        prop="borrowLoanAccomplishNum"
-        show-overflow-tooltip
-      >
-        <template slot-scope="{row}">
-          <span
-            @click="visible=true,currentCode=row.commodityCode,operationType=0"
-            class="d-text-blue d-pointer"
-          >{{row.borrowLoanAccomplishNum}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        fixed
-        label="返还数量"
-        min-width="70"
-        prop="returnNum"
-      >
-        <template slot-scope="{row}">
-          <span>{{row.returnAccomplishNum}}/{{row.returnNum}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        fixed
-        label="返还库房"
-        min-width="120"
-        prop="returnWmsName"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        fixed
-        label="机器号/SN码"
-        min-width="100"
-        prop="returnAccomplishNum"
-        show-overflow-tooltip
-      >
-        <template slot-scope="{row}">
-          <span
-            @click="visible=true,currentCode=row.commodityCode,operationType=1"
-            class="d-text-blue d-pointer"
-          >{{row.returnAccomplishNum}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="商品编号"
-        min-width="130"
-        prop="commodityCode"
-      >
-        <template slot-scope="{row}">
-          <div class="d-elip">
-            <el-link
-              :underline="false"
-              class="f12"
-              type="primary"
-              @click="showCommodityDetail=true,currentCommodityCode=row.commodityCode"
-            >{{row.commodityCode}}</el-link>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="商品名称"
-        min-width="100"
-        prop="goodsName"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        label="商品图片"
-        min-width="100"
-        prop="title"
-        show-overflow-tooltip
-      >
-        <template slot-scope="{row}">
-          <el-image
-            :src="row.goodsPic"
-            class="d-center"
-            fit="fill"
-            style="width: 100px; height: 40px"
-          >
-            <span slot="error">暂无图片</span>
-          </el-image>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="商品类别"
-        min-width="80"
-        prop="categoryCode"
-        show-overflow-tooltip
-      >
-        <template slot-scope="{row}">
-          <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="商品分类"
-        min-width="100"
-        prop="className"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        label="配置"
-        min-width="100"
-        prop="configName"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        label="商品规格"
-        min-width="140"
-        prop="specOne"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        label="单位"
-        min-width="80"
-        prop="unit"
-        show-overflow-tooltip
-      >
-        <template slot-scope="{row}">
-          <span>{{row.unit | dictionary('SC_JLDW')}}</span>
-        </template>
-      </el-table-column>
-    </el-table>
-    <FullscreenElement
-      :element="$refs.elTable"
-      :visible.sync="showInFullscreen"
-    />
+  <div>
+    <buying-goods-edit
+      :customColumns="[
+        { label:'借入数量', key:'borrowLoanNum',fixed:true, width:70, prop:'borrowLoanNum',format:(a,b,info)=>!info.isChild?`${b.borrowLoanAccomplishNum||0}/${b.borrowLoanNum||0}`:'' },
+        { label:'借入库房', key:'borrowWmsName',fixed:true, width:120, prop:'borrowWmsName',showOverflowTip:true },
+        { label:'机器号/SN码', key:'borrowLoanAccomplishNum',fixed:true, width:100, prop:'borrowLoanAccomplishNum',showOverflowTip:true,
+          click:(row)=>(visible=true,currentCode=row.commodityCode,operationType=0),
+        },
+        { label:'返还数量', key:'returnNum',fixed:true, width:70, prop:'returnNum',format:(a,b,info)=>!info.isChild?`${b.returnAccomplishNum||0}/${b.returnNum||0}`:'' },
+        { label:'返还库房', key:'returnWmsName',fixed:true, width:120, prop:'returnWmsName',showOverflowTip:true },
+        { label:'机器号/SN码', key:'returnAccomplishNum',fixed:true, width:100, prop:'returnAccomplishNum',showOverflowTip:true,
+          click:(row)=>(visible=true,currentCode=row.commodityCode,operationType=0),
+        },
+      ]"
+      :data="data"
+      :show="[
+        'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','configName','!add','unit'
+      ]"
+      :showSummary="false"
+      :sort="[
+        'expanded','borrowLoanNum','borrowWmsName','borrowLoanAccomplishNum','returnNum','returnWmsName',
+        'returnAccomplishNum','commodityCode','goodsName','borrowLoanNum','costUnivalence',
+      ]"
+      :title="`${(data&&data.borrowLoanType==0)?'借入商品':'借出商品'}`"
+      class="borrow-goods"
+      ref="goodsTable"
+    ></buying-goods-edit>
     <commodityRecordBorrow
       :params="{
       commodityCode:currentCode,
@@ -210,23 +42,16 @@
       :visible.sync="visible"
       v-if="visible"
     />
-    <CommodityDetail
-      :code="currentCommodityCode"
-      :visible.sync="showCommodityDetail"
-      v-if="showCommodityDetail"
-    />
-  </form-card>
+  </div>
 </template>
 <script>
 import FullscreenElement from '@/components/fullscreen-element';
 import commodityRecordBorrow from './commodity-record-borrow';
-import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 
 export default {
   components: {
     FullscreenElement,
-    commodityRecordBorrow,
-    CommodityDetail
+    commodityRecordBorrow
   },
   props: {
     data: {
@@ -245,12 +70,29 @@ export default {
       default: () => []
     }
   },
+  computed: {
+    // prettier-ignore
+    customColumns(){
+      // 1 借出 0 借入
+      let columns = [];
+      if(this.data){
+        columns = [
+          { label:'操作', key:'actions', width:120, prop:'actions',slot:'actions' },
+          { label:'商品编号', key:'commodityCodes', width:140, prop:'commodityCode',slot:'commodityCode',showOverflowTip:true },
+          { label:'商品名称', key:'goodsNames', width:140, prop:'goodsName',slot:'goodsName',showOverflowTip:true },
+          { label:this.data.borrowLoanType==1?'借出数量':'借入数量', key:'borrowLoanNum', width:100, prop:'borrowLoanNum',slot:'borrowLoanNum'},
+        ]
+        if(this.data.borrowLoanType==0){
+          columns.push({ label:'借入价格', key:'costUnivalence', width:100, prop:'costUnivalence',slot:'costUnivalence'})
+        }
+      }
+      return columns;
+    }
+  },
   data() {
     return {
       currentCode: '',
-      currentCommodityCode: '',
       showInFullscreen: false,
-      showCommodityDetail: false,
       operationType: 0,
       visible: false
     };

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 16:02:27
+ * @LastEditTime: 2019-12-04 09:55:21
  * @Description: 采购单详情
 */
 <template>
@@ -10,7 +10,7 @@
     :status="status"
     :title="`请购单 ${detail?detail.purchaseApplyCode:''}`"
     :visible.sync="showDetailPage"
-    @close="$emit('update:visible',false)"
+    @close="close"
     v-loading="loading"
     width="990px"
   >
@@ -59,12 +59,16 @@
       </el-tab-pane>
     </el-tabs>
     <OrderStorageAdd :joinCode="code" :visible.sync="orderStorageVisible" @reload="setEdit(),$reload()" from="请购单" />
+    <!-- borrowLoanNum: '',
+          commodityCode: '',
+    costUnivalence: ''-->
     <addBorrowIn
       :rowData="{
         commodityList:detail.commodityList.filter(a=>a.waitPurchaseNumber>0).map(a=>({
           ...a,
-          commodityNumber:a.waitPurchaseNumber,
-          maxcommodityNumber:a.waitPurchaseNumber,
+          borrowLoanNum:a.waitPurchaseNumber,
+          maxborrowLoanNum:a.waitPurchaseNumber,
+          costUnivalence:a.costAmount,
         })),
         borrowLoanType:0,
         businessCode :detail.purchaseApplyCode,

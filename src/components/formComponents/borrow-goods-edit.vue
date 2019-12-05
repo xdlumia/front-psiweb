@@ -2,97 +2,59 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 11:14:41
+ * @LastEditTime: 2019-12-04 10:41:08
  * @Description: 借入/借出商品编辑页面
 */  
 <template>
-  <form-card class="borrow-goods" title="借入/借出商品">
-    <div slot="title">
-      <span>借入/借出商品</span>
-    </div>
-    <el-table :data="data.commodityList" max-height="400" ref="elTable" row-key="name" size="mini">
-      <el-table-column class-name="hide-children" min-width="1" width="1"></el-table-column>
-      <el-table-column label="操作" min-width="70" prop="name">
-        <template slot-scope="{$index}">
-          <!-- el-icon-remove el-icon-circle-plus -->
-          <span @click="add($index)" class="f20 el-icon-circle-plus"></span>
-          <span @click="del($index)" class="f20 ml5 el-icon-remove d-text-red" v-if="$index>0"></span>
-        </template>
-      </el-table-column>
-      <!-- <el-table-column min-width="60">
-        <template slot-scope="{row}">
-          <div class="expanded-icons d-text-gray" v-if="row.children&&row.children.length">
-            <span @click="expand(row)" class="el-icon-plus d-pointer" v-if="!row.expanded"></span>
-            <span @click="expand(row)" class="el-icon-minus d-pointer" v-else></span>
-          </div>
-        </template>
-      </el-table-column>-->
-      <el-table-column label="商品编号" min-width="130" prop="commodityCode">
-        <template slot-scope="{row,$index}">
-          <el-form-item :prop="`commodityList.${$index}.commodityCode`" :rules="[{required:true}]">
-            <commodity-selector
-              :codes="data.commodityList.map(item=>item.commodityCode)"
-              @choose="chooseGoods($event,$index)"
-              type="code"
-              v-model="row.commodityCode"
-            />
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="商品名称" min-width="130" prop="goodsName">
-        <template slot-scope="{row,$index}">
-          <el-form-item :prop="`commodityList.${$index}.goodsName`" :rules="[{required:true}]">
-            <commodity-selector
-              :codes="data.commodityList.map(item=>item.commodityCode)"
-              @choose="chooseGoods($event,$index)"
-              v-model="row.goodsName"
-            />
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="借出数量" min-width="100" prop="borrowLoanNum" v-if="data.borrowLoanType==1">
-        <template slot-scope="{row,$index}">
-          <el-form-item :prop="`commodityList.${$index}.borrowLoanNum`" :rules="[{required:true},{type:'positiveNum'}]">
-            <el-input v-model="row.borrowLoanNum"></el-input>
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="借入数量" min-width="100" prop="borrowLoanNum" v-else>
-        <template slot-scope="{row,$index}">
-          <el-form-item :prop="`commodityList.${$index}.borrowLoanNum`" :rules="[{required:true},{type:'positiveNum'}]">
-            <el-input v-model="row.borrowLoanNum"></el-input>
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="借入价格(不含税)" min-width="120" prop="name" v-if="data.borrowLoanType==0">
-        <template slot-scope="{row,$index}">
-          <el-form-item :prop="`commodityList.${$index}.costUnivalence`" :rules="[{required:true},{type:'price'}]">
-            <el-input v-model="row.costUnivalence"></el-input>
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="商品图片" min-width="100" prop="title" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <el-image :src="row.goodsPic" class="d-center" fit="fill" style="width: 100px; height: 40px">
-            <span slot="error">暂无图片</span>
-          </el-image>
-        </template>
-      </el-table-column>
-      <el-table-column label="商品类别" min-width="80" prop="categoryCode" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <div>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="商品分类" min-width="100" prop="className" show-overflow-tooltip></el-table-column>
-      <el-table-column label="配置" min-width="100" prop="configName" show-overflow-tooltip></el-table-column>
-      <el-table-column label="商品规格" min-width="140" prop="specOne" show-overflow-tooltip></el-table-column>
-      <el-table-column label="单位" min-width="80" prop="unit" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <span>{{row.unit | dictionary('SC_JLDW')}}</span>
-        </template>
-      </el-table-column>
-    </el-table>
-  </form-card>
+  <buying-goods-edit
+    :customColumns="customColumns"
+    :data="data"
+    :show="[
+      'goodsPic','categoryCode','className','specOne','configName','!add','unit'
+    ]"
+    :showSummary="false"
+    :sort="['expanded','actions','commodityCodes','goodsNames','borrowLoanNum','costUnivalence',]"
+    :title="`${(data&&data.borrowLoanType==0)?'借入商品':'借出商品'}`"
+    class="borrow-goods"
+    ref="goodsTable"
+  >
+    <template slot="actions" slot-scope="{row,info}">
+      <span @click="add(info.index)" class="f20 el-icon-circle-plus" v-if="!info.isChild"></span>
+      <span @click="del(info.index)" class="f20 ml5 el-icon-remove d-text-red" v-if="info.index>0&&!info.isChild"></span>
+    </template>
+    <template slot="commodityCode" slot-scope="{row,info,formProp}">
+      <el-form-item :prop="formProp" :rules="[{required:true}]" v-if="!info.isChild">
+        <commodity-selector
+          :codes="data.commodityList.map(item=>item.commodityCode)"
+          @choose="chooseGoods($event,info.index)"
+          type="code"
+          v-model="row.commodityCode"
+        />
+      </el-form-item>
+      <span v-else>{{row.commodityCode}}</span>
+    </template>
+    <template slot="goodsName" slot-scope="{row,info,formProp}">
+      <el-form-item :prop="formProp" :rules="[{required:true}]" v-if="!info.isChild">
+        <commodity-selector
+          :codes="data.commodityList.map(item=>item.commodityCode)"
+          @choose="chooseGoods($event,info.index)"
+          v-model="row.goodsName"
+        />
+      </el-form-item>
+      <span v-else>{{row.goodsName}}</span>
+    </template>
+    <!-- 借出/入数量 -->
+    <template slot="borrowLoanNum" slot-scope="{row,info,formProp}">
+      <el-form-item :prop="formProp" :rules="[{required:true},{type:'positiveNum'}]" v-if="!info.isChild">
+        <el-input v-model="row.borrowLoanNum"></el-input>
+      </el-form-item>
+    </template>
+    <template slot="costUnivalence" slot-scope="{row,info,formProp}">
+      <el-form-item :prop="formProp" :rules="[{required:true},{type:'price'}]" v-if="!info.isChild">
+        <el-input v-model="row.costUnivalence"></el-input>
+      </el-form-item>
+    </template>
+  </buying-goods-edit>
 </template>
 <script>
 export default {
@@ -119,6 +81,25 @@ export default {
       showInFullscreen: false
     };
   },
+  computed: {
+    // prettier-ignore
+    customColumns(){
+      // 1 借出 0 借入
+      let columns = [];
+      if(this.data){
+        columns = [
+          { label:'操作', key:'actions', width:120, prop:'actions',slot:'actions' },
+          { label:'商品编号', key:'commodityCodes', width:140, prop:'commodityCode',slot:'commodityCode',showOverflowTip:true },
+          { label:'商品名称', key:'goodsNames', width:140, prop:'goodsName',slot:'goodsName',showOverflowTip:true },
+          { label:this.data.borrowLoanType==1?'借出数量':'借入数量', key:'borrowLoanNum', width:100, prop:'borrowLoanNum',slot:'borrowLoanNum'},
+        ]
+        if(this.data.borrowLoanType==0){
+          columns.push({ label:'借入价格', key:'costUnivalence', width:100, prop:'costUnivalence',slot:'costUnivalence'})
+        }
+      }
+      return columns;
+    }
+  },
   mounted() {
     if (!this.data.commodityList || !this.data.commodityList.length) {
       this.data.commodityList = [
@@ -131,9 +112,6 @@ export default {
     }
   },
   methods: {
-    getData(data) {
-      console.log(data);
-    },
     expand(row) {
       this.$set(row, 'expanded', !row.expanded);
       this.$refs.elTable.toggleRowExpansion(row, row.expanded);

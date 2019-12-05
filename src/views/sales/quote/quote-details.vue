@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 19:48:25
+ * @LastEditTime: 2019-12-04 17:41:15
  * @Description: 报价单详情
 */
 <template>
@@ -25,7 +25,6 @@
         >
           <el-button
             class="mr10"
-            :disabled="isDisabledButton(item.label)"
             @click="buttonsClick(item.label)"
             v-if="currStatusType[detail.state || 0].includes(item.label)"
             size="mini"
@@ -78,6 +77,7 @@
       :visible.sync="outLibAddVisible"
       type="add"
       :rowData="rowData"
+      @reload="setEdit(),close()"
     />
     <!-- 生成请购单 -->
     <buyingAdd
@@ -85,6 +85,7 @@
       :params="{quotationCode:rowData.quotationCode}"
       type="add"
       :rowData="rowData"
+      @reload="setEdit(),close()"
     />
   </div>
 </template>
@@ -139,6 +140,7 @@ export default {
       editVisible: false, //销售单编辑
       outLibAddVisible: false, //生成销售出库单
       buyingAddVisible: false, //生成请购单
+
       // tab操作栏
       tabs: {
         detail: '详情',

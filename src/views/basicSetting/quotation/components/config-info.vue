@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-09 12:27:18
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-28 14:47:19
+ * @LastEditTime: 2019-12-04 14:19:28
  * @Description: description
  -->
 <template>
@@ -11,7 +11,8 @@
       <form-card class="mb10" :title="true" v-if="!data.commonQuotationConfigDetailsEntitys.length">
         <div slot="title" style="display:flex;align-items: center">
           <span class="mr10">配置信息</span>
-          <el-button size="mini" type="primary" plain @click="add">+添加商品</el-button>
+          <el-button size="mini" type="primary" plain
+@click="add">+添加商品</el-button>
         </div>
       </form-card>
       <form-card
@@ -22,7 +23,8 @@
       >
         <div slot="title" style="display:flex;align-items: center">
           <span class="mr10">配置信息</span>
-          <el-button size="mini" type="primary" plain @click="add">+添加商品</el-button>
+          <el-button size="mini" type="primary" plain
+@click="add">+添加商品</el-button>
         </div>
         <el-row :gutter="10" class="d-relative">
           <el-col :span="8">
@@ -61,13 +63,14 @@
       @choose="choose"
       v-if="showCommodityGoods"
       :codes="codes"
+      :params="{isConfig: 0}"
     />
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
 export default {
-  data () {
+  data() {
     return {
       showCommodityGoods: false,
       loading: false
@@ -78,21 +81,21 @@ export default {
   },
   components: {
   },
-  mounted () {
+  mounted() {
     if (this.data.id) {
       this.commonquotationconfigdetailsListConfigByGoodName(this.data.id)
     }
   },
   computed: {
-    codes () {
+    codes() {
       return this.data.commonQuotationConfigDetailsEntitys.map(item => item.commodityCode)
     }
   },
   methods: {
-    add () {
+    add() {
       this.showCommodityGoods = true
     },
-    choose (goods) {
+    choose(goods) {
       const temp = this.data.commonQuotationConfigDetailsEntitys
       goods.forEach(good => {
         const { goodsName, commodityCode, className, commodityNum = 1, id: commodityId } = good
@@ -104,7 +107,7 @@ export default {
         }
       })
     },
-    commonquotationconfigdetailsListConfigByGoodName (quotationId) {
+    commonquotationconfigdetailsListConfigByGoodName(quotationId) {
       this.loading = true
       this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName({ quotationId }).then(res => {
         this.data.commonQuotationConfigDetailsEntitys = res.data || []

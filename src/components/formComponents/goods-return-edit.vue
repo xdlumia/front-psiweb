@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 10:26:02
+ * @LastEditTime: 2019-12-04 22:35:18
  * @Description: 退货商品商品信息
 */
 <template>
@@ -39,6 +39,19 @@
         row-key="id"
         ref="table"
       >
+        <el-table-column
+          min-width="50"
+          label="操作"
+        >
+          <template slot-scope="scope">
+            <el-button
+              type="text"
+              icon="el-icon-remove"
+              @click="data.businessCommoditySaveVoList.splice(scope.$index,1)"
+            ></el-button>
+
+          </template>
+        </el-table-column>
         <el-table-column
           prop="commodityCode"
           min-width="100"
@@ -95,13 +108,13 @@
         /> -->
 
         <el-table-column
-          prop="commodityNumber"
+          prop="customNumber"
           min-width="70"
           label="销售数量"
           show-overflow-tooltip
         />
         <el-table-column
-          prop="alterationNumber"
+          prop="commodityNumber"
           min-width="100"
           label="退货商品数量"
           show-overflow-tooltip
@@ -109,7 +122,7 @@
           <template slot-scope="scope">
             <el-form-item
               class="mb0"
-              :prop="`businessCommoditySaveVoList.${scope.$index}.alterationNumber`"
+              :prop="`businessCommoditySaveVoList.${scope.$index}.commodityNumber`"
               :rules="[{required:false},{type:'positiveNum'}]"
             >
               <el-input
@@ -117,7 +130,7 @@
                 @input="sumTaxPrice(scope.row,scope.$index)"
                 :disabled="disabled"
                 :show-word-limit="false"
-                v-model="scope.row.alterationNumber"
+                v-model="scope.row.commodityNumber"
               />
             </el-form-item>
           </template>
@@ -239,44 +252,53 @@ export default {
       handler(val) {
         this.$nextTick(() => {
           this.params.busCode = this.data.quotationCode
-          this.businesscommodityGetBusinessCommodityList()
+          if (!this.params.busCode) return
+          this.salesquotationQueryMayCommodity()
         })
       },
       deep: true,
       immediate: true
     }
   },
+  created() {
+    this.salesquotationQueryMayCommodity()
+  },
   methods: {
-    businesscommodityGetBusinessCommodityList() {
-      this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.params)
+    salesquotationQueryMayCommodity() {
+      this.$api.seePsiSaleService.salesquotationQueryMayCommodity({ quotaionCode: this.data.quotationCode })
         .then(res => {
           let data = res.data || []
-          this.data.businessCommoditySaveVoList = this.$$util.formatCommodity(data)
+          data.map(item => {
+            item.customNumber = item.commodityNumber
+            item.commodityNumber = item.actionableNumber
+          })
+          // this.data.businessCommoditySaveVoList = data
+
+          this.$set(this.data, 'businessCommoditySaveVoList', this.$$util.formatCommodity(data))
           // this.data.exChangeCommodityList 是临时数据 存放换货后的数据
           if (this.data.exChangeCommodityList) {
             this.data.exChangeCommodityList = JSON.parse(JSON.stringify(data))
           }
-
         })
     },
     sumTaxPrice(row, index) {
-      if (row.alterationNumber > row.commodityNumber) {
+      if (row.commodityNumber > row.actionableNumber) {
         this.$message({
-          message: '退货商品数量不能大于销售数量',
-          type: 'info',
+          message: `退货商品数量超过${row.actionableNumber},不能退货`,
+          type: 'error',
           showClose: true,
         });
-        row.alterationNumber = row.commodityNumber
+        row.commodityNumber = row.actionableNumber
         return
       }
 
       let taxRate = (row.taxRate || 100) / 100  ///税率
-      let alterationNumber = row.alterationNumber || 1 //退货数量
+      let commodityNumber = row.commodityNumber || 1 //退货数量
       let alterationPrice = row.alterationPrice || 1 //销售单价
       // 税后销售单价  公式:销售单价 * (1-税率)
       row.taxPrice = (alterationPrice * (1 - taxRate)).toFixed(2)
       // 销售税后总价  公式:税后销售单价 * 退货数量
-      row.taxTotalAmount = (alterationNumber * row.taxPrice).toFixed(2)
+      row.taxTotalAmount = (commodityNumber * row.taxPrice).toFixed(2)
 
     },
     // 自定义账单金额数据
@@ -286,16 +308,32 @@ export default {
       columns.forEach((col, index) => {
         if (index == 0) {
           sums[index] = '总价'
-        } else if (col.property == 'taxPrice' || col.property == 'taxTotalAmount') {
+        } else if (['taxPrice', 'taxTotalAmount', 'customNumber', 'commodityNumber'].includes(col.property)) {
           const values = data.map(item => Number(item[col.property] || 0));
-          sums[index] = values.reduce((sum, curr) => {
-            const val = Number(curr)
-            return sum + curr
-          }, 0).toFixed(2)
+          if (['customNumber', 'commodityNumber'].includes(col.property)) {
+            sums[index] = values.reduce((sum, curr) => {
+              const val = Number(curr)
+              return sum + curr
+            }, 0)
+          } else {
+            sums[index] = values.reduce((sum, curr) => {
+              const val = Number(curr)
+              return sum + curr
+            }, 0).toFixed(2)
+          }
+
         }
         //获取税后总价
         if (col.property == 'taxTotalAmount') {
           this.data.shouldRefundAmount = sums[index]
+        }
+        //获取销售数量
+        if (col.property == 'commodityNumber') {
+          this.data.salesNumber = sums[index]
+        }
+        //获取退货数量
+        if (col.property == 'customNumber') {
+          this.data.totalRefundNumber = sums[index]
         }
       });
       return sums

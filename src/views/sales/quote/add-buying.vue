@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-25 18:39:55
+ * @LastEditTime: 2019-12-03 21:58:48
  * @Description: 生成请购单
 */
 <template>
@@ -120,6 +120,14 @@ export default {
   mounted() { },
   methods: {
     save() {
+      if (!this.form.commodityList.length) {
+        this.$message({
+          message: '库存充足,不能生成请购单',
+          type: 'error',
+          showClose: true,
+        });
+        return
+      }
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true;

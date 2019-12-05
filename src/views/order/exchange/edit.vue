@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 16:41:06
+ * @LastEditTime: 2019-12-04 11:35:47
  * @Description: 换货单
 */
 <template>
@@ -30,7 +30,7 @@
             :data="form"
             :hide="['isBillFee']"
             :max="Math.abs(money.in-money.out)"
-            :type="3"
+            :type="money.in>money.out?0:1"
             feeDetailCode="ZD_DY_LX-4-3"
             id="billInfo"
           />

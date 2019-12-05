@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 19:01:45
+ * @LastEditTime: 2019-12-04 19:49:40
  * @Description: 客户管理-新增分摊
 */
 <template>
@@ -77,30 +77,30 @@ export default {
         attachList: [], //"附件",
         businessCommoditySaveVoList: [
           {
-            alterationNumber: '', //9,
-            alterationPrice: '', //98765432109876.12,
-            apportionmentAmount: '', //98765432109876.12,
+            alterationNumber: '', //退换商品数
+            alterationPrice: '', //实际退/换单价
+            apportionmentAmount: '', //分摊后金额
             busCode: '', //"业务编号",
             busType: '', //9,
             commodityCode: '', //"商品编号",
             commodityNumber: '', //9,
-            costAmount: '', //98765432109876.12,
-            discount: '', //98765432109876.12,
-            discountSprice: '', //98765432109876.12,
-            isAssembly: '', //9,
-            isDirect: '', //9,
-            isTeardown: '', //9,
+            costAmount: '', //采购/销售成本金额
+            discount: '', //折扣
+            discountSprice: '', //折后单价
+            isAssembly: '', //是否组装
+            isDirect: '', //是否直发
+            isTeardown: '', //是否拆卸
             note: '', //"备注",
             parentCommodityCode: '', //"100000",
-            pickingNumber: '', //9,
-            preTaxAmount: '', //98765432109876.12,
+            pickingNumber: '', //拣货数量
+            preTaxAmount: '', //含税总价
             putawayType: '', //9,
-            reference: '', //98765432109876.12,
-            salesPrice: '', //98765432109876.12,
+            reference: '', //销售参考价
+            salesPrice: '', //销售单价
             shipmentsNumber: '', //9,
             snCode: '', //"SN码",
-            taxPrice: '', //98765432109876.12,
-            taxTotalAmount: '', //98765432109876.12
+            taxPrice: '', //税后退货单价
+            taxTotalAmount: '', //税后退货总价
           }
         ],
         costAmount: '', //采购/销售成本金额
@@ -142,6 +142,7 @@ export default {
           }
           this.$api.seePsiSaleService[api](this.form)
             .then(res => {
+
               this.setEdit()
               this.close()
             })
