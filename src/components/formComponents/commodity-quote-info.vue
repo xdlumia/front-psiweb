@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 16:17:28
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-05 17:16:28
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -17,8 +17,9 @@
       border
       :summary-method="getSummaries"
       :data="goodsData"
-      default-expand-all
-      :tree-props="{children: 'commonGoodConfigDetailsEntityList'}"
+      lazy
+      :load="loadChildren"
+      :tree-props="{children: 'commonGoodConfigDetailsEntityList',hasChildren:'configId'}"
       row-key="id"
       max-height="400"
       ref="elTable"
@@ -158,6 +159,16 @@ export default {
     }
   },
   methods: {
+    async loadChildren(row, node, cb) {
+      let {
+        data
+      } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
+        {
+          commodityCode: row.commodityCode
+        }
+      );
+      cb(data);
+    },
     businesscommodityGetBusinessCommodityList(quotationCode) {
       this.queryForm.busCode = quotationCode || this.data.quotationCode
       this.loading = true
