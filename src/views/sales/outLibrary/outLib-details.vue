@@ -200,7 +200,7 @@ export default {
         salesReturn: '销售退货单',
         salesExchange: '销售换货单',
         financeReceivable: '应收账单',
-        financeQuote: '发票记录',
+        financeBilling: '发票记录',
         salesApportion: '费用分摊单'
       },
 
