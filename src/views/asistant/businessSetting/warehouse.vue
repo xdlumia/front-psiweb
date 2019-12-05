@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 10:29:10
+ * @LastEditTime: 2019-12-05 17:54:34
  * @Description: 业务设置-库房
  -->
 <template>
@@ -26,10 +26,12 @@
           style="margin-top: 20px;"
           @click="save"
         >保存</el-button>
-        <el-button v-if="isEdit" size="small" style="margin-top: 20px;" @click="cancel">取消</el-button>
+        <el-button v-if="isEdit" size="small" style="margin-top: 20px;"
+@click="cancel">取消</el-button>
       </el-col>
     </div>
-    <el-form size="small" :model="warehouseEntity" :disabled="!isEdit" label-width="190px">
+    <el-form size="small" :model="warehouseEntity" :disabled="!isEdit"
+label-width="190px">
       <fieldset class="d-fieldset mb20">
         <legend>
           <i class="d-round12 d-circle d-bg-blue"></i>
@@ -251,7 +253,7 @@
 
 <script type='text/ecmascript-6'>
 export default {
-  data () {
+  data() {
     return {
       loading: false,
       isEdit: false,
@@ -272,11 +274,11 @@ export default {
   },
   components: {
   },
-  mounted () {
+  mounted() {
     this.commonsystemconfigInfo()
   },
   methods: {
-    save () {
+    save() {
       const params = {
         configType: 2,
         configJson: JSON.stringify(this.warehouseEntity)
@@ -284,26 +286,30 @@ export default {
       this.commonsystemconfigSave(params)
     },
     // 保存接口
-    commonsystemconfigSave (params) {
+    commonsystemconfigSave(params) {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigSave(params).finally(() => {
         this.commonsystemconfigInfo()
         this.loading = false
         this.isEdit = false
+        this.wmsBusinessSynchConfig(params)
       })
     },
-    cancel () {
+    wmsBusinessSynchConfig(params) {
+      this.$api.seePsiWmsService.wmsBusinessSynchConfig(params)
+    },
+    cancel() {
       this.isEdit = false
       this.handleDefault()
     },
     // 处理返回数据
-    handleDefault () {
+    handleDefault() {
       Object.keys(this.warehouseEntity).forEach(key => {
         this.warehouseEntity[key] = this.tempObj[key] || this.warehouseEntity[key]
       })
       console.log(this.warehouseEntity)
     },
-    commonsystemconfigInfo () {
+    commonsystemconfigInfo() {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigInfo(null, 2).then(res => {
         this.tempObj = JSON.parse(res.data.configJson)
