@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 15:27:20
+ * @LastEditTime: 2019-12-05 17:01:14
  * @Description: 生成销售换货单
 */
 <template>
@@ -204,11 +204,22 @@ export default {
     saveHandle() {
       this.$refs.form.validate(valid => {
         if (!valid) {
+          // 获取销售出库单编号
+          this.form.salesShipmentCode = this.rowData.shipmentCode
           // 把退货和换货产品合并
           this.form.businessCommoditySaveVoList.map(item => item.putawayType = 0) // 退货入库
           this.form.exChangeCommodityList.map(item => item.putawayType = 1) //换货入库
           this.form.businessCommoditySaveVoList = this.form.businessCommoditySaveVoList.concat(this.form.exChangeCommodityList)
           this.form.businessCommoditySaveVoList.map(v => v.busCode = this.form.quotationCode)
+
+          if (copyParams.businessCommoditySaveVoList.some(item => !item.commodityNumber || !item.alterationPrice)) {
+            this.$message({
+              message: '商品的退货数量和单价没有填写或当前没有可退货商品',
+              type: 'error',
+              showClose: true,
+            });
+            return
+          }
           this.loading = true
           // rules 表单验证是否通过
           let api = 'salesexchangeUpdate' // 默认编辑更新

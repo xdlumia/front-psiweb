@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 15:25:48
+ * @LastEditTime: 2019-12-05 16:58:52
  * @Description: 退货商品商品信息
 */
 <template>
@@ -45,10 +45,11 @@
           label="操作"
         >
           <template slot-scope="scope">
-            <i
-              class="el-icon-remove"
-              @click="delete(scope.row)"
-            ></i>
+            <el-button
+              type="text"
+              class="el-icon-remove f20"
+              @click="del(scope.row)"
+            ></el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -143,6 +144,7 @@
         </el-table-column>
 
         <el-table-column
+          prop="alterationPrice"
           min-width="100"
           label="退货单价"
           show-overflow-tooltip
@@ -263,11 +265,11 @@ export default {
     }
   },
   created() {
-    this.salesquotationQueryMayCommodity()
+
   },
   methods: {
     // 删除退货
-    delete(row) {
+    del(row) {
       let index = this.data.businessCommoditySaveVoList.findIndex(item => item.id == row.id)
       this.data.businessCommoditySaveVoList.splice(index, 1)
     },
@@ -300,7 +302,7 @@ export default {
 
       let taxRate = (row.taxRate || 100) / 100  ///税率
       let commodityNumber = row.commodityNumber || 1 //退货数量
-      let alterationPrice = row.alterationPrice || 1 //销售单价
+      let alterationPrice = row.alterationPrice || 0 //销售单价
       // 税后销售单价  公式:销售单价 * (1-税率)
       row.taxPrice = (alterationPrice * (1 - taxRate)).toFixed(2)
       // 销售税后总价  公式:税后销售单价 * 退货数量
@@ -314,7 +316,7 @@ export default {
       columns.forEach((col, index) => {
         if (index == 0) {
           sums[index] = '总价'
-        } else if (['taxPrice', 'taxTotalAmount', 'customNumber', 'commodityNumber'].includes(col.property)) {
+        } else if (['taxPrice', 'alterationPrice', 'taxTotalAmount', 'customNumber', 'commodityNumber'].includes(col.property)) {
           const values = data.map(item => Number(item[col.property] || 0));
           if (['customNumber', 'commodityNumber'].includes(col.property)) {
             sums[index] = values.reduce((sum, curr) => {
@@ -329,8 +331,8 @@ export default {
           }
 
         }
-        //获取税后总价
-        if (col.property == 'taxTotalAmount') {
+        //获取应退金额
+        if (col.property == 'alterationPrice') {
           this.data.shouldRefundAmount = sums[index]
         }
         //获取销售数量

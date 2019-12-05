@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 15:06:11
+ * @LastEditTime: 2019-12-05 17:36:53
  * @Description: 销售出库单详情
 */
 <template>
@@ -54,7 +54,7 @@
         </el-tabs>
         <components
           ref="detail"
-          :params="{relationCode:code}"
+          :params="activeName == 'contractSale'? {shipmentCode:code}:{relationCode:code}"
           :code="this.code"
           :rowData="rowData"
           :data="detail || {}"
@@ -309,7 +309,7 @@ export default {
           '驳回': {
             api: 'seePsiSaleService.salesshipmentReject',
             data: params,
-            needNote: null
+            needNote: true
           },
           '合同完善': {
             api: 'seePsiSaleService.salesshipmentPassContractApproval',

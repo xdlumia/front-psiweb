@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-02 18:11:03
+ * @LastEditTime: 2019-12-05 17:12:16
  * @Description: 操作记录
 */
 <template>
@@ -14,7 +14,7 @@
       >暂无操作记录</div>
       <el-timeline-item
         v-for="(item,index) of logData"
-        timestamp="2018/4/12"
+        :timestamp="$options.filters.timeToStr(item.createTime)"
         placement="top"
         :key="index"
       >
@@ -24,10 +24,10 @@
             style="align-items: center;"
           >
             <el-avatar icon="el-icon-user-solid"></el-avatar>
-            <span class="d-inline ml20">王五</span>
-            <span class="d-inline ml30">审核通过</span>
+            <span class="d-inline ml20">{{item.userName}}</span>
+            <!-- <span class="d-inline ml30">审核通过</span> -->
           </div>
-          <p>王小虎 提交于 2018/4/12 20:46</p>
+          <p>{{item.description}}</p>
         </el-card>
       </el-timeline-item>
     </el-timeline>
@@ -60,6 +60,8 @@ export default {
       let params = {
         businessId: id,
         businessType: '20', // 报价单
+        limit: 99,
+        page: 1
       }
       this.$api.operlogService.logQueryList(params)
         .then(res => {
