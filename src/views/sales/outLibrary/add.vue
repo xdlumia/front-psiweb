@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 11:43:37
+ * @LastEditTime: 2019-12-05 18:39:47
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -15,7 +15,7 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{type=='edit'?'`编辑:${code}`':'生成销售出库单'}}</span>
+      <span>{{type=='edit'?`编辑:${code}`:'生成销售出库单'}}</span>
       <div class="fr mr30">
         <el-button
           type="primary"
@@ -58,10 +58,10 @@
           :data="form"
         />
         <!-- 报价单信息 -->
-        <quote-info
+        <!-- <quote-info
           v-if="quoteCodes && quoteCodes.length"
           :options="quoteCodes"
-        />
+        /> -->
         <!-- 收款滞纳金 -->
         <payment-late-sales
           id="paymentLateSales"
@@ -157,7 +157,8 @@ export default {
       let quotationCodes = null
       // 如果是编辑 详情数据里会带多个quotationCodes
       if (this.type == 'edit') {
-        quotationCodes = this.detail.quotationCodes
+        console.log(this.form)
+        quotationCodes = this.form.quotationCodes
       }
       // 如果是合并 那操作的是出库单的数据 rowData 一定是多个数据.
       else if (this.type == 'merge') {
@@ -177,11 +178,12 @@ export default {
           let ids = null
           if (this.type == 'merge') {
             ids = this.rowData.map(item => item.id)
+            this.salesshipmentGetAddShipemtAmount(ids)
           }
           else if (this.type == 'add') {
             ids = [this.rowData].map(item => item.id)
+            this.salesshipmentGetAddShipemtAmount(ids)
           }
-          this.salesshipmentGetAddShipemtAmount(ids)
         })
       }
     }
