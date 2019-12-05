@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 11:14:47
+ * @LastEditTime: 2019-12-05 11:20:07
  * @Description: 审核采购时间
 */
 <template>
@@ -33,6 +33,10 @@
           size="small"
           @click="pause"
         >不同意并终止</el-button>
+        <el-button
+          size="small"
+          @click="close"
+        >取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -64,7 +68,6 @@ export default {
     // 同意所有时间
     passApproval() {
       let params = {
-        apprpvalNode: this.rowData.apprpvalNode,
         id: this.rowData.id,
         processType: 'psi_sales_outlibrary_01',
         apprpvalNode: 'psi_sales_outlibrary_12'
@@ -73,7 +76,12 @@ export default {
     },
     // 不同意并终止
     pause() {
-
+      let params = {
+        id: this.rowData.id,
+        processType: 'psi_sales_outlibrary_01',
+        apprpvalNode: 'psi_sales_outlibrary_12'
+      }
+      this.$submission('seePsiSaleService.salesshipmentReject', params, '不同意')
     },
   }
 }
