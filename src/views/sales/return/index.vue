@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 16:15:54
+ * @LastEditTime: 2019-12-06 16:53:18
  * @Description: 销售-销售退货单
  */
 <template>
@@ -38,8 +38,6 @@
         <span v-else-if="column.columnFields=='refundNumber'">
           {{value}}/{{row.totalRefundNumber}}
         </span>
-        <!-- 创建时间 -->
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>

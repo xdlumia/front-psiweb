@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 16:35:50
+ * @LastEditTime: 2019-12-06 16:57:46
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -203,8 +203,6 @@ export default {
         this.form.companyAccountId = this.rowData.companyAccountId
         this.form.companySettlementId = this.rowData.companySettlementId
         this.form.clientId = this.rowData.clientId // 100000,
-        console.log(this.form.clientId);
-
       }
     },
     // 根据报价单id，计算获取销售出库单金额数据

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 21:55:18
+ * @LastEditTime: 2019-12-06 16:53:39
  * @Description: 销售-销售换货单
  */
 <template>
@@ -32,7 +32,6 @@
           v-else-if="column.columnFields=='salesShipmentCode'"
           @click="eventHandle('outLibVisible',row)"
         > {{value}}</span>
-        <!-- 创建时间 -->
         <span v-else>{{value}}</span>
       </template>
     </table-view>
