@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 17:16:46
+ * @LastEditTime: 2019-12-06 15:17:43
  * @Description: 账单调整
  */
 <template>
@@ -13,7 +13,7 @@
           <el-form-item
             :rules="[{required:true,message:'必填项',trigger: 'blur'}]"
             label="应收账单"
-            prop="fbiiBusCode"
+            prop="fbillCode"
           >
             <div
               class="not-disabled-class"

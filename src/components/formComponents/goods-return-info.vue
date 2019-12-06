@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 18:13:35
+ * @LastEditTime: 2019-12-06 11:32:26
  * @Description: 退货商品商品信息
 */
 <template>
@@ -66,7 +66,10 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.alterationNumber}}/{{scope.row.commodityNumber}}</span>
+            <span
+              @click="changeRecord(scope)"
+              class="d-text-blue d-pointer"
+            >{{scope.row.alterationNumber}}/{{scope.row.commodityNumber}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -151,6 +154,12 @@
         />
       </el-table>
     </form-card>
+    <goods-return-record
+      :rowData='rowData'
+      :code="code"
+      :visible.sync='dialogVisible'
+      v-if="dialogVisible"
+    />
   </div>
 </template>
 <script>
@@ -159,6 +168,7 @@ export default {
   props: {
     from: String,
     data: Array,
+    code: [Number, String],
     params: {
       type: Object,
       default: () => ({})
@@ -180,6 +190,8 @@ export default {
   },
   data() {
     return {
+      dialogVisible: false,
+      rowData: {}
       // queryFrom: {
       //   busType: 1, // 1报价单 2请购单]
       //   putawayType: 1,
@@ -199,6 +211,11 @@ export default {
         { commodityCode: row.commodityCode }
       );
       cb(data);
+    },
+    //点击SN码
+    changeRecord(scope) {
+      this.dialogVisible = true;
+      this.rowData = scope.row
     },
     // 自定义账单金额数据
     getSummaries(param) {

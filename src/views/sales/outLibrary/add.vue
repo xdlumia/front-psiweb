@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 19:04:55
+ * @LastEditTime: 2019-12-06 14:19:58
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -51,10 +51,12 @@
         <!-- 客户信息 -->
         <customerInfo
           id="customerInfo"
+          disabled
           :data="form"
         />
         <!-- 公司信息 -->
         <companyInfo
+          disabled
           id="companyInfo"
           :data="form"
         />
@@ -113,11 +115,11 @@ export default {
       form: {
         id: '',
         pickingPerson: '', //拣货人
-        companyAccountId: '',
-        companySettlementId: '',
+        companyAccountId: this.rowData.companyAccountId,
+        companySettlementId: this.rowData.companySettlementId,
         apprpvalNode: '', // 审核节点,
         attachList: [], // 附件",
-        clientId: '', // 100000,
+        clientId: this.rowData.clientId, // 100000,
         contractTemplate: '', // 9,
         fieldList: [], // 自定义字段",
         isContract: '', // 有无合同,

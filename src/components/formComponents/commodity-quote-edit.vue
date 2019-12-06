@@ -109,9 +109,9 @@
         min-width="110"
         prop="className"
       >
-      <template slot-scope="{row}">
-        <span>{{row.className||row.secondClassName}}</span>
-      </template>
+        <template slot-scope="{row}">
+          <span>{{row.className||row.secondClassName}}</span>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -346,20 +346,20 @@ export default {
     };
   },
   methods: {
-    checkCommodityNumber(rule,value,cb){
-      if(value>0) cb();
+    checkCommodityNumber(rule, value, cb) {
+      if (value > 0) cb();
       else cb(new Error('数量至少为1'))
     },
-    checkDiscount(rule,value,cb){
-      let num = +(Number(value)||0)
+    checkDiscount(rule, value, cb) {
+      let num = +(Number(value) || 0)
       let twoNum = num.toFixed(2)
-      if(num>=0&&num<=1&&/^(([1-9]{1}\d*)|(0{1}))(\.\d{0,2})?$/.test(String(value))){
-          cb();
-      }else cb(new Error('折扣区间[0-1],且保留两位小数'))
+      if (num >= 0 && num <= 1 && /^(([1-9]{1}\d*)|(0{1}))(\.\d{0,2})?$/.test(String(value))) {
+        cb();
+      } else cb(new Error('折扣区间[0-1],且保留两位小数'))
     },
-    getProp(row,prop){
-      let i=this.data.businessCommoditySaveVoList.indexOf(row)
-      if(i<0) return;
+    getProp(row, prop) {
+      let i = this.data.businessCommoditySaveVoList.indexOf(row)
+      if (i < 0) return;
       else return `businessCommoditySaveVoList.${i}.${prop}`
     },
     //选择商品
@@ -455,7 +455,7 @@ export default {
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
       // 折扣价格  公式:税前金额  * (1-税率) * 折扣
-      row.discountSprice = +(reference * (1 - taxRate) * discount).toFixed(2)||0
+      row.discountSprice = +(reference * (1 - taxRate) * discount).toFixed(2) || 0
     },
     discountSpriceChange(row) {
       let reference = row.reference || 0   //销售参考价

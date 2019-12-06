@@ -2,39 +2,19 @@
  * @Author: 高大鹏
  * @Date: 2019-11-20 11:47:43
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-20 17:41:56
+ * @LastEditTime: 2019-12-06 14:22:36
  * @Description: description
  -->
 
 <template>
-  <el-dialog
-    :visible="visible"
-    @close="close"
-    title="选择公司"
-    v-dialogDrag
-    width="60%"
-  >
+  <el-dialog :visible="visible" @close="close" title="选择公司" v-dialogDrag width="60%">
     <div class="d-relative">
       <el-tabs v-model="activeName">
-        <el-tab-pane
-          label="客户"
-          name="0"
-        ></el-tab-pane>
-        <el-tab-pane
-          label="供应商"
-          name="1"
-        ></el-tab-pane>
-        <el-tab-pane
-          label="服务商"
-          name="2"
-        ></el-tab-pane>
+        <el-tab-pane label="客户" name="0"></el-tab-pane>
+        <el-tab-pane label="供应商" name="1"></el-tab-pane>
+        <el-tab-pane label="服务商" name="2"></el-tab-pane>
       </el-tabs>
-      <el-popover
-        placement="bottom"
-        v-model="filterPopover"
-        trigger="click"
-        width="250"
-      >
+      <el-popover placement="bottom" v-model="filterPopover" trigger="click" width="250">
         <el-link
           :underline="false"
           @click="filterPopover = false"
@@ -42,11 +22,7 @@
           style="margin-top:2px;"
           title="关闭"
         ></el-link>
-        <dFilter
-          v-model="queryForm"
-          :options="filterOptions"
-          @change="reload"
-        />
+        <dFilter v-model="queryForm" :options="filterOptions" @change="reload" />
         <el-button
           size="mini"
           class="tool-item"
@@ -67,54 +43,25 @@
       ref="multipleTable"
       style="height:calc(100vh - 240px)"
     >
-      <el-table-column
-        :selectable="selectable"
-        type="selection"
-        width="55"
-      ></el-table-column>
-      <el-table-column
-        label="编号"
-        min-width="200"
-        prop="code"
-      ></el-table-column>
-      <el-table-column
-        label="名称"
-        min-width="100"
-        prop="companyName"
-      >
-        <template slot-scope="{row}">{{row.companyName || row.supplierName || row.serviceName}}</template>
+      <el-table-column :selectable="selectable" type="selection" width="55"></el-table-column>
+      <el-table-column label="编号" min-width="200" prop="code"></el-table-column>
+      <el-table-column label="名称" min-width="100" prop="companyName">
+        <template
+          slot-scope="{row}"
+        >{{row.companyName || row.clientName || row.supplierName || row.serviceName}}</template>
       </el-table-column>
-      <el-table-column
-        label="状态"
-        min-width="130"
-        prop="state"
-      >
+      <el-table-column label="状态" min-width="130" prop="state">
         <template slot-scope="{row}">{{row.state ? '停用' : '启用'}}</template>
       </el-table-column>
-      <el-table-column
-        label="联系人"
-        min-width="140"
-        prop="linkManName"
-      >
+      <el-table-column label="联系人" min-width="140" prop="linkManName">
         <template slot-scope="{row}">{{row.linkManName || row.linkMan}}</template>
       </el-table-column>
-      <el-table-column
-        label="联系电话"
-        min-width="140"
-        prop="phone"
-      ></el-table-column>
+      <el-table-column label="联系电话" min-width="140" prop="phone"></el-table-column>
     </d-table>
 
     <div class="ac">
-      <el-button
-        @click="close"
-        size="small"
-      >关 闭</el-button>
-      <el-button
-        @click="save"
-        size="small"
-        type="primary"
-      >保 存</el-button>
+      <el-button @click="close" size="small">关 闭</el-button>
+      <el-button @click="save" size="small" type="primary">保 存</el-button>
     </div>
   </el-dialog>
 </template>
@@ -133,7 +80,7 @@ export default {
       default: () => ({})
     }
   },
-  data() {
+  data () {
     return {
       activeName: '0',
       filterPopover: false,
@@ -173,12 +120,12 @@ export default {
     };
   },
   watch: {
-    visible() {
+    visible () {
       if (this.visible) {
         this.multipleSelection = [];
       }
     },
-    activeName(newValue) {
+    activeName (newValue) {
       let method
       switch (parseFloat(newValue)) {
         case 2:
@@ -200,14 +147,14 @@ export default {
   },
   computed: {},
   methods: {
-    close() {
+    close () {
       this.$emit('update:visible', false)
     },
-    save() {
+    save () {
       this.$emit('choose', [Object.assign(this.multipleSelection[0], { clientType: this.activeName })]);
       this.close();
     },
-    selectable(row, index) {
+    selectable (row, index) {
       if (this.multipleSelection.length > 0) {
         return this.multipleSelection.every(
           item => item.code === row.code
@@ -215,13 +162,13 @@ export default {
       }
       return true;
     },
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.multipleSelection = val;
     },
-    reload() {
+    reload () {
       this.$refs.multipleTable.reload()
     },
-    closeFilter() {
+    closeFilter () {
 
     }
   }

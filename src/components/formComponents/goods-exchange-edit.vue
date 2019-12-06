@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 14:43:40
+ * @LastEditTime: 2019-12-06 14:11:40
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -173,7 +173,7 @@
           <el-form-item
             class="mb0"
             :prop="`exChangeCommodityList.${scope.$index}.discount`"
-            :rules="[{required:true},{type:'positiveNum'}]"
+            :rules="[{required:true},{validator:checkDiscount}]"
           >
             <el-input
               size="mini"
@@ -318,6 +318,13 @@ export default {
     };
   },
   methods: {
+    checkDiscount(rule, value, cb) {
+      let num = +(Number(value) || 0)
+      let twoNum = num.toFixed(2)
+      if (num >= 0 && num <= 1 && /^(([1-9]{1}\d*)|(0{1}))(\.\d{0,2})?$/.test(String(value))) {
+        cb();
+      } else cb(new Error('折扣区间[0-1],且保留两位小数'))
+    },
     //选择商品
     commodityChoose(e, scope) {
       let [list] = e[0]
