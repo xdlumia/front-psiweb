@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 16:53:39
+ * @LastEditTime: 2019-12-06 18:23:18
  * @Description: 销售-销售换货单
  */
 <template>
@@ -32,6 +32,12 @@
           v-else-if="column.columnFields=='salesShipmentCode'"
           @click="eventHandle('outLibVisible',row)"
         > {{value}}</span>
+        <span v-else-if="column.columnFields=='refundNumber'">
+          {{value}}/{{row.totalRefundNumber}}
+        </span>
+        <span v-else-if="column.columnFields=='exchangeNumber'">
+          {{value}}/{{row.totalExchangeNumber}}
+        </span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>

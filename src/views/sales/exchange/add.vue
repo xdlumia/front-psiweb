@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 17:25:34
+ * @LastEditTime: 2019-12-06 18:15:40
  * @Description: 生成销售换货单
 */
 <template>
@@ -163,7 +163,7 @@ export default {
         quotationCode: (this.rowData.quotationCodes || [])[0] || '',//默认取报价单编号第一个,报价单编号,
         refundNumber: '',//9,
         salesNumber: '',//9,
-        salesShipmentCode: '',//销售出库单编号,
+        salesShipmentCode: this.rowData.shipmentCode,//销售出库单编号,
         shipmentFinanceSaveVoList: [
           // {
           //   busCode: '',//业务编号,
@@ -206,9 +206,11 @@ export default {
     saveHandle() {
       this.$refs.form.validate(valid => {
         if (valid) {
+          this.form.businessCommoditySaveVoList.map(item => item.putawayType = 0) // 退货入库
+          this.form.exChangeCommodityList.map(item => item.putawayType = 1) //换货入库
           let copyParams = JSON.parse(JSON.stringify(this.form))
-          // 获取销售出库单编号
-          copyParams.salesShipmentCode = this.rowData.shipmentCode
+
+
           if (copyParams.businessCommoditySaveVoList.some(item => !item.commodityNumber || !item.alterationPrice)) {
             this.$message({
               message: '商品的退货数量和单价没有填写或当前没有可退货商品',
@@ -217,11 +219,13 @@ export default {
             });
             return
           }
-          copyParams.businessCommoditySaveVoList.map(item => item.putawayType = 0) // 退货入库
-          copyParams.exChangeCommodityList.map(item => item.putawayType = 1) //换货入库
+
           // 把退货和换货产品合并
           copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.concat(copyParams.exChangeCommodityList)
           copyParams.businessCommoditySaveVoList.map(v => v.busCode = copyParams.quotationCode)
+          copyParams.totalExchangeNumber = copyParams.exChangeCommodityList.reduce((sum, curr) => {
+            return sum + Number(curr.commodityNumber)
+          }, 0)
           this.loading = true
           // rules 表单验证是否通过
           let api = 'salesexchangeUpdate' // 默认编辑更新
@@ -230,7 +234,7 @@ export default {
             api = 'salesexchangeSave'
             // 编辑保存
           }
-          this.$api.seePsiSaleService[api](this.form)
+          this.$api.seePsiSaleService[api](copyParams)
             .then(res => {
               this.close()
               this.setEdit()
