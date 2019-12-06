@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 10:14:46
+ * @LastEditTime: 2019-12-06 17:03:00
  * @Description: 公司信息  传入 公司发票账户 和公司结算账户id 会自动查询其余信息
 */
 <template>
@@ -162,9 +162,7 @@ export default {
       this.companyInfo.invoiceTitle = row.corporationName
       this.companyInfo.taxpayersNum = row.taxpayersNum
       this.companyInfo.registerAddres = row.address
-      this.data.companyAccountId = row.id
       this.$set(this.data,'companyAccountId',row.id)
-      this.data.companySettlementId = ''
       this.$set(this.data,'companySettlementId','')
 
       // 这里的接口是公共的 .所以字段不对应
@@ -177,7 +175,6 @@ export default {
     },
     // 公司结算账户更改
     settlementChange(row) {
-      this.data.companySettlementId = row.id
       this.$set(this.data,'companySettlementId',row.id)
       // 这里的接口是公共的 .所以字段不对应
       this.companyInfo.accountBank = row.accountBank
