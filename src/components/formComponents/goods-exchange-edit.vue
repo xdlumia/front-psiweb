@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 17:18:23
+ * @LastEditTime: 2019-12-06 17:21:15
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -172,7 +172,6 @@
         label="折扣"
         min-width="110"
       >
-        <!-- :prop="`exChangeCommodityList.${scope.$index}.discount`" -->
         <template
           slot-scope="scope"
           v-if="!scope.row.parentCommodityCode"
