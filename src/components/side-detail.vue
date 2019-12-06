@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-23 17:04:43
+ * @LastEditTime: 2019-12-06 17:46:20
  * @Description: 侧边详情弹框
 */
 <template>
@@ -46,15 +46,14 @@ export default {
       this.showPop = this.visible;
     }
   },
-  computed: { 
-  },
+  computed: {},
   methods: {
     close() {
       this.$emit('close');
       this.$emit('update:visible', false);
     }
   },
-  updated(){
+  updated() {
     this.hasButton = this.$slots.button && this.$slots.button.length;
   }
 };
@@ -87,6 +86,23 @@ export default {
           > div > .main-content,
           > .main-content {
             height: 100% !important;
+          }
+        }
+      }
+    }
+    .el-drawer__body > .el-form {
+      > .el-tabs:not(.el-tabs--card) {
+        margin: -10px -15px 10px;
+        background-color: #f2f2f2;
+        height: 40px;
+        overflow: hidden;
+        width: calc(100% + 30px);
+        & > .el-tabs__header {
+          background-color: #f2f2f2;
+          padding: 0 20px;
+          margin-bottom: 0;
+          > .el-tabs__nav-wrap::after {
+            background-color: #f2f2f2;
           }
         }
       }
