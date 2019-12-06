@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 18:46:20
+ * @LastEditTime: 2019-12-06 09:31:21
  * @Description: 生成销售换货单
 */
 <template>
@@ -213,7 +213,7 @@ export default {
           this.form.exChangeCommodityList.map(item => item.putawayType = 1) //换货入库
           this.form.businessCommoditySaveVoList = this.form.businessCommoditySaveVoList.concat(this.form.exChangeCommodityList)
           this.form.businessCommoditySaveVoList.map(v => v.busCode = this.form.quotationCode)
-
+          let copyParams = JSON.parse(JSON.stringify(this.form))
           if (copyParams.businessCommoditySaveVoList.some(item => !item.commodityNumber || !item.alterationPrice)) {
             this.$message({
               message: '商品的退货数量和单价没有填写或当前没有可退货商品',
