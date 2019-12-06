@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 10:37:52
+ * @LastEditTime: 2019-12-06 10:48:52
  * @Description: 退货扫码
 */
 
@@ -66,10 +66,10 @@ export default {
           // }
         ],
         wmsId: '', //库房
-        businessCode: '',//关联业务编号
+        businessCode: this.code,//关联业务编号
         businessCodeList: [],//关联业务code List
         businessId: '',//0,
-        businessType: '',//0,
+        businessType: 17,//0,
         returnScanData: [], //临时数据 退货记录
         exchangeScanData: [], //临时数据 换货记录
         putawayCommodityList: [ //出入库商品信息
@@ -123,10 +123,12 @@ export default {
       })
       let api = 'salesreturnedScanReturned'
       if (this.from == 'exchange') {
+        this.copyParams.businessType = 18
         api = 'salesreturnedScanExchange'
       }
       this.$api.seePsiSaleService[api](copyParams)
         .then(res => {
+          this.$emit('reload')
           this.setEdit()
           this.close()
         })
