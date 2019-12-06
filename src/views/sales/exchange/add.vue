@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 09:31:21
+ * @LastEditTime: 2019-12-06 10:34:33
  * @Description: 生成销售换货单
 */
 <template>
@@ -206,14 +206,15 @@ export default {
     saveHandle() {
       this.$refs.form.validate(valid => {
         if (!valid) {
-          // 获取销售出库单编号
-          this.form.salesShipmentCode = this.rowData.shipmentCode
-          // 把退货和换货产品合并
-          this.form.businessCommoditySaveVoList.map(item => item.putawayType = 0) // 退货入库
-          this.form.exChangeCommodityList.map(item => item.putawayType = 1) //换货入库
-          this.form.businessCommoditySaveVoList = this.form.businessCommoditySaveVoList.concat(this.form.exChangeCommodityList)
-          this.form.businessCommoditySaveVoList.map(v => v.busCode = this.form.quotationCode)
           let copyParams = JSON.parse(JSON.stringify(this.form))
+          // 获取销售出库单编号
+          copyParams.salesShipmentCode = this.rowData.shipmentCode
+          // 把退货和换货产品合并
+          copyParams.businessCommoditySaveVoList.map(item => item.putawayType = 0) // 退货入库
+          copyParams.exChangeCommodityList.map(item => item.putawayType = 1) //换货入库
+          copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.concat(copyParams.exChangeCommodityList)
+          copyParams.businessCommoditySaveVoList.map(v => v.busCode = copyParams.quotationCode)
+
           if (copyParams.businessCommoditySaveVoList.some(item => !item.commodityNumber || !item.alterationPrice)) {
             this.$message({
               message: '商品的退货数量和单价没有填写或当前没有可退货商品',
