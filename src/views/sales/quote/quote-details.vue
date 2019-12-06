@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 16:41:27
+ * @LastEditTime: 2019-12-06 16:56:39
  * @Description: 报价单详情
 */
 <template>
@@ -172,7 +172,7 @@ export default {
     // 判断禁用的按钮
     isDisabledButton(label) {
       // 采购预计到货时间为空 禁用采购审核时间
-      if (label == '生成请购单' && this.detail.isPurchaseApply == 1) {
+      if (label == '生成请购单' && this.detail.isPurchaseApply == 1 && !this.detail.shipmentCode) {
         return true
       } else if (label == '生成销售出库单' && this.detail.shipmentCode) {
         return true
