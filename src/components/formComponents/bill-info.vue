@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 14:53:04
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-06 17:18:45
  * @Description: 账期信息
  */
 <template>
@@ -43,7 +43,8 @@
           <i
             type="text"
             @click="delBill(scope.$index)"
-            class="d-text-blue f18 el-icon-remove-outline"
+            class="d-text-blue d-pointer f18 el-icon-remove-outline"
+            v-if="scope.$index>0"
           ></i>
         </template>
       </el-table-column>
@@ -66,7 +67,7 @@
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.payTime`"
           >
             <el-date-picker
-              :disabled="disabled || billDisable"
+              :disabled="disabled || billDisable || scope.$index==0"
               size="mini"
               value-format="timestamp"
               v-model="scope.row.payTime"
@@ -109,7 +110,7 @@
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.payAmount`"
           >
             <el-input
-              :disabled="disabled || billDisable"
+              :disabled="disabled || billDisable || scope.$index==0"
               size="mini"
               placeholder="请输入"
               @input="payAmountChange(scope)"

@@ -2,18 +2,23 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 11:26:39
+ * @LastEditTime: 2019-12-06 17:15:31
  * @Description: 账单信息
 */
 <template>
   <form-card title="账单信息">
     <el-table :data="data.financeList" :summary-method="getSummaries" max-height="500px" ref="table" show-summary>
+      <el-table-column label="操作" min-width="60" v-if="!disabled">
+        <template slot-scope="{$index}">
+          <el-link :underline="false" @click="remove($index)" class="d-text-blue el-icon-remove f20" v-if="$index"></el-link>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="账期" min-width="60" show-overflow-tooltip>
         <template slot-scope="{$index}">
           <span>第{{$index+1}}期</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="type==1?'收款时间':'付款时间'" min-width="140" prop="payTime" show-overflow-tooltip>
+      <el-table-column :label="type==1?'收款时间':'付款时间'" align="center" min-width="140" prop="payTime" show-overflow-tooltip>
         <template slot-scope="{row,$index}">
           <el-form-item
             :prop="`financeList.${$index}.payTime`"
@@ -63,11 +68,6 @@
               v-model="row.payAmount"
             ></el-input>
           </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" min-width="60" v-if="!disabled">
-        <template slot-scope="{$index}">
-          <el-link :underline="false" @click="remove($index)" class="el-icon-remove f20" v-if="$index"></el-link>
         </template>
       </el-table-column>
     </el-table>
