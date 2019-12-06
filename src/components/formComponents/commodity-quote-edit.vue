@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 15:41:14
+ * @LastEditTime: 2019-12-06 17:54:38
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -19,7 +19,9 @@
       border
       :summary-method="getSummaries"
       :data="data.businessCommoditySaveVoList"
-      :tree-props="{children: 'commonGoodConfigDetailsEntityList'}"
+      lazy
+      :load="loadChildren"
+      :tree-props="{children: 'commonGoodConfigDetailsEntityList',hasChildren:'configId'}"
       max-height="400"
       ref="elTable"
       row-key="id"
@@ -346,6 +348,21 @@ export default {
     };
   },
   methods: {
+    async loadChildren(row, node, cb) {
+      let {
+        data
+      } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
+        {
+          commodityCode: row.commodityCode
+        }
+      );
+      data.map(child=>{
+        child.parentCommodityCode=row.commodityCode
+        child.reference = child.saleReferencePrice
+        child.discountSprice=''
+      })
+      cb(data);
+    },
     checkCommodityNumber(rule, value, cb) {
       if (value > 0) cb();
       else cb(new Error('数量至少为1'))
