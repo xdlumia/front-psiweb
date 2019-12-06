@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 17:12:16
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-06 16:45:58
  * @Description: 操作记录
 */
 <template>
@@ -14,7 +14,7 @@
       >暂无操作记录</div>
       <el-timeline-item
         v-for="(item,index) of logData"
-        :timestamp="$options.filters.timeToStr(item.createTime)"
+        :timestamp="$options.filters.timeToStr(item.createTime,'YYYY-MM-DD HH:mm:ss')"
         placement="top"
         :key="index"
       >
@@ -27,7 +27,7 @@
             <span class="d-inline ml20">{{item.userName}}</span>
             <!-- <span class="d-inline ml30">审核通过</span> -->
           </div>
-          <p>{{item.description}}</p>
+          <p class="mt10">{{item.description}}</p>
         </el-card>
       </el-timeline-item>
     </el-timeline>
