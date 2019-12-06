@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 21:15:21
+ * @LastEditTime: 2019-12-06 14:53:04
  * @Description: 账期信息
  */
 <template>
@@ -112,6 +112,7 @@
               :disabled="disabled || billDisable"
               size="mini"
               placeholder="请输入"
+              @input="payAmountChange(scope)"
               v-model="scope.row.payAmount"
             />
           </el-form-item>
@@ -173,6 +174,20 @@ export default {
     }
   },
   methods: {
+    payAmountChange(scope) {
+      let row = scope.row
+      let payAmount = row.payAmount
+      let index = scope.$index
+      let total = 0;
+      if (index != 0) {
+        total = this.data.shipmentFinanceSaveVoList.filter((item, index) => index != 0).reduce((sum, curr, index) => {
+          const val = Number(curr.payAmount)
+          return sum + val
+        }, 0)
+      }
+      this.data.shipmentFinanceSaveVoList[0].payAmount = this.data.totalAmount - total
+    },
+    // 删除账单
     delBill(index) {
       this.data.shipmentFinanceSaveVoList.splice(index, 1)
       // 重新修改账期名称
@@ -207,7 +222,7 @@ export default {
             const val = Number(curr)
             return sum + curr
           }, 0)
-          if (tatal != this.data.totalAmount) {
+          if (tatal > this.data.totalAmount) {
             this.$message({
               message: '所有账期的付款金额不能大于或小于总价',
               type: 'error',
