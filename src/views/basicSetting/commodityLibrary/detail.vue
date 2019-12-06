@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 17:38:07
+ * @LastEditTime: 2019-12-06 15:27:27
  * @Description: description
  -->
 <template>
@@ -21,8 +21,13 @@
         type="primary"
         @click="showBeginn = true"
       >期初库存</el-button>
-      <el-button size="mini" type="primary" @click="showEdit = true">编辑</el-button>
-      <el-button size="mini" type="danger" @click="deleteGood(rowData.id)">删除</el-button>
+      <el-button v-if="!rowData.configId" size="mini" type="primary" @click="showEdit = true">编辑</el-button>
+      <el-button
+        v-if="!rowData.configId"
+        size="mini"
+        type="danger"
+        @click="deleteGood(rowData.id)"
+      >删除</el-button>
     </template>
     <div class="d-bg-gray" style="display: flex;margin:-40px -15px 10px">
       <el-image
@@ -52,8 +57,7 @@
       style="height: calc(100vh - 270px)!important"
     >
       <el-tab-pane label="详情">
-        <good :code="code" :disabled="true" ref="detail"
-@update="update"></good>
+        <good :code="code" :disabled="true" ref="detail" @update="update"></good>
         <el-form
           size="mini"
           :model="beginnForm"
@@ -82,8 +86,7 @@
         </el-form>
       </el-tab-pane>
     </el-tabs>
-    <el-dialog :visible.sync="showEdit" title v-dialogDrag
-:show-close="false" width="1000px">
+    <el-dialog :visible.sync="showEdit" title v-dialogDrag :show-close="false" width="1000px">
       <div slot="title" style="display:flex;">
         <h3 style="flex:1;text-align:center;">编辑商品</h3>
         <div>
@@ -91,8 +94,7 @@
           <el-button size="mini" @click="showEdit=false">关闭</el-button>
         </div>
       </div>
-      <good :code="code" :isEdit="true" @refresh="refresh"
-v-if="showEdit" ref="addGood"></good>
+      <good :code="code" :isEdit="true" @refresh="refresh" v-if="showEdit" ref="addGood"></good>
     </el-dialog>
     <opening-stock
       :visible.sync="showBeginn"
@@ -129,7 +131,7 @@ export default {
       default: true
     }
   },
-  data() {
+  data () {
     return {
       noPic: require('@/assets/img/no-pic.png'),
       showEdit: false,
@@ -141,26 +143,26 @@ export default {
       beginnForm: {}
     }
   },
-  mounted() {
+  mounted () {
     this.checkVisible();
     this.wmsinventorycommodityinitialinfoInfo()
   },
   watch: {
-    visible() {
+    visible () {
       this.checkVisible();
       this.wmsinventorycommodityinitialinfoInfo()
     }
   },
   methods: {
-    saveGood() {
+    saveGood () {
       this.$refs.addGood && this.$refs.addGood.saveGood()
     },
-    wmsinventorycommodityinitialinfoInfo() {
+    wmsinventorycommodityinitialinfoInfo () {
       this.$api.seePsiWmsService.wmsinventorycommodityinitialinfoInfo(null, this.code).then(res => {
         this.beginnForm = res.data
       })
     },
-    deleteGood(id) {
+    deleteGood (id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -177,12 +179,12 @@ export default {
       })
 
     },
-    refresh() {
+    refresh () {
       this.$refs.detail.getGoodsDetailV2(this.code)
       this.showEdit = false
       this.$emit('reload')
     },
-    update(temp) {
+    update (temp) {
       this.rowData.categoryCode = temp.categoryCode
       this.rowData.secondClassName = temp.secondClassName
       this.rowData.specOne = temp.values[0].specOne
@@ -192,13 +194,14 @@ export default {
       this.rowData.id = temp.id
       this.rowData.configName = temp.values[0].configName
       this.rowData.unit = temp.unit
+      this.rowData.configId = temp.values[0].configId
       this.status = [
         { label: '创建时间', value: temp.createTime, isTime: true },
         { label: '创建人', value: temp.creatorName },
         { label: '来源', value: temp.sourceFromCode, dictName: 'SP_SOURCE_FROM' }
       ]
     },
-    checkVisible() {
+    checkVisible () {
       this.showPop = this.visible;
     }
   }
