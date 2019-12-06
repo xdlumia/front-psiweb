@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 21:29:39
+ * @LastEditTime: 2019-12-06 11:49:59
  * @Description: 退货商品商品信息
 */
 <template>
@@ -59,10 +59,7 @@
           label="商品编号"
           show-overflow-tooltip
         >
-          <template
-            slot-scope="scope"
-            v-if="scope.row.categoryCode == 'PSI_SP_KIND-1'"
-          >
+          <template slot-scope="scope">
             {{scope.row.commodityCode}}
           </template>
         </el-table-column>
@@ -72,10 +69,7 @@
           label="商品名称"
           show-overflow-tooltip
         >
-          <template
-            slot-scope="scope"
-            v-if="scope.row.categoryCode == 'PSI_SP_KIND-1'"
-          >
+          <template slot-scope="scope">
             {{scope.row.goodsName}}
           </template>
         </el-table-column>
@@ -140,10 +134,7 @@
           label="退货商品数量"
           show-overflow-tooltip
         >
-          <template
-            slot-scope="scope"
-            v-if="scope.row.categoryCode == 'PSI_SP_KIND-1'"
-          >
+          <template slot-scope="scope">
             <el-form-item
               class="mb0"
               :prop="'businessCommoditySaveVoList.' + scope.$index + '.commodityNumber'"
@@ -166,10 +157,7 @@
           label="退货单价"
           show-overflow-tooltip
         >
-          <template
-            slot-scope="scope"
-            v-if="scope.row.categoryCode == 'PSI_SP_KIND-1'"
-          >
+          <template slot-scope="scope">
             <el-form-item
               class="mb0"
               :prop="`businessCommoditySaveVoList.${scope.$index}.alterationPrice`"
@@ -209,10 +197,7 @@
           label="是否拆卸"
           show-overflow-tooltip
         >
-          <template
-            slot-scope="scope"
-            v-if="scope.row.categoryCode == 'PSI_SP_KIND-1'"
-          >
+          <template slot-scope="scope">
             <el-form-item
               class="mb0"
               prop="isTeardown"

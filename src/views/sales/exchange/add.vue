@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 10:34:33
+ * @LastEditTime: 2019-12-06 11:54:02
  * @Description: 生成销售换货单
 */
 <template>
@@ -205,7 +205,7 @@ export default {
     // 保存表单数据
     saveHandle() {
       this.$refs.form.validate(valid => {
-        if (!valid) {
+        if (valid) {
           let copyParams = JSON.parse(JSON.stringify(this.form))
           // 获取销售出库单编号
           copyParams.salesShipmentCode = this.rowData.shipmentCode
