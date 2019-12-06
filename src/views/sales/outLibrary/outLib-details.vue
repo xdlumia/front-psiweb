@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 16:34:19
+ * @LastEditTime: 2019-12-06 17:03:38
  * @Description: 销售出库单详情
 */
 <template>
@@ -68,6 +68,7 @@
 
     <!-- 编辑 -->
     <add
+      v-if="editVisible"
       :visible.sync="editVisible"
       :rowData="detail"
       type="edit"
