@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 17:13:32
+ * @LastEditTime: 2019-12-06 16:08:03
  * @Description: 销售-销售调价单
  */
 <template>
@@ -39,17 +39,17 @@
     </table-view>
 
     <!-- 费用分摊详情 -->
-    <detail
-      v-if="detailVisible"
-      :visible.sync="detailVisible"
-      :rowData="rowData"
+    <Detail
       :code="rowData.code"
+      :visible.sync="detailVisible"
       @reload="$refs.table.reload()"
+      v-if="detailVisible"
     />
     <!-- 新增账单调整-->
     <add
       :visible.sync="addVisible"
       adjustPriceType='1'
+      v-if="addVisible"
       @reload="$refs.table.reload()"
     />
   </div>
@@ -58,13 +58,13 @@
 // import add from './add' // 新增账单调价
 
 import add from '@/views/order/price/edit.vue' //新增
-import detail from './details' //详情
+import Detail from '@/views/order/price/detail.vue'; //采购调价单详情
 
 export default {
   name: 'addjustPrice',
   components: {
     add,
-    detail
+    Detail
   },
   props: {
     // 是否显示按钮

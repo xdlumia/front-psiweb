@@ -1,14 +1,14 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 16:19:41
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-06 16:05:19
  * @Description: 采购调价单
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`采购调价单 ${detail?detail.code:''}`"
+    :title="`调价单: ${detail?detail.code:''}`"
     :visible="showDetailPage"
     @close="close"
     v-loading="loading"
@@ -55,7 +55,12 @@
         type="danger"
         v-if="detail&&[1].includes(detail.state)"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0].includes(detail.state)">编辑</el-button>
+      <el-button
+        @click="showEdit=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&[0].includes(detail.state)"
+      >编辑</el-button>
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpriceLogicDelete',{ id:detail.id },'删除')"
         size="mini"
@@ -65,8 +70,15 @@
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <approve-panel :busType="40" :id="detail.id" v-if="isDataReady" />
-        <el-form :model="detail" v-if="detail&&visible">
+        <approve-panel
+          :busType="40"
+          :id="detail.id"
+          v-if="isDataReady"
+        />
+        <el-form
+          :model="detail"
+          v-if="detail&&visible"
+        >
           <buying-goods-edit
             :customColumns="[
                 { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140,format:(a,b)=>Number(b.purchaseAverage||b.inventoryPrice).toFixed(2) },
@@ -87,11 +99,21 @@
             disabled
             title="商品信息"
           ></buying-goods-edit>
-          <extrasInfo :data="detail" disabled id="extrasInfo" />
+          <extrasInfo
+            :data="detail"
+            disabled
+            id="extrasInfo"
+          />
         </el-form>
       </el-tab-pane>
     </el-tabs>
-    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" v-if="showEdit" />
+    <Edit
+      :rowData="detail"
+      :visible.sync="showEdit"
+      @reload="setEdit(),$reload()"
+      type="edit"
+      v-if="showEdit"
+    />
   </sideDetail>
 </template>
 <script>
