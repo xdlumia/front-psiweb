@@ -103,6 +103,7 @@ export default {
         "consigneePhone": "",
         "note": "",
         "practicalShipmentsTime": "",
+        salesExpectedShipmentsTime: '',
         "requireShipmentsTime": "",
         "salesSheetCode": "",
         "salesShipmentCode": "",
@@ -122,7 +123,7 @@ export default {
   mounted() {
     console.log(this.form, 'this.addForm.salesShipmentCodethis.addForm.salesShipmentCodethis.addForm.salesShipmentCode')
     this.addForm.salesShipmentCode = this.form.shipmentCode
-    this.addForm.requireShipmentsTime = this.form.salesQuotationEntity.salesRequireArrivalTime
+    this.addForm.requireShipmentsTime = this.form.salesQuotationEntity.salesExpectedShipmentsTime
   },
   methods: {
     handleClick({ label, name }) {
