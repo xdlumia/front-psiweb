@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 11:23:24
+ * @LastEditTime: 2019-12-06 19:24:56
  * @Description: 审核采购时间
 */
 <template>
@@ -67,22 +67,24 @@ export default {
   },
   methods: {
     // 同意所有时间
-    passApproval() {
+    async passApproval() {
       let params = {
         id: this.rowData.id,
         processType: 'psi_sales_outlibrary_01',
         apprpvalNode: 'psi_sales_outlibrary_12'
       }
-      this.$submission('seePsiSaleService.salesshipmentPurchaseTimeApproval', params, '采购入库审核')
+      await this.$submission('seePsiSaleService.salesshipmentPurchaseTimeApproval', params, '采购入库审核')
+      this.close()
     },
     // 不同意并终止
-    pause() {
+    async pause() {
       let params = {
         id: this.rowData.id,
         processType: 'psi_sales_outlibrary_01',
         apprpvalNode: 'psi_sales_outlibrary_12'
       }
-      this.$submission('seePsiSaleService.salesshipmentReject', params, '不同意')
+      await this.$submission('seePsiSaleService.salesshipmentReject', params, '不同意')
+      this.close()
     },
   }
 }
