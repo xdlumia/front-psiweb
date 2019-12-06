@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 15:07:02
+ * @LastEditTime: 2019-12-06 09:37:08
  * @Description: 确定配置信息
 */
 <template>
@@ -19,9 +19,6 @@
             </template>
           </el-table-column>
           <el-table-column label="商品名称" min-width="80" prop="name"></el-table-column>
-          <el-table-column label="商品类别" min-width="70">
-            <template>配件</template>
-          </el-table-column>
           <el-table-column label="商品规格" min-width="80" prop="specOne" />
           <el-table-column label="销售参考价" prop="saleReferencePrice" width="90" />
         </el-table>
@@ -59,9 +56,6 @@
             </template>
           </el-table-column>
           <el-table-column label="商品名称" min-width="80" prop="goodsName"></el-table-column>
-          <el-table-column label="商品类别" min-width="70">
-            <template>整机</template>
-          </el-table-column>
           <el-table-column label="商品规格" min-width="80" prop="specOne"></el-table-column>
           <el-table-column label="商品数量" min-width="80" prop="commodityNum" />
           <el-table-column label="销售参考价" prop="saleReferencePrice" width="90"></el-table-column>
