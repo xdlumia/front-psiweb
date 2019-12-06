@@ -416,7 +416,9 @@ export default {
             data.operation = 1
           }
           // this.data.returnScanData.push({ ...item, ...data })
+          data.id = item.id
           this.data[`${type}ScanData`].push({ ...item, ...data })
+
           // 本次扫码次数
           item.scanNumber = (item.scanNumber || 0) + 1
           // 历史扫码次数
@@ -426,13 +428,18 @@ export default {
     },
     //删除某条
     delRecord(scope) {
+
       let row = scope.row
       let index = this.data[`${row.fromType}ScanData`].findIndex(v => v.id = row.id)
-      this.data[`${row.fromType}ScanData`].splice(index, 1)
+
+
       let item = this.data.putawayCommodityList.find(item => item.id == row.id)
+
+
       // 本次扫码次数
       item.scanNumber--
       item.commodityNumber++
+      this.data[`${row.fromType}ScanData`].splice(index, 1)
     },
   }
 };
