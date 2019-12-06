@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 14:47:41
+ * @LastEditTime: 2019-12-06 17:26:51
  * @Description: 确定配置信息
 */
 <template>
@@ -110,6 +110,7 @@ export default {
       loading: false,
       configList: {},
       preConfigGoods: {},
+      configNames:{},
       wholeCacheList: [] // 存放根据nama查出来的整机配置信息
     };
   },
@@ -172,7 +173,7 @@ export default {
         } else sums[index] = '';
       });
       if (!row.disabled) {
-        sums[sums.length - 1] = configName ? '' : '未确定配置';
+        sums[sums.length - 1] = configName ? configName : '未确定配置';
       }
       return sums;
     },
@@ -224,16 +225,15 @@ export default {
       );
     },
     findSelectedConfig(item) {
-      let { configName } = this.getAllConfigGoods(item);
-      if (configName) {
-        return configName.split('-').pop();
-      }
+      let { configId } = this.getAllConfigGoods(item);
+      return configId;
     },
     getAllConfigGoods(row) {
       let children = this.flatten(row.children);
       let configs = this.getCurrentConfig(row);
       let allConfigGoods = [];
       let configName = '';
+      let configId = ''
       if (configs && configs.length >= 1) {
         configs.some(config => {
           let configList = JSON.parse(
@@ -251,12 +251,14 @@ export default {
             );
           if (isFullMatch) {
             allConfigGoods = selectedGoods;
-            configName = config;
+            configId = config.split('-').pop()
+            configName = this.configNames[configId]
           }
           return isFullMatch;
         });
       }
       return {
+        configId,
         configName,
         allConfigGoods
       };
@@ -376,6 +378,7 @@ export default {
       const newJson = {};
       data.forEach(item => {
         item.checked = false;
+        this.configNames[item.quotationId] = item.quotationName
         let configKey = `${item.configGoodCode}-${item.quotationId}`;
         configList[configKey] = configList[configKey] || [];
         configList[configKey].push(
