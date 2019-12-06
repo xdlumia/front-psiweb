@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 21:17:34
+ * @LastEditTime: 2019-12-06 12:01:36
  * @Description: 其他费用
  */
 <template>
@@ -14,9 +14,14 @@
     <el-card
       v-for="(item,index) of data.shipmentFinanceSaveVoList || []"
       :key="index"
-      class="mb10"
+      class="mb10 d-relative"
       :body-style="{ padding: '10px' }"
     >
+      <i
+        class="el-icon-remove d-pointer f20 d-absolute"
+        style="right:10px; top:10px; z-index:1"
+        @click="data.shipmentFinanceSaveVoList.splice(index,1)"
+      ></i>
       <el-row :gutter="10">
         <el-col
           :span="8"
