@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 21:44:20
+ * @LastEditTime: 2019-12-06 15:24:26
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -120,6 +120,9 @@
         prop="discountSprice"
         min-width="110"
       >
+      <template slot-scope="{row}">
+        <span>{{row.discountSprice||0}}</span>
+      </template>
       </el-table-column>
 
       <el-table-column

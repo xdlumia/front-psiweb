@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 09:37:08
+ * @LastEditTime: 2019-12-06 14:47:41
  * @Description: 确定配置信息
 */
 <template>
@@ -12,14 +12,19 @@
     <quotationInfo :key="index" :title="`${index+1}.商品名称:${key}`" v-for="(val,key,index) of KIND2List">
       <div slot="body">
         <el-table :data="val" border max-height="350px" ref="kind2" size="mini">
-          <el-table-column label="商品分类" prop="secondClassName" width="130"></el-table-column>
-          <el-table-column label="编号" min-width="100" show-overflow-tooltip>
+          <el-table-column label="商品编号" min-width="100" show-overflow-tooltip>
             <template slot-scope="scope">
               <span class="d-text-blue">{{scope.row.goodsCode}}</span>
             </template>
           </el-table-column>
           <el-table-column label="商品名称" min-width="80" prop="name"></el-table-column>
-          <el-table-column label="商品规格" min-width="80" prop="specOne" />
+          <el-table-column label="商品类别" prop="categoryCode" width="130">
+            <template slot-scope="{row}">
+              <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="商品分类" prop="secondClassName" width="130"></el-table-column>
+          <el-table-column label="规格" min-width="80" prop="specOne" />
           <el-table-column label="销售参考价" prop="saleReferencePrice" width="90" />
         </el-table>
       </div>
@@ -36,27 +41,40 @@
         v-if="item.disabled"
         @click="resetConfig(item,index)"
       >重置</el-button>-->
-      <el-button @click="chooseNotConfig(item,index)" size="mini" slot="title" type="primary" v-if="!item.disabled">不选择此配置</el-button>
+      <span slot="title" v-if="!item.noConfig">
+        <el-button @click="chooseNotConfig(item,index)" size="mini" type="primary" v-if="!item.disabled">不选择此配置</el-button>
+        <el-button @click="recoveryConfig(item,index)" size="mini" type="primary" v-else>挑选配置</el-button>
+      </span>
       <div slot="body">
         <el-table
           :data="item.children"
+          :show-summary="!item.disabled"
           :summary-method="getSummary.bind(this,item)"
           :tree-props="{children: 'children'}"
           border
           default-expand-all
           max-height="350px"
           row-key="id"
-          show-summary
           size="mini"
+          ref="kind1table"
         >
-          <el-table-column label="商品分类" prop="className" width="130"></el-table-column>
+          <el-table-column label="商品分类" prop="className" v-if="!item.disabled" width="130">
+            <template slot-scope="{row}">
+              <span>{{row.className||row.secondClassName}}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="商品编号" min-width="100" show-overflow-tooltip>
             <template slot-scope="scope">
               <span class="d-text-blue">{{scope.row.commodityCode}}</span>
             </template>
           </el-table-column>
           <el-table-column label="商品名称" min-width="80" prop="goodsName"></el-table-column>
-          <el-table-column label="商品规格" min-width="80" prop="specOne"></el-table-column>
+          <el-table-column label="商品类别" prop="categoryCode" width="130">
+            <template slot-scope="{row}">
+              <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="规格" min-width="80" prop="specOne"></el-table-column>
           <el-table-column label="商品数量" min-width="80" prop="commodityNum" />
           <el-table-column label="销售参考价" prop="saleReferencePrice" width="90"></el-table-column>
           <el-table-column label="操作" min-width="120" v-if="!item.disabled">
@@ -91,6 +109,7 @@ export default {
     return {
       loading: false,
       configList: {},
+      preConfigGoods: {},
       wholeCacheList: [] // 存放根据nama查出来的整机配置信息
     };
   },
@@ -118,7 +137,7 @@ export default {
   },
   methods: {
     getSummary(row, param) {
-      let { allConfigGoods,configName } = this.getAllConfigGoods(row);
+      let { allConfigGoods, configName } = this.getAllConfigGoods(row);
       let { columns } = param;
       const sums = [];
       columns.forEach((col, index) => {
@@ -152,8 +171,8 @@ export default {
           sums[0] = '总计';
         } else sums[index] = '';
       });
-      if(!row.disabled){
-        sums[sums.length-1] = configName?'':'未确定配置'
+      if (!row.disabled) {
+        sums[sums.length - 1] = configName ? '' : '未确定配置';
       }
       return sums;
     },
@@ -180,8 +199,8 @@ export default {
       );
       return selectedConfigs;
     },
-    checkOther(row,e) {
-      if(e){
+    checkOther(row, e) {
+      if (e) {
         let children = this.flatten(row.children);
         let configs = this.getCurrentConfig(row);
         if (configs && configs.length == 1) {
@@ -204,10 +223,10 @@ export default {
         ) || []
       );
     },
-    findSelectedConfig(item){
-      let {configName} = this.getAllConfigGoods(item)
-      if(configName){
-        return configName.split('-').pop()
+    findSelectedConfig(item) {
+      let { configName } = this.getAllConfigGoods(item);
+      if (configName) {
+        return configName.split('-').pop();
       }
     },
     getAllConfigGoods(row) {
@@ -258,6 +277,14 @@ export default {
     // },
     // 不选择此配置
     async chooseNotConfig(item, index) {
+      if (this.preConfigGoods[item.goodsCode]) {
+        this.$set(
+          this.data.KIND1List,
+          index,
+          this.clone(this.preConfigGoods[item.goodsCode])
+        );
+        return;
+      }
       let params = {
         categoryCode: 'PSI_SP_KIND-1',
         // name: item.configGoodName,
@@ -272,10 +299,21 @@ export default {
         item.goodsName = item.name;
         item.commodityCode = item.goodsCode;
         item.quotationIds = item.configId;
-        item.reference = item.saleReferencePrice
+        item.reference = item.saleReferencePrice;
         return item;
       });
+      this.preConfigGoods[item.goodsCode] = this.clone(item);
       this.$set(this.data.KIND1List, index, item);
+    },
+    clone(a) {
+      return JSON.parse(JSON.stringify(a));
+    },
+    recoveryConfig(item, i) {
+      this.$set(
+        this.data.KIND1List,
+        i,
+        JSON.parse(JSON.stringify(this.wholeCacheList[i]))
+      );
     },
     // 选中项目
     checkboxChange(row, index) {
@@ -330,7 +368,7 @@ export default {
       this.data.KIND1List = [];
       let configList = {};
       let configKeys = {};
-      let keyNames = {}
+      let keyNames = {};
       /**
        * 名称:newJson
        * 数据格式:{key:[]}
@@ -355,13 +393,10 @@ export default {
           newJson[item.configGoodCode].push(item);
         }
       });
-      let Kind1DataList = this.data.KIND1Data.reduce(
-        (data, item) => {
-          keyNames[item.goodsCode]=item.name;
-          return { ...data, [item.goodsCode]: false }
-        },
-        {}
-      );
+      let Kind1DataList = this.data.KIND1Data.reduce((data, item) => {
+        keyNames[item.goodsCode] = item.name;
+        return { ...data, [item.goodsCode]: false };
+      }, {});
       // let newArr = []
       for (const key in newJson) {
         const childrenData = newJson[key];
@@ -383,6 +418,7 @@ export default {
             goodsCode: key,
             configGoodName: keyNames[key],
             disabled: true,
+            noConfig: true,
             children: []
           });
         }
@@ -400,11 +436,13 @@ export default {
       // })
       // 缓存列表 方便重置
       this.wholeCacheList = JSON.parse(JSON.stringify(this.data.KIND1List));
+      console.log(this.data.KIND1List);
       this.configList = configList;
     },
     // 根据名称获取整机信息
     commonquotationconfigdetailsListConfigByGoodName() {
       // 如果没有商品不查询
+      this.data.KIND1List=[]
       if (!this.data.KIND1Data.length) return;
       const params = {
         // doodsName 如果查传的是'' 查的是全部 所以没有值得时候传 ' '

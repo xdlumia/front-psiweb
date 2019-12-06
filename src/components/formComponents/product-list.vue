@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 11:18:42
+ * @LastEditTime: 2019-12-06 14:45:49
  * @Description: 整机列表 和 配件列表  私有组件 你们用不了 
 */
 <template>
@@ -188,6 +188,7 @@ export default {
     },
     // 多选
     selectionChange(val) {
+      console.log(val)
       this.$emit('selection-change', val)
     }
   },

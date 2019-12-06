@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 20:18:17
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-06 15:18:47
  * @Description: file content
 */
 <template>
@@ -237,6 +237,7 @@ export default {
             (item.commonGoodConfigDetailsEntityList || []).forEach(sub => {
               sub.parentCommodityCode = item.commodityCode
             })
+            item.categoryCode = 'PSI_SP_KIND-1'
             item.id = 'customId' + item.id
             item.inventoryNumber = item.usableInventoryNum
             item.reference = item.saleReferencePrice
@@ -261,7 +262,14 @@ export default {
 
         // let
         // 第4步整合商品信息
-        this.form.businessCommoditySaveVoList = [...wholeListData, ...wholeListNotChoose, ...fixingsList]
+        this.form.businessCommoditySaveVoList = [...wholeListData, ...wholeListNotChoose, ...fixingsList].map(item=>{
+          return {
+            ...item,
+            discountSprice:+Number(item.reference*(1+(item.taxRate||0)/100)).toFixed(2),
+            discount:1,
+            commodityNumber:1
+          }
+        })
       }
     },
   },
@@ -278,6 +286,16 @@ export default {
           })
         } else {
           this.steps++
+        }
+      } else if(this.steps==2){
+        if(this.form.KIND1Data.length+this.form.KIND2Data.length>0){
+          this.steps++
+        }else{
+          return this.$message({
+            message: '请选择产品',
+            showClose: true,
+            type: 'warning'
+          })
         }
       } else {
         this.steps++

@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 21:33:56
+ * @LastEditTime: 2019-12-06 15:22:47
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -249,6 +249,7 @@
           <el-switch
             :active-value="1"
             :inactive-value="0"
+            :disabled="scope.row.isAssembly==1"
             v-model="scope.row.isDirect"
           ></el-switch>
         </template>
@@ -260,13 +261,14 @@
         min-width="110"
       >
         <template
-          slot-scope="scope"
-          v-if="!scope.row.parentCommodityCode"
+          slot-scope="{row}"
+          v-if="!row.parentCommodityCode&&row.categoryCode=='PSI_SP_KIND-1'&&(row.configId||row.configName)"
         >
           <el-switch
             :active-value="1"
             :inactive-value="0"
-            v-model="scope.row.isAssembly"
+            :disabled="row.isDirect==1"
+            v-model="row.isAssembly"
           ></el-switch>
         </template>
       </el-table-column>
