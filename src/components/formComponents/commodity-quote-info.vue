@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 15:50:57
+ * @LastEditTime: 2019-12-06 17:08:42
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -31,6 +31,9 @@
         label="商品编号"
         min-width="150"
       >
+      <template slot-scope="{row}">
+        <span class="d-text-blue d-pointer" @click="showCommodityDetail=true,currentCommodityCode=row.commodityCode">{{row.commodityCode}}</span>
+      </template>
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
@@ -167,12 +170,17 @@
       >
       </el-table-column>
     </el-table>
+    <CommodityDetail :code="currentCommodityCode" :visible.sync="showCommodityDetail" v-if="showCommodityDetail" />
   </form-card>
 </template>
 <script>
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 
 export default {
   props: ['data'],
+  components:{
+    CommodityDetail
+  },
   data() {
     return {
       loading: false,
@@ -182,6 +190,8 @@ export default {
         putawayType: 0,
         busCode: this.data.quotationCode
       },
+      currentCommodityCode:'',
+      showCommodityDetail:false
     };
   },
   created() {
