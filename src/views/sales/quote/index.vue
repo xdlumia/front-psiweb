@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 16:37:47
+ * @LastEditTime: 2019-12-06 16:40:53
  * @Description: 销售-报价单
  */
 <template>
@@ -166,10 +166,10 @@ export default {
           })
           return
         }
-        if (this.selectionData.some(item => item.shipmentCode || item.state != '-1')) {
+        if (this.selectionData.some(item => item.shipmentCode || item.state != '1')) {
           this.$message.error({
             showClose: true,
-            message: '已经生成出库单或者非新建状态不能合并'
+            message: '已经生成出库单或者非已通过状态不能合并'
           })
           return
         }
