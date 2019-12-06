@@ -1,14 +1,14 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 18:02:55
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-06 15:58:06
  * @Description: 报价单详情
 */
 <template>
   <div>
     <!-- 审核面板 -->
-    <approve-panel busType="15" />
+    <approve-panel busType="15" :id="rowData.id" />
     <!-- 客户信息 -->
     <customerInfo
       disabled

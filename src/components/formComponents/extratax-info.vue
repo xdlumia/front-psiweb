@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 15:13:27
+ * @LastEditTime: 2019-12-06 15:56:15
  * @Description: 附加发票 字段对应 但是公式还没计算
 */
 <template>
@@ -89,7 +89,7 @@ export default {
       let taxRate = (this.data.taxRate || 100) / 100  ///税率
       let taxAmount = this.data.taxAmount || 0 //税后金额
       // 税后金额  公式:税前金额 * 税率
-      this.data.taxAmount = (preTaxAmount * (1 - taxRate)).toFixed(2)
+      this.data.taxAmount = (preTaxAmount * (1 + taxRate)).toFixed(2)
     },
     // 税后金额变化 计算税率
     taxAmountChange(val) {
@@ -98,7 +98,7 @@ export default {
       let taxAmount = this.data.taxAmount || 0 //税后金额
       // 税率  公式:preTaxAmount * (1-税率)
 
-      this.data.taxRate = ((preTaxAmount - taxAmount) / preTaxAmount).toFixed(4) * 100
+      this.data.taxRate = ((taxAmount-preTaxAmount) / preTaxAmount).toFixed(4) * 100
     }
   },
   computed: {

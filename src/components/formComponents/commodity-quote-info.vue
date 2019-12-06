@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 15:24:26
+ * @LastEditTime: 2019-12-06 15:50:57
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -124,6 +124,41 @@
         <span>{{row.discountSprice||0}}</span>
       </template>
       </el-table-column>
+      
+      <el-table-column
+        show-overflow-tooltip
+        label="是否直发"
+        min-width="110"
+      >
+        <template
+          slot-scope="scope"
+          v-if="!scope.row.parentCommodityCode"
+        >
+          <el-switch
+            :active-value="1"
+            :inactive-value="0"
+            :value="scope.row.isDirect"
+          ></el-switch>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        label="是否组装"
+        min-width="110"
+      >
+        <template
+          slot-scope="{row}"
+          v-if="!row.parentCommodityCode&&row.categoryCode=='PSI_SP_KIND-1'&&(row.configId||row.configName)"
+        >
+          <el-switch
+            :active-value="1"
+            :inactive-value="0"
+            :disabled="row.isDirect==1"
+            :value="row.isAssembly"
+          ></el-switch>
+        </template>
+      </el-table-column>
 
       <el-table-column
         show-overflow-tooltip
@@ -164,9 +199,10 @@ export default {
           commodityCode: row.commodityCode
         }
       );
-      data.map(item=>{
-        item.reference = item.saleReferencePrice
-        item.discountSprice=''
+      data.map(child=>{
+        child.parentCommodityCode=row.commodityCode
+        child.reference = child.saleReferencePrice
+        child.discountSprice=''
       })
       cb(data);
     },
