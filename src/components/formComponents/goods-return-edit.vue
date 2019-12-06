@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 11:49:59
+ * @LastEditTime: 2019-12-06 17:28:29
  * @Description: 退货商品商品信息
 */
 <template>
@@ -297,7 +297,7 @@ export default {
           this.data.businessCommoditySaveVoList = data
           this.data.businessCommoditySaveVoList.map(item => {
             item.customNumber = item.commodityNumber
-            item.commodityNumber = item.actionableNumber
+            item.commodityNumber = item.actionableNumber || 0
           })
           // 直接使用this.data.businessCommoditySaveVoList数据响应不过来
           this.returnTableData = this.data.businessCommoditySaveVoList
@@ -311,7 +311,7 @@ export default {
     sumTaxPrice(row, index) {
       if (row.commodityNumber > row.actionableNumber) {
         this.$message({
-          message: `退货商品数量超过${row.actionableNumber},不能退货`,
+          message: `退货商品数量超过${row.actionableNumber || 0},不能退货`,
           type: 'error',
           showClose: true,
         });
