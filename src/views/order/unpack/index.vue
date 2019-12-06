@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 13:59:18
+ * @LastEditTime: 2019-12-06 17:29:03
  * @Description: 采购-拆卸单
 */
 <template>
@@ -24,9 +24,10 @@
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
+        <span v-else-if="prop=='sequence'">{{value>0?value:''}}</span>
         <span v-else-if="prop=='operation'">
           <span class="elTableDragDefault el-icon-rank f20" v-if="row.sequence>0"></span>
-          <el-button @click="setTop(row)" class="ml10" size="mini" type="primary" v-if="row.sequence>1">置顶</el-button>
+          <el-button @click="setTop(row)" class="ml10" size="mini" type="primary" v-if="row.sequence>0" :disabled="row.sequence==1">置顶</el-button>
         </span>
         <span v-else-if="prop=='disassemblyOrderState'">{{stateText[value]}}</span>
         <span v-else-if="prop=='disassemblyOrderCode'">
