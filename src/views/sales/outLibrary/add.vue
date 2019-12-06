@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 14:19:58
+ * @LastEditTime: 2019-12-06 16:35:50
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -115,11 +115,11 @@ export default {
       form: {
         id: '',
         pickingPerson: '', //拣货人
-        companyAccountId: this.rowData.companyAccountId,
-        companySettlementId: this.rowData.companySettlementId,
+        companyAccountId: '',
+        companySettlementId: '',
         apprpvalNode: '', // 审核节点,
         attachList: [], // 附件",
-        clientId: this.rowData.clientId, // 100000,
+        clientId: '', // 100000,
         contractTemplate: '', // 9,
         fieldList: [], // 自定义字段",
         isContract: '', // 有无合同,
@@ -150,12 +150,14 @@ export default {
     }
   },
   created() {
-    // this.init()
+    this.init()
   },
   mounted() {
 
   },
   computed: {
+    // 客户 账单信息 
+
     quoteCodes() {
       let quotationCodes = null
       // 如果是编辑 详情数据里会带多个quotationCodes
@@ -191,6 +193,20 @@ export default {
     }
   },
   methods: {
+    init() {
+      if (this.type == 'merge') {
+        let row = this.rowData[0]
+        this.form.companyAccountId = row.companyAccountId
+        this.form.companySettlementId = row.companySettlementId
+        this.form.clientId = row.clientId // 100000,
+      } else {
+        this.form.companyAccountId = this.rowData.companyAccountId
+        this.form.companySettlementId = this.rowData.companySettlementId
+        this.form.clientId = this.rowData.clientId // 100000,
+        console.log(this.form.clientId);
+
+      }
+    },
     // 根据报价单id，计算获取销售出库单金额数据
     salesshipmentGetAddShipemtAmount(ids) {
       this.$api.seePsiSaleService.salesshipmentGetAddShipemtAmount({ quotationIds: ids })

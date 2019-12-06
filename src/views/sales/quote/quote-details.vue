@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 15:47:10
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-06 16:34:27
  * @Description: 报价单详情
 */
 <template>
@@ -76,6 +76,7 @@
     />
     <!-- 生成销售出库单 -->
     <outLibAdd
+      v-if="outLibAddVisible"
       :visible.sync="outLibAddVisible"
       type="add"
       :rowData="rowData"
@@ -233,15 +234,15 @@ export default {
           apiObj[label].needNote)
       }
     },
-    checkAddBuying(){
-      let buyingGoods = this.detail.commodityEntityList.filter(item=>item.isDirect==0&&item.inventoryNumber<item.commodityNumber)
-      if(buyingGoods.length>0){
+    checkAddBuying() {
+      let buyingGoods = this.detail.commodityEntityList.filter(item => item.isDirect == 0 && item.inventoryNumber < item.commodityNumber)
+      if (buyingGoods.length > 0) {
         this.buyingAddVisible = true
-      }else{
+      } else {
         this.$message({
-          message:'库存充沛，不能申请采购',
-          showClose:true,
-          type:'warning'
+          message: '库存充沛，不能申请采购',
+          showClose: true,
+          type: 'warning'
         })
       }
     }
