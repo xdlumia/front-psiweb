@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 15:49:57
+ * @LastEditTime: 2019-12-06 18:11:56
  * @Description: 采购入库单
 */
 <template>
@@ -238,6 +238,7 @@ export default {
           this.code
         );
         data.commodityList = data.commodityList || [];
+        console.log(data)
         return data;
       } else if (this.rowData) {
         return this.rowData;

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 17:04:34
+ * @LastEditTime: 2019-12-06 18:17:05
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -23,12 +23,12 @@
         </span>
       </div>
       <el-table
-        :class="[showSummary?'':'hide-summary']"
+        :class="[showSummary?'':'hide-summary',(sort||[]).includes('expanded')?'':'hide-expanded']"
         :data="recalcRowKey(data[fkey])"
         :expand-row-keys="expandRowKeys"
         :load="loadChildren"
         :summary-method="showSummary?getSummaries:null"
-        :tree-props="{children: 'children', hasChildren: (sort||[]).includes('expanded')?'configName':'_children'}"
+        :tree-props="{children: 'children', hasChildren: (sort||[]).includes('expanded')?'configName':'_$children'}"
         border
         lazy
         maxHeight="calc(100% - 40px)"
@@ -334,7 +334,9 @@ export default {
       return list;
     }
   },
-  mounted() {},
+  mounted() {
+    console.log(this)
+  },
   methods: {
     isChildShowColumn(row) {
       return (this.sort || []).includes('expanded') &&
@@ -571,6 +573,11 @@ export default {
   .el-table__footer-wrapper,
   .el-table__fixed-footer-wrapper {
     display: none;
+  }
+}
+.hide-expanded{
+  .el-table__expand-icon{
+    display: none !important;
   }
 }
 </style>

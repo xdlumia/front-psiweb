@@ -2,12 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-30 13:31:05
+ * @LastEditTime: 2019-12-06 18:08:29
  * @Description: 收票申请
 */
 <template>
-  <el-dialog :visible="visible" @close="close" v-dialogDrag
-v-loading="loading" width="1000">
+  <el-dialog :visible="visible" @close="close" v-dialogDrag v-loading="loading" width="1000">
     <div slot="title">
       <span>{{invoiceType==1?'收票申请':'开票申请'}}</span>
       <span class="fr mr20">
@@ -22,13 +21,12 @@ v-loading="loading" width="1000">
       <d-tab-pane label="发票内容" name="goods" />
       <d-tab-pane label="其他信息" name="extrasInfo" />
       <div>
-        <el-form :model="form" class="p10" ref="form"
-size="mini" v-if="isDataReady">
+        <el-form :model="form" class="p10" ref="form" size="mini" v-if="isDataReady">
           <make-invoice-info
-            :invoiceType="invoiceType"
             :data="form"
-            id="invoice"
             :hide="invoiceType==1?[]:['invoiceCoding','invoiceCode']"
+            :invoiceType="invoiceType"
+            id="invoice"
           />
           <make-buyer :data="form" id="buyer" prefix="purchase" />
           <make-buyer :data="form" id="saler" prefix="market" />
@@ -58,7 +56,7 @@ export default {
       form: {
         invoiceDetailList: [] // 发票列表
       },
-      alwaysDropAndCopyForm: true// 在getDetail返回数据后，重新覆盖form
+      alwaysDropAndCopyForm: true // 在getDetail返回数据后，重新覆盖form
     };
   },
   computed: {
@@ -77,13 +75,13 @@ export default {
     }
   },
   mounted() {
-    this.salesshipmentGetShipmentCommodity()
+    this.salesshipmentGetShipmentCommodity();
   },
   watch: {
     visible: {
       handler(val) {
         if (val) {
-          this.salesshipmentGetShipmentCommodity()
+          this.salesshipmentGetShipmentCommodity();
         }
       },
       immediate: true
@@ -94,27 +92,38 @@ export default {
     salesshipmentGetShipmentCommodity() {
       // invoiceType=1 是收票的时候才加载商品信息
       if (this.invoiceType == 0 && this.type != 'edit' && this.code) {
-        this.$api.seePsiSaleService.salesshipmentGetShipmentCommodity({ code: this.code })
+        this.$api.seePsiSaleService
+          .salesshipmentGetShipmentCommodity({ code: this.code })
           .then(res => {
-            let data = res.data || []
+            let data = res.data || [];
             // type == 0是请求过来的商品信息
             data = data.map(item => {
-              item.type = 0
-              return item
-            })
+              item.type = 0;
+              return item;
+            });
             // this.form.invoiceDetailList = data
-            this.$set(this.form, 'invoiceDetailList', data)
-          })
+            this.$set(this.form, 'invoiceDetailList', data);
+          });
       }
     },
     async getDetail() {
       if (this.invoiceType != 0 && this.code) {
-        const { data } = await this.$api.seePsiPurchaseService.purchasestockorderGetByCode(null, this.code);
+        const {
+          data
+        } = await this.$api.seePsiPurchaseService.purchasestockorderGetByCode(
+          null,
+          this.code
+        );
         return data;
       }
       // 如果是收票
       else if (this.invoiceType == 0 && this.id) {
-        const { data } = await this.$api.seePsiFinanceService.finvoicebillingInfo(null, this.id);
+        const {
+          data
+        } = await this.$api.seePsiFinanceService.finvoicebillingInfo(
+          null,
+          this.id
+        );
         return data;
       } else if (this.rowData) return this.rowData;
     },
@@ -135,7 +144,7 @@ export default {
       this.form.commodityTotalAmount = 0; // 商品合计金额
       this.form.invoiceAmount = 0; // 票据金额
       this.form.taxTotalAmount = 0; // 税价合计金额
-      let totalCount = 0;// 商品总数量
+      let totalCount = 0; // 商品总数量
       // prettier-ignore
       this.form.invoiceDetailList.map(item => {
         item.taxRate = item.taxRate || 0
@@ -161,17 +170,17 @@ export default {
       this.loading = true;
       try {
         if (this.isEdit) {
-          let api = 'finvoicebillingUpdate'
+          let api = 'finvoicebillingUpdate';
           // 如果是开票编辑
           if (this.invoiceType == 1) {
-            api = 'finvoicereceivableUpdate'
+            api = 'finvoicereceivableUpdate';
           }
           await this.$api.seePsiFinanceService[api](this.form);
         } else {
-          let api = 'finvoicebillingSave'
+          let api = 'finvoicebillingSave';
           // 如果是开票 保存
           if (this.invoiceType == 1) {
-            api = 'finvoicereceivableSave'
+            api = 'finvoicereceivableSave';
           }
           await this.$api.seePsiFinanceService[api](this.form);
         }

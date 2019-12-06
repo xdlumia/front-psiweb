@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-30 12:52:08
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 13:34:42
+ * @LastEditTime: 2019-12-06 18:22:28
  * @Description: file content
  */
 /**
@@ -126,14 +126,18 @@ export default {
                 } else commodityList = data;
             }
             return commodityList.map(item => {
-                return typeof config.transfer == 'function' ? config.transfer(item) : {
+                let data = typeof config.transfer == 'function' ? config.transfer(item) : {
                     ...Object.keys(config.transfer).reduce((data, key) => {
                         data[key] = item[config.transfer[key] || key]
                         return data;
                     }, {}),
                     isOrder: 1,
                     type: 0,
+                };
+                if (busType == 0) {
+                    data.price = +Number(item.discountSprice / item.discount * (1 + item.taxRate / 100)).toFixed(2);
                 }
+                return data;
             })
         }
     }
