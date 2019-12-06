@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 20:09:31
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-06 16:10:09
  * @Description: 销售-报价单
  */
 <template>
@@ -171,6 +171,12 @@ export default {
             message: '已经生成出库单或者非新建状态不能合并'
           })
           return
+        }
+        if(this.selectionData.map(item=>item.clientId).filter((a,b,c)=>c.indexOf(a)==b).length!=1){
+          return this.$message.error({
+            showClose: true,
+            message: '相同客户的报价单才可合并生成出库单'
+          })
         }
 
       }
