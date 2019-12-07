@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 16:05:19
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-07 10:18:52
  * @Description: 采购调价单
 */
 <template>
@@ -167,7 +167,7 @@ export default {
         } = await this.$api.seePsiCommonService.commonadjustpricedetailedList({
           sellBillsId: data.id,
           page: 1,
-          limit: 15
+          limit: 999
         });
         data.commodityList = commodityList || [];
         return data;

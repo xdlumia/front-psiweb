@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:28:25
+ * @LastEditTime: 2019-12-07 14:22:16
  * @Description: 采购-备货单
 */
 <template>
@@ -50,14 +50,14 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => ({ page: 1, limit: 15 })
+      default: () => ({ page: 1, limit: 20 })
     }
   },
   data() {
     return {
       defaultParams: {
         page: 1,
-        limit: 15
+        limit: 20
       },
       status: [],
       showAdd: false,
@@ -75,7 +75,7 @@ export default {
       filterOptions: [
         { label: '备货单编号', prop: 'stockCode', default: true },
         { label: '采购预计到货时间', prop: 'PurchaseArrivalTime', type: 'dateRange', default: true },
-        { label: '合同创建人', prop: 'creator', type: 'employee' },
+        { label: '创建人', prop: 'creator', type: 'employee' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
       ]

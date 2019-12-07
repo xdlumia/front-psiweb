@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 17:18:45
+ * @LastEditTime: 2019-12-07 14:57:07
  * @Description: 账期信息
  */
 <template>
@@ -10,6 +10,7 @@
     <el-form-item
       label="结账方式"
       prop="paymentTypeCode"
+      :rules="[{required:true}]"
     >
       <el-select
         size="mini"
@@ -67,7 +68,7 @@
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.payTime`"
           >
             <el-date-picker
-              :disabled="disabled || billDisable || scope.$index==0"
+              :disabled="disabled || billDisable"
               size="mini"
               value-format="timestamp"
               v-model="scope.row.payTime"
@@ -186,7 +187,7 @@ export default {
           return sum + val
         }, 0)
       }
-      this.data.shipmentFinanceSaveVoList[0].payAmount = this.data.totalAmount - total
+      this.data.shipmentFinanceSaveVoList[0].payAmount = +Number(this.data.totalAmount - total).toFixed(2)
     },
     // 删除账单
     delBill(index) {

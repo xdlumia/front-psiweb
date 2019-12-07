@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 18:13:18
+ * @LastEditTime: 2019-12-07 10:17:19
  * @Description: 采购-请购明细表
 */
 <template>
@@ -13,6 +13,7 @@
     <div class="buying-requisition-page wfull hfull">
       <tableView
         :filterOptions="filterOptions"
+        :params="Object.assign(defaultParams,params)"
         api="seePsiPurchaseService.purchaseapplyorderCommoditys"
         busType="33"
         exportApi="seePsiPurchaseService.purchaseapplyorderDetailExport"
@@ -54,7 +55,7 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => ({ page: 1, limit: 15 })
+      default: () => ({ page: 1, limit: 20 })
     }
   },
   components: {
@@ -62,6 +63,10 @@ export default {
   },
   data() {
     return {
+      defaultParams: {
+        page: 1,
+        limit: 20
+      },
       status: [],
       currentCode: '',
       currentCommodityCode: '',

@@ -20,6 +20,7 @@
           @click="orderStorageVisible=true"
           size="mini"
           type="primary"
+          v-if="detailForm.deliverState === 0"
         >发货</el-button>
       </div>
       <el-tabs

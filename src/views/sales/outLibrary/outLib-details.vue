@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 17:03:38
+ * @LastEditTime: 2019-12-07 14:47:25
  * @Description: 销售出库单详情
 */
 <template>
@@ -111,7 +111,6 @@
     />
     <!-- 开票申请 -->
     <collectInvoice
-      v-if="collectInvoiceVisible"
       :visible.sync="collectInvoiceVisible"
       :rowData="detail"
       :invoiceType="0"

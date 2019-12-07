@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-30 12:52:08
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 18:22:28
+ * @LastEditTime: 2019-12-07 14:44:35
  * @Description: file content
  */
 /**
@@ -135,7 +135,7 @@ export default {
                     type: 0,
                 };
                 if (busType == 0) {
-                    data.price = +Number(item.discountSprice / item.discount * (1 + item.taxRate / 100)).toFixed(2);
+                    data.price = +Number(item.discountSprice / (1 + item.taxRate / 100)).toFixed(2);
                 }
                 return data;
             })

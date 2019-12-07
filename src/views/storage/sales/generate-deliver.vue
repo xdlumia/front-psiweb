@@ -137,7 +137,7 @@ export default {
       this.addForm.salesSheetCode = this.form.salesSheetCode
       this.$refs.addForm.validate((valid) => {
         if (valid) {
-          this.$api.seePsiWmsService.wmsshipmentsorderSave(this.addForm)
+          this.$api.seePsiSaleService.salessheetDeliverGoods(this.addForm)
             .then(res => {
               this.close()
             })
