@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 15:25:48
+ * @LastEditTime: 2019-12-06 17:28:29
  * @Description: 退货商品商品信息
 */
 <template>
@@ -34,9 +34,10 @@
         :summary-method="getSummaries"
         size="mini"
         border
-        :data="data.businessCommoditySaveVoList || []"
-        default-expand-all
-        :tree-props="{children: 'children'}"
+        :data="returnTableData || []"
+        lazy
+        :load="loadChildren"
+        :tree-props="{hasChildren:'configId'}"
         row-key="id"
         ref="table"
       >
@@ -45,10 +46,11 @@
           label="操作"
         >
           <template slot-scope="scope">
-            <i
-              class="el-icon-remove"
-              @click="delete(scope.row)"
-            ></i>
+            <el-button
+              type="text"
+              class="el-icon-remove f18"
+              @click="del(scope.row)"
+            ></el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -56,14 +58,21 @@
           min-width="100"
           label="商品编号"
           show-overflow-tooltip
-        />
-
+        >
+          <template slot-scope="scope">
+            {{scope.row.commodityCode}}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="goodsName"
           min-width="100"
           label="商品名称"
           show-overflow-tooltip
-        />
+        >
+          <template slot-scope="scope">
+            {{scope.row.goodsName}}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="goodsPic"
           min-width="100"
@@ -143,6 +152,7 @@
         </el-table-column>
 
         <el-table-column
+          prop="alterationPrice"
           min-width="100"
           label="退货单价"
           show-overflow-tooltip
@@ -219,6 +229,7 @@
 </template>
 <script>
 import goodsChangeEdit from '@/components/formComponents/goods-exchange-edit.vue'
+import { watch } from 'fs'
 export default {
   components: { goodsChangeEdit },
   props: {
@@ -244,7 +255,7 @@ export default {
   },
   data() {
     return {
-      tableData: [],
+      returnTableData: [],
       // queryFrom: {
       //   busType: 1, // 1报价单 2请购单]
       //   putawayType: 1,
@@ -262,35 +273,45 @@ export default {
       immediate: true
     }
   },
+  computed: {},
   created() {
-    this.salesquotationQueryMayCommodity()
+
   },
   methods: {
+    async loadChildren(row, node, cb) {
+      let { data } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
+        { commodityCode: row.commodityCode }
+      );
+      cb(data);
+    },
     // 删除退货
-    delete(row) {
+    del(row) {
       let index = this.data.businessCommoditySaveVoList.findIndex(item => item.id == row.id)
       this.data.businessCommoditySaveVoList.splice(index, 1)
+      // this.returnTableData.splice(index, 1)
     },
     salesquotationQueryMayCommodity() {
       this.$api.seePsiSaleService.salesquotationQueryMayCommodity({ quotaionCode: this.data.quotationCode })
         .then(res => {
           let data = res.data || []
           this.data.businessCommoditySaveVoList = data
-          // this.$set(this.data, 'businessCommoditySaveVoList', data)
           this.data.businessCommoditySaveVoList.map(item => {
             item.customNumber = item.commodityNumber
-            item.commodityNumber = item.actionableNumber
+            item.commodityNumber = item.actionableNumber || 0
           })
+          // 直接使用this.data.businessCommoditySaveVoList数据响应不过来
+          this.returnTableData = this.data.businessCommoditySaveVoList
+
           // this.data.exChangeCommodityList 是临时数据 存放换货后的数据
           if (this.data.exChangeCommodityList) {
-            this.data.exChangeCommodityList = JSON.parse(JSON.stringify(data))
+            this.data.exChangeCommodityList = []
           }
         })
     },
     sumTaxPrice(row, index) {
       if (row.commodityNumber > row.actionableNumber) {
         this.$message({
-          message: `退货商品数量超过${row.actionableNumber},不能退货`,
+          message: `退货商品数量超过${row.actionableNumber || 0},不能退货`,
           type: 'error',
           showClose: true,
         });
@@ -300,7 +321,7 @@ export default {
 
       let taxRate = (row.taxRate || 100) / 100  ///税率
       let commodityNumber = row.commodityNumber || 1 //退货数量
-      let alterationPrice = row.alterationPrice || 1 //销售单价
+      let alterationPrice = row.alterationPrice || 0 //销售单价
       // 税后销售单价  公式:销售单价 * (1-税率)
       row.taxPrice = (alterationPrice * (1 - taxRate)).toFixed(2)
       // 销售税后总价  公式:税后销售单价 * 退货数量
@@ -314,7 +335,7 @@ export default {
       columns.forEach((col, index) => {
         if (index == 0) {
           sums[index] = '总价'
-        } else if (['taxPrice', 'taxTotalAmount', 'customNumber', 'commodityNumber'].includes(col.property)) {
+        } else if (['taxPrice', 'alterationPrice', 'taxTotalAmount', 'customNumber', 'commodityNumber'].includes(col.property)) {
           const values = data.map(item => Number(item[col.property] || 0));
           if (['customNumber', 'commodityNumber'].includes(col.property)) {
             sums[index] = values.reduce((sum, curr) => {
@@ -329,8 +350,8 @@ export default {
           }
 
         }
-        //获取税后总价
-        if (col.property == 'taxTotalAmount') {
+        //获取应退金额
+        if (col.property == 'alterationPrice') {
           this.data.shouldRefundAmount = sums[index]
         }
         //获取销售数量

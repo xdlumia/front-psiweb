@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 11:13:59
+ * @LastEditTime: 2019-12-05 18:55:43
  * @Description: 分摊信息
  */
 <template>
@@ -189,6 +189,9 @@ export default {
         return item
       })
       this.data.businessCommoditySaveVoList = this.goodsTableData
+      this.data.businessCommoditySaveVoList.map(item => {
+        item.busType = 6
+      })
       return this.goodsTableData
     }
   },
@@ -204,6 +207,8 @@ export default {
     }
   },
   methods: {
+
+
     busTypeChange(val) {
       this.dialogData.title = this.options[val].title
       this.data.busCode = ''

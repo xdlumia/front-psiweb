@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 15:11:04
+ * @LastEditTime: 2019-12-05 21:15:52
  * @Description: 生成销售退货单
 */
 <template>
@@ -48,10 +48,12 @@
         <!-- 客户信息 -->
         <customerInfo
           id="customerInfo"
+          disabled
           :data="form"
         />
         <!-- 公司信息 -->
         <companyInfo
+          disabled
           id="companyInfo"
           :data="form"
         />
@@ -112,6 +114,7 @@ export default {
         customInfo: '自定义信息',
         extrasInfo: '备注信息',
       },
+      alwaysDropAndCopyForm: false,
       // 新增orEdit框内容
       form: {
         busType: 0, // 0退货 1换货
@@ -146,10 +149,11 @@ export default {
           //   taxTotalAmount: '',//税后退货总价
           // }
         ],
-        clientId: '',//100000,
-        companyAccountId: '',//100000,
-        companySettlementId: '',//100000,
+        clientId: this.rowData.clientId,//100000,
+        companyAccountId: this.rowData.companyAccountId,//100000,
+        companySettlementId: this.rowData.companySettlementId,//100000,
         exchangeNumber: '',//9,
+        id: '',
         fieldList: [],//自定义字段,
         note: '',//备注,
         payTime: '',//1572403069457,
@@ -183,6 +187,9 @@ export default {
   mounted() {
 
   },
+  watch: {
+
+  },
   computed: {
     rowDatas() {
       // 判断rowData 是多行数据还是单行数据
@@ -194,7 +201,12 @@ export default {
     },
   },
   methods: {
-
+    async getDetail() {
+      if (this.code) {
+        let { data } = await this.$api.seePsiSaleService.salesreturnedGetInfoByCode({ code: this.code })
+        return data;
+      }
+    },
     // 保存表单数据
     saveHandle() {
       this.$refs.form.validate(valid => {
@@ -206,6 +218,7 @@ export default {
             api = 'salesreturnedSave'
             // 编辑保存
           }
+          // 获取销售出库单编号
           this.form.salesShipmentCode = this.rowData.shipmentCode
           let copyParams = JSON.parse(JSON.stringify(this.form))
           copyParams.businessCommoditySaveVoList = this.$$util.jsonFlatten(copyParams.businessCommoditySaveVoList, 'commonGoodConfigDetailsEntityList')

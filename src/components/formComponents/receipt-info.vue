@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 18:32:40
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-05 17:56:43
  * @Description: 付款 新增流水 单据信息
 */
 <template>
@@ -16,7 +16,7 @@
         >
           <el-form-item
             :rules="item.rules"
-            :label="item.label"
+            :label="item.prop == 'oppositeAccount'? `${item.label}  类型:${clientType}`: item.label"
             :prop="item.prop"
           >
             <el-input
@@ -31,21 +31,25 @@
               >元</template>
             </el-input>
             <!-- 对方账号 -->
-            <el-autocomplete
-              class="wfull"
+            <div
               v-if="item.type =='autocomplete'"
-              :disabled='disabled'
-              v-model="data[item.prop]"
-              :fetch-suggestions="querySearchAsync"
-              placeholder="请输入内容"
+              class="not-disabled-class"
+              @click="addAccountVisible = true"
             >
-              <el-button
+              <el-input
                 class="wfull"
-                slot="append"
-                icon="el-icon-plus"
-                @click="addAccountVisible = true"
-              ></el-button>
-            </el-autocomplete>
+                :disabled='true'
+                v-model="data[item.prop]"
+                placeholder="请输入内容"
+              >
+                <el-button
+                  class="wfull"
+                  slot="append"
+                  icon="el-icon-plus"
+                  @click="addAccountVisible = true"
+                ></el-button>
+              </el-input>
+            </div>
             <!-- 结算账号 -->
             <el-select
               class="wfull"
@@ -130,7 +134,7 @@ export default {
       // 遍历表单
       items: [
         { label: '流水号', prop: 'incomeRecordCode', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
-        { label: '收支状态', prop: 'incomeType', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [{ content: '收款', code: '0' }, { content: '付款', code: '1' }], },
+        { label: '收支状态', prop: 'incomeType', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [{ content: '收款', code: 0 }, { content: '付款', code: 1 }], },
         { label: '发生金额', prop: 'incomeAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'price' }], },
         { label: '收款日期', prop: 'accountDate', type: 'date', rules: [{ required: true, trigger: 'blur' }] },
         { label: '结算账户', prop: 'companySettlementId', type: 'select', rules: [{ required: true, trigger: 'blur' }] },
@@ -138,7 +142,8 @@ export default {
         { label: '流水单凭号', prop: 'serialNumber', type: 'input', rules: [{ required: false }], },
         { label: '联系方式', prop: 'accountPhone', type: 'input', rules: [{ required: false }], }
       ],
-      options: []
+      options: [],
+      clientType: ''
     };
   },
   computed: {
@@ -161,18 +166,20 @@ export default {
   },
   methods: {
     // 选择对方账号
-    choose(item) {
+    choose(item, type) {
       let [row] = item
       this.data.oppositeAccount = row.bankAccount
+      let typeObj = {
+        '0': '客户',
+        '1': '供应商',
+        '2': '服务商',
+      }
+      this.clientType = typeObj[row.clientType]
     },
-    querySearchAsync(query, cb) {
-      // { value: "balel"}
-      cb([])
-    },
-    onSettleAccountChange(){
-      let item = this.settlementAccount.find(item=>item.id==this.data.companySettlementId)
-      if(item){
-        this.$set(this.data,'companySettlementInfo',`${item.corporationName}${item.accountType}(${item.account})`)
+    onSettleAccountChange() {
+      let item = this.settlementAccount.find(item => item.id == this.data.companySettlementId)
+      if (item) {
+        this.$set(this.data, 'companySettlementInfo', `${item.corporationName}${item.accountType}(${item.account})`)
       }
     }
   }

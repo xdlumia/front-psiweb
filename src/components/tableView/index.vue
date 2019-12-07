@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 11:09:56
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-06 15:16:03
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -312,7 +312,11 @@ export default {
     // 格式化状态和时间
     formatState(row, fields) {
       if (fields.match(/(Time|Date)/)) {
-        return this.$options.filters.timeToStr(row[fields], 'YYYY-MM-DD HH:mm:ss')
+        if(['createTime'].includes(fields)){
+          return this.$options.filters.timeToStr(row[fields], 'YYYY-MM-DD HH:mm:ss')
+        }else{
+          return this.$options.filters.timeToStr(row[fields], 'YYYY-MM-DD')
+        }
       }
       else if (fields == 'state' || fields == 'approvalState') {
         return this.statusText[row[fields]]

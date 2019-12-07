@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 21:30:33
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-06 15:33:41
  * @Description: 生成请购单商品信息
 */
 <template>
@@ -21,7 +21,7 @@
       >
         <el-table-column
           prop="commodityCode"
-          min-width="100"
+          min-width="220"
           label="商品编号"
           show-overflow-tooltip
         />
@@ -32,12 +32,18 @@
           label="商品名称"
           show-overflow-tooltip
         />
-        <el-table-column
-          prop="goodsPic"
-          min-width="100"
-          label="商品图片"
-          show-overflow-tooltip
-        />
+      <el-table-column
+        show-overflow-tooltip
+        label="商品图片"
+        min-width="120"
+      >
+        <template slot-scope="scope">
+          <el-image
+            style="width: 90px; height: 40px"
+            :src="scope.row.goodsPic"
+          />
+        </template>
+      </el-table-column>
         <el-table-column
           prop="categoryCode"
           min-width="80"
@@ -74,7 +80,7 @@
         />
 
         <el-table-column
-          prop="salesPrice"
+          prop="reference"
           min-width="80"
           label="销售单价"
           show-overflow-tooltip
@@ -86,14 +92,6 @@
           label="商品数量"
           show-overflow-tooltip
         />
-
-        <el-table-column
-          min-width="100"
-          label="退货单价"
-          prop="salesPrice"
-          show-overflow-tooltip
-        >
-        </el-table-column>
         <el-table-column
           prop="taxRate"
           min-width="70"
@@ -167,7 +165,7 @@ export default {
           this.tableData.forEach(item => {
             // 商品数量-总库存大于0的商品才生成请购单
             let commodityNumber = (item.commodityNumber || 0) - (item.inventoryNumber || 0)
-            if (commodityNumber > 0) {
+            if (commodityNumber > 0&&item.isDirect==0) {
               // 生成请购单商品数量是 请求过来的商品数量-总库存数量
               item.commodityNumber = commodityNumber
               this.data.commodityList.push(item)

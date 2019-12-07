@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 18:39:47
+ * @LastEditTime: 2019-12-07 10:13:46
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -42,6 +42,7 @@
           :label="val"
           :name="key"
         />
+        <!-- 人员分配 -->
         <choose-assembly
           :hide="['note','assemblePerson']"
           id="choose-assembly"
@@ -50,10 +51,12 @@
         <!-- 客户信息 -->
         <customerInfo
           id="customerInfo"
+          disabled
           :data="form"
         />
         <!-- 公司信息 -->
         <companyInfo
+          disabled
           id="companyInfo"
           :data="form"
         />
@@ -147,12 +150,14 @@ export default {
     }
   },
   created() {
-    // this.init()
+    this.init()
   },
   mounted() {
 
   },
   computed: {
+    // 客户 账单信息 
+
     quoteCodes() {
       let quotationCodes = null
       // 如果是编辑 详情数据里会带多个quotationCodes
@@ -173,22 +178,25 @@ export default {
   },
   watch: {
     visible(val) {
-      if (val) {
-        this.$nextTick(() => {
-          let ids = null
-          if (this.type == 'merge') {
-            ids = this.rowData.map(item => item.id)
-            this.salesshipmentGetAddShipemtAmount(ids)
-          }
-          else if (this.type == 'add') {
-            ids = [this.rowData].map(item => item.id)
-            this.salesshipmentGetAddShipemtAmount(ids)
-          }
-        })
-      }
     }
   },
   methods: {
+    init() {
+      if (this.type == 'merge') {
+        let row = this.rowData[0]
+        this.form.companyAccountId = row.companyAccountId
+        this.form.companySettlementId = row.companySettlementId
+        this.form.clientId = row.clientId // 100000,
+        let ids = this.rowData.map(item => item.id)
+        this.salesshipmentGetAddShipemtAmount(ids)
+      } else {
+        this.form.companyAccountId = this.rowData.companyAccountId
+        this.form.companySettlementId = this.rowData.companySettlementId
+        this.form.clientId = this.rowData.clientId // 100000,
+        let ids = [this.rowData].map(item => item.id)
+        this.salesshipmentGetAddShipemtAmount(ids)
+      }
+    },
     // 根据报价单id，计算获取销售出库单金额数据
     salesshipmentGetAddShipemtAmount(ids) {
       this.$api.seePsiSaleService.salesshipmentGetAddShipemtAmount({ quotationIds: ids })

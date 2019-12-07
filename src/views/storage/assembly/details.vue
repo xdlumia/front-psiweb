@@ -110,6 +110,7 @@ export default {
       transferVisible: false,//转移
       hangVisible: false,//挂起
       goodsVisible: false,//组装
+      loading: false,
       activeName: '',
       state: {
         '-1': '终止',

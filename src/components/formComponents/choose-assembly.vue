@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-28 14:00:55
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 12:02:39
+ * @LastEditTime: 2019-12-05 19:07:01
  * @Description: 生成拣货单和组装任务 人员分配 1
 */
 <template>
@@ -107,6 +107,9 @@ export default {
       employeeName: '',
       employeeAssembleName: '',
     };
+  },
+  created() {
+    this.employeeName = this.$options.filters.userName(this.data.pickingPerson)
   },
   methods: {
     //选择拣货人员

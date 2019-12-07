@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 16:24:28
+ * @LastEditTime: 2019-12-05 21:30:55
  * @Description: 审核信息
 */
 <template>
@@ -54,13 +54,12 @@ export default {
   },
   async mounted() {
     // 查询当前项共有多少节点
-
     if (this.id && this.busType) {
       await this.processtaskQueryProcessHistoryEntity()
     }
   },
   watch: {
-    '$parent.data': {
+    '$parent.data.state': {
       handler(val) {
         if (val) {
           this.processtaskQueryProcessHistoryEntity()

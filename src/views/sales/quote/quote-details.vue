@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 11:58:30
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-06 17:11:03
  * @Description: 报价单详情
 */
 <template>
@@ -72,13 +72,15 @@
       :code="code"
       type="edit"
       :rowData="rowData"
+      @reload="setEdit(),$reload()"
     />
     <!-- 生成销售出库单 -->
     <outLibAdd
+      v-if="outLibAddVisible"
       :visible.sync="outLibAddVisible"
       type="add"
       :rowData="rowData"
-      @reload="setEdit(),close()"
+      @reload="setEdit(),$reload()"
     />
     <!-- 生成请购单 -->
     <buyingAdd
@@ -86,7 +88,7 @@
       :params="{quotationCode:rowData.quotationCode}"
       type="add"
       :rowData="rowData"
-      @reload="setEdit(),close()"
+      @reload="setEdit(),$reload()"
     />
   </div>
 </template>
@@ -170,7 +172,7 @@ export default {
     // 判断禁用的按钮
     isDisabledButton(label) {
       // 采购预计到货时间为空 禁用采购审核时间
-      if (label == '生成请购单' && this.detail.isPurchaseApply == 1) {
+      if (label == '生成请购单' && (this.detail.isPurchaseApply == 1 || this.detail.shipmentCode)) {
         return true
       } else if (label == '生成销售出库单' && this.detail.shipmentCode) {
         return true
@@ -183,7 +185,7 @@ export default {
       if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
         if (label == '编辑') { this.editVisible = true }
         else if (label == '生成销售出库单') { this.outLibAddVisible = true }
-        else if (label == '生成请购单') { this.buyingAddVisible = true }
+        else if (label == '生成请购单') { this.checkAddBuying() }
       } else {
         // 接口参数
         let params = {
@@ -211,7 +213,7 @@ export default {
           '驳回': {
             api: 'seePsiSaleService.salesquotationReject',
             data: params,
-            needNote: null
+            needNote: true
           },
           '删除': {
             api: 'seePsiSaleService.salesquotationLogicDelete',
@@ -232,6 +234,18 @@ export default {
           apiObj[label].needNote)
       }
     },
+    checkAddBuying() {
+      let buyingGoods = this.detail.commodityEntityList.filter(item => item.isDirect == 0 && item.inventoryNumber < item.commodityNumber)
+      if (buyingGoods.length > 0) {
+        this.buyingAddVisible = true
+      } else {
+        this.$message({
+          message: '库存充沛，不能申请采购',
+          showClose: true,
+          type: 'warning'
+        })
+      }
+    }
   },
   beforeDestroy() {
   }

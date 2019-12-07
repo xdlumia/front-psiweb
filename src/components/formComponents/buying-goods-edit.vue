@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 14:08:24
+ * @LastEditTime: 2019-12-06 18:17:05
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -23,12 +23,12 @@
         </span>
       </div>
       <el-table
-        :class="[showSummary?'':'hide-summary']"
+        :class="[showSummary?'':'hide-summary',(sort||[]).includes('expanded')?'':'hide-expanded']"
         :data="recalcRowKey(data[fkey])"
         :expand-row-keys="expandRowKeys"
         :load="loadChildren"
         :summary-method="showSummary?getSummaries:null"
-        :tree-props="{children: 'children', hasChildren: (sort||[]).includes('expanded')?'configName':'_children'}"
+        :tree-props="{children: 'children', hasChildren: (sort||[]).includes('expanded')?'configName':'_$children'}"
         border
         lazy
         maxHeight="calc(100% - 40px)"
@@ -235,7 +235,7 @@ export default {
     // dictName             如有该值表明是业务字典
     // format               定义format函数，会传值进去并显示返回数据 Function(value,row)
     let columns = [
-      { label: '商品编号', key: 'commodityCode', width: 160, prop: 'commodityCode' },
+      { label: '商品编号', key: 'commodityCode', width: 220, prop: 'commodityCode' },
       { label: '商品图片', key: 'goodsPic', width: 120, prop: 'goodsPic' },
       { label: '商品名称', key: 'goodsName', width: 120, prop: 'goodsName', showOverflowTip: true },
       { label: '库房', key: 'wsm', width: 100, prop: 'wsmName', showOverflowTip: true },
@@ -253,7 +253,7 @@ export default {
       { label: '退货商品数量', key: 'alterationNumber', width: 140, prop: 'alterationNumber', showOverflowTip: true, type: 'inputinteger' },
       { label: '退货数量', key: 'alterationNumberRate', width: 140, prop: 'alterationNumber', showOverflowTip: true, },
       { label: '退货单价', key: 'alterationPrice', width: 80, prop: 'alterationPrice', type: 'input', showOverflowTip: true, rules: [{ required: true }, { type: 'price' }] },
-      { label: '税率', key: 'taxRate', width: 60, prop: 'taxRate', format: a => a ? `${a}%` : '-' },
+      { label: '税率%', key: 'taxRate', width: 80, prop: 'taxRate', format: a => a ? `${a}` : '-' },
       { label: '含税总价', key: 'preTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + (taxRate / 100)) * commodityNumber) || 0).toFixed(2)
       },
@@ -334,7 +334,9 @@ export default {
       return list;
     }
   },
-  mounted() {},
+  mounted() {
+    console.log(this)
+  },
   methods: {
     isChildShowColumn(row) {
       return (this.sort || []).includes('expanded') &&
@@ -433,6 +435,7 @@ export default {
       });
     },
     async loadChildren(row, node, cb) {
+      if(row.children) return cb(row.children);
       let {
         data
       } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
@@ -570,6 +573,11 @@ export default {
   .el-table__footer-wrapper,
   .el-table__fixed-footer-wrapper {
     display: none;
+  }
+}
+.hide-expanded{
+  .el-table__expand-icon{
+    display: none !important;
   }
 }
 </style>

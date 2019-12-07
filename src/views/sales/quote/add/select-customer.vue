@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 15:47:25
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-06 15:19:27
  * @Description: 选择客户
 */
 <template>
@@ -104,8 +104,12 @@ export default {
   },
   methods: {
     async getClinent(words) {
-      let { data } = await this.$api.seePsiCommonService.commonclientinfoQueryList();
-      this.clientOptions = data || []
+      this.loading = true;
+      try {
+        let { data } = await this.$api.seePsiCommonService.commonclientinfoQueryList();
+        this.clientOptions = data || []
+      } catch (error) {}
+      this.loading = false;
     },
     // 获取客户详情信息
     commonclientinfoInfo() {

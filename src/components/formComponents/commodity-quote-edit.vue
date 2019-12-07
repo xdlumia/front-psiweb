@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 15:09:08
+ * @LastEditTime: 2019-12-06 17:54:38
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -19,7 +19,9 @@
       border
       :summary-method="getSummaries"
       :data="data.businessCommoditySaveVoList"
-      :tree-props="{children: 'commonGoodConfigDetailsEntityList'}"
+      lazy
+      :load="loadChildren"
+      :tree-props="{children: 'commonGoodConfigDetailsEntityList',hasChildren:'configId'}"
       max-height="400"
       ref="elTable"
       row-key="id"
@@ -109,9 +111,9 @@
         min-width="110"
         prop="className"
       >
-      <template slot-scope="{row}">
-        <span>{{row.className||row.secondClassName}}</span>
-      </template>
+        <template slot-scope="{row}">
+          <span>{{row.className||row.secondClassName}}</span>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -145,7 +147,9 @@
         <template slot-scope="scope">
           <el-form-item
             class="mb0"
-            :rules="[{required:true},{type:'positiveNum'}]"
+            :rules="[{required:true},{type:'positiveNum'},{validator:checkCommodityNumber}]"
+            :prop="getProp(scope.row,'commodityNumber')"
+            v-if="!scope.row.parentCommodityCode"
           >
             <el-input
               size="mini"
@@ -177,7 +181,8 @@
         >
           <el-form-item
             class="mb0"
-            :rules="[{required:true},{type:'positiveNum'}]"
+            :rules="[{required:true},{validator:checkDiscount}]"
+            :prop="getProp(scope.row,'discount')"
           >
 
             <el-input
@@ -204,6 +209,7 @@
           <el-form-item
             class="mb0"
             :rules="[{required:true},{type:'price'}]"
+            :prop="getProp(scope.row,'discountSprice')"
           >
             <el-input
               size="mini"
@@ -245,6 +251,7 @@
           <el-switch
             :active-value="1"
             :inactive-value="0"
+            :disabled="scope.row.isAssembly==1"
             v-model="scope.row.isDirect"
           ></el-switch>
         </template>
@@ -256,13 +263,14 @@
         min-width="110"
       >
         <template
-          slot-scope="scope"
-          v-if="!scope.row.parentCommodityCode"
+          slot-scope="{row}"
+          v-if="!row.parentCommodityCode&&row.categoryCode=='PSI_SP_KIND-1'&&(row.configId||row.configName)"
         >
           <el-switch
             :active-value="1"
             :inactive-value="0"
-            v-model="scope.row.isAssembly"
+            :disabled="row.isDirect==1"
+            v-model="row.isAssembly"
           ></el-switch>
         </template>
       </el-table-column>
@@ -340,6 +348,37 @@ export default {
     };
   },
   methods: {
+    async loadChildren(row, node, cb) {
+      let {
+        data
+      } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
+        {
+          commodityCode: row.commodityCode
+        }
+      );
+      data.map(child=>{
+        child.parentCommodityCode=row.commodityCode
+        child.reference = child.saleReferencePrice
+        child.discountSprice=''
+      })
+      cb(data);
+    },
+    checkCommodityNumber(rule, value, cb) {
+      if (value > 0) cb();
+      else cb(new Error('数量至少为1'))
+    },
+    checkDiscount(rule, value, cb) {
+      let num = +(Number(value) || 0)
+      let twoNum = num.toFixed(2)
+      if (num >= 0 && num <= 1 && /^(([1-9]{1}\d*)|(0{1}))(\.\d{0,2})?$/.test(String(value))) {
+        cb();
+      } else cb(new Error('折扣区间[0-1],且保留两位小数'))
+    },
+    getProp(row, prop) {
+      let i = this.data.businessCommoditySaveVoList.indexOf(row)
+      if (i < 0) return;
+      else return `businessCommoditySaveVoList.${i}.${prop}`
+    },
     //选择商品
     commodityChoose(e, scope) {
       let [list] = e[0]
@@ -385,10 +424,10 @@ export default {
         else if (['discountSprice', 'reference'].includes(col.property)) {
           // 单价 * 数量
           const values = data.map(item => Number(item[col.property] || 0) * (item.commodityNumber || 0));
-          sums[index] = values.reduce((sum, curr) => {
+          sums[index] = +Number(values.reduce((sum, curr) => {
             const val = Number(curr)
             return sum + curr
-          }, 0)
+          }, 0)).toFixed(2)
         }
         if (col.property == 'commodityNumber') {
           this.data.totalNumber = sums[index] //总计数量,
@@ -433,7 +472,7 @@ export default {
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
       // 折扣价格  公式:税前金额  * (1-税率) * 折扣
-      row.discountSprice = (reference * (1 - taxRate) * discount).toFixed(2)
+      row.discountSprice = +(reference * (1 + taxRate) * discount).toFixed(2) || 0
     },
     discountSpriceChange(row) {
       let reference = row.reference || 0   //销售参考价
@@ -441,8 +480,8 @@ export default {
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
       // 折后价格 / (税后价格*(1-税率)
-
-      row.discount = (discountSprice / (reference * (1 - taxRate))).toFixed(2)
+      
+      row.discount = (discountSprice / (reference * (1 + taxRate))).toFixed(2)
     },
     //关闭弹窗
     update() {

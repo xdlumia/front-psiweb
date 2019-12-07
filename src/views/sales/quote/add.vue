@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 10:59:17
+ * @LastEditTime: 2019-12-06 15:18:47
  * @Description: file content
 */
 <template>
@@ -111,6 +111,7 @@ export default {
         companyAccountId: '', //公司发票信息
         registerPhone: '',
         companySettlementId: '', //公司结算账户
+        commodityEntityList: [],
         businessCommoditySaveVoList: [ //商品信息合集
           // {
           //   alterationNumber: '', //退换商品数量(出入数量),
@@ -188,13 +189,10 @@ export default {
     //  等detail加载完成 并且给form 对象赋值完成之后再加载商品数据
     'form.id': {
       handler(val) {
-        if (val && this.type == 'edit') {
-          this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList({ putawayType: 0, busType: 1, busCode: this.code })
-            .then(res => {
-              let data = res.data || []
-              // this.$set(this.form, 'businessCommoditySaveVoList', this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList'))
-              this.form.businessCommoditySaveVoList = this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList')
-            })
+        if (val && (this.type == 'edit' || this.type == 'copy') && this.form.id) {
+          // this.form.businessCommoditySaveVoList = this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList')
+          this.form.businessCommoditySaveVoList = this.form.commodityEntityList
+
         }
       }
     },
@@ -239,6 +237,7 @@ export default {
             (item.commonGoodConfigDetailsEntityList || []).forEach(sub => {
               sub.parentCommodityCode = item.commodityCode
             })
+            item.categoryCode = 'PSI_SP_KIND-1'
             item.id = 'customId' + item.id
             item.inventoryNumber = item.usableInventoryNum
             item.reference = item.saleReferencePrice
@@ -253,7 +252,7 @@ export default {
           fixingsList = fixingsList.concat(flattenData)
           fixingsList = fixingsList.map(item => {
             item.commodityCode = item.goodsCode
-            item.goodsName = item.name; 
+            item.goodsName = item.name;
             item.className = item.secondClassName
             item.inventoryNumber = item.usableInventoryNum
             item.reference = item.saleReferencePrice
@@ -263,30 +262,48 @@ export default {
 
         // let
         // 第4步整合商品信息
-        this.form.businessCommoditySaveVoList = [...wholeListData, ...wholeListNotChoose, ...fixingsList]
+        this.form.businessCommoditySaveVoList = [...wholeListData, ...wholeListNotChoose, ...fixingsList].map(item=>{
+          return {
+            ...item,
+            discountSprice:+Number(item.reference*(1+(item.taxRate||0)/100)).toFixed(2),
+            discount:1,
+            commodityNumber:1
+          }
+        })
       }
     },
   },
   methods: {
-    changeStep(){
-      if(this.steps==3){
-        if(this.form.KIND1List.filter(a=>!a.disabled).some(item=>{
+    changeStep() {
+      if (this.steps == 3) {
+        if (this.form.KIND1List.filter(a => !a.disabled).some(item => {
           return !this.$refs.confirmInfo.findSelectedConfig(item)
-        })){
+        })) {
           return this.$message({
-            message:'请选择整机配置',
-            showClose:true,
-            type:'warning'
+            message: '请选择整机配置',
+            showClose: true,
+            type: 'warning'
           })
-        }else{
+        } else {
           this.steps++
         }
-      }else{
+      } else if(this.steps==2){
+        if(this.form.KIND1Data.length+this.form.KIND2Data.length>0){
+          this.steps++
+        }else{
+          return this.$message({
+            message: '请选择产品',
+            showClose: true,
+            type: 'warning'
+          })
+        }
+      } else {
         this.steps++
       }
     },
     async getDetail() {
       if (this.code) {
+        this.form.id = ''
         let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
         return data;
       }
@@ -321,7 +338,10 @@ export default {
             });
             return
           }
-          copyParams.businessCommoditySaveVoList = this.$$util.jsonFlatten(copyParams.businessCommoditySaveVoList, 'commonGoodConfigDetailsEntityList')
+          copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.map(item => {
+            delete item.commonGoodConfigDetailsEntityList
+            return item;
+          })
           this.loading = true
           // rules 表单验证是否通过
           let api = 'salesquotationSave' // 默认编辑更新

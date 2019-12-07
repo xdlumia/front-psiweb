@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 16:17:28
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-06 17:08:42
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -16,9 +16,10 @@
       sum-text='总计'
       border
       :summary-method="getSummaries"
-      :data="goodsData"
-      default-expand-all
-      :tree-props="{children: 'commonGoodConfigDetailsEntityList'}"
+      :data="data.commodityEntityList"
+      lazy
+      :load="loadChildren"
+      :tree-props="{hasChildren:'configId'}"
       row-key="id"
       max-height="400"
       ref="elTable"
@@ -30,6 +31,9 @@
         label="商品编号"
         min-width="150"
       >
+      <template slot-scope="{row}">
+        <span class="d-text-blue d-pointer" @click="showCommodityDetail=true,currentCommodityCode=row.commodityCode">{{row.commodityCode}}</span>
+      </template>
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
@@ -119,6 +123,44 @@
         prop="discountSprice"
         min-width="110"
       >
+      <template slot-scope="{row}">
+        <span>{{row.discountSprice||0}}</span>
+      </template>
+      </el-table-column>
+      
+      <el-table-column
+        show-overflow-tooltip
+        label="是否直发"
+        min-width="110"
+      >
+        <template
+          slot-scope="scope"
+          v-if="!scope.row.parentCommodityCode"
+        >
+          <el-switch
+            :active-value="1"
+            :inactive-value="0"
+            :value="scope.row.isDirect"
+          ></el-switch>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        label="是否组装"
+        min-width="110"
+      >
+        <template
+          slot-scope="{row}"
+          v-if="!row.parentCommodityCode&&row.categoryCode=='PSI_SP_KIND-1'&&(row.configId||row.configName)"
+        >
+          <el-switch
+            :active-value="1"
+            :inactive-value="0"
+            :disabled="row.isDirect==1"
+            :value="row.isAssembly"
+          ></el-switch>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -128,12 +170,17 @@
       >
       </el-table-column>
     </el-table>
+    <CommodityDetail :code="currentCommodityCode" :visible.sync="showCommodityDetail" v-if="showCommodityDetail" />
   </form-card>
 </template>
 <script>
+import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 
 export default {
   props: ['data'],
+  components:{
+    CommodityDetail
+  },
   data() {
     return {
       loading: false,
@@ -143,32 +190,31 @@ export default {
         putawayType: 0,
         busCode: this.data.quotationCode
       },
+      currentCommodityCode:'',
+      showCommodityDetail:false
     };
   },
   created() {
     // this.businesscommodityGetBusinessCommodityList(this.data.quotationCode)
   },
   watch: {
-    'data.quotationCode': {
-      handler(val) {
-        if (val) {
-          this.businesscommodityGetBusinessCommodityList(this.data.quotationCode)
-        }
-      }
-    }
+
   },
   methods: {
-    businesscommodityGetBusinessCommodityList(quotationCode) {
-      this.queryForm.busCode = quotationCode || this.data.quotationCode
-      this.loading = true
-      this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.queryForm)
-        .then(res => {
-          let data = res.data || []
-          this.goodsData = this.$$util.formatCommodity(data, 'commonGoodConfigDetailsEntityList')
-        })
-        .finally(() => {
-          this.loading = false
-        })
+    async loadChildren(row, node, cb) {
+      let {
+        data
+      } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
+        {
+          commodityCode: row.commodityCode
+        }
+      );
+      data.map(child=>{
+        child.parentCommodityCode=row.commodityCode
+        child.reference = child.saleReferencePrice
+        child.discountSprice=''
+      })
+      cb(data);
     },
     //算合计的
     getSummaries(param) {

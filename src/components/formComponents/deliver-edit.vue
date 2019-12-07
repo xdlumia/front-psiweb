@@ -35,7 +35,7 @@
           :rules="[ 
                     {required:true,message:'请选择日期'}
                 ]"
-          label="销售要求发货日期"
+          label="销售预计发货日期"
           prop='requireShipmentsTime'
           size="mini"
         >

@@ -108,11 +108,11 @@ export default {
           prop: 'putinState',
           type: 'select',
           options: [
+            { label: '全部', value: '' },
             { label: '待入库', value: '0' },
             { label: '部分完成', value: '1' },
             { label: '完成入库', value: '2' },
             { label: '终止', value: '3' },
-            { label: '全部', value: '' },
           ],
           default: true
         },

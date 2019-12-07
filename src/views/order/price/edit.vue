@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 10:10:55
+ * @LastEditTime: 2019-12-06 16:03:05
  * @Description: 销售和采购调价单
 */
 <template>
@@ -50,6 +50,7 @@
             { label:'调整后库存成本(税前)',key:'repertoryCost',prop:'repertoryCost',width:140,
               format:(a,b)=>calcRepertoryCost(b)
             },
+            { label:'库存数量',key:'usableInventoryNum',prop:'usableInventoryNum',width:120,format:(a)=>a||0 },
             { label:'调整差异',key:'adjustPriceDifference	',prop:'adjustPriceDifference	',width:100,
               format:(a,b)=>calcAdjustPriceDifference(b)
             },

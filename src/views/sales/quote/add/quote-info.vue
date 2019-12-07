@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 19:07:38
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-06 14:57:38
  * @Description: 填写报价单详情
 */
 <template>
@@ -87,10 +87,16 @@ export default {
     }
   },
   mounted() {
-
+    this.getConfig()
   },
   methods: {
-
+    async getConfig(){
+      if(this.data.failureTime) return
+      let { data } = await this.$api.seePsiCommonService.commonsystemconfigInfo(null,1)
+      let { quotationTime } = JSON.parse(data.configJson)
+      let time = +new Date() + quotationTime*24*60*60*1000
+      this.$set(this.data,'failureTime',time)
+    },
   },
   watch: {
 

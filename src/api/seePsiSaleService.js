@@ -723,7 +723,7 @@ export default {
   salesshipmentPause: {
     'url': '/salesshipment/pause',
     'mock': false,
-    'methods': 'post'
+    'methods': 'get'
   },
 
   // 审核采购时间

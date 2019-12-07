@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 17:16:34
+ * @LastEditTime: 2019-12-06 18:23:18
  * @Description: 销售-销售换货单
  */
 <template>
@@ -32,7 +32,12 @@
           v-else-if="column.columnFields=='salesShipmentCode'"
           @click="eventHandle('outLibVisible',row)"
         > {{value}}</span>
-        <!-- 创建时间 -->
+        <span v-else-if="column.columnFields=='refundNumber'">
+          {{value}}/{{row.totalRefundNumber}}
+        </span>
+        <span v-else-if="column.columnFields=='exchangeNumber'">
+          {{value}}/{{row.totalExchangeNumber}}
+        </span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
@@ -41,7 +46,7 @@
       :visible.sync="exchangeVisible"
       :rowData="rowData"
       :code="rowData.alterationCode"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
     <!-- 销售出库单 -->
     <outLibDetails
@@ -49,7 +54,7 @@
       :visible.sync="outLibVisible"
       :rowData="rowData"
       :code="rowData.salesShipmentCode"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
   </div>
 </template>

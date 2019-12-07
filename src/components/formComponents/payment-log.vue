@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 15:13:39
+ * @LastEditTime: 2019-12-06 14:21:57
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -147,6 +147,7 @@ export default {
     },
     addIncoming() {
       this.$nextTick(() => {
+        this.$refs.addIncoming.form.incomeType=parseInt(this.type)
         this.$refs.addIncoming.saveHandle = () => this.saveIncoming();
       });
     },

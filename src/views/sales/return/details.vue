@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 17:56:50
+ * @LastEditTime: 2019-12-05 21:51:21
  * @Description: 销售出库单详情
 */
 <template>
@@ -14,7 +14,10 @@
       :status="status"
       @close="close"
     >
-      <div class="drawer-header">
+      <div
+        slot="button"
+        v-if="Object.keys(detail).length"
+      >
         <!-- 操作按钮 -->
         <span
           v-for="(item,index) of buttons"
@@ -31,6 +34,8 @@
         </span>
 
       </div>
+      <!-- 客户信息 -->
+
       <el-form
         ref="form"
         size="mini"
@@ -46,24 +51,26 @@
             :label="val"
             :name="key"
           >
-            <components
-              ref="detail"
-              :code="code"
-              :rowData="rowData"
-              :data="detail || {}"
-              class="d-auto-y"
-              :params="{relationCode:code}"
-              :button="false"
-              style="height:calc(100vh - 200px)"
-              :is="activeName"
-            />
           </el-tab-pane>
         </el-tabs>
+
+        <components
+          ref="detail"
+          :code="code"
+          :rowData="rowData"
+          :data="detail || {}"
+          class="d-auto-y"
+          :params="{relationCode:code}"
+          :button="false"
+          style="height:calc(100vh - 200px)"
+          :is="activeName"
+        />
 
       </el-form>
     </side-detail>
     <!-- 退货单新增/编辑 -->
     <add
+      v-if="editVisible"
       :visible.sync="editVisible"
       :code="code"
       type="edit"
@@ -71,6 +78,7 @@
     />
     <!-- 退货扫码 -->
     <return-scan
+      v-if="scanVisible"
       :visible.sync='scanVisible'
       :code="code"
       :rowData='rowData'
@@ -165,7 +173,7 @@ export default {
         let params = {
           apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
-          processType: 'psi_purchase_reject_01',
+          processType: 'psi_sales_return_01',
         }
         let apiObj = {
           '提交审核': {

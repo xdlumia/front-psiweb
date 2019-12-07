@@ -64,7 +64,7 @@
                 prop="accomplishNum"
               >
                 <template slot-scope="scope">
-                  <span>{{(scope.row.allocationNum || 0) - (scope.row.accomplishNum || 0)}}</span>
+                  <span>{{(scope.row.allocationNum || 0) - (scope.row.accomplishNum || 0) - tableData.length}}</span>
                 </template>
               </el-table-column>
               <el-table-column

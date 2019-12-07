@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 18:41:12
+ * @LastEditTime: 2019-12-05 17:24:03
  * @Description: 采购-直发单
 */
 <template>
@@ -14,6 +14,7 @@
       busType="28"
       exportApi="seePsiPurchaseService.purchasedirectExport"
       title="直发单"
+      ref="tableView"
     >
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='directCode'">

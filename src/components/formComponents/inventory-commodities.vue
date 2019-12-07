@@ -196,6 +196,10 @@ export default {
           treeNode.loading = false
         })
     },
+    //切换库房奥
+    changeRecord() {
+      this.tableData = [{}]
+    },
     expand(row) {
       this.$set(row, 'expanded', !row.expanded);
       this.$refs.elTable.toggleRowExpansion(row, row.expanded);

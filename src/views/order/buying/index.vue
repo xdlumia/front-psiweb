@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 17:59:20
+ * @LastEditTime: 2019-12-05 17:20:53
  * @Description: 采购-请购单
 */
 <template>
@@ -15,6 +15,7 @@
       busType="27"
       exportApi="seePsiPurchaseService.purchaseapplyorderExport"
       title="请购单"
+      ref="tableView"
     >
       <template slot="button">
         <el-button @click="orderBuyingDetailRecVisible=true" size="mini" type="primary">请购单明细表</el-button>

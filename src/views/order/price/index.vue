@@ -17,12 +17,21 @@
       title="采购调价单"
     >
       <template slot="button">
-        <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
+        <el-button
+          @click="showEdit=true"
+          size="mini"
+          type="primary"
+        >新增</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
         <span v-else-if="prop=='code'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link
+            :underline="false"
+            @click="showDetail=true,currentCode=value"
+            class="f12"
+            type="primary"
+          >{{value}}</el-link>
         </span>
         <span v-else-if="prop=='state'">
           <span>{{stateText[row.state]}}</span>
@@ -30,8 +39,17 @@
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
-    <Edit :visible.sync="showEdit" @reload="reload" v-if="showEdit" />
+    <Detail
+      :code="currentCode"
+      :visible.sync="showDetail"
+      @reload="reload"
+      v-if="showDetail"
+    />
+    <Edit
+      :visible.sync="showEdit"
+      @reload="reload"
+      v-if="showEdit"
+    />
   </div>
 </template>
 <script>
@@ -86,7 +104,7 @@ export default {
       ]
     };
   },
-  mounted() {},
+  mounted() { },
   methods: {
     reload() {
       this.$refs.tableView.reload(1);
