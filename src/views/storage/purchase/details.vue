@@ -67,7 +67,7 @@
             <financePayable
               v-if="activeName == 'financePayable'"
               :button="false"
-              :params="{page:1,limit:15,relationCode:detailForm.purchaseCode}"
+              :params="{page:1,limit:15,busCode:detailForm.putinCode}"
             ></financePayable>
           </FullscreenWrap>
         </el-tab-pane>
