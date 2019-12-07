@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 17:20:02
+ * @LastEditTime: 2019-12-07 18:10:03
  * @Description: 费用分摊单详情
 */
 <template>
@@ -14,7 +14,10 @@
       :status="status"
       @close="close"
     >
-      <div slot="button">
+      <div
+        slot="button"
+        v-if="Object.keys(detail).length"
+      >
         <!-- 操作按钮 -->
         <span
           v-for="(item,index) of buttons"
