@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 17:01:50
+ * @LastEditTime: 2019-12-07 16:24:39
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -194,7 +194,9 @@ export default {
         this.form.companySettlementId = this.rowData.companySettlementId
         this.form.clientId = this.rowData.clientId // 100000,
         let ids = [this.rowData].map(item => item.id)
-        this.salesshipmentGetAddShipemtAmount(ids)
+        if (this.type == 'add') {
+          this.salesshipmentGetAddShipemtAmount(ids)
+        }
       }
     },
     // 根据报价单id，计算获取销售出库单金额数据
