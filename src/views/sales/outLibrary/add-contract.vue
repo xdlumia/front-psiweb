@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 14:50:26
+ * @LastEditTime: 2019-12-07 16:05:30
  * @Description: 生成合同
 */
 <template>
@@ -215,6 +215,9 @@ export default {
     },
     // 保存表单数据
     saveHandle() {
+      if (this.form.templateId) {
+        this.form.templateName = this.templateOptions.find(item => item.id == this.form.templateId).name
+      }
       this.form.shipmentCode = this.rowData.shipmentCode // 销售出库单编号,
       this.$refs.form.validate(valid => {
         if (valid) {
