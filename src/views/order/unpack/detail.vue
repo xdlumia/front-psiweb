@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 20:49:44
+ * @LastEditTime: 2019-12-07 18:43:20
  * @Description: 拆卸单
 */
 <template>
@@ -53,7 +53,7 @@
         @click="showTask=true"
         size="mini"
         type="primary"
-        v-if="detail&&[2].includes(detail.disassemblyOrderState)&&detail.undistributedNum"
+        v-if="detail&&[2,3].includes(detail.disassemblyOrderState)&&detail.undistributedNum"
       >生成拆卸任务</el-button>
       <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0].includes(detail.disassemblyOrderState)">编辑</el-button>
       <el-button
