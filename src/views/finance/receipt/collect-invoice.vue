@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 15:26:53
+ * @LastEditTime: 2019-12-07 16:42:08
  * @Description: 收票申请
 */
 <template>
@@ -133,6 +133,17 @@ export default {
         }
       },
       immediate: true
+    },
+    'form.invoiceDetailList': {
+      handler(val) {
+        if (val && this.invoiceType == 0) {
+          val.forEach(item => {
+            item.isOrder = item.commodityNumber == item.quantity ? 1 : 0
+          });
+        }
+
+      },
+      deep: true
     }
   },
   methods: {
@@ -147,6 +158,7 @@ export default {
             data = data.map(item => {
               item.price = item.reference //销售单价
               item.quantity = item.commodityNumber //商品数量
+
               item.articleName = item.goodsName //商品名称
               item.type = 0;
               return item;
