@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 15:32:54
+ * @LastEditTime: 2019-12-07 16:11:49
  * @Description: 收款滞纳金
  */
 <template>
@@ -73,7 +73,7 @@ export default {
       detail: {},
       items: [
         // { label: '滞纳金方案', prop: 'lateFeesId', type: 'input', rules: [{ required: false, trigger: 'change' }], },
-        { label: '滞纳金比例', prop: 'limitType', type: 'input', rules: [{ required: false, trigger: 'change' }], },
+        { label: '滞纳金比例', prop: 'overdueFineLimit', type: 'input', rules: [{ required: false, trigger: 'change' }], },
         { label: '滞纳金间隔', prop: 'overdueFineInterval', type: 'input', rules: [{ required: false, }], },
         { label: '滞纳金上限', prop: 'overdueFineUpperLimit', type: 'input', rules: [{ required: false, }], },
       ]
