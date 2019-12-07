@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 11:18:20
+ * @LastEditTime: 2019-12-07 20:29:26
  * @Description: 退货扫码
 */
 
@@ -13,6 +13,7 @@
     v-dialogDrag
     @close="close"
     v-loading="loading"
+    destroy-on-close
   >
     <!-- 确定按钮 -->
     <div slot="title">
@@ -41,7 +42,10 @@
       <!-- 库房列表 -->
       <warehouse-list :data="form" />
       <!-- 退换出入库商品 -->
-      <goods-in-warehousing :data="form" />
+      <goods-in-warehousing
+        :from="from"
+        :data="form"
+      />
     </el-form>
   </el-dialog>
 </template> 
@@ -121,12 +125,28 @@ export default {
       copyParams.businessCode = this.code
       copyParams.businessId = this.rowData.id
       copyParams.putawayCommodityList = [...copyParams.returnScanData, ...copyParams.exchangeScanData]
-
       let api = 'salesreturnedScanReturned'
-      if (this.from == 'exchange') {
-        this.copyParams.businessType = 18
-        api = 'salesreturnedScanExchange'
+      if (!copyParams.returnScanData.length) {
+        this.$message({
+          message: '没有退货扫码记录',
+          type: 'error',
+          showClose: true,
+        });
+        return
       }
+      if (this.from == 'exchange') {
+        copyParams.businessType = 18
+        api = 'salesexchangeScanExchange'
+        if (!copyParams.exchangeScanData.length) {
+          this.$message({
+            message: '没有换货扫码记录',
+            type: 'error',
+            showClose: true,
+          });
+          return
+        }
+      }
+
       this.$api.seePsiSaleService[api](copyParams)
         .then(res => {
           this.$emit('reload')
