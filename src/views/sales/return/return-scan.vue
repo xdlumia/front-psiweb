@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 10:48:52
+ * @LastEditTime: 2019-12-07 11:18:20
  * @Description: 退货扫码
 */
 
@@ -86,11 +86,11 @@ export default {
     }
   },
   created() {
-    this.getDetail()
+    this.salesreturnedGetInfoByCode()
   },
   methods: {
     // 获取商品信息
-    getDetail() {
+    salesreturnedGetInfoByCode() {
       if (this.code) {
         this.$api.seePsiSaleService.salesreturnedGetInfoByCode({ code: this.code })
           .then(res => {
@@ -109,18 +109,19 @@ export default {
         })
         return
       }
-      let copyParams = JSON.parse(JSON.stringify(this.form))
-      copyParams.businessCode = this.code
-      copyParams.businessId = this.rowData.id
-      copyParams.putawayCommodityList = [...copyParams.returnScanData, ...copyParams.exchangeScanData]
-      copyParams.alterationCommodityVoList = copyParams.putawayCommodityList.map(item => {
+      this.form.alterationCommodityVoList = this.form.putawayCommodityList.map(item => {
         return {
           alterationCode: this.code,//"示例：退换货单code",
-          alterationNumber: item.scanNumber,//退货数量/扫码次数
+          alterationNumber: item.alterationNumber,//退货数量/扫码次数
           commodityCode: item.commodityCode,//"示例：商品编号",
           putawayType: item.putawayType,// 入库1
         }
       })
+      let copyParams = JSON.parse(JSON.stringify(this.form))
+      copyParams.businessCode = this.code
+      copyParams.businessId = this.rowData.id
+      copyParams.putawayCommodityList = [...copyParams.returnScanData, ...copyParams.exchangeScanData]
+
       let api = 'salesreturnedScanReturned'
       if (this.from == 'exchange') {
         this.copyParams.businessType = 18

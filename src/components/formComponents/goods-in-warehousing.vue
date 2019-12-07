@@ -26,7 +26,7 @@
           >
             <template slot-scope="scope">
               <!-- 扫码数量 -->
-              <span>{{scope.row.scanNumber || 0}}/{{scope.row.commodityNumber || 0}}</span>
+              <span>{{scope.row.alterationNumber || 0}}/{{scope.row.commodityNumber || 0}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -90,7 +90,7 @@
         <div class="mt10 mb10">
           <span class="b mt5">机器号/SN码</span>
           <el-input
-            :disabled="item.commodityNumber==0 || !item.commodityNumber"
+            :disabled="item.alterationNumber == item.commodityNumber || !item.commodityNumber"
             @keyup.native.13="commodityCheck(item,'return')"
             size="mini"
             v-model="item.snCode"
@@ -106,9 +106,9 @@
             <span>本次成功扫码 </span>
             <span class="b d-text-red f16">{{item.scanNumber || 0}}</span>
             <span> 件，历史扫码 </span>
-            <span class="b d-text-green f16">{{item.hisScanNumber||0}}</span>
+            <span class="b d-text-green f16">{{item.alterationNumber||0}}</span>
             <span> 件，还需扫码 </span>
-            <span class="b d-text-blue f16">{{item.commodityNumber||0}}</span>
+            <span class="b d-text-blue f16">{{(item.commodityNumber||0) - (item.alterationNumber || 0) }}</span>
             <span> 件</span>
           </span>
         </div>
@@ -139,7 +139,7 @@
           >
             <template slot-scope="scope">
               <!-- 扫码数量 -->
-              <span>{{scope.row.scanNumber || 0}}/{{scope.row.commodityNumber || 0}}</span>
+              <span>{{scope.row.alterationNumber || 0}}/{{scope.row.commodityNumber || 0}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -217,9 +217,9 @@
           </el-input>
           <span class="fr d-text-black mr10 mt5">
             <span>本次成功扫码 </span>
-            <span class="b d-text-red f16">{{item.scanNumber || 0}}</span>
+            <span class="b d-text-red f16">{{item.alterationNumber || 0}}</span>
             <span> 件，历史扫码 </span>
-            <span class="b d-text-green f16">{{item.hisScanNumber||0}}</span>
+            <span class="b d-text-green f16">{{item.alterationNumber||0}}</span>
             <span> 件，还需扫码 </span>
             <span class="b d-text-blue f16">{{item.commodityNumber||0}}</span>
             <span> 件</span>
@@ -421,9 +421,7 @@ export default {
 
           // 本次扫码次数
           item.scanNumber = (item.scanNumber || 0) + 1
-          // 历史扫码次数
-          item.hisScanNumber = (item.hisScanNumber || 0) + 1
-          item.commodityNumber--
+          item.alterationNumber++
         })
     },
     //删除某条
@@ -433,7 +431,7 @@ export default {
       let item = this.data.putawayCommodityList.find(item => item.id == row.id)
       // 本次扫码次数
       item.scanNumber--
-      item.commodityNumber++
+      item.alterationNumber--
       this.data[`${row.fromType}ScanData`].splice(index, 1)
     },
   }

@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 11:30:59
+ * @LastEditTime: 2019-12-07 11:28:36
  * @Description: 退货记录里
 */
 <template>
@@ -108,7 +108,7 @@
             show-overflow-tooltip
           >
             <template slot-scope="">
-              <span>组装入库</span>
+              <span>退货入库</span>
             </template>
           </el-table-column>
 

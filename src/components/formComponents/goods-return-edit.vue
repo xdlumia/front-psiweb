@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 17:28:29
+ * @LastEditTime: 2019-12-07 11:09:32
  * @Description: 退货商品商品信息
 */
 <template>
@@ -336,8 +336,14 @@ export default {
         if (index == 0) {
           sums[index] = '总价'
         } else if (['taxPrice', 'alterationPrice', 'taxTotalAmount', 'customNumber', 'commodityNumber'].includes(col.property)) {
-          const values = data.map(item => Number(item[col.property] || 0));
+          let values = data.map(item => Number(item[col.property] || 0));
           if (['customNumber', 'commodityNumber'].includes(col.property)) {
+            sums[index] = values.reduce((sum, curr) => {
+              const val = Number(curr)
+              return sum + curr
+            }, 0)
+          } else if (['alterationPrice',].includes(col.property)) {
+            values = data.map(item => Number(item[col.property] || 0) * (item.commodityNumber || 0));
             sums[index] = values.reduce((sum, curr) => {
               const val = Number(curr)
               return sum + curr
@@ -355,11 +361,11 @@ export default {
           this.data.shouldRefundAmount = sums[index]
         }
         //获取销售数量
-        if (col.property == 'commodityNumber') {
+        if (col.property == 'customNumber') {
           this.data.salesNumber = sums[index]
         }
         //获取退货数量
-        if (col.property == 'customNumber') {
+        if (col.property == 'commodityNumber') {
           this.data.totalRefundNumber = sums[index]
         }
       });
