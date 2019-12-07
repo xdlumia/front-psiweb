@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 11:32:26
+ * @LastEditTime: 2019-12-07 18:03:36
  * @Description: 退货商品商品信息
 */
 <template>
@@ -60,9 +60,24 @@
           </template>
         </el-table-column>
         <el-table-column
+          v-if="title=='换入商品信息'"
           prop="alterationNumber"
           min-width="80"
-          label="退货数量"
+          label="退回数量"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span
+              @click="changeRecord(scope)"
+              class="d-text-blue d-pointer"
+            >{{scope.row.alterationNumber}}/{{scope.row.commodityNumber}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="title=='换出商品信息'"
+          prop="alterationNumber"
+          min-width="80"
+          label="换出数量"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
@@ -157,6 +172,7 @@
     <goods-return-record
       :rowData='rowData'
       :code="code"
+      title="title"
       :visible.sync='dialogVisible'
       v-if="dialogVisible"
     />

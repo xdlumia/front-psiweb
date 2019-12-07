@@ -2,14 +2,14 @@
  * @Author: 王晓冬
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 11:28:36
+ * @LastEditTime: 2019-12-07 18:05:22
  * @Description: 退货记录里
 */
 <template>
   <div>
     <el-dialog
       :visible.sync="showPop"
-      title="销售出库单"
+      :title="title"
       v-dialogDrag
     >
       <form-card title='组装信息'>
@@ -21,9 +21,21 @@
           ref="table"
         >
           <el-table-column
+            v-if="title=='换入商品信息'"
             prop="alterationNumber"
             min-width="80"
             label="退货数量"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.alterationNumber}}/{{scope.row.commodityNumber}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            v-if="title=='换出商品信息'"
+            prop="alterationNumber"
+            min-width="80"
+            label="换货数量"
             show-overflow-tooltip
           >
             <template slot-scope="scope">
@@ -189,6 +201,7 @@ export default {
       type: Boolean,
       defaults: false
     },
+    title: String,
     data: {
       type: Object,
       default: () => ({})

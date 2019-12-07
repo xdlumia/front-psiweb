@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 18:41:44
+ * @LastEditTime: 2019-12-07 18:01:58
  * @Description: 销售换货单详情-详情
 */
 <template>
@@ -29,7 +29,7 @@
       title="换入商品信息"
     />
     <!-- 换出商品信息 -->
-    <goods-exchange-info
+    <goods-return-info
       :data="(data.commodityEntityList || []).filter(item=>item.putawayType ==0)"
       title="换出商品信息"
     />
