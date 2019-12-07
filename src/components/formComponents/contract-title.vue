@@ -2,15 +2,15 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 11:15:42
+ * @LastEditTime: 2019-12-07 16:41:26
  * @Description: 其他合同-单据信息 字段已绑定 1 
 */
 <template>
   <form-card title="单据信息">
     <el-row :gutter="10">
       <el-col :span="8" class>
-        <el-form-item label="合同号" prop="contractCode" size="mini">
-          <el-input :disabled="disabled" maxlength="32" placeholder="请输入合同号" v-model="data.contractCode" />
+        <el-form-item label="合同号" prop="source" size="mini">
+          <el-input :disabled="disabled" maxlength="32" placeholder="请输入合同号" v-model="data.source" />
         </el-form-item>
       </el-col>
       <el-col :span="8" class>
