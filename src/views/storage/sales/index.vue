@@ -1,6 +1,6 @@
 /*
- * @Author: 徐贺 
- * @Date: 2019-10-25 15:24:18 
+ * @Author: 徐贺
+ * @Date: 2019-10-25 15:24:18
  * @Last Modified by: 徐贺
  * @Last Modified time: 2019-10-28 14:00:41
  * @Description: 库房  销售单
@@ -10,10 +10,10 @@
     <!-- 右侧滑出 -->
     <TableView
       busType="20"
-      :filterOptions='filterOptions'
+      :filterOptions="filterOptions"
       :params="params"
       selection
-      ref='table'
+      ref="table"
       exportApi="seePsiSaleService.salessheetExport"
       api="seePsiSaleService.salessheetList"
       title="销售单"
@@ -29,16 +29,22 @@
           class="d-text-blue d-pointer"
           @click="getDetailVisible(row)"
         >{{value}}</span>
-        <span v-else-if="column.columnFields=='pickingState'">{{value == 0 ? '待拣货' : value == 1 ? '部分拣货' : value == 2 ? '完成拣货' : value == -1 ? '终止' : '-'}}</span>
-        <span v-else-if="column.columnFields=='assemblyState'">{{value == 0 ? '未开始' : value == 1 ? '待组装':value == 2 ? '部分组装':value == 3 ? '完后组装':value == -1 ? '终止':'-'}}</span>
-        <span v-else-if="column.columnFields=='deliverState'">{{value == 0 ? '待发货' : value == 1 ? '完成发货' : value == 2 ? '终止' : '-'}}</span>
+        <span
+          v-else-if="column.columnFields=='pickingState'"
+        >{{pickingStateText[value]}}</span>
+        <span
+          v-else-if="column.columnFields=='assemblyState'"
+        >{{assemblyStateText[value]}}</span>
+        <span
+          v-else-if="column.columnFields=='deliverState'"
+        >{{value == 0 ? '待发货' : value == 1 ? '完成发货' : value == 2 ? '终止' : '-'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
     <Details
-      :data='drawerData'
+      :data="drawerData"
       :code="drawerData.salesSheetCode"
-      :visible.sync='tableVisible'
+      :visible.sync="tableVisible"
       v-if="tableVisible"
     />
     <outLibDetails
@@ -46,7 +52,7 @@
       :rowData="rowData"
       v-if="outLibVisible"
       :code="rowData.shipmentCode"
-      @reload="$refs.table.reload()"
+      @reload="$refs.table.reload"
     />
   </div>
 </template>
@@ -77,17 +83,30 @@ export default {
   },
   data() {
     return {
+      pickingStateText: {
+        '-1': '终止',
+        0: '待拣货',
+        1: '部分拣货',
+        2: '完成拣货'
+      },
+      assemblyStateText: {
+        '-1': '终止',
+        0: '未开始',
+        1: '待组装',
+        2: '部分组装',
+        3: '完成组装'
+      },
       // 查询表单
       queryForm: {
         page: 1,
         limit: 20
       },
       rowData: {},
-      outLibVisible: false,//销售出库单详情
-      tableVisible: false,//销售单右侧抽屉
-      componentActive: '',//当前的组件
-      drawerData: {//弹框的相关数据
-        tableVisible: false,//销售单右侧抽屉
+      outLibVisible: false, // 销售出库单详情
+      tableVisible: false, // 销售单右侧抽屉
+      componentActive: '', // 当前的组件
+      drawerData: { // 弹框的相关数据
+        tableVisible: false, // 销售单右侧抽屉
         title: '',
         component: 'Details'
       },
@@ -112,7 +131,7 @@ export default {
             { label: '完成拣货', value: '2' },
             { label: '部分拣货', value: '1' },
             { label: '待拣货', value: '0' },
-            { label: '终止', value: '-1' },
+            { label: '终止', value: '-1' }
           ],
           default: true
         },
@@ -126,7 +145,7 @@ export default {
             { label: '待组装', value: '1' },
             { label: '部分组装', value: '2' },
             { label: '完后组装', value: '3' },
-            { label: '终止', value: '-1' },
+            { label: '终止', value: '-1' }
           ],
           default: true
         },
@@ -188,7 +207,7 @@ export default {
           type: 'employee',
           default: true
         },
-        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true }
       ],
       usableList: []
     };
@@ -197,21 +216,21 @@ export default {
     this.commonwmsmanagerUsableList()
   },
   methods: {
-    //点击打开右侧边栏
+    // 点击打开右侧边栏
     getTableVisible(data) {
       this.tableVisible = true
       this.drawerData = data
     },
-    //打开销售出库单详情
+    // 打开销售出库单详情
     getDetailVisible(data) {
       this.outLibVisible = true
       this.rowData = data
     },
-    //tab换组件
+    // tab换组件
     handleClick() {
 
     },
-    //请求客户列表，用作筛选
+    // 请求客户列表，用作筛选
     commonwmsmanagerUsableList() {
       this.$api.seePsiCommonService.commonclientinfoPagelist({ page: 1, limit: 100 })
         .then(res => {
@@ -226,7 +245,7 @@ export default {
         .finally(() => {
 
         })
-    },
+    }
   }
 };
 </script>
