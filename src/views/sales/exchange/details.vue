@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 21:54:36
+ * @LastEditTime: 2019-12-07 20:26:27
  * @Description: 销售换货单详情
 */
 <template>
@@ -14,7 +14,10 @@
       :status="status"
       @close="close"
     >
-      <div slot="button">
+      <div
+        slot="button"
+        v-if="Object.keys(detail).length"
+      >
         <!-- 操作按钮 -->
         <span
           v-for="(item,index) of buttons"
@@ -155,7 +158,7 @@ export default {
     buttonsClick(label) {
       if (label == '编辑' || label == '退货扫码') {
         if (label == '编辑') { this.editVisible = true }
-        else if (label == '退货扫码') { this.outLibAddVisible = true }
+        else if (label == '退货扫码') { this.scanVisible = true }
       } else {
         let params = {
           apprpvalNode: this.detail.apprpvalNode,

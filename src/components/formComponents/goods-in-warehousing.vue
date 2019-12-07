@@ -203,7 +203,7 @@
         <div class="mt10 mb10">
           <span class="b mt5">机器号/SN码</span>
           <el-input
-            :disabled="item.commodityNumber==0 || !item.commodityNumber"
+            :disabled="item.alterationNumber == item.commodityNumber || !item.commodityNumber"
             @keyup.native.13="commodityCheck(item,'exchange')"
             size="mini"
             v-model="item.snCode"
@@ -264,7 +264,7 @@
           label="状态"
           show-overflow-tooltip
         >
-          <template slot-scope="">待退货</template>
+          <template slot-scope="scope">{{scope.row.operation == 0?'待入库':'待出库'}}</template>
         </el-table-column>
         <el-table-column
           prop="snCode"
@@ -412,6 +412,15 @@ export default {
           if (item.putawayType == 1) {
             // operation也是操作类型 0 入库 1出库.  这俩人写的 类型值还不统一.  噗噗噗....
             data.operation = 0
+            if (item.commodityCode != data.commodityCode) {
+              this.$message({
+                message: '当前扫码出来的商品不是当前操作的商品',
+                type: 'error',
+                showClose: true,
+              });
+
+              return
+            }
           } else {
             data.operation = 1
           }

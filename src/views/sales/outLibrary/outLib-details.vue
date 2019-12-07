@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 17:36:55
+ * @LastEditTime: 2019-12-07 19:18:27
  * @Description: 销售出库单详情
 */
 <template>
   <div>
     <side-detail
-      title="出库单详情"
+      :title="`出库单详情: ${code}`"
       :visible.sync="showDetailPage"
       width="920px"
       :status="status"
