@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 17:44:56
+ * @LastEditTime: 2019-12-07 19:36:00
  * @Description: 销售-客户管理
  */
 <template>
@@ -34,11 +34,6 @@
           v-if="column.columnFields=='code'"
           @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
-        <!-- 状态 -->
-        <span v-else-if="column.columnFields=='state'">
-          <i v-if="value==1">停用中</i>
-          <i v-else>启用中</i>
-        </span>
 
         <!-- 行业 -->
         <span v-else-if="column.columnFields=='trade'">{{value | dictionary('PSI_KH_HY')}}</span>
