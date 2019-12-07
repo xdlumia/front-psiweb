@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 21:51:21
+ * @LastEditTime: 2019-12-07 11:25:14
  * @Description: 销售出库单详情
 */
 <template>
@@ -78,6 +78,7 @@
     />
     <!-- 退货扫码 -->
     <return-scan
+      v-if="scanVisible"
       :visible.sync='scanVisible'
       :code="code"
       :rowData='rowData'

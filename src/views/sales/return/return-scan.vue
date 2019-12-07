@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 10:59:08
+ * @LastEditTime: 2019-12-07 11:18:20
  * @Description: 退货扫码
 */
 
@@ -112,7 +112,7 @@ export default {
       this.form.alterationCommodityVoList = this.form.putawayCommodityList.map(item => {
         return {
           alterationCode: this.code,//"示例：退换货单code",
-          alterationNumber: item.scanNumber,//退货数量/扫码次数
+          alterationNumber: item.alterationNumber,//退货数量/扫码次数
           commodityCode: item.commodityCode,//"示例：商品编号",
           putawayType: item.putawayType,// 入库1
         }
@@ -120,14 +120,6 @@ export default {
       let copyParams = JSON.parse(JSON.stringify(this.form))
       copyParams.businessCode = this.code
       copyParams.businessId = this.rowData.id
-      copyParams.alterationCommodityVoList = copyParams.putawayCommodityList.map(item => {
-        return {
-          alterationCode: this.code,//"示例：退换货单code",
-          alterationNumber: item.scanNumber,//退货数量/扫码次数
-          commodityCode: item.commodityCode,//"示例：商品编号",
-          putawayType: item.putawayType,// 入库1
-        }
-      })
       copyParams.putawayCommodityList = [...copyParams.returnScanData, ...copyParams.exchangeScanData]
 
       let api = 'salesreturnedScanReturned'
