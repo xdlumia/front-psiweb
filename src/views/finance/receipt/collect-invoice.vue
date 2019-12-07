@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 15:26:53
+ * @LastEditTime: 2019-12-07 17:23:26
  * @Description: 收票申请
 */
 <template>
@@ -133,29 +133,41 @@ export default {
         }
       },
       immediate: true
+    },
+    'form.invoiceDetailList': {
+      handler(val) {
+        if (val && this.invoiceType == 0) {
+          val.forEach(item => {
+            item.isOrder = item.commodityNumber == item.quantity ? 1 : 0
+          });
+        }
+
+      },
+      deep: true
     }
   },
   methods: {
     // 获取业务商品列表
-    salesshipmentGetShipmentCommodity() {
-      // invoiceType=1 是收票的时候才加载商品信息
-      if (this.invoiceType == 0 && this.type != 'edit' && this.code) {
-        this.$api.seePsiSaleService.salesshipmentGetShipmentCommodity({ code: this.code })
-          .then(res => {
-            let data = res.data || [];
-            // type == 0是请求过来的商品信息
-            data = data.map(item => {
-              item.price = item.reference //销售单价
-              item.quantity = item.commodityNumber //商品数量
-              item.articleName = item.goodsName //商品名称
-              item.type = 0;
-              return item;
-            });
-            // this.form.invoiceDetailList = data
-            this.$set(this.form, 'invoiceDetailList', data);
-          });
-      }
-    },
+    // salesshipmentGetShipmentCommodity() {
+    //   // invoiceType=1 是收票的时候才加载商品信息
+    //   if (this.invoiceType == 0 && this.type != 'edit' && this.code) {
+    //     this.$api.seePsiSaleService.salesshipmentGetShipmentCommodity({ code: this.code })
+    //       .then(res => {
+    //         let data = res.data || [];
+    //         // type == 0是请求过来的商品信息
+    //         data = data.map(item => {
+    //           item.price = item.reference //销售单价
+    //           item.quantity = item.commodityNumber //商品数量
+
+    //           item.articleName = item.goodsName //商品名称
+    //           item.type = 0;
+    //           return item;
+    //         });
+    //         // this.form.invoiceDetailList = data
+    //         this.$set(this.form, 'invoiceDetailList', data);
+    //       });
+    //   }
+    // },
     async getDetail() {
       if (this.invoiceType != 0 && this.code) {
         const {

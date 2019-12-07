@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:29:48
+ * @LastEditTime: 2019-12-07 16:39:42
  * @Description: 其他合同
 */
 <template>
@@ -119,7 +119,7 @@ export default {
   },
   mounted() {
     // prettier-ignore
-    this.form = {"attachList":[],"beginDate":1574179200000,"companyCode":"","contractCode":"010","contractName":"合同名称","deptTotalCode":"","endDate":1574179200000,"fieldList":[{"fieldCode":"userField__ziDingYiYi","fieldName":"自定义一","fieldVal":"自定义内容"}],"note":"合同备注一下","partyA":"甲方爸爸","partyADate":1574179200000,"partyAId":"100861111111111111","partyALinkman":"甲方爸爸","partyAPhone":"10086111","partyASign":"甲方爸爸","partyB":"乙方儿子","partyBDate":1574179200000,"partyBId":"100861111111111111","partyBLinkman":"乙方儿子","partyBPhone":"10086111","partyBSign":"乙方儿子","source":"","state":"","templateId":15}
+    // this.form = {"attachList":[],"beginDate":1574179200000,"companyCode":"","contractCode":"010","contractName":"合同名称","deptTotalCode":"","endDate":1574179200000,"fieldList":[{"fieldCode":"userField__ziDingYiYi","fieldName":"自定义一","fieldVal":"自定义内容"}],"note":"合同备注一下","partyA":"甲方爸爸","partyADate":1574179200000,"partyAId":"100861111111111111","partyALinkman":"甲方爸爸","partyAPhone":"10086111","partyASign":"甲方爸爸","partyB":"乙方儿子","partyBDate":1574179200000,"partyBId":"100861111111111111","partyBLinkman":"乙方儿子","partyBPhone":"10086111","partyBSign":"乙方儿子","source":"","state":"","templateId":15}
   },
   methods: {
     handleClick({ label, name }) {

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 17:25:06
+ * @LastEditTime: 2019-12-07 17:13:41
  * @Description: 销售合同
 */
 <template>
@@ -22,7 +22,7 @@
           <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else-if="prop=='shipmentCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="showOutlibDetail=true,currentOutlibCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>

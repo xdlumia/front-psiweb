@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 11:15:54
+ * @LastEditTime: 2019-12-07 16:29:01
  * @Description: 其他合同-合同期限 字段已绑定 1 
 */
 <template>
-  <form-card title="单据信息">
+  <form-card title="合同期限">
     <el-row :gutter="10">
       <el-col :span="8" class>
         <el-form-item :rules="[ 
