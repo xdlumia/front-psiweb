@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 16:52:00
+ * @LastEditTime: 2019-12-07 17:36:55
  * @Description: 销售出库单详情
 */
 <template>
@@ -115,7 +115,7 @@
     <!-- 开票申请 -->
     <collectInvoice
       :visible.sync="collectInvoiceVisible"
-      :rowData="detail"
+      :rowData="collectInvoiceData"
       :invoiceType="0"
       :code="code"
       @reload="setEdit(),$reload()"
@@ -220,6 +220,7 @@ export default {
       exchangeAddVisible: false,
       collectInvoiceVisible: false, //开票申请
       timeApprovalVisible: false, //审核采购时间
+      collectInvoiceData: {},
 
     }
   },
@@ -283,6 +284,34 @@ export default {
             });
             return
           }
+        }
+        if (label == '开票申请') {
+          // 收集
+          this.collectInvoiceData = {
+            type: 0,
+            busCode: this.detail.putinCode,
+            busType: 0,
+            purchaseId: this.detail.clientId,
+            purchaseType: 0,
+            marketId: this.detail.companySettlementId,
+            marketType: 3,
+            invoiceDetailList: []
+              .concat(
+                this.detail.commodityEntityList || [],
+                this.detail.additionalCommodityList || []
+              )
+              .map(item => {
+                return {
+                  articleName: item.goodsName,
+                  commodityCode: item.commodityCode,
+                  isOrder: 1,
+                  type: 0,
+                  taxRate: item.taxRate,
+                  price: item.reference,
+                  quantity: item.commodityNumber
+                };
+              })
+          };
         }
         let visible = labelObj[label]
         this[visible] = true
