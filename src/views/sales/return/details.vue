@@ -78,7 +78,6 @@
     />
     <!-- 退货扫码 -->
     <return-scan
-      v-if="scanVisible"
       :visible.sync='scanVisible'
       :code="code"
       :rowData='rowData'

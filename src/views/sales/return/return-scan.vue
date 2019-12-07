@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 10:48:52
+ * @LastEditTime: 2019-12-07 10:46:29
  * @Description: 退货扫码
 */
 
@@ -86,11 +86,11 @@ export default {
     }
   },
   created() {
-    this.getDetail()
+    this.salesreturnedGetInfoByCode()
   },
   methods: {
     // 获取商品信息
-    getDetail() {
+    salesreturnedGetInfoByCode() {
       if (this.code) {
         this.$api.seePsiSaleService.salesreturnedGetInfoByCode({ code: this.code })
           .then(res => {

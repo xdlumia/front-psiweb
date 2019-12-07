@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 17:28:29
+ * @LastEditTime: 2019-12-07 10:50:01
  * @Description: 退货商品商品信息
 */
 <template>
@@ -355,11 +355,11 @@ export default {
           this.data.shouldRefundAmount = sums[index]
         }
         //获取销售数量
-        if (col.property == 'commodityNumber') {
+        if (col.property == 'customNumber') {
           this.data.salesNumber = sums[index]
         }
         //获取退货数量
-        if (col.property == 'customNumber') {
+        if (col.property == 'commodityNumber') {
           this.data.totalRefundNumber = sums[index]
         }
       });
