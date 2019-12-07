@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 18:10:03
+ * @LastEditTime: 2019-12-07 19:22:22
  * @Description: 费用分摊单详情
 */
 <template>
   <div>
     <side-detail
-      title="费用分摊单详情"
+      :title="`费用分摊单详情: ${code}`"
       :visible.sync="showDetailPage"
       width="920px"
       :status="status"
