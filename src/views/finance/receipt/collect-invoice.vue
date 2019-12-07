@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 17:23:26
+ * @LastEditTime: 2019-12-07 19:19:33
  * @Description: 收票申请
 */
 <template>
@@ -123,13 +123,13 @@ export default {
     }
   },
   mounted() {
-    this.salesshipmentGetShipmentCommodity();
+    // this.salesshipmentGetShipmentCommodity();
   },
   watch: {
     visible: {
       handler(val) {
         if (val) {
-          this.salesshipmentGetShipmentCommodity();
+          // this.salesshipmentGetShipmentCommodity();
         }
       },
       immediate: true
