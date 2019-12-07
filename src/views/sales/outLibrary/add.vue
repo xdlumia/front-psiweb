@@ -2,11 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
-<<<<<<< HEAD
- * @LastEditTime: 2019-12-07 10:13:46
-=======
- * @LastEditTime: 2019-12-07 16:24:39
->>>>>>> dev
+ * @LastEditTime: 2019-12-07 18:11:41
  * @Description: 生成销售出库单出库单
 */
 <template>
