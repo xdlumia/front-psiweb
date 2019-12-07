@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 17:08:42
+ * @LastEditTime: 2019-12-07 14:53:33
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -169,6 +169,28 @@
         min-width="110"
       >
       </el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        label="库存数量"
+        prop="inventoryNumber"
+        min-width="110"
+      >
+      <template slot-scope="{row}">
+        <span>{{row.inventoryNumber||0}}</span>
+      </template>
+      </el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        label="最近销售价"
+        prop="recentDiscountSprice"
+        min-width="110"
+      >
+      <template slot-scope="{row}">
+        <span>{{row.recentDiscountSprice||0}}</span>
+      </template>
+      </el-table-column>
     </el-table>
     <CommodityDetail :code="currentCommodityCode" :visible.sync="showCommodityDetail" v-if="showCommodityDetail" />
   </form-card>
@@ -225,20 +247,10 @@ export default {
           sums[index] = '总计';
           return;
         }
-        if (column.property == 'inventoryPrice') {
-          const values = data.map((item) => {
-            if (item.commodityInfoList && item.commodityInfoList.length > 0) {
-              return Number(item.inventoryPrice) * Number(item.commodityInfoList.length)
-            }
-          });
-          sums[index] = values.reduce((prev, curr) => {
-            const value = Number(curr);
-            if (!isNaN(value)) {
-              return prev + curr;
-            } else {
-              return prev;
-            }
-          }, 0);
+        else if (['reference','commodityNumber','discountSprice','inventoryNumber','recentDiscountSprice'].includes(column.property)) {
+          sums[index] = +Number(data.reduce((num, item) => {
+            return num + +Number(item[column.property]||0)
+          }, 0)).toFixed(2)||0;
         }
       })
       return sums;

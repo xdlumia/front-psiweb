@@ -67,14 +67,14 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => ({ page: 1, limit: 15 })
+      default: () => ({ page: 1, limit: 20 })
     }
   },
   data() {
     return {
       defaultParams: {
         page: 1,
-        limit: 15
+        limit: 20
       },
       status: [],
       showDetail: false,
