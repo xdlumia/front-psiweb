@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 16:35:04
+ * @LastEditTime: 2019-12-07 17:53:11
  * @Description: 报价单详情
 */
 <template>
@@ -30,7 +30,7 @@
             v-if="currStatusType[detail.state || 0].includes(item.label)"
             size="mini"
             :type="item.type"
-          >{{detail.state}}</el-button>
+          >{{item.label}}</el-button>
         </span>
 
       </div>

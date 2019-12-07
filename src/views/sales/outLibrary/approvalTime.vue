@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 19:24:56
+ * @LastEditTime: 2019-12-07 16:50:20
  * @Description: 审核采购时间
 */
 <template>
@@ -74,6 +74,7 @@ export default {
         apprpvalNode: 'psi_sales_outlibrary_12'
       }
       await this.$submission('seePsiSaleService.salesshipmentPurchaseTimeApproval', params, '采购入库审核')
+      this.$emit('reload')
       this.close()
     },
     // 不同意并终止
@@ -84,6 +85,7 @@ export default {
         apprpvalNode: 'psi_sales_outlibrary_12'
       }
       await this.$submission('seePsiSaleService.salesshipmentReject', params, '不同意')
+      this.$emit('reload')
       this.close()
     },
   }
