@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 17:11:03
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-07 16:35:04
  * @Description: 报价单详情
 */
 <template>
@@ -30,7 +30,7 @@
             v-if="currStatusType[detail.state || 0].includes(item.label)"
             size="mini"
             :type="item.type"
-          >{{item.label}}</el-button>
+          >{{detail.state}}</el-button>
         </span>
 
       </div>
@@ -127,7 +127,8 @@ export default {
         '0': '审核中',
         '1': '已通过',
         '2': '已驳回',
-        '3': '完成',
+        '2': '完成',
+        '4': '已终止',
       },
       /**
        * 根据当前状态判断显示哪些按钮
@@ -139,6 +140,7 @@ export default {
         '1': ['生成销售出库单', '生成请购单', '终止'],// 已通过
         '2': ['提交审核', '编辑', '删除'], //已驳回
         '3': [], //完成
+        '4': [], //终止
       },
       editVisible: false, //销售单编辑
       outLibAddVisible: false, //生成销售出库单
