@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-30 14:27:08
+ * @LastEditTime: 2019-12-07 20:09:17
  * @Description: 客户管理-账单调整单
 */
 <template>
@@ -84,6 +84,7 @@ export default {
         attachList: [],// 示例：附件,
         fbiiBusCode: '',// 示例：账单业务编号,
         fbiiBusType: '53',// 100000,
+        fbillCode: '',
         fbillId: '',// 100000,
         id: '',
         note: '',// 示例：备注,
