@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 18:22:05
+ * @LastEditTime: 2019-12-07 10:19:06
  * @Description: 付款单
 */
 <template>
@@ -122,7 +122,7 @@ export default {
       currentCode: '',
       defaultParams: {
         page: 1,
-        limit: 15,
+        limit: 20,
         billType: 1
       },
       // prettier-ignore

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 14:08:32
+ * @LastEditTime: 2019-12-07 10:19:20
  * @Description: 今日应付账单
 */
 <template>
@@ -73,7 +73,7 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => ({ page: 1, limit: 15, billType: 1 })
+      default: () => ({ page: 1, limit: 20, billType: 1 })
     },
     filterOptions: {
       type: Array,
@@ -138,7 +138,7 @@ export default {
   },
   data() {
     return {
-      defaultParams: { page: 1, limit: 15, billType: 1 },
+      defaultParams: { page: 1, limit: 20, billType: 1 },
       status: [],
       loading: false,
       showDetail: false,
