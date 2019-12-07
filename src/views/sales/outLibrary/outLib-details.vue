@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 14:47:25
+ * @LastEditTime: 2019-12-07 16:52:00
  * @Description: 销售出库单详情
 */
 <template>
@@ -90,6 +90,7 @@
       type="editContract"
       :params="{salesShipmentCode:code}"
       :code="code"
+      @reload="setEdit(),$reload()"
     />
     <!-- 生成换货单 -->
     <exchangeAdd
@@ -99,6 +100,7 @@
       type="add"
       :params="{salesShipmentCode:code}"
       :code="code"
+      @reload="setEdit(),$reload()"
     />
     <!-- 生成退货单 -->
     <returnAdd
@@ -108,6 +110,7 @@
       type="add"
       :params="{salesShipmentCode:code}"
       :code="code"
+      @reload="setEdit(),$reload()"
     />
     <!-- 开票申请 -->
     <collectInvoice
@@ -115,11 +118,13 @@
       :rowData="detail"
       :invoiceType="0"
       :code="code"
+      @reload="setEdit(),$reload()"
     />
     <!-- 采购审核时间 -->
     <approvalTime
       :visible.sync="timeApprovalVisible"
       :rowData="detail"
+      @reload="setEdit(),$reload()"
     >
     </approvalTime>
   </div>

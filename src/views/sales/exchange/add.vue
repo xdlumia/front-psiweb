@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 18:15:40
+ * @LastEditTime: 2019-12-07 16:52:57
  * @Description: 生成销售换货单
 */
 <template>
@@ -236,6 +236,7 @@ export default {
           }
           this.$api.seePsiSaleService[api](copyParams)
             .then(res => {
+              this.$emit('reload')
               this.close()
               this.setEdit()
             })
