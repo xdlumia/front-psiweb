@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-07 21:21:03
+ * @LastEditTime: 2019-12-07 21:44:10
  * @Description: 收票申请
 */
 <template>
@@ -207,7 +207,7 @@ export default {
       this.form.invoiceAmount = 0; // 票据金额
       this.form.taxTotalAmount = 0; // 税价合计金额
       this.form.busCode = this.form.busCode || this.code; // 业务code
-      this.form.busType = 0 // 类型
+      this.form.busType = this.form.busType || 0 // 类型
       let totalCount = 0; // 商品总数量
       // prettier-ignore
       this.form.invoiceDetailList.map(item => {
@@ -237,7 +237,7 @@ export default {
           let api = 'finvoicebillingUpdate';
           // 如果是收票编辑
           if (this.invoiceType == 1) {
-            this.form.busType = 0
+            this.form.busType = this.form.busType || 0
             api = 'finvoicereceivableUpdate';
           }
           await this.$api.seePsiFinanceService[api](this.form);
@@ -245,7 +245,7 @@ export default {
           let api = 'finvoicebillingSave';
           // 如果是收票 保存
           if (this.invoiceType == 1) {
-            this.form.busType = 0
+            this.form.busType = this.form.busType || 0
             api = 'finvoicereceivableSave';
           }
           await this.$api.seePsiFinanceService[api](this.form);
