@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:46:22
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 10:42:11
+ * @LastEditTime: 2019-12-09 10:52:38
  * @Description: 数字区间过滤框
 */
 <template>
@@ -14,7 +14,7 @@
             :placeholder="item.placeholder?(`${item.placeholder}最小值`):'最小值'"
             @change="checkMinMax"
             type="number"
-            v-model.number="form['min'+item.prop]"
+            v-model.number="form['min'+firstToUpperCase(item.prop)]"
           ></el-input>
         </el-form-item>
       </el-col>
@@ -24,7 +24,7 @@
             :placeholder="item.placeholder?(`${item.placeholder}最大值`):'最大值'"
             @change="checkMinMax"
             type="number"
-            v-model.number="form['max'+item.prop]"
+            v-model.number="form['max'+firstToUpperCase(item.prop)]"
           ></el-input>
         </el-form-item>
       </el-col>
