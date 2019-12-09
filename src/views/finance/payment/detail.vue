@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 11:17:37
+ * @LastEditTime: 2019-12-09 14:49:15
  * @Description: 付款单
 */
 <template>
@@ -177,7 +177,9 @@ export default {
       });
     },
     async saveIncoming() {
-      let amount = +Number(this.detail.billTotalAmount - this.detail.factAmount).toFixed(2);
+      let amount = +Number(
+        this.detail.billTotalAmount - this.detail.factAmount
+      ).toFixed(2);
       if (
         !(
           this.$refs.addIncoming.form.incomeAmount > 0 &&
@@ -201,6 +203,8 @@ export default {
           unmatchAmount: this.$refs.addIncoming.form.incomeAmount,
           matchedAmount: 0
         });
+        this.setEdit();
+        this.$reload();
         this.$refs.addIncoming.setEdit();
         this.$refs.addIncoming.close();
       } catch (error) {}
