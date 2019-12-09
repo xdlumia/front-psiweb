@@ -113,6 +113,7 @@
               label="备注"
               min-width="120"
               prop="note"
+              show-overflow-tooltip
             ></el-table-column>
           </el-table>
 
@@ -138,15 +139,15 @@
       class="dialog-footer"
     >
       <el-button
-        @click="close"
-        size="small"
-      >关 闭</el-button>
-      <el-button
         :disabled="!radioData.commodityCode"
         type="primary"
         @click="submit"
         size="small"
       >确定并拆卸</el-button>
+      <el-button
+        @click="close"
+        size="small"
+      >取 消</el-button>
     </span>
   </el-dialog>
 </template>

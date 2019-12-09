@@ -59,14 +59,14 @@
       class="dialog-footer"
     >
       <el-button
-        @click="close"
-        size="small"
-      >关 闭</el-button>
-      <el-button
         type="primary"
         @click="submit"
         size="small"
-      >保 存</el-button>
+      >确 定</el-button>
+      <el-button
+        @click="close"
+        size="small"
+      >取 消</el-button>
     </span>
   </el-dialog>
 </template>
@@ -128,4 +128,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+/deep/.el-dialog__footer {
+  text-align: center;
+}
 </style>

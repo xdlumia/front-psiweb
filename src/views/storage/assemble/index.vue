@@ -245,7 +245,7 @@ export default {
       });
       let [a, b] = changed;
       try {
-        if (a.generateOrder && b.generateOrder) {
+        if (a.generateOrder && b.generateOrder && a.generateOrder != -1 && b.generateOrder != -1) {
           await this.$api.seePsiWmsService.wmsassembleorderUpdatesSquence([
             { id: a.id, sequence: b.generateOrder },
             { id: b.id, sequence: a.generateOrder }

@@ -14,7 +14,10 @@
       v-dialogDrag
     >
       <el-container>
-        <el-main style="padding:0;max-height:500px;">
+        <el-main
+          style="padding:0;"
+          :style="{maxHeight:'calc(100vh - 120px)'}"
+        >
           <form-card title='组装信息'>
             <el-table
               border
@@ -177,7 +180,7 @@
           </form-card>
         </el-main>
       </el-container>
-      <span
+      <!-- <span
         slot="footer"
         class="dialog-footer"
       >
@@ -185,7 +188,7 @@
           @click="close"
           size="small"
         >关 闭</el-button>
-      </span>
+      </span> -->
     </el-dialog>
     <CommodityDetail
       :code="currentCommodityCode"

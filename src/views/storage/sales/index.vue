@@ -29,15 +29,9 @@
           class="d-text-blue d-pointer"
           @click="getDetailVisible(row)"
         >{{value}}</span>
-        <span
-          v-else-if="column.columnFields=='pickingState'"
-        >{{pickingStateText[value]}}</span>
-        <span
-          v-else-if="column.columnFields=='assemblyState'"
-        >{{assemblyStateText[value]}}</span>
-        <span
-          v-else-if="column.columnFields=='deliverState'"
-        >{{value == 0 ? '待发货' : value == 1 ? '完成发货' : value == 2 ? '终止' : '-'}}</span>
+        <span v-else-if="column.columnFields=='pickingState'">{{pickingStateText[value]}}</span>
+        <span v-else-if="column.columnFields=='assemblyState'">{{assemblyStateText[value]}}</span>
+        <span v-else-if="column.columnFields=='deliverState'">{{value == 0 ? '待发货' : value == 1 ? '完成发货' : value == 2 ? '终止' : '-'}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
@@ -92,9 +86,9 @@ export default {
       assemblyStateText: {
         '-1': '终止',
         0: '未开始',
-        1: '待组装',
-        2: '部分组装',
-        3: '完成组装'
+        1: '待执行',
+        2: '部分完成',
+        3: '已完成'
       },
       // 查询表单
       queryForm: {
