@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 14:49:15
+ * @LastEditTime: 2019-12-09 14:55:46
  * @Description: 付款单
 */
 <template>
@@ -167,7 +167,9 @@ export default {
     addIncoming() {
       this.$nextTick(() => {
         Object.assign(this.$refs.addIncoming.form, {
-          incomeAmount: this.detail.amount,
+          incomeAmount: +Number(
+            this.detail.billTotalAmount - this.detail.factAmount
+          ).toFixed(2),
           accountDate: +new Date(),
           // oppositeAccount: this.detail.accountName,
           accountPhone: this.detail.linkmanPhone,
