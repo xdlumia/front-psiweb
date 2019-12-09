@@ -542,7 +542,10 @@ export default {
   wmsblitemGenerateReportingOrder: {
     'url': '/wmsblitem/generateReportingOrder',
     'mock': false,
-    'methods': 'post'
+    'methods': 'post',
+    config: {
+      showMsg: false
+    }
   },
 
   // 查看盘点单详细信息
@@ -1747,7 +1750,9 @@ export default {
     'url': '/wmsBusiness/synchConfig',
     'mock': false,
     'methods': 'post',
-    config: { showMsg: false }
+    config: {
+      showMsg: false
+    }
   }
   /* =============库房业务同步接口end=========== */
   /* =============文件压缩下载（日志和配置文件）end=========== */

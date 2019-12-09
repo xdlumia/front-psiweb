@@ -134,15 +134,15 @@
       class="dialog-footer"
     >
       <el-button
-        @click="close"
-        size="small"
-      >关 闭</el-button>
-      <el-button
         :disabled='!radioData.commodityCode'
         type="primary"
         @click="submit"
         size="small"
       >确定并组装</el-button>
+      <el-button
+        @click="close"
+        size="small"
+      >关 闭</el-button>
     </span>
   </el-dialog>
 </template>

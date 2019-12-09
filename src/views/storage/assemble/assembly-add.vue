@@ -13,9 +13,23 @@
     title="新增组装单"
     v-dialogDrag
   >
+    <div slot="title">
+      <span>新增组装单</span>
+      <span class="fr mr20">
+        <el-button
+          type="primary"
+          @click="submit"
+          size="mini"
+        >保 存</el-button>
+        <el-button
+          @click="close"
+          size="mini"
+        >关 闭</el-button>
+      </span>
+    </div>
     <el-container>
       <el-main
-        :style="{maxHeight:'calc(100vh - 240px)'}"
+        :style="{maxHeight:'calc(100vh - 120px)'}"
         style="padding:0;"
       >
         <el-form
@@ -34,7 +48,7 @@
 
       </el-main>
     </el-container>
-    <span
+    <!-- <span
       slot="footer"
       class="dialog-footer"
     >
@@ -47,7 +61,7 @@
         @click="submit"
         size="small"
       >保 存</el-button>
-    </span>
+    </span> -->
   </el-dialog>
 </template>
 <script>

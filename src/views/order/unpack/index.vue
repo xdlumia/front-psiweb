@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 17:29:03
+ * @LastEditTime: 2019-12-09 16:11:55
  * @Description: 采购-拆卸单
 */
 <template>
@@ -27,7 +27,7 @@
         <span v-else-if="prop=='sequence'">{{value>0?value:''}}</span>
         <span v-else-if="prop=='operation'">
           <span class="elTableDragDefault el-icon-rank f20" v-if="row.sequence>0"></span>
-          <el-button @click="setTop(row)" class="ml10" size="mini" type="primary" v-if="row.sequence>0" :disabled="row.sequence==1">置顶</el-button>
+          <el-button :disabled="row.sequence==1" @click="setTop(row)" class="ml10" size="mini" type="primary" v-if="row.sequence>0">置顶</el-button>
         </span>
         <span v-else-if="prop=='disassemblyOrderState'">{{stateText[value]}}</span>
         <span v-else-if="prop=='disassemblyOrderCode'">
@@ -135,10 +135,9 @@ export default {
         return isChanged;
       });
       let [a, b] = changed;
-      console.log([a, b]);
       this.loading = true;
       try {
-        if (a.sequence && b.sequence) {
+        if (a.sequence > 0 && b.sequence > 0) {
           await this.$api.seePsiWmsService.wmsdisassemblyorderUpdatesSquence([
             { id: a.id, sequence: b.sequence },
             { id: b.id, sequence: a.sequence }

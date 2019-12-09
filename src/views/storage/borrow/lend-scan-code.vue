@@ -178,14 +178,14 @@
       class="dialog-footer mt20"
     >
       <el-button
-        @click="close()"
-        size="small"
-      >关 闭</el-button>
-      <el-button
         type="primary"
         @click="submit"
         size="small"
-      >保 存</el-button>
+      >确 定</el-button>
+      <el-button
+        @click="close()"
+        size="small"
+      >取 消</el-button>
     </div>
   </div>
 </template>
