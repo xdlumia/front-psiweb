@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 18:33:28
+ * @LastEditTime: 2019-12-09 18:52:20
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -13,7 +13,10 @@
       :status="statusArr"
       @close="close"
     >
-      <div class="drawer-header">
+      <div
+        slot="button"
+        v-if="Object.keys(detail).length"
+      >
         <!-- 操作按钮 -->
         <span
           v-for="(item,index) of buttons"
@@ -102,7 +105,7 @@ export default {
         '-1': ['提交审核', '删除', '编辑'], // 新建
         '0': ['撤销审核', '通过', '驳回'], // 审核中
         '1': ['提交审核', '删除', '编辑'], //已驳回
-        '2': [], //已收票
+        '3': [], //已收票
       },
       // tab操作栏
       tabs: {
@@ -117,7 +120,7 @@ export default {
         '-1': '新建',
         '0': '审核中',
         '1': '已驳回',
-        '2': '已收票',
+        '3': '已收票',
       }
     }
   },
@@ -171,12 +174,12 @@ export default {
           },
           '通过': {
             api: 'seePsiFinanceService.finvoicereceivablePassApproval',
-            data: { busCode: this.detail.shipmentCode },
+            data: { ...params, },
             needNote: null
           },
           '驳回': {
             api: 'seePsiFinanceService.finvoicereceivableReject',
-            data: { busCode: this.detail.shipmentCode },
+            data: { ...params, },
             needNote: true
           },
           '删除': {
