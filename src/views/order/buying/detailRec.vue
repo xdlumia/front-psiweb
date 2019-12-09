@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-07 10:17:19
+ * @LastEditTime: 2019-12-09 13:40:48
  * @Description: 采购-请购明细表
 */
 <template>
@@ -21,7 +21,13 @@
       >
         <template slot-scope="{column,row,value,prop}">
           <span v-if="prop=='goodsPic'">
-            <el-image :src="value" fit="contain" style="width:100px;height:40px;margin:0;">
+            <el-image
+              :preview-src-list="value?[value]:[]"
+              :src="value"
+              class="d-center"
+              fit="contain"
+              style="width:100px;height:40px;margin:0;"
+            >
               <template slot="error">暂无图片</template>
             </el-image>
           </span>
