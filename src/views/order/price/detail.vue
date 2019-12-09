@@ -8,7 +8,7 @@
 <template>
   <sideDetail
     :status="status"
-    :title="`调价单: ${detail?detail.code:''}`"
+    :title="`调价单: ${detail?(detail.code||''):''}`"
     :visible="showDetailPage"
     @close="close"
     v-loading="loading"

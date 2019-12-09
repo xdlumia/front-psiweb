@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 16:48:30
+ * @LastEditTime: 2019-12-09 10:38:13
  * @Description: 今日应付账单
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`${pageConfig.title} ${detail?detail.billCode:''}`"
+    :title="`${pageConfig.title} ${detail?(detail.billCode||''):''}`"
     :visible="showDetailPage"
     @close="close"
     v-loading="loading"

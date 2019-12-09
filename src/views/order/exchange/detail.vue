@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 11:20:10
+ * @LastEditTime: 2019-12-09 10:37:02
  * @Description: 换货单
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`换货单 ${detail?detail.swapOrderCode:''}`"
+    :title="`换货单 ${detail?(detail.swapOrderCode||''):''}`"
     :visible="showDetailPage"
     @close="close"
     v-loading="loading"
