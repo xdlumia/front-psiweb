@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 14:55:46
+ * @LastEditTime: 2019-12-09 15:29:03
  * @Description: 付款单
 */
 <template>
@@ -78,7 +78,7 @@
       </el-tab-pane>
     </el-tabs>
     <Apply :rowData="detail" :visible.sync="showApply" @reload="setEdit(),$reload()" v-if="showApply" />
-    <AddIncoming :visible.sync="showAddIncoming" code incomeType="1" ref="addIncoming" v-if="showAddIncoming" />
+    <AddIncoming :visible.sync="showAddIncoming" code incomeType="1" ref="addIncoming" type="add" v-if="showAddIncoming" />
   </sideDetail>
 </template>
 <script>
