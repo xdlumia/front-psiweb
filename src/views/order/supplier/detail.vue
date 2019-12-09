@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 14:00:25
+ * @LastEditTime: 2019-12-09 10:37:34
  * @Description: 供应商编号
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`${detail?detail.supplierName:'供应商编号'} ${detail?detail.code:''}`"
+    :title="`${detail?detail.supplierName:'供应商编号'} ${detail?(detail.code||''):''}`"
     :visible="showDetailPage"
     @close="close"
     v-loading="loading"

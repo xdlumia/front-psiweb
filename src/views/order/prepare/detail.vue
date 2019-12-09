@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 10:11:18
+ * @LastEditTime: 2019-12-09 10:37:11
  * @Description: 备货单详情
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`备货单 ${detail?detail.stockCode:''}`"
+    :title="`备货单 ${detail?(detail.stockCode||''):''}`"
     :visible.sync="showDetailPage"
     @close="close"
     v-loading="loading"
