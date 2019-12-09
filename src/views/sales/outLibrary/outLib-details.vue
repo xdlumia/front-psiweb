@@ -2,11 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
-<<<<<<< HEAD
- * @LastEditTime: 2019-12-09 14:47:44
-=======
- * @LastEditTime: 2019-12-09 14:46:31
->>>>>>> dev
+ * @LastEditTime: 2019-12-09 18:21:31
  * @Description: 销售出库单详情
 */
 <template>
@@ -44,10 +40,7 @@
         v-loading="loading"
         label-position="top"
       >
-        <el-tabs
-          v-model="activeName"
-          type="card"
-        >
+        <el-tabs v-model="activeName">
           <el-tab-pane
             v-for="(val,key) of tabs"
             :key="key"
@@ -64,7 +57,7 @@
           :data="detail || {}"
           class="d-auto-y"
           :button="false"
-          style="height:calc(100vh - 200px)"
+          style="height:calc(100vh - 170px)"
           :is="activeName"
         ></components>
       </el-form>
@@ -196,7 +189,7 @@ export default {
         '0': ['撤销审核', '审核通过', '驳回', '合同完善', '追加合同附件'], //审核中
         '1': ['审核采购时间', '追加合同附件'], //请购处理
         '2': ['合同收回', '追加合同附件'], //合同收回
-        '3': ['终止', '生成退货单', '生成换货单', '追加合同附件'], //已通过
+        '3': ['终止', '追加合同附件'], //已通过
         '4': ['生成退货单', '生成换货单', '开票申请', '追加合同附件'], //已完成
         '5': ['提交审核', '编辑', '删除', '编辑合同'], //已驳回
         '6': ['生成退货单'] //已终止

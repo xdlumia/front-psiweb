@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 10:06:43
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-09 15:48:04
  * @Description: file content
 */
 <template>
@@ -263,23 +263,23 @@ export default {
 
         // let
         // 第4步整合商品信息
-        this.form.businessCommoditySaveVoList = [...wholeListData, ...wholeListNotChoose, ...fixingsList].map(item=>{
+        this.form.businessCommoditySaveVoList = [...wholeListData, ...wholeListNotChoose, ...fixingsList].map(item => {
           return {
             ...item,
-            discountSprice:+Number(item.reference*(1+(item.taxRate||0)/100)).toFixed(2),
-            discount:1,
-            commodityNumber:1
+            discountSprice: +Number(item.reference * (1 + (item.taxRate || 0) / 100)).toFixed(2),
+            discount: 1,
+            commodityNumber: 1
           }
         })
       }
     },
   },
   methods: {
-    async getFailureTimeConfig(){
-      let { data } = await this.$api.seePsiCommonService.commonsystemconfigInfo(null,1)
+    async getFailureTimeConfig() {
+      let { data } = await this.$api.seePsiCommonService.commonsystemconfigInfo(null, 1)
       let { quotationTime } = JSON.parse(data.configJson)
-      let time = +new Date() + quotationTime*24*60*60*1000
-      this.$set(this.form,'failureTime',time)
+      let time = +new Date() + quotationTime * 24 * 60 * 60 * 1000
+      this.$set(this.form, 'failureTime', time)
     },
     changeStep() {
       if (this.steps == 3) {
@@ -294,10 +294,10 @@ export default {
         } else {
           this.steps++
         }
-      } else if(this.steps==2){
-        if(this.form.KIND1Data.length+this.form.KIND2Data.length>0){
+      } else if (this.steps == 2) {
+        if (this.form.KIND1Data.length + this.form.KIND2Data.length > 0) {
           this.steps++
-        }else{
+        } else {
           return this.$message({
             message: '请选择产品',
             showClose: true,
@@ -356,6 +356,8 @@ export default {
           if (this.isEdit) {
             api = 'salesquotationUpdate'
             // 编辑保存
+          } else {
+            this.form.shipmentCode = ''
           }
           this.$api.seePsiSaleService[api](copyParams)
             .then(res => {

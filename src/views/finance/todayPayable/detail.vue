@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 11:24:24
+ * @LastEditTime: 2019-12-09 17:24:38
  * @Description: 今日应付账单
 */
 <template>
@@ -30,6 +30,7 @@
             :billAmount="+(Number(detail.billTotalAmount-detail.factAmount)||0).toFixed(2)"
             :billCode="detail.billCode"
             :billId="detail.id"
+            :clientType="detail.clientType"
             :data="detail"
             :hide="paymentLogHide"
             :matchApi="pageConfig.api.matchIncoming"

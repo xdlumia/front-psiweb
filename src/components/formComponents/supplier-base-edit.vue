@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-07 11:08:41
+ * @LastEditTime: 2019-12-09 16:10:47
  * @Description: 供应商基本信息编辑 字段已绑定 1 
 */
 <template>
@@ -98,6 +98,11 @@ export default {
       value3: '',
       options: ['CPU', '内存', '主板', '机箱', 'GPU', '键盘', '鼠标']
     };
+  },
+  mounted() {
+    if (!this.data.id&&!this.data.tenementSource) {
+      this.data.tenementSource = 'PSI_KHGL_LY-2';
+    }
   }
 };
 </script>

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 17:49:56
+ * @LastEditTime: 2019-12-09 16:30:30
  * @Description: 客户详情
 */
 <template>
@@ -38,10 +38,7 @@
         size="mini"
         label-position="top"
       >
-        <el-tabs
-          v-model="activeName"
-          type="card"
-        >
+        <el-tabs v-model="activeName">
           <el-tab-pane
             v-for="(val,key) of tabs"
             :key="key"
@@ -53,7 +50,7 @@
         <keep-alive>
           <components
             class="d-auto-y"
-            style="height:calc(100vh - 200px)"
+            style="height:calc(100vh - 170px)"
             :is="activeName"
             :code="code"
             :data="detail || {}"

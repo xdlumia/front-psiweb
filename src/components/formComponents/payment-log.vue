@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 15:30:10
+ * @LastEditTime: 2019-12-09 17:39:42
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -10,7 +10,7 @@
     <div slot="title">
       <span>收支流水</span>
       <span class="fr">
-        <el-link :underline="false" @click="showAdd=true,addIncoming()" class="mr10" type="primary" v-if="!hide.includes('addIncoming')">+新建</el-link>
+        <el-link :underline="false" @click="addIncoming()" class="mr10" type="primary" v-if="!hide.includes('addIncoming')">+新建</el-link>
         <el-link :underline="false" @click="showChooseIncoming=true" type="primary" v-if="!hide.includes('matchIncoming')">匹配</el-link>
       </span>
     </div>
@@ -34,7 +34,16 @@
       </el-table-column>
     </el-table>
     <!-- 收款0 付款1 -->
-    <Add :incomeType="`${type}`" :visible.sync="showAdd" code ref="addIncoming" type="add" v-if="showAdd" />
+    <Add
+      :accountTypes="[clientType]"
+      :incomeType="`${type}`"
+      :rowData="addIncomingData"
+      :visible.sync="showAdd"
+      code
+      ref="addIncoming"
+      type="add"
+      v-if="showAdd"
+    />
     <chooseIncoming
       :params="{
         page: 1,
@@ -88,7 +97,8 @@ export default {
     },
     params: Object,
     billAmount: Number,
-    type: [Number, String]
+    type: [Number, String],
+    clientType: [Number, String]
   },
   data() {
     return {
@@ -98,7 +108,8 @@ export default {
       showChooseIncoming: false,
       showMatchDialog: false,
       unmatchData: 0,
-      matchIncomingId: ''
+      matchIncomingId: '',
+      addIncomingData: null
     };
   },
   watch: {
@@ -146,8 +157,12 @@ export default {
       this.loading = false;
     },
     addIncoming() {
+      this.addIncomingData = {
+        incomeType: parseInt(this.type),
+        incomeAmount: this.billAmount
+      };
+      this.showAdd = true;
       this.$nextTick(() => {
-        this.$refs.addIncoming.form.incomeType = parseInt(this.type);
         this.$refs.addIncoming.saveHandle = () => this.saveIncoming();
       });
     },

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 15:46:01
+ * @LastEditTime: 2019-12-09 16:49:07
  * @Description: 账单调整
  */
 <template>
@@ -94,7 +94,7 @@
         class="add-fee"
         :more="false"
         :button="false"
-        :params="{busType:0}"
+        :params="{billType:0, busType:0,settleStatusList:[0,1]}"
         :column="false"
         @selection-change="selectionChange"
         :is="dialogData.component"

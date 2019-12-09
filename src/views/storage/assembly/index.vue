@@ -100,7 +100,7 @@ export default {
         { label: '组装任务编号', prop: 'assembleTaskCode', default: true },
         { label: '组装单编号', prop: 'assembleOrderCode', default: true },
         {
-          label: '组装单状态',
+          label: '组装状态',
           prop: 'state',
           type: 'select',
           options: [

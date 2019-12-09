@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 18:11:41
+ * @LastEditTime: 2019-12-09 18:20:48
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -223,10 +223,10 @@ export default {
         if (valid) {
           // 最大不能超过销售单总金额
           const values = this.form.shipmentFinanceSaveVoList.map(item => Number(item.payAmount || 0));
-          let tatal = values.reduce((sum, curr) => {
+          let tatal = +Number(values.reduce((sum, curr) => {
             const val = Number(curr)
             return sum + curr
-          }, 0)
+          }, 0)).toFixed(2)
           if (tatal != this.form.totalAmount) {
             this.$message({
               message: '所有账期的付款金额不能大于或小于总价',

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 15:29:03
+ * @LastEditTime: 2019-12-09 17:35:59
  * @Description: 付款单
 */
 <template>
@@ -48,7 +48,7 @@
       >复核通过</el-button>
       <!-- :billAmount="+(Number(detail.billTotalAmount-detail.factAmount)||0).toFixed(2)" -->
       <el-button
-        @click="showAddIncoming=true,addIncoming()"
+        @click="addIncoming()"
         size="mini"
         type="primary"
         v-if="detail&&[2].includes(detail.state)&&+Number(detail.billTotalAmount-detail.factAmount).toFixed(2)"
@@ -78,7 +78,16 @@
       </el-tab-pane>
     </el-tabs>
     <Apply :rowData="detail" :visible.sync="showApply" @reload="setEdit(),$reload()" v-if="showApply" />
-    <AddIncoming :visible.sync="showAddIncoming" code incomeType="1" ref="addIncoming" type="add" v-if="showAddIncoming" />
+    <AddIncoming
+      :accountTypes="[detail.clientType]"
+      :rowData="addIncomingData"
+      :visible.sync="showAddIncoming"
+      code
+      incomeType="1"
+      ref="addIncoming"
+      type="add"
+      v-if="showAddIncoming"
+    />
   </sideDetail>
 </template>
 <script>
@@ -116,7 +125,8 @@ export default {
       overText: {
         0: '未逾期',
         1: '已逾期'
-      }
+      },
+      addIncomingData: null
     };
   },
   computed: {
@@ -165,16 +175,17 @@ export default {
       this.loading = false;
     },
     addIncoming() {
+      this.showAddIncoming = true;
+      this.addIncomingData = {
+        incomeAmount: +Number(
+          this.detail.billTotalAmount - this.detail.factAmount
+        ).toFixed(2),
+        accountDate: +new Date(),
+        // oppositeAccount: this.detail.accountName,
+        accountPhone: this.detail.linkmanPhone,
+        incomeType: 1
+      };
       this.$nextTick(() => {
-        Object.assign(this.$refs.addIncoming.form, {
-          incomeAmount: +Number(
-            this.detail.billTotalAmount - this.detail.factAmount
-          ).toFixed(2),
-          accountDate: +new Date(),
-          // oppositeAccount: this.detail.accountName,
-          accountPhone: this.detail.linkmanPhone,
-          incomeType: 1
-        });
         this.$refs.addIncoming.saveHandle = () => this.saveIncoming();
       });
     },
