@@ -12,6 +12,20 @@
     v-dialogDrag
     @close='close'
   >
+    <div slot="title">
+      <span>生成发货单</span>
+      <span class="fr mr20">
+        <el-button
+          @click="close"
+          size="mini"
+        >关 闭</el-button>
+        <el-button
+          type="primary"
+          @click="submit"
+          size="mini"
+        >保 存</el-button>
+      </span>
+    </div>
     <el-container>
       <el-header
         class="d-bg-white"
@@ -56,20 +70,6 @@
 
       </el-main>
     </el-container>
-    <span
-      slot="footer"
-      class="dialog-footer"
-    >
-      <el-button
-        @click="close"
-        size="small"
-      >关 闭</el-button>
-      <el-button
-        type="primary"
-        @click="submit"
-        size="small"
-      >保 存</el-button>
-    </span>
   </el-dialog>
 </template>
 <script>

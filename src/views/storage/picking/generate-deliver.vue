@@ -109,14 +109,14 @@
       class="dialog-footer"
     >
       <el-button
-        @click="close"
-        size="small"
-      >关 闭</el-button>
-      <el-button
         type="primary"
         @click="submit"
         size="small"
       >保 存</el-button>
+      <el-button
+        @click="close"
+        size="small"
+      >关 闭</el-button>
     </span>
   </el-dialog>
 </template>

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 19:20:53
+ * @LastEditTime: 2019-12-09 15:31:12
  * @Description: 销售出库单详情
 */
 <template>
@@ -83,7 +83,7 @@
       :code="code"
       :rowData='rowData'
       from="return"
-      @reload='$refs.table.reload()'
+      @reload="setEdit(),$reload()"
     />
   </div>
 </template>
