@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 18:11:56
+ * @LastEditTime: 2019-12-09 14:40:11
  * @Description: 采购入库单
 */
 <template>
@@ -52,12 +52,7 @@
         type="danger"
         v-if="detail&&[1].includes(detail.state)"
       >驳回</el-button>
-      <el-button
-        @click="showEdit=true"
-        size="mini"
-        type="primary"
-        v-if="detail&&[0,5].includes(detail.state)"
-      >编辑</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0,5].includes(detail.state)">编辑</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinLogicDelete',{
           id:detail.id,
@@ -83,44 +78,15 @@
         type="danger"
         v-if="detail&&[3].includes(detail.state)"
       >终止</el-button>
-      <el-button
-        @click="collectInvoiceApply"
-        size="mini"
-        type="primary"
-        v-if="detail&&[3,4].includes(detail.state)"
-      >收票申请</el-button>
-      <el-button
-        @click="generateContract"
-        size="mini"
-        type="primary"
-        v-if="detail&&[3].includes(detail.state)"
-      >生成合同</el-button>
+      <el-button @click="collectInvoiceApply" size="mini" type="primary" v-if="detail&&[3,4].includes(detail.state)">收票申请</el-button>
+      <el-button @click="generateContract" size="mini" type="primary" v-if="detail&&[3].includes(detail.state)">生成合同</el-button>
     </template>
-    <el-tabs
-      class="wfull hfull tabs-view"
-      v-model="activeTab"
-    >
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <approve-panel
-          :busType="30"
-          :id="detail.id"
-          v-if="isDataReady"
-        />
-        <el-form
-          :model="detail"
-          size="mini"
-          v-if="detail"
-        >
-          <supplierInfo
-            :data="detail"
-            disabled
-            id="supplierInfo"
-          />
-          <companyInfo
-            :data="detail"
-            disabled
-            id="companyInfo"
-          />
+        <approve-panel :busType="30" :id="detail.id" v-if="isDataReady" />
+        <el-form :model="detail" size="mini" v-if="detail">
+          <supplierInfo :data="detail" disabled id="supplierInfo" />
+          <companyInfo :data="detail" disabled id="companyInfo" />
           <arrivalInfo
             :data="detail"
             :hide="detail.source=='备货单'?['saleTime']:[]"
@@ -131,13 +97,7 @@
             id="arrivalInfo"
             v-if="detail.source!='直发单'"
           />
-          <buyingDeliverInfo
-            :data="detail"
-            disabled
-            id="deliverInfo"
-            ref="deliverInfo"
-            v-else
-          />
+          <buyingDeliverInfo :data="detail" disabled id="deliverInfo" ref="deliverInfo" v-else />
           <buying-goods-edit
             :data="detail"
             :show="[
@@ -160,107 +120,45 @@
             title="附加商品"
             v-if="detail.source=='请购单'"
           />
-          <buyingPaymentLate
-            :data="detail"
-            disabled
-            id="paymentLate"
-          />
-          <order-storage-bill
-            :data="detail"
-            disabled
-            id="billInfo"
-          />
-          <customInfo
-            :data="detail"
-            busType="30"
-            disabled
-            id="customInfo"
-          />
-          <extrasInfo
-            :data="detail"
-            disabled
-            id="extrasInfo"
-          />
+          <buyingPaymentLate :data="detail" disabled id="paymentLate" />
+          <order-storage-bill :data="detail" disabled id="billInfo" />
+          <customInfo :data="detail" busType="30" disabled id="customInfo" />
+          <extrasInfo :data="detail" disabled id="extrasInfo" />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane
-        label="请购单"
-        name="purchaseApplyCode"
-        v-if="detail&&detail.source=='请购单'"
-      >
+      <el-tab-pane label="请购单" name="purchaseApplyCode" v-if="detail&&detail.source=='请购单'">
         <FullscreenWrap v-if="isDataReady&&tabStatus.purchaseApplyCode">
-          <OrderBuying
-            :button="false"
-            :params="{page:1,limit:15,purchaseApplyCode:detail.joinCode,relationCode:detail.putinCode}"
-          />
+          <OrderBuying :button="false" :params="{page:1,limit:15,purchaseApplyCode:detail.joinCode,relationCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane
-        label="直发单"
-        name="directCode"
-        v-if="detail&&detail.source=='直发单'"
-      >
+      <el-tab-pane label="直发单" name="directCode" v-if="detail&&detail.source=='直发单'">
         <FullscreenWrap v-if="isDataReady&&tabStatus.directCode">
-          <OrderDirect
-            :button="false"
-            :params="{page:1,limit:15,directCode:detail.joinCode,relationCode:detail.putinCode}"
-          />
+          <OrderDirect :button="false" :params="{page:1,limit:15,directCode:detail.joinCode,relationCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane
-        label="备货单"
-        name="stockCode"
-        v-if="detail&&detail.source=='备货单'"
-      >
+      <el-tab-pane label="备货单" name="stockCode" v-if="detail&&detail.source=='备货单'">
         <FullscreenWrap v-if="isDataReady&&tabStatus.stockCode">
-          <OrderPrepare
-            :button="false"
-            :params="{page:1,limit:15,stockCode:detail.joinCode,relationCode:detail.putinCode}"
-          />
+          <OrderPrepare :button="false" :params="{page:1,limit:15,stockCode:detail.joinCode,relationCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane
-        label="采购单"
-        name="purchaseOrder"
-      >
+      <el-tab-pane label="采购单" name="purchaseOrder">
         <FullscreenWrap v-if="isDataReady&&tabStatus.purchaseOrder">
-          <StoragePurchase
-            :button="false"
-            :params="{page:1,limit:15,putinCode:detail.putinCode,relationCode:detail.putinCode}"
-          />
+          <StoragePurchase :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode,relationCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane
-        label="采购退货单"
-        name="reject"
-      >
+      <el-tab-pane label="采购退货单" name="reject">
         <FullscreenWrap v-if="isDataReady&&tabStatus.reject">
-          <OrderReject
-            :button="false"
-            :params="{page:1,limit:15,putinCode:detail.putinCode,relationCode:detail.putinCode}"
-          />
+          <OrderReject :button="false" :params="{page:1,limit:15,putinCode:detail.putinCode,relationCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane
-        label="应付账单"
-        name="payable"
-      >
+      <el-tab-pane label="应付账单" name="payable">
         <FullscreenWrap v-if="isDataReady&&tabStatus.payable">
-          <FinancePayable
-            :button="false"
-            :params="{page:1,limit:15,busCode:detail.putinCode,relationCode:detail.putinCode}"
-          />
+          <FinancePayable :button="false" :params="{page:1,limit:15,busCode:detail.putinCode,relationCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane
-        label="发票记录"
-        name="invoice"
-      >
+      <el-tab-pane label="发票记录" name="invoice">
         <FullscreenWrap v-if="isDataReady&&tabStatus.invoice">
-          <FinanceReceipt
-            :button="false"
-            :params="{page:1,limit:15,busCode:detail.putinCode,relationCode:detail.putinCode}"
-          />
+          <FinanceReceipt :button="false" :params="{page:1,limit:15,busCode:detail.putinCode,relationCode:detail.putinCode}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
@@ -276,24 +174,9 @@
       @reload="setEdit(),$reload()"
       v-if="detail"
     />
-    <orderContract
-      :rowData="orderContractData"
-      :visible.sync="showOrderContract"
-      v-if="showOrderContract"
-    />
-    <Edit
-      :rowData="detail"
-      :visible.sync="showEdit"
-      @reload="setEdit(),$reload()"
-      type="edit"
-      v-if="showEdit"
-    />
-    <CollectInvoiceDialog
-      :invoiceType="1"
-      :rowData="collectInvoiceData"
-      :visible.sync="showCollectInvoice"
-      v-if="showCollectInvoice"
-    />
+    <orderContract :rowData="orderContractData" :visible.sync="showOrderContract" v-if="showOrderContract" />
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" v-if="showEdit" />
+    <CollectInvoiceDialog :invoiceType="1" :rowData="collectInvoiceData" :visible.sync="showCollectInvoice" v-if="showCollectInvoice" />
   </sideDetail>
 </template>
 <script>
@@ -355,7 +238,7 @@ export default {
           this.code
         );
         data.commodityList = data.commodityList || [];
-        console.log(data)
+        console.log(data);
         return data;
       } else if (this.rowData) {
         return this.rowData;

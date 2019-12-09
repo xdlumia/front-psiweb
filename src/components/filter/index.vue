@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-01 10:31:09
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 10:50:09
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-09 14:05:22
  * @Description: 通用过滤组件
 */
 <template>
@@ -172,7 +172,7 @@ export default {
               item.prop,
               typeof this.form[item.prop] == 'undefined'
                 ? ''
-                : this.form[this.firstToUpperCase(item.prop)]
+                : this.form[item.prop]
             );
           }
         }

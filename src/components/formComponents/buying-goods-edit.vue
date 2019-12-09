@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 10:42:07
+ * @LastEditTime: 2019-12-09 14:20:38
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -335,7 +335,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this)
   },
   methods: {
     isChildShowColumn(row) {
