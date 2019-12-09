@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 17:52:23
+ * @LastEditTime: 2019-12-09 18:46:42
  * @Description: 销售-待收票
  */
 <template>
@@ -121,11 +121,6 @@ export default {
   },
   data() {
     return {
-      stateText: {
-        '0': '未匹配',
-        '1': '部分匹配',
-        '2': '已匹配',
-      },
       loading: false,
       // 查询表单
       queryForm: {

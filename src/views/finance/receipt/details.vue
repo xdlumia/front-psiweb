@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 18:36:37
+ * @LastEditTime: 2019-12-09 18:47:31
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -117,7 +117,7 @@ export default {
         '-1': '新建',
         '0': '审核中',
         '1': '已驳回',
-        '2': '已收票',
+        '3': '已收票',
       }
     }
   },
