@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 11:10:09
+ * @LastEditTime: 2019-12-09 16:50:16
  * @Description: 新增收支流水
 */
 <template>
@@ -97,6 +97,9 @@ export default {
 
   },
   methods: {
+    getDetail(){
+      if(this.rowData) return this.rowData;
+    },
 
     // 保存表单数据
     saveHandle() {
