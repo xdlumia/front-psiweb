@@ -6,7 +6,10 @@
  * @Description: 客户模糊查询
 */
 <template>
-  <el-form-item :label="item.label" :prop="item.prop">
+  <el-form-item
+    :label="item.label"
+    :prop="item.prop"
+  >
     <el-select
       :loading="loading"
       :placeholder="item.placeholder||('请输入选择'+item.label)"
@@ -18,7 +21,12 @@
       reserve-keyword
       v-model="form[item.prop]"
     >
-      <el-option :key="item.id" :label="item.clientName" :value="item.id" v-for="item in options"></el-option>
+      <el-option
+        :key="item.id"
+        :label="item.clientName"
+        :value="item.id"
+        v-for="item in options"
+      ></el-option>
     </el-select>
     <span class="el-icon-search search-icon"></span>
   </el-form-item>

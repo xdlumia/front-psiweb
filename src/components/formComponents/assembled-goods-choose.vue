@@ -104,6 +104,7 @@
               label="商品配置"
               min-width="100"
               prop="configName"
+              show-overflow-tooltip
             ></el-table-column>
             <el-table-column
               label="商品规格"
@@ -114,6 +115,7 @@
               label="备注"
               min-width="120"
               prop="note"
+              show-overflow-tooltip
             ></el-table-column>
           </el-table>
           <commodityAssemblyEdit
@@ -136,6 +138,7 @@
         size="small"
       >关 闭</el-button>
       <el-button
+        :disabled='!radioData.commodityCode'
         type="primary"
         @click="submit"
         size="small"

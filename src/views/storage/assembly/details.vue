@@ -61,6 +61,7 @@
             />
             <assemblyInfo :data='detailForm' />
             <assembledGoodsChoose
+              @reload="reload"
               :visible.sync='goodsVisible'
               :data='detailForm'
             />
@@ -164,7 +165,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.seePsiWmsService.wmsassembletaskStart(null, this.data.id)
+        this.$api.seePsiWmsService.wmsassembletaskStart(null, this.data.assembleTaskCode)
           .then(res => {
             this.reload()
           })

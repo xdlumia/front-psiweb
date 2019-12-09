@@ -29,13 +29,13 @@
           type="primary"
         >拆卸</el-button>
         <el-button
-          v-if="detailForm.isHang == 0"
+          v-if="detailForm.isHang == 0 && detailForm.disassemblyTaskState != -1 && detailForm.disassemblyTaskState != 3"
           @click="wmsdisassemblytaskHangTask"
           size="mini"
           type="primary"
         >挂起</el-button>
         <el-button
-          v-if="detailForm.isHang == 1"
+          v-if="detailForm.isHang == 1 && detailForm.disassemblyTaskState != -1 && detailForm.disassemblyTaskState != 3"
           @click="wmsdisassemblytaskContinueTask"
           size="mini"
           type="primary"
@@ -85,11 +85,13 @@
       <hangUp
         @reload='reload'
         :visible.sync='hangVisible'
+        v-if="hangVisible"
         @close='hangVisible = false'
         :data="detailForm"
       />
       <disassembleGoodsChoose
         :visible.sync='disassembleVisible'
+        v-if="disassembleVisible"
         :data="detailForm"
         @reload='reload'
         @close='disassembleVisible = false'

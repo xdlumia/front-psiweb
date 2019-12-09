@@ -128,6 +128,7 @@ export default {
     },
     //点一下保存
     submit() {
+      // console.log(this.addForm, 'this.addFormthis.addFormthis.addFormthis.addForm')
       this.$refs['addForm'].validate((valid) => {
         if (valid) {
           this.$api.seePsiWmsService.wmsreportinglossesSave(this.addForm)

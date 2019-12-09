@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 16:04:56
+ * @LastEditTime: 2019-12-09 11:17:37
  * @Description: 付款单
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`付款单 ${detail?detail.billCode:''}`"
+    :title="`付款单 ${detail?(detail.billCode||''):''}`"
     :visible="showDetailPage"
     @close="close"
     v-loading="loading"
@@ -170,12 +170,26 @@ export default {
           incomeAmount: this.detail.amount,
           accountDate: +new Date(),
           // oppositeAccount: this.detail.accountName,
-          accountPhone: this.detail.linkmanPhone
+          accountPhone: this.detail.linkmanPhone,
+          incomeType: 1
         });
         this.$refs.addIncoming.saveHandle = () => this.saveIncoming();
       });
     },
     async saveIncoming() {
+      let amount = +Number(this.detail.billTotalAmount - this.detail.factAmount).toFixed(2);
+      if (
+        !(
+          this.$refs.addIncoming.form.incomeAmount > 0 &&
+          this.$refs.addIncoming.form.incomeAmount <= amount
+        )
+      ) {
+        return this.$message({
+          message: `发生金额必须大于0小于当前应付金额${amount || 0}元`,
+          type: 'warning',
+          showClose: true
+        });
+      }
       this.loading = true;
       this.$refs.addIncoming.loading = true;
       try {
@@ -183,7 +197,7 @@ export default {
         await this.$api.seePsiFinanceService.paybillPay({
           ...this.$refs.addIncoming.form,
           fbiiCode: this.detail.billCode,
-          matchState:0,
+          matchState: 0,
           unmatchAmount: this.$refs.addIncoming.form.incomeAmount,
           matchedAmount: 0
         });

@@ -142,6 +142,7 @@
         size="small"
       >关 闭</el-button>
       <el-button
+        :disabled="!radioData.commodityCode"
         type="primary"
         @click="submit"
         size="small"
@@ -179,8 +180,14 @@ export default {
       this.$emit('update:visible', false)
     },
     submit() {
-      this.disVisible = true
-      console.log(this.radioData)
+      if (this.radioData.commodityCode) {
+        this.disVisible = true
+      } else {
+        this.$message({
+          type: 'error',
+          message: '请选择要拆卸的商品'
+        });
+      }
     }
   },
   computed: {

@@ -31,7 +31,8 @@
               prop="name"
             >
               <el-select
-                :disabled="!!wmsId"
+                @change="wmsDisabled = true"
+                :disabled="wmsDisabled"
                 style="width:30%"
                 class="wfull"
                 v-model="wmsId"
@@ -357,12 +358,12 @@ export default {
       tableData: [],
       value: '',
       usableList: [],
-      wmsId: ''
+      wmsId: '',//库房id
+      wmsDisabled: false,
     };
   },
   mounted() {
     this.commonwmsmanagerUsableList()
-    this.getLastWmId()
   },
   methods: {
     //查询上一次选择的仓库，下一次不能更改
@@ -370,7 +371,27 @@ export default {
       this.$api.seePsiWmsService.wmsflowrecordList({ page: 1, limit: 2, commodityCode: this.data.commodityCode, businessCode: this.allData.disassemblyTaskCode })
         .then(res => {
           let list = res.data || []
-          this.wmsId = list[0].wmsId || ''
+          if (list && list.length > 0 && list[0].wmsId) {
+            this.wmsId = list[0].wmsId || ''
+            this.wmsDisabled = true
+            let wmsIdArr = []
+            //检查当前库房id是否还可用
+            this.usableList.forEach((item) => {
+              wmsIdArr.push(item.id)
+            })
+            if (wmsIdArr.indexOf(this.wmsId) < 0) {
+              this.$message({
+                type: 'error',
+                message: '当前库房已不可用!'
+              })
+              this.wmsId = ''
+              this.wmsDisabled = true
+            } else {
+              console.log('可用可用')
+            }
+          } else {
+            this.wmsDisabled = false
+          }
         })
         .finally(() => {
 
@@ -386,6 +407,7 @@ export default {
           this.usableList = res.data || []
         })
         .finally(() => {
+          this.getLastWmId()
         })
     },
     //上边的input  出库

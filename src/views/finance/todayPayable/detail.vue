@@ -2,20 +2,20 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 16:48:30
+ * @LastEditTime: 2019-12-09 11:24:24
  * @Description: 今日应付账单
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`${pageConfig.title} ${detail?detail.billCode:''}`"
+    :title="`${pageConfig.title} ${detail?(detail.billCode||''):''}`"
     :visible="showDetailPage"
     @close="close"
     v-loading="loading"
     width="990px"
   >
     <template slot="button">
-      <el-button @click="showLateAmount=true" size="mini" type="primary">滞纳金</el-button>
+      <el-button @click="showLateAmount=true" size="mini" type="primary" v-if="detail&&detail.settleStatus!=2">滞纳金</el-button>
       <el-button @click="showLog=true" size="mini" type="primary">操作记录</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
@@ -31,7 +31,7 @@
             :billCode="detail.billCode"
             :billId="detail.id"
             :data="detail"
-            :hide="detail.amount>0&&pageConfig.type==0?[]:['addIncoming','matchIncoming']"
+            :hide="paymentLogHide"
             :matchApi="pageConfig.api.matchIncoming"
             :type="pageConfig.type"
             @reload="setEdit(),$reload()"
@@ -116,6 +116,20 @@ export default {
           { label: this.pageConfig.type==1?'收款方':'付款方', value: this.detail.accountName }
         ];
       }
+    },
+    paymentLogHide() {
+      if (!this.detail) return [];
+      let hide =
+        this.detail.amount > 0 && this.pageConfig.type == 0
+          ? []
+          : ['addIncoming', 'matchIncoming'];
+      if (
+        [2].includes(this.detail.settleStatus) ||
+        [4].includes(this.detail.state)
+      ) {
+        hide.push('delIncoming');
+      }
+      return hide;
     }
   },
   mounted() {},

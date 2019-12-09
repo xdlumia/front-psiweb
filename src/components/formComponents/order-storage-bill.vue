@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 17:15:31
+ * @LastEditTime: 2019-12-09 11:14:31
  * @Description: 账单信息
 */
 <template>
@@ -41,7 +41,7 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="直接生成应收" min-width="100" prop="isBillFee" v-if="!hide.includes('isBillFee')">
+      <el-table-column align="center" label="直接生成应付" min-width="100" prop="isBillFee" v-if="!hide.includes('isBillFee')">
         <template slot-scope="{row,$index}">
           <el-form-item :prop="`financeList.${$index}.isBillFee`" size="mini" style="margin-bottom:0;">
             <el-checkbox :disabled="disabled" :false-label="0" :true-label="1" v-model="row.isBillFee"></el-checkbox>
