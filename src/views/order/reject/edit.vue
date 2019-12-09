@@ -75,7 +75,7 @@ export default {
       }
     },
     async save() {
-      await this.$refs.form.validate();
+      await this.$showFormError(this.$refs.form);
       this.loading = true;
       this.form.commodityList.reduce((data, item) => {
         data.alterationNum = data.alterationNum || 0;

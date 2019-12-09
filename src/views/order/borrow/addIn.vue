@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:27:50
+ * @LastEditTime: 2019-12-09 18:17:10
  * @Description: 新增借入单
 */
 <template>
@@ -94,7 +94,7 @@ export default {
           type: 'warning'
         });
       }
-      await this.$refs.form.validate();
+      await this.$showFormError(this.$refs.form);
       this.loading = true;
       this.form.borrowLoanNum = this.form.commodityList.reduce(
         (data, item) => data + parseInt(item.borrowLoanNum),

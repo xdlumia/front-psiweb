@@ -92,7 +92,7 @@ export default {
           type: 'warning'
         });
       }
-      await this.$refs.form.validate();
+      await this.$showFormError(this.$refs.form);
       this.loading = true;
       try {
         let form = { ...this.form };

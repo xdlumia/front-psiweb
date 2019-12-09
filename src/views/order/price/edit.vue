@@ -128,7 +128,7 @@ export default {
       ).toFixed(2);
     },
     async save() {
-      await this.$refs.form.validate();
+      await this.$showFormError(this.$refs.form);
       let form = { ...this.form };
       form.commonAdjustPriceDetailedEntityList = form.commodityList.map(
         item => {

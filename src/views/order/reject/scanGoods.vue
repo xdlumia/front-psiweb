@@ -44,7 +44,7 @@ export default {
       return this.rowData;
     },
     async save() {
-      await this.$refs.form.validate();
+      await this.$showFormError(this.$refs.form);
       if (
         !this.form.putawayCommodityList ||
         !this.form.putawayCommodityList.length

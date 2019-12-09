@@ -133,7 +133,7 @@ export default {
           showClose: true
         });
       }
-      await this.$refs.form.validate();
+      await this.$showFormError(this.$refs.form);
       this.loading = true;
       try {
         let { data } = await this.$api.seePsiContractService.contractPreview(
@@ -155,7 +155,7 @@ export default {
           showClose: true
         });
       }
-      await this.$refs.form.validate();
+      await this.$showFormError(this.$refs.form);
       this.loading = true;
       try {
         await this.$api.seePsiContractService.contractSave(this.form);
