@@ -187,9 +187,9 @@
         </el-table-column>
       </el-table>
     </form-card>
+    <!-- :params='{wmsId: form.putawayWmsId}' -->
     <commodityChoose
       sn
-      :params='{wmsId: form.putawayWmsId}'
       :visible.sync='chooseVisible'
       v-if="chooseVisible"
       @choose='commodityChoose'
@@ -243,9 +243,9 @@ export default {
   methods: {
     //库房切换，清空下边扫过的码，因为只能扫库房里面的东西
     changeWmsId() {
-      this.upTableData = []
-      this.downTableData = []
-      this.snCode = ''
+      // this.upTableData = []
+      // this.downTableData = []
+      // this.snCode = ''
     },
     handleClick({ label, name }) {
       this.activeName = '';
@@ -288,7 +288,8 @@ export default {
     getCommodityBySnCode() {
       if (this.form.putawayWmsId) {
         if (this.snCode) {
-          this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.form.id, commodityList: this.upTableData, wmsId: this.form.putawayWmsId })
+          // , wmsId: this.form.putawayWmsId
+          this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.form.id, commodityList: this.upTableData })
             .then(res => {
               if (res.data) {
                 let arr = this.upTableData.filter((item) => {
