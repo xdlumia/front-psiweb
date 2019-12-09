@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 19:51:32
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-09 11:10:09
  * @Description: 新增收支流水
 */
 <template>
@@ -75,7 +75,7 @@ export default {
         id: '',// ,
         incomeAmount: '',// 流水金额
         incomeRecordCode: '',// 流水编号",
-        incomeType: this.incomeType,//收支类型    
+        incomeType: +this.incomeType,//收支类型    
         matchState: '',//匹配状态
         matchedAmount: '',// 已匹配金额
         note: '',// 备注",
