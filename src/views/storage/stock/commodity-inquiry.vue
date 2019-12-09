@@ -151,7 +151,6 @@ export default {
   data() {
     return {
       activeName: '',
-      tableData: [{ name: '写的假的' }]
     };
   },
   mounted() { },
