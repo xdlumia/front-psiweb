@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 18:17:05
+ * @LastEditTime: 2019-12-09 10:42:07
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -61,7 +61,7 @@
                 fit="contain"
                 style="width: 100px; height: 40px"
               >
-                <span slot="error">暂无图片</span>
+                <span slot="error" class="d-text-qgray">暂无图片</span>
               </el-image>
             </template>
             <!-- 字典开始 -->

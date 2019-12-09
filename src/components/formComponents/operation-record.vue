@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 16:49:52
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-09 09:22:00
  * @Description: 操作记录
 */
 <template>
@@ -23,7 +23,7 @@
             class="d-flex"
             style="align-items: center;"
           >
-            <el-avatar icon="el-icon-user-solid"></el-avatar>
+            <el-avatar icon="el-icon-user-solid" :src="item.userId | userInfo('avatarUrl')"></el-avatar>
             <span class="d-inline ml20">{{item.userName}}</span>
             <!-- <span class="d-inline ml30">审核通过</span> -->
           </div>

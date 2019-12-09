@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 14:21:57
+ * @LastEditTime: 2019-12-09 11:25:00
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -147,11 +147,23 @@ export default {
     },
     addIncoming() {
       this.$nextTick(() => {
-        this.$refs.addIncoming.form.incomeType=parseInt(this.type)
+        this.$refs.addIncoming.form.incomeType = parseInt(this.type);
         this.$refs.addIncoming.saveHandle = () => this.saveIncoming();
       });
     },
     async saveIncoming() {
+      if (
+        !(
+          this.$refs.addIncoming.form.incomeAmount > 0 &&
+          this.$refs.addIncoming.form.incomeAmount <= this.billAmount
+        )
+      ) {
+        return this.$message({
+          message: `发生金额必须大于0小于当前应付金额${this.billAmount || 0}`,
+          type: 'warning',
+          showClose: true
+        });
+      }
       this.loading = true;
       this.$refs.addIncoming.loading = true;
       try {

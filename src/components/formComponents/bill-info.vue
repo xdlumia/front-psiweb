@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-07 14:57:07
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-09 11:14:24
  * @Description: 账期信息
  */
 <template>
@@ -10,7 +10,7 @@
     <el-form-item
       label="结账方式"
       prop="paymentTypeCode"
-      :rules="[{required:true}]"
+      :rules="[{required:true,trigger: 'blur'}]"
     >
       <el-select
         size="mini"

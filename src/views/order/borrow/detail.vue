@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 11:19:50
+ * @LastEditTime: 2019-12-09 10:36:41
  * @Description: 借入借出详情
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`借入借出单 ${detail?detail.borrowLoanCode:''}`"
+    :title="`借入借出单 ${detail?(detail.borrowLoanCode||''):''}`"
     :visible.sync="showDetailPage"
     @close="close"
     v-loading="loading"

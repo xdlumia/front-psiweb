@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 17:54:38
+ * @LastEditTime: 2019-12-09 10:43:55
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -90,7 +90,11 @@
           <el-image
             style="width: 90px; height: 40px"
             :src="scope.row.goodsPic"
-          />
+            fit="contain"
+            class="d-center"
+          >
+            <span slot="error" class="d-text-qgray">暂无图片</span>
+          </el-image>
         </template>
       </el-table-column>
 
