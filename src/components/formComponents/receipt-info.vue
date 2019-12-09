@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 17:56:43
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-09 15:38:02
  * @Description: 付款 新增流水 单据信息
 */
 <template>
@@ -148,7 +148,13 @@ export default {
   },
   computed: {
     formItems() {
-      return this.items.filter(item => !this.hide.includes(item.prop))
+      return this.items.filter(item => {
+        if(item.prop=='accountDate'){
+          // 收款0 付款1
+          item.label = this.incomeType==0?'收款日期':'付款日期'
+        }
+        return !this.hide.includes(item.prop)
+      })
     },
     settlementAccount() {
       return [].concat(...this.accountList.map(item => {

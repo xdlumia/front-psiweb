@@ -170,20 +170,20 @@
         v-if="dialogVisible"
         v-dialogDrag
       >
+        <!-- <div slot="title">
+          <span>机器号/SN码记录</span>
+          <span class="fr mr20">
+            <el-button
+              @click="dialogVisible = false"
+              size="mini"
+            >关 闭</el-button>
+          </span>
+        </div> -->
         <commodityPicking :data='rowData' />
         <machineSn
           :data='rowData'
           :detailForm='detailForm'
         />
-        <span
-          slot="footer"
-          class="dialog-footer"
-        >
-          <el-button
-            @click="dialogVisible = false"
-            size="small"
-          >关 闭</el-button>
-        </span>
       </el-dialog>
       <CommodityDetail
         :code="currentCommodityCode"
@@ -218,7 +218,6 @@ export default {
       this.$api.seePsiWmsService.wmsassembleorderGetBySalesSheetCode(null, this.code)
         .then(res => {
           this.tableData = res.data || []
-          console.log(this.tableData, 'this.tableDatathis.tableDatathis.tableDatathis.tableData')
         })
     },
     // 打开商品详情

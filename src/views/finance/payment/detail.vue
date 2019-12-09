@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 11:17:37
+ * @LastEditTime: 2019-12-09 15:29:03
  * @Description: 付款单
 */
 <template>
@@ -78,7 +78,7 @@
       </el-tab-pane>
     </el-tabs>
     <Apply :rowData="detail" :visible.sync="showApply" @reload="setEdit(),$reload()" v-if="showApply" />
-    <AddIncoming :visible.sync="showAddIncoming" code incomeType="1" ref="addIncoming" v-if="showAddIncoming" />
+    <AddIncoming :visible.sync="showAddIncoming" code incomeType="1" ref="addIncoming" type="add" v-if="showAddIncoming" />
   </sideDetail>
 </template>
 <script>
@@ -167,7 +167,9 @@ export default {
     addIncoming() {
       this.$nextTick(() => {
         Object.assign(this.$refs.addIncoming.form, {
-          incomeAmount: this.detail.amount,
+          incomeAmount: +Number(
+            this.detail.billTotalAmount - this.detail.factAmount
+          ).toFixed(2),
           accountDate: +new Date(),
           // oppositeAccount: this.detail.accountName,
           accountPhone: this.detail.linkmanPhone,
@@ -177,7 +179,9 @@ export default {
       });
     },
     async saveIncoming() {
-      let amount = +Number(this.detail.billTotalAmount - this.detail.factAmount).toFixed(2);
+      let amount = +Number(
+        this.detail.billTotalAmount - this.detail.factAmount
+      ).toFixed(2);
       if (
         !(
           this.$refs.addIncoming.form.incomeAmount > 0 &&
@@ -201,6 +205,8 @@ export default {
           unmatchAmount: this.$refs.addIncoming.form.incomeAmount,
           matchedAmount: 0
         });
+        this.setEdit();
+        this.$reload();
         this.$refs.addIncoming.setEdit();
         this.$refs.addIncoming.close();
       } catch (error) {}
