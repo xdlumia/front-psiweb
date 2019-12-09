@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 17:39:42
+ * @LastEditTime: 2019-12-09 18:18:41
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -182,7 +182,7 @@ export default {
       this.loading = true;
       this.$refs.addIncoming.loading = true;
       try {
-        await this.$refs.addIncoming.$refs.form.validate();
+        await this.$showFormError(this.$refs.addIncoming.$refs.form);
         await this.$getApi(this.addApi)({
           ...this.$refs.addIncoming.form,
           fbiiCode: this.billCode,

@@ -135,7 +135,7 @@ export default {
       this.loading = false;
     },
     async save() {
-      await this.$refs.form.validate();
+      await this.$showFormError(this.$refs.form);
       this.loading = true;
       let data = Object.assign({}, this.form);
       data.productRange = data.productRange.join(',');

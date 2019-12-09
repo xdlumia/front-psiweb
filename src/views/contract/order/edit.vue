@@ -103,7 +103,7 @@ export default {
           showClose: true
         });
       }
-      await this.$refs.form.validate();
+      await this.$showFormError(this.$refs.form);
       this.loading = true;
       try {
         let {
@@ -126,7 +126,7 @@ export default {
           showClose: true
         });
       }
-      await this.$refs.form.validate();
+      await this.$showFormError(this.$refs.form);
       this.loading = true;
       try {
         let {

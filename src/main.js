@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 11:43:42
+ * @LastEditTime: 2019-12-09 18:16:21
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -70,6 +70,14 @@ Vue.mixin({
   methods: {
     $getApi(path) {
       return path.split('.').reduce((data, path) => data[path], this.$api)
+    },
+    async $showFormError(formRef){
+      try {
+        await formRef.validate()
+      } catch (error) {
+        formRef.$el.querySelector('.el-form-item__error').parentElement.scrollIntoView()
+        throw error
+      }
     }
   }
 })

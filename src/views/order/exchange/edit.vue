@@ -86,7 +86,7 @@ export default {
       };
     },
     async save() {
-      await this.$refs.form.validate();
+      await this.$showFormError(this.$refs.form);
       this.loading = true;
       try {
         this.form.swapInNum = 0;

@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 17:33:40
+ * @LastEditTime: 2019-12-09 18:10:44
  * @Description: 新增备货单
 */
 <template>
-  <el-dialog :fullscreen="true" :visible="visible" @close="close" v-dialogDrag v-loading="loading" width="1000">
+  <el-dialog :fullscreen="false" :visible="visible" @close="close" v-dialogDrag v-loading="loading" width="1000">
     <div slot="title">
       <span>新增备货单</span>
       <span class="fr mr20">
@@ -37,7 +37,7 @@
           ]"
             id="commodityInfo"
           />
-          <customInfo :data="form" id="customInfo"  busType="29"/>
+          <customInfo :data="form" busType="29" id="customInfo" />
           <extrasInfo :data="form" id="extrasInfo" />
         </el-form>
       </div>
@@ -50,9 +50,7 @@ import VisibleMixin from '@/utils/visibleMixin';
 export default {
   mixins: [VisibleMixin],
   components: {},
-  computed: {
-    
-  },
+  computed: {},
   data() {
     return {
       form: {
@@ -73,7 +71,7 @@ export default {
         // 请购单编号 示例：请购单编号
         stockCode: ''
       },
-      alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
+      alwaysDropAndCopyForm: true // 在getDetail返回数据后，重新覆盖form
     };
   },
   mounted() {},
@@ -90,7 +88,7 @@ export default {
       } else if (this.rowData) return this.rowData;
     },
     async save() {
-      await this.$refs.form.validate();
+      await this.$showFormError(this.$refs.form);
       this.loading = true;
       this.form.commodityList.map(item => {
         item.preTaxAmount = +Number(
