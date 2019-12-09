@@ -97,10 +97,10 @@
             style="width:200px;"
             class="ml10 mt5"
           >
-            <el-button
+            <!-- <el-button
               slot="append"
               @click="commodityCheck(item,'return')"
-            >确定</el-button>
+            >确定</el-button> -->
           </el-input>
           <span class="fr d-text-black mr10 mt5">
             <span>本次成功扫码 </span>
@@ -210,10 +210,10 @@
             style="width:200px;"
             class="ml10 mt5"
           >
-            <el-button
+            <!-- <el-button
               slot="append"
               @click="commodityCheck(item,'exchange')"
-            >确定</el-button>
+            >确定</el-button> -->
           </el-input>
           <span class="fr d-text-black mr10 mt5">
             <span>本次成功扫码 </span>
