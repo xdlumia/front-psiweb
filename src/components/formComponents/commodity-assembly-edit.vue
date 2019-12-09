@@ -162,6 +162,15 @@
               label="编号"
             ></el-table-column>
             <el-table-column
+              min-width="100"
+              label="状态"
+              show-overflow-tooltip
+            >
+              <template slot-scope="">
+                <span>待确定</span>
+              </template>
+            </el-table-column>
+            <el-table-column
               prop="snCode"
               label="SN码"
               min-width="160"
@@ -184,18 +193,18 @@
             <el-table-column
               prop="wmsName"
               min-width="100"
-              label="拣货库房"
+              label="库房"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
               prop="operator"
               min-width="100"
-              label="拣货人"
+              label="组装人"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
               prop="createTime"
-              label="拣货时间"
+              label="组装时间"
               min-width="140"
               show-overflow-tooltip
             >
@@ -209,6 +218,12 @@
             ></el-table-column>
             <el-table-column
               prop="goodsName"
+              min-width="100"
+              label="商品名称"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              prop="specOne"
               min-width="100"
               label="商品名称"
               show-overflow-tooltip

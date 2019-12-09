@@ -295,15 +295,8 @@ export default {
                 let arr = this.upTableData.filter((item) => {
                   return item.id == res.data.id
                 })
-                // if (arr.length == 0) {
                 this.upTableData.push(res.data)
                 this.doSth()
-                // } else {
-                //   this.$message({
-                //     type: 'info',
-                //     message: '扫过喽'
-                //   })
-                // }
               }
             })
             .finally(() => {

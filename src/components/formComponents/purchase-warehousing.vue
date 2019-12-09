@@ -24,7 +24,7 @@
             <el-select
               v-model="wmsId"
               :disabled="rowData.type == 'disable' || !!wmsId"
-              size='small'
+              size='mini'
               placeholder="请选择"
             >
               <el-option
