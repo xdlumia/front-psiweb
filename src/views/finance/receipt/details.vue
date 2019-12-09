@@ -2,12 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 18:52:20
+ * @LastEditTime: 2019-12-09 18:53:10
  * @Description: 财务-收入流水详情
 <template>
   <div>
     <side-detail
-      :title="`流水编号:${code}`"
+      :title="`待收票:${code}`"
       :visible.sync="showDetailPage"
       width="920px"
       :status="statusArr"

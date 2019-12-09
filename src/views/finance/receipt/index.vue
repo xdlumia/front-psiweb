@@ -121,11 +121,6 @@ export default {
   },
   data() {
     return {
-      stateText: {
-        '0': '未匹配',
-        '1': '部分匹配',
-        '2': '已匹配',
-      },
       loading: false,
       // 查询表单
       queryForm: {
