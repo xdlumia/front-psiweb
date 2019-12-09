@@ -10,9 +10,7 @@
   <el-dialog :visible="visible" @close="close" title="选择公司" v-dialogDrag width="60%">
     <div class="d-relative">
       <el-tabs v-model="activeName">
-        <el-tab-pane label="客户" name="0"></el-tab-pane>
-        <el-tab-pane label="供应商" name="1"></el-tab-pane>
-        <el-tab-pane label="服务商" name="2"></el-tab-pane>
+        <el-tab-pane :label="item.label" :name="item.value" v-for="item of availableTabs" :key="item.value"></el-tab-pane>
       </el-tabs>
       <el-popover placement="bottom" v-model="filterPopover" trigger="click" width="250">
         <el-link
@@ -78,11 +76,19 @@ export default {
     params: {
       type: Object,
       default: () => ({})
+    },
+    show:{
+      type: Array,
     }
   },
   data () {
     return {
       activeName: '0',
+      activeTabs:[
+        {label:'客户',value:'0'},
+        {label:'供应商',value:'1'},
+        {label:'服务商',value:'2'},
+      ],
       filterPopover: false,
       apiPath: 'seePsiCommonService.commonclientinfoPagelist',
       queryForm: {
@@ -142,10 +148,19 @@ export default {
           break;
       }
       this.apiPath = 'seePsiCommonService.' + method
-      this.$refs.multipleTable.reload()
+      this.reload()
     }
   },
-  computed: {},
+  computed: {
+    availableTabs(){
+      if(this.show&&this.show.length){
+        return this.activeTabs.filter(item=>this.show.includes(parseInt(item.value)))
+      }else return this.activeTabs
+    }
+  },
+  mounted(){
+    this.activeName = this.availableTabs[0].value;
+  },
   methods: {
     close () {
       this.$emit('update:visible', false)
@@ -166,7 +181,7 @@ export default {
       this.multipleSelection = val;
     },
     reload () {
-      this.$refs.multipleTable.reload()
+      this.$refs.multipleTable&&this.$refs.multipleTable.reload()
     },
     closeFilter () {
 

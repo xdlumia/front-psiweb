@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 16:50:16
+ * @LastEditTime: 2019-12-09 17:14:32
  * @Description: 新增收支流水
 */
 <template>
@@ -42,6 +42,7 @@
         :span="12"
         :hide="['incomeRecordCode']"
         :data="form"
+        :accountTypes="accountTypes"
       />
 
       <!-- 备注信息 其他信息-->
@@ -55,7 +56,8 @@
 import VisibleMixin from '@/utils/visibleMixin';
 export default {
   props: {
-    incomeType: String //来源 0收入流水  1支出流水
+    incomeType: String, //来源 0收入流水  1支出流水
+    accountTypes: Array,
   },
   mixins: [VisibleMixin],
   components: {
@@ -97,9 +99,6 @@ export default {
 
   },
   methods: {
-    getDetail(){
-      if(this.rowData) return this.rowData;
-    },
 
     // 保存表单数据
     saveHandle() {

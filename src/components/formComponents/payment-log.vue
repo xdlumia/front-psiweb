@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 16:56:48
+ * @LastEditTime: 2019-12-09 17:24:11
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -34,7 +34,7 @@
       </el-table-column>
     </el-table>
     <!-- 收款0 付款1 -->
-    <Add :incomeType="`${type}`" :visible.sync="showAdd" code ref="addIncoming" type="add" v-if="showAdd" />
+    <Add :accountTypes="[clientType]" :incomeType="`${type}`" :visible.sync="showAdd" code ref="addIncoming" type="add" v-if="showAdd" />
     <chooseIncoming
       :params="{
         page: 1,
@@ -88,7 +88,8 @@ export default {
     },
     params: Object,
     billAmount: Number,
-    type: [Number, String]
+    type: [Number, String],
+    clientType: [Number, String]
   },
   data() {
     return {
