@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 20:26:27
+ * @LastEditTime: 2019-12-09 16:31:01
  * @Description: 销售换货单详情
 */
 <template>
@@ -39,10 +39,7 @@
         size="mini"
         label-position="top"
       >
-        <el-tabs
-          v-model="activeName"
-          type="card"
-        >
+        <el-tabs v-model="activeName">
           <el-tab-pane
             v-for="(val,key) of tabs"
             :key="key"
@@ -60,7 +57,7 @@
           :data="detail || {}"
           class="d-auto-y"
           :button="false"
-          style="height:calc(100vh - 200px)"
+          style="height:calc(100vh - 170px)"
           :is="activeName"
         ></components>
       </el-form>

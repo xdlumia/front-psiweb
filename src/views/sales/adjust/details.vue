@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 19:20:10
+ * @LastEditTime: 2019-12-09 16:27:53
  * @Description: 账单调整详情
 */
 <template>
@@ -80,8 +80,8 @@ export default {
         { label: '调整申请', type: 'primary', authCode: '' },
         { label: '撤销审核', type: 'primary', authCode: '' },
         { label: '通过', type: 'primary', authCode: '' },
-        { label: '驳回', type: 'primary', authCode: '' },
-        { label: '编辑', type: '', authCode: '' },
+        { label: '驳回', type: '', authCode: '' },
+        { label: '编辑', type: 'primary', authCode: '' },
       ],
       /**
        * 根据当前状态判断显示哪些按钮
