@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 15:10:07
+ * @LastEditTime: 2019-12-09 15:13:35
  * @Description: 账单调整
  */
 <template>
@@ -189,7 +189,7 @@ export default {
         return
       };
       let [rowData] = this.multipleSelection
-      if (row.state == 2) {
+      if (rowData.state == 2) {
         this.$message({
           message: '已结清的账单不能调整',
           type: 'error',

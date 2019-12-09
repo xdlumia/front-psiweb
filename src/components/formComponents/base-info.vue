@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 15:12:46
+ * @LastEditTime: 2019-12-09 15:14:48
  * @Description: 基本信息 1
  */
 <template>
@@ -75,7 +75,7 @@ export default {
       // 遍历表单
       items: [
         { label: '客户编号', prop: 'code', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }] },
-        { label: '客户名称', prop: 'clientName', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }, { type: 'name' }], },
+        { label: '客户名称', prop: 'clientName', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }], },
         { label: '联系人', prop: 'linkManName', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }, { type: 'name' }], },
         { label: '联系电话', prop: 'phone', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }, { type: 'phone' }], },
         { label: '客户级别', prop: 'grade', type: 'select', rules: [{ required: false }], dicName: 'PSI_KH_KHJB', },
