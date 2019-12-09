@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:46:22
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 10:55:46
+ * @LastEditTime: 2019-12-09 11:24:20
  * @Description: 时间段过滤框
 */
 <template>
@@ -46,26 +46,31 @@ export default {
       let range = this.value || [];
       let minDate = new Date(+range[0] || '')
       let maxDate = new Date(+range[1] || '')
-      this.$set(this.form, `min${firstToUpperCase(this.item.prop)}`, +new Date(`${minDate.toLocaleDateString()} 00:00:00`));
-      this.$set(this.form, `max${firstToUpperCase(this.item.prop)}`, +new Date(`${maxDate.toLocaleDateString()} 23:59:59`));
+      this.$set(this.form, `min${this.firstToUpperCase(this.item.prop)}`, +new Date(`${minDate.toLocaleDateString()} 00:00:00`));
+      this.$set(this.form, `max${this.firstToUpperCase(this.item.prop)}`, +new Date(`${maxDate.toLocaleDateString()} 23:59:59`));
       this.changed()
     },
     reset() {
-      let min = this.form[`min${firstToUpperCase(this.item.prop)}`];
-      let max = this.form[`max${firstToUpperCase(this.item.prop)}`];
+      let min = this.form[`min${this.firstToUpperCase(this.item.prop)}`];
+      let max = this.form[`max${this.firstToUpperCase(this.item.prop)}`];
       if (min && max) {
         min = min ? new Date(min) : '';
         max = max ? new Date(max) : '';
         this.value = [min, max];
       } else {
-        this.form[`min${firstToUpperCase(this.item.prop)}`] = '';
-        this.form[`max${firstToUpperCase(this.item.prop)}`] = '';
+        this.form[`min${this.firstToUpperCase(this.item.prop)}`] = '';
+        this.form[`max${this.firstToUpperCase(this.item.prop)}`] = '';
         this.value = null;
       }
     },
     changed(e) {
       this.$emit('change');
-    }
+    },
+    // 首字母转大写
+    firstToUpperCase(str) {
+      str = str || ''
+      return str.charAt(0).toUpperCase() + str.slice(1)
+    },
   }
 };
 </script>
