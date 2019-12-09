@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 17:13:16
+ * @LastEditTime: 2019-12-09 17:35:59
  * @Description: 付款单
 */
 <template>
@@ -79,9 +79,9 @@
     </el-tabs>
     <Apply :rowData="detail" :visible.sync="showApply" @reload="setEdit(),$reload()" v-if="showApply" />
     <AddIncoming
+      :accountTypes="[detail.clientType]"
       :rowData="addIncomingData"
       :visible.sync="showAddIncoming"
-      :accountTypes="[detail.clientType]"
       code
       incomeType="1"
       ref="addIncoming"
@@ -176,19 +176,17 @@ export default {
     },
     addIncoming() {
       this.showAddIncoming = true;
+      this.addIncomingData = {
+        incomeAmount: +Number(
+          this.detail.billTotalAmount - this.detail.factAmount
+        ).toFixed(2),
+        accountDate: +new Date(),
+        // oppositeAccount: this.detail.accountName,
+        accountPhone: this.detail.linkmanPhone,
+        incomeType: 1
+      };
       this.$nextTick(() => {
-        this.$nextTick(() => {
-          Object.assign(this.$refs.addIncoming.form, {
-            incomeAmount: +Number(
-              this.detail.billTotalAmount - this.detail.factAmount
-            ).toFixed(2),
-            accountDate: +new Date(),
-            // oppositeAccount: this.detail.accountName,
-            accountPhone: this.detail.linkmanPhone,
-            incomeType: 1
-          });
-          this.$refs.addIncoming.saveHandle = () => this.saveIncoming();
-        });
+        this.$refs.addIncoming.saveHandle = () => this.saveIncoming();
       });
     },
     async saveIncoming() {
