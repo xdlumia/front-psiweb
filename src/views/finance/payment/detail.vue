@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 16:56:10
+ * @LastEditTime: 2019-12-09 17:13:16
  * @Description: 付款单
 */
 <template>
@@ -81,6 +81,7 @@
     <AddIncoming
       :rowData="addIncomingData"
       :visible.sync="showAddIncoming"
+      :accountTypes="[detail.clientType]"
       code
       incomeType="1"
       ref="addIncoming"

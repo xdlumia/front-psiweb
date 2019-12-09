@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 15:38:02
+ * @LastEditTime: 2019-12-09 17:14:23
  * @Description: 付款 新增流水 单据信息
 */
 <template>
@@ -99,6 +99,7 @@
       :visible.sync="addAccountVisible"
       @choose="choose"
       v-if="addAccountVisible"
+      :show="accountTypes"
     />
   </div>
 </template>
@@ -125,7 +126,8 @@ export default {
     span: {
       type: Number,
       default: 8
-    }
+    },
+    accountTypes: Array
   },
 
   data() {
