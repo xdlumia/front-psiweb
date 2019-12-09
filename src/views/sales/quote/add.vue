@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 15:48:04
+ * @LastEditTime: 2019-12-09 18:56:13
  * @Description: file content
 */
 <template>
@@ -316,7 +316,8 @@ export default {
       }
     },
     // 保存表单数据
-    saveHandle() {
+    async saveHandle() {
+      await this.$showFormError(this.$refs.form)
       this.$refs.form.validate(valid => {
         if (valid) {
           let params = Object.assign(this.form, this.params)
