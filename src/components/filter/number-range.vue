@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-01 10:46:22
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-04 17:07:53
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-09 10:42:11
  * @Description: 数字区间过滤框
 */
 <template>
@@ -43,26 +43,31 @@ export default {
   methods: {
     checkMinMax() {
       console.log('check min max')
-      let min = this.form[`min${this.item.prop}`];
-      let max = this.form[`max${this.item.prop}`];
+      let min = this.form[`min${firstToUpperCase(this.item.prop)}`];
+      let max = this.form[`max${firstToUpperCase(this.item.prop)}`];
       if (String(min) && this.item.int) {
         min = parseInt(min);
-        this.form[`min${this.item.prop}`] = min;
+        this.form[`min${firstToUpperCase(this.item.prop)}`] = min;
       }
       if (String(max) && this.item.int) {
         max = parseInt(max);
-        this.form[`max${this.item.prop}`] = max;
+        this.form[`max${firstToUpperCase(this.item.prop)}`] = max;
       }
       if (String(min).trim() && String(max).trim()) {
         if (min > max) {
-          this.form[`min${this.item.prop}`] = max;
+          this.form[`min${firstToUpperCase(this.item.prop)}`] = max;
         }
       }
       this.changed();
     },
     changed(e) {
       this.$emit('change');
-    }
+    },
+    // 首字母转大写
+    firstToUpperCase(str) {
+      str = str || ''
+      return str.charAt(0).toUpperCase() + str.slice(1)
+    },
   }
 };
 </script>
