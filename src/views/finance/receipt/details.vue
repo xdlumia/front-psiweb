@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 18:32:58
+ * @LastEditTime: 2019-12-09 18:33:28
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -170,7 +170,7 @@ export default {
             needNote: null
           },
           '通过': {
-            api: 'seePsiFinanceService.finvoicereceivablPassApproval',
+            api: 'seePsiFinanceService.finvoicereceivablePassApproval',
             data: { busCode: this.detail.shipmentCode },
             needNote: null
           },
