@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 17:06:56
+ * @LastEditTime: 2019-12-09 18:06:51
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -177,7 +177,7 @@ export default {
           '驳回': {
             api: 'seePsiFinanceService.finvoicereceivableReject',
             data: { busCode: this.detail.shipmentCode },
-            needNote: null
+            needNote: true
           },
           '删除': {
             api: 'seePsiFinanceService.finvoicereceivableDelete',

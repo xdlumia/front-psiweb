@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 16:27:53
+ * @LastEditTime: 2019-12-09 18:05:44
  * @Description: 账单调整详情
 */
 <template>
@@ -143,7 +143,7 @@ export default {
           '驳回': {
             api: 'seePsiFinanceService.fbilladjustReject',
             data: { ...params, ...{} },
-            needNote: null
+            needNote: true
           },
           '删除': {
             api: 'seePsiFinanceService.fbilladjustLogicDelete',

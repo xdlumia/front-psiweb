@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 10:42:31
+ * @LastEditTime: 2019-12-09 17:42:01
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -373,7 +373,8 @@ export default {
               type = 'account'
             }
             // 如果是部门
-            else if (item.columnFields == 'deptTotalCode') {
+            else if (item.columnFields == 'deptName') {
+              columnFields = 'companySettlementId'
               type = 'dept'
             }
             filterOptions.push(

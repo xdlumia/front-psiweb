@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 17:14:32
+ * @LastEditTime: 2019-12-09 17:35:16
  * @Description: 新增收支流水
 */
 <template>
@@ -93,12 +93,17 @@ export default {
     // this.init()
   },
   mounted() {
-
+    this.init()
   },
   computed: {
 
   },
   methods: {
+    init(){
+      if(this.rowData){
+        Object.assign(this.form,this.rowData);
+      }
+    },
 
     // 保存表单数据
     saveHandle() {
