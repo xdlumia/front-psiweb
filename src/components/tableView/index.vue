@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 10:34:23
+ * @LastEditTime: 2019-12-09 10:42:31
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -355,7 +355,7 @@ export default {
             // 如果是客户
             else if (item.columnFields == 'clientName') {
               columnFields = 'clientId'
-              type = 'employee'
+              type = 'client'
             }
             // 如果是有无合同
             else if (item.columnFields == 'isContract') {
