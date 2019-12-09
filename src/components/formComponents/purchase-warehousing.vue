@@ -298,7 +298,7 @@ export default {
     //回车机器号和SN码
     shipmentCommodityCheck() {
       if (this.wmsId) {
-        if ((this.rowData.commodityNumber - (this.rowData.putinNumber || 0) - this.tableData.length) >= 0) {
+        if ((this.rowData.commodityNumber - (this.rowData.putinNumber || 0) - this.tableData.length) > 0) {
           this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: this.snCode, commodityCode: this.rowData.commodityCode, putawayCommodityList: this.tableData, categoryCode: this.rowData.categoryCode, wmsId: this.wmsId })
             .then(res => {
               if (res.data) {

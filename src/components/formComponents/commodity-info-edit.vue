@@ -351,13 +351,14 @@ export default {
       this.ceIndex = scope.$index
     },
     sumitSn(data) {
-
+      this.addForm.commodityList = []
       this.$set(this.tableData[this.ceIndex], 'commodityInfoList', data)
       this.tableData.forEach((item) => {
         if (item.commodityCode) {
           this.addForm.commodityList.push(item)
         }
       })
+      console.log(this.addForm.commodityList, 'this.addForm.commodityListthis.addForm.commodityList')
     }
   }
 };

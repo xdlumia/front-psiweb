@@ -356,10 +356,10 @@ export default {
           commodityCode: row.commodityCode
         }
       );
-      data.map(child=>{
-        child.parentCommodityCode=row.commodityCode
+      data.map(child => {
+        child.parentCommodityCode = row.commodityCode
         child.reference = child.saleReferencePrice
-        child.discountSprice=''
+        child.discountSprice = ''
       })
       cb(data);
     },
@@ -480,7 +480,7 @@ export default {
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
       // 折后价格 / (税后价格*(1-税率)
-      
+
       row.discount = (discountSprice / (reference * (1 + taxRate))).toFixed(2)
     },
     //关闭弹窗

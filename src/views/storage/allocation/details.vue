@@ -127,6 +127,9 @@ export default {
             this.getNum(this.detailForm.allocationCommodityList)
           }
           this.data = JSON.parse(JSON.stringify(this.detailForm))
+          this.data.allocationCommodityList.forEach((item) => {
+            this.$set(item, 'snCode', '')
+          })
         })
         .finally(() => {
 

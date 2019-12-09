@@ -43,9 +43,14 @@
           class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
         >{{value}}</span>
+        <span v-else-if="column.columnFields=='generateOrder'"><span v-if="row.generateOrder>0">{{value}}</span></span>
         <span v-else-if="column.columnFields=='operation'">
-          <span class="elTableDragDefault el-icon-rank f20 ml10"></span>
+          <span
+            class="elTableDragDefault el-icon-rank f20 ml10"
+            v-if="row.generateOrder>0"
+          ></span>
           <el-button
+            v-if="row.generateOrder>0"
             :disabled='row.generateOrder == 1'
             class="ml15"
             size="mini"
@@ -108,6 +113,7 @@ export default {
       addVisible: false,//新增弹窗
       activeName: '',
       filterOptions: [
+        { label: '生成顺序', prop: 'GenerateOrder', type: 'numberRange', int: true, default: true, },
         { label: '组装单编号', prop: 'assembleOrderCode', default: true },
         {
           label: '组装单状态',

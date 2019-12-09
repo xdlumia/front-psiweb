@@ -10,7 +10,7 @@
     <el-dialog
       :visible.sync="visible"
       @close='close'
-      title="组装-DHYFBHBAFVDI"
+      :title="`组装-${data.commodityCode}`"
       v-dialogDrag
     >
       <el-container>
@@ -111,6 +111,7 @@
                 label="备注"
                 min-width="120"
                 prop="note"
+                show-overflow-tooltip
               ></el-table-column>
             </el-table>
 
