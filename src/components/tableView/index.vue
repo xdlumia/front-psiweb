@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 15:16:03
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-09 10:34:23
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -312,9 +312,9 @@ export default {
     // 格式化状态和时间
     formatState(row, fields) {
       if (fields.match(/(Time|Date)/)) {
-        if(['createTime'].includes(fields)){
+        if (['createTime'].includes(fields)) {
           return this.$options.filters.timeToStr(row[fields], 'YYYY-MM-DD HH:mm:ss')
-        }else{
+        } else {
           return this.$options.filters.timeToStr(row[fields], 'YYYY-MM-DD')
         }
       }
@@ -350,6 +350,11 @@ export default {
             // 如果是创建人
             else if (item.columnFields == 'creator' || item.columnFields == 'creatorName') {
               columnFields = 'creator'
+              type = 'employee'
+            }
+            // 如果是客户
+            else if (item.columnFields == 'clientName') {
+              columnFields = 'clientId'
               type = 'employee'
             }
             // 如果是有无合同
