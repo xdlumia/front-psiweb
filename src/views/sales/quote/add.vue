@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 15:18:47
+ * @LastEditTime: 2019-12-09 10:06:43
  * @Description: file content
 */
 <template>
@@ -181,6 +181,7 @@ export default {
               this.form[key] = ""
             }
           }
+          this.getFailureTimeConfig()
         } else {
           this.steps = 4
         }
@@ -274,6 +275,12 @@ export default {
     },
   },
   methods: {
+    async getFailureTimeConfig(){
+      let { data } = await this.$api.seePsiCommonService.commonsystemconfigInfo(null,1)
+      let { quotationTime } = JSON.parse(data.configJson)
+      let time = +new Date() + quotationTime*24*60*60*1000
+      this.$set(this.form,'failureTime',time)
+    },
     changeStep() {
       if (this.steps == 3) {
         if (this.form.KIND1List.filter(a => !a.disabled).some(item => {
