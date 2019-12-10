@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:12:17
+ * @LastEditTime: 2019-12-10 15:46:54
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -86,13 +86,14 @@
         <slot name="filter"></slot>
       </template>
       <template slot="filterTable">
+
         <slot
           name="filterTable"
-          v-if="filterOptions || autoFilterOptions"
+          v-if="autoFilterOptions"
         >
           <dFilter
             v-model="params"
-            :options="filterOptions || autoFilterOptions"
+            :options="autoFilterOptions"
             @change="reload()"
           />
         </slot>
@@ -328,7 +329,7 @@ export default {
     // 返回的自定义列数据
     columnHandle(cols) {
       //  自定添加筛选
-      if (this.filter && !this.filterOptions) {
+      if (this.filter) {
         let filterOptions = []
         cols.forEach(item => {
           // 过滤状态不用添加到筛选里的类型
@@ -387,11 +388,36 @@ export default {
               })
           }
         })
-        this.autoFilterOptions = filterOptions
+
+        if (this.filterOptions) {
+          // 合并数组
+          var obj = {};
+          this.autoFilterOptions = [...this.filterOptions, ...filterOptions].reduce((item, next) => {
+            obj[next.label] ? '' : obj[next.label] = true && item.push(next);
+            return item;
+          }, []);
+        } else {
+          this.autoFilterOptions = filterOptions
+        }
       }
       // 列表默认请求的就是全部列数据 所以这里就不用重新请求了
       this.headers = cols;
       this.$refs.table.reload(1)
+    },
+    // 合并两个数组 如果根据key来判断 如果相同key的数组取新增项
+    formatArray(newData, oldData, key = 'label') {
+      let oldLables = oldData.map(v => v[key])
+      let format = []
+      newData.forEach(item => {
+        let index = oldLables.indexOf(item[key])
+        if (index != -1) {
+          format.push({ ...oldData[index], ...item })
+        } else {
+          format.push(item)
+        }
+      })
+      console.log(format);
+      return format
     },
     // 多选
     selectionChange(val) {
