@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 16:31:55
+ * @LastEditTime: 2019-12-10 10:22:28
  * @Description: 报价单详情
 */
 <template>
@@ -27,7 +27,7 @@
             class="mr10"
             :disabled="isDisabledButton(item.label)"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state || 0].includes(item.label)"
+            v-if="currStatusType[detail.state || 0].includes(item.label) && authorityButtons.includes(item.authCode)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -109,15 +109,15 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '提交审核', type: 'primary', authCode: '' },
-        { label: '撤销审核', type: 'danger', authCode: '' },
-        { label: '审核通过', type: 'primary', authCode: '' },
-        { label: '编辑', type: 'primary', authCode: '' },
-        { label: '删除', type: 'danger', authCode: '' },
-        { label: '驳回', authCode: '' },
-        { label: '生成销售出库单', type: 'primary', authCode: '' },
-        { label: '生成请购单', type: 'primary', authCode: '' },
-        { label: '终止', authCode: '' }
+        { label: '提交审核', type: 'primary', authCode: 'psi_sales_quote_06' },
+        { label: '撤销审核', type: 'danger', authCode: 'psi_sales_quote_09' },
+        { label: '审核通过', type: 'primary', authCode: 'psi_sales_quote_10' },
+        { label: '编辑', type: 'primary', authCode: 'psi_sales_quote_07' },
+        { label: '删除', type: 'danger', authCode: 'psi_sales_quote_08' },
+        { label: '驳回', authCode: 'psi_sales_quote_11' },
+        { label: '生成销售出库单', type: 'primary', authCode: 'psi_sales_quote_12' },
+        { label: '生成请购单', type: 'primary', authCode: 'psi_sales_quote_13' },
+        { label: '终止', authCode: 'psi_sales_quote_14' }
       ],
       stateText: {
         '-1': '新建',

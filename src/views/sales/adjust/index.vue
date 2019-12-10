@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 17:03:19
+ * @LastEditTime: 2019-12-10 10:47:38
  * @Description: 销售-账单调整单
  */
 <template>
@@ -11,7 +11,7 @@
       busType="56"
       ref="table"
       :filter="true"
-      :moreButton="true"
+      :exportButton="authorityButtons.includes('psi_sales_adjust_10')"
       :column="true"
       title="账单调整单"
       api="seePsiFinanceService.fbilladjustList"
@@ -23,6 +23,7 @@
           type="primary"
           size="mini"
           @click="eventHandle('addVisible')"
+          v-if="authorityButtons.includes('psi_sales_adjust_03')"
         >新增账单调整</el-button>
       </template>
       <template slot-scope="{column,row,value}">

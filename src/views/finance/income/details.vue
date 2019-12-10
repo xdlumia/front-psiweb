@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 16:45:09
+ * @LastEditTime: 2019-12-10 10:59:24
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -22,7 +22,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state|| 0].includes(item.label)"
+            v-if="currStatusType[detail.state|| 0].includes(item.label) && authorityButtons.includes(item.authCode)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -70,8 +70,8 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '收款单匹配', type: 'primary', authCode: '' },
-        { label: '删除', type: 'danger', authCode: '' },
+        { label: '收款单匹配', type: 'primary', authCode: 'psi_income_1005' },
+        { label: '删除', type: 'danger', authCode: 'psi_income_1004' },
       ],
       // 收款单匹配
       receivableVisible: false,

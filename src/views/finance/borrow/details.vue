@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 17:00:51
+ * @LastEditTime: 2019-12-10 11:05:02
  * @Description: 详情
 <template>
   <div>
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state || 0].includes(item.label)"
+            v-if="currStatusType[detail.state || 0].includes(item.label) && authorityButtons.includes(item.authCode)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -77,8 +77,8 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '还款', type: 'primary', authCode: '' },
-        { label: '删除', type: 'danger', authCode: '' },
+        { label: '还款', type: 'primary', authCode: 'psi_borrow_1004' },
+        { label: '删除', type: 'danger', authCode: 'psi_borrow_1003' },
       ],
       // 收款单匹配
       receivableVisible: false,

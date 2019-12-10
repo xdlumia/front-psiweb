@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:10:47
+ * @LastEditTime: 2019-12-10 11:03:07
  * @Description: 销售-支出流水
  */
 <template>
@@ -11,7 +11,7 @@
       busType="54"
       ref="table"
       :filter="true"
-      :exportButton="true"
+      :exportButton="authorityButtons.includes('psi_outlay_1003')"
       :column="true"
       title="支出流水"
       api="seePsiFinanceService.payrecordList"
@@ -24,11 +24,13 @@
           size="mini"
           icon="el-icon-plus"
           @click="addVisible = true"
+          v-if="authorityButtons.includes('psi_outlay_1001')"
         >新增支出流水</el-button>
         <el-button
           size="mini"
           @click="addTransferVisible = true"
           icon="el-icon-plus"
+          v-if="authorityButtons.includes('psi_outlay_1002')"
         >新增转账单</el-button>
       </template>
       <template slot="top-filter">

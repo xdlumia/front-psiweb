@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 16:30:30
+ * @LastEditTime: 2019-12-10 10:41:02
  * @Description: 客户详情
 */
 <template>
@@ -24,7 +24,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state || 0].includes(item.label)"
+            v-if="currStatusType[detail.state || 0].includes(item.label) && authorityButtons.includes(item.authCode)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -98,18 +98,18 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '停用', type: 'primary', authCode: '' },
-        { label: '启用', type: 'primary', authCode: '' },
-        { label: '编辑', type: '', authCode: '' },
-        { label: '新建报价单', type: 'primary', authCode: '' }
+        { label: '停用', type: 'primary', authCode: 'psi_sales_client_04' },
+        { label: '启用', type: 'primary', authCode: 'psi_sales_client_05' },
+        { label: '编辑', type: '', authCode: 'psi_sales_client_06' },
+        { label: '新增报价单', type: 'primary', authCode: 'psi_sales_client_07' }
       ],
       /**
        * 根据当前状态判断显示哪些按钮
        */
       // currStatus: this.detail.state,
       currStatusType: {
-        0: ['停用', '编辑', '新建报价单'], // 启用中
-        1: ['启用', '编辑', '新建报价单'], // 已停用
+        0: ['停用', '编辑', '新增报价单'], // 启用中
+        1: ['启用', '编辑', '新增报价单'], // 已停用
       },
       // tab操作栏
       tabs: {
