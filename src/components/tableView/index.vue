@@ -1,8 +1,13 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
+<<<<<<< HEAD
  * @LastEditors: web.王晓冬
  * @LastEditTime: 2019-12-10 17:50:07
+=======
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-10 17:58:48
+>>>>>>> c2ed2ca894a4ed2ecb1e27a16bf244d0048a900a
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -333,7 +338,7 @@ export default {
         let filterOptions = []
         cols.forEach(item => {
           // 过滤状态不用添加到筛选里的类型
-          let notFilter = ['state', 'matchState']
+          let notFilter = ['state', 'matchState', 'personInChargeName']
           if (!notFilter.includes(item.columnFields)) {
 
             let type = 'text' //默认筛选类型是text
@@ -393,7 +398,7 @@ export default {
           // 合并数组
           var obj = {};
           this.autoFilterOptions = [...this.filterOptions, ...filterOptions].reduce((item, next) => {
-            obj[next.label] ? '' : obj[next.label] = true && item.push(next);
+            obj[next.prop.toLowerCase()] ? '' : obj[next.prop.toLowerCase()] = true && item.push(next);
             return item;
           }, []);
         } else {
