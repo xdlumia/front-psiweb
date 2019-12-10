@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-11 15:50:55
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-10 17:41:27
  * @Description: 转移
 */
 <template>
@@ -49,7 +49,6 @@
         <el-input
           type="textarea"
           v-model="ruleForm.hangUpNote"
-          max='300'
           placeholder="请输入"
         ></el-input>
       </el-form-item>
@@ -99,7 +98,7 @@ export default {
         ],
         hangUpNote: [
           { required: true, message: '请填写转移原因', trigger: 'blur' },
-          { min: 5, max: 300, message: '长度在 5 到 300 个字符', trigger: 'blur' }
+          { min: 5, max: 200, message: '长度在 5 到 200 个字符', trigger: 'blur' }
         ],
       }
     }
