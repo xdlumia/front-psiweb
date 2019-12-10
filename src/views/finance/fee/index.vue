@@ -3,7 +3,7 @@
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
  * @LastEditTime: 2019-11-29 13:58:20
- * @Description: 销售-销售退货单
+ * @Description: 费用单
  */
 <template>
   <div>
@@ -19,6 +19,7 @@
       :params="Object.assign(queryForm,params)"
       @selection-change="selectionChange"
       :filterOptions="filterOptions"
+      :exportButton="authorityButtons.includes('psi_finance_cost_04')"
     >
       <template slot="top-filter">
         <el-row
@@ -54,7 +55,7 @@
           size="mini"
           type="primary"
           @click="editId = null,visible = true"
-          v-if="button"
+          v-if="button && authorityButtons.includes('psi_finance_addfee')"
         >新增费用单</el-button>
       </template>
       <template slot-scope="{column,row,value}">
