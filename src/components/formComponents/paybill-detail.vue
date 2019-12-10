@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:25:52
+ * @LastEditTime: 2019-12-10 09:28:56
  * @Description: 付款单详细信息 已绑定 1
 */
 <template>
@@ -12,8 +12,8 @@
         <el-form-item :label="item.label" required>
           <el-input :value="data[item.prop]|dictionary('ZD_DY_LX')" disabled v-if="item.dictName" />
           <el-input :value="data[item.prop]|timeToStr('YYYY-MM-DD')" disabled v-else-if="item.time" />
-          <el-input :value="item.map[data[item.prop]]||' '" disabled v-else-if="item.map" />
-          <el-input :value="data[item.prop]||' '" disabled v-else />
+          <el-input :value="item.map[data[item.prop]]" disabled v-else-if="item.map" />
+          <el-input :value="data[item.prop]" disabled v-else />
         </el-form-item>
       </el-col>
     </el-row>
