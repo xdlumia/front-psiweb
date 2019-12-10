@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 18:18:41
+ * @LastEditTime: 2019-12-10 13:37:02
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -10,8 +10,19 @@
     <div slot="title">
       <span>收支流水</span>
       <span class="fr">
-        <el-link :underline="false" @click="addIncoming()" class="mr10" type="primary" v-if="!hide.includes('addIncoming')">+新建</el-link>
-        <el-link :underline="false" @click="showChooseIncoming=true" type="primary" v-if="!hide.includes('matchIncoming')">匹配</el-link>
+        <el-link
+          :underline="false"
+          @click="addIncoming()"
+          class="mr10"
+          type="primary"
+          v-if="!hide.includes('addIncoming')&&pageConfig&&authorityButtons.includes(pageConfig.func.addIncoming)"
+        >+新建</el-link>
+        <el-link
+          :underline="false"
+          @click="showChooseIncoming=true"
+          type="primary"
+          v-if="!hide.includes('matchIncoming')&&pageConfig&&authorityButtons.includes(pageConfig.func.matchIncoming)"
+        >匹配</el-link>
       </span>
     </div>
     <el-table :data="recList" size="mini" v-loading="loading">
@@ -29,7 +40,12 @@
       <el-table-column label="该账单匹配金额" min-width="80" prop="matchAmount" show-overflow-tooltip></el-table-column>
       <el-table-column label="操作" min-width="80" prop="matchAmount" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <el-button @click="del(row)" size="mini" type="danger" v-if="!hide.includes('delIncoming')">删除</el-button>
+          <el-button
+            @click="del(row)"
+            size="mini"
+            type="danger"
+            v-if="!hide.includes('delIncoming')&&pageConfig&&authorityButtons.includes(pageConfig.func.delIncoming)"
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -98,7 +114,10 @@ export default {
     params: Object,
     billAmount: Number,
     type: [Number, String],
-    clientType: [Number, String]
+    clientType: [Number, String],
+    pageConfig: {
+      type: Object
+    }
   },
   data() {
     return {

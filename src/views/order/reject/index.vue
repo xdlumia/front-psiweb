@@ -2,12 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:36:58
+ * @LastEditTime: 2019-12-10 11:02:55
  * @Description: 采购-采购退货单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
+      :exportButton="authorityButtons.includes('psi_purchase_reject_10')"
       :filterOptions="filterOptions"
       :params="Object.assign(defaultParams,params)"
       api="seePsiPurchaseService.purchasealterationList"

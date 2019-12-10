@@ -2,12 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-07 10:19:06
+ * @LastEditTime: 2019-12-10 11:38:09
  * @Description: 付款单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <tableView
+      :exportButton="authorityButtons.includes('psi_payment_04')"
       :filterOptions="filterOptions"
       :params="Object.assign(defaultParams,params)"
       :selection="true"
@@ -19,10 +20,7 @@
       v-loading="loading"
     >
       <template slot="top-filter">
-        <bill-account-selector
-          @change="reload"
-          v-model="defaultParams.companySettlementId"
-        />
+        <bill-account-selector @change="reload" v-model="defaultParams.companySettlementId" />
       </template>
       <template slot="button">
         <!-- 15.勾选付款单后，展示批量付款申请。新建、已驳回状态可点击批量提交付款申请。如勾选中包含了其他状态，则只提交新建、已驳回的即可。批量付款申请，不需弹出付款申请确认。 -->
@@ -31,16 +29,12 @@
           size="mini"
           title="新建、已驳回的付款单可批量申请"
           type="primary"
+          v-if="authorityButtons.includes('psi_payment_match')"
         >批量付款申请</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='billCode'">
-          <el-link
-            :underline="false"
-            @click="showDetail=true,currentCode=value"
-            class="f12"
-            type="primary"
-          >{{value}}</el-link>
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else-if="['feeDetailCode','feeTypeCode'].includes(prop)">
           <span>{{value|dictionary('ZD_DY_LX')}}</span>
@@ -58,27 +52,13 @@
         </span>
         <span v-else-if="prop=='busCode'">
           <!-- 关联单据编号 -->
-          <el-link
-            :type="hasBusPage(row)?'primary':'info'"
-            :underline="false"
-            @click="openBusPage(row)"
-            class="f12"
-          >{{value}}</el-link>
+          <el-link :type="hasBusPage(row)?'primary':'info'" :underline="false" @click="openBusPage(row)" class="f12">{{value}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>
     </tableView>
-    <Detail
-      :code="currentCode"
-      :visible.sync="showDetail"
-      @reload="reload"
-      v-if="showDetail"
-    />
-    <Apply
-      :visible.sync="showApply"
-      @reload="reload"
-      v-if="showApply"
-    />
+    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
+    <Apply :visible.sync="showApply" @reload="reload" v-if="showApply" />
     <component
       :code="currentBusCode"
       :is="busInfo[currentBusType].detailPage"

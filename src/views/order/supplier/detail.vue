@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 10:37:34
+ * @LastEditTime: 2019-12-10 11:31:07
  * @Description: 供应商编号
 */
 <template>
@@ -15,9 +15,14 @@
     width="990px"
   >
     <template slot="button">
-      <el-button @click="changeState(0)" size="mini" type="primary" v-if="detail&&detail.state!=0">启用</el-button>
-      <el-button @click="changeState(1)" size="mini" type="danger" v-else>停用</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary">编辑</el-button>
+      <el-button
+        @click="changeState(0)"
+        size="mini"
+        type="primary"
+        v-if="detail&&detail.state!=0&&authorityButtons.includes('psi_supplier_05')"
+      >启用</el-button>
+      <el-button @click="changeState(1)" size="mini" type="danger" v-else-if="authorityButtons.includes('psi_supplier_04')">停用</el-button>
+      <el-button @click="showEdit=true" size="mini" type="primary" v-if="authorityButtons.includes('psi_supplier_08')">编辑</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">

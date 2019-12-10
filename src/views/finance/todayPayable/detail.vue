@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 17:24:38
+ * @LastEditTime: 2019-12-10 13:40:58
  * @Description: 今日应付账单
 */
 <template>
@@ -15,8 +15,13 @@
     width="990px"
   >
     <template slot="button">
-      <el-button @click="showLateAmount=true" size="mini" type="primary" v-if="detail&&detail.settleStatus!=2">滞纳金</el-button>
-      <el-button @click="showLog=true" size="mini" type="primary">操作记录</el-button>
+      <el-button
+        @click="showLateAmount=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&detail.settleStatus!=2&&authorityButtons.includes(pageConfig.func.lateFee)"
+      >滞纳金</el-button>
+      <el-button @click="showLog=true" size="mini" type="primary" v-if="authorityButtons.includes(pageConfig.func.operateRec)">操作记录</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
@@ -34,12 +39,13 @@
             :data="detail"
             :hide="paymentLogHide"
             :matchApi="pageConfig.api.matchIncoming"
+            :pageConfig="pageConfig"
             :type="pageConfig.type"
             @reload="setEdit(),$reload()"
           />
-          <invoice-log :busCode="detail.busCode" :data="detail" :type="pageConfig.type" />
+          <invoice-log :busCode="detail.busCode" :data="detail" :pageConfig="pageConfig" :type="pageConfig.type" />
           <paybill-log :billId="detail.id" v-if="pageConfig.show.includes('paybillLog')" />
-          <extras-info :data="detail" @change="saveExtras" can-modify disabled />
+          <extras-info :can-modify="authorityButtons.includes(pageConfig.func.edit)" :data="detail" @change="saveExtras" disabled />
         </el-form>
       </el-tab-pane>
       <el-tab-pane

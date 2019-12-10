@@ -2,12 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:37:20
+ * @LastEditTime: 2019-12-10 11:24:44
  * @Description: 采购-供应商
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
+      :exportButton="authorityButtons.includes('psi_supplier_03')"
       :filterOptions="filterOptions"
       :params="Object.assign(defaultParams,params)"
       api="seePsiCommonService.commonsupplierinfoPagelist"
@@ -17,8 +18,8 @@
       title="供应商"
     >
       <template slot="button">
-        <el-button @click="showCat=true" size="mini" type="primary">商品供应分类表</el-button>
-        <el-button @click="showEdit=true" size="mini" type="primary">新增供应商</el-button>
+        <el-button @click="showCat=true" size="mini" type="primary" v-if="authorityButtons.includes('psi_supplier_06')">商品供应分类表</el-button>
+        <el-button @click="showEdit=true" size="mini" type="primary" v-if="authorityButtons.includes('psi_supplier_07')">新增供应商</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='code'">

@@ -2,53 +2,36 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:28:18
+ * @LastEditTime: 2019-12-10 11:22:42
  * @Description: 采购-换货单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
+      :exportButton="authorityButtons.includes('psi_wms_swap_10')"
       :filterOptions="filterOptions"
       :params="Object.assign(defaultParams,params)"
+      @selection-change="selectionChange"
       api="seePsiWmsService.wmsswaporderList"
       busType="1"
       exportApi="seePsiWmsService.wmsswaporderExport"
       ref="tableView"
       title="换货单"
-      @selection-change="selectionChange"
     >
       <template slot="button">
-        <el-button
-          @click="showEdit=true"
-          size="mini"
-          type="primary"
-        >新增</el-button>
+        <el-button @click="showEdit=true" size="mini" type="primary" v-if="authorityButtons.includes('psi_wms_swap_09')">新增</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
         <span v-else-if="prop=='swapOrderCode'">
-          <el-link
-            :underline="false"
-            @click="showDetail=true,currentCode=value"
-            class="f12"
-            type="primary"
-          >{{value}}</el-link>
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else-if="prop=='swapState'">{{stateText[value]}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail
-      :code="currentCode"
-      :visible.sync="showDetail"
-      @reload="reload"
-      v-if="showDetail"
-    />
-    <Edit
-      :visible.sync="showEdit"
-      @reload="reload"
-      v-if="showEdit"
-    />
+    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
+    <Edit :visible.sync="showEdit" @reload="reload" v-if="showEdit" />
   </div>
 </template>
 <script>
@@ -110,7 +93,7 @@ export default {
   methods: {
     // 多选
     selectionChange(val) {
-      this.$emit("selection-change", val);
+      this.$emit('selection-change', val);
     },
     reload() {
       this.$refs.tableView.reload(1);

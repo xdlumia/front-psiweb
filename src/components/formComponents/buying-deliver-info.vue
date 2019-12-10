@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:27:10
+ * @LastEditTime: 2019-12-10 11:51:17
  * @Description: 采购入库单的发货信息 1
 */
 <template>
@@ -74,7 +74,7 @@
 let formItems = [
   // { label: '销售预计发货时间', prop: 'saleTime', type: 'date', rules: [{ required: true, trigger: 'blur' } ], },
   // { label: '采购预计发货时间', prop: 'purchaseTime', type: 'date', rules: [{ required: true, trigger: 'blur' } ], },
-  { label: '供应商联系人', prop: 'supplierLinkman', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },
+  { label: '供应商联系人', prop: 'supplierLinkman', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
   { label: '供应商联系人电话', prop: 'supplierPhone', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'phone' }], },
   { label: '客户名称', prop: 'clientName', type: 'input', rules: [{ required: true, trigger: 'blur' }],disabled:true },
   { label: '客户联系人', prop: 'clientLinkman', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'name' }], },

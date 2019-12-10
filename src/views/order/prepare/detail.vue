@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 10:37:11
+ * @LastEditTime: 2019-12-10 10:02:30
  * @Description: 备货单详情
 */
 <template>
@@ -23,7 +23,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
-        v-if="detail&&[0,5].includes(detail.state)"
+        v-if="detail&&[0,5].includes(detail.state)&&authorityButtons.includes('psi_purchase_stock_05')"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasestockorderCancel',{
@@ -32,7 +32,7 @@
         },'撤销审核')"
         size="mini"
         type="danger"
-        v-if="detail&&[1].includes(detail.state)"
+        v-if="detail&&[1].includes(detail.state)&&authorityButtons.includes('psi_purchase_stock_08')"
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasestockorderPassApproval',{
@@ -42,7 +42,7 @@
         },'通过')"
         size="mini"
         type="primary"
-        v-if="detail&&[1].includes(detail.state)"
+        v-if="detail&&[1].includes(detail.state)&&authorityButtons.includes('psi_purchase_stock_02')"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasestockorderReject',{
@@ -51,23 +51,28 @@
         },'驳回',true)"
         size="mini"
         type="danger"
-        v-if="detail&&[1].includes(detail.state)"
+        v-if="detail&&[1].includes(detail.state)&&authorityButtons.includes('psi_purchase_stock_09')"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0,5].includes(detail.state)">编辑</el-button>
+      <el-button
+        @click="showEdit=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&[0,5].includes(detail.state)&&authorityButtons.includes('psi_purchase_stock_06')"
+      >编辑</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasestockorderDelete',{
           id:detail.id
         },'删除')"
         size="mini"
         type="danger"
-        v-if="detail&&[0,5].includes(detail.state)"
+        v-if="detail&&[0,5].includes(detail.state)&&authorityButtons.includes('psi_purchase_stock_07')"
       >删除</el-button>
       <el-button
         :disabled="!(waitBuyingNumber>0)"
         @click="showAddOrderStorage=true"
         size="mini"
         type="primary"
-        v-if="detail&&[2,3].includes(detail.state)"
+        v-if="detail&&[2,3].includes(detail.state)&&authorityButtons.includes('psi_purchase_stock_10')"
       >采购</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-07 10:19:20
+ * @LastEditTime: 2019-12-10 13:39:26
  * @Description: 今日应付账单
 */
 <template>
@@ -11,6 +11,7 @@
       :api="pageConfig.api.list"
       :busType="pageConfig.busType"
       :exportApi="pageConfig.api.export"
+      :exportButton="authorityButtons.includes(pageConfig.func.export)"
       :filterOptions="filterOptions"
       :params="Object.assign(defaultParams,params)"
       :selectable="selectable"
@@ -123,7 +124,17 @@ export default {
           addIncoming: 'seePsiFinanceService.todaybillInsertRoutedMatching',
           matchIncoming: 'seePsiFinanceService.todaybillRoutedMatching'
         },
-        show: []
+        show: [],
+        func: {
+          lateFee: 'psi_todayPayable_01',
+          operateRec: 'psi_todayPayable_02',
+          addIncoming: '',
+          delIncoming: '',
+          matchIncoming: '',
+          export: 'psi_todayPayable_03',
+          addInvoice: 'psi_todayPayable_04',
+          edit: 'psi_todayPayable_05'
+        }
       })
     }
   },

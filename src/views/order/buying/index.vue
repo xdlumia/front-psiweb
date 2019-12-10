@@ -2,23 +2,29 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 17:20:53
+ * @LastEditTime: 2019-12-10 10:20:23
  * @Description: 采购-请购单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
+      :exportButton="authorityButtons.includes('psi_purchase_apply_07')"
       :filterOptions="filterOptions"
       :params="Object.assign(defaultParams,params)"
       :selection="true"
       api="seePsiPurchaseService.purchaseapplyorderList"
       busType="27"
       exportApi="seePsiPurchaseService.purchaseapplyorderExport"
-      title="请购单"
       ref="tableView"
+      title="请购单"
     >
       <template slot="button">
-        <el-button @click="orderBuyingDetailRecVisible=true" size="mini" type="primary">请购单明细表</el-button>
+        <el-button
+          @click="orderBuyingDetailRecVisible=true"
+          size="mini"
+          type="primary"
+          v-if="authorityButtons.includes('psi_purchase_apply_06')"
+        >请购单明细表</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='purchaseApplyCode'">

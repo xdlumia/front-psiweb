@@ -2,19 +2,20 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 17:24:03
+ * @LastEditTime: 2019-12-10 10:55:52
  * @Description: 采购-直发单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
+      :exportButton="authorityButtons.includes('psi_purchase_direct_05')"
       :filterOptions="filterOptions"
       :params="Object.assign(defaultParams,params)"
       api="seePsiPurchaseService.purchasedirectList"
       busType="28"
       exportApi="seePsiPurchaseService.purchasedirectExport"
-      title="直发单"
       ref="tableView"
+      title="直发单"
     >
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='directCode'">
