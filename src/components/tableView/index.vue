@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 17:35:19
+ * @LastEditTime: 2019-12-10 17:58:48
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -333,7 +333,7 @@ export default {
         let filterOptions = []
         cols.forEach(item => {
           // 过滤状态不用添加到筛选里的类型
-          let notFilter = ['state', 'matchState']
+          let notFilter = ['state', 'matchState', 'personInChargeName']
           if (!notFilter.includes(item.columnFields)) {
 
             let type = 'text' //默认筛选类型是text
