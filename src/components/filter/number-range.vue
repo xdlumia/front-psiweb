@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-01 10:46:22
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 14:03:31
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-10 17:55:18
  * @Description: 数字区间过滤框
 */
 <template>
@@ -42,7 +42,6 @@ export default {
   },
   methods: {
     checkMinMax() {
-      console.log('check min max')
       let min = this.form[`min${this.firstToUpperCase(this.item.prop)}`];
       let max = this.form[`max${this.firstToUpperCase(this.item.prop)}`];
       if (String(min) && this.item.int) {

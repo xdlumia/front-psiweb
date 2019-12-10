@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 13:39:26
+ * @LastEditTime: 2019-12-10 17:39:07
  * @Description: 今日应付账单
 */
 <template>
@@ -89,7 +89,7 @@ export default {
           {label:'已结清',value:'2',},
           {label:'已关闭',value:'3',},
         ] },
-        { label: '逾期状态', prop: 'overSate', default: true, type:'select', options:[
+        { label: '逾期状态', prop: 'overState', default: true, type:'select', options:[
           {label:'全部',value:'',},
           {label:'未逾期',value:0},
           {label:'已逾期',value:1},
@@ -142,8 +142,8 @@ export default {
     // prettier-ignore
     if(this.pageConfig.title=='今日应付账单'){
       let now = new Date
-      this.$set(this.params,'minPayEndDate',+new Date(`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} 00:00`))
-      this.$set(this.params,'maxPayEndDate',+new Date(`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} 23:59`))
+      this.$set(this.defaultParams,'minPayEndDate',+new Date(`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} 00:00`))
+      this.$set(this.defaultParams,'maxPayEndDate',+new Date(`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} 23:59`))
     }
     this.getFeeDetailCodeList();
   },
