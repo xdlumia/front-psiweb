@@ -1,13 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
-<<<<<<< HEAD
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 17:50:07
-=======
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 17:58:48
->>>>>>> c2ed2ca894a4ed2ecb1e27a16bf244d0048a900a
+ * @LastEditTime: 2019-12-10 18:13:35
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
