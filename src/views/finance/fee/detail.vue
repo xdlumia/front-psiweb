@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-29 17:00:21
+ * @LastEditTime: 2019-12-10 11:52:03
  * @Description: description
  -->
 <template>
@@ -15,40 +15,45 @@
     v-loading="loading"
   >
     <template slot="button">
-      <el-button size="mini" v-if="buttonState == -1" type="primary" @click="showEdit = true">编辑</el-button>
       <el-button
         size="mini"
-        v-if="buttonState == -1"
+        v-if="buttonState == -1 && authorityButtons.includes('psi_finance_cost_05')"
+        type="primary"
+        @click="showEdit = true"
+      >编辑</el-button>
+      <el-button
+        size="mini"
+        v-if="buttonState == -1 && authorityButtons.includes('psi_finance_cost_06')"
         type="danger"
         @click="fcostDelete(detailForm.id)"
       >删除</el-button>
       <el-button
         size="mini"
-        v-if="buttonState == -1 || buttonState == 3"
+        v-if="(buttonState == -1 || buttonState == 3) && authorityButtons.includes('psi_finance_cost_03')"
         type="primary"
         @click="fcostSubmitApproval(detailForm.id)"
       >提交审核</el-button>
       <el-button
         size="mini"
-        v-if="buttonState == 0"
+        v-if="buttonState == 0 && authorityButtons.includes('psi_finance_cost_01')"
         type="primary"
         @click="fcostPassApproval(detailForm.id)"
       >通过</el-button>
       <el-button
         size="mini"
-        v-if="buttonState == 0"
+        v-if="buttonState == 0 && authorityButtons.includes('psi_finance_cost_07')"
         type="danger"
         @click="fcostReject(detailForm.id)"
       >驳回</el-button>
       <el-button
         size="mini"
-        v-if="buttonState == 1"
+        v-if="buttonState == 1 && authorityButtons.includes('psi_finance_cost_02')"
         type="primary"
         @click="fcostAuditApproval(detailForm.id)"
       >复核通过</el-button>
       <el-button
         size="mini"
-        v-if="buttonState == 1"
+        v-if="buttonState == 1 && authorityButtons.includes('psi_finance_cost_07')"
         type="danger"
         @click="fcostReject(detailForm.id)"
       >复核驳回</el-button>
