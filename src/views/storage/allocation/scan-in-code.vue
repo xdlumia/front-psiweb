@@ -238,13 +238,15 @@ export default {
       },
     };
   },
-  mounted() { },
+  created() {
+
+  },
   methods: {
     handleClick({ label, name }) {
       this.activeName = '';
     },
     close() {
-      this.$emit('update:visible', false)
+      this.$emit('close')
     },
     //扫SN码
     shipmentCommodityCheck(item, index) {

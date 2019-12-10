@@ -243,7 +243,7 @@ export default {
       this.activeName = '';
     },
     close() {
-      this.$emit('update:visible', false)
+      this.$emit('close')
     },
     //弹窗选择商品
     commodityChoose(selected) {
