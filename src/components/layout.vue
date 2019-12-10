@@ -59,10 +59,7 @@
               v-if="menu.type == 2"
             >{{menu.name}}</el-menu-item>
             <!-- 二级菜单 -->
-            <el-submenu
-              v-else
-              :index="index+''"
-            >
+            <el-submenu v-else :index="index+''">
               <template slot="title">{{menu.name}}</template>
               <div style="display:flex;">
                 <!-- 二级菜单按 5长度 折行 -->
