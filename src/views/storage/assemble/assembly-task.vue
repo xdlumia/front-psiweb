@@ -96,7 +96,6 @@ export default {
       isNum ?
         this.$refs['form'].validate((valid) => {
           if (valid) {
-            console.log('11111111111111111111111111111111111111')
             this.$api.seePsiWmsService.wmsassembletaskSave({
               assembleCommoditySaveVoList: this.data.commodityList,
               assembleOrderCode: this.data.assembleOrderCode,
