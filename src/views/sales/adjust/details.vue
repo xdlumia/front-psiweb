@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 18:05:44
+ * @LastEditTime: 2019-12-10 10:48:50
  * @Description: 账单调整详情
 */
 <template>
@@ -27,7 +27,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state || 0].includes(item.label)"
+            v-if="currStatusType[detail.state || 0].includes(item.label) && authorityButtons.includes(item.authCode)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -77,11 +77,11 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '调整申请', type: 'primary', authCode: '' },
-        { label: '撤销审核', type: 'primary', authCode: '' },
-        { label: '通过', type: 'primary', authCode: '' },
-        { label: '驳回', type: '', authCode: '' },
-        { label: '编辑', type: 'primary', authCode: '' },
+        { label: '调整申请', type: 'primary', authCode: 'psi_sales_adjust_04' },
+        { label: '撤销审核', type: 'primary', authCode: 'psi_sales_adjust_07' },
+        { label: '通过', type: 'primary', authCode: 'psi_sales_adjust_08' },
+        { label: '驳回', type: '', authCode: 'psi_sales_adjust_09' },
+        { label: '编辑', type: 'primary', authCode: 'psi_sales_adjust_05' },
       ],
       /**
        * 根据当前状态判断显示哪些按钮

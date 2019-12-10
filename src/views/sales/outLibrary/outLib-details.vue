@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 17:33:57
+ * @LastEditTime: 2019-12-10 10:32:08
  * @Description: 销售出库单详情
 */
 <template>
@@ -27,7 +27,7 @@
             class="mr10"
             :disabled="isDisabledButton(item.label)"
             @click="buttonsClick(item.label)"
-            v-if="isShowButton(item.label)"
+            v-if="isShowButton(item.label) && authorityButtons.includes(item.authCode)"
             size="small"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -154,22 +154,22 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '提交审核', type: 'primary', authCode: '' },
-        { label: '撤销审核', type: 'danger', authCode: '' },
-        { label: '审核通过', type: 'primary', authCode: '' },
-        { label: '编辑', type: 'primary', authCode: '' },
-        { label: '删除', type: 'danger', authCode: '' },
-        { label: '生成合同', type: 'primary', authCode: '' },
-        { label: '驳回', authCode: '' },
-        { label: '终止', authCode: '' },
-        { label: '生成退货单', type: 'primary', authCode: '' },
-        { label: '生成换货单', type: 'primary', authCode: '' },
-        { label: '开票申请', type: 'primary', authCode: '' },
-        { label: '编辑合同', type: 'primary', authCode: '' },
-        { label: '合同完善', type: 'primary', authCode: '' },
-        { label: '审核采购时间', type: 'primary', authCode: '' },
-        { label: '合同收回', type: 'primary', authCode: '' },
-        { label: '追加合同附件', type: 'primary', authCode: '' },
+        { label: '提交审核', type: 'primary', authCode: 'psi_sales_outlibrary_03' },
+        { label: '撤销审核', type: 'danger', authCode: 'psi_sales_outlibrary_06' },
+        { label: '审核通过', type: 'primary', authCode: 'psi_sales_outlibrary_07' },
+        { label: '编辑', type: 'primary', authCode: 'psi_sales_outlibrary_04' },
+        { label: '删除', type: 'danger', authCode: 'psi_sales_outlibrary_05' },
+        { label: '生成合同', type: 'primary', authCode: 'psi_sales_outlibrary_09' },
+        { label: '驳回', authCode: 'psi_sales_outlibrary_08' },
+        { label: '终止', authCode: 'psi_sales_outlibrary_14' },
+        { label: '生成退货单', type: 'primary', authCode: 'psi_sales_outlibrary_15' },
+        { label: '生成换货单', type: 'primary', authCode: 'psi_sales_outlibrary_16' },
+        { label: '开票申请', type: 'primary', authCode: 'psi_sales_outlibrary_17' },
+        { label: '编辑合同', type: 'primary', authCode: 'psi_sales_outlibrary_19' },
+        { label: '合同完善', type: 'primary', authCode: 'psi_sales_outlibrary_10' },
+        { label: '审核采购时间', type: 'primary', authCode: 'psi_sales_outlibrary_12' },
+        { label: '合同收回', type: 'primary', authCode: 'psi_sales_outlibrary_13' },
+        { label: '追加合同附件', type: 'primary', authCode: 'psi_sales_outlibrary_11' },
       ],
       stateText: {
         '-1': '新建',

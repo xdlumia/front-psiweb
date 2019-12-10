@@ -48,6 +48,7 @@
           >
             <!-- :disabled='scope.row.currAccomplishNum > 0 ? false : true' -->
             <el-button
+              v-if="authorityButtons.includes('psi_wms_assembly_04')"
               type="primary"
               size="mini"
               @click='changeAssemblyVisible(scope.row)'

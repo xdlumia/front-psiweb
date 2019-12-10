@@ -37,6 +37,7 @@
         >
           <template slot-scope="scope">
             <el-button
+              v-if="authorityButtons.includes('psi_wms_purchase_04')"
               :disabled='Number(scope.row.putinNumber) >= scope.row.commodityNumber'
               type="primary"
               size="mini"

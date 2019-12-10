@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 16:53:18
+ * @LastEditTime: 2019-12-10 10:34:19
  * @Description: 销售-销售退货单
  */
 <template>
@@ -11,7 +11,7 @@
       busType="17"
       ref="table"
       :filter="true"
-      :moreButton="true"
+      :exportButton="authorityButtons.includes('psi_sales_return_10')"
       :column="true"
       title="销售退货单"
       api="seePsiSaleService.salesreturnedList"

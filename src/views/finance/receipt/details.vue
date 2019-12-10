@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 18:53:10
+ * @LastEditTime: 2019-12-10 11:07:17
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -26,7 +26,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state|| 0].includes(item.label)"
+            v-if="currStatusType[detail.state|| 0].includes(item.label) && authorityButtons.includes(item.authCode)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -93,12 +93,12 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '提交审核', type: 'primary', authCode: '' },
-        { label: '撤销审核', type: '', authCode: '' },
-        { label: '编辑', type: 'primary', authCode: '' },
-        { label: '通过', type: 'primary', authCode: '' },
-        { label: '驳回', type: 'primary', authCode: '' },
-        { label: '删除', type: 'danger', authCode: '' },
+        { label: '提交审核', type: 'primary', authCode: 'psi_receipt_1001' },
+        { label: '撤销审核', type: '', authCode: 'psi_receipt_1004' },
+        { label: '编辑', type: 'primary', authCode: 'psi_receipt_1005' },
+        { label: '通过', type: 'primary', authCode: 'psi_receipt_1002' },
+        { label: '驳回', type: 'primary', authCode: 'psi_receipt_1003' },
+        { label: '删除', type: 'danger', authCode: 'psi_receipt_1006' },
       ],
       // 状态功能按钮
       currStatusType: {

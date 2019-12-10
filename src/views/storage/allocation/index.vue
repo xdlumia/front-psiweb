@@ -13,6 +13,7 @@
       :filterOptions='filterOptions'
       selection
       ref='allTable'
+      :exportButton="authorityButtons.includes('psi_wms_allocation_03')"
       exportApi="seePsiWmsService.wmsallocationorderExport"
       api="seePsiWmsService.wmsallocationorderList"
       :params="params"
@@ -21,6 +22,7 @@
     >
       <template v-slot:button>
         <el-button
+          v-if="authorityButtons.includes('psi_wms_allocation_07')"
           type="primary"
           size='mini'
           @click="visible = true"

@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 21:25:33
+ * @LastEditTime: 2019-12-10 10:07:40
  * @Description: 业务设置-销售
  -->
 <template>
@@ -13,7 +13,7 @@
       </el-col>
       <el-col :span="8" class="ar">
         <el-button
-          v-if="!isEdit"
+          v-if="!isEdit && authorityButtons.includes('asystem_assist_sell_10001')"
           type="primary"
           size="small"
           style="margin-top: 20px;"

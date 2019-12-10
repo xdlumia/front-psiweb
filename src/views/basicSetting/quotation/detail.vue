@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 16:35:43
+ * @LastEditTime: 2019-12-10 10:32:54
  * @Description: description
  -->
 <template>
@@ -16,18 +16,23 @@
   >
     <template slot="button">
       <el-button
-        v-if="!detailForm.state"
+        v-if="!detailForm.state && authorityButtons.includes('psi_pricelist_1004')"
         size="mini"
         type="danger"
         @click="commonquotationconfigUpdate(rowData.id, 1)"
       >停用</el-button>
       <el-button
-        v-else
+        v-if="detailForm.state && authorityButtons.includes('psi_pricelist_1003')"
         size="mini"
         type="primary"
         @click="commonquotationconfigUpdate(rowData.id, 0)"
       >启用</el-button>
-      <el-button size="mini" type="primary" @click="showEdit = true">编辑</el-button>
+      <el-button
+        v-if="authorityButtons.includes('psi_pricelist_1002')"
+        size="mini"
+        type="primary"
+        @click="showEdit = true"
+      >编辑</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">

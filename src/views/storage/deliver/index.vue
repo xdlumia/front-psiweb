@@ -13,6 +13,7 @@
       :filterOptions='filterOptions'
       :params="params"
       selection
+      :exportButton="authorityButtons.includes('psi_wms_deliver_03')"
       api="seePsiWmsService.wmsshipmentsorderList"
       exportApi="seePsiWmsService.wmsshipmentsorderExport"
       title="发货单"

@@ -3,7 +3,7 @@
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
  * @LastEditTime: 2019-11-18 09:05:08
- * @Description: 销售-销售退货单
+ * @Description: 发票本
  */
 <template>
   <div>
@@ -18,6 +18,7 @@
       exportApi="seePsiFinanceService.finvoicedatumExport"
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
+      :exportButton="authorityButtons.includes('psi_quote_1002')"
     >
       <template slot="top-filter">
         <el-row style="width:430px" type="flex" justify="space-between"
@@ -38,7 +39,7 @@ align="center">
           </el-col>
         </el-row>
       </template>
-      <template v-slot:button>
+      <template v-slot:button v-if="authorityButtons.includes('psi_quote_1001')">
         <el-button size="mini" type="primary" @click="editId = null,visible = true">发票录入</el-button>
       </template>
       <template slot-scope="{column,row,value}">

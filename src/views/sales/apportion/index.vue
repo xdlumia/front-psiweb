@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 16:38:54
+ * @LastEditTime: 2019-12-10 10:43:44
  * @Description: 销售-费用分摊单
  */
 <template>
@@ -11,7 +11,7 @@
       busType="19"
       ref="table"
       :filter="true"
-      :moreButton="true"
+      :exportButton="authorityButtons.includes('psi_sales_apportion_10')"
       :column="true"
       title="费用分摊单"
       @clear-filter="reset()"
@@ -24,6 +24,7 @@
           type="primary"
           size="mini"
           @click="eventHandle('addVisible')"
+          v-if="authorityButtons.includes('psi_sales_apportion_03')"
         >新增分摊</el-button>
       </template>
       <!-- 自定义按钮功能 -->

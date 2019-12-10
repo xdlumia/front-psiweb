@@ -12,6 +12,7 @@
       busType="2"
       :filterOptions='filterOptions'
       selection
+      :exportButton="authorityButtons.includes('psi_wms_exchange_03')"
       ref='allTable'
       :params='params'
       api="seePsiWmsService.wmsswaptaskList"

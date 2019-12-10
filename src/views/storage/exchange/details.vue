@@ -17,7 +17,7 @@
     <div>
       <div class="drawer-header">
         <el-button
-          v-if="detailForm.swapState != 4"
+          v-if="detailForm.swapState != 4 && authorityButtons.includes('psi_wms_exchange_04')"
           @click="exchangeVisible=true"
           size="mini"
           type="primary"

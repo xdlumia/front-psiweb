@@ -17,19 +17,19 @@
     <div>
       <div class="drawer-header">
         <el-button
-          v-if="detailForm.allocationOrderState == 2 && detailForm.allocationOrderState != -1"
+          v-if="detailForm.allocationOrderState == 2 && detailForm.allocationOrderState != -1 && authorityButtons.includes('psi_wms_allocation_05')"
           @click="backVisible=true,isComponents = 'scanInCode',dialogData.title = '调入扫码'"
           size="mini"
           type="primary"
         >调入扫码</el-button>
         <el-button
-          v-if="(outNum < outAllNum) && detailForm.allocationOrderState != -1"
+          v-if="(outNum < outAllNum) && detailForm.allocationOrderState != -1 && authorityButtons.includes('psi_wms_allocation_04')"
           @click="backVisible=true,isComponents = 'scanOutCode',dialogData.title = '调出扫码'"
           size="mini"
           type="primary"
         >调出扫码</el-button>
         <el-button
-          v-if="detailForm.allocationOrderState == 1"
+          v-if="detailForm.allocationOrderState == 1 && authorityButtons.includes('psi_wms_allocation_06')"
           @click="wmsallocationorderUpdateOrderState('-1')"
           size="mini"
           type="primary"
