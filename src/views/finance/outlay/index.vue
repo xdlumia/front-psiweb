@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 11:57:53
- * @Description: 财务-支出流水
+ * @LastEditTime: 2019-12-10 12:00:36
+ * @Description: 销售-支出流水
  */
 <template>
   <div>
     <table-view
-      busType="54"
+      busType="55"
       ref="table"
       :filter="true"
       :exportButton="authorityButtons.includes('psi_outlay_1003')"

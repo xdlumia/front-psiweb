@@ -19,6 +19,7 @@
       :params="Object.assign(queryForm,params)"
       :filterOptions="filterOptions"
       @selection-change="selectionChange"
+      :exportButton="authorityButtons.includes('psi_billing_1010')"
     >
       <template slot="top-filter">
         <el-row
@@ -44,8 +45,16 @@
         </el-row>
       </template>
       <template v-slot:button>
-        <el-button size="mini" @click="obsolete = true" v-if="button">发票作废</el-button>
-        <el-button size="mini" @click="finvoicebillingDilution" v-if="button">发票冲红</el-button>
+        <el-button
+          size="mini"
+          @click="obsolete = true"
+          v-if="button && authorityButtons.includes('psi_billing_1001')"
+        >发票作废</el-button>
+        <el-button
+          size="mini"
+          @click="finvoicebillingDilution"
+          v-if="button && authorityButtons.includes('psi_billing_1002')"
+        >发票冲红</el-button>
       </template>
       <template slot-scope="{column,row,value}">
         <el-button
@@ -56,7 +65,8 @@
         >{{row.invoiceCode || '未确定发票号码'}}</el-button>
         <span v-else-if="column.columnFields=='busCode'">
           <!-- 关联单据编号 -->
-          <el-link :underline="false" @click="openBusPage(row)" class="f12" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="openBusPage(row)" class="f12"
+type="primary">{{value}}</el-link>
         </span>
 
         <span v-else-if="column.columnFields=='state'">{{stateText[row.state]}}</span>
@@ -78,7 +88,7 @@
       :code="currentBusCode"
       :is="busInfo[currentBusType].detailPage"
       :visible.sync="showBusDetail"
-      @reload="$refs.table.reload()"
+      @reload="$refs.table.reload"
       v-if="showBusDetail"
     />
   </div>
@@ -91,8 +101,8 @@ import cancellation from './cancellation'
 import BusMixin from '@/views/finance/payment/busMixin';
 
 const filterOptions = [
-  {    label: '发票类型', prop: 'invoiceTyepCode', default: true, type: 'dict',
-    dictName: 'CW_FP_LX'  },
+  { label: '发票类型', prop: 'invoiceTyepCode', default: true, type: 'dict',
+    dictName: 'CW_FP_LX' },
   { label: '发票号码', prop: 'invoiceCode', default: true },
   { label: '商品合计金额', prop: 'CommodityTotalAmount', default: true, type: 'numberrange' },
   { label: '税价合计金额', prop: 'TaxTotalAmount', default: true, type: 'numberrange' },
@@ -122,7 +132,7 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     return {
       obsolete: false,
       showDetail: false,
@@ -160,15 +170,15 @@ export default {
   },
   watch: {
     'queryForm.marketId': {
-      handler (newValue) {
+      handler(newValue) {
         this.$refs.table.reload();
       }
     }
   },
-  mounted () {
+  mounted() {
   },
   methods: {
-    finvoicebillingDilution () {
+    finvoicebillingDilution() {
       if (!this.selectList.length) {
         this.$message.error('请选择发票')
         return
@@ -194,17 +204,17 @@ export default {
         })
       })
     },
-    selectionChange (val) {
+    selectionChange(val) {
       console.log(val)
       this.selectList = val
     },
-    detail (row) {
+    detail(row) {
       this.rowData = row
       this.code = row.id
       this.showDetail = true
     },
     // 按钮功能操作
-    eventHandle (type, row) {
+    eventHandle(type, row) {
       this[type] = true
       this.rowData = row || {}
       return
