@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 16:52:57
+ * @LastEditTime: 2019-12-10 16:15:39
  * @Description: 生成销售换货单
 */
 <template>
@@ -203,7 +203,8 @@ export default {
   methods: {
 
     // 保存表单数据
-    saveHandle() {
+    async saveHandle() {
+      await this.$showFormError(this.$refs.form)
       this.$refs.form.validate(valid => {
         if (valid) {
           this.form.businessCommoditySaveVoList.map(item => item.putawayType = 0) // 退货入库

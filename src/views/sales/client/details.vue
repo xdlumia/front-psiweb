@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 11:41:30
+ * @LastEditTime: 2019-12-10 16:27:44
  * @Description: 客户详情
 */
 <template>
@@ -54,7 +54,7 @@
             :is="activeName"
             :code="code"
             :data="detail || {}"
-            :params="{relationCode:code}"
+            :params=" {clientId:detail.id}"
             :rowData="rowData"
             :button="false"
           ></components>
@@ -190,6 +190,7 @@ export default {
           this.$api.seePsiCommonService.commonclientinfoUpdate(params)
             .then(res => {
               this.$reload()
+              this.setEdit()
             });
         });
       }
