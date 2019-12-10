@@ -18,6 +18,7 @@
         style="padding:0;"
       >
         <el-form
+          ref="form"
           :model="form"
           class="p10"
         >
@@ -78,6 +79,8 @@ export default {
         assemblePerson: '',
         pickingPerson: '',
         assembleOrderCode: '',
+        employeeName: '',
+        employeeAssembleName: ''
       }
     };
   },
@@ -91,19 +94,27 @@ export default {
         return item.num >= 1
       })
       isNum ?
-        this.$api.seePsiWmsService.wmsassembletaskSave({
-          assembleCommoditySaveVoList: this.data.commodityList,
-          assembleOrderCode: this.data.assembleOrderCode,
-          note: this.form.note,
-          assemblePerson: this.form.assemblePerson,
-          pickingPerson: this.form.pickingPerson
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            console.log('11111111111111111111111111111111111111')
+            this.$api.seePsiWmsService.wmsassembletaskSave({
+              assembleCommoditySaveVoList: this.data.commodityList,
+              assembleOrderCode: this.data.assembleOrderCode,
+              note: this.form.note,
+              assemblePerson: this.form.assemblePerson,
+              pickingPerson: this.form.pickingPerson
+            })
+              .then(res => {
+                this.$emit('reload')
+                this.close()
+              })
+              .finally(() => {
+              })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
         })
-          .then(res => {
-            this.$emit('reload')
-            this.close()
-          })
-          .finally(() => {
-          })
         :
         this.$message({
           message: '请至少添加一个分配数量！',
