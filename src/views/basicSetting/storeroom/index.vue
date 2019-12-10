@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-05 10:56:47
+ * @LastEditTime: 2019-12-10 10:41:03
  * @Description: 库房管理
  -->
 <template>
@@ -16,29 +16,30 @@
       api="seePsiWmsService.commonwmsmanagerList"
       exportApi="seePsiWmsService.commonwmsmanagerExport"
       :params="Object.assign(queryForm, params)"
+      :exportButton="authorityButtons.includes('psi_warehouse_1005')"
     >
       <template v-slot:filter>自定义筛选列</template>
       <!-- 自定义按钮功能 -->
-      <template v-slot:button>
+      <template v-slot:button v-if="authorityButtons.includes('psi_warehouse_1001')">
         <el-button size="mini" type="primary" @click="editId = null,visible = true">新增</el-button>
       </template>
       <template slot-scope="{column,row,value,scope}">
         <span v-if="column.columnFields=='operation'">
           <el-button
-            v-if="!scope.row.state"
+            v-if="!scope.row.state && authorityButtons.includes('psi_warehouse_1002')"
             type="text"
             @click="editId = scope.row.id,visible = true"
             style="padding:0"
           >编辑</el-button>
           <el-button
             type="text"
-            v-if="!scope.row.state"
+            v-if="!scope.row.state && authorityButtons.includes('psi_warehouse_1006')"
             @click="commonwmsmanagerLogicDelete(scope.row.id)"
             style="padding:0"
           >删除</el-button>
           <el-button
             type="text"
-            v-if="scope.row.state == 1"
+            v-if="scope.row.state == 1 && authorityButtons.includes('psi_warehouse_1004')"
             :disabled="scope.row.state !== 1"
             @click="commonwmsmanagerUpdateState(scope.row.id, 0)"
             style="padding:0"
@@ -46,7 +47,7 @@
           <el-button
             @click="commonwmsmanagerUpdateState(scope.row.id, 1)"
             type="text"
-            v-else-if="!scope.row.state"
+            v-else-if="!scope.row.state && authorityButtons.includes('psi_warehouse_1003')"
             style="padding:0"
           >启用</el-button>
         </span>

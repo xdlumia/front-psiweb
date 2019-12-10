@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 16:37:30
+ * @LastEditTime: 2019-12-10 10:44:25
  * @Description: 目标管理
  -->
 <template>
@@ -16,10 +16,11 @@
       api="seePsiCommonService.commonpromotiongoalList"
       :params="Object.assign(queryForm, params)"
       exportApi="seePsiCommonService.commonpromotiongoalExport"
+      :exportButton="authorityButtons.includes('psi_goal_manage_1005')"
     >
       <template v-slot:filter>自定义筛选列</template>
       <!-- 自定义按钮功能 -->
-      <template v-slot:button>
+      <template v-slot:button v-if="authorityButtons.includes('psi_goal_manage_1001')">
         <el-button size="mini" type="primary" @click="editId = null,visible = true">新增目标</el-button>
       </template>
       <template slot-scope="{column,row,value,scope}">
@@ -69,7 +70,7 @@ export default {
       default: () => ({ page: 1, limit: 15 })
     }
   },
-  data () {
+  data() {
     return {
       rowData: null,
       code: null,
@@ -112,19 +113,19 @@ export default {
       ]
     }
   },
-  mounted () {
+  mounted() {
   },
   components: {
     addObjective,
     detail
   },
   methods: {
-    detail (row) {
+    detail(row) {
       this.rowData = row
       this.code = row.code
       this.showDetail = true
     },
-    commonwmsmanagerUpdateState (id, state) {
+    commonwmsmanagerUpdateState(id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -140,7 +141,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete (id) {
+    commonwmsmanagerLogicDelete(id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -156,10 +157,10 @@ export default {
         })
       })
     },
-    saveFacilitator () {
+    saveFacilitator() {
       this.$refs.addObjective && this.$refs.addObjective.commonserviceproviderSave()
     },
-    refresh () {
+    refresh() {
       this.visible = false
       this.$refs.table.reload()
     }

@@ -2,32 +2,35 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-03 21:27:08
+ * @LastEditTime: 2019-12-10 10:38:06
  * @Description: 业务设置-财务
  -->
 <template>
   <div class v-loading="loading" style="min-width:1200px;">
     <div>
-      <el-col :span="16">
-        <h3 class="mt10 d-text-gray b">逾期滞纳金</h3>
-      </el-col>
-      <el-col :span="8" class="ar">
-        <el-button
-          v-if="!isEdit"
-          type="primary"
-          size="small"
-          style="margin-top: 20px;"
-          @click="isEdit = true"
-        >编辑</el-button>
-        <el-button
-          v-if="isEdit"
-          type="primary"
-          size="small"
-          style="margin-top: 20px;"
-          @click="save"
-        >保存</el-button>
-        <el-button v-if="isEdit" size="small" style="margin-top: 20px;" @click="cancel">取消</el-button>
-      </el-col>
+      <el-row>
+        <el-col :span="16">
+          <h3 class="mt10 d-text-gray b">逾期滞纳金</h3>
+        </el-col>
+        <el-col :span="8" class="ar">
+          <el-button
+            v-if="!isEdit && authorityButtons.includes('asystem_assist_finance_10001')"
+            type="primary"
+            size="small"
+            style="margin-top: 20px;"
+            @click="isEdit = true"
+          >编辑</el-button>
+          <el-button
+            v-if="isEdit"
+            type="primary"
+            size="small"
+            style="margin-top: 20px;"
+            @click="save"
+          >保存</el-button>
+          <el-button v-if="isEdit" size="small" style="margin-top: 20px;"
+@click="cancel">取消</el-button>
+        </el-col>
+      </el-row>
     </div>
     <el-form
       ref="financeConfigEntity"
@@ -43,7 +46,8 @@
         </legend>
         <el-row>
           <el-col :span="24">
-            <el-button size="mini" type="primary" class="mb10 mt10" @click="addItem">+新增滞纳金方案</el-button>
+            <el-button size="mini" type="primary" class="mb10 mt10"
+@click="addItem">+新增滞纳金方案</el-button>
           </el-col>
         </el-row>
         <div v-for="(item, index) in financeConfigEntity.financeConfigList" :key="index">
@@ -126,7 +130,7 @@
 
 <script type='text/ecmascript-6'>
 export default {
-  data () {
+  data() {
     const validateName = (rule, value, callback) => {
       const result = this.financeConfigEntity.financeConfigList.filter(item => item.overdueFineName === value)
       if (result.length > 1) {
@@ -169,11 +173,11 @@ export default {
   },
   components: {
   },
-  mounted () {
+  mounted() {
     this.commonsystemconfigInfo()
   },
   methods: {
-    addItem () {
+    addItem() {
       this.financeConfigEntity.financeConfigList.push({
         limitType: 0,
         overdueFineInterval: 0,
@@ -182,7 +186,7 @@ export default {
         overdueFineUpperLimit: ''
       })
     },
-    save () {
+    save() {
       this.$refs.financeConfigEntity.validate(valid => {
         if (valid) {
           const params = {
@@ -194,7 +198,7 @@ export default {
       })
     },
     // 保存接口
-    commonsystemconfigSave (params) {
+    commonsystemconfigSave(params) {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigSave(params).finally(() => {
         this.commonsystemconfigInfo()
@@ -202,17 +206,17 @@ export default {
         this.isEdit = false
       })
     },
-    cancel () {
+    cancel() {
       this.isEdit = false
       this.handleDefault()
     },
     // 处理返回数据
-    handleDefault () {
+    handleDefault() {
       Object.keys(this.financeConfigEntity).forEach(key => {
         this.financeConfigEntity[key] = this.tempObj[key] || this.financeConfigEntity[key]
       })
     },
-    commonsystemconfigInfo () {
+    commonsystemconfigInfo() {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigInfo(null, 3).then(res => {
         this.tempObj = JSON.parse(res.data.configJson)

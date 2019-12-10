@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 16:37:05
+ * @LastEditTime: 2019-12-10 10:35:44
  * @Description: description
  -->
 <template>
@@ -16,18 +16,23 @@
   >
     <template slot="button">
       <el-button
-        v-if="!detailForm.state"
+        v-if="!detailForm.state && authorityButtons.includes('psi_serviceprovider_1004')"
         size="mini"
         type="danger"
         @click="commonserviceproviderUpdate(rowData.id, 1)"
       >停用</el-button>
       <el-button
-        v-else
+        v-if="detailForm.state && authorityButtons.includes('psi_serviceprovider_1003')"
         size="mini"
         type="primary"
         @click="commonserviceproviderUpdate(rowData.id, 0)"
       >启用</el-button>
-      <el-button size="mini" type="primary" @click="showEdit = true">编辑</el-button>
+      <el-button
+        v-if="authorityButtons.includes('psi_serviceprovider_1002')"
+        size="mini"
+        type="primary"
+        @click="showEdit = true"
+      >编辑</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情" name="detail">
@@ -92,7 +97,7 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       activeTab: 'detail',
       showEdit: false,
@@ -103,24 +108,24 @@ export default {
       status: []
     }
   },
-  mounted () {
+  mounted() {
     this.checkVisible();
     this.commonserviceproviderInfoBycode()
   },
   watch: {
-    visible () {
+    visible() {
       this.checkVisible();
     }
   },
   methods: {
-    refresh () {
+    refresh() {
       this.commonserviceproviderInfoBycode()
       this.$emit('refresh')
     },
-    checkVisible () {
+    checkVisible() {
       this.showDetailPage = this.visible;
     },
-    commonserviceproviderInfoBycode () {
+    commonserviceproviderInfoBycode() {
       this.loading = true
       this.$api.seePsiCommonService.commonserviceproviderInfoBycode(null, this.code).then(res => {
         this.detailForm = res.data || {}
@@ -138,7 +143,7 @@ export default {
         this.loading = false
       })
     },
-    fbillGetClientFbillStatistics () {
+    fbillGetClientFbillStatistics() {
       this.$api.seePsiFinanceService.fbillGetClientFbillStatistics({
         clientType: 2,
         clientId: this.detailForm.id,
@@ -148,7 +153,7 @@ export default {
         this.totalAmount = res.data
       })
     },
-    commonserviceproviderUpdate (id, state) {
+    commonserviceproviderUpdate(id, state) {
       this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
