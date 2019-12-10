@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 15:09:41
+ * @LastEditTime: 2019-12-10 15:47:58
  * @Description: 退货商品商品信息
 */
 <template>
@@ -107,12 +107,12 @@
           show-overflow-tooltip
         />
 
-        <el-table-column
+        <!-- <el-table-column
           prop=""
           min-width="80"
           label="销售成本"
           show-overflow-tooltip
-        />
+        /> -->
 
         <el-table-column
           prop="commodityNumber"
