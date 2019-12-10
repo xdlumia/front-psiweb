@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:58:32
+ * @LastEditTime: 2019-12-10 12:39:29
  * @Description: 销售-收入流水
  */
 <template>
@@ -74,11 +74,9 @@
       :visible.sync="detailVisible"
       :rowData="rowData"
       :code="rowData.incomeRecordCode"
-      <<<<<<<
       HEAD
-      @reload="this.$refs.table.reload()"=======@reload="$refs.table.reload()"
-    >>>>>>> dev
-      />
+      @reload="$refs.table.reload()"
+    />
   </div>
 </template>
 <script>
