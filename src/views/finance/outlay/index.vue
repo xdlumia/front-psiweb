@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 19:20:34
+ * @LastEditTime: 2019-12-10 10:10:47
  * @Description: 销售-支出流水
  */
 <template>
@@ -11,7 +11,7 @@
       busType="54"
       ref="table"
       :filter="true"
-      :moreButton="true"
+      :exportButton="true"
       :column="true"
       title="支出流水"
       api="seePsiFinanceService.payrecordList"
@@ -69,7 +69,7 @@
       :visible.sync="detailVisible"
       :rowData="rowData"
       :code="rowData.incomeRecordCode"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
   </div>
 </template>
