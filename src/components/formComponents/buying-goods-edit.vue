@@ -16,9 +16,16 @@
           class="ml10"
           v-if="(!disabled)&&!hide.includes('add')&&!show.includes(`!add`)"
         />
-        <span class="fr" v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')">
+        <span
+          class="fr"
+          v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')"
+        >
           <span>
-            <el-link :underline="false" @click="showInFull=true" type="primary">全屏显示</el-link>
+            <el-link
+              :underline="false"
+              @click="showInFull=true"
+              type="primary"
+            >全屏显示</el-link>
           </span>
         </span>
       </div>
@@ -51,7 +58,10 @@
         >
           <template slot-scope="{row}">
             <template v-if="item.key=='commodityCode'">
-              <div @click="openCommodityDetail(row.commodityCode)" class="d-text-blue d-elip d-pointer">{{row.commodityCode}}</div>
+              <div
+                @click="openCommodityDetail(row.commodityCode)"
+                class="d-text-blue d-elip d-pointer"
+              >{{row.commodityCode}}</div>
             </template>
             <template v-else-if="item.key=='goodsPic'">
               <el-image
@@ -61,7 +71,10 @@
                 fit="contain"
                 style="width: 100px; height: 40px"
               >
-                <span slot="error" class="d-text-qgray">暂无图片</span>
+                <span
+                  slot="error"
+                  class="d-text-qgray"
+                >暂无图片</span>
               </el-image>
             </template>
             <!-- 字典开始 -->
@@ -87,7 +100,11 @@
                 size="mini"
                 v-if="isChildShowColumn(row)"
               >
-                <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]" />
+                <el-input
+                  :disabled="disabled"
+                  class="wfull"
+                  v-model="row[item.prop]"
+                />
               </el-form-item>
             </template>
             <!-- 价格输入结束 -->
@@ -104,16 +121,27 @@
                 size="mini"
                 v-if="isChildShowColumn(row)"
               >
-                <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]"></el-input>
+                <el-input
+                  :disabled="disabled"
+                  class="wfull"
+                  v-model="row[item.prop]"
+                ></el-input>
               </el-form-item>
             </template>
             <!-- 商品数量结束 -->
             <template v-else-if="item.key=='action'">
-              <i @click="deleteChoose(row)" class="el-icon-error d-pointer f20 d-text-red"></i>
+              <i
+                @click="deleteChoose(row)"
+                class="el-icon-error d-pointer f20 d-text-red"
+              ></i>
             </template>
             <!-- 选择开始 -->
             <template v-else-if="item.type=='selection'">
-              <el-form-item :prop="`${getCurrentFormProp(row,item.prop)}`" size="mini" v-if="isChildShowColumn(row)">
+              <el-form-item
+                :prop="`${getCurrentFormProp(row,item.prop)}`"
+                size="mini"
+                v-if="isChildShowColumn(row)"
+              >
                 <el-checkbox
                   :disabled="disabled"
                   :false-label="0"
@@ -126,9 +154,20 @@
             <!-- 选择结束 -->
             <!-- 展开子项开始 -->
             <template v-else-if="item.type=='expanded'">
-              <div class="expanded-icons d-text-gray" v-if="(row.children&&row.children.length)||row.configName">
-                <span @click="expand(row)" class="el-icon-plus d-pointer" v-if="!row.expanded"></span>
-                <span @click="expand(row)" class="el-icon-minus d-pointer" v-else></span>
+              <div
+                class="expanded-icons d-text-gray"
+                v-if="(row.children&&row.children.length)||row.configName"
+              >
+                <span
+                  @click="expand(row)"
+                  class="el-icon-plus d-pointer"
+                  v-if="!row.expanded"
+                ></span>
+                <span
+                  @click="expand(row)"
+                  class="el-icon-minus d-pointer"
+                  v-else
+                ></span>
               </div>
             </template>
             <!-- 展开子项结束 -->
@@ -153,7 +192,10 @@
             </template>
             <!-- 其他结束 -->
           </template>
-          <template slot="header" v-if="item.type=='selection'">
+          <template
+            slot="header"
+            v-if="item.type=='selection'"
+          >
             <el-checkbox
               :disabled="disabled"
               :false-label="0"
@@ -165,8 +207,15 @@
         </el-table-column>
       </el-table>
     </form-card>
-    <FullscreenElement :element="$refs.table" :visible.sync="showInFull" />
-    <CommodityDetail :code="currentCommodityCode" :visible.sync="showCommodityDetail" v-if="showCommodityDetail" />
+    <FullscreenElement
+      :element="$refs.table"
+      :visible.sync="showInFull"
+    />
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </div>
 </template>
 <script>
@@ -254,13 +303,13 @@ export default {
       { label: '退货数量', key: 'alterationNumberRate', width: 140, prop: 'alterationNumber', showOverflowTip: true, },
       { label: '退货单价', key: 'alterationPrice', width: 80, prop: 'alterationPrice', type: 'input', showOverflowTip: true, rules: [{ required: true }, { type: 'price' }] },
       { label: '税率%', key: 'taxRate', width: 80, prop: 'taxRate', format: a => a ? `${a}` : '-' },
-      { label: '含税总价', key: 'preTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+      {        label: '含税总价', key: 'preTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + (taxRate / 100)) * commodityNumber) || 0).toFixed(2)
       },
-      { label: '含税总价', key: 'purchasePreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+      {        label: '含税总价', key: 'purchasePreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + (taxRate / 100)) * commodityNumber) || 0).toFixed(2)
       },
-      { label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+      {        label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { alterationPrice, taxRate, alterationNumber }) => +Number((alterationPrice * (1 + (taxRate / 100)) * alterationNumber) || 0).toFixed(2)
       },
       { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber', type: 'number', showOverflowTip: true, },
@@ -434,7 +483,7 @@ export default {
       });
     },
     async loadChildren(row, node, cb) {
-      if(row.children) return cb(row.children);
+      if (row.children) return cb(row.children);
       let {
         data
       } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
@@ -466,8 +515,8 @@ export default {
                 item =>
                   +Number(
                     item[this.priceKey] *
-                      (1 + item.taxRate / 100) *
-                      item.commodityNumber || 0
+                    (1 + item.taxRate / 100) *
+                    item.commodityNumber || 0
                   ).toFixed(2)
               )
               .reduce((sum, item) => sum + item, 0)
@@ -574,8 +623,8 @@ export default {
     display: none;
   }
 }
-.hide-expanded{
-  .el-table__expand-icon{
+.hide-expanded {
+  .el-table__expand-icon {
     display: none !important;
   }
 }

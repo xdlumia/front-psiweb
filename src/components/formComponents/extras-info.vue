@@ -29,7 +29,6 @@ type="primary">保存</el-link>
           <el-input
             :disabled="!canEditable"
             :rows="3"
-            maxlength="300"
             placeholder="请输入备注信息"
             show-word-limit
             type="textarea"
