@@ -138,7 +138,7 @@
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
-              prop="creator"
+              prop="operator"
               min-width="100"
               label="借出人"
               show-overflow-tooltip

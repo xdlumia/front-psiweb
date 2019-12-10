@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 16:35:23
+ * @LastEditTime: 2019-12-10 10:43:53
  * @Description: 促销详情
  -->
 <template>
@@ -16,13 +16,23 @@
   >
     <template slot="button">
       <el-button
-        v-if="!detailForm.state"
+        v-if="!detailForm.state && authorityButtons.includes('psi_promotion_1004')"
         size="mini"
         type="danger"
         @click="commonpromotionUpdate(rowData.id, 1)"
       >停用</el-button>
-      <el-button v-else size="mini" type="primary" @click="commonpromotionUpdate(rowData.id, 0)">启用</el-button>
-      <el-button size="mini" type="primary" @click="showEdit = true">编辑</el-button>
+      <el-button
+        v-if="detailForm.state && authorityButtons.includes('psi_promotion_1003')"
+        size="mini"
+        type="primary"
+        @click="commonpromotionUpdate(rowData.id, 0)"
+      >启用</el-button>
+      <el-button
+        v-if="authorityButtons.includes('psi_promotion_1005')"
+        size="mini"
+        type="primary"
+        @click="showEdit = true"
+      >编辑</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
@@ -76,7 +86,7 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       showEdit: false,
       loading: false,
@@ -90,24 +100,24 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     this.checkVisible();
     this.commonpromotionInfoBycode()
   },
   watch: {
-    visible () {
+    visible() {
       this.checkVisible();
     }
   },
   methods: {
-    refresh () {
+    refresh() {
       this.commonpromotionInfoBycode()
       this.$emit('refresh')
     },
-    checkVisible () {
+    checkVisible() {
       this.showPop = this.visible;
     },
-    commonpromotionInfoBycode () {
+    commonpromotionInfoBycode() {
       this.loading = true
       this.$api.seePsiCommonService.commonpromotionInfoBycode(null, this.code).then(res => {
         this.detailForm = res.data
@@ -125,7 +135,7 @@ export default {
         this.loading = false
       })
     },
-    commonpromotionUpdate (id, state) {
+    commonpromotionUpdate(id, state) {
       this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

@@ -2,11 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
-<<<<<<< HEAD
- * @LastEditTime: 2019-12-07 19:22:22
-=======
- * @LastEditTime: 2019-12-09 16:29:59
->>>>>>> dev
+ * @LastEditTime: 2019-12-10 11:58:38
  * @Description: 费用分摊单详情
 */
 <template>
@@ -30,7 +26,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state || 0].includes(item.label)"
+            v-if="currStatusType[detail.state || 0].includes(item.label) && authorityButtons.includes(item.authCode)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -91,12 +87,12 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '提交审核', type: 'primary', authCode: '' },
-        { label: '编辑', type: 'primary', authCode: '' },
-        { label: '删除', type: 'danger', authCode: '' },
-        { label: '撤销审核', type: 'primary', authCode: '' },
-        { label: '通过', type: 'primary', authCode: '' },
-        { label: '驳回', type: 'primary', authCode: '' },
+        { label: '提交审核', type: 'primary', authCode: 'psi_sales_apportion_04' },
+        { label: '编辑', type: 'primary', authCode: 'psi_sales_apportion_05' },
+        { label: '删除', type: 'danger', authCode: 'psi_sales_apportion_06' },
+        { label: '撤销审核', type: 'primary', authCode: 'psi_sales_apportion_07' },
+        { label: '通过', type: 'primary', authCode: 'psi_sales_apportion_09' },
+        { label: '驳回', type: '', authCode: 'psi_sales_apportion_08' },
       ],
       /**
        * 根据当前状态判断显示哪些按钮

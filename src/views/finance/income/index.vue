@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-27 09:29:27
+ * @LastEditTime: 2019-12-10 10:58:32
  * @Description: 销售-收入流水
  */
 <template>
@@ -11,7 +11,7 @@
       busType="54"
       ref="table"
       :filter="true"
-      :moreButton="true"
+      :exportButton="authorityButtons.includes('psi_income_1003')"
       :column="true"
       title="收入流水"
       api="seePsiFinanceService.revenuerecordList"
@@ -27,11 +27,13 @@
           size="mini"
           icon="el-icon-plus"
           @click="addVisible = true"
+          v-if="authorityButtons.includes('psi_income_1001')"
         >新增收入流水</el-button>
         <el-button
           size="mini"
           @click="addTransferVisible = true"
           icon="el-icon-plus"
+          v-if="authorityButtons.includes('psi_income_1002')"
         >新增转账单</el-button>
       </template>
       <template slot-scope="{column,row,value}">

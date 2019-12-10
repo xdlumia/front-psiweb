@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 10:39:55
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-10 10:27:14
  * @Description: 表格头部 
  */
 <template>
@@ -41,13 +41,13 @@
           <el-button
             size="mini"
             @click="$emit('moreHandle', 'export')"
-            v-if="moreButton"
+            v-if="exportButton"
           >导出
           </el-button>
-          <slot name="moreButton"></slot>
+          <slot name="exportButton"></slot>
           <!-- <el-dropdown
             trigger="click"
-            v-if="moreButton"
+            v-if="exportButton"
           >
             <el-button
               size="mini"
@@ -60,7 +60,7 @@
               <el-dropdown-item>
                 <span @click="$emit('moreHandle', 'export')">导出</span>
               </el-dropdown-item>
-              <slot name="moreButton"></slot>
+              <slot name="exportButton"></slot>
             </el-dropdown-menu>
           </el-dropdown> -->
           <!-- 筛选 -->
@@ -233,7 +233,7 @@ export default {
       default: true
     },
     // 是否显示更多按钮
-    moreButton: {
+    exportButton: {
       type: Boolean,
       default: true
     },

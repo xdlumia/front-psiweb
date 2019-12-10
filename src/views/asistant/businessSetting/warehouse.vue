@@ -2,36 +2,36 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-05 17:54:34
+ * @LastEditTime: 2019-12-10 10:38:23
  * @Description: 业务设置-库房
  -->
 <template>
   <div class v-loading="loading">
     <div>
-      <el-col :span="16">
-        <h3 class="mt10 d-text-gray b">拆卸单设置</h3>
-      </el-col>
-      <el-col :span="8" class="ar">
-        <el-button
-          v-if="!isEdit"
-          type="primary"
-          size="small"
-          style="margin-top: 20px;"
-          @click="isEdit = true"
-        >编辑</el-button>
-        <el-button
-          v-if="isEdit"
-          type="primary"
-          size="small"
-          style="margin-top: 20px;"
-          @click="save"
-        >保存</el-button>
-        <el-button v-if="isEdit" size="small" style="margin-top: 20px;"
-@click="cancel">取消</el-button>
-      </el-col>
+      <el-row>
+        <el-col :span="16">
+          <h3 class="mt10 d-text-gray b">拆卸单设置</h3>
+        </el-col>
+        <el-col :span="8" class="ar">
+          <el-button
+            v-if="!isEdit && authorityButtons.includes('asystem_assist_warehouse_10001')"
+            type="primary"
+            size="small"
+            style="margin-top: 20px;"
+            @click="isEdit = true"
+          >编辑</el-button>
+          <el-button
+            v-if="isEdit"
+            type="primary"
+            size="small"
+            style="margin-top: 20px;"
+            @click="save"
+          >保存</el-button>
+          <el-button v-if="isEdit" size="small" style="margin-top: 20px;" @click="cancel">取消</el-button>
+        </el-col>
+      </el-row>
     </div>
-    <el-form size="small" :model="warehouseEntity" :disabled="!isEdit"
-label-width="190px">
+    <el-form size="small" :model="warehouseEntity" :disabled="!isEdit" label-width="190px">
       <fieldset class="d-fieldset mb20">
         <legend>
           <i class="d-round12 d-circle d-bg-blue"></i>
@@ -253,7 +253,7 @@ label-width="190px">
 
 <script type='text/ecmascript-6'>
 export default {
-  data() {
+  data () {
     return {
       loading: false,
       isEdit: false,
@@ -274,11 +274,11 @@ export default {
   },
   components: {
   },
-  mounted() {
+  mounted () {
     this.commonsystemconfigInfo()
   },
   methods: {
-    save() {
+    save () {
       const params = {
         configType: 2,
         configJson: JSON.stringify(this.warehouseEntity)
@@ -286,7 +286,7 @@ export default {
       this.commonsystemconfigSave(params)
     },
     // 保存接口
-    commonsystemconfigSave(params) {
+    commonsystemconfigSave (params) {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigSave(params).finally(() => {
         this.commonsystemconfigInfo()
@@ -295,21 +295,21 @@ export default {
         this.wmsBusinessSynchConfig(params)
       })
     },
-    wmsBusinessSynchConfig(params) {
+    wmsBusinessSynchConfig (params) {
       this.$api.seePsiWmsService.wmsBusinessSynchConfig(params)
     },
-    cancel() {
+    cancel () {
       this.isEdit = false
       this.handleDefault()
     },
     // 处理返回数据
-    handleDefault() {
+    handleDefault () {
       Object.keys(this.warehouseEntity).forEach(key => {
         this.warehouseEntity[key] = this.tempObj[key] || this.warehouseEntity[key]
       })
       console.log(this.warehouseEntity)
     },
-    commonsystemconfigInfo() {
+    commonsystemconfigInfo () {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigInfo(null, 2).then(res => {
         this.tempObj = JSON.parse(res.data.configJson)

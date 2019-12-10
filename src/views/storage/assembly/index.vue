@@ -11,6 +11,7 @@
       busType="10"
       :filterOptions='filterOptions'
       selection
+      :exportButton="authorityButtons.includes('psi_wms_assembly_03')"
       ref='allTable'
       api="seePsiWmsService.wmsassembletaskList"
       exportApi="seePsiWmsService.wmsassembletaskExport"

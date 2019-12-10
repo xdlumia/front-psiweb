@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 16:45:56
+ * @LastEditTime: 2019-12-10 10:33:41
  * @Description: 报价单配置
  -->
 <template>
@@ -16,10 +16,11 @@
       api="seePsiCommonService.commonquotationconfigList"
       :params="Object.assign(queryForm, params)"
       exportApi="seePsiCommonService.commonquotationconfigExport"
+      :exportButton="authorityButtons.includes('psi_pricelist_1005')"
     >
       <template v-slot:filter>自定义筛选列</template>
       <!-- 自定义按钮功能 -->
-      <template v-slot:button>
+      <template v-slot:button v-if="authorityButtons.includes('psi_pricelist_1001')">
         <el-button size="mini" type="primary" @click="editId = null,visible = true">新增</el-button>
       </template>
       <template slot-scope="{column,row,value,scope}">

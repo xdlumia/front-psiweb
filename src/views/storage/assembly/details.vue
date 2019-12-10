@@ -42,7 +42,7 @@
           type="primary"
         >继续</el-button>
         <el-button
-          v-if="(detailForm.assembleTaskState == 1 || detailForm.assembleTaskState == 2) && detailForm.isHang==0 && detailForm.assembleTaskState != -1"
+          v-if="(detailForm.assembleTaskState == 1 || detailForm.assembleTaskState == 2) && detailForm.isHang==0 && detailForm.assembleTaskState != -1 && authorityButtons.includes('psi_wms_assembly_04')"
           @click="goodsVisible=true"
           size="mini"
           type="primary"

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 16:45:17
+ * @LastEditTime: 2019-12-10 11:52:05
  * @Description: 财务-支出流水详情
 */
 <template>
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state|| 0].includes(item.label)"
+            v-if="currStatusType[detail.state|| 0].includes(item.label) && authorityButtons.includes(item.authCode)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -66,7 +66,7 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '删除', type: 'danger', authCode: '' },
+        { label: '删除', type: 'danger', authCode: 'psi_outlay_1005' },
       ],
       editVisible: false,
       /**
@@ -75,9 +75,8 @@ export default {
       // currStatus: 3, // 当前数据状态
       currStatusType: {
         '0': ['删除'], // 未匹配
-        '1': [], // 已匹配
-        '2': ['部分匹配'], // 部分匹配
-        '3': [], //未匹配
+        '1': [], // 部分匹配
+        '2': [], // 已匹配
       },
     }
   },

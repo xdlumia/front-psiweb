@@ -2,34 +2,20 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
-<<<<<<< HEAD
- * @LastEditTime: 2019-11-21 10:07:33
+ * @LastEditTime: 2019-12-10 11:57:53
  * @Description: 财务-支出流水
-=======
- * @LastEditTime: 2019-11-26 19:20:34
- * @Description: 销售-支出流水
->>>>>>> dev
  */
 <template>
   <div>
     <table-view
-<<<<<<< HEAD
-      busType="55"
-=======
       busType="54"
->>>>>>> dev
       ref="table"
       :filter="true"
-      :moreButton="true"
+      :exportButton="authorityButtons.includes('psi_outlay_1003')"
       :column="true"
       title="支出流水"
-<<<<<<< HEAD
-      api="seePsiSaleService.salesreturnedList"
-      exportApi="seePsiSaleService.salesreturnedExport"
-=======
       api="seePsiFinanceService.payrecordList"
       exportApi="seePsiFinanceService.payrecordExport"
->>>>>>> dev
       :params="Object.assign(queryForm,params)"
     >
       <template slot="button">
@@ -38,11 +24,13 @@
           size="mini"
           icon="el-icon-plus"
           @click="addVisible = true"
+          v-if="authorityButtons.includes('psi_outlay_1001')"
         >新增支出流水</el-button>
         <el-button
           size="mini"
           @click="addTransferVisible = true"
           icon="el-icon-plus"
+          v-if="authorityButtons.includes('psi_outlay_1002')"
         >新增转账单</el-button>
       </template>
       <template slot="top-filter">
@@ -83,7 +71,7 @@
       :visible.sync="detailVisible"
       :rowData="rowData"
       :code="rowData.incomeRecordCode"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
   </div>
 </template>

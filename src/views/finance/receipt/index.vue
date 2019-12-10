@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 18:46:42
+ * @LastEditTime: 2019-12-10 11:05:45
  * @Description: 销售-待收票
  */
 <template>
@@ -11,7 +11,7 @@
       busType="58"
       ref="table"
       :filter="true"
-      :moreButton="true"
+      :exportButton="authorityButtons.includes('psi_receipt_1007')"
       :column="true"
       title="待收票"
       api="seePsiFinanceService.finvoicereceivableList"

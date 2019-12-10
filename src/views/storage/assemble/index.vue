@@ -12,6 +12,7 @@
       busType="9"
       :filterOptions='filterOptions'
       selection
+      :exportButton="authorityButtons.includes('psi_wms_assemble_07')"
       ref='allTable'
       :params="params"
       @response="onTableData"
@@ -32,6 +33,7 @@
           @click="automaticReload()"
         >刷新</el-button> -->
         <el-button
+          v-if="authorityButtons.includes('psi_wms_assemble_06')"
           type="primary"
           size='mini'
           @click="addVisible = true"
@@ -50,7 +52,7 @@
             v-if="row.generateOrder>0"
           ></span>
           <el-button
-            v-if="row.generateOrder>0"
+            v-if="row.generateOrder>0 && authorityButtons.includes('psi_wms_assemble_04')"
             :disabled='row.generateOrder == 1'
             class="ml15"
             size="mini"

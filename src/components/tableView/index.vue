@@ -2,25 +2,25 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 17:42:01
+ * @LastEditTime: 2019-12-10 10:12:17
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
  * @params busType 当前是哪个功能页
- * @params selection 表格是否支持多选 默认false
- * @params filter 是否显示筛选 默认false
+ * @params selection 表格是否支持多选 默认true
+ * @params filter 是否显示筛选 默认true
  * @params exportApi 导出api接口
- * @params moreButton 是否显示更多按钮 默认false
+ * @params exportButton 是否显示导出按钮 默认true
+ * @params column 是否显示列 默认true
  * @slot filter 自定义筛选
  * @slot button 自定义操作按钮
- * @slot moreButton 自定义更多操作下拉按钮
  * @example 
   <!-- 
   <table-view
     busType="1"
     ref="table"
     :filter="true"
-    :moreButton="true"
+    :exportButton="true"
     :column="true"
     title="报价单"
     api="bizSystemService.getEmployeeList"
@@ -44,7 +44,7 @@
         @click="quoteHandle('copy')"
       >复制生成报价单</el-button>
     </template>
-    <template v-slot:moreButton>自定义更多按钮</template>
+    <template v-slot:exportButton>自定义更多按钮</template>
     <template slot-scope="{column,row,value,scope}">
       {{scope.$index}}
       <span @click="quoteHandle('quote',row)">报价单编号</span>
@@ -68,7 +68,7 @@
       @clear-filter="clearFilter"
       :title="title"
       :filter="filter"
-      :moreButton="moreButton"
+      :exportButton="exportButton"
       :column="this.column"
       :statusData="statusList"
       :staData="staList"
@@ -78,8 +78,8 @@
         <slot name="button"></slot>
       </template>
       <!-- 自定义更多按钮 -->
-      <template v-slot:moreButton>
-        <slot name="moreButton"></slot>
+      <template v-slot:exportButton>
+        <slot name="exportButton"></slot>
       </template>
       <!-- 自定义筛选 -->
       <template v-slot:filter>
@@ -184,7 +184,7 @@ export default {
       default: true
     },
     // 是否显示更多按钮
-    moreButton: {
+    exportButton: {
       type: Boolean,
       default: true
     },

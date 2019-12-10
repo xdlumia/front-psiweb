@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 16:40:53
+ * @LastEditTime: 2019-12-10 10:19:38
  * @Description: 销售-报价单
  */
 <template>
@@ -12,7 +12,7 @@
       busType="15"
       ref="table"
       :filter="true"
-      :moreButton="true"
+      :exportButton="authorityButtons.includes('psi_sales_quote_15')"
       :column="true"
       title="报价单"
       api="seePsiSaleService.salesquotationList"
@@ -26,14 +26,17 @@
           size="mini"
           type="primary"
           @click="eventHandle('quoteAddVisible')"
+          v-if="authorityButtons.includes('psi_sales_quote_02')"
         >新建</el-button>
         <el-button
           size="mini"
           @click="eventHandle('mergeVisible')"
+          v-if="authorityButtons.includes('psi_sales_quote_03')"
         >合并生成出库单</el-button>
         <el-button
           size="mini"
           @click="eventHandle('quoteCopyVisible')"
+          v-if="authorityButtons.includes('psi_sales_quote_04')"
         >复制生成报价单</el-button>
       </template>
       <template slot-scope="{column,row,value}">
