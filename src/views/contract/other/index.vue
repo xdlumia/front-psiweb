@@ -2,12 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:38:31
+ * @LastEditTime: 2019-12-10 16:10:01
  * @Description: 其他合同
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
+      :exportButton="authorityButtons.includes('psi_other_contract_01')"
       :filterOptions="filterOptions"
       :params="Object.assign(defaultParams,params)"
       api="seePsiContractService.contractList"
@@ -17,7 +18,7 @@
       title="其他合同"
     >
       <template slot="button">
-        <el-button @click="showEdit=true" size="mini" type="primary">新增</el-button>
+        <el-button @click="showEdit=true" size="mini" type="primary" v-if="authorityButtons.includes('psi_other_contract_add')">新增</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>

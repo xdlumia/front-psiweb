@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-04 13:36:20
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-26 15:19:52
+ * @LastEditTime: 2019-12-10 13:38:27
  * @Description: 应收账单
 */
 <template>
@@ -43,7 +43,17 @@ export default {
           addIncoming: 'seePsiFinanceService.revenuebillInsertRoutedMatching',
           matchIncoming: 'seePsiFinanceService.revenuebillRoutedMatching'
         },
-        show: ['paybillLog']
+        show: ['paybillLog'],
+        func: {
+          lateFee: 'psi_receivable_01',
+          operateRec: 'psi_receivable_02',
+          addIncoming: 'psi_receivable_04',
+          delIncoming: 'psi_receivable_08',
+          matchIncoming: 'psi_receivable_05',
+          export: 'psi_receivable_03',
+          addInvoice: 'psi_receivable_04',
+          edit: 'psi_receivable_07'
+        }
       }
     };
   },

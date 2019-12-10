@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 14:40:11
+ * @LastEditTime: 2019-12-10 11:02:15
  * @Description: 采购入库单
 */
 <template>
@@ -22,7 +22,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
-        v-if="detail&&[0,5].includes(detail.state)"
+        v-if="detail&&[0,5].includes(detail.state)&&authorityButtons.includes('psi_purchase_storage_04')"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinCancel',{
@@ -31,7 +31,7 @@
         },'撤销审核')"
         size="mini"
         type="danger"
-        v-if="detail&&[1].includes(detail.state)"
+        v-if="detail&&[1].includes(detail.state)&&authorityButtons.includes('psi_purchase_storage_07')"
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinPassApproval',{
@@ -41,7 +41,7 @@
         },'通过')"
         size="mini"
         type="primary"
-        v-if="detail&&[1].includes(detail.state)"
+        v-if="detail&&[1].includes(detail.state)&&authorityButtons.includes('psi_purchase_storage_09')"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinReject',{
@@ -50,23 +50,28 @@
         },'驳回',true)"
         size="mini"
         type="danger"
-        v-if="detail&&[1].includes(detail.state)"
+        v-if="detail&&[1].includes(detail.state)&&authorityButtons.includes('psi_purchase_storage_08')"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0,5].includes(detail.state)">编辑</el-button>
+      <el-button
+        @click="showEdit=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&[0,5].includes(detail.state)&&authorityButtons.includes('psi_purchase_storage_05')"
+      >编辑</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinLogicDelete',{
           id:detail.id,
         },'删除')"
         size="mini"
         type="danger"
-        v-if="detail&&[0,5].includes(detail.state)"
+        v-if="detail&&[0,5].includes(detail.state)&&authorityButtons.includes('psi_purchase_storage_06')"
       >删除</el-button>
       <el-button
         :disabled="!(canReject&&detail.isAlteration)"
         @click="showReject=true"
         size="mini"
         type="primary"
-        v-if="detail&&[3,4].includes(detail.state)&&detail.source!='直发单'"
+        v-if="detail&&[3,4].includes(detail.state)&&detail.source!='直发单'&&authorityButtons.includes('psi_purchase_storage_10')"
       >退货</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinShutdown',{
@@ -76,10 +81,20 @@
         },'终止')"
         size="mini"
         type="danger"
-        v-if="detail&&[3].includes(detail.state)"
+        v-if="detail&&[3].includes(detail.state)&&authorityButtons.includes('psi_purchase_storage_11')"
       >终止</el-button>
-      <el-button @click="collectInvoiceApply" size="mini" type="primary" v-if="detail&&[3,4].includes(detail.state)">收票申请</el-button>
-      <el-button @click="generateContract" size="mini" type="primary" v-if="detail&&[3].includes(detail.state)">生成合同</el-button>
+      <el-button
+        @click="collectInvoiceApply"
+        size="mini"
+        type="primary"
+        v-if="detail&&[3,4].includes(detail.state)&&authorityButtons.includes('psi_purchase_storage_12')"
+      >收票申请</el-button>
+      <el-button
+        @click="generateContract"
+        size="mini"
+        type="primary"
+        v-if="detail&&[3].includes(detail.state)&&authorityButtons.includes('psi_purchase_storage_03')"
+      >生成合同</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">

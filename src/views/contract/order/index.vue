@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:29:35
+ * @LastEditTime: 2019-12-10 16:09:50
  * @Description: 采购合同
 */
 <template>
@@ -15,6 +15,7 @@
       exportApi="seePsiContractService.contractpurchaseExport"
       ref="tableView"
       title="采购合同"
+      :exportButton="authorityButtons.includes('psi_order_contract_01')"
     >
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>

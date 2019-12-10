@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 16:52:32
+ * @LastEditTime: 2019-12-10 16:16:18
  * @Description: 生成销售退货单
 */
 <template>
@@ -208,7 +208,8 @@ export default {
       }
     },
     // 保存表单数据
-    saveHandle() {
+    async saveHandle() {
+      await this.$showFormError(this.$refs.form)
       this.$refs.form.validate(valid => {
         if (valid) {
           // rules 表单验证是否通过

@@ -316,9 +316,6 @@ export default {
   padding: 0px;
   padding-top: 5px;
 }
-/deep/.el-input__suffix {
-  display: none !important;
-}
 </style>
 <style>
 .borrow-goods-info .el-autocomplete-suggestion {

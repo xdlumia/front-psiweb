@@ -2,12 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-07 14:22:16
+ * @LastEditTime: 2019-12-10 10:22:03
  * @Description: 采购-备货单
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
     <TableView
+      :exportButton="authorityButtons.includes('psi_purchase_stock_11')"
       :filterOptions="filterOptions"
       :params="Object.assign(defaultParams,params)"
       api="seePsiPurchaseService.purchasestockorderList"
@@ -17,7 +18,7 @@
       title="备货单"
     >
       <template slot="button">
-        <el-button @click="showAdd=true" size="mini" type="primary">新建</el-button>
+        <el-button @click="showAdd=true" size="mini" type="primary" v-if="authorityButtons.includes('psi_purchase_stock_04')">新建</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='stockCode'">

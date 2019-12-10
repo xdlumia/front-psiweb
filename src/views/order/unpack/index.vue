@@ -2,12 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 16:11:55
+ * @LastEditTime: 2019-12-10 11:06:59
  * @Description: 采购-拆卸单
 */
 <template>
   <div class="buying-requisition-page wfull hfull" v-loading="loading">
     <TableView
+      :exportButton="authorityButtons.includes('psi_purchase_unpack_13')"
       :filterOptions="filterOptions"
       :params="Object.assign(defaultParams,params)"
       @response="onTableData"
@@ -26,8 +27,15 @@
         <span v-if="prop=='createTime'">{{value}}</span>
         <span v-else-if="prop=='sequence'">{{value>0?value:''}}</span>
         <span v-else-if="prop=='operation'">
-          <span class="elTableDragDefault el-icon-rank f20" v-if="row.sequence>0"></span>
-          <el-button :disabled="row.sequence==1" @click="setTop(row)" class="ml10" size="mini" type="primary" v-if="row.sequence>0">置顶</el-button>
+          <span class="elTableDragDefault el-icon-rank f20" v-if="row.sequence>0&&authorityButtons.includes('psi_purchase_unpack_10')"></span>
+          <el-button
+            :disabled="row.sequence==1"
+            @click="setTop(row)"
+            class="ml10"
+            size="mini"
+            type="primary"
+            v-if="row.sequence>0&&authorityButtons.includes('psi_purchase_unpack_10')"
+          >置顶</el-button>
         </span>
         <span v-else-if="prop=='disassemblyOrderState'">{{stateText[value]}}</span>
         <span v-else-if="prop=='disassemblyOrderCode'">

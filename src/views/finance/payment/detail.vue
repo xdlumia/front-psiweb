@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 17:35:59
+ * @LastEditTime: 2019-12-10 11:39:34
  * @Description: 付款单
 */
 <template>
@@ -15,7 +15,12 @@
     width="990px"
   >
     <template slot="button">
-      <el-button @click="showApply=true" size="mini" type="primary" v-if="detail&&[-1,3].includes(detail.state)">付款申请</el-button>
+      <el-button
+        @click="showApply=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&[-1,3].includes(detail.state)&&authorityButtons.includes('psi_payment_05')"
+      >付款申请</el-button>
       <el-button
         @click="$submission('seePsiFinanceService.paybillPassApproval',{
           apprpvalNode:detail.apprpvalNode,
@@ -24,7 +29,7 @@
         },'通过')"
         size="mini"
         type="primary"
-        v-if="detail&&[0].includes(detail.state)"
+        v-if="detail&&[0].includes(detail.state)&&authorityButtons.includes('psi_payment_01')"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiFinanceService.paybillReject',{
@@ -34,7 +39,7 @@
         },'驳回',true)"
         size="mini"
         type="danger"
-        v-if="detail&&[0,1].includes(detail.state)"
+        v-if="detail&&[0,1].includes(detail.state)&&authorityButtons.includes('psi_payment_06')"
       >驳回</el-button>
       <el-button
         @click="$submission('seePsiFinanceService.paybillAuditApproval',{
@@ -44,14 +49,14 @@
         },'复核通过')"
         size="mini"
         type="primary"
-        v-if="detail&&[1].includes(detail.state)"
+        v-if="detail&&[1].includes(detail.state)&&authorityButtons.includes('psi_payment_02')"
       >复核通过</el-button>
       <!-- :billAmount="+(Number(detail.billTotalAmount-detail.factAmount)||0).toFixed(2)" -->
       <el-button
         @click="addIncoming()"
         size="mini"
         type="primary"
-        v-if="detail&&[2].includes(detail.state)&&+Number(detail.billTotalAmount-detail.factAmount).toFixed(2)"
+        v-if="detail&&[2].includes(detail.state)&&+Number(detail.billTotalAmount-detail.factAmount).toFixed(2)&&authorityButtons.includes('psi_payment_03')"
       >付款</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">

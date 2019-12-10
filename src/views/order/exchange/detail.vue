@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 10:37:02
+ * @LastEditTime: 2019-12-10 11:23:31
  * @Description: 换货单
 */
 <template>
@@ -22,7 +22,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
-        v-if="detail&&[0,-1].includes(detail.swapState)"
+        v-if="detail&&[0,-1].includes(detail.swapState)&&authorityButtons.includes('psi_wms_swap_04')"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsswaporderCancel',{
@@ -31,7 +31,7 @@
         },'撤销审核')"
         size="mini"
         type="danger"
-        v-if="detail&&[1].includes(detail.swapState)"
+        v-if="detail&&[1].includes(detail.swapState)&&authorityButtons.includes('psi_wms_swap_07')"
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsswaporderPassApproval',{
@@ -41,7 +41,7 @@
         },'通过')"
         size="mini"
         type="primary"
-        v-if="detail&&[1].includes(detail.swapState)"
+        v-if="detail&&[1].includes(detail.swapState)&&authorityButtons.includes('psi_wms_swap_02')"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsswaporderReject',{
@@ -50,16 +50,21 @@
         },'驳回',true)"
         size="mini"
         type="danger"
-        v-if="detail&&[1].includes(detail.swapState)"
+        v-if="detail&&[1].includes(detail.swapState)&&authorityButtons.includes('psi_wms_swap_08')"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0,-1].includes(detail.swapState)">编辑</el-button>
+      <el-button
+        @click="showEdit=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&[0,-1].includes(detail.swapState)&&authorityButtons.includes('psi_wms_swap_05')"
+      >编辑</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsswaporderDelete',{
           id:detail.id
         },'删除')"
         size="mini"
         type="danger"
-        v-if="detail&&[0,-1].includes(detail.swapState)"
+        v-if="detail&&[0,-1].includes(detail.swapState)&&authorityButtons.includes('psi_wms_swap_06')"
       >删除</el-button>
       <!-- <el-button @click="showExchangeGoods=true" size="mini" type="primary">换货扫码</el-button> -->
     </template>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 10:36:50
+ * @LastEditTime: 2019-12-10 09:56:17
  * @Description: 采购单详情
 */
 <template>
@@ -20,12 +20,14 @@
         @click="orderStorageVisible=true"
         size="mini"
         type="primary"
+        v-if="authorityButtons.includes('psi_purchase_apply_04')"
       >采购</el-button>
       <el-button
         :disabled="!(waitBuyingNumber>0)"
         @click="addBorrowInVisible=true"
         size="mini"
         type="primary"
+        v-if="authorityButtons.includes('psi_purchase_apply_05')"
       >借入</el-button>
     </template>
     <el-tabs

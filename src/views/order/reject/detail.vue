@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 10:37:23
+ * @LastEditTime: 2019-12-10 11:04:01
  * @Description: 采购退货单
 */
 <template>
@@ -22,7 +22,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
-        v-if="detail&&[0,5].includes(detail.state)"
+        v-if="detail&&[0,5].includes(detail.state)&&authorityButtons.includes('psi_purchase_reject_03')"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasealterationCancel',{
@@ -31,7 +31,7 @@
         },'撤销审核')"
         size="mini"
         type="danger"
-        v-if="detail&&[1].includes(detail.state)"
+        v-if="detail&&[1].includes(detail.state)&&authorityButtons.includes('psi_purchase_reject_06')"
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasealterationPassApproval',{
@@ -41,7 +41,7 @@
         },'通过')"
         size="mini"
         type="primary"
-        v-if="detail&&[1].includes(detail.state)"
+        v-if="detail&&[1].includes(detail.state)&&authorityButtons.includes('psi_purchase_reject_08')"
       >通过</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasealterationReject',{
@@ -50,21 +50,26 @@
         },'驳回',true)"
         size="mini"
         type="danger"
-        v-if="detail&&[1].includes(detail.state)"
+        v-if="detail&&[1].includes(detail.state)&&authorityButtons.includes('psi_purchase_reject_07')"
       >驳回</el-button>
-      <el-button @click="showEdit=true" size="mini" type="primary" v-if="detail&&[0,5].includes(detail.state)">编辑</el-button>
+      <el-button
+        @click="showEdit=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&[0,5].includes(detail.state)&&authorityButtons.includes('psi_purchase_reject_04')"
+      >编辑</el-button>
       <el-button
         @click="$submission('seePsiPurchaseService.purchasealterationLogicDelete',{ id:detail.id },'删除')"
         size="mini"
         type="primary"
-        v-if="detail&&[0,5].includes(detail.state)"
+        v-if="detail&&[0,5].includes(detail.state)&&authorityButtons.includes('psi_purchase_reject_05')"
       >删除</el-button>
       <el-button
         :disabled="canReject"
         @click="showScanGoods=true"
         size="mini"
         type="primary"
-        v-if="detail&&[2,3].includes(detail.state)"
+        v-if="detail&&[2,3].includes(detail.state)&&authorityButtons.includes('psi_purchase_reject_09')"
       >退货扫码</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">

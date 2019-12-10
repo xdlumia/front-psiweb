@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 18:20:48
+ * @LastEditTime: 2019-12-10 16:16:02
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -146,6 +146,8 @@ export default {
         totalAmount: '', // 销售单总金额
         totalCostAmount: '', //销售参考价总金额
         totalNumber: '', //销售单总数量
+        employeeName: '',
+        employeeAssembleName: ''
       },
     }
   },
@@ -218,7 +220,8 @@ export default {
     },
 
     // 保存表单数据
-    saveHandle() {
+    async saveHandle() {
+      await this.$showFormError(this.$refs.form)
       this.$refs.form.validate(valid => {
         if (valid) {
           // 最大不能超过销售单总金额

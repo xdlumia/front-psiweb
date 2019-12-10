@@ -18,10 +18,10 @@
         >
           <el-form-item
             :rules="[  
-              {required:true,message:'必填项',trigger: 'input',}
+              {required:true,message:'必填项',trigger: 'change',}
           ]"
             label="选择拣货人"
-            prop="pickingPerson"
+            prop="employeeName"
             size="mini"
           >
             <employees-chosen
@@ -34,7 +34,7 @@
             >
               <el-input
                 :disabled="disabled"
-                :value="employeeName"
+                :value="data.employeeName"
                 size="mini"
               ></el-input>
             </employees-chosen>
@@ -46,10 +46,11 @@
         >
           <el-form-item
             :rules="[ 
-              {required:true,message:'必填项',trigger: 'input',}
+              {required:true,message:'必填项',trigger: 'change',}
           ]"
             label="选择组装人"
             size="mini"
+            prop="employeeAssembleName"
           >
             <employees-chosen
               :closeOnSelect="false"
@@ -60,7 +61,7 @@
             >
               <el-input
                 :disabled="disabled"
-                :value="employeeAssembleName"
+                :value="data.employeeAssembleName"
                 size="mini"
               ></el-input>
             </employees-chosen>
@@ -104,22 +105,22 @@ export default {
   data() {
     return {
       options: [],
-      employeeName: '',
-      employeeAssembleName: '',
+      // employeeName: '',
+      // employeeAssembleName: '',
     };
   },
   created() {
-    this.employeeName = this.$options.filters.userName(this.data.pickingPerson)
+    this.data.employeeName = this.$options.filters.userName(this.data.pickingPerson)
   },
   methods: {
     //选择拣货人员
     chooseChai(value) {
-      this.employeeName = value.employeeName;
+      this.data.employeeName = value.employeeName;
       this.data.pickingPerson = value.userId;
     },
     //选择组装人员
     chooseAssemble(value) {
-      this.employeeAssembleName = value.employeeName;
+      this.data.employeeAssembleName = value.employeeName;
       this.data.assemblePerson = value.userId;
     }
   }

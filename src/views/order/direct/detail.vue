@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:28:09
+ * @LastEditTime: 2019-12-10 10:55:37
  * @Description: 直发单详情
 */
 <template>
@@ -15,8 +15,18 @@
     width="990px"
   >
     <template slot="button">
-      <el-button @click="showDeliverGoods=true" size="mini" type="primary" v-if="detail&&[0,1].includes(detail.state)">发货</el-button>
-      <el-button @click="showAddOrderStorage=true" size="mini" type="primary" v-if="detail&&[0,1].includes(detail.state)">采购</el-button>
+      <el-button
+        @click="showDeliverGoods=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&[0,1].includes(detail.state)&&authorityButtons.includes('psi_purchase_direct_03')"
+      >发货</el-button>
+      <el-button
+        @click="showAddOrderStorage=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&[0,1].includes(detail.state)&&authorityButtons.includes('psi_purchase_direct_04')"
+      >采购</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
@@ -49,7 +59,13 @@
     </el-tabs>
     <addOrderStorage :joinCode="detail.directCode||code" :visible.sync="showAddOrderStorage" from="直发单" v-if="showAddOrderStorage" />
     <editDirect :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" v-if="showEdit" />
-    <deliverEdit :code="detail.directCode||code" :rowData="detail" :visible.sync="showDeliverGoods" @reload="setEdit(),$reload()" v-if="showDeliverGoods" />
+    <deliverEdit
+      :code="detail.directCode||code"
+      :rowData="detail"
+      :visible.sync="showDeliverGoods"
+      @reload="setEdit(),$reload()"
+      v-if="showDeliverGoods"
+    />
   </sideDetail>
 </template>
 <script>
@@ -78,8 +94,7 @@ export default {
       }
     };
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     async getDetail() {
       if (this.code) {

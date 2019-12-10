@@ -20,7 +20,7 @@
         <!-- && detailForm.generateOrder> 0  -->
         <!-- && detailForm.undistributedNum > 0 -->
         <el-button
-          v-if="detailForm.assembleOrderState !== 3 && detailForm.assembleOrderState !== -1 && authorityButtons.includes('psi_wms_assemble_03')"
+          v-if="detailForm.assembleOrderState !== 3 && detailForm.assembleOrderState !== -1 && authorityButtons.includes('psi_wms_assemble_03') && detailForm.undistributedNum > 0"
           type="primary"
           size='mini'
           @click="taskVisible = true"

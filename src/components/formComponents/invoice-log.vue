@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-30 13:41:36
+ * @LastEditTime: 2019-12-10 13:37:44
  * @Description: 开票/收票 记录 已绑定 1
 */
 <template>
@@ -10,7 +10,13 @@
     <div slot="title">
       <span>{{`${type==1?'收票':'开票'}记录`}}</span>
       <span class="fr">
-        <el-link :underline="false" @click="add()" class="mr10" type="primary">+新增</el-link>
+        <el-link
+          :underline="false"
+          @click="add()"
+          class="mr10"
+          type="primary"
+          v-if="pageConfig&&authorityButtons.includes(pageConfig.func.addInvoice)"
+        >+新增</el-link>
       </span>
     </div>
     <el-table :data="list" size="mini">
@@ -53,7 +59,8 @@ export default {
       default: () => ({})
     },
     type: [Number, String],
-    busCode: String
+    busCode: String,
+    pageConfig: Object
   },
   data() {
     return {
@@ -119,7 +126,7 @@ export default {
         this.data.busCode,
         this.data.busType
       );
-      console.log(data)
+      console.log(data);
       this.collectInvoiceData = data;
       this.$nextTick(() => (this.showCollectInvoice = true));
     }

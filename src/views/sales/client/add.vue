@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-06 16:00:00
+ * @LastEditTime: 2019-12-10 16:15:28
  * @Description: 客户管理-新增客户
 */
 <template>
@@ -155,7 +155,8 @@ export default {
         })
     },
     // 保存表单数据
-    saveHandle() {
+    async saveHandle() {
+      await this.$showFormError(this.$refs.form)
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true
