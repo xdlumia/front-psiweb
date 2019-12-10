@@ -164,7 +164,7 @@
       v-if="showCommodityDetail"
     />
   </div>
-</template> 
+</template>  
 <script>
 import FullscreenElement from '@/components/fullscreen-element';
 import purchaseWarehousing from './purchase-warehousing'

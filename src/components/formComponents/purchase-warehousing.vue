@@ -94,7 +94,6 @@
               min-width="140"
               show-overflow-tooltip
             >
-              <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
             </el-table-column>
             <el-table-column
               prop="configName"
@@ -115,7 +114,7 @@
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span>{{scope.row.categoryCode|dictionary('SC_JLDW')}}</span>
+                <span>{{scope.row.unit|dictionary('SC_JLDW')}}</span>
               </template>
             </el-table-column>
           </el-table>
