@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 11:32:26
+ * @LastEditTime: 2019-12-10 15:49:50
  * @Description: 退货商品商品信息
 */
 <template>
@@ -27,12 +27,6 @@
           show-overflow-tooltip
         />
         <el-table-column
-          prop="goodsName"
-          min-width="100"
-          label="商品名称"
-          show-overflow-tooltip
-        />
-        <el-table-column
           prop="goodsPic"
           min-width="100"
           label="商品图片"
@@ -50,6 +44,13 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="goodsName"
+          min-width="100"
+          label="商品名称"
+          show-overflow-tooltip
+        />
+
+        <el-table-column
           prop="categoryCode"
           min-width="80"
           label="商品类别"
@@ -60,9 +61,24 @@
           </template>
         </el-table-column>
         <el-table-column
+          v-if="title=='换入商品信息' || title=='退货商品信息'"
           prop="alterationNumber"
           min-width="80"
-          label="退货数量"
+          label="退回数量"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span
+              @click="changeRecord(scope)"
+              class="d-text-blue d-pointer"
+            >{{scope.row.alterationNumber}}/{{scope.row.commodityNumber}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="title=='换出商品信息'"
+          prop="alterationNumber"
+          min-width="80"
+          label="换出数量"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
@@ -91,12 +107,12 @@
           show-overflow-tooltip
         />
 
-        <el-table-column
-          prop="inventoryPrice"
+        <!-- <el-table-column
+          prop=""
           min-width="80"
           label="销售成本"
           show-overflow-tooltip
-        />
+        /> -->
 
         <el-table-column
           prop="commodityNumber"
@@ -131,6 +147,19 @@
           show-overflow-tooltip
         />
         <el-table-column
+          prop="inventoryNumber"
+          min-width="120"
+          label="总库存"
+          show-overflow-tooltip
+        />
+
+        <el-table-column
+          prop="note"
+          min-width="120"
+          label="备注"
+          show-overflow-tooltip
+        />
+        <el-table-column
           prop="isTeardown"
           min-width="120"
           label="是否拆卸"
@@ -146,17 +175,12 @@
           </template>
 
         </el-table-column>
-        <el-table-column
-          prop="note"
-          min-width="120"
-          label="备注"
-          show-overflow-tooltip
-        />
       </el-table>
     </form-card>
     <goods-return-record
       :rowData='rowData'
       :code="code"
+      title="title"
       :visible.sync='dialogVisible'
       v-if="dialogVisible"
     />
