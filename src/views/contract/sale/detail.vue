@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 16:41:22
+ * @LastEditTime: 2019-12-10 16:55:23
  * @Description: 销售合同
 */
 <template>
@@ -15,7 +15,7 @@
           <!-- 公司信息 -->
           <companyInfo :data="detail" :defaultData="getCompanyInfo()" disabled />
           <!-- 报价单信息 -->
-          <quote-info :options="(detail.quotationList || []).map(item=>item.quotationCode)" :quotationMap="getQuotationMap()" />
+          <quote-info :options="(detail.quotationList || []).map(item=>item.quotationCode)" />
           <!-- 账期信息 -->
           <order-storage-bill :data="detail" :hide="['isBillFee']" disabled />
         </el-form>

@@ -146,6 +146,8 @@ export default {
         totalAmount: '', // 销售单总金额
         totalCostAmount: '', //销售参考价总金额
         totalNumber: '', //销售单总数量
+        employeeName: '',
+        employeeAssembleName: ''
       },
     }
   },

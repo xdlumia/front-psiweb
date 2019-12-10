@@ -34,7 +34,7 @@
           <el-col :span="18">
             <el-select
               size="mini"
-              v-model="queryForm.companyId"
+              v-model="queryForm.companyAccountId"
             >
               <el-option
                 value
@@ -148,7 +148,7 @@ export default {
   computed: {
   },
   watch: {
-    'queryForm.companySettlementId': {
+    'queryForm.companyAccountId': {
       handler(newValue) {
         this.$refs.table.reload();
       }
