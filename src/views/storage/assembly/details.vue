@@ -18,25 +18,25 @@
     <div>
       <div class="drawer-header">
         <el-button
-          v-if="detailForm.assembleTaskState == 0 && detailForm.assembleTaskState !=-1"
+          v-if="detailForm.assembleTaskState == 0 && detailForm.assembleTaskState !=-1 && authorityButtons.includes('psi_wms_assembly_08')"
           @click="wmsassembletaskStart"
           size="mini"
           type="primary"
         >确认收到并开始</el-button>
         <el-button
-          v-if="detailForm.assembleTaskState !== -1 && detailForm.assembleTaskState !== 3"
+          v-if="detailForm.assembleTaskState !== -1 && detailForm.assembleTaskState !== 3 && authorityButtons.includes('psi_wms_assembly_06')"
           @click="wmsassembletaskTransferTask"
           size="mini"
           type="primary"
         >转移</el-button>
         <el-button
-          v-if="(detailForm.isHang == 0 || !detailForm.isHang) && detailForm.assembleTaskState != -1 && detailForm.assembleTaskState !== 3"
+          v-if="(detailForm.isHang == 0 || !detailForm.isHang) && detailForm.assembleTaskState != -1 && detailForm.assembleTaskState !== 3 && authorityButtons.includes('psi_wms_assembly_05')"
           @click="wmsdisassemblytaskHangTask"
           size="mini"
           type="primary"
         >挂起</el-button>
         <el-button
-          v-if="detailForm.isHang == 1 && detailForm.assembleTaskState != -1 && detailForm.assembleTaskState !== 3"
+          v-if="detailForm.isHang == 1 && detailForm.assembleTaskState != -1 && detailForm.assembleTaskState !== 3 && authorityButtons.includes('psi_wms_assembly_07')"
           @click="wmsassembletaskContinueTask"
           size="mini"
           type="primary"
