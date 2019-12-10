@@ -112,8 +112,8 @@ export default {
   watch: {
     'queryForm.companyId': {
       handler(newValue) {
-        console.log(newValue)
-        // this.$refs.table.reload();
+        // console.log(newValue)
+        this.$refs.table.reload();
       }
     }
   },
