@@ -2,18 +2,18 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:10:16
+ * @LastEditTime: 2019-12-10 10:12:17
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
  * @params busType 当前是哪个功能页
- * @params selection 表格是否支持多选 默认false
- * @params filter 是否显示筛选 默认false
+ * @params selection 表格是否支持多选 默认true
+ * @params filter 是否显示筛选 默认true
  * @params exportApi 导出api接口
- * @params exportButton 是否显示更多按钮 默认false
+ * @params exportButton 是否显示导出按钮 默认true
+ * @params column 是否显示列 默认true
  * @slot filter 自定义筛选
  * @slot button 自定义操作按钮
- * @slot exportButton 自定义更多操作下拉按钮
  * @example 
   <!-- 
   <table-view
