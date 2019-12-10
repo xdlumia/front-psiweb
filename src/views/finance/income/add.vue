@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 17:35:16
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-10 11:54:02
  * @Description: 新增收支流水
 */
 <template>
@@ -56,7 +56,10 @@
 import VisibleMixin from '@/utils/visibleMixin';
 export default {
   props: {
-    incomeType: String, //来源 0收入流水  1支出流水
+    incomeType: {
+      type: String,
+      default: ''
+    }, //来源 0收入流水  1支出流水
     accountTypes: Array,
   },
   mixins: [VisibleMixin],
@@ -99,9 +102,9 @@ export default {
 
   },
   methods: {
-    init(){
-      if(this.rowData){
-        Object.assign(this.form,this.rowData);
+    init() {
+      if (this.rowData) {
+        Object.assign(this.form, this.rowData);
       }
     },
 
