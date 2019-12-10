@@ -14,6 +14,7 @@
       :filterOptions='filterOptions'
       :params="params"
       selection
+      :exportButton="authorityButtons.includes('psi_wms_picking_03')"
       exportApi="seePsiWmsService.wmspickingorderExport"
       api="seePsiWmsService.wmspickingorderList"
       title="拣货单"
