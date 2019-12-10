@@ -63,6 +63,7 @@
           <template slot-scope="scope">{{scope.row.teardownNumber}}/{{scope.row.commodityNumber}}</template>
         </el-table-column> -->
         <el-table-column
+          fixed
           label="机器号/SN码"
           min-width="140"
           show-overflow-tooltip
@@ -74,7 +75,7 @@
             >{{scope.row.putinNumber || 0}}</span>
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="isTeardown"
           min-width="100"
           label="是否拆卸"
@@ -83,7 +84,7 @@
           <template slot-scope="scope">
             <span class="">{{scope.row.isTeardown == 1 ? '是' : '-'}}</span>
           </template>
-        </el-table-column>
+        </el-table-column> -->
 
         <el-table-column
           prop="commodityCode"
