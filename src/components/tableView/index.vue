@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 17:58:48
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-10 18:13:35
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -366,7 +366,7 @@ export default {
             // 收支状态
             else if (item.columnFields == 'incomeType') {
               type = 'select'
-              options = [{ label: '付款', value: 1 }, { label: '收款', value: 0 }]
+              options = [{ label: '支出', value: 1 }, { label: '收入', value: 0 }]
             }
             // 如果是账户信息
             else if (item.columnFields == 'companySettlementInfo') {

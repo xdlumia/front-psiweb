@@ -151,9 +151,9 @@ export default {
   computed: {
     formItems() {
       return this.items.filter(item => {
-        if(item.prop=='accountDate'){
+        if (item.prop == 'accountDate') {
           // 收款0 付款1
-          item.label = this.incomeType==0?'收款日期':'付款日期'
+          item.label = this.incomeType == 0 ? '收款日期' : '付款日期'
         }
         return !this.hide.includes(item.prop)
       })
