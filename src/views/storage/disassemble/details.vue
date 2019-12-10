@@ -17,25 +17,25 @@
     <div>
       <div class="drawer-header">
         <el-button
-          v-if="detailForm.disassemblyTaskState == 0"
+          v-if="detailForm.disassemblyTaskState == 0 && authorityButtons.includes('psi_wms_disassemble_07')"
           @click="wmsdisassemblytaskStart"
           size="mini"
           type="primary"
         >确认收到并开始</el-button>
         <el-button
-          v-if="(detailForm.disassemblyTaskState == 1 || detailForm.disassemblyTaskState == 2) && detailForm.isHang==0"
+          v-if="(detailForm.disassemblyTaskState == 1 || detailForm.disassemblyTaskState == 2) && detailForm.isHang==0 && authorityButtons.includes('psi_wms_disassemble_04')"
           @click="disassembleVisible =true"
           size="mini"
           type="primary"
         >拆卸</el-button>
         <el-button
-          v-if="detailForm.isHang == 0 && detailForm.disassemblyTaskState != -1 && detailForm.disassemblyTaskState != 3"
+          v-if="detailForm.isHang == 0 && detailForm.disassemblyTaskState != -1 && detailForm.disassemblyTaskState != 3 && authorityButtons.includes('psi_wms_disassemble_05')"
           @click="wmsdisassemblytaskHangTask"
           size="mini"
           type="primary"
         >挂起</el-button>
         <el-button
-          v-if="detailForm.isHang == 1 && detailForm.disassemblyTaskState != -1 && detailForm.disassemblyTaskState != 3"
+          v-if="detailForm.isHang == 1 && detailForm.disassemblyTaskState != -1 && detailForm.disassemblyTaskState != 3 && authorityButtons.includes('psi_wms_disassemble_06')"
           @click="wmsdisassemblytaskContinueTask"
           size="mini"
           type="primary"

@@ -16,6 +16,7 @@
       api="seePsiWmsService.wmsdisassemblytaskList"
       exportApi="seePsiWmsService.wmsdisassemblytaskExport"
       :params="params"
+      :exportButton="authorityButtons.includes('psi_wms_disassemble_03')"
       title="拆卸任务"
     >
       <template slot-scope="{column,row,value}">

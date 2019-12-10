@@ -14,12 +14,14 @@
       :params="params"
       ref="allTable"
       selection
+      :exportButton="authorityButtons.includes('psi_wms_reporting_03')"
       exportApi="seePsiWmsService.wmsreportinglossesExport"
       api="seePsiWmsService.wmsreportinglossesList"
       title="报溢报损单"
     >
       <template v-slot:button>
         <el-button
+          v-if="authorityButtons.includes('psi_wms_reporting_04')"
           type="primary"
           size='mini'
           @click="visible = true"

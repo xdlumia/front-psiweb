@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 17:57:50
+ * @LastEditTime: 2019-12-10 11:04:29
  * @Description: 销售-借款单
  */
 <template>
@@ -11,7 +11,7 @@
       busType="57"
       ref="table"
       :filter="true"
-      :moreButton="true"
+      :exportButton="authorityButtons.includes('psi_borrow_1002')"
       :column="true"
       title="借款单"
       api="seePsiFinanceService.fborrowingList"
@@ -27,6 +27,7 @@
           size="mini"
           icon="el-icon-plus"
           @click="addVisible = true"
+          v-if="authorityButtons.includes('psi_borrow_1001')"
         >新增借款</el-button>
       </template>
       <template slot-scope="{column,row,value}">

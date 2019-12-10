@@ -12,6 +12,7 @@
       busType="0"
       :filterOptions='filterOptions'
       :params="params"
+      :exportButton="authorityButtons.includes('psi_wms_inventory_03')"
       selection
       ref='allTable'
       api="seePsiWmsService.wmsblitemList"
@@ -20,6 +21,7 @@
     >
       <template v-slot:button>
         <el-button
+          v-if="authorityButtons.includes('psi_wms_inventory_07')"
           type="primary"
           size='mini'
           @click="visible = true"

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 16:08:03
+ * @LastEditTime: 2019-12-10 10:53:45
  * @Description: 销售-销售调价单
  */
 <template>
@@ -11,7 +11,7 @@
       busType="39"
       ref="table"
       :filter="true"
-      :moreButton="true"
+      :exportButton="authorityButtons.includes('psi_adjustPrice_1005')"
       :column="true"
       title="销售调价单"
       api="seePsiCommonService.commonadjustpriceList"
@@ -23,6 +23,7 @@
         <el-button
           type="primary"
           size="mini"
+          v-if="authorityButtons.includes('psi_adjustPrice_1004')"
           @click="eventHandle('addVisible')"
         >新增调价</el-button>
       </template>

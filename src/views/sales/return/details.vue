@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 16:32:04
+ * @LastEditTime: 2019-12-10 10:35:46
  * @Description: 销售出库单详情
 */
 <template>
@@ -27,7 +27,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state|| 0].includes(item.label)"
+            v-if="currStatusType[detail.state|| 0].includes(item.label) && authorityButtons.includes(item.authCode)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -102,13 +102,13 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '提交审核', type: 'primary', authCode: '' },
-        { label: '撤销审核', type: '', authCode: '' },
-        { label: '审核通过', type: 'primary', authCode: '' },
-        { label: '编辑', type: 'primary', authCode: '' },
-        { label: '删除', type: 'danger', authCode: '' },
-        { label: '驳回', authCode: '' },
-        { label: '退货扫码', type: 'primary', authCode: '' }
+        { label: '提交审核', type: 'primary', authCode: 'psi_sales_return_03' },
+        { label: '撤销审核', type: '', authCode: 'psi_sales_return_06' },
+        { label: '审核通过', type: 'primary', authCode: 'psi_sales_return_07' },
+        { label: '编辑', type: 'primary', authCode: 'psi_sales_return_04' },
+        { label: '删除', type: 'danger', authCode: 'psi_sales_return_05' },
+        { label: '驳回', authCode: 'psi_sales_return_08' },
+        { label: '退货扫码', type: 'primary', authCode: 'psi_sales_return_09' }
       ],
       // 编辑
       editVisible: false,

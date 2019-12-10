@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 21:57:03
+ * @LastEditTime: 2019-12-10 10:32:57
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -11,7 +11,7 @@
       busType="16"
       ref="table"
       :filter="true"
-      :moreButton="true"
+      :exportButton="authorityButtons.includes('psi_sales_outlibrary_18')"
       :column="true"
       title="销售出库单"
       api="seePsiSaleService.salesshipmentList"

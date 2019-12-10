@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 18:23:18
+ * @LastEditTime: 2019-12-10 10:37:17
  * @Description: 销售-销售换货单
  */
 <template>
@@ -11,7 +11,7 @@
       busType="18"
       ref="table"
       :filter="true"
-      :moreButton="true"
+      :exportButton="authorityButtons.includes('psi_sales_exchange_08')"
       :column="true"
       title="销售换货单"
       api="seePsiSaleService.salesexchangeList"

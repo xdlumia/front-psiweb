@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 19:36:00
+ * @LastEditTime: 2019-12-10 10:39:30
  * @Description: 销售-客户管理
  */
 <template>
@@ -11,7 +11,7 @@
       busType="41"
       ref="table"
       :filter="true"
-      :moreButton="true"
+      :exportButton="authorityButtons.includes('psi_sales_client_08')"
       :column="true"
       title="客户管理"
       api="seePsiCommonService.commonclientinfoPagelist"
@@ -23,6 +23,7 @@
           type="primary"
           size="mini"
           @click="eventHandle('addVisible')"
+          v-if="authorityButtons.includes('psi_sales_client_03')"
         >新增客户</el-button>
       </template>
       <!-- 自定义按钮功能 -->
