@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 16:34:27
+ * @LastEditTime: 2019-12-10 10:45:20
  * @Description: 促销详情
  -->
 <template>
@@ -21,18 +21,23 @@
         @click="commonpromotiongoalUpdateDefault(rowData.id, 1)"
       >设为默认</el-button>
       <el-button
-        v-if="!detailForm.state"
+        v-if="!detailForm.state && authorityButtons.includes('psi_goal_manage_1004')"
         size="mini"
         type="danger"
         @click="commonpromotiongoalUpdate(rowData.id, 1)"
       >停用</el-button>
       <el-button
-        v-else
+        v-if="detailForm.state && authorityButtons.includes('psi_goal_manage_1003')"
         size="mini"
         type="primary"
         @click="commonpromotiongoalUpdate(rowData.id, 0)"
       >启用</el-button>
-      <el-button size="mini" type="primary" @click="showEdit = true">编辑</el-button>
+      <el-button
+        v-if="authorityButtons.includes('psi_goal_manage_1002')"
+        size="mini"
+        type="primary"
+        @click="showEdit = true"
+      >编辑</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
@@ -82,7 +87,7 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       showEdit: false,
       loading: false,
@@ -97,24 +102,24 @@ export default {
 
     }
   },
-  mounted () {
+  mounted() {
     this.checkVisible();
     this.commonpromotiongoalInfoBycode()
   },
   watch: {
-    visible () {
+    visible() {
       this.checkVisible();
     }
   },
   methods: {
-    refresh () {
+    refresh() {
       this.commonpromotiongoalInfoBycode()
       this.$emit('refresh')
     },
-    checkVisible () {
+    checkVisible() {
       this.showPop = this.visible;
     },
-    commonpromotiongoalInfoBycode () {
+    commonpromotiongoalInfoBycode() {
       this.loading = true
       this.$api.seePsiCommonService.commonpromotiongoalInfoBycode(null, this.code).then(res => {
         this.detailForm = res.data || {}
@@ -130,7 +135,7 @@ export default {
         this.loading = false
       })
     },
-    commonpromotiongoalUpdate (id, state) {
+    commonpromotiongoalUpdate(id, state) {
       this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -147,7 +152,7 @@ export default {
         })
       })
     },
-    commonpromotiongoalUpdateDefault (id, type) {
+    commonpromotiongoalUpdateDefault(id, type) {
       this.$confirm(`是否设为默认?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
