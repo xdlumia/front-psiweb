@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:43:02
+ * @LastEditTime: 2019-12-10 11:41:37
  * @Description: 费用分摊单详情
 */
 <template>
@@ -89,7 +89,7 @@ export default {
         { label: '删除', type: 'danger', authCode: 'psi_sales_apportion_06' },
         { label: '撤销审核', type: 'primary', authCode: 'psi_sales_apportion_07' },
         { label: '通过', type: 'primary', authCode: 'psi_sales_apportion_09' },
-        { label: '驳回', type: 'primary', authCode: 'psi_sales_apportion_08' },
+        { label: '驳回', type: '', authCode: 'psi_sales_apportion_08' },
       ],
       /**
        * 根据当前状态判断显示哪些按钮

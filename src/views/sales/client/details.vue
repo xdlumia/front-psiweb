@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:41:02
+ * @LastEditTime: 2019-12-10 11:41:30
  * @Description: 客户详情
 */
 <template>
@@ -63,7 +63,7 @@
     </side-detail>
     <!-- 客户编辑 -->
     <clientAdd
-      @reload="$parent.$refs.table.reload(1)"
+      @reload="setEdit(),$reload()"
       :visible.sync="editVisible"
       :code="rowData.code"
       type="edit"
@@ -100,7 +100,7 @@ export default {
         // label:按钮名称  type:按钮样式  authCode:权限码
         { label: '停用', type: 'primary', authCode: 'psi_sales_client_04' },
         { label: '启用', type: 'primary', authCode: 'psi_sales_client_05' },
-        { label: '编辑', type: '', authCode: 'psi_sales_client_06' },
+        { label: '编辑', type: 'primary', authCode: 'psi_sales_client_06' },
         { label: '新增报价单', type: 'primary', authCode: 'psi_sales_client_07' }
       ],
       /**
@@ -189,8 +189,7 @@ export default {
           // 通过lable 查找接口方法
           this.$api.seePsiCommonService.commonclientinfoUpdate(params)
             .then(res => {
-              this.showPop = false
-              this.$emit('reload')
+              this.$reload()
             });
         });
       }
