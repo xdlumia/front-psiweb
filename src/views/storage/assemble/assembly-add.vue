@@ -36,7 +36,7 @@
           :model="form"
           class="p10"
         >
-          <commodityInfoAssemble
+          <commodityInfoAssemble 
             :addForm='form'
             ref="commodityInfoEdit"
           />
