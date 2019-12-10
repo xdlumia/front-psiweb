@@ -19,7 +19,7 @@
     <div>
       <div class="drawer-header">
         <el-button
-          v-if="detailForm.state !== 2 && detailForm.state !== -1"
+          v-if="detailForm.state !== 2 && detailForm.state !== -1 && authorityButtons.includes('psi_wms_picking_04')"
           @click="orderStorageVisible=true"
           size="mini"
           type="primary"

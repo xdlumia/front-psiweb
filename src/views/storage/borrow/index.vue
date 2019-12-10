@@ -14,6 +14,7 @@
       busType="4"
       :filterOptions='filterOptions'
       :params="params"
+      :exportButton="authorityButtons.includes('psi_wms_borrow_03')"
       ref='table'
       selection
       api="seePsiWmsService.wmsborrowloantaskList"

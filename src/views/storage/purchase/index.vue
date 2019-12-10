@@ -14,6 +14,7 @@
       :filterOptions='filterOptions'
       :params="params"
       selection
+      :exportButton="authorityButtons.includes('psi_wms_purchase_03')"
       exportApi="seePsiPurchaseService.purchaseExport"
       ref='allTable'
       api="seePsiPurchaseService.purchaseList"

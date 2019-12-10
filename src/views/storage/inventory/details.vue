@@ -17,25 +17,25 @@
     <div>
       <div class="drawer-header">
         <el-button
-          v-if="detailForm.blitemState == 1"
+          v-if="detailForm.blitemState == 1 && authorityButtons.includes('psi_wms_inventory_08')"
           @click="clickFinish"
           size="mini"
           type="primary"
         >完成盘点</el-button>
         <el-button
-          v-if="detailForm.blitemState == 1"
+          v-if="detailForm.blitemState == 1 && authorityButtons.includes('psi_wms_inventory_06')"
           @click="fStop"
           size="mini"
           type="primary"
         >终止</el-button>
         <el-button
-          v-if="detailForm.isLose == 1"
+          v-if="detailForm.isLose == 1 && authorityButtons.includes('psi_wms_inventory_05')"
           @click="changeReportingVisible(2)"
           size="mini"
           type="primary"
         >生成报损单</el-button>
         <el-button
-          v-if="detailForm.isProfit == 1"
+          v-if="detailForm.isProfit == 1 && authorityButtons.includes('psi_wms_inventory_04')"
           @click="changeReportingVisible(1)"
           size="mini"
           type="primary"

@@ -15,6 +15,7 @@
       selection
       ref="table"
       exportApi="seePsiSaleService.salessheetExport"
+      :exportButton="authorityButtons.includes('psi_wms_sales_03')"
       api="seePsiSaleService.salessheetList"
       title="销售单"
     >

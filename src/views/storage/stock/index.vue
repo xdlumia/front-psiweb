@@ -16,6 +16,7 @@
       :filterOptions='filterOptions'
       selection
       ref='allTable'
+      :exportButton="authorityButtons.includes('psi_wms_stock_03')"
       api="seePsiWmsService.wmsinventoryList"
       exportApi="seePsiWmsService.wmsinventoryExport"
       :params="params"
@@ -23,6 +24,7 @@
     >
       <template v-slot:button>
         <el-input
+          v-if="authorityButtons.includes('psi_wms_stock_04')"
           class="mr15"
           style="width:300px;"
           size="small"
