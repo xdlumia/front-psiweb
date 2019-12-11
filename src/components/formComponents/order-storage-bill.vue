@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 11:31:15
+ * @LastEditTime: 2019-12-11 17:53:19
  * @Description: 账单信息
 */
 <template>
@@ -115,15 +115,13 @@ export default {
             if (!this.data.financeList || !this.data.financeList.length) {
               return cb(new Error((this.errorTip = '请填写账单信息')));
             }
-            if (max) {
-              if (now != max) {
-                return cb(
-                  new Error(
-                    (this.errorTip =
-                      '账单总金额须为商品总金额之和,当前总和' + max + '元')
-                  )
-                );
-              }
+            if (now != max) {
+              return cb(
+                new Error(
+                  (this.errorTip =
+                    '账单总金额须为商品总金额之和,当前总和' + max + '元')
+                )
+              );
             }
             this.errorTip = '';
             cb();
@@ -160,6 +158,7 @@ export default {
       }
     },
     max() {
+      console.log(this.max);
       this.checkPayAmount();
     }
   },
@@ -175,6 +174,8 @@ export default {
         });
         if (sum < this.max) {
           list[0].payAmount = +Number(this.max - sum).toFixed(2);
+        } else {
+          list[0].payAmount = this.max;
         }
       }
     },
