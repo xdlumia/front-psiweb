@@ -1,15 +1,12 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-01 10:46:22
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 11:24:20
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-10 17:51:02
  * @Description: 时间段过滤框
 */
 <template>
-  <el-form-item
-    :label="item.label"
-    :prop="`min${item.prop}`"
-  >
+  <el-form-item :label="item.label" :prop="`min${item.prop}`">
     <el-date-picker
       @change="update"
       class="wfull"
@@ -40,6 +37,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this.reset();
+  },
   methods: {
     // prettier-ignore
     update() {
@@ -68,9 +68,9 @@ export default {
     },
     // 首字母转大写
     firstToUpperCase(str) {
-      str = str || ''
-      return str.charAt(0).toUpperCase() + str.slice(1)
-    },
+      str = str || '';
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
   }
 };
 </script>

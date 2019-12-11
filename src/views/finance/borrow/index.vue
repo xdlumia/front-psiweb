@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 11:04:29
+ * @LastEditTime: 2019-12-10 17:30:21
  * @Description: 销售-借款单
  */
 <template>
@@ -39,7 +39,6 @@
         > {{value}}</span>
 
         <!-- 创建时间 -->
-        <span v-else-if="column.columnFields=='createTime'">{{value|timeToStr('YYYY-MM-DD hh:mm:ss')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>

@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-10 17:41:37
  * @Description: 挂起
 */
 <template>
@@ -28,7 +28,7 @@
         <el-input
           type="textarea"
           v-model="ruleForm.desc"
-          max='300'
+          max='200'
           placeholder="请输入最少五个字符"
         ></el-input>
       </el-form-item>

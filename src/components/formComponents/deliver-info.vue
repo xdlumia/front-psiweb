@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 18:01:15
+ * @LastEditTime: 2019-12-10 17:40:27
  * @Description: 发货信息 1
 */
 <template>
@@ -83,7 +83,7 @@ export default {
         { label: '客户收货地址', prop: 'clientReceivingAddress', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' },], },
         { label: '销售要求到货时间', prop: 'salesRequireArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
         { label: '采购预计到货时间', prop: 'procurementExpectedArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
-        { label: '备注', prop: 'note', type: 'note', maxlength: 300, rules: [{ required: false, trigger: 'blur' }], },
+        { label: '备注', prop: 'note', type: 'note', maxlength: 200, rules: [{ required: false, trigger: 'blur' }], },
       ]
     }
   },

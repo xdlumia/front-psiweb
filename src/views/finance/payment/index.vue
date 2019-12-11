@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 11:38:09
+ * @LastEditTime: 2019-12-11 10:13:20
  * @Description: 付款单
 */
 <template>
@@ -44,11 +44,11 @@
         <span v-else-if="prop=='overState'">
           <span>{{overText[value||0]}}</span>
         </span>
-        <span v-else-if="prop=='payEndDate'">
-          <span>{{value}}</span>
-        </span>
         <span v-else-if="prop=='settleStatus'">
           <span>{{settleText[value]}}</span>
+        </span>
+        <span v-else-if="prop=='payEndDate'">
+          <span :class="[[0,1].includes(row.settleStatus)?checkDateColor(row.payEndDate):'']">{{value}}</span>
         </span>
         <span v-else-if="prop=='busCode'">
           <!-- 关联单据编号 -->
@@ -116,7 +116,7 @@ export default {
             { label: '已结清', value: '2', },
             { label: '已关闭', value: '3', },
           ]        },
-        {          label: '逾期状态', prop: 'overSate', default: true, type: 'select', options: [
+        {          label: '逾期状态', prop: 'overState', default: true, type: 'select', options: [
             { label: '全部', value: '', },
             { label: '未逾期', value: 0 },
             { label: '已逾期', value: 1 },
@@ -229,6 +229,17 @@ export default {
           showClose: true
         });
       }
+    },
+    checkDateColor(date) {
+      // 7天为限
+      date = new Date(date);
+      let now = new Date();
+      let will = new Date(+date - 7 * 24 * 60 * 60 * 1000);
+      if (+date < +now) {
+        return 'd-text-red';
+      } else if (+will < +now) {
+        return 'd-text-orange';
+      } else return '';
     }
   }
 };

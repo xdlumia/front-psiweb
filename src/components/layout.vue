@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-31 18:55:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 17:12:27
+ * @LastEditTime: 2019-12-11 09:19:40
  * @Description: description
  -->
 /*
@@ -13,7 +13,7 @@
  * @Description: layout 页面架构
 */
 <template>
-  <d-layout v-model="isLockkScreen" :lockOutTime="8000">
+  <d-layout v-model="isLockkScreen" :lockOutTime="15">
     <img slot="logo" src="@/assets/img/logo.png" alt />
     <div style="height: 100vh" v-loading="loading">
       <el-container class="d-container">

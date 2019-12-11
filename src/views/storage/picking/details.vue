@@ -54,6 +54,18 @@
             ></storageSales>
           </FullscreenWrap>
         </el-tab-pane>
+        <el-tab-pane
+          label="组装单"
+          name="storageAssemble"
+        >
+          <FullscreenWrap v-if="activeName == 'storageAssemble'">
+            <storageAssemble
+              v-if="activeName == 'storageAssemble'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.pickingOrderCode}"
+            ></storageAssemble>
+          </FullscreenWrap>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </SideDetail>

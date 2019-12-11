@@ -50,14 +50,14 @@
             <el-dialog
               :visible.sync="backVisible"
               :title="dialogData.title"
-              v-if="backVisible"
               v-dialogDrag
+              v-if="backVisible"
             >
               <components
+                @close='closedia'
                 @reload='reload'
                 :dialogData='data'
                 :is='isComponents'
-                :visible.sync="backVisible"
               >
               </components>
             </el-dialog>
@@ -103,6 +103,10 @@ export default {
     this.wmsallocationorderInfo()
   },
   methods: {
+    closedia() {
+      this.backVisible = false
+      this.wmsallocationorderInfo()
+    },
     close() {
       this.$emit('update:visible', false)
     },

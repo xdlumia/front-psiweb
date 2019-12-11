@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-28 14:00:55
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 19:07:01
+ * @LastEditTime: 2019-12-10 17:40:46
  * @Description: 生成拣货单和组装任务 人员分配 1
 */
 <template>
@@ -76,7 +76,6 @@
       >
         <el-input
           :rows="3"
-          maxlength="300"
           placeholder="备注"
           show-word-limit
           type="textarea"

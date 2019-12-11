@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 12:39:04
+ * @LastEditTime: 2019-12-11 11:25:52
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -35,10 +35,14 @@
         :model="form"
         size="mini"
         label-position="top"
+        class="d-auto-y"
+        style="height:calc(100vh - 110px)"
       >
         <!-- 单据信息 -->
         <receipt-info
           disabled
+          :span="12"
+          incomeType="0"
           :data="detail"
         />
 
@@ -53,6 +57,12 @@
           disabled
           :data="detail"
         />
+        <!-- 账单匹配详情 -->
+        <!-- <match-bill-detail
+          disabled
+          :data="detail.fBillEntityList || []"
+        /> -->
+        <!-- TODO 缺少操作记录 -->
       </el-form>
     </side-detail>
     <!-- 账单匹配 -->

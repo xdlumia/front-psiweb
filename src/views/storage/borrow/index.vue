@@ -148,7 +148,7 @@ export default {
           default: true
         },
         {
-          label: '借入/借出数量',
+          label: '借出/借入数量',
           prop: 'BorrowLoanNum',
           type: 'numberRange',
           default: true,

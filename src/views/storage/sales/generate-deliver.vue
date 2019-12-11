@@ -50,7 +50,7 @@
         </el-tabs>
       </el-header>
       <el-main
-        :style="{maxHeight:'calc(100vh - 240px)'}"
+        :style="{maxHeight:'calc(100vh - 180px)'}"
         style="padding:0;"
       >
         <el-form

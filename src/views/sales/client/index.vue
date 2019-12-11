@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 15:31:13
+ * @LastEditTime: 2019-12-11 11:26:29
  * @Description: 销售-客户管理
  */
 <template>
@@ -15,9 +15,10 @@
       :column="true"
       title="客户管理"
       api="seePsiCommonService.commonclientinfoPagelist"
+      :mergeFilter="true"
+      :filterOptions="filterOptions"
       exportApi="seePsiCommonService.commonclientinfoExport"
       :params="Object.assign(queryForm,params)"
-      :filterOptions="filterOptions"
     >
       <template v-slot:button>
         <el-button

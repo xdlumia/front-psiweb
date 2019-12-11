@@ -15,7 +15,10 @@
     width="990px"
   >
     <div>
-      <el-tabs class="wfull hfull tabs-view">
+      <el-tabs
+        class="wfull hfull tabs-view"
+        v-model="activeName"
+      >
         <el-tab-pane label="详情">
           <el-form
             :model="detailForm"
@@ -31,6 +34,19 @@
             />
           </el-form>
         </el-tab-pane>
+        <el-tab-pane
+          label="盘点单"
+          name='storageInventory'
+        >
+          <FullscreenWrap v-if="activeName == 'storageInventory'">
+            <storageInventory
+              v-if="activeName == 'storageInventory'"
+              :button="false"
+              :params="{page:1,limit:15,relationCode:detailForm.reportingLossesCode}"
+            ></storageInventory>
+          </FullscreenWrap>
+        </el-tab-pane>
+
       </el-tabs>
     </div>
   </SideDetail>
@@ -48,6 +64,7 @@ export default {
       backVisible: false,
       detailForm: {},
       isComponents: '',
+      activeName: '',
       dialogData: {
         title: ''
       }

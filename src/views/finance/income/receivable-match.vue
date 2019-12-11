@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 11:25:19
+ * @LastEditTime: 2019-12-11 10:18:56
  * @Description: 匹配
 */
 <template>
@@ -13,23 +13,24 @@
   >
     <div slot="title">
       <span>选择应收账单</span>
-      <div class="fr mr30">
-        <el-button
-          type="primary"
-          @click="saveHandle"
-          size="mini"
-        >确定</el-button>
-        <el-button
-          @click="$emit('update:visible', false)"
-          size="mini"
-        >取消</el-button>
-      </div>
     </div>
 
     <financeReceivable
+      class="dialog"
       @selection-change="selectionChange"
       :button="false"
     />
+    <div class="ac">
+      <el-button
+        type="primary"
+        @click="saveHandle"
+        size="mini"
+      >确定</el-button>
+      <el-button
+        @click="$emit('update:visible', false)"
+        size="mini"
+      >取消</el-button>
+    </div>
   </el-dialog>
 </template>
 <script>
@@ -69,6 +70,7 @@ export default {
   methods: {
     selectionChange(val) {
       let [row] = val
+      if (!row) return
       this.form.fbillId = row.id
       this.form.matchAmount = row.billTotalAmount
     },

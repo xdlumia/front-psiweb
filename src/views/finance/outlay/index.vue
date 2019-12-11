@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 12:00:36
+ * @LastEditTime: 2019-12-11 11:26:03
  * @Description: 销售-支出流水
  */
 <template>
@@ -46,7 +46,7 @@
         <!-- 匹配状态 -->
         <span v-else-if="column.columnFields=='matchState'"> {{stateText[value]}}</span>
         <!-- 收支状态 -->
-        <span v-else-if="column.columnFields=='incomeType'"> {{value ==1?'付款':'收款'}}</span>
+        <span v-else-if="column.columnFields=='incomeType'"> {{value ==1?'支出':'收入'}}</span>
 
         <span v-else>{{value}}</span>
       </template>
@@ -120,7 +120,9 @@ export default {
       // 查询表单
       queryForm: {
         page: 1,
-        limit: 20
+        limit: 20,
+        incomeType: 1,
+
       },
       // 筛选数据
       filterOptions: filterOptions,

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 16:06:58
+ * @LastEditTime: 2019-12-11 11:18:52
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -198,6 +198,10 @@ export default {
     exportApi: {
       type: String,
     },
+    mergeFilter: {
+      type: Boolean,
+      default: false
+    },
     // 筛选配置
     filterOptions: Array,
     selectable: Function,
@@ -333,7 +337,7 @@ export default {
         let filterOptions = []
         cols.forEach(item => {
           // 过滤状态不用添加到筛选里的类型
-          let notFilter = ['state', 'matchState']
+          let notFilter = ['state', 'matchState', 'personInChargeName']
           if (!notFilter.includes(item.columnFields)) {
 
             let type = 'text' //默认筛选类型是text
@@ -366,7 +370,7 @@ export default {
             // 收支状态
             else if (item.columnFields == 'incomeType') {
               type = 'select'
-              options = [{ label: '付款', value: 1 }, { label: '收款', value: 0 }]
+              options = [{ label: '支出', value: 1 }, { label: '收入', value: 0 }]
             }
             // 如果是账户信息
             else if (item.columnFields == 'companySettlementInfo') {
@@ -389,15 +393,15 @@ export default {
           }
         })
 
-        if (this.filterOptions) {
+        if (this.filterOptions && this.mergeFilter) {
           // 合并数组
           var obj = {};
           this.autoFilterOptions = [...this.filterOptions, ...filterOptions].reduce((item, next) => {
-            obj[next.label] ? '' : obj[next.label] = true && item.push(next);
+            obj[next.prop.toLowerCase()] ? '' : obj[next.prop.toLowerCase()] = true && item.push(next);
             return item;
           }, []);
         } else {
-          this.autoFilterOptions = filterOptions
+          this.autoFilterOptions = this.filterOptions
         }
       }
       // 列表默认请求的就是全部列数据 所以这里就不用重新请求了

@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 18:16:21
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-10 17:38:28
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -42,8 +42,8 @@ ElementUI.Input.render = (function (old) {
 })(ElementUI.Input.render)
 
 // 禁用按钮双击事件冒泡
-ElementUI.Button.mounted = function(){
-  this.$el.ondblclick=e=>e.stopPropagation()
+ElementUI.Button.mounted = function () {
+  this.$el.ondblclick = e => e.stopPropagation()
 }
 
 
@@ -64,14 +64,22 @@ ElementUI.Image.props.fit = { default: 'cover', type: String }
 ElementUI.Input.props.showWordLimit.default = true
 // 表格单行显示超出隐藏
 // ElementUI.TableColumn.props.showOverflowTooltip.default = true
+ElementUI.Input.render = (function (old, defaultMaxLength) {
+  return function () {
+    if (this.$attrs.maxlength === undefined) {
+      this.$attrs.maxlength = this.type == 'text' ? 32 : defaultMaxLength;
+    }
 
+    return old.apply(this, arguments)
+  }
+})(ElementUI.Input.render, 200)
 Vue.prototype.$store = store;
 Vue.mixin({
   methods: {
     $getApi(path) {
       return path.split('.').reduce((data, path) => data[path], this.$api)
     },
-    async $showFormError(formRef){
+    async $showFormError(formRef) {
       try {
         await formRef.validate()
       } catch (error) {

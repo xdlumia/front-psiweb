@@ -58,14 +58,14 @@
           </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
-          label="组装任务"
-          name="storageAssembly"
+          label="组装单"
+          name="storageAssemble"
         >
-          <FullscreenWrap v-if="activeName == 'storageAssembly'">
-            <storageAssembly
+          <FullscreenWrap v-if="activeName == 'storageAssemble'">
+            <storageAssemble
               :button="false"
               :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
-            ></storageAssembly>
+            ></storageAssemble>
           </FullscreenWrap>
         </el-tab-pane>
         <el-tab-pane
@@ -86,11 +86,11 @@
           <FullscreenWrap v-if="activeName == 'salesOutLibrary'">
             <salesOutLibrary
               :button="false"
-              :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
+              :params="{page:1,limit:15,shipmentCode:data.shipmentCode}"
             ></salesOutLibrary>
           </FullscreenWrap>
         </el-tab-pane>
-        <el-tab-pane
+        <!-- <el-tab-pane
           label="借入单"
           name="orderBorrow"
         >
@@ -100,7 +100,7 @@
               :params="{page:1,limit:15,borrowLoanType:0,relationCode:data.salesSheetCode}"
             ></orderBorrow>
           </FullscreenWrap>
-        </el-tab-pane>
+        </el-tab-pane> -->
         <el-tab-pane
           label="应收账单"
           name="financeReceivable"
@@ -108,7 +108,7 @@
           <FullscreenWrap v-if="activeName == 'financeReceivable'">
             <financeReceivable
               :button="false"
-              :params="{page:1,limit:15,relationCode:data.salesSheetCode}"
+              :params="{page:1,limit:15,busCode:data.shipmentCode}"
             ></financeReceivable>
           </FullscreenWrap>
         </el-tab-pane>
