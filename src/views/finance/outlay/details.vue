@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-11 14:26:24
+ * @LastEditTime: 2019-12-11 17:42:15
  * @Description: 财务-支出流水详情
 */
 <template>
@@ -53,6 +53,11 @@
         <match-bill-detail
           disabled
           :data="detail.fBillEntityList || []"
+        />
+        <!-- 操作记录 -->
+        <bill-history
+          disabled
+          :data="rowData || {}"
         />
 
       </el-form>
