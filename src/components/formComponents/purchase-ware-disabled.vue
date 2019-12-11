@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-11 15:59:02
+ * @LastEditTime: 2019-12-11 16:00:55
  * @Description: 采购单 详情  入库商品  点击入库或者SN码公共弹窗
 */
 <template>
@@ -193,11 +193,6 @@
         @click="close"
         size="small"
       >关 闭</el-button>
-      <el-button
-        type="primary"
-        @click="close"
-        size="small"
-      >保 存</el-button>
     </span>
     <CommodityDetail
       :code="currentCommodityCode"
