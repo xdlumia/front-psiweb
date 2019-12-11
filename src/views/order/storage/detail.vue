@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 15:06:11
+ * @LastEditTime: 2019-12-11 15:49:09
  * @Description: 采购入库单
 */
 <template>
@@ -330,7 +330,7 @@ export default {
         type: 1,
         busCode: this.detail.putinCode,
         busType: 4,
-        purchaseId: this.detail.companySettlementId,
+        purchaseId: this.detail.companyAccountId,
         purchaseType: 3,
         marketId: this.detail.supplierId,
         marketType: 1,

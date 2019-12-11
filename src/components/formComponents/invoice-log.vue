@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 15:06:03
+ * @LastEditTime: 2019-12-11 16:21:52
  * @Description: 开票/收票 记录 已绑定 1
 */
 <template>
@@ -112,12 +112,12 @@ export default {
         data.purchaseId = this.data.clientId;
         data.purchaseType = this.data.clientType;
         data.marketType = 3;
-        data.marketId = this.data.companySettlementId;
+        data.companySettlementId = this.data.companySettlementId;
       } else {
         data.marketId = this.data.clientId;
         data.marketType = this.data.clientType;
         data.purchaseType = 3;
-        data.purchaseId = this.data.companySettlementId;
+        data.companySettlementId = this.data.companySettlementId;
       }
       data.type = this.type;
       data.busCode = this.data.busCode;
@@ -126,7 +126,6 @@ export default {
         this.data.busCode,
         this.data.busType
       );
-      console.log(data);
       this.collectInvoiceData = data;
       this.$nextTick(() => (this.showCollectInvoice = true));
     }

@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 10:45:15
+ * @LastEditTime: 2019-12-11 16:03:15
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -181,7 +181,7 @@
         min-width="110"
       >
       <template slot-scope="{row}">
-        <span>{{row.inventoryNumber||0}}</span>
+      <span>{{row.inventoryNumber||row.usableInventoryNum||0}}</span>
       </template>
       </el-table-column>
 
@@ -192,7 +192,7 @@
         min-width="110"
       >
       <template slot-scope="{row}">
-        <span>{{row.recentDiscountSprice||0}}</span>
+      <span>{{row.recentDiscountSprice}}</span>
       </template>
       </el-table-column>
     </el-table>
