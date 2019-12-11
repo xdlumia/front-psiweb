@@ -56,18 +56,18 @@
           </el-form>
         </el-tab-pane>
         <el-tab-pane
-          label="应收账单"
-          name='financeReceivable'
+          label="换货单"
+          name='orderExchange'
         >
-          <FullscreenWrap v-if="activeName == 'financeReceivable'">
-            <financeReceivable
-              v-if="activeName == 'financeReceivable'"
+          <FullscreenWrap v-if="activeName == 'orderExchange'">
+            <orderExchange
+              v-if="activeName == 'orderExchange'"
               :button="false"
               :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
-            ></financeReceivable>
+            ></orderExchange>
           </FullscreenWrap>
         </el-tab-pane>
-        <el-tab-pane
+        <!-- <el-tab-pane
           label="应付账单"
           name='financePayable'
         >
@@ -102,7 +102,7 @@
               :params="{page:1,limit:15,relationCode:detailForm.swapTaskCode}"
             ></financeReceipt>
           </FullscreenWrap>
-        </el-tab-pane>
+        </el-tab-pane> -->
       </el-tabs>
       <exchangeSweepcode
         :visible.sync="exchangeVisible"
