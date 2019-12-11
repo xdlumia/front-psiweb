@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-12 15:53:05
+ * @LastEditTime: 2019-12-11 08:46:54
  * @Description: 收款滞纳金
  */
 <template>
@@ -45,7 +45,9 @@
       </el-col>
       <el-col :span="8" v-if="data.financeConfig">
         <el-form-item label="滞纳金上限" prop size="mini">
-          <el-input disabled placeholder="请输入" v-model="data.financeConfig.overdueFineUpperLimit"></el-input>
+          <el-input disabled placeholder="请输入" v-model="data.financeConfig.overdueFineUpperLimit">
+            <template slot="append" v-if="data.financeConfig.limitType==0">%</template>
+          </el-input>
         </el-form-item>
       </el-col>
     </el-row>
@@ -57,7 +59,7 @@ export default {
     data: {
       default: () => {
         return {
-          financeConfig:{}
+          financeConfig: {}
         };
       }
     },
@@ -75,22 +77,22 @@ export default {
       options: []
     };
   },
-  watch:{
-    data:{
-      deep:true,
-      handler(){
-        this.resetData()
+  watch: {
+    data: {
+      deep: true,
+      handler() {
+        this.resetData();
       }
     }
   },
   mounted() {
-    this.resetData()
+    this.resetData();
     this.getList();
   },
   methods: {
-    resetData(){
-      if(this.data&&!this.data.financeConfig){
-        this.data.financeConfig={}
+    resetData() {
+      if (this.data && !this.data.financeConfig) {
+        this.data.financeConfig = {};
       }
     },
     async getList() {
