@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 11:23:31
+ * @LastEditTime: 2019-12-11 10:33:26
  * @Description: 换货单
 */
 <template>
@@ -80,9 +80,14 @@
           <extrasInfo :data="detail" disabled id="extrasInfo"></extrasInfo>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="账单管理" name="bill">
+      <el-tab-pane label="付款单" name="bill">
         <FullscreenWrap v-if="isDataReady&&tabStatus.bill">
-          <FinancePayable :button="false" :params="{page:1,limit:15,busCode:detail.swapOrderCode,relationCode:detail.swapOrderCode}" />
+          <FinancePayment :button="false" :params="{page:1,limit:15,busCode:detail.swapOrderCode,relationCode:detail.swapOrderCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="应收账单" name="bill2">
+        <FullscreenWrap v-if="isDataReady&&tabStatus.bill2">
+          <FinanceReceivable :button="false" :params="{page:1,limit:15,busCode:detail.swapOrderCode,relationCode:detail.swapOrderCode}" />
         </FullscreenWrap>
       </el-tab-pane>
       <el-tab-pane label="发票管理" name="invoice">

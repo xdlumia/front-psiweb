@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 17:39:07
+ * @LastEditTime: 2019-12-11 10:09:44
  * @Description: 今日应付账单
 */
 <template>
@@ -36,6 +36,9 @@
         </span>
         <span v-else-if="prop=='settleStatus'">
           <span>{{settleText[value]}}</span>
+        </span>
+        <span v-else-if="prop=='payEndDate'">
+          <span :class="[[0,1].includes(row.settleStatus)?checkDateColor(row.payEndDate):'']">{{value}}</span>
         </span>
         <span v-else-if="prop=='busCode'">
           <!-- 关联单据编号 -->
@@ -224,6 +227,17 @@ export default {
     },
     reload() {
       this.$refs.tableView.reload();
+    },
+    checkDateColor(date) {
+      // 7天为限
+      date = new Date(date);
+      let now = new Date();
+      let will = new Date(+date - 7 * 24 * 60 * 60 * 1000);
+      if (+date < +now) {
+        return 'd-text-red';
+      } else if (+will < +now) {
+        return 'd-text-orange';
+      } else return '';
     }
   }
 };
