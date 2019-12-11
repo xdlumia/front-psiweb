@@ -2,18 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-11-22 09:38:51
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 16:33:33
+ * @LastEditTime: 2019-12-11 16:19:07
  * @Description: 销售方/购买方信息 已绑定 1
 */ 
 <template>
   <form-card :title="title">
     <el-row :gutter="10">
       <el-col :span="8">
-        <el-form-item
-          :prop="`${prefix}Id`"
-          :rules="[{required:true}]"
-          label="名称"
-        >
+        <el-form-item :prop="`${prefix}Id`" :rules="[{required:true}]" label="名称">
           <el-select
             :disabled="disabled"
             :loading="searching"
@@ -25,27 +21,13 @@
             filterable
             v-model="data[`${prefix}Id`]"
           >
-            <el-option
-              :key="index"
-              :label="item.name"
-              :value="item.id"
-              v-for="(item,index) in companyList"
-            ></el-option>
+            <el-option :key="index" :label="item.name" :value="item.id" v-for="(item,index) in companyList"></el-option>
           </el-select>
         </el-form-item>
       </el-col>
-      <el-col
-        :key="index"
-        :span="item.span || 8"
-        v-for="(item,index) of formItems"
-      >
+      <el-col :key="index" :span="item.span || 8" v-for="(item,index) of formItems">
         <el-form-item :label="item.label">
-          <el-input
-            :disabled="true"
-            :placeholder="`请输入${item.label}`"
-            v-if="item.type =='input'"
-            v-model.trim="currentCompany[item.prop]"
-          />
+          <el-input :disabled="true" :placeholder="`请输入${item.label}`" v-if="item.type =='input'" v-model.trim="currentCompany[item.prop]" />
           <el-select
             :disabled="true"
             :placeholder="`请输入${item.label}`"
@@ -53,12 +35,7 @@
             v-else-if="item.type =='select'"
             v-model="currentCompany[item.prop]"
           >
-            <el-option
-              :key="item.code"
-              :label="item.content"
-              :value="item.code"
-              v-for="item in dictionaryOptions(item.dicName)"
-            />
+            <el-option :key="item.code" :label="item.content" :value="item.code" v-for="item in dictionaryOptions(item.dicName)" />
           </el-select>
           <el-date-picker
             :disabled="true"
@@ -196,29 +173,35 @@ export default {
         ...data.map(item => {
           // id name taxNo address phone bankName bankAccount
           return [].concat(
-            ...(item.commonCorporationAccountEntities || []).map(sub => {
-              sub.accountType = dictObj[sub.accountType];
-              return {
-                id: sub.id,
-                name: `${item.corporationName}(${sub.accountType}${sub.account})`,
-                taxNo: item.taxpayersNum,
-                address: item.address,
-                phone: item.phone,
-                bankName: sub.accountBank,
-                bankAccount: sub.account
-              };
-            })
+            ...(item.commonCorporationAccountEntities || [])
+              .filter(item => item.accountType == 'PSI_GSSZ_ZHLX-3')
+              .map(sub => {
+                sub.accountType = dictObj[sub.accountType];
+                return {
+                  id: item.id,
+                  setId: sub.id,
+                  name: `${item.corporationName}(${sub.accountType}${sub.account})`,
+                  taxNo: item.taxpayersNum,
+                  address: item.address,
+                  phone: item.phone,
+                  bankName: sub.accountBank,
+                  bankAccount: sub.account
+                };
+              })
           );
         })
       );
       this.companyList.some(item => {
-        if (item.id == this.data[`${this.prefix}Id`]) {
+        if (
+          item.id == this.data[`${this.prefix}Id`] ||
+          item.setId == this.data.companySettlementId
+        ) {
           this.currentCompany = item;
+          this.data[`${this.prefix}Id`] = item.id;
           this.$set(this.data, `${this.prefix}Name`, item.name);
           return true;
         }
       });
-      console.log(this.companyList)
     },
     async getServiceProvider() {
       let {

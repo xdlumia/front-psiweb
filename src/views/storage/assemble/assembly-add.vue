@@ -1,12 +1,13 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-11 14:56:37
  * @Description: 新增组装单
 */
 <template>
   <el-dialog
+    v-loading='loading'
     width='80%'
     :visible.sync="visible"
     @close="close"
@@ -36,7 +37,7 @@
           :model="form"
           class="p10"
         >
-          <commodityInfoAssemble 
+          <commodityInfoAssemble
             :addForm='form'
             ref="commodityInfoEdit"
           />
@@ -90,6 +91,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       activeName: '',
       form: {
         note: '',
@@ -123,12 +125,14 @@ export default {
           message: '未选择商品或组装数量为空！'
         })
       } else {
+        this.loading = true
         this.$api.seePsiWmsService.wmsassembleorderSave({ assembleCommoditySaveVoList: list, isSelfMotion: this.isSelfMotion, note: this.form.note, source: '新增' })
           .then(res => {
             this.$emit('reload')
             this.close()
           })
           .finally(() => {
+            this.loading = false
           })
       }
     }

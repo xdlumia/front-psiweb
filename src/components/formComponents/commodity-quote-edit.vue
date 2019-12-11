@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 10:43:55
+ * @LastEditTime: 2019-12-11 16:03:28
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -284,13 +284,21 @@
         label="库存数量"
         min-width="110"
         prop="inventoryNumber"
-      />
+      >
+      <template slot-scope="{row}">
+      <span>{{row.inventoryNumber||row.usableInventoryNum||0}}</span>
+      </template>
+      </el-table-column>
       <el-table-column
         show-overflow-tooltip
         label="最近销售价"
         min-width="110"
         prop="recentDiscountSprice"
-      />
+      >
+      <template slot-scope="{row}">
+      <span>{{row.recentDiscountSprice}}</span>
+      </template>
+      </el-table-column>
 
     </el-table>
     <el-button

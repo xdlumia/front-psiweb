@@ -19,7 +19,7 @@
       :exportButton="authorityButtons.includes('psi_wms_stock_03')"
       api="seePsiWmsService.wmsinventoryList"
       exportApi="seePsiWmsService.wmsinventoryExport"
-      :params="params"
+      :params="Object.assign(queryForm,params)"
       title="库存查询"
     >
       <template v-slot:button>
@@ -137,7 +137,6 @@ export default {
       queryForm: {
         page: 1,
         limit: 20,
-        classId: ''
       },
       input2: '',
       treeData: [],

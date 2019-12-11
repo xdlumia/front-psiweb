@@ -16,7 +16,7 @@
       :exportButton="authorityButtons.includes('psi_wms_allocation_03')"
       exportApi="seePsiWmsService.wmsallocationorderExport"
       api="seePsiWmsService.wmsallocationorderList"
-      :params="params"
+      :params="Object.assign(queryForm,params)"
       title="调拨单"
       @selection-change="selectionChange"
     >

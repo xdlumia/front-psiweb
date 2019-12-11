@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 17:35:12
+ * @LastEditTime: 2019-12-11 15:40:48
  * @Description: 换货信息 已绑定字段 1
  */
 <template>
@@ -105,7 +105,12 @@ export default {
       { label: '换货方联系人', prop: 'contacts', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
       { label: '换货方联系人电话', prop: 'contactsPhone', type: 'input', rules: [{ required: true, }, { type: 'phone' }], },
       { label: '换货方地址', prop: 'address', type: 'input', rules: [{ required: true, }], },
-      { label: '服务商名称', prop: 'serviceProviderId', type: 'serviceProvider', },
+      { label: '服务商名称', prop: 'serviceProviderId', type: 'serviceProvider', rules:[{validator:(rule,value,cb)=>{
+        if(this.data.logisticsFees>0){
+          if(!value) cb(new Error('此处为必填项'))
+          else cb()
+        }else cb();
+      }}] },
       {        label: '服务类型', prop: 'serveType', type: 'select', dictName: 'PSI_FWS_FWLX',
         exclude: 'serviceFilter'      },
       { label: '运单编号', prop: 'waybillCode', type: 'input', },

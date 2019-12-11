@@ -12,7 +12,7 @@
       ref='table'
       busType="8"
       :filterOptions='filterOptions'
-      :params="params"
+      :params="Object.assign(queryForm,params)"
       selection
       :exportButton="authorityButtons.includes('psi_wms_picking_03')"
       exportApi="seePsiWmsService.wmspickingorderExport"
