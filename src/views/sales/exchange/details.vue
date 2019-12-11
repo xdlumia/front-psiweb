@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:38:22
+ * @LastEditTime: 2019-12-11 14:14:34
  * @Description: 销售换货单详情
 */
 <template>
@@ -82,7 +82,7 @@
 <script>
 import detail from './details/detail' //详情
 import add from '../return/add'
-import returnScan from '../return/return-scan' // 退货扫码
+import returnScan from '../return/return-scan' // 换货扫码
 import VisibleMixin from '@/utils/visibleMixin';
 export default {
   mixins: [VisibleMixin],
@@ -102,7 +102,7 @@ export default {
         { label: '编辑', type: 'primary', authCode: 'psi_sales_exchange_04' },
         { label: '删除', type: 'danger', authCode: 'psi_sales_exchange_05' },
         { label: '驳回', authCode: 'psi_sales_exchange_08' },
-        { label: '退货扫码', type: 'primary', authCode: 'psi_sales_exchange_09' }
+        { label: '换货扫码', type: 'primary', authCode: 'psi_sales_exchange_09' }
       ],
       /**
        * 根据当前状态判断显示哪些按钮
@@ -111,8 +111,8 @@ export default {
       currStatusType: {
         '-1': ['提交审核', '编辑', '删除'], // 新建
         '0': ['撤销审核', '审核通过', '驳回'], // 审核中
-        '1': ['退货扫码'], // 待完成
-        '2': ['退货扫码'], //部分完成
+        '1': ['换货扫码'], // 待完成
+        '2': ['换货扫码'], //部分完成
         '3': [], //已完成
         '4': ['提交审核', '编辑', '删除'], //已驳回
       },
@@ -153,9 +153,9 @@ export default {
       }
     },
     buttonsClick(label) {
-      if (label == '编辑' || label == '退货扫码') {
+      if (label == '编辑' || label == '换货扫码') {
         if (label == '编辑') { this.editVisible = true }
-        else if (label == '退货扫码') { this.scanVisible = true }
+        else if (label == '换货扫码') { this.scanVisible = true }
       } else {
         let params = {
           apprpvalNode: this.detail.apprpvalNode,
