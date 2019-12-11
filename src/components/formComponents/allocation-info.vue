@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-11 16:35:52
+ * @LastEditTime: 2019-12-11 16:38:43
  * @Description: 调拨信息 公共
 */
 <template>
@@ -249,8 +249,6 @@ export default {
     },
     //选择服务商切换的方法,请求服务商详情,拿出服务类型的code码
     facilitatorNameChange(val) {
-      console.log(val, 'valvalvalvalvalvalvalvalvalvalvalvalvalvalvalvalvalvalvalvalvalvalvalvalval', this.providerList)
-
       this.$api.seePsiCommonService.commonserviceproviderInfo(null, val)
         .then(res => {
           let serviceTypeArr = res.data.serviceType.split(',')
