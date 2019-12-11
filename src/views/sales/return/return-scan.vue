@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 20:29:26
+ * @LastEditTime: 2019-12-11 14:13:59
  * @Description: 退货扫码
 */
 
@@ -17,7 +17,7 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{`销售退货单:${code}`}}</span>
+      <span>{{`销售${from == 'exchange'?'换':'退'}货单:${code}`}}</span>
       <div class="fr mr30">
         <el-button
           type="primary"
