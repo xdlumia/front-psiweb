@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 11:00:06
+ * @LastEditTime: 2019-12-11 14:37:07
  * @Description: 采购-采购入库单
 */
 <template>
@@ -105,7 +105,7 @@ export default {
             { label: '备货单', value: '备货单' },
             { label: '直发单', value: '直发单' },
           ]        },
-        { label: '供应商', prop: 'supplierId', default: true },
+        { label: '供应商', prop: 'supplierId', default: true, type:'supplier' },
         { label: '销售预计到/发货时间', prop: 'SaleTime', type: 'dateRange', default: true },
         { label: '采购预计到/发货时间', prop: 'PurchaseTime', type: 'dateRange', default: true },
         { label: '总计数量', prop: 'PutinNum', type: 'numberRange', default: true, int: true },

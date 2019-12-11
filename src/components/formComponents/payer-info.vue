@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 10:25:44
+ * @LastEditTime: 2019-12-11 14:47:00
  * @Description: 收款方信息 已绑定 1
 */
 <template>
@@ -34,11 +34,18 @@ export default {
   },
   computed: {
     formItems() {
-      return [
+      let formItems = [
         { label: this.type == 0 ? '付款方' : '收款方', prop: 'accountName' },
         { label: '联系人', prop: 'linkman' },
         { label: '联系电话', prop: 'linkmanPhone' }
       ];
+      if (typeof this.type != 'undefined') {
+        formItems[1] = {
+          label: '银行账号',
+          prop: 'clientAccount'
+        };
+      }
+      return formItems
     }
   }
 };

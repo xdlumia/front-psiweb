@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 11:53:04
+ * @LastEditTime: 2019-12-11 14:39:25
  * @Description: 采购-直发单
 */
 <template>
@@ -87,7 +87,7 @@ export default {
         { label: '单据执行人', prop: 'personInChargeId', type: 'employee', default: true },
         { label: '创建人', prop: 'creator', type: 'employee' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
-        { label: '最小创建时间', prop: 'CreateTime', type: 'dateRange' }
+        { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
       ]
     };
   },

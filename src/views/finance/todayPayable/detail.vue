@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 13:40:58
+ * @LastEditTime: 2019-12-11 14:48:17
  * @Description: 今日应付账单
 */
 <template>
@@ -147,6 +147,9 @@ export default {
         let { data } = await this.$getApi(this.pageConfig.api.detail)({
           code: this.code
         });
+        data.clientAccount = data.fbilClientInfoVo
+          ? data.fbilClientInfoVo.account
+          : '';
         return data;
       } else if (this.rowData) {
         return this.rowData;
