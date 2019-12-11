@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 14:48:17
+ * @LastEditTime: 2019-12-11 22:47:33
  * @Description: 今日应付账单
 */
 <template>
@@ -116,7 +116,7 @@ export default {
         // 账单类型（0收款/1付款）
         // prettier-ignore
         return [
-          { label: '账单状态', value: this.stateText[this.detail.state] },
+          { label: '账单状态', value: this.settleText[this.detail.settleStatus] },
           { label: '逾期状态', value: this.overText[this.detail.overSate||0] },
           { label: this.pageConfig.type==0?'总应收金额':'总应付金额', value: this.detail.billTotalAmount },
           { label: this.pageConfig.type==0?'实收金额':'实付金额', value: this.detail.factAmount },

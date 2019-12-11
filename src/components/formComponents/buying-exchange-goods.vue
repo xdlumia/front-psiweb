@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:27:28
+ * @LastEditTime: 2019-12-11 22:39:10
  * @Description: 换货单换货商品 已绑定字段 1
 */  
 <template>
@@ -13,12 +13,12 @@
       :disabled="disabled"
       :fkey="fkey"
       :show="[
-      'categoryCode','className','specOne','configName','noteText','costAmountPrice','taxRate','!add','unit',
-    ]"
+        'categoryCode','className','specOne','configName','noteText','costAmountPrice','taxRate','!add','unit',
+      ].concat(disabled?[]:['goodsPic'])"
       :sort="['expanded'].concat(
-      disabled?['snCodes','swapInNum','swapOutNum','swapInWmsNames','swapOutWmsNames']:[],
-      ['actions','commodityCodes','commodityCode','goodsNames','swapInNum','swapInMoney','swapOutNum','swapOutMoney','taxRate','preTaxAmount']
-    )"
+        disabled?['snCodes','swapInNum','swapOutNum','swapInWmsNames','swapOutWmsNames']:[],
+        ['actions','commodityCodes','commodityCode','goodsNames','swapInNum','swapInMoney','swapOutNum','swapOutMoney','taxRate','preTaxAmount','goodsPic']
+      )"
       :summaryMethod="getSummaries"
       :title="exchangeType=='in'?'换入商品':'换出商品'"
       class="borrow-goods"
