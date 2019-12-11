@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 10:04:27
+ * @LastEditTime: 2019-12-11 15:33:27
  * @Description: 到货信息 已绑定字段 1
  */
 <template>
@@ -102,7 +102,12 @@ export default {
     let formItems = [
       { label: '供应商联系人', prop: 'supplierLinkman', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
       { label: '供应商联系人电话', prop: 'supplierPhone', type: 'input', rules: [{ required: true, }, { type: 'phone' }], },
-      { label: '服务商名称', prop: 'serviceCode', type: 'serviceProvider', },
+      { label: '服务商名称', prop: 'serviceCode', type: 'serviceProvider', rules: [{validator:(rule,value,cb)=>{
+        if(this.data.logistics.totalAmount>0){
+          if(!value) cb(new Error('此处为必填项'))
+          else cb()
+        }else cb();
+      }}] },
       { label: '服务类型', prop: 'logisticsModelCode', type: 'select', dictName:'PSI_FWS_FWLX',
         exclude:'serviceFilter' },
       { label: '物流单号', prop: 'logisticsSn', type: 'input', },

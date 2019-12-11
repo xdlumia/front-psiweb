@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 11:02:15
+ * @LastEditTime: 2019-12-11 17:17:40
  * @Description: 采购入库单
 */
 <template>
@@ -253,7 +253,6 @@ export default {
           this.code
         );
         data.commodityList = data.commodityList || [];
-        console.log(data);
         return data;
       } else if (this.rowData) {
         return this.rowData;
@@ -327,10 +326,10 @@ export default {
     collectInvoiceApply() {
       // 收集
       this.collectInvoiceData = {
-        type: 0,
+        type: 1,
         busCode: this.detail.putinCode,
         busType: 4,
-        purchaseId: this.detail.companySettlementId,
+        purchaseId: this.detail.companyAccountId,
         purchaseType: 3,
         marketId: this.detail.supplierId,
         marketType: 1,

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 11:58:45
+ * @LastEditTime: 2019-12-11 18:21:30
  * @Description: 销售出库单详情
 */
 <template>
@@ -51,7 +51,7 @@
         </el-tabs>
         <components
           ref="detail"
-          :params="activeName == 'contractSale'? {shipmentCode:code}:{relationCode:code}"
+          :params="activeName == 'contractSale' || activeName == 'storageSales'? {shipmentCode:code}:{relationCode:code}"
           :code="this.code"
           :rowData="detail || {}"
           :data="detail || {}"
@@ -202,6 +202,7 @@ export default {
         contractSale: '合同',
         salesReturn: '销售退货单',
         salesExchange: '销售换货单',
+        storageSales: '销售单',
         financeReceivable: '应收账单',
         financeBilling: '发票记录',
         salesApportion: '费用分摊单'
@@ -290,7 +291,7 @@ export default {
             busType: 0,
             purchaseId: this.detail.clientId,
             purchaseType: 0,
-            marketId: this.detail.companySettlementId,
+            marketId: this.detail.companyId,
             marketType: 3,
             invoiceDetailList: []
               .concat(

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 11:02:55
+ * @LastEditTime: 2019-12-11 14:51:05
  * @Description: 采购-采购退货单
 */
 <template>
@@ -82,7 +82,7 @@ export default {
         { label: '退货数量', prop: 'AlterationNum', type: 'numberRange', int: true, default: true },
         { label: '退货价', prop: 'AlterationAmount', type: 'numberRange', default: true },
         { label: '采购预计发货时间', prop: 'PurchasePlanTime', type: 'dateRange', default: true },
-        // { label: '创建人', prop: 'creator', type: 'employee' },
+        { label: '创建人', prop: 'creator', type: 'employee' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
       ]

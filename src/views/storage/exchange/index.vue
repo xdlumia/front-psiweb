@@ -14,7 +14,7 @@
       selection
       :exportButton="authorityButtons.includes('psi_wms_exchange_03')"
       ref='allTable'
-      :params='params'
+      :params='Object.assign(queryForm,params)'
       api="seePsiWmsService.wmsswaptaskList"
       exportApi="seePsiWmsService.wmsswaptaskExport"
       title="换货任务"

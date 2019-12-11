@@ -11,7 +11,7 @@
     <TableView
       busType="20"
       :filterOptions="filterOptions"
-      :params="params"
+      :params="Object.assign(queryForm,params)"
       selection
       ref="table"
       exportApi="seePsiSaleService.salessheetExport"

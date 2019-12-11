@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:27:14
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-11 15:17:09
  * @Description: 表格头部 
  */
 <template>
@@ -69,7 +69,7 @@
             placement="bottom"
             v-model="filterPopover"
             trigger="click"
-            width="250"
+            width="280"
             @hide="closeFilter"
           >
             <el-link

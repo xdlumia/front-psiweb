@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 17:21:21
+ * @LastEditTime: 2019-12-11 17:18:05
  * @Description: 借款单 - 还款记录
 */
 <template>
@@ -60,7 +60,7 @@ export default {
         { label: '还款日期', prop: 'repaymentDate', width: '120', },
         { label: '结算账户', prop: 'companySettlementInfo', width: '160', },
         { label: '流水凭证号', prop: 'serialNumber', width: '120', },
-        { label: '录入人', prop: 'creator', width: '120', },
+        { label: '录入人', prop: 'creatorName', width: '120', },
       ],
     };
   },

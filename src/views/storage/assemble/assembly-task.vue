@@ -1,12 +1,13 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-11 14:57:47
  * @Description: 生成拣货单和组装任务
 */
 <template>
   <el-dialog
+    v-loading="loading"
     :visible.sync="visible"
     title="生成拣货单和组装任务"
     @close='close'
@@ -74,6 +75,7 @@ export default {
   data() {
     return {
       activeName: '',
+      loading: false,
       form: {
         note: '',
         assemblePerson: '',
@@ -96,6 +98,7 @@ export default {
       isNum ?
         this.$refs['form'].validate((valid) => {
           if (valid) {
+            this.loading = true
             this.$api.seePsiWmsService.wmsassembletaskSave({
               assembleCommoditySaveVoList: this.data.commodityList,
               assembleOrderCode: this.data.assembleOrderCode,
@@ -108,6 +111,7 @@ export default {
                 this.close()
               })
               .finally(() => {
+                this.loading = false
               })
           } else {
             console.log('error submit!!');

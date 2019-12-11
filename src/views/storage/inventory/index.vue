@@ -11,7 +11,7 @@
     <TableView
       busType="0"
       :filterOptions='filterOptions'
-      :params="params"
+      :params="Object.assign(queryForm,params)"
       :exportButton="authorityButtons.includes('psi_wms_inventory_03')"
       selection
       ref='allTable'
@@ -80,20 +80,6 @@ export default {
     return {
       // 查询表单
       queryForm: {
-        wmsId: '',//库房id
-        blitemCode: '',//盘点单编号
-        type: '',//盘点类型（1-全盘 2-抽盘）
-        blitemState: '',//盘点状态（1- 进行中 2-盘点完成）
-        result: '',//盘点结果（1-盘盈 2-盘亏 3-有盈亏 4-吻合）
-        inventorySurplusNum: '',//盘盈数量
-        inventorySurplusSum: '',//盘盈金额（成本）
-        inventoryLossesNum: '',//盘亏数量
-        inventoryLossesSum: '',//盘亏金额（成本）
-        blitemPerson: '',//盘点人	
-        source: '',//来源
-        deptId: '',//部门id
-        companyCode: '',//公司code
-        isDelete: '',//是否删除
         page: 1,
         limit: 20
       },

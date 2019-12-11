@@ -2,22 +2,14 @@
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-18 17:35:12
+ * @LastEditTime: 2019-12-11 17:48:30
  * @Description: 换货信息 已绑定字段 1
  */
 <template>
   <form-card title="换货信息">
     <el-row :gutter="10">
-      <el-col
-        :key="index"
-        :span="item.span || 8"
-        v-for="(item,index) of formItems"
-      >
-        <el-form-item
-          :label="item.label"
-          :prop="`${item.prop}`"
-          :rules="item.rules"
-        >
+      <el-col :key="index" :span="item.span || 8" v-for="(item,index) of formItems">
+        <el-form-item :label="item.label" :prop="`${item.prop}`" :rules="item.rules">
           <el-input
             :disabled="disabled"
             :placeholder="`请输入${item.label}`"
@@ -53,18 +45,14 @@
             :disabled="disabled"
             :loading="serviceLoading"
             :remote-method="getServiceProvider"
+            @change="serviceChange"
             class="wfull"
             filterable
             remote
             v-else-if="item.type=='serviceProvider'"
             v-model="data[item.prop]"
           >
-            <el-option
-              :key="item.code"
-              :label="item.serviceName"
-              :value="item.id"
-              v-for="item in serviceOptions"
-            />
+            <el-option :key="item.code" :label="item.serviceName" :value="item.id" v-for="item in serviceOptions" />
           </el-select>
           <el-date-picker
             :disabled="disabled"
@@ -105,7 +93,12 @@ export default {
       { label: '换货方联系人', prop: 'contacts', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
       { label: '换货方联系人电话', prop: 'contactsPhone', type: 'input', rules: [{ required: true, }, { type: 'phone' }], },
       { label: '换货方地址', prop: 'address', type: 'input', rules: [{ required: true, }], },
-      { label: '服务商名称', prop: 'serviceProviderId', type: 'serviceProvider', },
+      { label: '服务商名称', prop: 'serviceProviderId', type: 'serviceProvider', rules:[{validator:(rule,value,cb)=>{
+        if(this.data.logisticsFees>0){
+          if(!value) cb(new Error('此处为必填项'))
+          else cb()
+        }else cb();
+      }}] },
       {        label: '服务类型', prop: 'serveType', type: 'select', dictName: 'PSI_FWS_FWLX',
         exclude: 'serviceFilter'      },
       { label: '运单编号', prop: 'waybillCode', type: 'input', },
@@ -160,6 +153,15 @@ export default {
         if (!this.serviceFilter.includes(this.data.serveType)) {
           this.$set(this.data, 'serveType', '');
         }
+      }
+      this.serviceChange()
+    },
+    serviceChange() {
+      let service = this.serviceOptions.find(
+        item => item.id == this.data.serviceProviderId
+      );
+      if (service) {
+        this.$set(this.data, 'facilitatorName', service.serviceName);
       }
     },
     async getServiceProvider(words = '') {
