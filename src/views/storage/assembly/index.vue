@@ -15,7 +15,7 @@
       ref='allTable'
       api="seePsiWmsService.wmsassembletaskList"
       exportApi="seePsiWmsService.wmsassembletaskExport"
-      :params="params"
+      :params="Object.assign(queryForm,params)"
       title="组装任务"
     >
       <template slot-scope="{column,row,value}">

@@ -1,13 +1,14 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-11 15:05:41
  * @Description: 采购单 详情  拆卸任务 拆卸公共弹窗 
 */
 <template>
   <el-dialog
     v-if='visible'
+    v-loading="loading"
     :visible.sync="visible"
     @close='close'
     :title="'拆卸-'+data.commodityCode"
@@ -360,6 +361,7 @@ export default {
       tableData: [],
       value: '',
       usableList: [],
+      loading: false,
       wmsId: '',//库房id
       wmsDisabled: false,
     };
@@ -481,6 +483,7 @@ export default {
     },
     //保存按钮
     submit() {
+      this.loading = true
       let params = {
         businessCode: this.allData.disassemblyTaskCode,
         businessCodeList: [this.allData.disassemblyOrderCode],
@@ -492,6 +495,7 @@ export default {
           this.close()
         })
         .finally(() => {
+          this.loading = false
         })
     }
   }

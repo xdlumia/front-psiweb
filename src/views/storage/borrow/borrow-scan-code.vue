@@ -1,12 +1,12 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-11 15:11:31
  * @Description: 借入扫码
 */
 <template>
-  <div>
+  <div v-loading='loading'>
     <el-container>
       <el-main :style="{maxHeight:'calc(100vh - 180px)'}">
         <form-card
@@ -264,6 +264,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       activeName: '',
       tableData: [],
       usableList: [],
@@ -320,13 +321,14 @@ export default {
     },
     //保存按钮
     submit() {
+      this.loading = true
       this.$api.seePsiWmsService.wmsborrowloantaskBorrowCommodity({ businessCode: this.data.borrowLoanCode, businessId: this.data.id, putawayCommodityList: this.tableData })
         .then(res => {
           this.close()
           this.$emit('reload')
         })
         .finally(() => {
-
+          this.loading = false
         })
     }
   }

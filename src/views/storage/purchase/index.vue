@@ -12,7 +12,7 @@
       busType="32"
       :filter="true"
       :filterOptions='filterOptions'
-      :params="params"
+      :params="Object.assign(queryForm,params)"
       selection
       :exportButton="authorityButtons.includes('psi_wms_purchase_03')"
       exportApi="seePsiPurchaseService.purchaseExport"

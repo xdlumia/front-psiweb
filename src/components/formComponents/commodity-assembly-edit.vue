@@ -1,13 +1,14 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-30 17:43:52
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-11 15:03:01
  * @Description: 组装任务组装弹窗 
 */
 <template>
   <div>
     <el-dialog
+      v-loading="loading"
       :visible.sync="visible"
       @close='close'
       :title="`组装-${data.commodityCode}`"
@@ -266,6 +267,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       snCode: '',
       tableData: [],
       usableList: [],
@@ -339,12 +341,14 @@ export default {
     },
     //保存
     submit() {
+      this.loading = true
       this.$api.seePsiWmsService.wmsassembletaskPutawayCommodity({ businessCode: this.detailForm.assembleTaskCode, businessId: this.detailForm.id, putawayCommodityList: this.tableData })
         .then(res => {
           this.close()
           this.$emit('reload')
         })
         .finally(() => {
+          this.loading = false
         })
     }
   }

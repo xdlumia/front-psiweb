@@ -14,7 +14,7 @@
       selection
       :exportButton="authorityButtons.includes('psi_wms_assemble_07')"
       ref='allTable'
-      :params="params"
+      :params="Object.assign(queryForm,params)"
       @response="onTableData"
       exportApi="seePsiWmsService.wmsassembleorderExport"
       api="seePsiWmsService.wmsassembleorderList"
@@ -114,6 +114,11 @@ export default {
       drawerData: {},//弹框的相关数据
       addVisible: false,//新增弹窗
       activeName: '',
+      // 查询表单
+      queryForm: {
+        page: 1,
+        limit: 20
+      },
       filterOptions: [
         { label: '生成顺序', prop: 'GenerateOrder', type: 'numberRange', int: true, default: true, },
         { label: '组装单编号', prop: 'assembleOrderCode', default: true },

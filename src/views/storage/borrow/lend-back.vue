@@ -1,12 +1,12 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-11 15:12:12
  * @Description: 借出返还
 */
 <template>
-  <div>
+  <div v-loading="loading">
     <el-container>
       <el-main :style="{maxHeight:'calc(100vh - 180px)'}">
         <form-card
@@ -265,7 +265,8 @@ export default {
       activeName: '',
       tableData: [],
       usableList: [],
-      wmsId: ''
+      wmsId: '',
+      loading: false,
     };
   },
   mounted() {
@@ -318,13 +319,14 @@ export default {
     },
     //保存按钮
     submit() {
+      this.loading = true
       this.$api.seePsiWmsService.wmsborrowloantaskReturnCommodity({ businessCode: this.data.borrowLoanCode, businessId: this.data.id, putawayCommodityList: this.tableData })
         .then(res => {
           this.close()
           this.$emit('reload')
         })
         .finally(() => {
-
+          this.loading = false
         })
     }
   }

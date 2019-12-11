@@ -11,7 +11,7 @@
     <TableView
       busType="3"
       :filterOptions='filterOptions'
-      :params="params"
+      :params="Object.assign(queryForm,params)"
       ref="allTable"
       selection
       :exportButton="authorityButtons.includes('psi_wms_reporting_03')"
@@ -79,16 +79,6 @@ export default {
     return {
       // 查询表单
       queryForm: {
-        wmsId: '',//库房id
-        personInChargeId: '',//责任人id
-        reportingLossesCode: '',//报溢报损单编号	
-        num: '',//报溢报损数量	
-        totalCostPrice: '',//总成本金额	
-        taxInclusiveTotalCostPrice: '',//税款总成本金额	
-        source: '',//来源
-        type: '',//类别（1-报溢 2-报损）
-        deptId: '',//部门ID	
-        isDelete: '',//是否删除(1-是 0-否)	
         page: 1,
         limit: 20
       },
