@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 11:02:15
+ * @LastEditTime: 2019-12-11 15:06:11
  * @Description: 采购入库单
 */
 <template>
@@ -327,7 +327,7 @@ export default {
     collectInvoiceApply() {
       // 收集
       this.collectInvoiceData = {
-        type: 0,
+        type: 1,
         busCode: this.detail.putinCode,
         busType: 4,
         purchaseId: this.detail.companySettlementId,
