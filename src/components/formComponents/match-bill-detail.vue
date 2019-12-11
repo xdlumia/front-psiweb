@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-11 10:39:30
+ * @LastEditTime: 2019-12-11 14:30:42
  * @Description: 收支流水匹配账单
 */
 <template>
@@ -56,7 +56,7 @@ export default {
     return {
       formItems: [
         { label: '账单编号', prop: 'billCode', },
-        { label: '账单金额', prop: 'amount', },
+        { label: '账单金额', prop: 'billTotalAmount', },
         { label: '对方名称 ', prop: 'accountName', },
         { label: '匹配金额 ', prop: 'matchedAmount', },
         { label: '费用类型', prop: 'feeTypeCode', dictName: 'ZD_DY_LX' },
