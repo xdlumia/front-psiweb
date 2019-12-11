@@ -110,7 +110,7 @@ export default {
         { label: '采购预计到/发货时间', prop: 'PurchaseTime', type: 'dateRange', default: true },
         { label: '总计数量', prop: 'PutinNum', type: 'numberRange', default: true, int: true },
         { label: '总计采购价', prop: 'PutinAmount', type: 'numberRange' },
-        { label: '合同创建人', prop: 'creator', type: 'employee' },
+        { label: '创建人', prop: 'creator', type: 'employee' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange' }
       ]
