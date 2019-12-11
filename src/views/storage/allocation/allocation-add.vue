@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-11 16:29:34
  * @Description: 新增调拨单
 */
 <template>
@@ -106,7 +106,7 @@ export default {
         facilitatorId: '',//服务商id
         facilitatorName: '',//服务商名称
         serveType: '',//服务类型
-        waybillCode: '',//运单编号
+        waybillCode: '',//运单编号 
         logisticsFees: '',//物流费用
         note: '',//备注
         serviceGrade: '',
