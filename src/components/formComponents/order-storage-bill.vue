@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 11:14:31
+ * @LastEditTime: 2019-12-11 11:31:15
  * @Description: 账单信息
 */
 <template>
@@ -44,7 +44,7 @@
       <el-table-column align="center" label="直接生成应付" min-width="100" prop="isBillFee" v-if="!hide.includes('isBillFee')">
         <template slot-scope="{row,$index}">
           <el-form-item :prop="`financeList.${$index}.isBillFee`" size="mini" style="margin-bottom:0;">
-            <el-checkbox :disabled="disabled" :false-label="0" :true-label="1" v-model="row.isBillFee"></el-checkbox>
+            <el-checkbox :disabled="disabled||forceBillFee" :false-label="0" :true-label="1" v-model="row.isBillFee"></el-checkbox>
           </el-form-item>
         </template>
       </el-table-column>
@@ -102,7 +102,8 @@ export default {
     feeDetailCode: {
       type: String,
       default: 'ZD_DY_LX-4-1'
-    }
+    },
+    forceBillFee: Boolean
   },
   data() {
     return {
@@ -185,6 +186,9 @@ export default {
         this.$set(this.data, 'financeList', []);
         this.addBill();
       }
+      this.data.financeList.map(item =>
+        this.forceBillFee ? (item.isBillFee = 1) : ''
+      );
       this.checkPayAmount();
     },
     // 自定义账单金额数据
@@ -207,7 +211,7 @@ export default {
     },
     addBill() {
       this.data.financeList.push({
-        isBillFee: 0,
+        isBillFee: this.forceBillFee ? 1 : 0,
         payAmount: '',
         payTime: this.data.financeList.length ? '' : +new Date(),
         paymenDays: ''

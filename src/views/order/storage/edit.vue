@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 16:14:21
+ * @LastEditTime: 2019-12-11 11:32:27
  * @Description: 采购入库单
 */
 <template>
@@ -61,7 +61,7 @@
             v-if="form.source=='请购单'"
           />
           <buyingPaymentLate :data="form" id="paymentLate" />
-          <order-storage-bill :data="form" :max="goodsTotalSum" id="billInfo" />
+          <order-storage-bill :data="form" :max="goodsTotalSum" id="billInfo" :forceBillFee="form.source=='直发单'" />
           <customInfo :data="form" busType="30" id="customInfo" />
           <extrasInfo :data="form" id="extrasInfo" />
         </el-form>
