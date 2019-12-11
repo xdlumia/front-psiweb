@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-11 11:19:17
+ * @LastEditTime: 2019-12-11 11:21:43
  * @Description: 销售-客户管理
  */
 <template>
@@ -54,7 +54,7 @@
       :code="rowData.code"
       :visible.sync="detailVisible"
       :rowData="rowData"
-      @reload="setEdit(),$reload()"
+      @reload="$refs.table.reload()"
     />
     <!-- 客户新增-->
     <clientAdd
