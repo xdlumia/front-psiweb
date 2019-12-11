@@ -13,7 +13,7 @@
     <TableView
       busType="4"
       :filterOptions='filterOptions'
-      :params="params"
+      :params="Object.assign(queryForm,params)"
       :exportButton="authorityButtons.includes('psi_wms_borrow_03')"
       ref='table'
       selection

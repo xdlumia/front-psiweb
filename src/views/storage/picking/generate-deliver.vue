@@ -1,12 +1,13 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-11 15:00:19
  * @Description: 拣货
 */
 <template>
   <el-dialog
+    v-loading="loading"
     :visible.sync="visible"
     title="拣货"
     @close="close"
@@ -145,6 +146,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       activeName: ''
     };
   },
@@ -166,13 +168,14 @@ export default {
           item.fieldList.push({ fieldVal: item1, fieldCode: item[item1] })
         })
       })
+      this.loading = true
       this.$api.seePsiWmsService.wmspickingorderBatchShipment({ businessCode: this.drawerData.pickingOrderCode, businessId: this.drawerData.id, putawayCommodityList: this.$refs.pickingSn.tableData, businessType: 10 })
         .then(res => {
           this.close()
           this.$emit('reload')
         })
         .finally(() => {
-
+          this.loading = false
         })
     }
 

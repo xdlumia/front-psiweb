@@ -1,12 +1,13 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-11 14:54:49
  * @Description: 生成发货单
 */
 <template>
   <el-dialog
+    v-loading="loading"
     :visible.sync="visible"
     title="生成发货单"
     v-dialogDrag
@@ -96,6 +97,7 @@ export default {
   data() {
     return {
       activeName: '',
+      loading: false,
       addForm: {
         "clientName": "",
         "consignee": "",
@@ -133,16 +135,18 @@ export default {
       this.$emit('update:visible', false)
     },
     submit() {
+
       this.addForm.clientName = this.form.clientName
       this.addForm.salesSheetCode = this.form.salesSheetCode
       this.$refs.addForm.validate((valid) => {
         if (valid) {
+          this.loading = true
           this.$api.seePsiSaleService.salessheetDeliverGoods(this.addForm)
             .then(res => {
               this.close()
             })
             .finally(() => {
-
+              this.loading = false
             })
         } else {
           console.log('error submit!!');

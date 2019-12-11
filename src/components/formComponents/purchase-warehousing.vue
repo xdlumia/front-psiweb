@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-11 15:17:00
  * @Description: 采购单 详情  入库商品  点击入库或者SN码公共弹窗
 */
 <template>
@@ -10,6 +10,7 @@
     :visible.sync="visible"
     @close="close"
     title="入库"
+    v-loading="loading"
     v-dialogDrag
   >
     <el-container>
@@ -276,6 +277,7 @@ export default {
       usableList: [],
       tableData: [],
       snCode: '',
+      loading: false,
       wmsId: '',//库房id
     };
   },
@@ -299,6 +301,7 @@ export default {
     shipmentCommodityCheck() {
       if (this.wmsId) {
         if ((this.rowData.commodityNumber - (this.rowData.putinNumber || 0) - this.tableData.length) > 0) {
+          this.loading = true
           this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: this.snCode, commodityCode: this.rowData.commodityCode, putawayCommodityList: this.tableData, categoryCode: this.rowData.categoryCode, wmsId: this.wmsId })
             .then(res => {
               if (res.data) {
@@ -306,7 +309,7 @@ export default {
               }
             })
             .finally(() => {
-
+              this.loading = false
             })
         } else {
           this.$message({
@@ -343,6 +346,7 @@ export default {
     },
     //保存
     submit() {
+      this.loading = true
       //振兴入库
       this.$api.seePsiWmsService.wmsinventorydetailBatchPutaway({ businessCode: this.drawerData.purchaseCode, businessId: this.drawerData.id, putawayCommodityList: this.tableData, businessType: 32 })
         .then(res => {
@@ -356,7 +360,7 @@ export default {
             })
         })
         .finally(() => {
-
+          this.loading = false
         })
     }
   }

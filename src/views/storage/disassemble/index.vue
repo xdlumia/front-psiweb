@@ -15,7 +15,7 @@
       ref='allTable'
       api="seePsiWmsService.wmsdisassemblytaskList"
       exportApi="seePsiWmsService.wmsdisassemblytaskExport"
-      :params="params"
+      :params="Object.assign(queryForm,params)"
       :exportButton="authorityButtons.includes('psi_wms_disassemble_03')"
       title="拆卸任务"
     >

@@ -11,7 +11,7 @@
     <TableView
       busType="7"
       :filterOptions='filterOptions'
-      :params="params"
+      :params="Object.assign(queryForm,params)"
       selection
       :exportButton="authorityButtons.includes('psi_wms_deliver_03')"
       api="seePsiWmsService.wmsshipmentsorderList"

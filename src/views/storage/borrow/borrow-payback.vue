@@ -1,12 +1,12 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-11 15:08:55
  * @Description: 借入归还
 */
 <template>
-  <div>
+  <div v-loading="loading">
     <el-container>
       <el-main :style="{maxHeight:'calc(100vh - 180px)'}">
         <form-card
@@ -329,6 +329,7 @@ export default {
   data() {
     return {
       activeName: '',
+      loading: false,
       snCode: '',
       tableData: [],
       providerList: [],//服务商列表
@@ -424,13 +425,14 @@ export default {
       let params = { businessCode: this.data.borrowLoanCode, businessId: this.data.id, putawayCommodityList: this.tableData }
       this.$refs.form.validate((valid) => {
         if (valid) {
+          this.loading = true
           this.$api.seePsiWmsService.wmsborrowloantaskBackCommodity(Object.assign(params, this.form))
             .then(res => {
               this.close()
               this.$emit('reload')
             })
             .finally(() => {
-
+              this.loading = false
             })
         } else {
           console.log('error submit!!');

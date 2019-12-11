@@ -1,12 +1,13 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-11 15:07:08
  * @Description: 换货任务 换货扫码公共弹窗 
 */
 <template>
   <el-dialog
+    v-loading="loading"
     v-if='visible'
     :visible.sync="visible"
     @close='close'
@@ -367,6 +368,7 @@ export default {
     return {
       queryForm: {},
       snCode: '',
+      loading: false,
       tableData: [],
       value: '',
       usableList: [],
@@ -497,12 +499,14 @@ export default {
     },
     //保存按钮
     submit() {
+      this.loading = true
       this.$api.seePsiWmsService.wmsswaptaskSwapCommodity({ businessCode: this.allData.swapOrderCode, businessCodeList: [this.allData.swapTaskCode], putawayCommodityList: this.tableData })
         .then(res => {
           this.$emit('reload')
           this.close()
         })
         .finally(() => {
+          this.loading = false
         })
     }
   }
