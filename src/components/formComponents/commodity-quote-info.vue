@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 16:03:15
+ * @LastEditTime: 2019-12-11 22:07:11
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -235,10 +235,20 @@ export default {
           commodityCode: row.commodityCode
         }
       );
+      let {data:childList} = await this.$api.seePsiSaleService.businesscommodityQueryGoodsList({
+        commodityCodes:data.map(item=>item.commodityCode),
+      })
+      let businessInfo = childList.reduce((data,item)=>{
+        data[item.commodityCode] = item;
+        return data;
+      },{})
+
       data.map(child=>{
         child.parentCommodityCode=row.commodityCode
+        child.commodityNumber=child.commodityNum
         child.reference = child.saleReferencePrice
-        child.discountSprice=''
+        child.discountSprice='-'
+        child.recentDiscountSprice=businessInfo[child.commodityCode].recentDiscountSprice
       })
       cb(data);
     },

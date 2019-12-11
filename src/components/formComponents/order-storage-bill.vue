@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 17:53:19
+ * @LastEditTime: 2019-12-11 21:58:10
  * @Description: 账单信息
 */
 <template>
@@ -158,7 +158,6 @@ export default {
       }
     },
     max() {
-      console.log(this.max);
       this.checkPayAmount();
     }
   },
@@ -172,10 +171,8 @@ export default {
             sum += Number(item.payAmount) || 0;
           }
         });
-        if (sum < this.max) {
+        if (sum <= this.max) {
           list[0].payAmount = +Number(this.max - sum).toFixed(2);
-        } else {
-          list[0].payAmount = this.max;
         }
       }
     },

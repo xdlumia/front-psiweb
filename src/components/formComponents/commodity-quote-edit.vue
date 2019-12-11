@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 19:27:51
+ * @LastEditTime: 2019-12-11 22:19:44
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -163,6 +163,7 @@
               v-model="scope.row.commodityNumber"
             />
           </el-form-item>
+          <span v-else>{{scope.row.commodityNumber}}</span>
         </template>
       </el-table-column>
 
@@ -381,10 +382,20 @@ export default {
           commodityCode: row.commodityCode
         }
       );
-      data.map(child => {
-        child.parentCommodityCode = row.commodityCode
+      let {data:childList} = await this.$api.seePsiSaleService.businesscommodityQueryGoodsList({
+        commodityCodes:data.map(item=>item.commodityCode),
+      })
+      let businessInfo = childList.reduce((data,item)=>{
+        data[item.commodityCode] = item;
+        return data;
+      },{})
+
+      data.map(child=>{
+        child.parentCommodityCode=row.commodityCode
+        child.commodityNumber=child.commodityNum
         child.reference = child.saleReferencePrice
-        child.discountSprice = ''
+        child.discountSprice='-'
+        child.recentDiscountSprice=businessInfo[child.commodityCode].recentDiscountSprice
       })
       cb(data);
     },
@@ -433,7 +444,7 @@ export default {
       // commonGoodConfigDetailsEntityList
       let needBusList = []
       this.flatCallback((item)=>{
-        if(!this.preCommodityBussinessInfo[item.commodityCode]){
+        if(!this.preCommodityBussinessInfo[item.commodityCode]&&item.commodityCode){
           needBusList.push(item.commodityCode)
         }
       })
