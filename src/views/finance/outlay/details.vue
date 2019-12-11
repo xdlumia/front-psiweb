@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 11:52:05
+ * @LastEditTime: 2019-12-11 10:34:50
  * @Description: 财务-支出流水详情
 */
 <template>
@@ -35,6 +35,8 @@
         :model="form"
         size="mini"
         label-position="top"
+        class="d-auto-y"
+        style="height:calc(100vh - 110px)"
       >
         <!-- 单据信息 -->
         <receipt-info
@@ -46,6 +48,11 @@
         <extras-info
           disabled
           :data="detail"
+        />
+        <!-- 匹配账单信息 -->
+        <match-bill-detail
+          disabled
+          :data="detail.fBillEntityList || []"
         />
 
       </el-form>

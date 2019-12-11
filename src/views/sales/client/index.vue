@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:39:30
+ * @LastEditTime: 2019-12-11 11:19:17
  * @Description: 销售-客户管理
  */
 <template>
@@ -15,6 +15,8 @@
       :column="true"
       title="客户管理"
       api="seePsiCommonService.commonclientinfoPagelist"
+      :mergeFilter="true"
+      :filterOptions="filterOptions"
       exportApi="seePsiCommonService.commonclientinfoExport"
       :params="Object.assign(queryForm,params)"
     >
@@ -52,7 +54,7 @@
       :code="rowData.code"
       :visible.sync="detailVisible"
       :rowData="rowData"
-      @reload="$refs.table.reload()"
+      @reload="setEdit(),$reload()"
     />
     <!-- 客户新增-->
     <clientAdd
@@ -67,13 +69,7 @@
 import clientAdd from './add' // 客户新增
 import clientDetail from './details' //客户详情
 let filterList = [
-  { label: '客户编号', prop: 'code', default: true, type: 'text' },
-  { label: '客户名称', prop: 'fuzzyClientName', default: true, type: 'text' },
-  { label: '联系人', prop: 'linkManName', default: true, type: 'employee', },
-  { label: '联系电话', prop: 'phone', default: true, type: 'text' },
-  { label: '提交人', prop: 'created', default: true, type: 'employee', },
-  { label: '部门', prop: 'deptTotalCode', default: true, type: 'employee', },
-  { label: '提交时间', prop: 'CreateTime', default: true, type: 'daterange', },
+  { label: '客户名称', prop: 'clientName', default: true, type: 'text' },
 ]
 export default {
   name: 'return',

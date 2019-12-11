@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 18:13:35
+ * @LastEditTime: 2019-12-11 11:18:52
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -198,6 +198,10 @@ export default {
     exportApi: {
       type: String,
     },
+    mergeFilter: {
+      type: Boolean,
+      default: false
+    },
     // 筛选配置
     filterOptions: Array,
     selectable: Function,
@@ -389,7 +393,7 @@ export default {
           }
         })
 
-        if (this.filterOptions) {
+        if (this.filterOptions && this.mergeFilter) {
           // 合并数组
           var obj = {};
           this.autoFilterOptions = [...this.filterOptions, ...filterOptions].reduce((item, next) => {
@@ -397,7 +401,7 @@ export default {
             return item;
           }, []);
         } else {
-          this.autoFilterOptions = filterOptions
+          this.autoFilterOptions = this.filterOptions
         }
       }
       // 列表默认请求的就是全部列数据 所以这里就不用重新请求了
