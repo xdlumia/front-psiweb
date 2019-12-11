@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-11 16:00:55
+ * @LastEditTime: 2019-12-11 16:13:26
  * @Description: 采购单 详情  入库商品  点击入库或者SN码公共弹窗
 */
 <template>

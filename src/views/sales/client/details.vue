@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-11 11:21:27
+ * @LastEditTime: 2019-12-11 17:10:20
  * @Description: 客户详情
 */
 <template>
@@ -69,7 +69,7 @@
       type="edit"
       :rowData="rowData"
     />
-    <!-- 新建报价单 -->
+    <!-- 新增报价单 -->
     <quoteAdd
       :visible.sync="addQuotoVisible"
       type="add"
@@ -82,7 +82,7 @@
 import basicInfo from './details/basic-info' //详情
 import clientData from './details/client-data' //详情
 import clientAdd from './add' //详情
-import quoteAdd from '../quote/add' //新建报价单
+import quoteAdd from '../quote/add' //新增报价单
 import VisibleMixin from '@/utils/visibleMixin';
 export default {
   mixins: [VisibleMixin],
@@ -196,12 +196,12 @@ export default {
         });
       }
 
-      else if (label == '编辑' || label == '新建报价单') {
+      else if (label == '编辑' || label == '新增报价单') {
         if (label == '编辑') {
           this.editVisible = true
           return
         }
-        if (label == '新建报价单') {
+        if (label == '新增报价单') {
           this.addQuotoVisible = true
           return
         }

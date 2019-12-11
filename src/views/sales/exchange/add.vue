@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 16:15:39
+ * @LastEditTime: 2019-12-11 16:51:29
  * @Description: 生成销售换货单
 */
 <template>
@@ -227,6 +227,11 @@ export default {
           copyParams.totalExchangeNumber = copyParams.exChangeCommodityList.reduce((sum, curr) => {
             return sum + Number(curr.commodityNumber)
           }, 0)
+          copyParams.shipmentFinanceSaveVoList = copyParams.shipmentFinanceSaveVoList.map(item => {
+            item.feeDetailCode = 'ZD_DY_LX-1-3' // 换货费 费用明细",
+            item.feeTypeCode = 'ZD_DY_LX-1' // 销售费 费用类型",
+            return item
+          })
           this.loading = true
           // rules 表单验证是否通过
           let api = 'salesexchangeUpdate' // 默认编辑更新

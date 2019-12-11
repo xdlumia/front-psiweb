@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 17:20:29 
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-11 16:38:43
  * @Description: 调拨信息 公共
 */
 <template>
@@ -259,6 +259,11 @@ export default {
         .finally(() => {
 
         })
+      //查出当前选择服务商名称， 后端要
+      let obj = this.providerList.filter((item) => {
+        return item.id == val
+      })
+      obj.length > 0 ? this.form.facilitatorName = obj[0].serviceName : this.form.facilitatorName = ''
     }
   }
 };
