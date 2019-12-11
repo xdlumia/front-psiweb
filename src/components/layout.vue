@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-31 18:55:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 17:12:27
+ * @LastEditTime: 2019-12-11 09:19:40
  * @Description: description
  -->
 /*
@@ -13,7 +13,7 @@
  * @Description: layout 页面架构
 */
 <template>
-  <d-layout v-model="isLockkScreen" :lockOutTime="8000">
+  <d-layout v-model="isLockkScreen" :lockOutTime="15">
     <img slot="logo" src="@/assets/img/logo.png" alt />
     <div style="height: 100vh" v-loading="loading">
       <el-container class="d-container">
@@ -37,16 +37,8 @@
               index="/todo"
               style="height: 32px;line-height: 33px;margin-top: 10px;border-bottom:none"
             >
-              <el-badge
-                :value="backlogNum"
-                class="backlog-wrapper"
-              >
-                <el-button
-                  icon="el-icon-tickets"
-                  round
-                  size="small"
-                  class="backlog"
-                >待办事项</el-button>
+              <el-badge :value="backlogNum" class="backlog-wrapper">
+                <el-button icon="el-icon-tickets" round size="small" class="backlog">待办事项</el-button>
               </el-badge>
             </el-menu-item>
             <!-- 如果type类型是菜单就不会有二级目录(最多只有2级菜单)
@@ -69,27 +61,14 @@
                   :style="{display: menu.children && menu.children[0].children ? 'flex' : ''}"
                   :class="[!(menu.children && menu.children[0].children) ? 'pr10 pl10' : '']"
                 >
-                  <div
-                    v-for="(submenu,submenuKey) in chunkMenu"
-                    :key="submenuKey"
-                  >
+                  <div v-for="(submenu,submenuKey) in chunkMenu" :key="submenuKey">
                     <!-- 二级菜单渲染 -->
-                    <el-menu-item
-                      v-if="submenu.type===2"
-                      :index="submenu.url+''"
-                    >{{submenu.name}}</el-menu-item>
+                    <el-menu-item v-if="submenu.type===2" :index="submenu.url+''">{{submenu.name}}</el-menu-item>
                     <!-- 三级菜单渲染 -->
-                    <div
-                      v-else
-                      class="hfull pb5"
-                      style="display:flex;flex-direction:column;"
-                    >
+                    <div v-else class="hfull pb5" style="display:flex;flex-direction:column;">
                       <h4 class="mt5 mb10 menu-title">{{submenu.name}}</h4>
                       <!-- 三级菜单按 5长度 分割 -->
-                      <div
-                        class="hfull mb10"
-                        style="display:flex;"
-                      >
+                      <div class="hfull mb10" style="display:flex;">
                         <div
                           class="pr10 pl10"
                           v-for="(chunkSubmenu, key) in chunk(submenu.children, WRAP_LENGTH)"
@@ -112,10 +91,7 @@
             </el-submenu>
 
             <!-- 用户详情 -->
-            <el-submenu
-              index="user"
-              class="fr"
-            >
+            <el-submenu index="user" class="fr">
               <template slot="title">
                 <img
                   class="user-head"
@@ -127,24 +103,14 @@
                   <p class="f12">{{userInfo.userName}}</p>
                 </div>
               </template>
-              <el-menu-item
-                @click="logout"
-                index="/login"
-                class="f12"
-              >退出</el-menu-item>
+              <el-menu-item @click="logout" index="/login" class="f12">退出</el-menu-item>
             </el-submenu>
             <!-- 版本更新 -->
-            <el-submenu
-              index="/version"
-              class="fr head-version"
-            >
+            <el-submenu index="/version" class="fr head-version">
               <template slot="title">
                 <i class="el-icon-info"></i>
               </template>
-              <el-menu-item
-                index="/version"
-                class="f12"
-              >版本更新</el-menu-item>
+              <el-menu-item index="/version" class="f12">版本更新</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-header>
@@ -157,16 +123,9 @@
         </el-main>
       </el-container>
     </div>
-    <add-fee
-      :visible.sync="addFeeVisible"
-      v-if="addFeeVisible"
-    ></add-fee>
+    <add-fee :visible.sync="addFeeVisible" v-if="addFeeVisible"></add-fee>
     <!-- 新增收支流水 -->
-    <addIncome
-      :visible.sync="addIncomeVisible"
-      type="add"
-      v-if="addIncomeVisible"
-    />
+    <addIncome :visible.sync="addIncomeVisible" type="add" v-if="addIncomeVisible" />
   </d-layout>
 </template>
 
@@ -181,7 +140,7 @@ import addIncome from '@/views/finance/income/add.vue' // 新增收支流水
 export default {
   name: 'App',
   components: { addFee, addIncome },
-  data() {
+  data () {
     return {
       addFeeVisible: false,
       addIncomeVisible: false,
@@ -207,19 +166,19 @@ export default {
     };
   },
   computed: {
-    backlogNum() {
+    backlogNum () {
       return this.$store.state.backlogNum
     },
-    syscode() {
+    syscode () {
       return this.isRentSystem ? 'asystem' : 'asysbusiness';
     },
     // 去掉菜单里的更多应用
-    navMenu() {
+    navMenu () {
       const navData = this.$local.fetch('navData') || [];
       return navData.filter(item => item.code != 'moremenu');
     },
     // 获取更多应用菜单
-    moremenu() {
+    moremenu () {
       const navData = this.$local.fetch('navData') || [];
       let moreMenuList = [];
       navData.forEach(item => {
@@ -229,7 +188,7 @@ export default {
       });
       return moreMenuList;
     },
-    sysList() {
+    sysList () {
       return (
         !this.loading &&
         (this.$local.fetch('syslist') || []).filter(item => {
@@ -246,7 +205,7 @@ export default {
     }
   },
 
-  created() {
+  created () {
     // let companyInfo = this.$local.fetch('companyInfo')
     // this.$store.commit('companyInfo',companyInfo)
     // 判断当前是否从别的平台跳转到当前
@@ -297,17 +256,17 @@ export default {
     this.$store.commit('setNavData', JSON.parse(localStorage.getItem('navData')) || [])
     this.$store.dispatch('backlogNum')
   },
-  beforeMount() {
+  beforeMount () {
     document.title = this.$route.meta.title
   },
   watch: {
-    isLockkScreen(val) {
+    isLockkScreen (val) {
       if (!val) {
         this.token = localStorage.token;
       }
     },
     $route: {
-      handler(a) {
+      handler (a) {
         this.path = a.path.indexOf('/home') !== -1 ? '/' : a.path;
         document.title = this.$route.meta.title
       },
@@ -315,27 +274,27 @@ export default {
     }
   },
   methods: {
-    handleMenuUrl(url) {
+    handleMenuUrl (url) {
       if (url === '/finance/addFee' || url === '/finance/addIncome') {
         return ''
       }
       return url
     },
-    buttonClick(url) {
+    buttonClick (url) {
       // 新增收支流水
       this.addIncomeVisible = url === '/finance/addIncome'
       this.addFeeVisible = url === '/finance/addFee'
     },
-    handleSelect() { },
+    handleSelect () { },
     // 退出登录
-    logout() {
+    logout () {
       localStorage.token = '';
       localStorage.timer = '';
       sessionStorage.setItem('loginRedirect', '');
       this.$router.push({ path: '/login' });
     },
     // 获取菜单权限
-    getNavData() {
+    getNavData () {
       return Promise.all([
         this.$api.bizSystemService.getUserAuth(this.syscode).then(res => {
           if (res && res.code === 200) {
@@ -389,13 +348,13 @@ export default {
       ]);
     },
     // 获取当前用户可操作的系统/平台列表
-    getsyslist() {
+    getsyslist () {
       return this.$api.bizSystemService.getsyslist().then(res => {
         localStorage.setItem('syslist', JSON.stringify(res.data || [])); // 存储该用户拥有的平台权限
       });
     },
     // 递归处理权限数据
-    authorityHandle(authorityData) {
+    authorityHandle (authorityData) {
       authorityData.forEach(item => {
         if (item.code !== '') {
           this.authorityBtn[item.code] = item.buttonsCode;
