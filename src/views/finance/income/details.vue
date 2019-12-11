@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 18:20:55
+ * @LastEditTime: 2019-12-11 10:12:22
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -50,11 +50,11 @@
           disabled
           :data="detail"
         />
+        <!-- 账单匹配详情 -->
         <!-- <match-bill-detail
           disabled
           :data="detail"
         /> -->
-        <!-- TODO 缺少账单匹配 -->
         <!-- TODO 缺少操作记录 -->
       </el-form>
     </side-detail>
