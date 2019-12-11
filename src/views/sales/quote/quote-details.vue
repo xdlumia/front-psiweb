@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:22:28
+ * @LastEditTime: 2019-12-11 17:09:13
  * @Description: 报价单详情
 */
 <template>
@@ -124,7 +124,7 @@ export default {
         '0': '审核中',
         '1': '已通过',
         '2': '已驳回',
-        '2': '完成',
+        '3': '完成',
         '4': '已终止',
       },
       /**
