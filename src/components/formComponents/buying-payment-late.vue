@@ -2,11 +2,11 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 22:29:12
- * @Description: 收款滞纳金
+ * @LastEditTime: 2019-12-12 16:29:41
+ * @Description: 收票滞纳金
  */
 <template>
-  <form-card title="收款滞纳金">
+  <form-card title="收票滞纳金">
     <el-row :gutter="10">
       <el-col :span="8" class="h80">
         <el-form-item label="收票时间" prop="ticketTime" size="mini">
