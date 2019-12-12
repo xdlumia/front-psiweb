@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 09:57:18
+ * @LastEditTime: 2019-12-12 18:45:23
  * @Description: 采购-采购调价单
 */
 <template>
@@ -32,7 +32,7 @@
       </template>
     </TableView>
     <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
-    <Edit :visible.sync="showEdit" @reload="reload" v-if="showEdit" />
+    <Edit :hide="['saleReferencePrice','taxBeforeAdjustPrice','profitRate']" :visible.sync="showEdit" @reload="reload" v-if="showEdit" />
   </div>
 </template>
 <script>
