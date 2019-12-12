@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 22:39:10
+ * @LastEditTime: 2019-12-12 17:38:16
  * @Description: 换货单换货商品 已绑定字段 1
 */  
 <template>
@@ -24,29 +24,16 @@
       class="borrow-goods"
       ref="goodsTable"
     >
-      <template
-        slot="actions"
-        slot-scope="{row,info}"
-      >
-        <span
-          @click="add(row,info)"
-          class="f20 ml5 el-icon-circle-plus d-pointer"
-          v-if="!info.isChild"
-        ></span>
+      <template slot="actions" slot-scope="{row,info}">
+        <span @click="add(row,info)" class="f20 ml5 el-icon-circle-plus d-pointer" v-if="!info.isChild"></span>
         <span
           @click="del(row,info)"
           class="f20 ml5 el-icon-remove d-text-red d-pointer"
-          v-if="(info.isChild)?false:(info.index>0)"
+          v-if="(info.isChild)?false:(data[fkey]&&data[fkey].length>1)"
         ></span>
       </template>
-      <template
-        slot="commodityCode"
-        slot-scope="{row,info,formProp}"
-      >
-        <el-form-item
-          :prop="formProp"
-          :rules="[{required:true}]"
-        >
+      <template slot="commodityCode" slot-scope="{row,info,formProp}">
+        <el-form-item :prop="formProp" :rules="[{required:true}]">
           <commodity-selector
             :codes="info.parentArray.map(item=>item.commodityCode)"
             :disabled="info.isChild?true:disabled"
@@ -56,14 +43,8 @@
           />
         </el-form-item>
       </template>
-      <template
-        slot="goodsName"
-        slot-scope="{row,info,formProp}"
-      >
-        <el-form-item
-          :prop="formProp"
-          :rules="[{required:true}]"
-        >
+      <template slot="goodsName" slot-scope="{row,info,formProp}">
+        <el-form-item :prop="formProp" :rules="[{required:true}]">
           <commodity-selector
             :codes="info.parentArray.map(item=>item.commodityCode)"
             :disabled="info.isChild?true:disabled"
@@ -72,81 +53,40 @@
           />
         </el-form-item>
       </template>
-      <template
-        slot="swapInNum"
-        slot-scope="{row,info,formProp}"
-      >
+      <template slot="swapInNum" slot-scope="{row,info,formProp}">
         <el-form-item
           :prop="formProp"
           :rules="[{required:true},{type:'positiveNum'},{validator:checkSwapInNum.bind(this,row)}]"
           v-if="!info.isChild"
         >
-          <el-input
-            :disabled="disabled"
-            size="mini"
-            v-model="row.swapInNum"
-          ></el-input>
+          <el-input :disabled="disabled" size="mini" v-model="row.swapInNum"></el-input>
         </el-form-item>
       </template>
-      <template
-        slot="swapInMoney"
-        slot-scope="{row,info,formProp}"
-      >
-        <el-form-item
-          :prop="formProp"
-          :rules="[{required:true},{type:'price'}]"
-          v-if="!info.isChild"
-        >
-          <el-input
-            :disabled="disabled"
-            size="mini"
-            v-model="row.swapInMoney"
-          ></el-input>
+      <template slot="swapInMoney" slot-scope="{row,info,formProp}">
+        <el-form-item :prop="formProp" :rules="[{required:true},{type:'price'}]" v-if="!info.isChild">
+          <el-input :disabled="disabled" size="mini" v-model="row.swapInMoney"></el-input>
         </el-form-item>
       </template>
-      <template
-        slot="swapOutNum"
-        slot-scope="{row,info,formProp}"
-      >
+      <template slot="swapOutNum" slot-scope="{row,info,formProp}">
         <el-form-item
           :prop="formProp"
           :rules="[{required:true},{type:'positiveNum'},{validator:checkSwapOutNum.bind(this,row)}]"
           v-if="!info.isChild"
         >
-          <el-input
-            :disabled="disabled"
-            size="mini"
-            v-model="row.swapOutNum"
-          ></el-input>
+          <el-input :disabled="disabled" size="mini" v-model="row.swapOutNum"></el-input>
         </el-form-item>
       </template>
-      <template
-        slot="swapOutMoney"
-        slot-scope="{row,info,formProp}"
-      >
-        <el-form-item
-          :prop="formProp"
-          :rules="[{required:true},{type:'price'}]"
-          v-if="!info.isChild"
-        >
-          <el-input
-            :disabled="disabled"
-            size="mini"
-            v-model="row.swapOutMoney"
-          ></el-input>
+      <template slot="swapOutMoney" slot-scope="{row,info,formProp}">
+        <el-form-item :prop="formProp" :rules="[{required:true},{type:'price'}]" v-if="!info.isChild">
+          <el-input :disabled="disabled" size="mini" v-model="row.swapOutMoney"></el-input>
         </el-form-item>
       </template>
-
     </buying-goods-edit>
-    <outGoodsRecord
-      :visible.sync='dialogVisible'
-      v-if="dialogVisible"
-      :form='tpForm'
-    />
+    <outGoodsRecord :form="tpForm" :visible.sync="dialogVisible" v-if="dialogVisible" />
   </div>
 </template>
 <script>
-import outGoodsRecord from './out-goods-record'
+import outGoodsRecord from './out-goods-record';
 export default {
   components: { outGoodsRecord },
   props: {
@@ -233,13 +173,13 @@ export default {
   },
   methods: {
     changeDialog(row) {
-      this.dialogVisible = true
-      this.tpForm.commodityCode = row.commodityCode
-      this.tpForm.businessCode = this.data.swapOrderCode//换货单/换货任务   this.data.swapTaskCode || 都用换货单的code
-      this.tpForm.page = 1
-      this.tpForm.limit = 20
-      this.tpForm.operation = this.exchangeType == 'in' ? 0 : 1//参数，0入库 1 出库 
-      this.tpForm.name = '换货'//区分换货和调拨单
+      this.dialogVisible = true;
+      this.tpForm.commodityCode = row.commodityCode;
+      this.tpForm.businessCode = this.data.swapOrderCode; //换货单/换货任务   this.data.swapTaskCode || 都用换货单的code
+      this.tpForm.page = 1;
+      this.tpForm.limit = 20;
+      this.tpForm.operation = this.exchangeType == 'in' ? 0 : 1; //参数，0入库 1 出库
+      this.tpForm.name = '换货'; //区分换货和调拨单
     },
     getPreTaxAmount(row) {
       let np = this.exchangeType == 'in' ? 'swapInNum' : 'swapOutNum';
@@ -288,8 +228,7 @@ export default {
         cb(new Error('数量最低为1'));
       } else cb();
     },
-    getData(data) {
-    },
+    getData(data) {},
     fullscreen() {
       this.showInFullscreen = true;
     },
@@ -306,8 +245,7 @@ export default {
       this.$set(row, 'children', children);
       this.expand(row, true);
     },
-    getScope(e) {
-    },
+    getScope(e) {},
     chooseGoods(goods, row, info) {
       let index = info.index;
       let parent = info.parent;

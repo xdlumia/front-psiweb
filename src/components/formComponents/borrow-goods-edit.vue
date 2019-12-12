@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 16:09:23
+ * @LastEditTime: 2019-12-12 17:36:27
  * @Description: 借入/借出商品编辑页面
 */  
 <template>
@@ -20,7 +20,7 @@
   >
     <template slot="actions" slot-scope="{row,info}">
       <span @click="add(info.index)" class="f20 el-icon-circle-plus" v-if="!info.isChild"></span>
-      <span @click="del(info.index)" class="f20 ml5 el-icon-remove d-text-red" v-if="info.index>0&&!info.isChild"></span>
+      <span @click="del(info.index)" class="f20 ml5 el-icon-remove d-text-red" v-if="data.commodityList&&data.commodityList.length>1&&!info.isChild"></span>
     </template>
     <template slot="commodityCode" slot-scope="{row,info,formProp}">
       <el-form-item :prop="formProp" :rules="[{required:true}]" v-if="!info.isChild">
