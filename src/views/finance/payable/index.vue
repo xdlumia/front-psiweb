@@ -2,11 +2,16 @@
  * @Author: 赵伦
  * @Date: 2019-11-04 13:36:20
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 10:50:42
+ * @LastEditTime: 2019-12-12 15:54:16
  * @Description: 应付账单
 */
 <template>
-  <FinanceTodayPayable :button="button" :pageConfig="pageConfig" :params="Object.assign({ page: 1, limit: 15,billType:1 },params)" />
+  <FinanceTodayPayable
+    :button="button"
+    :filterOptions="filterOptions"
+    :pageConfig="pageConfig"
+    :params="Object.assign({ page: 1, limit: 15,billType:1 },params)"
+  />
 </template>
 <script>
 export default {
@@ -50,6 +55,7 @@ export default {
           edit: 'psi_payable_05'
         }
       },
+      // prettier-ignore
       filterOptions:[
         { label: '账单编号', prop: 'billCode', default: true },
         { label: '关联单据编号', prop: 'busCode', default: true },
@@ -71,9 +77,9 @@ export default {
         { label: '预应付', prop: 'PredictAmount', type: 'numberRange', default: true },
         { label: '应付', prop: 'Amount', type: 'numberRange', default: true },
         { label: '实付', prop: 'FactAmount', type: 'numberRange', default: true },
-        { label: '应付日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
+        { label: '付款日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
-        { label: '生成时间', prop: 'CreateTime', type: 'dateRange' },
+        { label: '生成日期', prop: 'CreateTime', type: 'dateRange' },
         { label: '创建人', prop: 'creator', type: 'employee' },
       ]
     };

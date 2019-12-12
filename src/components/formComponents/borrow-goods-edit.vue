@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-05 16:29:19
+ * @LastEditTime: 2019-12-12 17:36:27
  * @Description: 借入/借出商品编辑页面
 */  
 <template>
@@ -20,7 +20,7 @@
   >
     <template slot="actions" slot-scope="{row,info}">
       <span @click="add(info.index)" class="f20 el-icon-circle-plus" v-if="!info.isChild"></span>
-      <span @click="del(info.index)" class="f20 ml5 el-icon-remove d-text-red" v-if="info.index>0&&!info.isChild"></span>
+      <span @click="del(info.index)" class="f20 ml5 el-icon-remove d-text-red" v-if="data.commodityList&&data.commodityList.length>1&&!info.isChild"></span>
     </template>
     <template slot="commodityCode" slot-scope="{row,info,formProp}">
       <el-form-item :prop="formProp" :rules="[{required:true}]" v-if="!info.isChild">
@@ -44,11 +44,11 @@
       <span v-else>{{row.goodsName}}</span>
     </template>
     <!-- 借出/入数量 -->
-    <template slot="borrowLoanNum" slot-scope="{row,info,formProp}">
-      <el-form-item :prop="formProp" :rules="[{required:true},{type:'positiveNum'}]" v-if="!info.isChild">
+    <!-- <template slot="borrowLoanNum" slot-scope="{row,info,formProp}">
+      <el-form-item :prop="formProp" :rules="[{required:true},{type:'positiveNum'},{validator:checkInputIntegerNumber.bind(this,row,'borrowLoanNum'),}]" v-if="!info.isChild">
         <el-input v-model="row.borrowLoanNum"></el-input>
       </el-form-item>
-    </template>
+    </template> -->
     <template slot="costUnivalence" slot-scope="{row,info,formProp}">
       <el-form-item :prop="formProp" :rules="[{required:true},{type:'price'}]" v-if="!info.isChild">
         <el-input v-model="row.costUnivalence"></el-input>
@@ -91,7 +91,7 @@ export default {
           { label:'操作', key:'actions', width:120, prop:'actions',slot:'actions' },
           { label:'商品编号', key:'commodityCodes', width:220, prop:'commodityCode',slot:'commodityCode',showOverflowTip:true },
           { label:'商品名称', key:'goodsNames', width:140, prop:'goodsName',slot:'goodsName',showOverflowTip:true },
-          { label:this.data.borrowLoanType==1?'借出数量':'借入数量', key:'borrowLoanNum', width:100, prop:'borrowLoanNum',slot:'borrowLoanNum'},
+          { label:this.data.borrowLoanType==1?'借出数量':'借入数量', key:'borrowLoanNum', width:100, prop:'borrowLoanNum', type:'inputinteger'},
         ]
         if(this.data.borrowLoanType==0){
           columns.push({ label:'借入价格', key:'costUnivalence', width:100, prop:'costUnivalence',slot:'costUnivalence'})

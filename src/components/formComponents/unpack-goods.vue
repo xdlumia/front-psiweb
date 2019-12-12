@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 12:29:02
+ * @LastEditTime: 2019-12-12 16:27:00
  * @Description: 拆卸商品编辑页面
 */  
 <template>
@@ -33,7 +33,7 @@
       <span
         @click="del(row,info)"
         class="f20 ml5 el-icon-remove d-text-red d-pointer"
-        v-if="(info.isChild)?(info.parent.configId?false:true):(info.index>0)"
+        v-if="(info.isChild)?(info.parent.configId?false:true):(data.commodityList.length>1)"
       ></span>
     </template>
     <template slot="commodityCode" slot-scope="{row,info,formProp}">

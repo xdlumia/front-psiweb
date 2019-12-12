@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 18:01:58
+ * @LastEditTime: 2019-12-12 16:09:34
  * @Description: 销售换货单详情-详情
 */
 <template>
@@ -27,11 +27,15 @@
     <goods-return-info
       :data="(data.commodityEntityList || []).filter(item=>item.putawayType ==1)"
       title="换入商品信息"
+      :code="rowData.alterationCode"
+      pre="换入"
     />
     <!-- 换出商品信息 -->
     <goods-return-info
       :data="(data.commodityEntityList || []).filter(item=>item.putawayType ==0)"
       title="换出商品信息"
+      :code="rowData.alterationCode"
+      pre="换出"
     />
     <!-- 其他费用 -->
     <other-fee

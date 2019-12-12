@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 17:04:27
+ * @LastEditTime: 2019-12-12 14:16:00
  * @Description: 新增费用单
  -->
 <template>
@@ -61,7 +61,7 @@ export default {
         clientId: '',
         clientName: '',
         clientType: '',
-        costType: '',
+        costType: 1,
         feeDetailCode: '',
         feeTypeCode: '',
         note: '', //

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 18:55:43
+ * @LastEditTime: 2019-12-12 16:24:28
  * @Description: 分摊信息
  */
 <template>
@@ -128,6 +128,7 @@
         class="dialog"
         :status="false"
         :more="false"
+        :params="{stateList:[2,4]}"
         :button="false"
         :column="false"
         @selection-change="selectionChange"
@@ -185,7 +186,13 @@ export default {
   computed: {
     tableData() {
       this.goodsTableData.map(item => {
-        item.apportionmentAmount = ((item.preTaxAmount || 0) / this.data.costAmount) * item.preTaxAmount
+        // 全部商品含税总价
+        let amoutPrice = this.goodsTableData.reduce((sum, cur) => {
+          return sum + Number(cur.preTaxAmount || 0)
+        }, 0)
+        // 算出当前商品总价占比
+        let currRate = (item.preTaxAmount || 0) / amoutPrice
+        item.apportionmentAmount = (currRate * (this.data.costAmount || 0)).toFixed(2)
         return item
       })
       this.data.businessCommoditySaveVoList = this.goodsTableData
@@ -207,8 +214,6 @@ export default {
     }
   },
   methods: {
-
-
     busTypeChange(val) {
       this.dialogData.title = this.options[val].title
       this.data.busCode = ''
@@ -269,8 +274,8 @@ export default {
       let [rowData] = this.multipleSelection
       if (this.dialogData.type == 'financeFee') {
         this.data.costCode = rowData.costCode
-        this.sumAmount = rowData.amount
-        this.data.unAmount = rowData.amount
+        this.sumAmount = rowData.unAmount
+        this.data.unAmount = rowData.unAmount
       } else {
         let codeObj = {
           '0': 'shipmentCode',
@@ -285,24 +290,31 @@ export default {
       this.dialogData.visible = false
     },
     getCommodityList() {
-      console.log(this.data.busType);
-
       if (!this.data.busCode) return
-      // 换货单，借入借出单，调拨单，本期不拉取商品信息。 所有retrun
+
       if (this.data.busType == 0) {  //销售出库单
         this.$api.seePsiSaleService.salesshipmentGetShipmentCommodity({ code: this.data.busCode })
           .then(res => {
-            this.goodsTableData = res.data || []
+            let commodityList = res.data || []
+            commodityList.map(item => {
+              item.salesPrice = item.discountSprice
+            })
+            this.goodsTableData = commodityList
           })
       }
       else if (this.data.busType == 1) { //采购入库单
         this.$api.seePsiPurchaseService.purchaseputinGetByCode(null, this.data.busCode)
           .then(res => {
-            this.goodsTableData = (res.data || {}).commodityList
+            let commodityList = (res.data || {}).commodityList || []
+            commodityList.map(item => {
+              item.salesPrice = item.costAmount
+            })
+            this.goodsTableData = commodityList
           })
       }
       else if (this.data.busType == 2) { //调拨单
         this.goodsTableData = []
+        // 换货单，借入借出单，调拨单，本期不拉取商品信息。 所以retrun
         return
         this.$api.seePsiWmsService.wmsallocationorderInfo(null, this.data.busCode)
           .then(res => {

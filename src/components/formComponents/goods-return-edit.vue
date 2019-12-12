@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 11:09:32
+ * @LastEditTime: 2019-12-12 15:50:50
  * @Description: 退货商品商品信息
 */
 <template>
@@ -192,6 +192,12 @@
           show-overflow-tooltip
         />
         <el-table-column
+          prop="note"
+          min-width="120"
+          label="备注"
+          show-overflow-tooltip
+        />
+        <el-table-column
           prop="isTeardown"
           min-width="120"
           label="是否拆卸"
@@ -212,26 +218,22 @@
           </template>
 
         </el-table-column>
-        <el-table-column
-          prop="note"
-          min-width="120"
-          label="备注"
-          show-overflow-tooltip
-        />
+
       </el-table>
     </form-card>
     <!-- 对退货的商品进行编辑 -->
-    <goodsChangeEdit
+    <goods-exchange-edit
       v-if="from=='exchange'"
       :data="data"
-    ></goodsChangeEdit>
+      title="换出商品信息"
+    ></goods-exchange-edit>
   </div>
 </template>
 <script>
-import goodsChangeEdit from '@/components/formComponents/goods-exchange-edit.vue'
+
 import { watch } from 'fs'
 export default {
-  components: { goodsChangeEdit },
+  components: {},
   props: {
     from: String,
     data: {

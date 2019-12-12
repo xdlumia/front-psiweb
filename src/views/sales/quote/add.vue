@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 10:40:19
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-12 17:44:40
  * @Description: file content
 */
 <template>
@@ -237,7 +237,7 @@ export default {
           wholeListData = wholeListData.map(item => {
             (item.commonGoodConfigDetailsEntityList || []).forEach(sub => {
               sub.parentCommodityCode = item.commodityCode
-              sub.commodityNumber=sub.commodityNum
+              sub.commodityNumber = sub.commodityNum
             })
             item.categoryCode = 'PSI_SP_KIND-1'
             item.id = 'customId' + item.id
@@ -251,9 +251,9 @@ export default {
         for (let key in this.form.KIND2List) {
           // 扁平化数据
           // const flattenData = this.$$util.jsonFlatten(this.form.KIND2List[key])
-          fixingsList = JSON.parse(JSON.stringify(Object.values(this.form.KIND2List).reduce((data,item)=>{
-            return data.concat(item||[])
-          },[])))
+          fixingsList = JSON.parse(JSON.stringify(Object.values(this.form.KIND2List).reduce((data, item) => {
+            return data.concat(item || [])
+          }, [])))
           fixingsList = fixingsList.map(item => {
             item.commodityCode = item.goodsCode
             item.goodsName = item.name;
@@ -335,8 +335,8 @@ export default {
               sub.putawayType = 0 //0=出库
             })
             item.putawayType = 0 //0=出库
-            // 销售总价
-            item.preTaxAmount = (item.reference || 0) * (item.commodityNumber || 0)
+            // 税后总价
+            item.preTaxAmount = (item.reference || 0) * (1 + item.taxRate / 100) * (item.commodityNumber || 0)
             // 销售单价
             item.salesPrice = item.salesPrice || 0
           })
@@ -361,7 +361,7 @@ export default {
             api = 'salesquotationUpdate'
             // 编辑保存
           } else {
-            this.form.shipmentCode = ''
+            copyParams.shipmentCode = ''
           }
           this.$api.seePsiSaleService[api](copyParams)
             .then(res => {

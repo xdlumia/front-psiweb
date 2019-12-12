@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-04 13:36:20
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 10:50:11
+ * @LastEditTime: 2019-12-12 15:55:22
  * @Description: 应收账单
 */
 <template>
@@ -11,6 +11,7 @@
     :pageConfig="pageConfig"
     :params="Object.assign({ page: 1, limit: 15,billType:0 },params)"
     @selection-change="selectionChange"
+    :filterOptions="filterOptions"
   />
 </template>
 <script>
@@ -55,6 +56,7 @@ export default {
           edit: 'psi_receivable_07'
         }
       },
+      // prettier-ignore
       filterOptions:[
         { label: '账单编号', prop: 'billCode', default: true },
         { label: '关联单据编号', prop: 'busCode', default: true },
@@ -76,9 +78,9 @@ export default {
         { label: '预应收', prop: 'PredictAmount', type: 'numberRange', default: true },
         { label: '应收', prop: 'Amount', type: 'numberRange', default: true },
         { label: '实收', prop: 'FactAmount', type: 'numberRange', default: true },
-        { label: '应收', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
+        { label: '应收日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
-        { label: '生成时间', prop: 'CreateTime', type: 'dateRange' },
+        { label: '生成日期', prop: 'CreateTime', type: 'dateRange' },
         { label: '创建人', prop: 'creator', type: 'employee' },
       ]
     };

@@ -2,17 +2,14 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 17:21:15
+ * @LastEditTime: 2019-12-12 15:49:07
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
   <form-card
     class="commodity-quote-edit"
-    title="商品信息"
+    title="换出商品信息"
   >
-    <div slot="title">
-      <span>商品信息</span>
-    </div>
     <el-table
       show-summary
       sum-text='总计'

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 18:56:17
+ * @LastEditTime: 2019-12-12 15:36:58
  * @Description: 新增费用分摊单商品信息
 */
 <template>
@@ -26,17 +26,23 @@
           label="商品编号"
           show-overflow-tooltip
         />
-
-        <el-table-column
-          prop="goodsName"
-          min-width="100"
-          label="商品名称"
-          show-overflow-tooltip
-        />
         <el-table-column
           prop="goodsPic"
           min-width="100"
           label="商品图片"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <el-image
+              style="width: 90px; height: 40px"
+              :src="scope.row.goodsPic"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="goodsName"
+          min-width="100"
+          label="商品名称"
           show-overflow-tooltip
         />
         <el-table-column

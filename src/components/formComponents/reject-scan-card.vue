@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-03 10:36:26
+ * @LastEditTime: 2019-12-12 17:59:21
  * @Description: 换退货商品扫码卡片 
 */
 <template>
@@ -40,6 +40,11 @@
       <el-table-column min-width="60">
         <template slot-scope="{$index,row}">
           <span @click="remove(row)" class="el-icon-circle-close f18 d-pointer d-text-red" v-if="!row.id"></span>
+        </template>
+      </el-table-column>
+      <el-table-column label="编号" min-width="60" show-overflow-tooltip>
+        <template slot-scope="{$index}">
+          <span>{{$index+1}}</span>
         </template>
       </el-table-column>
       <el-table-column label="状态" min-width="100" prop="state" show-overflow-tooltip>
