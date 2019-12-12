@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-22 09:38:51
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 16:19:07
+ * @LastEditTime: 2019-12-12 10:40:10
  * @Description: 销售方/购买方信息 已绑定 1
 */ 
 <template>
@@ -166,6 +166,7 @@ export default {
         data[item.code] = item.content;
         return data;
       }, {});
+      let setIds = {};
       let {
         data
       } = await this.$api.seeBaseinfoService.commoncorporationSelectForJxc();
@@ -174,7 +175,10 @@ export default {
           // id name taxNo address phone bankName bankAccount
           return [].concat(
             ...(item.commonCorporationAccountEntities || [])
-              .filter(item => item.accountType == 'PSI_GSSZ_ZHLX-3')
+              .filter(sub => {
+                setIds[sub.id] = item.id;
+                return sub.accountType == 'PSI_GSSZ_ZHLX-3';
+              })
               .map(sub => {
                 sub.accountType = dictObj[sub.accountType];
                 return {
@@ -194,7 +198,7 @@ export default {
       this.companyList.some(item => {
         if (
           item.id == this.data[`${this.prefix}Id`] ||
-          item.setId == this.data.companySettlementId
+          item.id == setIds[this.data.companySettlementId]
         ) {
           this.currentCompany = item;
           this.data[`${this.prefix}Id`] = item.id;

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-04 13:36:20
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 13:38:27
+ * @LastEditTime: 2019-12-12 10:50:11
  * @Description: 应收账单
 */
 <template>
@@ -54,7 +54,33 @@ export default {
           addInvoice: 'psi_receivable_04',
           edit: 'psi_receivable_07'
         }
-      }
+      },
+      filterOptions:[
+        { label: '账单编号', prop: 'billCode', default: true },
+        { label: '关联单据编号', prop: 'busCode', default: true },
+        { label: '账单状态', prop: 'settleStatus', default: true, type:'select', options:[
+          {label:'全部',value:'',},
+          {label:'未结清',value:'0',},
+          {label:'部分结清',value:'1',},
+          {label:'已结清',value:'2',},
+          {label:'已关闭',value:'3',},
+        ] },
+        { label: '逾期状态', prop: 'overState', default: true, type:'select', options:[
+          {label:'全部',value:'',},
+          {label:'未逾期',value:0},
+          {label:'已逾期',value:1},
+        ] },
+        { label: '对方名称', prop: 'accountName', default: true },
+        { label: '费用类型', prop: 'feeTypeCode', default: true, type:'select', options:[] },
+        { label: '费用明细', prop: 'feeDetailCode', default: true, type:'select', options:[] },
+        { label: '预应收', prop: 'PredictAmount', type: 'numberRange', default: true },
+        { label: '应收', prop: 'Amount', type: 'numberRange', default: true },
+        { label: '实收', prop: 'FactAmount', type: 'numberRange', default: true },
+        { label: '应收', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
+        { label: '生成时间', prop: 'CreateTime', type: 'dateRange' },
+        { label: '创建人', prop: 'creator', type: 'employee' },
+      ]
     };
   },
   methods: {
