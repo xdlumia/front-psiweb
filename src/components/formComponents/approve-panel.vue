@@ -2,14 +2,38 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 17:14:20
+ * @LastEditTime: 2019-12-12 10:38:40
  * @Description: 审核信息
 */
 <template>
-  <form-card title="审核信息">
-    <div class="progress-list">
-      <ApproveCard :progress="progressData" />
+  <form-card
+    title="审核信息"
+    :class="collapse?'approve-box':''"
+  >
+    <div
+      v-if="collapse"
+      slot="title"
+      class="d-flex"
+      style="align-items:center"
+    >
+      <div @click="collapseShow = !collapseShow">
+        审核信息
+        <i
+          :class="{active:collapseShow}"
+          class="collapse-arrow el-icon-arrow-right d-pointer"
+        ></i>
+      </div>
     </div>
+
+    <transition name="el-zoom-in-top">
+      <div
+        v-if="collapseShow"
+        class="progress-list d-auto-y"
+        :style="collapse?'height:140px':''"
+      >
+        <ApproveCard :progress="progressData" />
+      </div>
+    </transition>
   </form-card>
 </template>
 <script>
@@ -38,6 +62,10 @@ const busType = {
 export default {
   props: {
     // 业务类型
+    collapse: {
+      type: Boolean,
+      default: false
+    },
     busType: {
       required: false
     },
@@ -48,7 +76,7 @@ export default {
   },
   data() {
     return {
-      showHis: false, // 是否查看历史状态
+      collapseShow: true,
       progressData: [], // 当前流程节点
     };
   },
@@ -57,6 +85,8 @@ export default {
     if (this.id && this.busType) {
       await this.processtaskQueryProcessHistoryEntity()
     }
+  },
+  computed: {
   },
   watch: {
     '$parent.data.state': {
@@ -92,5 +122,18 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style scoped lang="scss">
+.approve-box {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  left: 0;
+  z-index: 9;
+}
+.collapse-arrow {
+  transition: all 0.2s;
+  &.active {
+    transform: rotate(90deg);
+  }
+}
 </style>

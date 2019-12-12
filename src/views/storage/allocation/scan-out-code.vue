@@ -1,12 +1,12 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-12 09:35:56
  * @Description: 调出扫码
 */
 <template>
-  <div>
+  <div v-loading='loading'>
     <div
       :style="{maxHeight:'calc(100vh - 180px)'}"
       class="borrow-goods-info mt10 d-auto-y"
@@ -195,11 +195,12 @@
         >保 存</el-button>
       </span>
     </div>
+
+    <!-- :params='{wmsId:dialogData.putawayWmsId}' -->
     <commodityChoose
       v-if="dialogData.putawayWmsId"
       :visible.sync='chooseVisible'
       @choose='commodityChoose'
-      :params='{wmsId:dialogData.putawayWmsId}'
       sn
     />
   </div>
@@ -231,6 +232,7 @@ export default {
       chooseVisible: false,
       tableData: [],
       snCode: '',
+      loading: false,
       formInline: {
         user: ''
       },
@@ -306,12 +308,14 @@ export default {
     //调出走的接口
     wmsallocationorderBatchUpdate() {
       if (this.downTableData.length > 0) {
+        this.loading = true
         this.$api.seePsiWmsService.wmsallocationorderBatchUpdate({ putawayCommodityList: this.downTableData, businessCode: this.dialogData.allocationOrderCode, businessType: 0 })
           .then(res => {
             this.close()
             this.$emit('reload')
           })
           .finally(() => {
+            this.loading = false
           })
       } else {
         this.$message({
