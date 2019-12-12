@@ -394,23 +394,45 @@ export default {
     },
     //回车 出库
     shipmentCommodityCheck() {
-      this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData })
+      this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData, })
         .then(res => {
           if (res.data) {
+            let commodityCodeList = []
             this.data.commodityShowList.forEach((item, index) => {
-              if (item.commodityCode == res.data.commodityCode) {
-                if (this.data.commodityShowList[index].returnAccomplishNum < this.data.commodityShowList[index].returnNum) {
-                  this.data.commodityShowList[index].returnAccomplishNum++
-                  this.codeNowNum++
-                  this.tableData.push(res.data)
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: '当前商品已经扫够啦!'
-                  })
-                }
-              }
+              // if (item.commodityCode == res.data.commodityCode) {
+              //   if (this.data.commodityShowList[index].returnAccomplishNum < this.data.commodityShowList[index].returnNum) {
+              //     this.data.commodityShowList[index].returnAccomplishNum++
+              //     this.codeNowNum++
+              //     this.tableData.push(res.data)
+              //   } else {
+              //     this.$message({
+              //       type: 'error',
+              //       message: '当前商品已经扫够啦!'
+              //     })
+              //   }
+              // }
+              commodityCodeList.push(item.commodityCode)
             })
+            if (!commodityCodeList.includes(res.data.commodityCode)) {
+              this.$message({
+                type: 'error',
+                message: '当前商品并非借入商品！'
+              })
+            } else {
+              let index = commodityCodeList.indexOf(res.data.commodityCode)
+              if (this.data.commodityShowList[index].returnAccomplishNum < this.data.commodityShowList[index].returnNum) {
+                this.data.commodityShowList[index].returnAccomplishNum++
+                this.codeNowNum++
+                this.tableData.push(res.data)
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: '当前商品已经扫够啦!'
+                })
+              }
+            }
+
+
           }
         })
         .finally(() => {
