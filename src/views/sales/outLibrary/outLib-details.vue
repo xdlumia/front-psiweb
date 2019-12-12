@@ -39,6 +39,7 @@
         size="mini"
         v-loading="loading"
         label-position="top"
+        class="d-relative"
       >
         <el-tabs v-model="activeName">
           <el-tab-pane

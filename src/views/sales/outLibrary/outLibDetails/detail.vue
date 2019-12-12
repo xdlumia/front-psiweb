@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 18:24:30
+ * @LastEditTime: 2019-12-12 10:39:18
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -10,46 +10,54 @@
     <!-- 审核面板 -->
     <approve-panel
       disabled
+      collapse
       busType="16"
       :data="data"
-    />
-    <!-- 客户信息 -->
-    <customerInfo
-      disabled
-      :data="data"
-    />
-    <!-- 公司信息 -->
-    <companyInfo
-      disabled
-      :data="data"
-    />
-    <!-- 报价单信息 -->
-    <quote-info
-      v-if="rowData.quotationCodes"
-      :options="rowData.quotationCodes || []"
-    />
+      class="d-bg-white"
+    >
+    </approve-panel>
+    <div
+      class="d-relative"
+      style="top:200px"
+    >
+      <!-- 客户信息 -->
+      <customerInfo
+        disabled
+        :data="data"
+      />
+      <!-- 公司信息 -->
+      <companyInfo
+        disabled
+        :data="data"
+      />
+      <!-- 报价单信息 -->
+      <quote-info
+        v-if="rowData.quotationCodes"
+        :options="rowData.quotationCodes || []"
+      />
 
-    <!-- 收款滞纳金 -->
-    <payment-late-sales
-      disabled
-      :data="data"
-    />
-    <!-- 账期信息 -->
-    <billInfo
-      disabled
-      :data="data"
-    />
-    <!-- 自定义信息 -->
-    <customInfo
-      disabled
-      busType="16"
-      :data="data"
-    />
-    <!-- 备注信息 -->
-    <extrasInfo
-      disabled
-      :data="data"
-    />
+      <!-- 收款滞纳金 -->
+      <payment-late-sales
+        disabled
+        :data="data"
+      />
+      <!-- 账期信息 -->
+      <billInfo
+        disabled
+        :data="data"
+      />
+      <!-- 自定义信息 -->
+      <customInfo
+        disabled
+        busType="16"
+        :data="data"
+      />
+      <!-- 备注信息 -->
+      <extrasInfo
+        disabled
+        :data="data"
+      />
+    </div>
   </div>
 </template>
 <script>
