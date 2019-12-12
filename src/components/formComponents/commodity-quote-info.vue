@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 14:08:42
+ * @LastEditTime: 2019-12-12 14:09:56
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -248,9 +248,7 @@ export default {
         child.commodityNumber=child.commodityNum
         child.reference = child.saleReferencePrice
         child.discountSprice='-'
-        if(businessInfo[child.commodityCode]){
-          child.recentDiscountSprice=businessInfo[child.commodityCode].recentDiscountSprice||0
-        }
+        child.recentDiscountSprice=businessInfo[child.commodityCode]?(businessInfo[child.commodityCode].recentDiscountSprice||0):0
       })
       cb(data);
     },
