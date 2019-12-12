@@ -2,7 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: web.王晓冬
+<<<<<<< HEAD
  * @LastEditTime: 2019-12-12 20:03:33
+=======
+ * @LastEditTime: 2019-12-12 20:06:53
+>>>>>>> dev
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -493,6 +497,10 @@ export default {
         }
       );
       data.map(item => item.inventoryNumber = item.usableInventoryNum)
+<<<<<<< HEAD
+=======
+      console.log(row)
+>>>>>>> dev
       row.children = this.recalcRowKey(data || [], row._rowKey);
       cb(row.children);
     },
