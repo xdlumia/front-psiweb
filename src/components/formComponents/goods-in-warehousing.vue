@@ -4,7 +4,7 @@
     <form-card title='退入库商品'>
       <div
         class="ac d-text-gray"
-        v-if="!data.putawayCommodityList.length"
+        v-if="!data.putawayCommodityList.filter(v=>v.putawayType==1).length"
       >无商品信息</div>
       <div
         v-for="(item,index) of data.putawayCommodityList.filter(v=>v.putawayType==1)"

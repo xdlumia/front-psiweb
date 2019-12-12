@@ -2,17 +2,17 @@
  * @Author: 王晓冬
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 11:28:36
+ * @LastEditTime: 2019-12-12 16:24:47
  * @Description: 退货记录里
 */
 <template>
   <div>
     <el-dialog
       :visible.sync="showPop"
-      title="销售出库单"
+      :title="`销售${pre}单:${code}`"
       v-dialogDrag
     >
-      <form-card title='组装信息'>
+      <form-card :title="`销售${pre}`">
         <el-table
           size="mini"
           border
@@ -169,9 +169,9 @@
           ></el-table-column>
         </d-table>
       </form-card>
-      <span class="ac">
+      <div class="ac mt5">
         <el-button size="small">关 闭</el-button>
-      </span>
+      </div>
     </el-dialog>
     <CommodityDetail
       :code="currentCommodityCode"
@@ -193,11 +193,12 @@ export default {
       type: Object,
       default: () => ({})
     },
+    code: [Number, String],
+    pre: String,
     rowData: {
       type: Object,
       default: () => ({})
     },
-    code: [Number, String]
   },
   data() {
     return {
