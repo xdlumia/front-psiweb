@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 15:49:50
+ * @LastEditTime: 2019-12-12 15:59:44
  * @Description: 退货商品商品信息
 */
 <template>
@@ -180,6 +180,7 @@
     <goods-return-record
       :rowData='rowData'
       :code="code"
+      :pre="pre"
       title="title"
       :visible.sync='dialogVisible'
       v-if="dialogVisible"
@@ -190,7 +191,6 @@
 export default {
   components: {},
   props: {
-    from: String,
     data: Array,
     code: [Number, String],
     params: {
@@ -210,12 +210,15 @@ export default {
       type: Boolean
     },
     // 销售单编号列表下拉
-    options: Array
+    options: Array,
+    pre: String,
   },
   data() {
     return {
       dialogVisible: false,
-      rowData: {}
+      rowData: {},
+      code: String,
+
       // queryFrom: {
       //   busType: 1, // 1报价单 2请购单]
       //   putawayType: 1,

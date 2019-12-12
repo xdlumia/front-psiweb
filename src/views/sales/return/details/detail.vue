@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 11:27:35
+ * @LastEditTime: 2019-12-12 16:06:36
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -26,6 +26,7 @@
     <goods-return-info
       :rowData="rowData"
       :code="code"
+      pre=退货
       :data="data.commodityEntityList"
       disabled
       :form="data"
