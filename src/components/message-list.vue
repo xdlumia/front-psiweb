@@ -82,7 +82,7 @@ trigger="manual">
         </el-form>
         <el-row slot="footer" class="msg-footer">
           <el-col :span="24" class="ar">
-            <el-button size="small" type="primary" @click="viewDetail">查看详情</el-button>
+            <!-- <el-button size="small" type="primary" @click="viewDetail">查看详情</el-button> -->
             <el-button
               v-if="activeMsgItem.isRead !== 1"
               size="small"
