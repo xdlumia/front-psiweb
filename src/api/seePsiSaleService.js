@@ -2,6 +2,15 @@ const MOCK_ADDRESS = '/mock/5dbfdd1bbc54fc3da273f35d/see-psi-sale-service'
 
 export default {
   __mockAddress: MOCK_ADDRESS,
+  /**
+   * @tag 单据业务商品表
+   * @description 查询商品业务数据
+   */
+  businesscommodityQueryGoodsList: {
+      url: '/businesscommodity/queryGoodsList',
+      methods: 'get',
+      mock: false
+  },
   /* =============单据业务商品表start=========== */
   // 删除
   businesscommodityDelete: {

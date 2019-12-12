@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 16:14:44
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-11 22:18:35
  * @Description: file content
 */
 <template>
@@ -237,6 +237,7 @@ export default {
           wholeListData = wholeListData.map(item => {
             (item.commonGoodConfigDetailsEntityList || []).forEach(sub => {
               sub.parentCommodityCode = item.commodityCode
+              sub.commodityNumber=sub.commodityNum
             })
             item.categoryCode = 'PSI_SP_KIND-1'
             item.id = 'customId' + item.id
