@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 11:20:40
+ * @LastEditTime: 2019-12-12 08:58:17
  * @Description: 采购-借入借出单
 */
 <template>
@@ -97,7 +97,7 @@ export default {
         { label: '最少借入借出数量', prop: 'BorrowLoanNum', type: 'numberRange', int: true, default: true },
         { label: '最少返还数量', prop: 'ReturnNum', type: 'numberRange', int: true, default: true },
         { label: '返回时间', prop: 'ReturnTime', type: 'dateRange', default: true },
-        { label: '创建部门', prop: 'deptId', type: 'dept', default: true },
+        { label: '创建部门', prop: 'deptTotalCode', type: 'dept', default: true },
         { label: '创建人', prop: 'creator', type: 'employee' },
         { label: '创建时间', prop: 'CreateTime', type: 'dateRange' },
       ]
