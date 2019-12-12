@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 17:03:00
+ * @LastEditTime: 2019-12-12 18:16:23
  * @Description: 公司信息  传入 公司发票账户 和公司结算账户id 会自动查询其余信息
 */
 <template>
@@ -99,6 +99,7 @@ let formItems = [
   { label: '发票抬头', prop: 'invoiceTitle', type: 'input', rules: [{ required: false, trigger: 'change' }], },
   { label: '纳税人识别号', prop: 'taxpayersNum', type: 'input', rules: [{ required: false, trigger: 'change' }], },
   { label: '注册地址', prop: 'registerAddres', type: 'input', rules: [{ required: false, }], },
+  { label: '注册电话', prop: 'registerPhone', type: 'input', rules: [{ required: false, }], },
   { label: '开户银行', prop: 'accountBank', type: 'input', rules: [{ required: false, }], },
   { label: '开户行账号', prop: 'bankAccount', type: 'input', rules: [{ required: false, }], },
 ]
@@ -162,6 +163,7 @@ export default {
       this.companyInfo.invoiceTitle = row.corporationName
       this.companyInfo.taxpayersNum = row.taxpayersNum
       this.companyInfo.registerAddres = row.address
+      this.companyInfo.registerPhone = row.phone
       this.$set(this.data,'companyAccountId',row.id)
       this.$set(this.data,'companySettlementId','')
 
