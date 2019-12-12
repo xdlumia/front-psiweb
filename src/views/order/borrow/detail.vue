@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 11:21:20
+ * @LastEditTime: 2019-12-12 10:13:38
  * @Description: 借入借出详情
 */
 <template>
@@ -70,7 +70,7 @@
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
         <approve-panel :busType="5" :id="detail.id" v-if="isDataReady" />
-        <el-form :model="detail" size="mini">
+        <el-form :model="detail" size="mini" class="hide-form-error">
           <borrow-in :data="detail" disabled />
           <borrow-goods :data="detail" disabled />
         </el-form>
