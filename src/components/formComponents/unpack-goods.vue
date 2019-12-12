@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 14:34:54
+ * @LastEditTime: 2019-12-12 12:29:02
  * @Description: 拆卸商品编辑页面
 */  
 <template>
@@ -22,7 +22,7 @@
         'categoryCode','className','specOne','configName','noteText','costAmountPrice','taxRate','!add','unit','expanded'
       ]"
     :showSummary="false"
-    :sort="['actions','commodityCodes','goodsNames','singleNum','disassemblyNum','purchaseUnivalence','childTotalPrice','taxRate','taxPrice']"
+    :sort="['actions','commodityCodes','goodsNames','singleNum','disassemblyNum','purchaseUnivalence','childTotalPrice','taxRate','taxPrice','expanded']"
     class="borrow-goods"
     ref="goodsTable"
     title="拆卸商品"

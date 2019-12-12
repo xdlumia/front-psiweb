@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 14:01:48
+ * @LastEditTime: 2019-12-12 11:51:03
  * @Description: 商品供应分类表
 */
 <template>
@@ -25,8 +25,8 @@
             <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
           </span>
           <span v-else-if="prop=='state'">
-            <span v-if="value==0">启用</span>
-            <span v-else>禁用</span>
+            <span v-if="value==0">启用中</span>
+            <span v-else>停用中</span>
           </span>
           <span v-else-if="prop=='productRange'">
             <el-tag
