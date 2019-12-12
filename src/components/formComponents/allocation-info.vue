@@ -259,7 +259,7 @@ export default {
         .finally(() => {
 
         })
-      //查出当前选择服务商名称， 后端要
+      //查出当前选择服务商名称， 后端要 
       let obj = this.providerList.filter((item) => {
         return item.id == val
       })
