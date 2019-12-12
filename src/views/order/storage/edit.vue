@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 15:44:48
+ * @LastEditTime: 2019-12-12 17:48:17
  * @Description: 采购入库单
 */
 <template>
@@ -29,7 +29,7 @@
           <companyInfo :data="form" id="companyInfo" />
           <arrivalInfo
             :data="form"
-            :hide="form.source=='备货单'?['saleTime']:[]"
+            :hide="form.source=='备货单'?['saleTime','collected']:['collected']"
             :labels="form.source=='直发单'?{
               saleTime:'销售预计发货时间'
             }:{}"
