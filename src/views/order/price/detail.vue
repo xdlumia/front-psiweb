@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 17:32:49
+ * @LastEditTime: 2019-12-12 18:44:27
  * @Description: 采购调价单
 */
 <template>
@@ -96,7 +96,14 @@
         </el-form>
       </el-tab-pane>
     </el-tabs>
-    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" v-if="showEdit" />
+    <Edit
+      :hide="['saleReferencePrice','taxBeforeAdjustPrice','profitRate']"
+      :rowData="detail"
+      :visible.sync="showEdit"
+      @reload="setEdit(),$reload()"
+      type="edit"
+      v-if="showEdit"
+    />
   </sideDetail>
 </template>
 <script>

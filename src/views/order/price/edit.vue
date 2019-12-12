@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 17:32:39
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-12 19:30:37
  * @Description: 销售和采购调价单
 */
 <template>
@@ -43,23 +43,12 @@
           v-if="form&&visible"
         >
           <buying-goods-edit
-            :customColumns="[
-            { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140,format:(a,b)=>Number(b.purchaseAverage||b.inventoryPrice).toFixed(2) },
-            { label:'库存成本(税前)',key:'inventoryPrice',prop:'inventoryPrice',width:140, },
-            { label:'调整金额',key:'adjustPriceMoney',prop:'adjustPriceMoney',width:120,slot:'adjustPriceMoney' },
-            { label:'调整后库存成本(税前)',key:'repertoryCost',prop:'repertoryCost',width:140,
-              format:(a,b)=>calcRepertoryCost(b)
-            },
-            { label:'库存数量',key:'usableInventoryNum',prop:'usableInventoryNum',width:120,format:(a)=>a||0 },
-            { label:'调整差异',key:'adjustPriceDifference	',prop:'adjustPriceDifference	',width:100,
-              format:(a,b)=>calcAdjustPriceDifference(b)
-            },
-            ]"
+            :customColumns="customColumns"
             :data="form"
             :show="[
               'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','action','!fullscreen'
             ]"
-            :sort="['action']"
+            :sort="sort"
             :showSummary="false"
             title="商品信息"
           >
@@ -74,7 +63,22 @@
               >
                 <el-input
                   size="mini"
+                  @input="adjustPriceMoneyChange(row)"
                   v-model="row.adjustPriceMoney"
+                ></el-input>
+              </el-form-item>
+            </template>
+            <!-- 利润率率 -->
+            <template
+              slot="profitRate"
+              slot-scope="{row,info,formProp}"
+            >
+              <el-form-item :prop="formProp">
+                <el-input
+                  @input="profitRateChange(row)"
+                  size="mini"
+                  type="number"
+                  v-model="row.profitRate"
                 ></el-input>
               </el-form-item>
             </template>
@@ -95,6 +99,14 @@ export default {
   mixins: [VisibleMixin],
   components: {},
   props: {
+    sort: {
+      type: Array,
+      default: () => []
+    },
+    hide: {
+      type: Array,
+      default: () => []
+    },
     from: String, // 来源
     adjustPriceType: String,
   },
@@ -106,10 +118,30 @@ export default {
   },
   data() {
     return {
+      customColumnsArray: [
+        { label: '采购价(平均值)', key: 'purchaseAverage', prop: 'purchaseAverage', width: 140, format: (a, b) => Number(b.purchaseAverage || b.inventoryPrice).toFixed(2) },
+        { label: '库存成本(税前)', key: 'inventoryPrice', prop: 'inventoryPrice', width: 140, },
+        { label: '调整金额', key: 'adjustPriceMoney', prop: 'adjustPriceMoney', width: 120, slot: 'adjustPriceMoney' },
+        {          label: '调整后库存成本(税前)', key: 'repertoryCost', prop: 'repertoryCost', width: 140,
+          format: (a, b) => this.calcRepertoryCost(b)
+        },
+        { label: '库存数量', key: 'usableInventoryNum', prop: 'usableInventoryNum', width: 120, format: (a) => a || 0 },
+        {          label: '调整差异', key: 'adjustPriceDifference	', prop: 'adjustPriceDifference	', width: 100,
+          format: (a, b) => this.calcAdjustPriceDifference(b)
+        },
+        { label: '销售参考价（税前）', key: 'saleReferencePrice', prop: 'saleReferencePrice', width: 130, },
+        { label: '调整后销售参考价（税前）', key: 'taxBeforeAdjustPrice', prop: 'taxBeforeAdjustPrice', width: 180, format: (a, b) => this.calcTaxBeforeAdjustPrice(b) },
+        { label: '利润率%', key: 'profitRate', prop: 'profitRate', width: 120, slot: 'profitRate', },
+      ],
       alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
     };
   },
   mounted() { },
+  computed: {
+    customColumns() {
+      return this.customColumnsArray.filter(item => !this.hide.includes(item.prop))
+    },
+  },
   methods: {
     getDetail() {
       if (this.rowData) return this.rowData;
@@ -122,6 +154,27 @@ export default {
         (+row.inventoryPrice || 0) + (+row.adjustPriceMoney || 0)
       ).toFixed(2);
     },
+    calcTaxBeforeAdjustPrice(row) {
+      return +Number(
+        (+row.saleReferencePrice || 0) + (+row.adjustPriceMoney || 0)
+      ).toFixed(2);
+    },
+    // 调整金额
+    adjustPriceMoneyChange(row) {
+      let taxBeforeAdjustPrice = (+row.saleReferencePrice || 0) + (+row.adjustPriceMoney || 0)
+      let inventoryPrice = +row.inventoryPrice || 0
+      row.profitRate = Number(
+        (taxBeforeAdjustPrice - inventoryPrice) / inventoryPrice * 100
+      ).toFixed(0);
+    },
+    // 调整利润率
+    profitRateChange(row) {
+
+      let inventoryPrice = + row.inventoryPrice || 0
+      let profitRate = Number(row.profitRate) || 0
+
+      row.adjustPriceMoney = (inventoryPrice * (1 + (profitRate / 100)) - (row.saleReferencePrice || 0)).toFixed(2);
+    },
     calcAdjustPriceDifference(row) {
       return +Number(
         (+row.usableInventoryNum || 0) * (+row.adjustPriceMoney || 0)
@@ -130,7 +183,7 @@ export default {
     async save() {
       await this.$showFormError(this.$refs.form);
       let form = { ...this.form };
-      form.adjustPriceDifference=0
+      form.adjustPriceDifference = 0
       form.commonAdjustPriceDetailedEntityList = form.commodityList.map(
         item => {
           form.adjustPriceDifference = form.adjustPriceDifference || 0;

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:53:45
+ * @LastEditTime: 2019-12-12 18:59:03
  * @Description: 销售-销售调价单
  */
 <template>
@@ -47,10 +47,14 @@
       v-if="detailVisible"
     />
     <!-- 新增账单调整-->
+    <!-- :sort="['action','commodityCode','goodsPic','goodsName','categoryCode','className','specOne','inventoryPrice','saleReferencePrice','adjustPriceMoney','taxBeforeAdjustPrice','adjustPriceDifference','profitRate']" -->
+
     <add
       :visible.sync="addVisible"
       adjustPriceType='1'
       v-if="addVisible"
+      :hide="['purchaseAverage','usableInventoryNum','repertoryCost']"
+      :sort="['action','commodityCode','goodsPic','goodsName','categoryCode','className','specOne','inventoryPrice','saleReferencePrice','adjustPriceMoney','taxBeforeAdjustPrice','adjustPriceDifference','profitRate']"
       @reload="$refs.table.reload()"
     />
   </div>
