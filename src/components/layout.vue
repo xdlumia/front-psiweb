@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-31 18:55:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-11 09:19:40
+ * @LastEditTime: 2019-12-12 16:22:30
  * @Description: description
  -->
 /*
@@ -20,7 +20,8 @@
         <!-- 头部区域 -->
         <el-header height="60px" class="header-top d-hidden">
           <!-- 菜单 -->
-          <el-menu :default-active="path" mode="horizontal" :router="true" :unique-opened="true">
+          <el-menu :default-active="path" mode="horizontal" :router="true"
+:unique-opened="true">
             <el-menu-item class="header-logo pl0" index="/">
               <img
                 class="header-img"
@@ -38,7 +39,8 @@
               style="height: 32px;line-height: 33px;margin-top: 10px;border-bottom:none"
             >
               <el-badge :value="backlogNum" class="backlog-wrapper">
-                <el-button icon="el-icon-tickets" round size="small" class="backlog">待办事项</el-button>
+                <el-button icon="el-icon-tickets" round size="small"
+class="backlog">待办事项</el-button>
               </el-badge>
             </el-menu-item>
             <!-- 如果type类型是菜单就不会有二级目录(最多只有2级菜单)
@@ -105,6 +107,8 @@
               </template>
               <el-menu-item @click="logout" index="/login" class="f12">退出</el-menu-item>
             </el-submenu>
+            <!-- 信息 -->
+            <message-list :isLockkScreen="isLockkScreen" class="mr20 fr mt20"></message-list>
             <!-- 版本更新 -->
             <el-submenu index="/version" class="fr head-version">
               <template slot="title">
@@ -135,12 +139,13 @@ const WRAP_LENGTH = 5
 import chunk from '@/utils/chunk'
 import addFee from '@/views/finance/fee/add'
 import addIncome from '@/views/finance/income/add.vue' // 新增收支流水
+import messageList from './message-list'
 
 
 export default {
   name: 'App',
-  components: { addFee, addIncome },
-  data () {
+  components: { addFee, addIncome, messageList },
+  data() {
     return {
       addFeeVisible: false,
       addIncomeVisible: false,
@@ -166,19 +171,19 @@ export default {
     };
   },
   computed: {
-    backlogNum () {
+    backlogNum() {
       return this.$store.state.backlogNum
     },
-    syscode () {
+    syscode() {
       return this.isRentSystem ? 'asystem' : 'asysbusiness';
     },
     // 去掉菜单里的更多应用
-    navMenu () {
+    navMenu() {
       const navData = this.$local.fetch('navData') || [];
       return navData.filter(item => item.code != 'moremenu');
     },
     // 获取更多应用菜单
-    moremenu () {
+    moremenu() {
       const navData = this.$local.fetch('navData') || [];
       let moreMenuList = [];
       navData.forEach(item => {
@@ -188,7 +193,7 @@ export default {
       });
       return moreMenuList;
     },
-    sysList () {
+    sysList() {
       return (
         !this.loading &&
         (this.$local.fetch('syslist') || []).filter(item => {
@@ -205,7 +210,7 @@ export default {
     }
   },
 
-  created () {
+  created() {
     // let companyInfo = this.$local.fetch('companyInfo')
     // this.$store.commit('companyInfo',companyInfo)
     // 判断当前是否从别的平台跳转到当前
@@ -256,17 +261,17 @@ export default {
     this.$store.commit('setNavData', JSON.parse(localStorage.getItem('navData')) || [])
     this.$store.dispatch('backlogNum')
   },
-  beforeMount () {
+  beforeMount() {
     document.title = this.$route.meta.title
   },
   watch: {
-    isLockkScreen (val) {
+    isLockkScreen(val) {
       if (!val) {
         this.token = localStorage.token;
       }
     },
     $route: {
-      handler (a) {
+      handler(a) {
         this.path = a.path.indexOf('/home') !== -1 ? '/' : a.path;
         document.title = this.$route.meta.title
       },
@@ -274,27 +279,27 @@ export default {
     }
   },
   methods: {
-    handleMenuUrl (url) {
+    handleMenuUrl(url) {
       if (url === '/finance/addFee' || url === '/finance/addIncome') {
         return ''
       }
       return url
     },
-    buttonClick (url) {
+    buttonClick(url) {
       // 新增收支流水
       this.addIncomeVisible = url === '/finance/addIncome'
       this.addFeeVisible = url === '/finance/addFee'
     },
-    handleSelect () { },
+    handleSelect() { },
     // 退出登录
-    logout () {
+    logout() {
       localStorage.token = '';
       localStorage.timer = '';
       sessionStorage.setItem('loginRedirect', '');
       this.$router.push({ path: '/login' });
     },
     // 获取菜单权限
-    getNavData () {
+    getNavData() {
       return Promise.all([
         this.$api.bizSystemService.getUserAuth(this.syscode).then(res => {
           if (res && res.code === 200) {
@@ -348,13 +353,13 @@ export default {
       ]);
     },
     // 获取当前用户可操作的系统/平台列表
-    getsyslist () {
+    getsyslist() {
       return this.$api.bizSystemService.getsyslist().then(res => {
         localStorage.setItem('syslist', JSON.stringify(res.data || [])); // 存储该用户拥有的平台权限
       });
     },
     // 递归处理权限数据
-    authorityHandle (authorityData) {
+    authorityHandle(authorityData) {
       authorityData.forEach(item => {
         if (item.code !== '') {
           this.authorityBtn[item.code] = item.buttonsCode;

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 16:09:26
+ * @LastEditTime: 2019-12-12 16:25:08
  * @Description: 销售合同
 */
 <template>
@@ -72,8 +72,8 @@ export default {
         { label: '合同编号', prop: 'contractCode', default: true },
         { label: '销售出库单编号', prop: 'shipmentCode', default: true },
         { label: '客户名称', prop: 'clientName', default: true },
-        { label: '数量', prop: 'TotalNum', type: 'numberRange', int: true, default: true },
-        { label: '销售总价', prop: 'TotalAmount', type: 'numberRange', default: true },
+        { label: '总计数量', prop: 'TotalNum', type: 'numberRange', int: true, default: true },
+        { label: '总计销售价', prop: 'TotalAmount', type: 'numberRange', default: true },
         { label: '预计发货时间', prop: 'SalesTime', type: 'dateRange', default: true },
         { label: '创建人', prop: 'creator', type: 'employee' },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
