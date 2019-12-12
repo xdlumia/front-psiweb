@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 09:32:31
+ * @LastEditTime: 2019-12-13 02:07:06
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -75,9 +75,8 @@
 </template>
 <script>
 import VisibleMixin from '@/utils/visibleMixin';
-import detail from './details/detail' //详情
-import collectInvoice from './collect-invoice' //详情
-import { log } from 'util';
+import detail from './details/detail' // 详情
+import collectInvoice from './collect-invoice' // 详情
 export default {
   mixins: [VisibleMixin],
   props: ['id'],
@@ -95,21 +94,21 @@ export default {
         { label: '编辑', type: 'primary', authCode: 'psi_receipt_1005' },
         { label: '通过', type: 'primary', authCode: 'psi_receipt_1002' },
         { label: '驳回', type: 'primary', authCode: 'psi_receipt_1003' },
-        { label: '删除', type: 'danger', authCode: 'psi_receipt_1006' },
+        { label: '删除', type: 'danger', authCode: 'psi_receipt_1006' }
       ],
       // 状态功能按钮
       currStatusType: {
         '-1': ['提交审核', '删除', '编辑'], // 新建
         '0': ['撤销审核', '通过', '驳回'], // 审核中
-        '1': ['提交审核', '删除', '编辑'], //已驳回
-        '3': [], //已收票
+        '1': ['提交审核', '删除', '编辑'], // 已驳回
+        '3': [] // 已收票
       },
       // tab操作栏
       tabs: {
         detail: '详情',
         financePayable: '应付账单',
         orderStorage: '采购入库单',
-        financeFee: '费用单',
+        financeFee: '费用单'
       },
       activeName: 'detail',
       editVisible: false,
@@ -117,7 +116,7 @@ export default {
         '-1': '新建',
         '0': '审核中',
         '1': '已驳回',
-        '3': '已收票',
+        '3': '已收票'
       }
     }
   },
@@ -145,7 +144,7 @@ export default {
   methods: {
     async getDetail() {
       if (this.id) {
-        let { data } = await this.$api.seePsiFinanceService.finvoicereceivableInfo(null, this.rowData.id)
+        const { data } = await this.$api.seePsiFinanceService.finvoicereceivableInfo(null, this.rowData.id)
         return data;
       }
     },
@@ -153,12 +152,12 @@ export default {
       if (label == '编辑') {
         this.editVisible = true
       } else {
-        let params = {
+        const params = {
           apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
           processType: 'psi_receipt'
         }
-        let apiObj = {
+        const apiObj = {
           '提交审核': {
             api: 'seePsiFinanceService.finvoicereceivableSubmitApproval',
             data: { ...params },
@@ -171,19 +170,19 @@ export default {
           },
           '通过': {
             api: 'seePsiFinanceService.finvoicereceivablePassApproval',
-            data: { ...params, },
+            data: { ...params },
             needNote: null
           },
           '驳回': {
             api: 'seePsiFinanceService.finvoicereceivableReject',
-            data: { ...params, },
+            data: { ...params },
             needNote: true
           },
           '删除': {
             api: 'seePsiFinanceService.finvoicereceivableDelete',
             data: ({ id: this.detail.id }),
             needNote: null
-          },
+          }
 
         }
         // 公共方法 mixin 引进来的
@@ -193,7 +192,7 @@ export default {
           label,
           apiObj[label].needNote)
       }
-    },
+    }
   },
   beforeDestroy() {
   }
