@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 11:41:37
+ * @LastEditTime: 2019-12-12 14:13:02
  * @Description: 费用分摊单详情
 */
 <template>
@@ -51,7 +51,7 @@
           :rowData="rowData"
           :data="detail || {}"
           class="d-auto-y"
-          :params="{relationCode:code}"
+          :params="activeName=='financeFee'?{costCode:detail.costCode}:{relationCode:code}"
           :button="false"
           style="height:calc(100vh - 170px)"
           :is="activeName"
