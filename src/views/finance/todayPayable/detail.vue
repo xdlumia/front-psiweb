@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 22:47:33
+ * @LastEditTime: 2019-12-12 09:51:04
  * @Description: 今日应付账单
 */
 <template>
@@ -127,7 +127,7 @@ export default {
     paymentLogHide() {
       if (!this.detail) return [];
       let hide =
-        this.detail.amount > 0 && this.pageConfig.type == 0
+        (this.detail.amount > 0 && this.pageConfig.type == 0 && [0,1].includes(this.detail.settleStatus))
           ? []
           : ['addIncoming', 'matchIncoming'];
       if (
