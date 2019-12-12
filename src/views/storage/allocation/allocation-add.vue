@@ -2,11 +2,12 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-11 16:29:34
+ * @LastEditTime: 2019-12-12 09:35:06
  * @Description: 新增调拨单
 */
 <template>
   <el-dialog
+    v-loading="loading"
     :visible.sync="visible"
     title="新增调拨单"
     @close='close'
@@ -100,6 +101,7 @@ export default {
   data() {
     return {
       activeName: '',
+      loading: false,
       allForm: {
         allocationType: 2,//调拨方式
         putawayWmsId: '',//调入库房
@@ -141,13 +143,14 @@ export default {
           //   this.allForm.wmsNames.push(item.name)
           // })
           if (arr.length > 0) {
+            this.loading = true
             this.$api.seePsiWmsService.wmsallocationorderSave(this.allForm)
               .then(res => {
                 this.close()
                 this.$emit('reload')
               })
               .finally(() => {
-
+                this.loading = false
               })
           } else {
             this.$message({

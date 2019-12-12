@@ -6,7 +6,7 @@
  * @Description: 调入商品
 */
 <template>
-  <div>
+  <div v-loading='loading'>
     <div
       :style="{maxHeight:'calc(100vh - 180px)'}"
       class="borrow-goods-info mt10 d-auto-y"
@@ -231,6 +231,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       chooseVisible: false,
       downTableData: [],
       formInline: {
@@ -307,12 +308,14 @@ export default {
     //调入扫码保存
     wmsallocationorderBatchSsave() {
       if (this.downTableData.length > 0) {
+        this.loading = true
         this.$api.seePsiWmsService.wmsallocationorderBatchSsave({ putawayCommodityList: this.downTableData, businessCode: this.dialogData.allocationOrderCode, businessId: this.dialogData.id, })
           .then(res => {
             this.close()
             this.$emit('reload')
           })
           .finally(() => {
+            this.loading = false
           })
       } else {
         this.$message({

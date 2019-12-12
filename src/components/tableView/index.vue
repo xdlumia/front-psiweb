@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-11 11:18:52
+ * @LastEditTime: 2019-12-12 10:50:04
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -400,8 +400,10 @@ export default {
             obj[next.prop.toLowerCase()] ? '' : obj[next.prop.toLowerCase()] = true && item.push(next);
             return item;
           }, []);
-        } else {
+        } else if (this.filterOptions && !this.mergeFilter) {
           this.autoFilterOptions = this.filterOptions
+        } else {
+          this.autoFilterOptions = filterOptions
         }
       }
       // 列表默认请求的就是全部列数据 所以这里就不用重新请求了

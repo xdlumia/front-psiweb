@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 11:20:04
+ * @LastEditTime: 2019-12-12 09:57:25
  * @Description: 采购调价单
 */
 <template>
@@ -115,7 +115,7 @@ export default {
       stateText: {
         '0': '新建',
         '1': '审核中',
-        '2': '通过',
+        '2': '已通过',
         '3': '驳回',
         '4': '撤销'
       }

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 11:24:44
+ * @LastEditTime: 2019-12-12 11:49:42
  * @Description: 采购-供应商
 */
 <template>
@@ -89,7 +89,7 @@ export default {
           label: '状态',
           prop: 'state',
           type: 'select',
-          options: [{ label: '启用', value: 0 }, { label: '停用', value: 1 }],
+          options: [{ label: '启用中', value: 0 }, { label: '停用中', value: 1 }],
           default: true
         },
         { label: '联系人', prop: 'linkManName', default: true },

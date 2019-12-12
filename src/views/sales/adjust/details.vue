@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:48:50
+ * @LastEditTime: 2019-12-12 10:44:29
  * @Description: 账单调整详情
 */
 <template>
@@ -55,8 +55,10 @@
     </side-detail>
     <!-- 客户编辑 -->
     <add
+      v-if="editVisible"
       :visible.sync="editVisible"
       :rowData="rowData"
+      @reload="setEdit(),$reload()"
       type="edit"
       :code="rowData.adjustCode"
     />
@@ -77,21 +79,22 @@ export default {
       // 操作按钮
       buttons: [
         // label:按钮名称  type:按钮样式  authCode:权限码
-        { label: '调整申请', type: 'primary', authCode: 'psi_sales_adjust_04' },
+        { label: '账单调整申请', type: 'primary', authCode: 'psi_sales_adjust_04' },
         { label: '撤销审核', type: 'primary', authCode: 'psi_sales_adjust_07' },
         { label: '通过', type: 'primary', authCode: 'psi_sales_adjust_08' },
         { label: '驳回', type: '', authCode: 'psi_sales_adjust_09' },
         { label: '编辑', type: 'primary', authCode: 'psi_sales_adjust_05' },
+        { label: '删除', type: 'danger', authCode: 'psi_sales_adjust_06' },
       ],
       /**
        * 根据当前状态判断显示哪些按钮
        */
 
       currStatusType: {
-        '-1': ['调整申请'], // 新建
+        '-1': ['账单调整申请', '编辑', '删除'], // 新建
         '0': ['撤销审核', '通过', '驳回'], // 审核中
         '1': [], // 已通过
-        '2': ['调整申请', '编辑'], // 已驳回
+        '2': ['账单调整申请', '编辑'], // 已驳回
       },
       // tab操作栏
       detail: {},
@@ -125,7 +128,7 @@ export default {
           processType: 'psi_sales_adjust_01',
         }
         let apiObj = {
-          '调整申请': {
+          '账单调整申请': {
             api: 'seePsiFinanceService.fbilladjustSubmitApproval',
             data: { ...params, ...{ apprpvalNode: '' } },
             needNote: null
@@ -146,7 +149,7 @@ export default {
             needNote: true
           },
           '删除': {
-            api: 'seePsiFinanceService.fbilladjustLogicDelete',
+            api: 'seePsiFinanceService.fbilladjustDelete',
             data: { ...params, ...{} },
             needNote: null
           }

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 11:31:07
+ * @LastEditTime: 2019-12-12 11:49:22
  * @Description: 供应商编号
 */
 <template>
@@ -106,7 +106,7 @@ export default {
         {
           label: '状态',
           value: this.detail.state,
-          options: [{ label: '启用', value: 0 }, { label: '停用', value: 1 }]
+          options: [{ label: '启用中', value: 0 }, { label: '停用中', value: 1 }]
         },
         { label: '供应商创建人', value: this.detail.creatorName },
         { label: '创建部门', value: this.detail.deptName },

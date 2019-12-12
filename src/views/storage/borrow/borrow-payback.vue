@@ -335,6 +335,7 @@ export default {
       providerList: [],//服务商列表
       serviceTypeList: [],//服务类型
       form: {
+        facilitatorName: '',//服务商名称
         serviceProviderId: '',//服务商id
         serveType: '',//服务类型
         waybillCode: "",//运单号
@@ -385,6 +386,11 @@ export default {
         .finally(() => {
 
         })
+      //查出当前选择服务商名称， 后端要 
+      let obj = this.providerList.filter((item) => {
+        return item.id == val
+      })
+      obj.length > 0 ? this.form.facilitatorName = obj[0].serviceName : this.form.facilitatorName = ''
     },
     //回车 出库
     shipmentCommodityCheck() {

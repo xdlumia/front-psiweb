@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 18:58:53
+ * @LastEditTime: 2019-12-12 09:45:03
  * @Description: 客户管理-账单调整单
 */
 <template>
@@ -47,6 +47,7 @@
         />
         <!-- 账单调整 -->
         <bill-adjust
+          :type="type"
           :data="form"
           id="billAdjust"
         />

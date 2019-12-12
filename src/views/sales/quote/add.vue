@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 22:18:35
+ * @LastEditTime: 2019-12-12 10:40:19
  * @Description: file content
 */
 <template>
@@ -250,8 +250,10 @@ export default {
         let fixingsList = []
         for (let key in this.form.KIND2List) {
           // 扁平化数据
-          const flattenData = this.$$util.jsonFlatten(this.form.KIND2List[key])
-          fixingsList = fixingsList.concat(flattenData)
+          // const flattenData = this.$$util.jsonFlatten(this.form.KIND2List[key])
+          fixingsList = JSON.parse(JSON.stringify(Object.values(this.form.KIND2List).reduce((data,item)=>{
+            return data.concat(item||[])
+          },[])))
           fixingsList = fixingsList.map(item => {
             item.commodityCode = item.goodsCode
             item.goodsName = item.name;

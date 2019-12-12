@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 10:13:20
+ * @LastEditTime: 2019-12-12 10:46:42
  * @Description: 付款单
 */
 <template>
@@ -124,10 +124,10 @@ export default {
         { label: '对方名称', prop: 'accountName', default: true },
         { label: '费用类型', prop: 'feeTypeCode', default: true, type: 'select', options: [] },
         { label: '费用明细', prop: 'feeDetailCode', default: true, type: 'select', options: [] },
-        { label: '预付/收金额', prop: 'PredictAmount', type: 'numberRange', default: true },
-        { label: '应付/收金额', prop: 'Amount', type: 'numberRange', default: true },
-        { label: '实收/付金额', prop: 'FactAmount', type: 'numberRange', default: true },
-        { label: '应收/付日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
+        { label: '预应付', prop: 'PredictAmount', type: 'numberRange', default: true },
+        { label: '应付', prop: 'Amount', type: 'numberRange', default: true },
+        { label: '实付', prop: 'FactAmount', type: 'numberRange', default: true },
+        { label: '应付日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '生成时间', prop: 'CreateTime', type: 'dateRange' },
         { label: '创建人', prop: 'creator', type: 'employee' },

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-11 18:21:30
+ * @LastEditTime: 2019-12-12 13:41:10
  * @Description: 销售出库单详情
 */
 <template>
@@ -39,6 +39,7 @@
         size="mini"
         v-loading="loading"
         label-position="top"
+        class="d-relative"
       >
         <el-tabs v-model="activeName">
           <el-tab-pane
@@ -202,10 +203,10 @@ export default {
         contractSale: '合同',
         salesReturn: '销售退货单',
         salesExchange: '销售换货单',
-        storageSales: '销售单',
         financeReceivable: '应收账单',
         financeBilling: '发票记录',
-        salesApportion: '费用分摊单'
+        salesApportion: '费用分摊单',
+        storageSales: '销售单',
       },
 
       // tabs当前选中
@@ -291,7 +292,7 @@ export default {
             busType: 0,
             purchaseId: this.detail.clientId,
             purchaseType: 0,
-            marketId: this.detail.companyId,
+            marketId: this.detail.companyAccountId,
             marketType: 3,
             invoiceDetailList: []
               .concat(
