@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 14:09:56
+ * @LastEditTime: 2019-12-12 14:56:21
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -171,6 +171,7 @@
         show-overflow-tooltip
         label="备注"
         min-width="110"
+        prop="note"
       >
       </el-table-column>
 
