@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 17:17:40
+ * @LastEditTime: 2019-12-12 15:22:36
  * @Description: 采购入库单
 */
 <template>
@@ -275,6 +275,7 @@
       :visible.sync="showReject"
       @reload="setEdit(),$reload()"
       v-if="detail"
+      from="采购入库单"
     />
     <orderContract
       :rowData="orderContractData"
