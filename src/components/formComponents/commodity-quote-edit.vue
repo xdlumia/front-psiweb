@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 16:03:28
+ * @LastEditTime: 2019-12-11 22:19:44
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -163,6 +163,7 @@
               v-model="scope.row.commodityNumber"
             />
           </el-form-item>
+          <span v-else>{{scope.row.commodityNumber}}</span>
         </template>
       </el-table-column>
 
@@ -357,7 +358,20 @@ export default {
       visibleData: {
       },
       visible: false,
+      preCommodityBussinessInfo:{},
+      timer:null
     };
+  },
+  watch:{
+    'data.businessCommoditySaveVoList':{
+      deep:true,
+      handler(){
+        clearTimeout(this.timer)
+        this.timer = setTimeout(()=>{
+          this.getCommodityBusinessInfo()
+        },200)
+      }
+    }
   },
   methods: {
     async loadChildren(row, node, cb) {
@@ -368,10 +382,20 @@ export default {
           commodityCode: row.commodityCode
         }
       );
-      data.map(child => {
-        child.parentCommodityCode = row.commodityCode
+      let {data:childList} = await this.$api.seePsiSaleService.businesscommodityQueryGoodsList({
+        commodityCodes:data.map(item=>item.commodityCode),
+      })
+      let businessInfo = childList.reduce((data,item)=>{
+        data[item.commodityCode] = item;
+        return data;
+      },{})
+
+      data.map(child=>{
+        child.parentCommodityCode=row.commodityCode
+        child.commodityNumber=child.commodityNum
         child.reference = child.saleReferencePrice
-        child.discountSprice = ''
+        child.discountSprice='-'
+        child.recentDiscountSprice=businessInfo[child.commodityCode].recentDiscountSprice
       })
       cb(data);
     },
@@ -407,6 +431,42 @@ export default {
         this.$set(this.data.businessCommoditySaveVoList, index, { ...addRowData, ...list })
         this.codes = []
       }
+    },
+    flatCallback(fn){
+      this.data.businessCommoditySaveVoList.map(item=>{
+        fn(item)
+        if(item.commonGoodConfigDetailsEntityList){
+          item.commonGoodConfigDetailsEntityList.map(item=>fn(item));
+        }
+      })
+    },
+    async getCommodityBusinessInfo(){
+      // commonGoodConfigDetailsEntityList
+      let needBusList = []
+      this.flatCallback((item)=>{
+        if(!this.preCommodityBussinessInfo[item.commodityCode]&&item.commodityCode){
+          needBusList.push(item.commodityCode)
+        }
+      })
+      if(needBusList.length){
+        let {data} = await this.$api.seePsiSaleService.businesscommodityQueryGoodsList({
+          commodityCodes:needBusList,
+        })
+        data.map(item=>{
+          if(!this.preCommodityBussinessInfo[item.commodityCode]){
+            this.preCommodityBussinessInfo[item.commodityCode] = item;
+          }
+        })
+      }
+      this.flatCallback((item)=>{
+        if(!this.preCommodityBussinessInfo[item.commodityCode]&&needBusList.includes(item.commodityCode)){
+          this.preCommodityBussinessInfo[item.commodityCode]={}
+        }
+        if(this.preCommodityBussinessInfo[item.commodityCode]){
+          this.$set(item,'inventoryNumber',item.inventoryNumber||this.preCommodityBussinessInfo[item.commodityCode].inventoryNumber||0)
+          this.$set(item,'recentDiscountSprice',this.preCommodityBussinessInfo[item.commodityCode].recentDiscountSprice||0)
+        }
+      })
     },
     // 添加商品
     addCommodity() {
