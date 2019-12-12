@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 16:03:05
+ * @LastEditTime: 2019-12-12 17:19:42
  * @Description: 销售和采购调价单
 */
 <template>
@@ -130,6 +130,7 @@ export default {
     async save() {
       await this.$showFormError(this.$refs.form);
       let form = { ...this.form };
+      form.adjustPriceDifference=0
       form.commonAdjustPriceDetailedEntityList = form.commodityList.map(
         item => {
           form.adjustPriceDifference = form.adjustPriceDifference || 0;
