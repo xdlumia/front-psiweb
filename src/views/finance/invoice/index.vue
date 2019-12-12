@@ -71,6 +71,7 @@
         </el-image>
         <span v-else-if="column.columnFields=='state'">{{stateText[row.state]}}</span>
         <span v-else-if="column.columnFields=='categoryCode'">{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
+        <span v-else-if="column.columnFields=='unit'">{{row.unit | dictionary('SC_JLDW')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
