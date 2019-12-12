@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 09:57:25
+ * @LastEditTime: 2019-12-12 17:32:49
  * @Description: 采购调价单
 */
 <template>
@@ -86,7 +86,7 @@
               ]"
             :data="detail"
             :show="[
-                'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','configName','noteText','fullscreen'
+                'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','fullscreen'
               ]"
             :showSummary="false"
             disabled
