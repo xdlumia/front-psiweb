@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-11 14:14:34
+ * @LastEditTime: 2019-12-13 09:31:33
  * @Description: 销售换货单详情
 */
 <template>
@@ -57,7 +57,7 @@
           :data="detail || {}"
           class="d-auto-y"
           :button="false"
-          style="height:calc(100vh - 170px)"
+          style="height:calc(100vh - 170px) !important"
           :is="activeName"
         ></components>
       </el-form>

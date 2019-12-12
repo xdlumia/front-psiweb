@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:35:46
+ * @LastEditTime: 2019-12-13 09:31:58
  * @Description: 销售出库单详情
 */
 <template>
@@ -59,7 +59,7 @@
           class="d-auto-y"
           :params="{relationCode:code}"
           :button="false"
-          style="height:calc(100vh - 170px)"
+          style="height:calc(100vh - 170px) !important"
           :is="activeName"
         />
 
