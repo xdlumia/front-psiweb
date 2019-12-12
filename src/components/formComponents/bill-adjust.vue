@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 16:49:07
+ * @LastEditTime: 2019-12-12 09:49:13
  * @Description: 账单调整
  */
 <template>
@@ -119,6 +119,7 @@ import { log } from 'util'
 export default {
   name: 'bill-adjust',
   props: {
+    type: String,
     data: {
       default: () => { return {} }
     },
@@ -140,6 +141,12 @@ export default {
       options: [],
       multipleSelection: []
     }
+  },
+  created() {
+
+  },
+  mounted() {
+
   },
   methods: {
     // 按钮功能操作
@@ -168,6 +175,9 @@ export default {
           showClose: true,
         });
         return
+      }
+      if (this.type == 'edit') {
+        this.sumAmount = this.data.adjustBeforAmount
       }
       if (this.data.adjustAmount > this.sumAmount) {
         this.$message({
