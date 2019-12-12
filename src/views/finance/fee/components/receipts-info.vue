@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-09 11:24:00
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-07 22:28:04
+ * @LastEditTime: 2019-12-12 14:17:15
  * @Description: description
  -->
 <template>
@@ -23,7 +23,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="收款日期" prop="chargeDate">
+          <el-form-item :label="`${data.costType ? '付' : '收'}款日期`" prop="chargeDate">
             <el-date-picker
               v-model="data.chargeDate"
               type="date"
@@ -53,7 +53,8 @@
         <el-col :span="8">
           <el-form-item label="对方名称" prop="clientId">
             <el-input v-model="data.clientName" v-if="detail"></el-input>
-            <otherNameChoose v-else class="wufll" @choose="choose" :value="data.clientName"></otherNameChoose>
+            <otherNameChoose v-else class="wufll" @choose="choose"
+:value="data.clientName"></otherNameChoose>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -76,7 +77,7 @@ import invoiceMixin from '../../invoice-mixins'
 import otherNameChoose from './other-name-choose'
 export default {
   mixins: [invoiceMixin],
-  data () {
+  data() {
     return {
     }
   },
@@ -96,7 +97,7 @@ export default {
     otherNameChoose
   },
   computed: {
-    settlementAccount () {
+    settlementAccount() {
       return [].concat(...this.accountList.map(item => {
         return [].concat(...((item.commonCorporationAccountEntities || []).map(sub => {
           sub.accountType = this.$options.filters.dictionary(sub.accountType, 'PSI_GSSZ_ZHLX')
@@ -106,12 +107,12 @@ export default {
     }
   },
   methods: {
-    selectChange (val) {
+    selectChange(val) {
       const temp = this.settlementAccount.filter(item => item.id === val)[0]
       this.data.companySettlementInfo = `${temp.corporationName}${temp.accountType}(${temp.account})`
       this.data.companyAccountId = temp.companyAccountId
     },
-    choose (e) {
+    choose(e) {
       // bankAccount  bankAccount  bankAccount
       this.data.clientId = e[0].id
       this.data.clientName = e[0].clientName || e[0].companyName || e[0].supplierName || e[0].serviceName
