@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 09:29:40
+ * @LastEditTime: 2019-12-12 11:15:41
  * @Description: 销售出库单详情
 */
 <template>
@@ -292,7 +292,7 @@ export default {
             busType: 0,
             purchaseId: this.detail.clientId,
             purchaseType: 0,
-            marketId: this.detail.companyId,
+            marketId: this.detail.companyAccountId,
             marketType: 3,
             invoiceDetailList: []
               .concat(

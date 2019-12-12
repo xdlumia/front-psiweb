@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 11:05:45
+ * @LastEditTime: 2019-12-12 11:07:36
  * @Description: 销售-待收票
  */
 <template>
@@ -31,7 +31,7 @@
           <el-col :span="18">
             <el-select
               size="mini"
-              v-model="queryForm.invoiceCode"
+              v-model="queryForm.purchaseId"
             >
               <el-option
                 value
@@ -40,8 +40,8 @@
               <el-option
                 v-for="(item, index) in accountList"
                 :key="index"
-                :value="item.invoiceSum"
-                :label="`${item.corporationName}(${item.invoiceSum})`"
+                :value="item.id"
+                :label="`${item.corporationName}(${item.commonCorporationAccountEntities[0] ? item.commonCorporationAccountEntities[0].account : ''})`"
               ></el-option>
             </el-select>
           </el-col>
@@ -127,6 +127,7 @@ export default {
         page: 1,
         limit: 20,
         dataType: 0, //票据类型(0收票，1开票)
+        purchaseId: '',
         // invoiceCode: ''
       },
       // 当前行数据
@@ -138,7 +139,7 @@ export default {
 
   },
   watch: {
-    'queryForm.invoiceCode': {
+    'queryForm.purchaseId': {
       handler(newValue) {
         this.$refs.table.reload();
       }
