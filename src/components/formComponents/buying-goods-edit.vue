@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 16:08:27
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-12 20:03:33
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -220,6 +220,7 @@
 </template>
 <script>
 import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
+import { log } from 'util';
 
 let fakeId = 1;
 export default {
@@ -312,7 +313,7 @@ export default {
       {        label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { alterationPrice, taxRate, alterationNumber }) => +Number((alterationPrice * (1 + (taxRate / 100)) * alterationNumber) || 0).toFixed(2)
       },
-      { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber', format:(a)=>a||0, showOverflowTip: true, },
+      { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber', format: (a) => a || 0, showOverflowTip: true, },
       { label: '备注', key: 'note', width: 100, prop: 'note', type: 'input', rules: [] },
       { label: '是否组装', key: 'isAssembly', align: "center", width: 100, prop: 'isAssembly', type: 'selection', selected: 0 },
       { label: '操作', key: 'action', width: 100, prop: 'action' },
@@ -491,8 +492,7 @@ export default {
           commodityCode: row.commodityCode
         }
       );
-      data.map(item=>item.inventoryNumber=item.usableInventoryNum)
-      console.log(row)
+      data.map(item => item.inventoryNumber = item.usableInventoryNum)
       row.children = this.recalcRowKey(data || [], row._rowKey);
       cb(row.children);
     },
@@ -532,6 +532,10 @@ export default {
     },
     // 选择商品
     choose(e) {
+      e = e.map(item => {
+        item.adjustPriceMoney = item.adjustPriceMoney || 0
+        return item
+      })
       this.data[this.fkey] = this.data[this.fkey] || [];
       this.data[this.fkey] = this.data[this.fkey].concat(
         e.map(this.goodToBuyingInfo)

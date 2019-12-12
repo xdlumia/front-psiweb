@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 19:30:37
+ * @LastEditTime: 2019-12-12 19:54:34
  * @Description: 销售和采购调价单
 */
 <template>
@@ -169,10 +169,8 @@ export default {
     },
     // 调整利润率
     profitRateChange(row) {
-
       let inventoryPrice = + row.inventoryPrice || 0
       let profitRate = Number(row.profitRate) || 0
-
       row.adjustPriceMoney = (inventoryPrice * (1 + (profitRate / 100)) - (row.saleReferencePrice || 0)).toFixed(2);
     },
     calcAdjustPriceDifference(row) {
