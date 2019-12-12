@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 15:37:10
+ * @LastEditTime: 2019-12-12 16:24:28
  * @Description: 分摊信息
  */
 <template>
@@ -128,6 +128,7 @@
         class="dialog"
         :status="false"
         :more="false"
+        :params="{stateList:[2,4]}"
         :button="false"
         :column="false"
         @selection-change="selectionChange"
@@ -213,8 +214,6 @@ export default {
     }
   },
   methods: {
-
-
     busTypeChange(val) {
       this.dialogData.title = this.options[val].title
       this.data.busCode = ''
@@ -275,8 +274,8 @@ export default {
       let [rowData] = this.multipleSelection
       if (this.dialogData.type == 'financeFee') {
         this.data.costCode = rowData.costCode
-        this.sumAmount = rowData.amount
-        this.data.unAmount = rowData.amount
+        this.sumAmount = rowData.unAmount
+        this.data.unAmount = rowData.unAmount
       } else {
         let codeObj = {
           '0': 'shipmentCode',

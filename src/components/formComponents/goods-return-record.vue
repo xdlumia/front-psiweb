@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 16:06:10
+ * @LastEditTime: 2019-12-12 16:24:47
  * @Description: 退货记录里
 */
 <template>
@@ -169,9 +169,9 @@
           ></el-table-column>
         </d-table>
       </form-card>
-      <span class="ac">
+      <div class="ac mt5">
         <el-button size="small">关 闭</el-button>
-      </span>
+      </div>
     </el-dialog>
     <CommodityDetail
       :code="currentCommodityCode"

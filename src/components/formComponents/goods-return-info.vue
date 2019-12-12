@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 15:59:44
+ * @LastEditTime: 2019-12-12 17:21:31
  * @Description: 退货商品商品信息
 */
 <template>
@@ -217,7 +217,6 @@ export default {
     return {
       dialogVisible: false,
       rowData: {},
-      code: String,
 
       // queryFrom: {
       //   busType: 1, // 1报价单 2请购单]

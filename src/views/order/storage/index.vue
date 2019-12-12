@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 14:37:07
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-12 17:35:17
  * @Description: 采购-采购入库单
 */
 <template>
@@ -21,18 +21,52 @@
     >
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='putinCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link
+            :underline="false"
+            @click="showDetail=true,currentCode=value"
+            class="f12"
+            type="primary"
+          >{{value}}</el-link>
         </span>
         <span v-else-if="prop=='joinCode'">
-          <el-link :underline="false" @click="openJoin(row)" class="f12" type="primary">{{value}}</el-link>
+          <el-link
+            :underline="false"
+            @click="openJoin(row)"
+            class="f12"
+            type="primary"
+          >{{value}}</el-link>
+        </span>
+        <!-- 销售库用到这个页面但是接口没有返回状态 -->
+        <span v-else-if="prop=='state'">
+          {{stateText[row.state]}}
         </span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
-    <OrderBuyingDetail :code="joinCode" :visible.sync="joinDetail.buying" @reload="reload" v-if="joinDetail.buying" />
-    <OrderDirectDetail :code="joinCode" :visible.sync="joinDetail.direct" @reload="reload" v-if="joinDetail.direct" />
-    <OrderPrepareDetail :code="joinCode" :visible.sync="joinDetail.prepare" @reload="reload" v-if="joinDetail.prepare" />
+    <Detail
+      :code="currentCode"
+      :visible.sync="showDetail"
+      @reload="reload"
+      v-if="showDetail"
+    />
+    <OrderBuyingDetail
+      :code="joinCode"
+      :visible.sync="joinDetail.buying"
+      @reload="reload"
+      v-if="joinDetail.buying"
+    />
+    <OrderDirectDetail
+      :code="joinCode"
+      :visible.sync="joinDetail.direct"
+      @reload="reload"
+      v-if="joinDetail.direct"
+    />
+    <OrderPrepareDetail
+      :code="joinCode"
+      :visible.sync="joinDetail.prepare"
+      @reload="reload"
+      v-if="joinDetail.prepare"
+    />
   </div>
 </template>
 <script>
@@ -105,7 +139,7 @@ export default {
             { label: '备货单', value: '备货单' },
             { label: '直发单', value: '直发单' },
           ]        },
-        { label: '供应商', prop: 'supplierId', default: true, type:'supplier' },
+        { label: '供应商', prop: 'supplierId', default: true, type: 'supplier' },
         { label: '销售预计到/发货时间', prop: 'SaleTime', type: 'dateRange', default: true },
         { label: '采购预计到/发货时间', prop: 'PurchaseTime', type: 'dateRange', default: true },
         { label: '总计数量', prop: 'PutinNum', type: 'numberRange', default: true, int: true },
@@ -116,7 +150,7 @@ export default {
       ]
     };
   },
-  mounted() {},
+  mounted() { },
   methods: {
     // 多选
     selectionChange(val) {
