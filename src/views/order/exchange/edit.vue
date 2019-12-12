@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 11:35:47
+ * @LastEditTime: 2019-12-12 15:48:32
  * @Description: 换货单
 */
 <template>
@@ -94,12 +94,22 @@ export default {
         this.form.putinCommodityList.map(item => {
           this.form.swapInNum += Number(item.swapInNum) || 0;
           item.swapInCommodityCode = item.commodityCode;
+          item.taxAmount = +Number(
+            (item.swapInMoney || 0) *
+              (1 + (item.taxRate || 0) / 100) *
+              (item.swapInNum || 0) || 0
+          ).toFixed(2);
         });
         this.form.swapOutNum = 0;
         this.form.swapOutMoney = this.money.out;
         this.form.putoutCommodityList.map(item => {
           this.form.swapOutNum += Number(item.swapOutNum) || 0;
           item.swapOutCommodityCode = item.commodityCode;
+          item.taxAmount = +Number(
+            (item.swapOutMoney || 0) *
+              (1 + (item.taxRate || 0) / 100) *
+              (item.swapOut || 0) || 0
+          ).toFixed(2);
         });
         this.form.source = this.from || '新建';
         if (this.isEdit) {
