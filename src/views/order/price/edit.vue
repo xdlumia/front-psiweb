@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 18:39:42
+ * @LastEditTime: 2019-12-12 19:30:37
  * @Description: 销售和采购调价单
 */
 <template>
@@ -63,22 +63,21 @@
               >
                 <el-input
                   size="mini"
+                  @input="adjustPriceMoneyChange(row)"
                   v-model="row.adjustPriceMoney"
                 ></el-input>
               </el-form-item>
             </template>
-            <!-- 税率 -->
+            <!-- 利润率率 -->
             <template
               slot="profitRate"
               slot-scope="{row,info,formProp}"
             >
-              <el-form-item
-                :prop="formProp"
-                :rules="[{required:true},{type:'profitRate'}]"
-                v-if="!info.isChild"
-              >
+              <el-form-item :prop="formProp">
                 <el-input
+                  @input="profitRateChange(row)"
                   size="mini"
+                  type="number"
                   v-model="row.profitRate"
                 ></el-input>
               </el-form-item>
@@ -130,9 +129,9 @@ export default {
         {          label: '调整差异', key: 'adjustPriceDifference	', prop: 'adjustPriceDifference	', width: 100,
           format: (a, b) => this.calcAdjustPriceDifference(b)
         },
-        { label: '销售参考价', key: 'saleReferencePrice', prop: 'saleReferencePrice', width: 120, },
-        { label: '调整后销售参考价（税前）', key: 'taxBeforeAdjustPrice', prop: 'taxBeforeAdjustPrice', width: 120, },
-        { label: '利润率%', key: 'profitRate', prop: 'profitRate', width: 120, slot: 'profitRate' },
+        { label: '销售参考价（税前）', key: 'saleReferencePrice', prop: 'saleReferencePrice', width: 130, },
+        { label: '调整后销售参考价（税前）', key: 'taxBeforeAdjustPrice', prop: 'taxBeforeAdjustPrice', width: 180, format: (a, b) => this.calcTaxBeforeAdjustPrice(b) },
+        { label: '利润率%', key: 'profitRate', prop: 'profitRate', width: 120, slot: 'profitRate', },
       ],
       alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
     };
@@ -154,6 +153,27 @@ export default {
       return +Number(
         (+row.inventoryPrice || 0) + (+row.adjustPriceMoney || 0)
       ).toFixed(2);
+    },
+    calcTaxBeforeAdjustPrice(row) {
+      return +Number(
+        (+row.saleReferencePrice || 0) + (+row.adjustPriceMoney || 0)
+      ).toFixed(2);
+    },
+    // 调整金额
+    adjustPriceMoneyChange(row) {
+      let taxBeforeAdjustPrice = (+row.saleReferencePrice || 0) + (+row.adjustPriceMoney || 0)
+      let inventoryPrice = +row.inventoryPrice || 0
+      row.profitRate = Number(
+        (taxBeforeAdjustPrice - inventoryPrice) / inventoryPrice * 100
+      ).toFixed(0);
+    },
+    // 调整利润率
+    profitRateChange(row) {
+
+      let inventoryPrice = + row.inventoryPrice || 0
+      let profitRate = Number(row.profitRate) || 0
+
+      row.adjustPriceMoney = (inventoryPrice * (1 + (profitRate / 100)) - (row.saleReferencePrice || 0)).toFixed(2);
     },
     calcAdjustPriceDifference(row) {
       return +Number(
