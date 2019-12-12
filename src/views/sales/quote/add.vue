@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 15:28:13
+ * @LastEditTime: 2019-12-12 17:44:40
  * @Description: file content
 */
 <template>
@@ -361,7 +361,7 @@ export default {
             api = 'salesquotationUpdate'
             // 编辑保存
           } else {
-            this.form.shipmentCode = ''
+            copyParams.shipmentCode = ''
           }
           this.$api.seePsiSaleService[api](copyParams)
             .then(res => {
