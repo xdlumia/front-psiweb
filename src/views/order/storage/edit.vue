@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 15:24:33
+ * @LastEditTime: 2019-12-12 15:41:40
  * @Description: 采购入库单
 */
 <template>
@@ -241,11 +241,11 @@ export default {
           .reduce((data, item) => {
             data.putinNum = data.putinNum || 0;
             data.putinNum += parseInt(item.commodityNumber) || 0;
-            item.preTaxAmount = +Number(
-              item.purchasePrice *
-                (1 + item.taxRate / 100) *
-                item.commodityNumber || 0
-            ).toFixed(2);
+            // item.preTaxAmount = +Number(
+            //   item.purchasePrice *
+            //     (1 + item.taxRate / 100) *
+            //     item.commodityNumber || 0
+            // ).toFixed(2);
             return data;
           }, this.form);
         this.form.putinAmount = this.goodsTotalSum;
