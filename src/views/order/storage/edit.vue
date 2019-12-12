@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 11:32:27
+ * @LastEditTime: 2019-12-12 15:44:48
  * @Description: 采购入库单
 */
 <template>
@@ -61,7 +61,7 @@
             v-if="form.source=='请购单'"
           />
           <buyingPaymentLate :data="form" id="paymentLate" />
-          <order-storage-bill :data="form" :max="goodsTotalSum" id="billInfo" :forceBillFee="form.source=='直发单'" />
+          <order-storage-bill :data="form" :forceBillFee="form.source=='直发单'" :max="goodsTotalSum" id="billInfo" />
           <customInfo :data="form" busType="30" id="customInfo" />
           <extrasInfo :data="form" id="extrasInfo" />
         </el-form>
@@ -241,6 +241,11 @@ export default {
           .reduce((data, item) => {
             data.putinNum = data.putinNum || 0;
             data.putinNum += parseInt(item.commodityNumber) || 0;
+            item.taxTotalAmount = +Number(
+              item.purchasePrice *
+                (1 + item.taxRate / 100) *
+                item.commodityNumber || 0
+            ).toFixed(2);
             return data;
           }, this.form);
         this.form.putinAmount = this.goodsTotalSum;

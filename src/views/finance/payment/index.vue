@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 10:46:42
+ * @LastEditTime: 2019-12-12 15:52:14
  * @Description: 付款单
 */
 <template>
@@ -127,9 +127,9 @@ export default {
         { label: '预应付', prop: 'PredictAmount', type: 'numberRange', default: true },
         { label: '应付', prop: 'Amount', type: 'numberRange', default: true },
         { label: '实付', prop: 'FactAmount', type: 'numberRange', default: true },
-        { label: '应付日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
+        { label: '付款日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
-        { label: '生成时间', prop: 'CreateTime', type: 'dateRange' },
+        { label: '生成日期', prop: 'CreateTime', type: 'dateRange' },
         { label: '创建人', prop: 'creator', type: 'employee' },
       ],
       stateText: {
