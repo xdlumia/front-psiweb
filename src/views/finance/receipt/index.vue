@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 11:07:36
+ * @LastEditTime: 2019-12-13 16:01:33
  * @Description: 销售-待收票
  */
 <template>
@@ -13,7 +13,7 @@
       :filter="true"
       :exportButton="authorityButtons.includes('psi_receipt_1007')"
       :column="true"
-      title="待收票"
+      :title="title"
       api="seePsiFinanceService.finvoicereceivableList"
       exportApi="seePsiFinanceService.finvoicereceivableExport"
       :params="Object.assign(queryForm,params)"
@@ -52,11 +52,11 @@
         <!-- 发票号码 -->
         <span
           class="d-text-blue d-pointer"
-          v-if="column.columnFields=='invoiceCode'"
+          v-if="column.columnFields=='invoiceCode' && title!='发票记录'"
           @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
 
-        <span v-else-if="column.columnFields=='busCode'">
+        <span v-else-if="column.columnFields=='busCode' && title!='发票记录'">
           <!-- 关联单据编号 -->
           <el-link
             :type="hasBusPage(row)?'primary':'info'"
@@ -65,11 +65,6 @@
             class="f12"
           >{{value}}</el-link>
         </span>
-        <!-- 关联单据号 -->
-        <span
-          class="d-text-blue"
-          v-else-if="column.columnFields=='busCode'"
-        > {{value}}</span>
         <!-- 发票类型 -->
         <span v-else-if="column.columnFields=='invoiceTypeCode'">{{value|dictionary('CW_FP_LX')}}</span>
         <span v-else>{{value}}</span>
@@ -106,6 +101,10 @@ export default {
     detail
   },
   props: {
+    title: {
+      type: String,
+      default: '待收票'
+    },
     // 是否显示按钮
     button: {
       type: Boolean,
