@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 17:06:10
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-13 18:14:45
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -207,9 +207,9 @@ export default {
 
     // 自定义头
     customHeaders: Array,
-    paramInterceptor:{
-      type:Function,
-      default:(a)=>a
+    paramInterceptor: {
+      type: Function,
+      default: (a) => a
     }
   },
   data() {
@@ -338,7 +338,7 @@ export default {
         let filterOptions = []
         cols.forEach(item => {
           // 过滤状态不用添加到筛选里的类型
-          let notFilter = ['state', 'matchState', 'personInChargeName']
+          let notFilter = ['state', 'matchState', 'personInChargeName', 'companySettlementInfo']
           if (!notFilter.includes(item.columnFields)) {
 
             let type = 'text' //默认筛选类型是text
@@ -374,10 +374,10 @@ export default {
               options = [{ label: '支出', value: 1 }, { label: '收入', value: 0 }]
             }
             // 如果是账户信息
-            else if (item.columnFields == 'companySettlementInfo') {
-              columnFields = 'companySettlementId'
-              type = 'account'
-            }
+            // else if (item.columnFields == 'companySettlementInfo') {
+            //   columnFields = 'companySettlementId'
+            //   type = 'account'
+            // }
             // 如果是部门
             else if (item.columnFields == 'deptName') {
               columnFields = 'deptTotalCode'

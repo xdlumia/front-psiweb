@@ -230,7 +230,15 @@ export default {
     };
   },
   mounted() { },
+  created() {
+    this.getCommodityInfoList()
+  },
   methods: {
+    getCommodityInfoList() {
+      if (this.commodityForm.commodityInfoList && this.commodityForm.commodityInfoList.length > 0) {
+        this.tableData = [...this.commodityForm.commodityInfoList]
+      }
+    },
     handleClick({ label, name }) {
       this.activeName = '';
     },

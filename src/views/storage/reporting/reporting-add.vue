@@ -126,7 +126,7 @@ export default {
     close() {
       this.$emit('update:visible', false)
     },
-    //点一下保存
+    //点一下保存 
     submit() {
       this.$refs['addForm'].validate((valid) => {
         if (valid) {

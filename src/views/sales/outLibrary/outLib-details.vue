@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 14:57:16
+ * @LastEditTime: 2019-12-13 17:33:18
  * @Description: 销售出库单详情
 */
 <template>
@@ -258,7 +258,6 @@ export default {
       } else {
         return this.currStatusType[state].includes(label)
       }
-
     },
     async buttonsClick(label) {
       // 需要弹出操作功能
