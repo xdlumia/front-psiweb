@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:32:57
+ * @LastEditTime: 2019-12-13 17:24:32
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -30,9 +30,7 @@
         <!-- 采购预计到货时间 -->
         <span
           v-else-if="column.columnFields=='procurementExpectedArrivalTime'"
-          class="d-pointer"
           :class="row.salesRequireArrivalTime && row.procurementExpectedArrivalTime>row.salesRequireArrivalTime?'d-text-red':''"
-          @click="eventHandle('detailVisible',row)"
         >{{value}} </span>
         <!-- 有无合同 -->
         <span v-else-if="column.columnFields=='isContract'">{{value?'有':'无'}}</span>

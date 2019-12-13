@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 16:33:14
+ * @LastEditTime: 2019-12-13 17:25:32
  * @Description: 审核采购时间
 */
 <template>
@@ -36,13 +36,19 @@
                 type="primary"
               >{{value}}</el-link>
             </span>
-            <span v-else-if="prop=='joinCode'">
+            <span v-else-if="prop=='quotationCode'">
               <el-link
                 :underline="false"
                 @click="quotationVisible=true, quotationCode = value"
                 class="f12"
                 type="primary"
               >{{value}}</el-link>
+            </span>
+            <span
+              v-else-if="prop=='purchaseTime'"
+              :class="row.purchaseTime && row.purchaseTime>row.saleTime?'d-text-red':''"
+            >
+              {{value}}
             </span>
             <!-- 销售库用到这个页面但是接口没有返回状态 -->
             <span v-else-if="prop=='state'">
@@ -112,10 +118,10 @@ export default {
       // TODO销售要求到货时间 采购预计到货时间 报价单编号字段没有对应
       customHeaders: [
         { columnName: "采购入库单编号", columnFields: "putinCode", },
-        { columnName: "报价单编号", columnFields: "joinCode", },
+        { columnName: "报价单编号", columnFields: "quotationCode", },
         { columnName: "单据状态", columnFields: "state", },
-        { columnName: "销售要求到货时间", columnFields: "putinCode", },
-        { columnName: "采购预计到货时间", columnFields: "putinCode", },
+        { columnName: "销售要求到货时间", columnFields: "saleTime", },
+        { columnName: "采购预计到货时间", columnFields: "purchaseTime", },
         { columnName: "单据创建人", columnFields: "creatorName", },
         { columnName: "创建部门", columnFields: "deptName", },
         { columnName: "创建时间", columnFields: "createTime", },
