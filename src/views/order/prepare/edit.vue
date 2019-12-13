@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 18:10:44
+ * @LastEditTime: 2019-12-13 11:37:24
  * @Description: 新增备货单
 */
 <template>
@@ -33,9 +33,10 @@
           <buyingGoodsEdit
             :data="form"
             :show="[
-            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','commodityNumber','taxRate','preTaxAmount','inventoryNumber','action'
+            'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','note','costAmount','commodityNumber','taxRate','preTaxAmount','inventoryNumber','action'
           ]"
             id="commodityInfo"
+            :sort="['commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','note','costAmount','commodityNumber','taxRate','preTaxAmount','inventoryNumber','action']"
           />
           <customInfo :data="form" busType="29" id="customInfo" />
           <extrasInfo :data="form" id="extrasInfo" />

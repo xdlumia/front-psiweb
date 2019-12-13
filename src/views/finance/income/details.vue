@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-11 18:21:10
+ * @LastEditTime: 2019-12-13 16:09:25
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -10,7 +10,6 @@
       :title="`流水编号:${code}`"
       :visible.sync="showDetailPage"
       width="920px"
-      :status="status"
       @close="close"
     >
       <div class="drawer-header">
@@ -36,7 +35,7 @@
         size="mini"
         label-position="top"
         class="d-auto-y"
-        style="height:calc(100vh - 110px)"
+        style="height:calc(100vh - 120px) !important"
       >
         <!-- 单据信息 -->
         <receipt-info
@@ -67,7 +66,6 @@
           disabled
           :data="rowData || {}"
         />
-        <!-- TODO 缺少操作记录 -->
       </el-form>
     </side-detail>
     <!-- 账单匹配 -->

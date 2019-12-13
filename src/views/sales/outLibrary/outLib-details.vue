@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 09:31:47
+ * @LastEditTime: 2019-12-13 14:57:16
  * @Description: 销售出库单详情
 */
 <template>
@@ -120,6 +120,7 @@
     />
     <!-- 采购审核时间 -->
     <approvalTime
+      v-if="timeApprovalVisible"
       :visible.sync="timeApprovalVisible"
       :rowData="detail"
       @reload="setEdit(),$reload()"

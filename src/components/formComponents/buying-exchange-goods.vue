@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 17:38:16
+ * @LastEditTime: 2019-12-13 16:15:44
  * @Description: 换货单换货商品 已绑定字段 1
 */  
 <template>
@@ -13,7 +13,7 @@
       :disabled="disabled"
       :fkey="fkey"
       :show="[
-        'categoryCode','className','specOne','configName','noteText','costAmountPrice','taxRate','!add','unit',
+        'categoryCode','className','specOne','configName','costAmountPrice','taxRate','!add','unit',
       ].concat(disabled?[]:['goodsPic'])"
       :sort="['expanded'].concat(
         disabled?['snCodes','swapInNum','swapOutNum','swapInWmsNames','swapOutWmsNames']:[],

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-11 11:24:56
+ * @LastEditTime: 2019-12-13 15:50:14
  * @Description: 审核小卡片
 */
 <template>
@@ -22,10 +22,13 @@
         <div class="approve-title ac">{{item.taskState==3?'驳回':item.taskName}}</div>
         <div class="approve-name ac">{{item.creator | userName}}</div>
         <div class="approve-time ac f12">{{item.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</div>
-        <div
-          class="approve-time ac f12"
+        <el-tooltip
           v-if="item.taskState==3"
-        >驳回原因:{{item.notes}}</div>
+          :content="item.notes"
+          placement="top-start"
+        >
+          <div class="approve-time ac f12 d-elip">驳回原因:{{item.notes}}</div>
+        </el-tooltip>
       </li>
     </ul>
   </div>
@@ -69,7 +72,7 @@ export default {
 .approve-wrap {
   overflow: hidden;
   .approve-item {
-    padding-bottom: 30px;
+    height: 120px;
     width: 20%;
     position: relative;
     &::before,

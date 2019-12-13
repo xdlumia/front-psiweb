@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 17:26:51
+ * @LastEditTime: 2019-12-13 12:05:49
  * @Description: 确定配置信息
 */
 <template>
@@ -457,7 +457,7 @@ export default {
         .commonquotationconfigdetailsListConfigByGoodName(params)
         .then(res => {
           // 给整机数据换成新数据
-          const data = res.data || [];
+          const data = (res.data || []).filter(item=>item.quotationState==0);
           this.filterKIND1List(data);
         });
     }

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 14:39:25
+ * @LastEditTime: 2019-12-13 15:38:04
  * @Description: 采购-直发单
 */
 <template>
@@ -34,7 +34,7 @@
       @reload="reload"
       v-if="showQuotationDetail"
     />
-    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" />
+    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
   </div>
 </template>
 <script>

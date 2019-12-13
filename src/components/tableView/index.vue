@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 10:50:04
+ * @LastEditTime: 2019-12-13 15:04:45
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -86,7 +86,6 @@
         <slot name="filter"></slot>
       </template>
       <template slot="filterTable">
-
         <slot
           name="filterTable"
           v-if="autoFilterOptions"
@@ -114,7 +113,7 @@
     <!-- </template> -->
     <d-table
       class="d-table"
-      :autoInit="false"
+      :autoInit="!column"
       @response="tabelRes"
       @selection-change="selectionChange"
       :params="params"
@@ -130,7 +129,7 @@
         type="selection"
       ></el-table-column>
       <el-table-column
-        v-for="(item,index) of headers"
+        v-for="(item,index) of customHeaders || headers"
         :key="index"
         show-overflow-tooltip
         :label="item.columnName"
@@ -205,11 +204,9 @@ export default {
     // 筛选配置
     filterOptions: Array,
     selectable: Function,
+
     // 自定义头
-    // headers: {
-    //   type: Array,
-    //   default: () => []
-    // }
+    customHeaders: Array
   },
   data() {
     return {
@@ -409,21 +406,6 @@ export default {
       // 列表默认请求的就是全部列数据 所以这里就不用重新请求了
       this.headers = cols;
       this.$refs.table.reload(1)
-    },
-    // 合并两个数组 如果根据key来判断 如果相同key的数组取新增项
-    formatArray(newData, oldData, key = 'label') {
-      let oldLables = oldData.map(v => v[key])
-      let format = []
-      newData.forEach(item => {
-        let index = oldLables.indexOf(item[key])
-        if (index != -1) {
-          format.push({ ...oldData[index], ...item })
-        } else {
-          format.push(item)
-        }
-      })
-      console.log(format);
-      return format
     },
     // 多选
     selectionChange(val) {

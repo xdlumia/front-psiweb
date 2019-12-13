@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 10:55:37
+ * @LastEditTime: 2019-12-13 15:46:29
  * @Description: 直发单详情
 */
 <template>
@@ -23,6 +23,7 @@
       >发货</el-button>
       <el-button
         @click="showAddOrderStorage=true"
+        :disabled="waitBuyingNumber>0?false:true"
         size="mini"
         type="primary"
         v-if="detail&&[0,1].includes(detail.state)&&authorityButtons.includes('psi_purchase_direct_04')"
@@ -47,13 +48,18 @@
             disabled
             fkey="commodityEntityList"
           />
-          <customInfo :data="detail" busType="28" disabled></customInfo>
+          <customInfo :data="detail" busType="15" disabled></customInfo>
           <extrasInfo :data="detail" disabled></extrasInfo>
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="采购入库单" name="putin">
         <FullscreenWrap v-if="isDataReady&&tabStatus.putin">
           <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:detail.directCode,relationCode:detail.directCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="报价单" name="quotion">
+        <FullscreenWrap v-if="isDataReady&&tabStatus.quotion">
+          <salesQuote :button="false" :params="{page:1,limit:15,quotationCode:detail.quotationCode,relationCode:detail.directCode}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
@@ -93,6 +99,18 @@ export default {
         '3': '已终止'
       }
     };
+  },
+  computed:{
+    waitBuyingNumber() {
+      if (this.detail) {
+        return []
+          .concat(this.detail.commodityEntityList || [])
+          .reduce((data, item) => {
+            data += Number(item.waitPurchaseNumber) || 0;
+            return data;
+          }, 0);
+      } else return 0;
+    }
   },
   mounted() {},
   methods: {
