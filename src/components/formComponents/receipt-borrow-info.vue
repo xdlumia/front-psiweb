@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 15:45:50
+ * @LastEditTime: 2019-12-13 18:04:48
  * @Description: 借款单 单据信息
 */
 <template>
@@ -149,7 +149,7 @@ export default {
     // 选择对方账号
     chooseEmployees(item) {
       this.data.borrower = item.employeeName
-      this.data.employeeId = item.id
+      this.data.employeeId = item.userId
     },
   }
 
