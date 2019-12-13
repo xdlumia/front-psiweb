@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 15:54:58
+ * @LastEditTime: 2019-12-13 17:11:40
  * @Description: 客户详情
 */
 <template>
@@ -54,8 +54,8 @@
             :is="activeName"
             :code="code"
             :data="detail || {}"
-            :title="activeName=='financeReceipt'?'发票记录':''"
-            :params=" {clientId:detail.id}"
+            :title="activeName=='financeBilling'?'发票记录':''"
+            :params="activeName=='financeBilling'?{purchaseId:detail.id}:{clientId:detail.id}"
             :rowData="rowData"
             :button="false"
           ></components>
@@ -125,7 +125,7 @@ export default {
         salesExchange: '销售换货单',
         storageDeliver: '发货单',
         financePayable: '应付账单',
-        financeReceipt: '发票记录',
+        financeBilling: '发票记录',
       },
       // tabs 默认显示项
       activeName: 'basicInfo',

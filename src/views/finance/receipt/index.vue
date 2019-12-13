@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 16:01:33
+ * @LastEditTime: 2019-12-13 17:05:28
  * @Description: 销售-待收票
  */
 <template>
@@ -52,11 +52,11 @@
         <!-- 发票号码 -->
         <span
           class="d-text-blue d-pointer"
-          v-if="column.columnFields=='invoiceCode' && title!='发票记录'"
+          v-if="column.columnFields=='invoiceCode'"
           @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
 
-        <span v-else-if="column.columnFields=='busCode' && title!='发票记录'">
+        <span v-else-if="column.columnFields=='busCode'">
           <!-- 关联单据编号 -->
           <el-link
             :type="hasBusPage(row)?'primary':'info'"
