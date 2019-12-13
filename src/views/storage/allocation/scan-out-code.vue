@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-12 09:35:56
+ * @LastEditTime: 2019-12-13 10:56:26
  * @Description: 调出扫码
 */
 <template>
@@ -283,7 +283,6 @@ export default {
     },
     //扫SN码
     shipmentCommodityCheck(snCode) {
-      console.log(this.dialogData, 'dialogDatadialogData')
       this.$api.seePsiWmsService.wmsallocationorderShipmentCommodityCheck({ businessId: this.dialogData.id, snCode: snCode, commodityList: this.downTableData })
         .then(res => {
           if (res.data) {

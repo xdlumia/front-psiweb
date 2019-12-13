@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-22 09:32:13
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-13 10:32:02
  * @Description: 物流信息 可编辑
 */
 <template>
@@ -166,7 +166,6 @@ export default {
       this.$api.seePsiCommonService.commonserviceproviderList({ page: 1, limit: 1000 })
         .then(res => {
           this.providerList = res.data
-          console.log(this.providerList, 'this.providerListthis.providerListthis.providerList')
         })
         .finally(() => {
 
@@ -174,7 +173,6 @@ export default {
     },
     //服务商列表切换的时候, 找出当前服务商对应的服务类型
     facilitatorNameChange(val, index) {
-      console.log(val, index)
       this.$api.seePsiCommonService.commonserviceproviderInfo(null, val)
         .then(res => {
           let serviceTypeList = []
