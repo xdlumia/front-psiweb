@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 18:31:33
+ * @LastEditTime: 2019-12-13 21:08:33
  * @Description: 销售出库单详情
 */
 <template>
@@ -249,7 +249,11 @@ export default {
     isShowButton(label) {
       let state = this.detail.state || 0
       let nodes = (this.detail.apprpvalNode || '').split(',')
-      if (state == 0 && label == '审核通过') {
+      if (state == 4 && label == '开票申请') {
+        // 如果 节点里有07 不显示审核通过
+        return this.detail.isFinvoice == 0
+      }
+      else if (state == 0 && label == '审核通过') {
         // 如果 节点里有07 不显示审核通过
         return !nodes.includes('psi_sales_outlibrary_07')
       } else if (state == 0 && label == '合同完善') {
