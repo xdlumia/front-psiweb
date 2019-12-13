@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 17:41:01
+ * @LastEditTime: 2019-12-13 19:00:26
  * @Description: 详情
 <template>
   <div>
@@ -23,7 +23,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="isShowButton(item.label)  && authorityButtons.includes(item.authCode)"
+            v-if="currStatusType[detail.state|| 0].includes(item.label) && authorityButtons.includes(item.authCode)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>
@@ -56,10 +56,10 @@
     </side-detail>
     <!-- 还款 -->
     <addRefund
-      :rowData="rowData"
+      :rowData="detail||{}"
       type="add"
       :visible.sync="receivableVisible"
-      @reload="$emit('reload')"
+      @reload="setEdit(),$reload()"
     ></addRefund>
   </div>
 </template>
@@ -87,7 +87,7 @@ export default {
         '0': ['删除', '还款'], // 未还清
         '1': ['删除'], // 已还清
       },
-      stateText: { 0: '未结清', 1: '已结清' }
+      stateText: { 0: '未还清', 1: '已还清' }
     }
   },
 
@@ -112,16 +112,6 @@ export default {
 
   },
   methods: {
-    // 判断显示的按钮
-    isShowButton(label) {
-      // let state = this.detail.state || 0
-      // if (label == '还款') {
-      //   // 如果 节点里有07 不显示审核通过
-      //   return 
-      // } else {
-      //   return this.currStatusType[state].includes(label)
-      // }
-    },
     async getDetail() {
       if (this.code) {
         let { data } = await this.$api.seePsiFinanceService.fborrowingGetInfoByCode({ code: this.code })

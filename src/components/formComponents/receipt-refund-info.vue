@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 15:52:45
+ * @LastEditTime: 2019-12-13 18:52:04
  * @Description: 借款单 - 还款 单据信息
 */
 <template>
@@ -140,10 +140,6 @@ export default {
 
   },
   methods: {
-    // 选择对方账号
-    chooseEmployees(item) {
-      this.data.borrower = item.employeeName
-    },
   }
 
 
