@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-11 17:42:15
+ * @LastEditTime: 2019-12-13 15:24:09
  * @Description: 财务-支出流水详情
 */
 <template>
@@ -36,7 +36,7 @@
         size="mini"
         label-position="top"
         class="d-auto-y"
-        style="height:calc(100vh - 110px)"
+        style="height:calc(100vh - 140px) !important"
       >
         <!-- 单据信息 -->
         <receipt-info
