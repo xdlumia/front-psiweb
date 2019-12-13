@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 16:44:40
+ * @LastEditTime: 2019-12-13 21:02:09
  * @Description:  退货单账期信息 账期费用
  */
 <template>
@@ -58,6 +58,25 @@ export default {
     hide: {
       type: Array,
       default: () => []
+    },
+  },
+  watch: {
+    // 实退金额
+    'data.actualRefundAmount': {
+      handler(val) {
+        let shouldRefundAmount = this.data.shouldRefundAmount || 0  //应退金额
+        let actualRefundAmount = val || 0 //实退金额
+        if (actualRefundAmount > shouldRefundAmount) {
+          this.$message({
+            message: '实退金额不能大于应退金额',
+            type: 'error',
+            showClose: true,
+          });
+
+          this.data.actualRefundAmount = shouldRefundAmount
+        }
+      },
+      deep: true
     },
   },
   data() {
