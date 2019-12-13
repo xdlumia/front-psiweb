@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 15:41:09
+ * @LastEditors: 高大鹏
+ * @LastEditTime: 2019-12-13 18:08:18
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
 
@@ -10,24 +10,24 @@ export default {
   props: {
     visible: Boolean,
     code: String,
-    rowData: [Object, Array], //报价单需要批量处理
+    rowData: [Object, Array], // 报价单需要批量处理
     type: String,
     // 新增用到
-    params: { default: () => ({}), type: Object },
+    params: { default: () => ({}), type: Object }
   },
   data() {
     return {
-      detail: {},// 详情
-      form: null,// 表单
-      isModified: false,// 是否有修改，有的话关闭弹出框会触发reload
+      detail: {}, // 详情
+      form: null, // 表单
+      isModified: false, // 是否有修改，有的话关闭弹出框会触发reload
       showDetailPage: false,
       showEditPage: false,
-      loading: false,// 加载中
+      loading: false, // 加载中
       stateText: {},
       closeTimer: null,
       alwaysDropAndCopyForm: false,
-      isDataReady: false,// 是否数据准备完毕，可以渲染视图了
-      activeTab: '',// 页签
+      isDataReady: false, // 是否数据准备完毕，可以渲染视图了
+      activeTab: '', // 页签
       tabStatus: {} // 页签状态
     }
   },
@@ -94,7 +94,7 @@ export default {
           else {
             // this.rowData = data || {}
             if (this.form && this.type == 'edit' || this.type == 'copy') {
-              for (let key in this.form) {
+              for (const key in this.form) {
                 if (this.form[key] instanceof Array) {
                   this.form[key] = data[key] || []
                 } else {
@@ -161,10 +161,10 @@ export default {
     // 审核
     async $submission(api, data, title, needNote) {
       if (needNote) {
-        let { value } = await this.$prompt(`确定要${title}吗？`, '提示', {
+        const { value } = await this.$prompt(`确定要${title}吗？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          inputType: "textarea",
+          inputType: 'textarea',
           closeOnClickModal: false,
           inputValidator(value) {
             if (value && value.length < 200) {
@@ -184,7 +184,7 @@ export default {
       }
       this.loading = true
       try {
-        let fn = api.split('.').reduce((api, item) => api[item], this.$api)
+        const fn = api.split('.').reduce((api, item) => api[item], this.$api)
         if (!fn) console.error(`接口不存在 ${api}`)
         if (data instanceof Array && data[0] == null) {
           await fn(data[0], data[1])

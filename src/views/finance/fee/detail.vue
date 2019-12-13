@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-10 11:52:03
+ * @LastEditTime: 2019-12-13 18:13:10
  * @Description: description
  -->
 <template>
@@ -132,7 +132,7 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       activeTab: 'detail',
       showEdit: false,
@@ -142,30 +142,30 @@ export default {
       status: []
     }
   },
-  mounted () {
+  mounted() {
     this.checkVisible();
     this.detailForm = Object.assign(this.detailForm, this.rowData)
     this.fcostGetInfoByCode()
   },
   computed: {
-    buttonState () {
+    buttonState() {
       return this.detailForm.state
     }
   },
   watch: {
-    visible () {
+    visible() {
       this.checkVisible();
     }
   },
   methods: {
-    refresh () {
+    refresh() {
       this.fcostGetInfoByCode()
       this.$emit('refresh')
     },
-    checkVisible () {
+    checkVisible() {
       this.showDetailPage = this.visible;
     },
-    fcostGetInfoByCode () {
+    fcostGetInfoByCode() {
       this.loading = true
       this.$api.seePsiFinanceService.fcostGetInfoByCode({ code: this.code }).then(res => {
         this.detailForm = res.data
@@ -181,7 +181,7 @@ export default {
         this.loading = false
       })
     },
-    fcostAuditApproval (id) {
+    fcostAuditApproval(id) {
       this.$confirm(`是否复核通过`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -197,13 +197,19 @@ export default {
         })
       })
     },
-    fcostReject (id) {
-      this.$confirm(`是否驳回`, '提示', {
+    fcostReject(id) {
+      this.$prompt(`确定要驳回吗`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$api.seePsiFinanceService.fcostReject({ id, processType: 'psi_finance_fee', apprpvalNode: this.detailForm.apprpvalNode }).then(res => {
+        inputType: 'textarea',
+        type: 'warning',
+        inputValidator(value) {
+          if (value && value.length < 200) {
+            return true;
+          } else return `请填写驳回原因且字数不能超过200字`;
+        }
+      }).then(({ value }) => {
+        this.$api.seePsiFinanceService.fcostReject({ id, processType: 'psi_finance_fee', apprpvalNode: this.detailForm.apprpvalNode, note: value }).then(res => {
           this.refresh()
         })
       }).catch(() => {
@@ -213,7 +219,7 @@ export default {
         })
       })
     },
-    fcostPassApproval (id) {
+    fcostPassApproval(id) {
       this.$confirm(`是否审核通过`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -229,7 +235,7 @@ export default {
         })
       })
     },
-    fcostSubmitApproval (id) {
+    fcostSubmitApproval(id) {
       this.$confirm(`是否提交审核`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -245,7 +251,7 @@ export default {
         })
       })
     },
-    fcostDelete (id) {
+    fcostDelete(id) {
       this.$confirm(`是否删除`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -262,7 +268,7 @@ export default {
         })
       })
     },
-    commonquotationconfigUpdate (id, state) {
+    commonquotationconfigUpdate(id, state) {
       this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
