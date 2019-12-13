@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-03 21:58:48
+ * @LastEditTime: 2019-12-13 19:59:41
  * @Description: 生成请购单
 */
 <template>
@@ -113,7 +113,7 @@ export default {
         purchaseArrivalTime: '',// 1572346044931,
         purchaseBorrow: '',// 0,
         quotationCode: '',// "示例：报价单",
-        saleArrivalTime: '',// 1572346044931,
+        saleArrivalTime: this.rowData.salesExpectedShipmentsTime,// 报价单里生成请购单的时候带入预计发货日期
       }
     };
   },
