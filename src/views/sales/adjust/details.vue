@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 02:03:32
+ * @LastEditTime: 2019-12-13 21:43:58
  * @Description: 账单调整详情
 */
 <template>
@@ -11,7 +11,7 @@
       :title="`账单调整详情: ${code}`"
       :visible.sync="showDetailPage"
       width="920px"
-      :status="status"
+      :status="statusArr"
       @close="close"
     >
       <div
@@ -111,7 +111,18 @@ export default {
     }
   },
   computed: {
-
+    statusArr() {
+      if (!this.getDetail) return [];
+      else {
+        return [
+          { label: '状态', value: this.stateText[this.detail.state] },
+          { label: '调整金额', value: this.detail.adjustAmount },
+          { label: '调整后金额', value: this.detail.adjustAfterAmount },
+          { label: '实际付款金额', value: this.detail.factAmount },
+          { label: '收款方', value: this.detail.companySettlementInfo }
+        ];
+      }
+    }
   },
   methods: {
     async getDetail() {
@@ -132,27 +143,27 @@ export default {
         const apiObj = {
           '账单调整申请': {
             api: 'seePsiFinanceService.fbilladjustSubmitApproval',
-            data: { ...params, ...{ apprpvalNode: '' }},
+            data: { ...params, ...{ apprpvalNode: '' } },
             needNote: null
           },
           '通过': {
             api: 'seePsiFinanceService.fbilladjustPassApproval',
-            data: { ...params, ...{}},
+            data: { ...params, ...{} },
             needNote: null
           },
           '撤销审核': {
             api: 'seePsiFinanceService.fbilladjustCancel',
-            data: { ...params, ...{}},
+            data: { ...params, ...{} },
             needNote: null
           },
           '驳回': {
             api: 'seePsiFinanceService.fbilladjustReject',
-            data: { ...params, ...{}},
+            data: { ...params, ...{} },
             needNote: true
           },
           '删除': {
             api: 'seePsiFinanceService.fbilladjustDelete',
-            data: { ...params, ...{}},
+            data: { ...params, ...{} },
             needNote: null
           }
         }
