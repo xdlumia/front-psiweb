@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 19:23:38
+ * @LastEditTime: 2019-12-13 20:31:55
  * @Description: 采购调价单
 */
 <template>
@@ -80,21 +80,12 @@
           v-if="detail&&visible"
         >
           <buying-goods-edit
-            :customColumns="[
-                { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140,format:(a,b)=>Number(b.purchaseAverage||b.inventoryPrice).toFixed(2) },
-                { label:'库存成本(税前)',key:'inventoryPrice',prop:'inventoryPrice',width:140,format:(a,b)=>b.originalPrice||Number(b.repertoryCost-b.adjustPriceMoney).toFixed(2) },
-                { label:'调整金额',key:'adjustPriceMoney',prop:'adjustPriceMoney',width:120, format:(a,b)=>b.adjustPriceMoney||0 },
-                { label:'调整后库存成本(税前)',key:'repertoryCost',prop:'repertoryCost',width:140,
-                  format:(a,b)=>b.repertoryCost||0
-                },
-                { label:'调整差异',key:'adjustPriceDifference	',prop:'adjustPriceDifference	',width:100,
-                  format:(a,b)=>b.adjustPriceDifference||0
-                },
-              ]"
+            :customColumns="customColumns"
             :data="detail"
             :show="[
                 'commodityCode','goodsName','goodsPic','categoryCode','className','specOne','fullscreen'
               ]"
+            :sort="sort"
             :showSummary="false"
             disabled
             title="商品信息"
@@ -127,12 +118,34 @@ export default {
     Edit
   },
   props: {
+    sort: {
+      type: Array,
+      default: () => []
+    },
+    hide: {
+      type: Array,
+      default: () => []
+    },
     adjustPriceType: {
       default: 2
     }
   },
   data() {
     return {
+      customColumnsArray: [
+        { label: '采购价(平均值)', key: 'purchaseAverage', prop: 'purchaseAverage', width: 140, format: (a, b) => Number(b.purchaseAverage || b.inventoryPrice).toFixed(2) },
+        { label: '库存成本(税前)', key: 'inventoryPrice', prop: 'inventoryPrice', width: 140, format: (a, b) => b.originalPrice || Number(b.repertoryCost - b.adjustPriceMoney).toFixed(2) },
+        { label: '调整金额', key: 'adjustPriceMoney', prop: 'adjustPriceMoney', width: 120, format: (a, b) => b.adjustPriceMoney || 0 },
+        {          label: '调整后库存成本(税前)', key: 'repertoryCost', prop: 'repertoryCost', width: 140,
+          format: (a, b) => b.repertoryCost || 0
+        },
+        {          label: '调整差异', key: 'adjustPriceDifference	', prop: 'adjustPriceDifference	', width: 100,
+          format: (a, b) => b.adjustPriceDifference || 0
+        },
+        { label: '销售参考价（税前）', key: 'saleReferencePrice', prop: 'saleReferencePrice', width: 130, },
+        { label: '调整后销售参考价（税前）', key: 'taxBeforeAdjustPrice', prop: 'taxBeforeAdjustPrice', width: 180, format: (a, b) => this.calcTaxBeforeAdjustPrice(b) },
+        { label: '利润率%', key: 'profitRate', prop: 'profitRate', width: 120, format: (a, b) => this.calcProfitRate(b) },
+      ],
       showEdit: false,
       stateText: {
         '0': '新建',
@@ -144,6 +157,9 @@ export default {
     };
   },
   computed: {
+    customColumns() {
+      return this.customColumnsArray.filter(item => !this.hide.includes(item.prop))
+    },
     status() {
       if (!this.detail) return [];
       else {
@@ -159,6 +175,18 @@ export default {
   },
   watch: {},
   methods: {
+    calcProfitRate(row) {
+      let taxBeforeAdjustPrice = (+row.saleReferencePrice || 0) + (+row.adjustPriceMoney || 0)
+      let inventoryPrice = +row.inventoryPrice || 0
+      return Number(
+        (taxBeforeAdjustPrice - inventoryPrice) / inventoryPrice * 100
+      ).toFixed(0);
+    },
+    calcTaxBeforeAdjustPrice(row) {
+      return +Number(
+        (+row.saleReferencePrice || 0) + (+row.adjustPriceMoney || 0)
+      ).toFixed(2);
+    },
     async getDetail() {
       if (this.code) {
         let {
