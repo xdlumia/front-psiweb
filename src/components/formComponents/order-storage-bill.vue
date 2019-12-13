@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 16:20:47
+ * @LastEditTime: 2019-12-13 18:33:37
  * @Description: 账单信息
 */
 <template>
@@ -55,7 +55,7 @@
             :rules="[
               {required:true},
               {type:'price'},
-              {validator:checkPayAmountRule}
+              {validator:checkPayAmountRule.bind(this,$index)}
           ]"
             size="mini"
             style="margin-bottom:0;"
@@ -163,8 +163,8 @@ export default {
     }
   },
   methods: {
-    checkPayAmountRule(rule,value,cb){
-      if(value>=0)cb();
+    checkPayAmountRule(i,rule,value,cb){
+      if(value>0||(i==0&&value>=0))cb();
       else cb(new Error('金额必须大于0'));
     },
     checkPayAmount() {
