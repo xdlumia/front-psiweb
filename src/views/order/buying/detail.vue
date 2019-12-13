@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 09:56:17
+ * @LastEditTime: 2019-12-13 10:40:17
  * @Description: 采购单详情
 */
 <template>
@@ -30,31 +30,18 @@
         v-if="authorityButtons.includes('psi_purchase_apply_05')"
       >借入</el-button>
     </template>
-    <el-tabs
-      class="wfull hfull tabs-view"
-      v-model="activeTab"
-    >
+    <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
-        <el-form
-          label-position="top"
-          size="mini"
-          v-if="detail"
-        >
+        <el-form label-position="top" size="mini" v-if="detail">
           <form-card title="到货信息">
             <el-row :gutter="10">
               <el-col :span="8">
-                <el-form-item
-                  label="销售要求到货时间"
-                  v-if="detail.saleArrivalTime"
-                >
+                <el-form-item label="销售要求到货时间" v-if="detail.saleArrivalTime">
                   <div class="wfull">{{detail.saleArrivalTime|timeToStr('YYYY-MM-DD')}}</div>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item
-                  label="采购预计到货时间"
-                  v-if="detail.purchaseArrivalTime"
-                >
+                <el-form-item label="采购预计到货时间" v-if="detail.purchaseArrivalTime">
                   <div class="wfull">{{detail.purchaseArrivalTime|timeToStr('YYYY-MM-DD')}}</div>
                 </el-form-item>
               </el-col>
@@ -68,46 +55,27 @@
             :sort="['expanded']"
             disabled
           />
-          <customInfo
-            :busType="27"
-            :data="detail"
-            disabled
-          />
-          <extrasInfo
-            :data="detail"
-            disabled
-          />
+          <customInfo :busType="27" :data="detail" disabled />
+          <extrasInfo :data="detail" disabled />
         </el-form>
       </el-tab-pane>
-      <el-tab-pane
-        label="采购入库单"
-        name="putin"
-      >
+      <el-tab-pane label="采购入库单" name="putin">
         <FullscreenWrap v-if="isDataReady&&tabStatus.putin">
-          <OrderStorage
-            :button="false"
-            :params="{page:1,limit:15,joinCode:code,relationCode:detail.purchaseApplyCode}"
-          />
+          <OrderStorage :button="false" :params="{page:1,limit:15,joinCode:code,relationCode:detail.purchaseApplyCode}" />
         </FullscreenWrap>
       </el-tab-pane>
-      <el-tab-pane
-        label="报价单"
-        name="quote"
-      >
+      <el-tab-pane label="报价单" name="quote">
         <FullscreenWrap v-if="isDataReady&&tabStatus.quote">
-          <salesQuote
-            :button="false"
-            :params="{page:1,limit:15,quotationCode:detail.quotationCode,relationCode:detail.purchaseApplyCode}"
-          />
+          <salesQuote :button="false" :params="{page:1,limit:15,quotationCode:detail.quotationCode,relationCode:detail.purchaseApplyCode}" />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="借入单" name="borrow">
+        <FullscreenWrap v-if="isDataReady&&tabStatus.borrow">
+          <orderBorrow :button="false" :params="{page:1,limit:15,businessCode:detail.purchaseApplyCode,businessType:1,relationCode:detail.purchaseApplyCode}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <OrderStorageAdd
-      :joinCode="code"
-      :visible.sync="orderStorageVisible"
-      @reload="setEdit(),$reload()"
-      from="请购单"
-    />
+    <OrderStorageAdd :joinCode="code" :visible.sync="orderStorageVisible" @reload="setEdit(),$reload()" from="请购单" />
     <!-- borrowLoanNum: '',
           commodityCode: '',
     costUnivalence: ''-->
