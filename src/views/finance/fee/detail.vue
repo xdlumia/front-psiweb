@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-13 18:13:10
+ * @LastEditTime: 2019-12-13 18:19:48
  * @Description: description
  -->
 <template>
@@ -61,7 +61,8 @@
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情" name="detail">
         <el-form disabled size="mini">
-          <approve-panel :id="detailForm.id" :busType="62" :data="detailForm"></approve-panel>
+          <approve-panel ref="approve" :id="detailForm.id" :busType="62"
+:data="detailForm"></approve-panel>
           <receiptsInfo :data="detailForm" :detail="true"></receiptsInfo>
           <extras-info :data="detailForm" id="extrasInfo" />
         </el-form>
@@ -160,6 +161,7 @@ export default {
   methods: {
     refresh() {
       this.fcostGetInfoByCode()
+      this.$refs.approve && this.$refs.approve.processtaskQueryProcessHistoryEntity()
       this.$emit('refresh')
     },
     checkVisible() {
