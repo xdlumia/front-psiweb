@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-11 14:54:49
+ * @LastEditTime: 2019-12-13 10:25:22
  * @Description: 生成发货单
 */
 <template>
@@ -135,7 +135,6 @@ export default {
       this.$emit('update:visible', false)
     },
     submit() {
-
       this.addForm.clientName = this.form.clientName
       this.addForm.salesSheetCode = this.form.salesSheetCode
       this.$refs.addForm.validate((valid) => {
@@ -143,6 +142,7 @@ export default {
           this.loading = true
           this.$api.seePsiSaleService.salessheetDeliverGoods(this.addForm)
             .then(res => {
+              this.$emit('reload')
               this.close()
             })
             .finally(() => {

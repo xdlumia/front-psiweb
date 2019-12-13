@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 20:06:53
+ * @LastEditTime: 2019-12-12 20:08:41
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -220,6 +220,7 @@
 </template>
 <script>
 import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
+import { log } from 'util';
 
 let fakeId = 1;
 export default {

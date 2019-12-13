@@ -22,7 +22,7 @@
       </div>
       <d-table
         api="seePsiWmsService.wmsflowrecordList"
-        :params="{page:1,limit:20,commodityCode:drawerData.commodityCode,operation:0}"
+        :params="{page:1,limit:20,commodityCode:drawerData.commodityCode,operation:0,isUsable:1}"
         ref="table"
         style="height: calc(100vh - 350px);"
       >

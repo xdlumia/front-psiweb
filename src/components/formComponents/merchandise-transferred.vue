@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-13 10:07:12
  * @Description: 调出商品
 */
 <template>
@@ -190,6 +190,7 @@
     <!-- :params='{wmsId: form.putawayWmsId}' -->
     <commodityChoose
       sn
+      :params='{ignoreWmsId:form.putawayWmsId}'
       :visible.sync='chooseVisible'
       v-if="chooseVisible"
       @choose='commodityChoose'
@@ -241,11 +242,11 @@ export default {
   },
   mounted() { },
   methods: {
-    //库房切换，清空下边扫过的码，因为只能扫库房里面的东西
+    //库房切换，清空下边扫过的码，因为不能当前扫库房里面的东西
     changeWmsId() {
-      // this.upTableData = []
-      // this.downTableData = []
-      // this.snCode = ''
+      this.upTableData = []
+      this.downTableData = []
+      this.snCode = ''
     },
     handleClick({ label, name }) {
       this.activeName = '';

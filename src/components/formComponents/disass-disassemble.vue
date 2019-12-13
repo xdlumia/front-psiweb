@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-11 15:05:41
+ * @LastEditTime: 2019-12-13 09:33:12
  * @Description: 采购单 详情  拆卸任务 拆卸公共弹窗 
 */
 <template>
@@ -487,7 +487,8 @@ export default {
       let params = {
         businessCode: this.allData.disassemblyTaskCode,
         businessCodeList: [this.allData.disassemblyOrderCode],
-        putawayCommodityList: this.tableData
+        putawayCommodityList: this.tableData,
+        parentCommodityCode: this.data.commodityCode
       }
       this.$api.seePsiWmsService.wmsdisassemblytaskPutawayCommodity(params)
         .then(res => {

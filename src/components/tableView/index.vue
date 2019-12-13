@@ -410,6 +410,21 @@ export default {
       this.headers = cols;
       this.$refs.table.reload(1)
     },
+    // 合并两个数组 如果根据key来判断 如果相同key的数组取新增项
+    formatArray(newData, oldData, key = 'label') {
+      let oldLables = oldData.map(v => v[key])
+      let format = []
+      newData.forEach(item => {
+        let index = oldLables.indexOf(item[key])
+        if (index != -1) {
+          format.push({ ...oldData[index], ...item })
+        } else {
+          format.push(item)
+        }
+      })
+      console.log(format);
+      return format
+    },
     // 多选
     selectionChange(val) {
       this.selectionRow = val

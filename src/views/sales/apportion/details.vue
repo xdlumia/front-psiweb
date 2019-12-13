@@ -14,7 +14,10 @@
       :status="status"
       @close="close"
     >
-      <div slot="button">
+      <div
+        slot="button"
+        v-if="Object.keys(detail).length"
+      >
         <!-- 操作按钮 -->
         <span
           v-for="(item,index) of buttons"

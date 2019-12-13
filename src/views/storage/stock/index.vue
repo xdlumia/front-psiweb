@@ -71,7 +71,7 @@
         <el-button
           type="text"
           class="ml10"
-          @click="clickAll"
+          @click="clickAll" 
         >全部</el-button>
         <el-tree
           class="filter-tree ml10"
