@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:28:51
+ * @LastEditTime: 2019-12-13 19:11:25
  * @Description: 新增供应商
 */
 <template>
@@ -18,7 +18,6 @@
       <d-tab-pane label="供应商信息" name="supplierInfo" />
       <d-tab-pane label="发票信息" name="invoiceInfo" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
-      <d-tab-pane label="可供商品" name="commodityInfo" />
       <div>
         <el-form :model="form" class="p10" ref="form" size="mini">
           <supplier-base-edit :data="form" id="supplierInfo"></supplier-base-edit>

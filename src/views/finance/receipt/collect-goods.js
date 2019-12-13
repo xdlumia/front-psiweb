@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-30 12:52:08
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-07 14:44:35
+ * @LastEditTime: 2019-12-13 19:19:04
  * @Description: file content
  */
 /**
@@ -76,7 +76,6 @@ export default {
                 // 采购退货单
                 5: {
                     detailApi: 'seePsiPurchaseService.purchasealterationGetByCode',
-                    paramFn: (code) => ({ code }),
                     transfer: {
                         articleName: 'goodsName', commodityCode: 'commodityCode',
                         taxRate: 'taxRate', price: 'alterationPrice', quantity: 'alterationNumber'
@@ -85,7 +84,6 @@ export default {
                 // 采购换货单
                 6: {
                     detailApi: 'seePsiWmsService.wmsswaporderGetByCode',
-                    paramFn: (code) => ({ code }),
                     getCommodityList: (data) => {
                         // 票据类型(1收票，0开票)
                         let list = (this.invoiceType == 1 ? data.putoutCommodityList : data.putinCommodityList) || [];
