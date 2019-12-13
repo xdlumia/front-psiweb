@@ -86,6 +86,7 @@
       type="add"
       :rowData="detail"
       @reload="setEdit(),$reload()"
+      v-if="buyingAddVisible"
     />
   </div>
 </template>

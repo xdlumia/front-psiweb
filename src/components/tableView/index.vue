@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 15:04:45
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-13 17:06:10
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -116,7 +116,7 @@
       :autoInit="!column"
       @response="tabelRes"
       @selection-change="selectionChange"
-      :params="params"
+      :params="paramInterceptor(params)"
       :api="api"
       ref="table"
       :style="{height:tableHeader}"
@@ -206,7 +206,11 @@ export default {
     selectable: Function,
 
     // 自定义头
-    customHeaders: Array
+    customHeaders: Array,
+    paramInterceptor:{
+      type:Function,
+      default:(a)=>a
+    }
   },
   data() {
     return {

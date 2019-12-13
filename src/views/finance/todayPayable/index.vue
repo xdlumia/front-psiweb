@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 15:52:45
+ * @LastEditTime: 2019-12-13 17:18:05
  * @Description: 今日应付账单
 */
 <template>
@@ -13,6 +13,7 @@
       :exportApi="pageConfig.api.export"
       :exportButton="authorityButtons.includes(pageConfig.func.export)"
       :filterOptions="filterOptions"
+      :paramInterceptor="paramInterceptor"
       :params="Object.assign(defaultParams,params)"
       :selectable="selectable"
       :selection="true"
@@ -141,13 +142,18 @@ export default {
       })
     }
   },
-  mounted() {
+  created() {
     // prettier-ignore
     if(this.pageConfig.title=='今日应付账单'){
-      let now = new Date
-      this.$set(this.defaultParams,'minPayEndDate',+new Date(`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} 00:00`))
-      this.$set(this.defaultParams,'maxPayEndDate',+new Date(`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} 23:59`))
+      this.$set(this.defaultParams,'state',2)
+      this.filterOptions.map((item,i)=>{
+        if(item.prop=='settleStatus'){
+          this.filterOptions.splice(i,1)
+        }
+      })
     }
+  },
+  mounted() {
     this.getFeeDetailCodeList();
   },
   data() {
@@ -180,6 +186,13 @@ export default {
     };
   },
   methods: {
+    paramInterceptor(params) {
+      params = JSON.parse(JSON.stringify(params));
+      if (this.pageConfig.title == '今日应付账单') {
+        params.settleStatus = [0, 1];
+      }
+      return params;
+    },
     // prettier-ignore
     async getFeeDetailCodeList() {
       let dicList = JSON.parse(JSON.stringify(this.dictionaryOptions('ZD_DY_LX')))

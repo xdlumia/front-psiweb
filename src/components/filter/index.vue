@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-01 10:31:09
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 17:50:29
+ * @LastEditTime: 2019-12-13 16:35:11
  * @Description: 通用过滤组件
 */
 <template>
@@ -197,7 +197,9 @@ export default {
     clearFilter() {
       this.$refs.filterForm.resetFields();
       let defaultParams = JSON.parse(JSON.stringify(this.defaultParams)) || {}
-      Object.assign(this.form, defaultParams)
+      Object.keys(this.form).map(key=>{
+        this.form[key] = defaultParams[key]||''
+      })
       if (Array.isArray(this.$refs.filterBox)) {
         this.$refs.filterBox.map(item => item.resetForm && item.resetForm());
       }
