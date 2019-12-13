@@ -375,7 +375,7 @@ export default {
 
     //回车机器号和SN码
     commodityCheck(item, type) {
-      if (!this.data.wmsId) {
+      if (type == 'return' && !this.data.wmsId) {
         this.$message({
           type: 'error',
           message: '请先选择入库库房!',
@@ -400,6 +400,7 @@ export default {
       }
       //换货
       else if (type == 'exchange') {
+        params.wmsId = ''
         api = 'wmsinventorydetailShipmentCommodityCheck'
         params.commodityList = this.data.exchangeScanData //换货
         delete params.putawayCommodityList
