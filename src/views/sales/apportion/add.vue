@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 16:15:19
+ * @LastEditTime: 2019-12-13 20:16:34
  * @Description: 客户管理-新增分摊
 */
 <template>
@@ -128,6 +128,12 @@ export default {
 
   },
   methods: {
+    async getDetail() {
+      if (this.code) {
+        let { data } = await this.$api.seePsiSaleService.salescostapportionGetInfoByCode({ code: this.code })
+        return data;
+      }
+    },
     // 保存表单数据
     async saveHandle() {
       await this.$showFormError(this.$refs.form)
