@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 18:26:38
+ * @LastEditTime: 2019-12-13 19:21:47
  * @Description: 销售-销售调价单
  */
 <template>
@@ -45,6 +45,7 @@
     <!-- 费用分摊详情 -->
     <Detail
       :code="rowData.code"
+      adjustPriceType='1'
       :visible.sync="detailVisible"
       @reload="$refs.table.reload()"
       v-if="detailVisible"

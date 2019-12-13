@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 18:44:27
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-13 19:23:38
  * @Description: 采购调价单
 */
 <template>
@@ -17,7 +17,7 @@
     <template slot="button">
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpriceSubmitApproval',{
-          adjustPriceType: 2,
+          adjustPriceType: adjustPriceType,
           taskCode:detail.taskNode,
           id:detail.id,
         },'提交审核')"
@@ -27,7 +27,7 @@
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpriceCancel',{
-          adjustPriceType: 2,
+          adjustPriceType: adjustPriceType,
           taskCode:detail.taskNode,
           id:detail.id,
         },'撤销审核')"
@@ -37,7 +37,7 @@
       >撤销审核</el-button>
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpricePassApproval',{
-          adjustPriceType: 2,
+          adjustPriceType: adjustPriceType,
           taskCode:detail.taskNode,
           id:detail.id,
         },'通过')"
@@ -47,7 +47,7 @@
       >通过</el-button>
       <el-button
         @click="$submission('seePsiCommonService.commonadjustpriceReject',{
-          adjustPriceType: 2,
+          adjustPriceType: adjustPriceType,
           taskCode:detail.taskNode,
           id:detail.id,
         },'驳回',true)"
@@ -70,8 +70,15 @@
     </template>
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
-        <approve-panel :busType="40" :id="detail.id" v-if="isDataReady" />
-        <el-form :model="detail" v-if="detail&&visible">
+        <approve-panel
+          :busType="40"
+          :id="detail.id"
+          v-if="isDataReady"
+        />
+        <el-form
+          :model="detail"
+          v-if="detail&&visible"
+        >
           <buying-goods-edit
             :customColumns="[
                 { label:'采购价(平均值)',key:'purchaseAverage',prop:'purchaseAverage',width:140,format:(a,b)=>Number(b.purchaseAverage||b.inventoryPrice).toFixed(2) },
@@ -92,7 +99,11 @@
             disabled
             title="商品信息"
           ></buying-goods-edit>
-          <extrasInfo :data="detail" disabled id="extrasInfo" />
+          <extrasInfo
+            :data="detail"
+            disabled
+            id="extrasInfo"
+          />
         </el-form>
       </el-tab-pane>
     </el-tabs>
@@ -115,7 +126,11 @@ export default {
   components: {
     Edit
   },
-  props: {},
+  props: {
+    adjustPriceType: {
+      default: 2
+    }
+  },
   data() {
     return {
       showEdit: false,
@@ -137,7 +152,7 @@ export default {
           { label: '单据创建人', value: this.detail.creatorName },
           { label: '创建部门', value: this.detail.deptName },
           { label: '创建时间', value: this.detail.createTime, isTime: true },
-          { label: '调价类型', value: '采购调价' }
+          { label: '调价类型', value: this.adjustPriceType == 2 ? '采购调价' : '销售调价' }
         ];
       }
     }
