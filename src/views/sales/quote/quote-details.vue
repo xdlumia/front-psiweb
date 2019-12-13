@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 17:17:19
+ * @LastEditTime: 2019-12-13 17:38:49
  * @Description: 报价单详情
 */
 <template>
@@ -184,7 +184,7 @@ export default {
           return false
         }
       } else if (label == '生成销售出库单') {
-        if (this.detail.isPurchaseApply == 1 || this.detail.shipmentCode || nowData > failureTime) {
+        if (this.detail.shipmentCode || nowData > failureTime) {
           return true
         } else {
           return false
