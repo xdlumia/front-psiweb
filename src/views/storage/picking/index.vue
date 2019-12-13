@@ -203,7 +203,6 @@ export default {
     getTableVisible(data) {
       this.tableVisible = true
       this.drawerData = data
-      console.log(this.drawerData, 'this.drawerDatathis.drawerDatathis.drawerData')
     },
     //打开组装任务详情
     getVisible(data) {

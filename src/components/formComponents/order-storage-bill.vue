@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 21:58:10
+ * @LastEditTime: 2019-12-13 16:20:47
  * @Description: 账单信息
 */
 <template>
@@ -54,7 +54,8 @@
             :prop="`financeList.${$index}.payAmount`"
             :rules="[
               {required:true},
-              {type:'price'}
+              {type:'price'},
+              {validator:checkPayAmountRule}
           ]"
             size="mini"
             style="margin-bottom:0;"
@@ -124,7 +125,7 @@ export default {
               );
             }
             this.errorTip = '';
-            cb();
+            cb()
           }
         }
       ],
@@ -162,6 +163,10 @@ export default {
     }
   },
   methods: {
+    checkPayAmountRule(rule,value,cb){
+      if(value>=0)cb();
+      else cb(new Error('金额必须大于0'));
+    },
     checkPayAmount() {
       let sum = 0;
       let list = this.data.financeList || [];
@@ -211,7 +216,7 @@ export default {
       this.data.financeList.push({
         isBillFee: this.forceBillFee ? 1 : 0,
         payAmount: '',
-        payTime: this.data.financeList.length ? '' : +new Date(),
+        payTime: '',
         paymenDays: ''
       });
       this.resetPaymentName();

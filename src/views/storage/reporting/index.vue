@@ -155,7 +155,6 @@ export default {
     },
     reload() {
       this.$refs.allTable.reload()
-      console.log('ahahahahha11111')
     },
   }
 };

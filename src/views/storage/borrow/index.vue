@@ -184,7 +184,6 @@ export default {
     getTableVisible(data) {
       this.tableVisible = true
       this.drawerData = data
-      console.log(this.drawerData, 'this.drawerDatathis.drawerDatathis.drawerDatathis.drawerData')
     },
     //销售出库单
     getdisassemblyVisible(row) {

@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-13 10:25:22
+ * @LastEditTime: 2019-12-13 10:31:34
  * @Description: 生成发货单
 */
 <template>
@@ -123,7 +123,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.form, 'this.addForm.salesShipmentCodethis.addForm.salesShipmentCodethis.addForm.salesShipmentCode')
     this.addForm.salesShipmentCode = this.form.shipmentCode
     this.addForm.requireShipmentsTime = this.form.salesQuotationEntity.salesExpectedShipmentsTime
   },

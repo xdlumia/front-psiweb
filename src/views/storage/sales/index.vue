@@ -236,7 +236,6 @@ export default {
             item.value = item.id
           })
           this.filterOptions[1].options = this.usableList
-          console.log(this.usableList, 'this.usableListthis.usableListthis.usableList')
         })
         .finally(() => {
 
