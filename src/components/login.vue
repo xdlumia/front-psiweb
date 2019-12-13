@@ -24,7 +24,7 @@
             :src="require('@/assets/img/logo.png')"
             alt
           />
-          <h2>进销存战役</h2>
+          <h2>进销存管理系统</h2>
         </div>
         <el-form
           :model="loginForm"
