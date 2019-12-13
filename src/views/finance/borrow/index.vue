@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 17:59:19
+ * @LastEditTime: 2019-12-13 18:13:26
  * @Description: 销售-借款单
  */
 <template>
@@ -17,8 +17,6 @@
       api="seePsiFinanceService.fborrowingList"
       exportApi="seePsiFinanceService.fborrowingExport"
       :params="Object.assign(queryForm,params)"
-      :mergeFilter="true"
-      :filterOptions="filterOptions"
     >
       <template slot="top-filter">
         <bill-account-selector v-model="queryForm.companySettlementId" />
@@ -65,9 +63,9 @@
 <script>
 import detail from './details' //详情
 import add from './add' //新增
-let filterOptions = [
-  { label: '借款人', prop: 'employeeId', default: true, type: 'employee' }
-]
+// let filterOptions = [
+//   { label: '借款人', prop: 'employeeId', default: true, type: 'employee' }
+// ]
 
 export default {
   name: 'financeIncome',
@@ -98,7 +96,7 @@ export default {
         limit: 20
       },
       // 筛选数据
-      filterOptions: filterOptions,
+      // filterOptions: filterOptions,
       // 当前行数据
       rowData: {},
       detailVisible: false,
