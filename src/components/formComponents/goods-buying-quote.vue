@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 15:33:41
+ * @LastEditTime: 2019-12-13 17:36:59
  * @Description: 生成请购单商品信息
 */
 <template>
@@ -168,6 +168,7 @@ export default {
             if (commodityNumber > 0&&item.isDirect==0) {
               // 生成请购单商品数量是 请求过来的商品数量-总库存数量
               item.commodityNumber = commodityNumber
+              item.preTaxAmount = +Number(item.reference*commodityNumber*(1+item.taxRate/100)).toFixed(2)
               this.data.commodityList.push(item)
             }
           })
