@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 10:33:07
+ * @LastEditTime: 2019-12-13 15:59:37
  * @Description: 借入借出详情
 */
 <template>
@@ -22,7 +22,7 @@
         },'提交审核')"
         size="mini"
         type="primary"
-        v-if="detail&&[0,-1].includes(detail.borrowLoanState)&&authorityButtons.includes('psi_purchase_borrow_03')"
+        v-if="detail&&[0,-1,12].includes(detail.borrowLoanState)&&authorityButtons.includes('psi_purchase_borrow_03')"
       >提交审核</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsborrowloanorderCancel',{
@@ -56,7 +56,7 @@
         @click="showEdit=true"
         size="mini"
         type="primary"
-        v-if="detail&&[0,-1].includes(detail.borrowLoanState)&&authorityButtons.includes('psi_purchase_borrow_04')"
+        v-if="detail&&[0,-1,12].includes(detail.borrowLoanState)&&authorityButtons.includes('psi_purchase_borrow_04')"
       >编辑</el-button>
       <el-button
         @click="$submission('seePsiWmsService.wmsborrowloanorderLogicDelete',{
@@ -64,7 +64,7 @@
       },'删除')"
         size="mini"
         type="danger"
-        v-if="detail&&[0,-1].includes(detail.borrowLoanState)&&authorityButtons.includes('psi_purchase_borrow_05')"
+        v-if="detail&&[0,-1,12].includes(detail.borrowLoanState)&&authorityButtons.includes('psi_purchase_borrow_05')"
       >删除</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">

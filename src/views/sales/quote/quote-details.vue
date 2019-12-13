@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-11 17:09:13
+ * @LastEditTime: 2019-12-13 11:22:23
  * @Description: 报价单详情
 */
 <template>
@@ -170,11 +170,25 @@ export default {
     },
     // 判断禁用的按钮
     isDisabledButton(label) {
-      // 采购预计到货时间为空 禁用采购审核时间
-      if (label == '生成请购单' && (this.detail.isPurchaseApply == 1 || this.detail.shipmentCode)) {
-        return true
-      } else if (label == '生成销售出库单' && this.detail.shipmentCode) {
-        return true
+      // let nowData = Date.serversDate().getTime() //当前时间
+      let nowData = new Date().getTime() //当前时间
+      let failureTime = this.detail.failureTime //报价单有效期截止
+      /**
+       * isPurchaseApply 是否存在请购单
+       * shipmentCode 出库单
+       */
+      if (label == '生成请购单') {
+        if (this.detail.isPurchaseApply == 1 || this.detail.shipmentCode || nowData > failureTime) {
+          return true
+        } else {
+          return false
+        }
+      } else if (label == '生成销售出库单') {
+        if (this.detail.isPurchaseApply == 1 || this.detail.shipmentCode || nowData > failureTime) {
+          return true
+        } else {
+          return false
+        }
       } else {
         return false
       }
@@ -194,12 +208,12 @@ export default {
         const apiObj = {
           '提交审核': {
             api: 'seePsiSaleService.salesquotationSubmitApproval',
-            data: { ...params, ...{}},
+            data: { ...params, ...{} },
             needNote: null
           },
           '审核通过': {
             api: 'seePsiSaleService.salesquotationPassApproval',
-            data: { ...params, ...{}},
+            data: { ...params, ...{} },
             needNote: null
           },
           '撤销审核': {

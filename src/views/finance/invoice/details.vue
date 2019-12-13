@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 18:08:19
+ * @LastEditTime: 2019-12-13 15:23:54
  * @Description: 销售出库单详情
 */
 <template>
@@ -37,10 +37,7 @@
         size="mini"
         label-position="top"
       >
-        <el-tabs
-          v-model="activeName"
-          type="card"
-        >
+        <el-tabs v-model="activeName">
           <el-tab-pane
             v-for="(item,index) of tabs"
             :key="index"
@@ -55,7 +52,7 @@
               class="d-auto-y"
               :params="item.params"
               :button="false"
-              style="height:calc(100vh - 200px)"
+              style="height:calc(100vh - 170px) !important"
               :is="activeName"
             />
           </el-tab-pane>

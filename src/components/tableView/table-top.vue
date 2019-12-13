@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 15:17:09
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-13 14:50:06
  * @Description: 表格头部 
  */
 <template>
@@ -275,6 +275,7 @@ export default {
     },
     // 获取自定义列的值
     getTableCol() {
+      if (!this.column) return
       // 获取busType参数
       let busType = this.$parent.busType
       this.$api.seePsiCommonService.customcolumnGetListAll({ busType: busType })
