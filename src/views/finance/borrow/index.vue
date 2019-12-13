@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 17:30:21
+ * @LastEditTime: 2019-12-13 17:59:19
  * @Description: 销售-借款单
  */
 <template>
@@ -17,6 +17,8 @@
       api="seePsiFinanceService.fborrowingList"
       exportApi="seePsiFinanceService.fborrowingExport"
       :params="Object.assign(queryForm,params)"
+      :mergeFilter="true"
+      :filterOptions="filterOptions"
     >
       <template slot="top-filter">
         <bill-account-selector v-model="queryForm.companySettlementId" />
@@ -64,11 +66,7 @@
 import detail from './details' //详情
 import add from './add' //新增
 let filterOptions = [
-  // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
-  // { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
-  // { label: '商机阶段', prop: 'state', default: true, type: 'select', options: [] },
-  // { label: '跟进时间起止', prop: 'CreateTime', default: true, type: 'daterange' },
-  // { label: '维护人', prop: 'creator', default: true, type: 'employee' }
+  { label: '借款人', prop: 'employeeId', default: true, type: 'employee' }
 ]
 
 export default {

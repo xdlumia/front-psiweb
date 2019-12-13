@@ -358,7 +358,6 @@ export default {
           this.addForm.commodityList.push(item)
         }
       })
-      console.log(this.addForm.commodityList, 'this.addForm.commodityListthis.addForm.commodityList')
     }
   }
 };
