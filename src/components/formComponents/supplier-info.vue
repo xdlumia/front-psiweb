@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-20 14:35:43
+ * @LastEditTime: 2019-12-13 19:05:07
  * @Description: 供应商信息 已绑定 1
 */
 <template>
@@ -134,6 +134,7 @@ export default {
         } = await this.$api.seePsiCommonService.commonsupplierinfoPagelist({
           page: 1,
           limit: 20,
+          state:0,
           fuzzySupplierName: words.trim()
         });
         this.suppliers = data;

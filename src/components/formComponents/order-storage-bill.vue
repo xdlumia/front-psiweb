@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 18:38:56
+ * @LastEditTime: 2019-12-13 19:06:52
  * @Description: 账单信息
 */
 <template>
@@ -17,7 +17,7 @@
     >
       <el-table-column label="操作" min-width="60" v-if="!disabled">
         <template slot-scope="{$index}">
-          <el-link :underline="false" @click="remove($index)" class="d-text-blue el-icon-remove f20" v-if="$index"></el-link>
+          <el-link :underline="false" @click="remove($index)" class="d-text-blue el-icon-remove f20" v-if="$index||data.financeList.length>1"></el-link>
         </template>
       </el-table-column>
       <el-table-column align="center" label="账期" min-width="60" show-overflow-tooltip>
