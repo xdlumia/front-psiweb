@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 17:49:35
+ * @LastEditTime: 2019-12-13 20:45:43
  * @Description: 销售-收入流水
  */
 <template>
@@ -36,13 +36,19 @@
           v-if="authorityButtons.includes('psi_income_1002')"
         >新增转账单</el-button>
       </template>
-      <template slot-scope="{column,row,value}">
+      <template slot-scope="{column,prop,row,value}">
         <!-- 流水编号 -->
         <span
           class="d-text-blue d-pointer"
           v-if="column.columnFields=='incomeRecordCode'"
           @click="eventHandle('detailVisible',row)"
-        > {{value}}</span>
+        >
+          {{value}}
+          <i
+            v-if="row.sourceType==1"
+            class="iconfont icon-jie d-text-blue"
+          ></i>
+        </span>
         <!-- 匹配状态 -->
         <span v-else-if="column.columnFields=='matchState'"> {{stateText[value]}}</span>
         <!-- 收支状态 -->
