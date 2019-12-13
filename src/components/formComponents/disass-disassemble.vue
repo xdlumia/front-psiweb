@@ -391,7 +391,6 @@ export default {
               this.wmsId = ''
               this.wmsDisabled = true
             } else {
-              console.log('可用可用')
             }
           } else {
             this.wmsDisabled = false
@@ -406,6 +405,10 @@ export default {
     },
     //请求可用库房
     commonwmsmanagerUsableList() {
+      this.data.childrenCommodityList.forEach((item) => {
+        item.nowNum = 0
+      })
+      this.data.nowNum = 0
       this.$api.seePsiWmsService.commonwmsmanagerUsableList()
         .then(res => {
           this.usableList = res.data || []
@@ -451,7 +454,7 @@ export default {
     getCommodityBySnCode(item) {
       if (this.wmsId) {
         if ((item.disassemblyNum - (item.accomplishDisassemblyNum || 0) - (item.nowNum || 0)) != 0) {
-          if ((item.singleNum || 0) * (this.data.accomplishDisassemblyNum || 0 + this.data.nowNum) > ((item.accomplishDisassemblyNum || 0) + (item.nowNum || 0))) {
+          if ((item.singleNum || 0) * ((this.data.accomplishDisassemblyNum || 0) + this.data.nowNum) > ((item.accomplishDisassemblyNum || 0) + (item.nowNum || 0))) {
             this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: item.snCode, commodityCode: item.commodityCode, putawayCommodityList: this.tableData, categoryCode: item.categoryCode, wmsId: this.wmsId })
               .then(res => {
                 if (res.data) {

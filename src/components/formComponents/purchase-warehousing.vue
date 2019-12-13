@@ -300,24 +300,25 @@ export default {
     //回车机器号和SN码
     shipmentCommodityCheck() {
       if (this.wmsId) {
-        if ((this.rowData.commodityNumber - (this.rowData.putinNumber || 0) - this.tableData.length) > 0) {
-          this.loading = true
-          this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: this.snCode, commodityCode: this.rowData.commodityCode, putawayCommodityList: this.tableData, categoryCode: this.rowData.categoryCode, wmsId: this.wmsId })
-            .then(res => {
-              if (res.data) {
-                this.tableData.push(res.data)
-              }
+        if (!this.loading) {
+          if ((this.rowData.commodityNumber - (this.rowData.putinNumber || 0) - this.tableData.length) > 0) {
+            this.loading = true
+            this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: this.snCode, commodityCode: this.rowData.commodityCode, putawayCommodityList: this.tableData, categoryCode: this.rowData.categoryCode, wmsId: this.wmsId })
+              .then(res => {
+                if (res.data) {
+                  this.tableData.push(res.data)
+                }
+              })
+              .finally(() => {
+                this.loading = false
+              })
+          } else {
+            this.$message({
+              type: 'error',
+              message: '当前商品待入库数量已为0!'
             })
-            .finally(() => {
-              this.loading = false
-            })
-        } else {
-          this.$message({
-            type: 'error',
-            message: '当前商品待入库数量已为0!'
-          })
+          }
         }
-
       } else {
         this.$message({
           type: 'error',
