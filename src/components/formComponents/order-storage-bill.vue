@@ -2,12 +2,19 @@
  * @Author: 赵伦
  * @Date: 2019-11-07 17:03:52
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 16:20:47
+ * @LastEditTime: 2019-12-13 18:38:56
  * @Description: 账单信息
 */
 <template>
   <form-card title="账单信息">
-    <el-table :data="data.financeList" :summary-method="getSummaries" max-height="500px" ref="table" show-summary>
+    <el-table
+      :data="data.financeList"
+      :summary-method="getSummaries"
+      class="order-storage-bill"
+      max-height="500px"
+      ref="table"
+      show-summary
+    >
       <el-table-column label="操作" min-width="60" v-if="!disabled">
         <template slot-scope="{$index}">
           <el-link :underline="false" @click="remove($index)" class="d-text-blue el-icon-remove f20" v-if="$index"></el-link>
@@ -55,7 +62,7 @@
             :rules="[
               {required:true},
               {type:'price'},
-              {validator:checkPayAmountRule}
+              {validator:checkPayAmountRule.bind(this,$index)}
           ]"
             size="mini"
             style="margin-bottom:0;"
@@ -125,7 +132,7 @@ export default {
               );
             }
             this.errorTip = '';
-            cb()
+            cb();
           }
         }
       ],
@@ -163,8 +170,12 @@ export default {
     }
   },
   methods: {
-    checkPayAmountRule(rule,value,cb){
-      if(value>=0)cb();
+    checkPayAmountRule(i, rule, value, cb) {
+      if (
+        value > 0 ||
+        (i == 0 && value >= 0 && this.data.financeList.length == 1)
+      )
+        cb();
       else cb(new Error('金额必须大于0'));
     },
     checkPayAmount() {
@@ -235,5 +246,15 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
+.order-storage-bill {
+  /deep/ {
+    .el-form-item {
+      margin-bottom: 0;
+      .el-form-item__error {
+        position: relative;
+      }
+    }
+  }
+}
 </style>

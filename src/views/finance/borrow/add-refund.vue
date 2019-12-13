@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-22 15:52:08
+ * @LastEditTime: 2019-12-13 19:05:42
  * @Description: 新增还款
 */
 <template>
@@ -47,7 +47,7 @@
         style="color:#333"
       >
         <span class="mr20"> 借款金额:{{rowData.borrowingAmount | milliFormat}}</span>
-        已还金额:<span :class="form.repaymentAmount>rowData.borrowingAmount?'d-text-red':''"> {{form.repaymentAmount | milliFormat}}</span>
+        已还金额:<span :class="rowData.alreadyAmount>rowData.borrowingAmount?'d-text-red':''"> {{rowData.alreadyAmount | milliFormat}}</span>
       </div>
     </el-form>
   </el-dialog>
@@ -91,6 +91,25 @@ export default {
   },
   computed: {
 
+  },
+  watch: {
+    // 当前还款金额
+    'form.repaymentAmount': {
+      handler(val) {
+        let borrowingAmount = this.rowData.borrowingAmount //借款金额
+        let alreadyAmount = this.rowData.alreadyAmount || 0 //已还金额
+        if (val > (borrowingAmount - alreadyAmount)) {
+          let calc = borrowingAmount - alreadyAmount
+          this.form.repaymentAmount = calc
+          this.$message({
+            message: `还款金额不能大于${calc}`,
+            type: 'error',
+            showClose: true,
+          });
+        }
+      },
+      deep: true
+    }
   },
   methods: {
 

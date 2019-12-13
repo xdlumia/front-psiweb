@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 18:59:03
+ * @LastEditTime: 2019-12-13 18:26:38
  * @Description: 销售-销售调价单
  */
 <template>
@@ -28,13 +28,16 @@
         >新增调价</el-button>
       </template>
       <!-- 自定义按钮功能 -->
-      <template slot-scope="{column,row,value}">
+      <template slot-scope="{column,prop, row,value}">
         <!-- 调价单编号 -->
         <span
-          v-if="column.columnFields == 'code'"
+          v-if="prop == 'code'"
           class="d-text-blue d-pointer"
           @click="eventHandle('detailVisible',row)"
         > {{value}}</span>
+        <span v-else-if="prop=='state'">
+          <span>{{stateText[row.state]}}</span>
+        </span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
@@ -87,6 +90,13 @@ export default {
   },
   data() {
     return {
+      stateText: {
+        '0': '新建',
+        '1': '审核中',
+        '2': '已通过',
+        '3': '驳回',
+        '4': '撤销'
+      },
       loading: false,
       // 查询表单
       queryForm: {
