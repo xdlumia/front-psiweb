@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:43:44
+ * @LastEditTime: 2019-12-13 20:09:28
  * @Description: 销售-费用分摊单
  */
 <template>
@@ -51,7 +51,7 @@
       :visible.sync="detailVisible"
       :rowData="rowData"
       :code="rowData.costApportionCode"
-      @reload="this.$refs.table.reload()"
+      @reload="$refs.table.reload()"
     />
     <!-- 费用单详情 -->
     <feeDetail
