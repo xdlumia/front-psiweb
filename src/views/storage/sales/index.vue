@@ -41,6 +41,7 @@
       :code="drawerData.salesSheetCode"
       :visible.sync="tableVisible"
       v-if="tableVisible"
+      @reload="$refs.table.reload"
     />
     <outLibDetails
       :visible.sync="outLibVisible"

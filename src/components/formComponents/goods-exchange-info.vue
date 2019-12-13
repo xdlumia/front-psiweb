@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 18:13:51
+ * @LastEditTime: 2019-12-07 17:59:27
  * @Description: 换货商品商品信息
 */
 <template>
@@ -67,7 +67,7 @@
           fixed
           prop="alterationNumber"
           min-width="80"
-          label="退货数量"
+          label="换出数量"
           show-overflow-tooltip
         >
           <template slot-scope="scope">

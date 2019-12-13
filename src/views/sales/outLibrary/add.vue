@@ -61,10 +61,10 @@
           :data="form"
         />
         <!-- 报价单信息 -->
-        <quote-info
+        <!-- <quote-info
           v-if="quoteCodes && quoteCodes.length"
           :options="quoteCodes"
-        />
+        /> -->
         <!-- 收款滞纳金 -->
         <payment-late-sales
           id="paymentLateSales"
@@ -164,7 +164,8 @@ export default {
       let quotationCodes = null
       // 如果是编辑 详情数据里会带多个quotationCodes
       if (this.type == 'edit') {
-        quotationCodes = this.detail.quotationCodes
+        console.log(this.form)
+        quotationCodes = this.form.quotationCodes
       }
       // 如果是合并 那操作的是出库单的数据 rowData 一定是多个数据.
       else if (this.type == 'merge') {
@@ -179,7 +180,6 @@ export default {
   },
   watch: {
     visible(val) {
-
     }
   },
   methods: {

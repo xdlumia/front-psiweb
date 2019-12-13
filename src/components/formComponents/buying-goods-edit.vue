@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 20:06:53
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-13 11:58:29
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -220,6 +220,7 @@
 </template>
 <script>
 import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
+import { log } from 'util';
 
 let fakeId = 1;
 export default {
@@ -313,7 +314,7 @@ export default {
         format: (a, { alterationPrice, taxRate, alterationNumber }) => +Number((alterationPrice * (1 + (taxRate / 100)) * alterationNumber) || 0).toFixed(2)
       },
       { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber', format: (a) => a || 0, showOverflowTip: true, },
-      { label: '备注', key: 'note', width: 100, prop: 'note', type: 'input', rules: [] },
+      { label: '备注', key: 'note', width: 200, prop: 'note', type: 'input', rules: [] },
       { label: '是否组装', key: 'isAssembly', align: "center", width: 100, prop: 'isAssembly', type: 'selection', selected: 0 },
       { label: '操作', key: 'action', width: 100, prop: 'action' },
     ];

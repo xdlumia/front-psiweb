@@ -40,6 +40,7 @@
               :hide="['note']"
             />
             <generateDeliver
+              @reload='reload'
               :visible.sync='orderStorageVisible'
               :form='detailForm'
               v-if="orderStorageVisible"
@@ -161,6 +162,10 @@ export default {
         .finally(() => {
 
         })
+    },
+    reload() {
+      this.salessheetInfo()
+      this.$emit('reload')
     }
   }
 }

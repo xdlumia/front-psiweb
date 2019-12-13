@@ -57,7 +57,7 @@
           :button="false"
           :data="detail || {}"
           :params="{relationCode:code}"
-          style="height:calc(100vh - 170px)"
+          style="height:calc(100vh - 170px) !important"
           :is="activeName"
         ></components>
 
@@ -90,10 +90,10 @@
   </div>
 </template>
 <script>
-import detail from './quoteDetails/detail' //详情
-import add from './add' //编辑
-import outLibAdd from '../outLibrary/add' //生成出库单
-import buyingAdd from './add-buying' //生成请购单
+import detail from './quoteDetails/detail' // 详情
+import add from './add' // 编辑
+import outLibAdd from '../outLibrary/add' // 生成出库单
+import buyingAdd from './add-buying' // 生成请购单
 import VisibleMixin from '@/utils/visibleMixin';
 
 export default {
@@ -102,7 +102,7 @@ export default {
     detail,
     add,
     outLibAdd,
-    buyingAdd,
+    buyingAdd
   },
   data() {
     return {
@@ -125,32 +125,32 @@ export default {
         '1': '已通过',
         '2': '已驳回',
         '3': '完成',
-        '4': '已终止',
+        '4': '已终止'
       },
       /**
        * 根据当前状态判断显示哪些按钮
        */
       // currStatus: 1,  //this.detail.state//当前状态
       currStatusType: {
-        '-1': ['提交审核', '编辑', '删除'], //新建 -1
-        '0': ['撤销审核', '审核通过', '驳回'], //审核中
-        '1': ['生成销售出库单', '生成请购单', '终止'],// 已通过
-        '2': ['提交审核', '编辑', '删除'], //已驳回
-        '3': [], //完成
-        '4': [], //终止
+        '-1': ['提交审核', '编辑', '删除'], // 新建 -1
+        '0': ['撤销审核', '审核通过', '驳回'], // 审核中
+        '1': ['生成销售出库单', '生成请购单', '终止'], // 已通过
+        '2': ['提交审核', '编辑', '删除'], // 已驳回
+        '3': [], // 完成
+        '4': [] // 终止
       },
-      editVisible: false, //销售单编辑
-      outLibAddVisible: false, //生成销售出库单
-      buyingAddVisible: false, //生成请购单
+      editVisible: false, // 销售单编辑
+      outLibAddVisible: false, // 生成销售出库单
+      buyingAddVisible: false, // 生成请购单
 
       // tab操作栏
       tabs: {
         detail: '详情',
         salesOutLibrary: '销售出库单',
         orderBuying: '请购单',
-        operationRecord: '操作记录',
+        operationRecord: '操作记录'
       },
-      activeName: 'detail',
+      activeName: 'detail'
     }
   },
   computed: {
@@ -164,7 +164,7 @@ export default {
   methods: {
     async getDetail() {
       if (this.code) {
-        let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
+        const { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
         return data;
       }
     },
@@ -182,26 +182,24 @@ export default {
     buttonsClick(label) {
       // 需要弹出操作功能
       if (label == '编辑' || label == '生成销售出库单' || label == '生成请购单') {
-        if (label == '编辑') { this.editVisible = true }
-        else if (label == '生成销售出库单') { this.outLibAddVisible = true }
-        else if (label == '生成请购单') { this.checkAddBuying() }
+        if (label == '编辑') { this.editVisible = true } else if (label == '生成销售出库单') { this.outLibAddVisible = true } else if (label == '生成请购单') { this.checkAddBuying() }
       } else {
         // 接口参数
-        let params = {
+        const params = {
           apprpvalNode: this.detail.apprpvalNode,
           id: this.detail.id,
-          processType: 'psi_sales_quote_01',//报价单的权限吗
+          processType: 'psi_sales_quote_01' // 报价单的权限吗
         }
         // 操作接口
-        let apiObj = {
+        const apiObj = {
           '提交审核': {
             api: 'seePsiSaleService.salesquotationSubmitApproval',
-            data: { ...params, ...{} },
+            data: { ...params, ...{}},
             needNote: null
           },
           '审核通过': {
             api: 'seePsiSaleService.salesquotationPassApproval',
-            data: { ...params, ...{} },
+            data: { ...params, ...{}},
             needNote: null
           },
           '撤销审核': {
@@ -234,7 +232,7 @@ export default {
       }
     },
     checkAddBuying() {
-      let buyingGoods = this.detail.commodityEntityList.filter(item => item.isDirect == 0 && item.inventoryNumber < item.commodityNumber)
+      const buyingGoods = this.detail.commodityEntityList.filter(item => item.isDirect == 0 && item.inventoryNumber < item.commodityNumber)
       if (buyingGoods.length > 0) {
         this.buyingAddVisible = true
       } else {

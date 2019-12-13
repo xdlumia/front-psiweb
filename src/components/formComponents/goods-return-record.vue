@@ -21,9 +21,21 @@
           ref="table"
         >
           <el-table-column
+            v-if="title=='换入商品信息'"
             prop="alterationNumber"
             min-width="80"
             label="退货数量"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.alterationNumber}}/{{scope.row.commodityNumber}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            v-if="title=='换出商品信息'"
+            prop="alterationNumber"
+            min-width="80"
+            label="换货数量"
             show-overflow-tooltip
           >
             <template slot-scope="scope">
@@ -189,6 +201,7 @@ export default {
       type: Boolean,
       defaults: false
     },
+    title: String,
     data: {
       type: Object,
       default: () => ({})

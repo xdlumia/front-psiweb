@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 10:13:38
+ * @LastEditTime: 2019-12-13 10:33:07
  * @Description: 借入借出详情
 */
 <template>
@@ -70,7 +70,7 @@
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">
         <approve-panel :busType="5" :id="detail.id" v-if="isDataReady" />
-        <el-form :model="detail" size="mini" class="hide-form-error">
+        <el-form :model="detail" class="hide-form-error" size="mini">
           <borrow-in :data="detail" disabled />
           <borrow-goods :data="detail" disabled />
         </el-form>
@@ -80,6 +80,14 @@
           <SalesOutLibrary
             :button="false"
             :params="{page:1,limit:15,shipmentCode:detail.salesShipmentCode,relationCode:detail.borrowLoanCode}"
+          />
+        </FullscreenWrap>
+      </el-tab-pane>
+      <el-tab-pane label="请购单" name="buyingOrder" v-if="isDataReady&&detail.businessType==1">
+        <FullscreenWrap v-if="tabStatus.buyingOrder">
+          <OrderBuying
+            :button="false"
+            :params="{page:1,limit:15,purchaseApplyCode:detail.businessCode,relationCode:detail.borrowLoanCode}"
           />
         </FullscreenWrap>
       </el-tab-pane>

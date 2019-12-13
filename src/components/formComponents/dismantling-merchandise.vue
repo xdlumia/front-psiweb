@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-29 16:16:52 
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-13 09:32:02
  * @Description: 拆卸商品
 */  
 <template>
@@ -120,7 +120,7 @@
       :element="$refs.companyTable"
       :visible.sync="showInFullscreen"
     />
-    <disassDsassemble
+    <disassDsassemble 
       :allData='data'
       @reload="$emit('reload'),disVisible = false"
       :data='visibleData'
