@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 11:22:23
+ * @LastEditTime: 2019-12-13 16:31:35
  * @Description: 报价单详情
 */
 <template>
@@ -53,7 +53,7 @@
         <components
           class="d-auto-y"
           :code="this.code"
-          :rowData="rowData"
+          :rowData="detail"
           :button="false"
           :data="detail || {}"
           :params="{relationCode:code}"
@@ -68,7 +68,7 @@
       :visible.sync="editVisible"
       :code="code"
       type="edit"
-      :rowData="rowData"
+      :rowData="detail"
       @reload="setEdit(),$reload()"
     />
     <!-- 生成销售出库单 -->
@@ -76,15 +76,15 @@
       v-if="outLibAddVisible"
       :visible.sync="outLibAddVisible"
       type="add"
-      :rowData="rowData"
+      :rowData="detail"
       @reload="setEdit(),$reload()"
     />
     <!-- 生成请购单 -->
     <buyingAdd
       :visible.sync="buyingAddVisible"
-      :params="{quotationCode:rowData.quotationCode}"
+      :params="{quotationCode:detail.quotationCode}"
       type="add"
-      :rowData="rowData"
+      :rowData="detail"
       @reload="setEdit(),$reload()"
     />
   </div>

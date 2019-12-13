@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:19:38
+ * @LastEditTime: 2019-12-13 11:11:06
  * @Description: 销售-报价单
  */
 <template>
@@ -39,20 +39,19 @@
           v-if="authorityButtons.includes('psi_sales_quote_04')"
         >复制生成报价单</el-button>
       </template>
-      <template slot-scope="{column,row,value}">
+      <template slot-scope="{column,prop,row,value}">
         <!-- 报价单编号 -->
         <span
-          v-if="column.columnFields == 'quotationCode'"
+          v-if="prop == 'quotationCode'"
           class="d-text-blue d-pointer"
           @click="eventHandle('quoteVisible',row)"
         > {{value}}</span>
         <!-- 销售出库单编号 -->
         <span
-          v-else-if="column.columnFields == 'shipmentCode'"
+          v-else-if="prop == 'shipmentCode'"
           class="d-text-blue d-pointer"
           @click="eventHandle('outLibVisible',row)"
         > {{value}}</span>
-
         <span v-else>{{value}}</span>
       </template>
     </table-view>
