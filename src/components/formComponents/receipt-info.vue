@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 17:14:23
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-13 17:02:24
  * @Description: 付款 新增流水 单据信息
 */
 <template>
@@ -34,7 +34,7 @@
             <div
               v-if="item.type =='autocomplete'"
               class="not-disabled-class"
-              @click="addAccountVisible = true"
+              @click="!disabled? addAccountVisible = true :''"
             >
               <el-input
                 class="wfull"
