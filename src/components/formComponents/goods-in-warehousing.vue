@@ -21,7 +21,7 @@
           <el-table-column
             fixed
             min-width="70"
-            label="入库数量"
+            label="数量"
             show-overflow-tooltip
           >
             <template slot-scope="scope">
@@ -134,7 +134,7 @@
           <el-table-column
             fixed
             min-width="70"
-            label="入库数量"
+            label="数量"
             show-overflow-tooltip
           >
             <template slot-scope="scope">
@@ -217,11 +217,11 @@
           </el-input>
           <span class="fr d-text-black mr10 mt5">
             <span>本次成功扫码 </span>
-            <span class="b d-text-red f16">{{item.alterationNumber || 0}}</span>
+            <span class="b d-text-red f16">{{item.scanNumber || 0}}</span>
             <span> 件，历史扫码 </span>
             <span class="b d-text-green f16">{{item.alterationNumber||0}}</span>
             <span> 件，还需扫码 </span>
-            <span class="b d-text-blue f16">{{item.commodityNumber||0}}</span>
+            <span class="b d-text-blue f16">{{(item.commodityNumber||0) - (item.alterationNumber || 0) }}</span>
             <span> 件</span>
           </span>
         </div>

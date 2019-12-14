@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 14:28:58
+ * @LastEditTime: 2019-12-14 19:08:11
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -275,7 +275,6 @@
         min-width="110"
         prop="saleReferencePrice"
       />
-      <!-- TODO最近销售价不对 -->
       <el-table-column
         show-overflow-tooltip
         label="最近销售价"

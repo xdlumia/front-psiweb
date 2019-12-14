@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 15:44:05
+ * @LastEditTime: 2019-12-14 19:23:32
  * @Description: 生成销售换货单
 */
 <template>
@@ -208,8 +208,8 @@ export default {
       await this.$showFormError(this.$refs.form)
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.form.businessCommoditySaveVoList.map(item => item.putawayType = 0) // 退货入库
-          this.form.exChangeCommodityList.map(item => item.putawayType = 1) //换货入库
+          this.form.businessCommoditySaveVoList.map(item => item.putawayType = 1) // 退货入库
+          this.form.exChangeCommodityList.map(item => item.putawayType = 0) //换货出库
           let copyParams = JSON.parse(JSON.stringify(this.form))
 
 
