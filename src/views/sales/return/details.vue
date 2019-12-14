@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 19:58:08
+ * @LastEditTime: 2019-12-14 23:08:39
  * @Description: 销售出库单详情
 */
 <template>
@@ -160,6 +160,7 @@ export default {
     async getDetail() {
       if (this.code) {
         let { data } = await this.$api.seePsiSaleService.salesreturnedGetInfoByCode({ code: this.code })
+        data.shipmentFinanceSaveVoList = data.shipmentFinanceEntityList
         return data;
       }
     },
