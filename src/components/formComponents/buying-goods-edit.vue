@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 11:58:29
+ * @LastEditTime: 2019-12-14 16:19:06
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -315,7 +315,7 @@ export default {
       },
       { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber', format: (a) => a || 0, showOverflowTip: true, },
       { label: '备注', key: 'note', width: 200, prop: 'note', type: 'input', rules: [] },
-      { label: '是否组装', key: 'isAssembly', align: "center", width: 100, prop: 'isAssembly', type: 'selection', selected: 0 },
+      { label: '是否组装', key: 'isAssembly', align: "center", width: 120, prop: 'isAssembly', type: 'selection', selected: 0 },
       { label: '操作', key: 'action', width: 100, prop: 'action' },
     ];
     return {
