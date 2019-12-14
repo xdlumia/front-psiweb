@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 16:17:00
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-14 17:28:31
  * @Description: 退货商品商品信息
 */
 <template>
@@ -354,9 +354,11 @@ export default {
           }
 
         }
+
         //获取应退金额
         if (col.property == 'taxTotalAmount') {
-          this.data.shouldRefundAmount = sums[index]
+          let outTotalAmount = (this.data.exChangeCommodityList||[]).reduce((amount,{discountSprice})=>amount+Number(discountSprice),0)
+          this.data.shouldRefundAmount = sums[index] - outTotalAmount
         }
         //获取销售数量
         if (col.property == 'customNumber') {

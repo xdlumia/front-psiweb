@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 15:41:20
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-14 17:34:44
  * @Description: 销售-销售换货单
  */
 <template>
@@ -21,7 +21,7 @@
       :filterOptions="filterOptions"
     >
 
-      <template slot-scope="{column,row,value}">
+      <template slot-scope="{column,row,value,prop}">
         <!-- 销售换货单编号 -->
         <span
           class="d-text-blue d-pointer"
@@ -40,6 +40,7 @@
         <span v-else-if="column.columnFields=='exchangeNumber'">
           {{value}}/{{row.totalExchangeNumber}}
         </span>
+        <span v-else-if="prop=='totalRefundAmount'">{{-Number(row.actualRefundAmount)}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
