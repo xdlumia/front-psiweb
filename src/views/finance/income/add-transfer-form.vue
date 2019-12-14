@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 11:25:48
+ * @LastEditTime: 2019-12-14 17:12:50
  * @Description: 新增转账单
 */
 <template>
@@ -14,6 +14,7 @@
           <el-form-item
             :rules="{required:true}"
             label="公司名称"
+            prop="companySettlementInfo"
           >
             <el-select
               v-model="company"
@@ -35,6 +36,7 @@
           <el-form-item
             :rules="{required:true}"
             label="转帐账户"
+            prop="oppositeAccount"
           >
             <el-select
               v-model="account"
@@ -74,6 +76,7 @@
       <el-row :gutter="10">
         <el-col :span="12">
           <el-form-item
+            prop="intoCompanySettlementInfo"
             :rules="{required:true}"
             label="公司名称"
           >
@@ -98,6 +101,7 @@
           <el-form-item
             :rules="{required:true}"
             label="转帐账户"
+            prop="intoCompanySettlementId"
           >
             <el-select
               v-model="intAccount"
