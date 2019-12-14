@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 17:02:24
+ * @LastEditTime: 2019-12-14 15:54:01
  * @Description: 付款 新增流水 单据信息
 */
 <template>
@@ -46,7 +46,6 @@
                   class="wfull"
                   slot="append"
                   icon="el-icon-plus"
-                  @click="addAccountVisible = true"
                 ></el-button>
               </el-input>
             </div>
