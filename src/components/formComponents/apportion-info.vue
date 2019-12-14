@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 16:24:28
+ * @LastEditTime: 2019-12-13 22:11:14
  * @Description: 分摊信息
  */
 <template>
@@ -297,7 +297,9 @@ export default {
           .then(res => {
             let commodityList = res.data || []
             commodityList.map(item => {
-              item.salesPrice = item.discountSprice
+              // TODO销售价取折后价还是 参考价
+              // item.salesPrice = item.discountSprice
+              item.salesPrice = item.reference
             })
             this.goodsTableData = commodityList
           })

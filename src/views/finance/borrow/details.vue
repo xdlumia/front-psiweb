@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 19:00:26
+ * @LastEditTime: 2019-12-13 19:42:53
  * @Description: 详情
 <template>
   <div>
@@ -84,7 +84,7 @@ export default {
       receivableVisible: false,
       // 状态功能按钮
       currStatusType: {
-        '0': ['删除', '还款'], // 未还清
+        '0': ['还款'], // 未还清
         '1': ['删除'], // 已还清
       },
       stateText: { 0: '未还清', 1: '已还清' }
