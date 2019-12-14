@@ -120,7 +120,7 @@
       :element="$refs.companyTable"
       :visible.sync="showInFullscreen"
     />
-    <disassDsassemble 
+    <disassDsassemble
       :allData='data'
       @reload="$emit('reload'),disVisible = false"
       :data='visibleData'

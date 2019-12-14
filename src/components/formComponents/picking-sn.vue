@@ -92,7 +92,7 @@
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="creator"
+          prop="operator"
           min-width="100"
           label="拣货人"
           show-overflow-tooltip

@@ -285,7 +285,7 @@
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
-              prop="creator"
+              prop="operator"
               min-width="100"
               label="操作人"
               show-overflow-tooltip

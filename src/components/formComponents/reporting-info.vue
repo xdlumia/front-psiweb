@@ -14,7 +14,7 @@
       >
         <el-form-item
           :rules="[ 
-                    {required:true,message:'请选择类型', trigger: 'change'}
+                    {required:true,message:'请选择类型', trigger: 'change'} 
                 ]"
           label="类型"
           prop='type'
