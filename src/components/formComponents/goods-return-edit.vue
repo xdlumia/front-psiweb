@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 16:04:05
+ * @LastEditTime: 2019-12-14 16:17:00
  * @Description: 退货商品商品信息
 */
 <template>
@@ -339,15 +339,9 @@ export default {
       columns.forEach((col, index) => {
         if (index == 0) {
           sums[index] = '总价'
-        } else if (['taxPrice', 'alterationPrice', 'taxTotalAmount', 'customNumber', 'commodityNumber'].includes(col.property)) {
+        } else if (['taxPrice', 'taxTotalAmount', 'customNumber', 'commodityNumber'].includes(col.property)) {
           let values = data.map(item => Number(item[col.property] || 0));
           if (['customNumber', 'commodityNumber'].includes(col.property)) {
-            sums[index] = values.reduce((sum, curr) => {
-              const val = Number(curr)
-              return sum + curr
-            }, 0)
-          } else if (['alterationPrice',].includes(col.property)) {
-            values = data.map(item => Number(item[col.property] || 0) * (item.commodityNumber || 0));
             sums[index] = values.reduce((sum, curr) => {
               const val = Number(curr)
               return sum + curr
