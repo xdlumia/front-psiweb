@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 15:54:01
+ * @LastEditTime: 2019-12-14 15:59:47
  * @Description: 付款 新增流水 单据信息
 */
 <template>
@@ -16,7 +16,7 @@
         >
           <el-form-item
             :rules="item.rules"
-            :label="item.prop == 'oppositeAccount'? `${item.label}  类型:${clientType}`: item.label"
+            :label="item.prop == 'oppositeAccount' && !disabled ? `${item.label}  类型:${clientType}`: item.label"
             :prop="item.prop"
           >
             <el-input
