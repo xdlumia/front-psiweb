@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 15:32:02
+ * @LastEditTime: 2019-12-14 17:20:20
  * @Description: 退货商品商品信息
 */
 <template>
@@ -121,7 +121,7 @@
         /> -->
 
         <el-table-column
-          prop="commodityNumber"
+          prop="initialCommodityNumber"
           min-width="70"
           label="销售数量"
           show-overflow-tooltip
@@ -194,26 +194,26 @@
           show-overflow-tooltip
           v-if="title=='换出商品信息'"
         />
-      <el-table-column
-        show-overflow-tooltip
-        prop="discount"
-        label="折扣"
-        min-width="110"
+        <el-table-column
+          show-overflow-tooltip
+          prop="discount"
+          label="折扣"
+          min-width="110"
           v-if="title=='换出商品信息'"
-      >
-      </el-table-column>
+        >
+        </el-table-column>
 
-      <el-table-column
-        show-overflow-tooltip
-        label="折后总销售价"
-        prop="taxTotalAmount"
-        min-width="110"
+        <el-table-column
+          show-overflow-tooltip
+          label="折后总销售价"
+          prop="taxTotalAmount"
+          min-width="110"
           v-if="title=='换出商品信息'"
-      >
-      <template slot-scope="{row}">
-        <span>{{row.taxTotalAmount||0}}</span>
-      </template>
-      </el-table-column>
+        >
+          <template slot-scope="{row}">
+            <span>{{row.taxTotalAmount||0}}</span>
+          </template>
+        </el-table-column>
 
         <el-table-column
           prop="isDirect"
@@ -249,25 +249,25 @@
           </template>
 
         </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="销售参考价"
-        min-width="110"
-        prop="reference"
+        <el-table-column
+          show-overflow-tooltip
+          label="销售参考价"
+          min-width="110"
+          prop="reference"
           v-if="title=='换出商品信息'"
-      ></el-table-column>
-      
-      <el-table-column
-        show-overflow-tooltip
-        label="最近销售价"
-        prop="recentDiscountSprice"
-        min-width="110"
+        ></el-table-column>
+
+        <el-table-column
+          show-overflow-tooltip
+          label="最近销售价"
+          prop="recentDiscountSprice"
+          min-width="110"
           v-if="title=='换出商品信息'"
-      >
-      <template slot-scope="{row}">
-      <span>{{row.recentDiscountSprice}}</span>
-      </template>
-      </el-table-column>
+        >
+          <template slot-scope="{row}">
+            <span>{{row.recentDiscountSprice}}</span>
+          </template>
+        </el-table-column>
       </el-table>
     </form-card>
     <goods-return-record
