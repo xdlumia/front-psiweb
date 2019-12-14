@@ -1,13 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
-<<<<<<< HEAD
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 14:45:50
-=======
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 14:16:14
->>>>>>> b46be91823ecf33280e73c3d9e8d49a88d5b4182
+ * @LastEditTime: 2019-12-14 14:47:12
  * @Description: 退货商品商品信息
 */
 <template>
@@ -202,8 +197,6 @@
           label="备注"
           show-overflow-tooltip
         />
-<<<<<<< HEAD
-=======
         <el-table-column
           prop="isTeardown"
           min-width="120"
@@ -227,7 +220,6 @@
 
         </el-table-column>
 
->>>>>>> b46be91823ecf33280e73c3d9e8d49a88d5b4182
       </el-table>
     </form-card>
     <!-- 对退货的商品进行编辑 -->
@@ -293,7 +285,7 @@ export default {
       let { data } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
         { commodityCode: row.commodityCode }
       );
-      (data||[]).map(child=>child.$parentCode=row.commodityCode)
+      (data || []).map(child => child.$parentCode = row.commodityCode)
       cb(data);
     },
     // 删除退货
