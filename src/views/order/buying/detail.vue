@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 15:23:44
+ * @LastEditTime: 2019-12-14 16:28:24
  * @Description: 采购单详情
 */
 <template>
@@ -55,7 +55,7 @@
             :sort="['expanded']"
             disabled
           />
-          <customInfo :busType="15" :data="detail" disabled />
+          <customInfo :busType="27" :data="detail" disabled />
           <extrasInfo :data="detail" disabled />
         </el-form>
       </el-tab-pane>
