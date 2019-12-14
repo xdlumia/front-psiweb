@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 15:02:48
+ * @LastEditTime: 2019-12-14 15:19:04
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -366,7 +366,7 @@ export default {
             // 如果是有无合同
             else if (item.columnFields == 'isContract') {
               type = 'select'
-              options = [{ label: '有', value: 1 }, { label: '无', value: 0 }]
+              options = [{ label: '全部', value: '' }, { label: '有', value: 1 }, { label: '无', value: 0 }]
             }
             // 收支状态
             else if (item.columnFields == 'incomeType') {
