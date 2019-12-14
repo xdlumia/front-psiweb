@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 21:02:09
+ * @LastEditTime: 2019-12-14 11:00:11
  * @Description:  退货单账期信息 账期费用
  */
 <template>
@@ -43,7 +43,7 @@
 let formItems = [
   // 客户名称编辑的时候使用clientId显示的时候使用clientName
   { label: '应退金额', prop: 'shouldRefundAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
-  { label: '实退金额', prop: 'actualRefundAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
+  { label: '实退金额', prop: 'actualRefundAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'price' }], },
   { label: '付款时间', prop: 'payTime', type: 'date', rules: [{ required: true, trigger: 'blur' }], },
 ]
 export default {
@@ -65,8 +65,7 @@ export default {
     'data.actualRefundAmount': {
       handler(val) {
         let shouldRefundAmount = this.data.shouldRefundAmount || 0  //应退金额
-        let actualRefundAmount = val || 0 //实退金额
-        if (actualRefundAmount > shouldRefundAmount) {
+        if (+val > +shouldRefundAmount) {
           this.$message({
             message: '实退金额不能大于应退金额',
             type: 'error',
