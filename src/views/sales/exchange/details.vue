@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 15:26:02
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-14 18:08:06
  * @Description: 销售换货单详情
 */
 <template>
@@ -76,7 +76,7 @@
       :code="code"
       :rowData='rowData'
       from="exchange"
-      @reload='$refs.table.reload()'
+      @reload="setEdit(),$reload()"
     />
   </div>
 </template>
