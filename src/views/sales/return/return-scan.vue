@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 17:51:20
+ * @LastEditTime: 2019-12-14 19:31:52
  * @Description: 退货扫码
 */
 
@@ -106,14 +106,6 @@ export default {
     },
     //保存
     saveHandle() {
-      if (!this.form.wmsId) {
-        this.$message({
-          type: 'error',
-          message: '请先选择入库库房!',
-          showClose: true
-        })
-        return
-      }
       this.form.alterationCommodityVoList = this.form.putawayCommodityList.map(item => {
         return {
           alterationCode: this.code,//"示例：退换货单code",
