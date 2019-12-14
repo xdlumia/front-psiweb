@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 18:51:09
+ * @LastEditTime: 2019-12-14 19:48:10
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -68,6 +68,7 @@
       :visible.sync="editVisible"
       :rowData="detail||{}"
       type="edit"
+      @reload="setEdit(),$reload()"
       :invoiceType="0"
     />
 

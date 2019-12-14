@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 18:08:06
+ * @LastEditTime: 2019-12-14 19:52:12
  * @Description: 销售换货单详情
 */
 <template>
@@ -54,7 +54,7 @@
           ref="detail"
           :params="{relationCode:code}"
           :code="this.code"
-          :rowData="rowData"
+          :rowData="detail"
           :data="detail || {}"
           class="d-auto-y"
           :button="false"
@@ -65,16 +65,17 @@
     </side-detail>
     <!-- 退货单新增/编辑 -->
     <add
+      v-if="editVisible"
       :visible.sync="editVisible"
       :code="code"
       type="edit"
-      :rowData="rowData"
+      :rowData="detail"
     />
     <!-- 换货扫码 -->
     <return-scan
       :visible.sync='scanVisible'
       :code="code"
-      :rowData='rowData'
+      :rowData='detail'
       from="exchange"
       @reload="setEdit(),$reload()"
     />
