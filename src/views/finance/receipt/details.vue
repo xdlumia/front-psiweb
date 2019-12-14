@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 02:07:06
+ * @LastEditTime: 2019-12-14 18:51:09
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -66,7 +66,7 @@
     <!-- 开票申请 -->
     <collectInvoice
       :visible.sync="editVisible"
-      :rowData="rowData"
+      :rowData="detail||{}"
       type="edit"
       :invoiceType="0"
     />

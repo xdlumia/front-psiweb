@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 11:28:30
+ * @LastEditTime: 2019-12-14 18:51:55
  * @Description: 收票申请
 */
 <template>
@@ -53,6 +53,7 @@
           :model="form"
           class="p10"
           ref="form"
+          label-position="top"
           size="mini"
           v-if="isDataReady"
         >
