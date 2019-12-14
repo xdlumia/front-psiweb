@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:34:19
+ * @LastEditTime: 2019-12-14 15:37:49
  * @Description: 销售-销售退货单
  */
 <template>
@@ -17,6 +17,8 @@
       api="seePsiSaleService.salesreturnedList"
       exportApi="seePsiSaleService.salesreturnedExport"
       :params="Object.assign(queryForm,params)"
+      :mergeFilter="true"
+      :filterOptions="filterOptions"
     >
 
       <template slot-scope="{column,row,value}">
@@ -63,11 +65,7 @@
 import returnDetails from './details' //销售退货单详情
 import outLibDetails from '../outLibrary/outLib-details' //销售出库单详情
 let filterOptions = [
-  // { label: '商户编号、商户名称/简称', prop: 'alterationCode', default: true, type: 'text' },
-  { label: '联系人、联系人电话', prop: 'shipmentCode', default: true, type: 'text' },
-  // { label: '商机阶段', prop: 'state', default: true, type: 'select', options: [] },
-  // { label: '跟进时间起止', prop: 'CreateTime', default: true, type: 'daterange' },
-  // { label: '维护人', prop: 'creator', default: true, type: 'employee' }
+  { label: '退货数量', prop: 'TotalRefundNumber', default: true, type: 'numberrange' },
 ]
 
 export default {

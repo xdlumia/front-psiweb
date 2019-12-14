@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 10:37:17
+ * @LastEditTime: 2019-12-14 15:41:20
  * @Description: 销售-销售换货单
  */
 <template>
@@ -17,6 +17,8 @@
       api="seePsiSaleService.salesexchangeList"
       exportApi="seePsiSaleService.salesexchangeExport"
       :params="Object.assign(queryForm,params)"
+      :mergeFilter="true"
+      :filterOptions="filterOptions"
     >
 
       <template slot-scope="{column,row,value}">
@@ -62,14 +64,8 @@
 import exchangeDetails from './details' //销售换货单详情
 import outLibDetails from '../outLibrary/outLib-details' //销售出库单详情
 let filterOptions = [
-  // { label: '排序', prop: 'sort', default: true, type: 'sort', options: [], },
-  { label: '客户编号', prop: 'title', default: true, type: 'text' },
-  { label: '客户名称', prop: 'city', default: true, type: 'text' },
-  { label: '联系人', prop: 'pushTime', default: true, type: 'employee', },
-  { label: '联系电话', prop: 'status', default: true, type: 'text' },
-  { label: '提交人', prop: 'messageType', default: true, type: 'employee', },
-  { label: '部门', prop: 'messageType2', default: true, type: 'employee', },
-  { label: '提交时间', prop: 'messageType3', default: true, type: 'daterange', },
+  { label: '退回数量', prop: 'TotalRefundNumber', default: true, type: 'numberrange' },
+  { label: '换出数量', prop: 'TotalExchangeNumber', default: true, type: 'numberrange' },
 ]
 
 export default {
