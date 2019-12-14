@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 18:14:45
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-14 11:57:09
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -272,8 +272,8 @@ export default {
     },
     // 统计点击筛选
     staHandle(row) {
-      this.params.state = row.state;
-      this.$refs.table.reload(1);
+      this.$set(this.params,'state',row.state);
+      this.$nextTick(()=>this.$refs.table.reload(1));
     },
     // 更多操作
     moreHandle(type) {
