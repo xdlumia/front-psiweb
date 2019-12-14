@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 11:20:46
+ * @LastEditTime: 2019-12-14 12:27:57
  * @Description: 退货商品商品信息
 */
 <template>
@@ -76,7 +76,7 @@
             <span
               @click="changeRecord(scope)"
               class="d-text-blue d-pointer"
-            >{{scope.row.alterationNumber}}/{{scope.row.commodityNumber}}</span>
+            >{{scope.row.alterationNumber || 0}}/{{scope.row.commodityNumber}}</span>
           </template>
         </el-table-column>
         <el-table-column
