@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-11 11:26:29
+ * @LastEditTime: 2019-12-14 20:04:55
  * @Description: 销售-客户管理
  */
 <template>
@@ -68,9 +68,6 @@
 <script>
 import clientAdd from './add' // 客户新增
 import clientDetail from './details' //客户详情
-let filterList = [
-  { label: '客户名称', prop: 'clientName', default: true, type: 'text' },
-]
 export default {
   name: 'return',
   components: {
@@ -109,7 +106,9 @@ export default {
       addVisible: false,
       detailVisible: false,
       // 筛选框数据
-      filterOptions: filterList
+      filterOptions: [
+        { label: '客户名称', prop: 'clientName', default: true, type: 'text' },
+      ]
     };
   },
   methods: {

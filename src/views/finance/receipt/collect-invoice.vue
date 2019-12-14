@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 18:51:55
+ * @LastEditTime: 2019-12-14 19:47:57
  * @Description: 收票申请
 */
 <template>
