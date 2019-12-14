@@ -136,7 +136,7 @@ export default {
       // 遍历表单
       items: [
         { label: '流水号', prop: 'incomeRecordCode', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
-        { label: '收支状态', prop: 'incomeType', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [{ content: '收款', code: 0 }, { content: '付款', code: 1 }], },
+        { label: '收支状态', prop: 'incomeType', type: 'select', rules: [{ required: true, trigger: 'blur' }], options: [{ content: '收入', code: 0 }, { content: '支出', code: 1 }], },
         { label: '发生金额', prop: 'incomeAmount', type: 'input', rules: [{ required: true, trigger: 'blur' }, { type: 'price' }], },
         { label: '收款日期', prop: 'accountDate', type: 'date', rules: [{ required: true, trigger: 'blur' }] },
         { label: '结算账户', prop: 'companySettlementId', type: 'select', rules: [{ required: true, trigger: 'blur' }] },
@@ -153,7 +153,7 @@ export default {
       return this.items.filter(item => {
         if (item.prop == 'accountDate') {
           // 收款0 付款1
-          item.label = this.incomeType == 0 ? '收款日期' : '付款日期'
+          item.label = this.data.incomeType == 0 ? '收款日期' : '付款日期'
         }
         return !this.hide.includes(item.prop)
       })

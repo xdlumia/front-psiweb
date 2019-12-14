@@ -117,10 +117,10 @@ const filterOptions = [
     dictName: 'CW_FP_LX'  },
   { label: '发票号码', prop: 'invoiceCode', default: true },
   { label: '购方名称', prop: 'purchaseName', default: true },
-  { label: '商品合计金额', prop: 'CommodityTotalAmount', default: true, type: 'numberrange' },
+  { label: '商品金额', prop: 'CommodityTotalAmount', default: true, type: 'numberrange' },
   { label: '税价合计金额', prop: 'TaxTotalAmount', default: true, type: 'numberrange' },
-  { label: '合计税金', prop: 'AccountTotalAmount', default: true, type: 'numberrange' },
-  { label: '票据金额', prop: 'InvoiceAmount', default: true, type: 'numberrange' },
+  { label: '税金', prop: 'AccountTotalAmount', default: true, type: 'numberrange' },
+  { label: '开票金额', prop: 'InvoiceAmount', default: true, type: 'numberrange' },
   { label: '开票日期', prop: 'InvoiceDate', default: true, type: 'daterange' }
 ]
 
