@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 18:40:51
+ * @LastEditTime: 2019-12-14 17:00:25
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -13,7 +13,15 @@
       busType="58"
       :data="data"
     />
-
+    <form-card title="付款状态">
+      <el-form-item
+        :rules="[{required:true,message:'必填项',trigger: 'blur'}]"
+        label="付款状态"
+        prop="fbillCode"
+      >
+        <!-- TODO付款状态没有写 -->
+      </el-form-item>
+    </form-card>
     <make-invoice-info
       :invoiceType="1"
       disabled
