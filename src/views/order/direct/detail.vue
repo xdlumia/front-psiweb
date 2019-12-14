@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 15:46:29
+ * @LastEditTime: 2019-12-14 11:26:16
  * @Description: 直发单详情
 */
 <template>
@@ -22,8 +22,8 @@
         v-if="detail&&[0,1].includes(detail.state)&&authorityButtons.includes('psi_purchase_direct_03')"
       >发货</el-button>
       <el-button
-        @click="showAddOrderStorage=true"
         :disabled="waitBuyingNumber>0?false:true"
+        @click="showAddOrderStorage=true"
         size="mini"
         type="primary"
         v-if="detail&&[0,1].includes(detail.state)&&authorityButtons.includes('psi_purchase_direct_04')"
@@ -63,7 +63,13 @@
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <addOrderStorage :joinCode="detail.directCode||code" :visible.sync="showAddOrderStorage" from="直发单" v-if="showAddOrderStorage" />
+    <addOrderStorage
+      :joinCode="detail.directCode||code"
+      :visible.sync="showAddOrderStorage"
+      @reload="setEdit(),$reload()"
+      from="直发单"
+      v-if="showAddOrderStorage"
+    />
     <editDirect :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" v-if="showEdit" />
     <deliverEdit
       :code="detail.directCode||code"
@@ -100,7 +106,7 @@ export default {
       }
     };
   },
-  computed:{
+  computed: {
     waitBuyingNumber() {
       if (this.detail) {
         return []
