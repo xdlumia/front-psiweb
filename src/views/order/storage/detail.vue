@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 11:39:32
+ * @LastEditTime: 2019-12-14 17:41:11
  * @Description: 采购入库单
 */
 <template>
@@ -52,12 +52,12 @@
         type="danger"
         v-if="detail&&[1].includes(detail.state)&&authorityButtons.includes('psi_purchase_storage_08')"
       >驳回</el-button>
-      <el-button
+      <!-- <el-button
         @click="showEdit=true"
         size="mini"
         type="primary"
         v-if="detail&&[0,5].includes(detail.state)&&authorityButtons.includes('psi_purchase_storage_05')"
-      >编辑</el-button>
+      >编辑</el-button> -->
       <el-button
         @click="$submission('seePsiPurchaseService.purchaseputinLogicDelete',{
           id:detail.id,
