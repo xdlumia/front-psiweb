@@ -214,6 +214,7 @@ export default {
   },
   data() {
     return {
+      defaultParams:{},
       loading: false,
       // 表格头
       headers: [],

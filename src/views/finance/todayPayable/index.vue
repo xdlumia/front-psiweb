@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 14:36:09
+ * @LastEditTime: 2019-12-14 15:43:25
  * @Description: 今日应付账单
 */
 <template>
@@ -145,7 +145,7 @@ export default {
   created() {
     // prettier-ignore
     if(this.pageConfig.title=='今日应付账单'){
-      this.$set(this.defaultParams,'state',0)
+      // this.$set(this.defaultParams,'state',2)
       this.filterOptions.map((item,i)=>{
         if(item.prop=='settleStatus'){
           this.filterOptions.splice(i,1)

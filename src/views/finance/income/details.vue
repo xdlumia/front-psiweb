@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 16:09:25
+ * @LastEditTime: 2019-12-14 16:50:12
  * @Description: 财务-收入流水详情
 <template>
   <div>
@@ -12,7 +12,10 @@
       width="920px"
       @close="close"
     >
-      <div class="drawer-header">
+      <div
+        class="drawer-header"
+        v-if="Object.keys(detail).length"
+      >
         <!-- 操作按钮 -->
         <span
           v-for="(item,index) of buttons"
@@ -22,7 +25,7 @@
           <el-button
             class="mr10"
             @click="buttonsClick(item.label)"
-            v-if="currStatusType[detail.state|| 0].includes(item.label) && authorityButtons.includes(item.authCode)"
+            v-if="currStatusType[detail.matchState|| 0].includes(item.label) && authorityButtons.includes(item.authCode)"
             size="mini"
             :type="item.type"
           >{{item.label}}</el-button>

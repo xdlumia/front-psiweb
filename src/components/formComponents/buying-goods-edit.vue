@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 11:58:29
+ * @LastEditTime: 2019-12-14 16:44:49
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -16,16 +16,9 @@
           class="ml10"
           v-if="(!disabled)&&!hide.includes('add')&&!show.includes(`!add`)"
         />
-        <span
-          class="fr"
-          v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')"
-        >
+        <span class="fr" v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')">
           <span>
-            <el-link
-              :underline="false"
-              @click="showInFull=true"
-              type="primary"
-            >全屏显示</el-link>
+            <el-link :underline="false" @click="showInFull=true" type="primary">全屏显示</el-link>
           </span>
         </span>
       </div>
@@ -58,10 +51,7 @@
         >
           <template slot-scope="{row}">
             <template v-if="item.key=='commodityCode'">
-              <div
-                @click="openCommodityDetail(row.commodityCode)"
-                class="d-text-blue d-elip d-pointer"
-              >{{row.commodityCode}}</div>
+              <div @click="openCommodityDetail(row.commodityCode)" class="d-text-blue d-elip d-pointer">{{row.commodityCode}}</div>
             </template>
             <template v-else-if="item.key=='goodsPic'">
               <el-image
@@ -71,10 +61,7 @@
                 fit="contain"
                 style="width: 100px; height: 40px"
               >
-                <span
-                  slot="error"
-                  class="d-text-qgray"
-                >暂无图片</span>
+                <span class="d-text-qgray" slot="error">暂无图片</span>
               </el-image>
             </template>
             <!-- 字典开始 -->
@@ -100,11 +87,7 @@
                 size="mini"
                 v-if="isChildShowColumn(row)"
               >
-                <el-input
-                  :disabled="disabled"
-                  class="wfull"
-                  v-model="row[item.prop]"
-                />
+                <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]" />
               </el-form-item>
             </template>
             <!-- 价格输入结束 -->
@@ -121,26 +104,19 @@
                 size="mini"
                 v-if="isChildShowColumn(row)"
               >
-                <el-input
-                  :disabled="disabled"
-                  class="wfull"
-                  v-model="row[item.prop]"
-                ></el-input>
+                <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]"></el-input>
               </el-form-item>
             </template>
             <!-- 商品数量结束 -->
             <template v-else-if="item.key=='action'">
-              <i
-                @click="deleteChoose(row)"
-                class="el-icon-error d-pointer f20 d-text-red"
-              ></i>
+              <i @click="deleteChoose(row)" class="el-icon-error d-pointer f20 d-text-red"></i>
             </template>
             <!-- 选择开始 -->
             <template v-else-if="item.type=='selection'">
               <el-form-item
                 :prop="`${getCurrentFormProp(row,item.prop)}`"
                 size="mini"
-                v-if="isChildShowColumn(row)"
+                v-if="isChildShowColumn(row)&&(item.canShowSelection?item.canShowSelection(row):true)"
               >
                 <el-checkbox
                   :disabled="disabled"
@@ -154,20 +130,9 @@
             <!-- 选择结束 -->
             <!-- 展开子项开始 -->
             <template v-else-if="item.type=='expanded'">
-              <div
-                class="expanded-icons d-text-gray"
-                v-if="(row.children&&row.children.length)||row.configName"
-              >
-                <span
-                  @click="expand(row)"
-                  class="el-icon-plus d-pointer"
-                  v-if="!row.expanded"
-                ></span>
-                <span
-                  @click="expand(row)"
-                  class="el-icon-minus d-pointer"
-                  v-else
-                ></span>
+              <div class="expanded-icons d-text-gray" v-if="(row.children&&row.children.length)||row.configName">
+                <span @click="expand(row)" class="el-icon-plus d-pointer" v-if="!row.expanded"></span>
+                <span @click="expand(row)" class="el-icon-minus d-pointer" v-else></span>
               </div>
             </template>
             <!-- 展开子项结束 -->
@@ -192,10 +157,7 @@
             </template>
             <!-- 其他结束 -->
           </template>
-          <template
-            slot="header"
-            v-if="item.type=='selection'"
-          >
+          <template slot="header" v-if="item.type=='selection'">
             <el-checkbox
               :disabled="disabled"
               :false-label="0"
@@ -207,15 +169,8 @@
         </el-table-column>
       </el-table>
     </form-card>
-    <FullscreenElement
-      :element="$refs.table"
-      :visible.sync="showInFull"
-    />
-    <CommodityDetail
-      :code="currentCommodityCode"
-      :visible.sync="showCommodityDetail"
-      v-if="showCommodityDetail"
-    />
+    <FullscreenElement :element="$refs.table" :visible.sync="showInFull" />
+    <CommodityDetail :code="currentCommodityCode" :visible.sync="showCommodityDetail" v-if="showCommodityDetail" />
   </div>
 </template>
 <script>
@@ -315,7 +270,9 @@ export default {
       },
       { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber', format: (a) => a || 0, showOverflowTip: true, },
       { label: '备注', key: 'note', width: 200, prop: 'note', type: 'input', rules: [] },
-      { label: '是否组装', key: 'isAssembly', align: "center", width: 100, prop: 'isAssembly', type: 'selection', selected: 0 },
+      { label: '是否组装', key: 'isAssembly', align: "center", width: 120, prop: 'isAssembly', type: 'selection', selected: 0, 
+        canShowSelection:(row)=>row.configName?true:false
+      },
       { label: '操作', key: 'action', width: 100, prop: 'action' },
     ];
     return {
@@ -384,8 +341,7 @@ export default {
       return list;
     }
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     isChildShowColumn(row) {
       return (this.sort || []).includes('expanded') &&
@@ -492,8 +448,8 @@ export default {
           commodityCode: row.commodityCode
         }
       );
-      data.map(item => item.inventoryNumber = item.usableInventoryNum)
-      console.log(row)
+      data.map(item => (item.inventoryNumber = item.usableInventoryNum));
+      console.log(row);
       row.children = this.recalcRowKey(data || [], row._rowKey);
       cb(row.children);
     },
@@ -518,8 +474,8 @@ export default {
                 item =>
                   +Number(
                     item[this.priceKey] *
-                    (1 + item.taxRate / 100) *
-                    item.commodityNumber || 0
+                      (1 + item.taxRate / 100) *
+                      item.commodityNumber || 0
                   ).toFixed(2)
               )
               .reduce((sum, item) => sum + item, 0)
@@ -534,9 +490,9 @@ export default {
     // 选择商品
     choose(e) {
       e = e.map(item => {
-        item.adjustPriceMoney = item.adjustPriceMoney || 0
-        return item
-      })
+        item.adjustPriceMoney = item.adjustPriceMoney || 0;
+        return item;
+      });
       this.data[this.fkey] = this.data[this.fkey] || [];
       this.data[this.fkey] = this.data[this.fkey].concat(
         e.map(this.goodToBuyingInfo)
@@ -569,8 +525,12 @@ export default {
       return nGood;
     },
     // 头部选择
-    headerSelect({ prop }, select) {
-      this.data[this.fkey].map(item => (item[prop] = select));
+    headerSelect({ prop, canShowSelection }, select) {
+      this.data[this.fkey].map(item => {
+        if (canShowSelection ? canShowSelection(item) : true) {
+          item[prop] = select;
+        }
+      });
       this.$refs.table.store.updateColumns();
     },
     // 某一行选择

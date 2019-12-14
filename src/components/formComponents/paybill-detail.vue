@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 09:31:07
+ * @LastEditTime: 2019-12-14 15:56:48
  * @Description: 付款单详细信息 已绑定 1
 */
 <template>
@@ -40,10 +40,16 @@ export default {
         { label: '预应付金额', prop: 'predictAmount' },
         { label: '应付款时间', prop: 'payEndDate', time: true },
         { label: '结算账户', prop: 'companySettlementInfo' },
-        { label: '付款单来源', prop: 'source' },
+        { label: '账单来源', prop: 'source' },
         { label: '滞纳金', prop: 'lateFeeAmount' }
       ]
     };
+  },
+  mounted() {
+    if (this.data.billType == 0) {
+      this.formItems[3].label = '应预收金额';
+      this.formItems[4].label = '应收款时间';
+    }
   },
   methods: {
     format(a) {

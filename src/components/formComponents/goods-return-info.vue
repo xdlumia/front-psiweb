@@ -125,6 +125,7 @@
           min-width="70"
           label="销售数量"
           show-overflow-tooltip
+          v-if="title=='换入商品信息' || title=='退货商品信息'"
         />
 
         <el-table-column
@@ -132,6 +133,7 @@
           min-width="100"
           label="退货单价"
           show-overflow-tooltip
+          v-if="title=='换入商品信息' || title=='退货商品信息'"
         >
         </el-table-column>
         <el-table-column
@@ -139,18 +141,21 @@
           min-width="70"
           label="税率%"
           show-overflow-tooltip
+          v-if="title=='换入商品信息' || title=='退货商品信息'"
         />
         <el-table-column
           prop="taxPrice"
           min-width="120"
           label="税后退货单价"
           show-overflow-tooltip
+          v-if="title=='换入商品信息' || title=='退货商品信息'"
         />
         <el-table-column
           prop="taxTotalAmount"
           min-width="120"
           label="税后总价"
           show-overflow-tooltip
+          v-if="title=='换入商品信息' || title=='退货商品信息'"
         />
         <el-table-column
           prop="inventoryNumber"
@@ -181,6 +186,88 @@
           </template>
 
         </el-table-column> -->
+
+        <el-table-column
+          prop="taxRate"
+          min-width="70"
+          label="税率%"
+          show-overflow-tooltip
+          v-if="title=='换出商品信息'"
+        />
+      <el-table-column
+        show-overflow-tooltip
+        prop="discount"
+        label="折扣"
+        min-width="110"
+          v-if="title=='换出商品信息'"
+      >
+      </el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        label="折后总销售价"
+        prop="taxTotalAmount"
+        min-width="110"
+          v-if="title=='换出商品信息'"
+      >
+      <template slot-scope="{row}">
+        <span>{{row.taxTotalAmount||0}}</span>
+      </template>
+      </el-table-column>
+
+        <el-table-column
+          prop="isDirect"
+          min-width="120"
+          label="是否直发"
+          show-overflow-tooltip
+          v-if="title=='换出商品信息'"
+        >
+          <template slot-scope="scope">
+            <el-switch
+              :disabled="disabled"
+              :active-value="1"
+              :inactive-value="0"
+              v-model="scope.row.isDirect"
+            ></el-switch>
+          </template>
+
+        </el-table-column>
+        <el-table-column
+          prop="isAssembly"
+          min-width="120"
+          label="是否组装"
+          show-overflow-tooltip
+          v-if="title=='换出商品信息'"
+        >
+          <template slot-scope="scope">
+            <el-switch
+              :disabled="disabled"
+              :active-value="1"
+              :inactive-value="0"
+              v-model="scope.row.isAssembly"
+            ></el-switch>
+          </template>
+
+        </el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        label="销售参考价"
+        min-width="110"
+        prop="reference"
+          v-if="title=='换出商品信息'"
+      ></el-table-column>
+      
+      <el-table-column
+        show-overflow-tooltip
+        label="最近销售价"
+        prop="recentDiscountSprice"
+        min-width="110"
+          v-if="title=='换出商品信息'"
+      >
+      <template slot-scope="{row}">
+      <span>{{row.recentDiscountSprice}}</span>
+      </template>
+      </el-table-column>
       </el-table>
     </form-card>
     <goods-return-record

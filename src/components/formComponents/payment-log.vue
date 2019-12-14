@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 13:37:02
+ * @LastEditTime: 2019-12-14 16:21:40
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -26,26 +26,20 @@
       </span>
     </div>
     <el-table :data="recList" size="mini" v-loading="loading">
-      <el-table-column label="流水号" min-width="80" prop="serialNumber"
-show-overflow-tooltip></el-table-column>
-      <el-table-column label="对方名称" min-width="80" prop="oppositeAccount"
-show-overflow-tooltip></el-table-column>
-      <el-table-column label="出账日期" min-width="100" prop="createTime"
-show-overflow-tooltip>
+      <el-table-column label="流水号" min-width="80" prop="serialNumber" show-overflow-tooltip></el-table-column>
+      <el-table-column label="对方名称" min-width="80" prop="oppositeAccount" show-overflow-tooltip></el-table-column>
+      <!-- 收款0 付款1 -->
+      <el-table-column :label="type==1?'出账日期':'入账日期'" min-width="100" prop="createTime" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{row.createTime|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="收支状态" min-width="80" prop="incomeType"
-show-overflow-tooltip>
+      <el-table-column label="收支状态" min-width="80" prop="incomeType" show-overflow-tooltip>
         <template slot-scope="{row}">{{row.incomeType==1?'付款':'收款'}}</template>
       </el-table-column>
-      <el-table-column label="流水金额" min-width="80" prop="incomeAmount"
-show-overflow-tooltip></el-table-column>
-      <el-table-column label="该账单匹配金额" min-width="80" prop="matchAmount"
-show-overflow-tooltip></el-table-column>
-      <el-table-column label="操作" min-width="80" prop="matchAmount"
-show-overflow-tooltip>
+      <el-table-column label="流水金额" min-width="80" prop="incomeAmount" show-overflow-tooltip></el-table-column>
+      <el-table-column label="该账单匹配金额" min-width="80" prop="matchAmount" show-overflow-tooltip></el-table-column>
+      <el-table-column label="操作" min-width="80" prop="matchAmount" show-overflow-tooltip>
         <template slot-scope="{row}">
           <el-button
             @click="del(row)"
@@ -219,7 +213,7 @@ export default {
         this.$refs.addIncoming.setEdit();
         this.$refs.addIncoming.close();
         this.$emit('reload');
-      } catch (error) { }
+      } catch (error) {}
       this.loading = false;
       this.$refs.addIncoming.loading = false;
     },

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 14:12:55
+ * @LastEditTime: 2019-12-14 15:26:48
  * @Description: 其他费用
  */
 <template>
@@ -16,6 +16,7 @@
       :key="index"
       class="mb10 d-relative"
       :body-style="{ padding: '10px' }"
+      v-else
     >
       <i
         title="删除"

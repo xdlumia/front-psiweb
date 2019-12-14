@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-11 10:18:56
+ * @LastEditTime: 2019-12-14 16:41:51
  * @Description: 匹配
 */
 <template>
@@ -46,7 +46,7 @@ export default {
       form: {
         fbillId: '', //账单id
         incomeRecordId: this.rowData.id, //流水id
-        matchAmount: '',//匹配金额
+        matchAmount: this.rowData.incomeAmount,//匹配金额
       }
     }
   },
@@ -72,7 +72,6 @@ export default {
       let [row] = val
       if (!row) return
       this.form.fbillId = row.id
-      this.form.matchAmount = row.billTotalAmount
     },
     saveHandle() {
       if (!this.form.fbillId) {
@@ -86,6 +85,7 @@ export default {
       this.$api.seePsiFinanceService.revenuerecordRoutedMatching(this.form)
         .then(res => {
           this.$emit('reload')
+          this.showPop = false
         })
     },
 
