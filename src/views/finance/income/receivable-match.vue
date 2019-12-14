@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 16:41:51
+ * @LastEditTime: 2019-12-14 19:55:01
  * @Description: 匹配
 */
 <template>
@@ -10,6 +10,7 @@
     :visible.sync="showPop"
     width="1120px"
     v-dialogDrag
+    v-loading="loading"
   >
     <div slot="title">
       <span>选择应收账单</span>
@@ -43,6 +44,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       form: {
         fbillId: '', //账单id
         incomeRecordId: this.rowData.id, //流水id
@@ -82,10 +84,14 @@ export default {
         });
         return
       }
+      this.loading = true
       this.$api.seePsiFinanceService.revenuerecordRoutedMatching(this.form)
         .then(res => {
           this.$emit('reload')
           this.showPop = false
+        })
+        .finally(() => {
+          this.loading = false
         })
     },
 
