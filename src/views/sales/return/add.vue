@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 20:44:09
+ * @LastEditTime: 2019-12-14 21:20:57
  * @Description: 生成销售退货单
 */
 <template>
@@ -61,6 +61,7 @@
         <goods-return-edit
           from="return"
           :data="form"
+          type='edit'
           :options="rowData.quotationCodes || []"
           id="goodsChangeEdit"
         />
@@ -121,6 +122,7 @@ export default {
         actualRefundAmount: '',//实退金额
         alterationCode: '',//退换货编号,
         attachList: [],//附件,
+        commodityEntityList: [], //别删 留着
         businessCommoditySaveVoList: [ //商品信息
           // {
           //   alterationNumber: '',//	退换商品数量(出入数量)
