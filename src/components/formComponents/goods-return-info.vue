@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 12:27:57
+ * @LastEditTime: 2019-12-14 15:32:02
  * @Description: 退货商品商品信息
 */
 <template>
@@ -165,7 +165,7 @@
           label="备注"
           show-overflow-tooltip
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="isTeardown"
           min-width="120"
           label="是否拆卸"
@@ -180,7 +180,7 @@
             ></el-switch>
           </template>
 
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </form-card>
     <goods-return-record
@@ -277,9 +277,9 @@ export default {
 
         }
         //获取税后总价
-        if (col.property == 'taxTotalAmount') {
-          this.form.shouldRefundAmount = sums[index]
-        }
+        // if (col.property == 'taxTotalAmount') {
+        //   this.form.shouldRefundAmount = sums[index]
+        // }
       });
       return sums
     },
