@@ -117,7 +117,7 @@
             ></el-table-column>
           </el-table>
           <div class="mt10 mb10">
-            <span class="b mt5">机器号</span>
+            <span class="b mt5">机器号/扫SN码</span>
             <el-input
               v-on:keyup.13.native="shipmentCommodityCheck"
               size="mini"
@@ -203,7 +203,7 @@
           </el-table>
 
           <div class="mt10 mb10">
-            <span class="b mt5">机器号</span>
+            <span class="b mt5">机器号/扫SN码</span>
             <el-input
               v-on:keyup.13.native="getCommodityBySnCode(item)"
               size="mini"
