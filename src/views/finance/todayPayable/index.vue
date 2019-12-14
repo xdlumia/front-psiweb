@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 15:43:25
+ * @LastEditTime: 2019-12-14 17:10:18
  * @Description: 今日应付账单
 */
 <template>
@@ -152,6 +152,29 @@ export default {
         }
       })
     }
+    this.filterOptions.splice(1, 0, {
+      label: '账单来源',
+      prop: 'source',
+      default: true,
+      type: 'select',
+      options: [{ label: '全部', value: '' }].concat(
+        [
+          '借入借出任务',
+          '借入单',
+          '借出单',
+          '调拨单',
+          '费用单',
+          '采购入库单',
+          '采购退货单',
+          '销售出库单',
+          '销售换货单',
+          '销售退换单'
+        ].map(name => ({
+          label: name,
+          value: name
+        }))
+      )
+    });
   },
   mounted() {
     this.getFeeDetailCodeList();
