@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 11:29:47
+ * @LastEditTime: 2019-12-14 20:10:38
  * @Description: 付款单
 */
 <template>
@@ -143,7 +143,7 @@ export default {
           { label: '账单状态', value: this.stateText[this.detail.state] },
           {
             label: '逾期状态',
-            value: this.overText[this.detail.overSate || 0]
+            value: this.overText[this.detail.overState || 0]
           },
           { label: '总应付金额', value: this.detail.billTotalAmount },
           { label: '实付金额', value: this.detail.factAmount },
