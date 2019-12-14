@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 19:47:19
+ * @LastEditTime: 2019-12-14 22:07:32
  * @Description: 生成销售换货单
 */
 <template>
@@ -62,6 +62,7 @@
           title="换入商品信息"
           from="exchange"
           :data="form"
+          type="edit"
           :options="rowData.quotationCodes || []"
           id="goodsChangeEdit"
         />
@@ -121,6 +122,7 @@ export default {
         attachList: [],//附件,
         attachs: '',//附件,
         busType: 1,//0 退货 1换货,
+        commodityEntityList: [], //编辑的时候用到
         exChangeCommodityList: [], // 临时数据 存放修改后的商品
         businessCommoditySaveVoList: [
           // {
@@ -202,7 +204,13 @@ export default {
     },
   },
   methods: {
-
+    async getDetail() {
+      if (this.code) {
+        let { data } = await this.$api.seePsiSaleService.salesexchangeGetInfoByCode({ code: this.code })
+        data.shipmentFinanceSaveVoList = data.shipmentFinanceEntityList
+        return data;
+      }
+    },
     // 保存表单数据
     async saveHandle() {
       await this.$showFormError(this.$refs.form)

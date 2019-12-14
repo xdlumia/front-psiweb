@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 21:45:32
+ * @LastEditTime: 2019-12-14 22:10:51
  * @Description: 退货商品商品信息
 */
 <template>
@@ -301,18 +301,32 @@ export default {
       this.$api.seePsiSaleService.salesquotationQueryMayCommodity({ quotaionCode: this.data.quotationCode })
         .then(res => {
           let data = res.data || []
+          // this.data.exChangeCommodityList 是临时数据 存放换货后的数据
+          if (this.data.exChangeCommodityList) {
+            this.data.exChangeCommodityList = []
+          }
           console.log(this.type);
 
+          // 如果是编辑退换货的时候
           if (this.type == 'edit') {
-            // 新增时候的商品数据
-            let commodityEntityList = this.data.commodityEntityList || []
+            // 查出入库商品
+            let returnEntityList = [] //入库商品
+            let exchangeEntityList = [] //出库商品
+            this.data.commodityEntityList.forEach(item => {
+              if (item.putawayType == 1) {
+                returnEntityList.push(item)
+              } else if (item.putawayType == 0) {
+                exchangeEntityList.push(item)
+              }
+            })
             data.forEach(item => {
-              let row = commodityEntityList.find(v => v.commodityCode == item.commodityCode)
+              let row = returnEntityList.find(v => v.commodityCode == item.commodityCode)
               if (row) {
                 item.actionableNumber = Number(item.actionableNumber || 0) + Number(row.commodityNumber || 0)
                 item.alterationPrice = row.alterationPrice
               }
             })
+            this.data.exChangeCommodityList = exchangeEntityList
           }
           this.data.businessCommoditySaveVoList = data
           this.data.businessCommoditySaveVoList.map(item => {
@@ -321,11 +335,6 @@ export default {
           })
           // 直接使用this.data.businessCommoditySaveVoList数据响应不过来
           this.returnTableData = this.data.businessCommoditySaveVoList
-
-          // this.data.exChangeCommodityList 是临时数据 存放换货后的数据
-          if (this.data.exChangeCommodityList) {
-            this.data.exChangeCommodityList = []
-          }
         })
     },
     // 税后销售单价
