@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-13 18:19:33
+ * @LastEditTime: 2019-12-14 18:16:23
  * @Description: description
  -->
 <template>
@@ -98,7 +98,7 @@
       :visible.sync="collectInvoiceVisible"
       :rowData="rowData"
       :invoiceType="0"
-      @reload="finvoicebillingInfo"
+      @reload="refresh"
       type="edit"
       :id="rowData.id"
     />
