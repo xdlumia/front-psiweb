@@ -247,7 +247,7 @@
         >
           <template slot-scope="scope">
             <i
-              class="el-icon-delete-solid d-text-red"
+              class="el-icon-delete-solid d-text-red d-pointer"
               @click="delRecord(scope)"
             ></i>
           </template>
@@ -264,7 +264,11 @@
           label="状态"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">{{scope.row.operation == 0?'待入库':'待出库'}}</template>
+          <template slot-scope="scope">
+            <!-- //来源 return 退货 exchange 换货 -->
+            <span v-if="from=='return'">待退货</span>
+            <span v-else>{{scope.row.operation == 0?'待入库':'待出库'}}</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="snCode"
@@ -437,7 +441,7 @@ export default {
     //删除某条
     delRecord(scope) {
       let row = scope.row
-      let index = this.data[`${row.fromType}ScanData`].findIndex(v => v.id = row.id)
+      let index = this.data[`${row.fromType}ScanData`].indexOf(scope.row)
       let item = this.data.putawayCommodityList.find(item => item.id == row.id)
       // 本次扫码次数
       item.scanNumber--

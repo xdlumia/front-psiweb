@@ -1,8 +1,13 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
+<<<<<<< HEAD
  * @LastEditors: web.王晓冬
  * @LastEditTime: 2019-12-14 14:45:50
+=======
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-14 14:16:14
+>>>>>>> b46be91823ecf33280e73c3d9e8d49a88d5b4182
  * @Description: 退货商品商品信息
 */
 <template>
@@ -48,7 +53,7 @@
           <template slot-scope="scope">
             <el-button
               type="text"
-              class="el-icon-remove f18"
+              class="el-icon-remove f18 d-pointer"
               @click="del(scope.row)"
             ></el-button>
           </template>
@@ -197,6 +202,32 @@
           label="备注"
           show-overflow-tooltip
         />
+<<<<<<< HEAD
+=======
+        <el-table-column
+          prop="isTeardown"
+          min-width="120"
+          label="是否拆卸"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <el-form-item
+              class="mb0"
+              prop="isTeardown"
+              v-if="scope.row.categoryCode=='PSI_SP_KIND-1'&&scope.row.configId"
+            >
+              <el-switch
+                :disabled="disabled"
+                :active-value="1"
+                :inactive-value="0"
+                v-model="scope.row.isTeardown"
+              ></el-switch>
+            </el-form-item>
+          </template>
+
+        </el-table-column>
+
+>>>>>>> b46be91823ecf33280e73c3d9e8d49a88d5b4182
       </el-table>
     </form-card>
     <!-- 对退货的商品进行编辑 -->
@@ -262,11 +293,12 @@ export default {
       let { data } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
         { commodityCode: row.commodityCode }
       );
+      (data||[]).map(child=>child.$parentCode=row.commodityCode)
       cb(data);
     },
     // 删除退货
     del(row) {
-      let index = this.data.businessCommoditySaveVoList.findIndex(item => item.id == row.id)
+      let index = this.data.businessCommoditySaveVoList.indexOf(row)
       this.data.businessCommoditySaveVoList.splice(index, 1)
       // this.returnTableData.splice(index, 1)
     },
