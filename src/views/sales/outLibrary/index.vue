@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 14:18:50
+ * @LastEditTime: 2019-12-14 20:18:09
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -35,7 +35,7 @@
           :class="row.salesRequireArrivalTime && row.procurementExpectedArrivalTime>row.salesRequireArrivalTime?'d-text-red':''"
         >{{value}} </span>
         <!-- 有无合同 -->
-        <span v-else-if="column.columnFields=='isContract'">{{value?'有':'无'}}</span>
+        <span v-else-if="column.columnFields=='isContract'">{{value==1?'有':value==0?'无':''}}</span>
 
         <!-- 有无合同 -->
         <span v-else-if="column.columnFields=='contractTemplate'">{{value==1?'非标准':value==0?'标准':''}}</span>

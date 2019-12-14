@@ -69,7 +69,7 @@
       :rowData="detail||{}"
       type="edit"
       @reload="setEdit(),$reload()"
-      :invoiceType="0"
+      :invoiceType="1"
     />
 
   </div>
