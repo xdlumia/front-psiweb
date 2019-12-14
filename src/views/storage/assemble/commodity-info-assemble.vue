@@ -168,6 +168,12 @@
         min-width="110"
         prop="specOne"
       ></el-table-column>
+      <el-table-column
+        label="备注"
+        min-width="110"
+        prop="note"
+        show-overflow-tooltip
+      ></el-table-column>
     </el-table>
     <!-- <commodityChoose
       @update=update
