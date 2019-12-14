@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 11:57:09
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-14 15:02:48
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -272,8 +272,8 @@ export default {
     },
     // 统计点击筛选
     staHandle(row) {
-      this.$set(this.params,'state',row.state);
-      this.$nextTick(()=>this.$refs.table.reload(1));
+      this.$set(this.params, 'state', row.state);
+      this.$nextTick(() => this.$refs.table.reload(1));
     },
     // 更多操作
     moreHandle(type) {
@@ -338,7 +338,7 @@ export default {
         let filterOptions = []
         cols.forEach(item => {
           // 过滤状态不用添加到筛选里的类型
-          let notFilter = ['state', 'matchState', 'personInChargeName', 'companySettlementInfo']
+          let notFilter = ['note', 'state', 'matchState', 'personInChargeName', 'companySettlementInfo']
           if (!notFilter.includes(item.columnFields)) {
 
             let type = 'text' //默认筛选类型是text
