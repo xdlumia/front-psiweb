@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-11 14:13:59
+ * @LastEditTime: 2019-12-14 17:51:20
  * @Description: 退货扫码
 */
 
@@ -60,6 +60,7 @@ export default {
   data() {
     return {
       form: {
+        loading: false,
         //单据出入库商品数量变更集合
         alterationCommodityVoList: [
           // {
@@ -126,27 +127,19 @@ export default {
       copyParams.businessId = this.rowData.id
       copyParams.putawayCommodityList = [...copyParams.returnScanData, ...copyParams.exchangeScanData]
       let api = 'salesreturnedScanReturned'
-      if (!copyParams.returnScanData.length) {
+      if (this.from == 'exchange') {
+        copyParams.businessType = 18
+        api = 'salesexchangeScanExchange'
+      }
+      if (!copyParams.putawayCommodityList.length) {
         this.$message({
-          message: '没有退货扫码记录',
+          message: '没有退换货扫码记录',
           type: 'error',
           showClose: true,
         });
         return
       }
-      if (this.from == 'exchange') {
-        copyParams.businessType = 18
-        api = 'salesexchangeScanExchange'
-        if (!copyParams.exchangeScanData.length) {
-          this.$message({
-            message: '没有换货扫码记录',
-            type: 'error',
-            showClose: true,
-          });
-          return
-        }
-      }
-
+      this.loading = true
       this.$api.seePsiSaleService[api](copyParams)
         .then(res => {
           this.$emit('reload')
@@ -154,7 +147,7 @@ export default {
           this.close()
         })
         .finally(() => {
-
+          this.loading = false
         })
     }
   },
