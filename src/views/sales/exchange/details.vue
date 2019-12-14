@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 14:12:23
+ * @LastEditTime: 2019-12-14 15:26:02
  * @Description: 销售换货单详情
 */
 <template>
@@ -38,6 +38,7 @@
         :model="form"
         size="mini"
         label-position="top"
+        v-if="form&&detail"
       >
         <el-tabs v-model="activeName">
           <el-tab-pane

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 14:16:14
+ * @LastEditTime: 2019-12-14 14:42:15
  * @Description: 退货商品商品信息
 */
 <template>
@@ -197,7 +197,7 @@
           label="备注"
           show-overflow-tooltip
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="isTeardown"
           min-width="120"
           label="是否拆卸"
@@ -218,7 +218,7 @@
             </el-form-item>
           </template>
 
-        </el-table-column>
+        </el-table-column> -->
 
       </el-table>
     </form-card>
