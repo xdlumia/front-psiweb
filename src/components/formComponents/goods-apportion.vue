@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 15:36:58
+ * @LastEditTime: 2019-12-14 11:32:59
  * @Description: 新增费用分摊单商品信息
 */
 <template>
@@ -74,9 +74,9 @@
           show-overflow-tooltip
         />
         <el-table-column
-          prop="salesPrice"
+          prop="discountSprice"
           min-width="80"
-          label="销售单价"
+          label="折后销售单价"
           show-overflow-tooltip
         />
 

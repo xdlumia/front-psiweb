@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 15:50:50
+ * @LastEditTime: 2019-12-14 10:44:40
  * @Description: 退货商品商品信息
 */
 <template>
@@ -359,7 +359,7 @@ export default {
 
         }
         //获取应退金额
-        if (col.property == 'alterationPrice') {
+        if (col.property == 'taxTotalAmount') {
           this.data.shouldRefundAmount = sums[index]
         }
         //获取销售数量
