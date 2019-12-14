@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 11:33:47
+ * @LastEditTime: 2019-12-14 11:34:57
  * @Description: 退货商品商品信息
 */
 <template>
@@ -188,7 +188,7 @@
         <el-table-column
           prop="taxTotalAmount"
           min-width="120"
-          label="税后总价"
+          label="总价"
           show-overflow-tooltip
         />
         <el-table-column
