@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 15:57:09
+ * @LastEditTime: 2019-12-14 16:21:40
  * @Description: 收支流水 已绑定 1
 */
 <template>
@@ -12,7 +12,7 @@
       <span class="fr">
         <el-link
           :underline="false"
-          @click="addIncoming()"
+          @click="addIncoming"
           class="mr10"
           type="primary"
           v-if="!hide.includes('addIncoming')&&pageConfig&&authorityButtons.includes(pageConfig.func.addIncoming)"
@@ -28,7 +28,8 @@
     <el-table :data="recList" size="mini" v-loading="loading">
       <el-table-column label="流水号" min-width="80" prop="serialNumber" show-overflow-tooltip></el-table-column>
       <el-table-column label="对方名称" min-width="80" prop="oppositeAccount" show-overflow-tooltip></el-table-column>
-      <el-table-column label="入账日期" min-width="100" prop="createTime" show-overflow-tooltip>
+      <!-- 收款0 付款1 -->
+      <el-table-column :label="type==1?'出账日期':'入账日期'" min-width="100" prop="createTime" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{row.createTime|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
         </template>
@@ -142,7 +143,7 @@ export default {
   methods: {
     async getRecList() {
       if (!this.billId) return;
-      let {
+      const {
         data
       } = await this.$api.seePsiFinanceService.fincomerecordmatchQueryList(
         Object.assign(

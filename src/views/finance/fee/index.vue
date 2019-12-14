@@ -109,6 +109,8 @@ const filterOptions = [
   //   dictName: 'PSI_GSSZ_FPZDXE' },
   // { label: '费用类型', prop: 'feeTypeCode', default: true, type: 'dict', dictName: 'ZD_DY_LX' },
   { label: '费用单编号', prop: 'costCode', default: true },
+  // { label: '关联单据编号', prop: 'costCode', default: true },
+  { label: '对方名称', prop: 'clientName', default: true },
   { label: '创建人', prop: 'creator', default: true, type: 'employee' },
   // { label: '发票代码', prop: 'invoiceCoding', default: true },
   { label: '金额', prop: 'Amount', default: true, type: 'numberrange' },
