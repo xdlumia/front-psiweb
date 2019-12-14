@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 19:52:12
+ * @LastEditTime: 2019-12-14 19:57:52
  * @Description: 销售换货单详情
 */
 <template>
@@ -13,6 +13,7 @@
       width="920px"
       :status="status"
       @close="close"
+      v-loading="loading"
     >
       <div
         slot="button"

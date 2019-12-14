@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 17:11:40
+ * @LastEditTime: 2019-12-14 19:57:44
  * @Description: 客户详情
 */
 <template>
@@ -14,6 +14,7 @@
       @close="close"
       width="920px"
       :status="statusArr"
+      v-loading="loading"
     >
       <div slot="button">
         <!-- 操作按钮 -->

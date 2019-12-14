@@ -13,6 +13,7 @@
       width="920px"
       :status="status"
       @close="close"
+      v-loading="loading"
     >
       <div
         slot="button"
