@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 14:42:15
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-14 14:57:41
  * @Description: 退货商品商品信息
 */
 <template>
@@ -188,7 +188,7 @@
         <el-table-column
           prop="taxTotalAmount"
           min-width="120"
-          label="总价"
+          label="税后总价"
           show-overflow-tooltip
         />
         <el-table-column
@@ -285,7 +285,7 @@ export default {
       let { data } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
         { commodityCode: row.commodityCode }
       );
-      (data||[]).map(child=>child.$parentCode=row.commodityCode)
+      (data || []).map(child => child.$parentCode = row.commodityCode)
       cb(data);
     },
     // 删除退货
@@ -324,8 +324,8 @@ export default {
       }
 
       let taxRate = (row.taxRate || 100) / 100  ///税率
-      let commodityNumber = row.commodityNumber || 1 //退货数量
-      let alterationPrice = row.alterationPrice || 0 //销售单价
+      let commodityNumber = row.commodityNumber || 0 //退货数量
+      let alterationPrice = row.alterationPrice || 0 //退货单价
       // 税后销售单价  公式:销售单价 * (1-税率)
       row.taxPrice = (alterationPrice * (1 - taxRate)).toFixed(2)
       // 销售税后总价  公式:税后销售单价 * 退货数量
@@ -361,7 +361,7 @@ export default {
 
         }
         //获取应退金额
-        if (col.property == 'taxTotalAmount') {
+        if (col.property == 'alterationPrice') {
           this.data.shouldRefundAmount = sums[index]
         }
         //获取销售数量

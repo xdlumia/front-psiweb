@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 15:37:44
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-14 15:43:38
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -273,8 +273,8 @@ export default {
     },
     // 统计点击筛选
     staHandle(row) {
-      this.$set(this.params,'state',row.state);
-      this.$nextTick(()=>this.$refs.table.reload(1));
+      this.$set(this.params, 'state', row.state);
+      this.$nextTick(() => this.$refs.table.reload(1));
     },
     // 更多操作
     moreHandle(type) {
@@ -339,7 +339,7 @@ export default {
         let filterOptions = []
         cols.forEach(item => {
           // 过滤状态不用添加到筛选里的类型
-          let notFilter = ['state', 'matchState', 'personInChargeName', 'companySettlementInfo']
+          let notFilter = ['note', 'state', 'matchState', 'personInChargeName', 'companySettlementInfo']
           if (!notFilter.includes(item.columnFields)) {
 
             let type = 'text' //默认筛选类型是text
@@ -367,7 +367,7 @@ export default {
             // 如果是有无合同
             else if (item.columnFields == 'isContract') {
               type = 'select'
-              options = [{ label: '有', value: 1 }, { label: '无', value: 0 }]
+              options = [{ label: '全部', value: '' }, { label: '有', value: 1 }, { label: '无', value: 0 }]
             }
             // 收支状态
             else if (item.columnFields == 'incomeType') {
@@ -399,7 +399,7 @@ export default {
           // 合并数组
           var obj = {};
           this.autoFilterOptions = [...this.filterOptions, ...filterOptions].reduce((item, next) => {
-            obj[next.prop.toLowerCase()] ? '' : obj[next.prop.toLowerCase()] = true && item.push(next);
+            obj[next.label] ? '' : obj[next.label] = true && item.push(next);
             return item;
           }, []);
         } else if (this.filterOptions && !this.mergeFilter) {

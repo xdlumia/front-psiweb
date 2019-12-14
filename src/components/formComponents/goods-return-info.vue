@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 15:18:30
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-14 15:32:02
  * @Description: 退货商品商品信息
 */
 <template>
@@ -364,9 +364,9 @@ export default {
 
         }
         //获取税后总价
-        if (col.property == 'taxTotalAmount') {
-          this.form.shouldRefundAmount = sums[index]
-        }
+        // if (col.property == 'taxTotalAmount') {
+        //   this.form.shouldRefundAmount = sums[index]
+        // }
       });
       return sums
     },

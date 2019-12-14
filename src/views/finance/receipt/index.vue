@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 17:05:28
+ * @LastEditTime: 2019-12-14 15:14:46
  * @Description: 销售-待收票
  */
 <template>
@@ -17,6 +17,8 @@
       api="seePsiFinanceService.finvoicereceivableList"
       exportApi="seePsiFinanceService.finvoicereceivableExport"
       :params="Object.assign(queryForm,params)"
+      :mergeFilter="true"
+      :filterOptions="filterOptions"
     >
       <template slot="top-filter">
         <el-row
@@ -66,6 +68,7 @@
           >{{value}}</el-link>
         </span>
         <!-- 发票类型 -->
+        <span v-else-if="column.columnFields=='overState'">{{value==0?'正常':value==1?'已逾期':''}}</span>
         <span v-else-if="column.columnFields=='invoiceTypeCode'">{{value|dictionary('CW_FP_LX')}}</span>
         <span v-else>{{value}}</span>
       </template>
@@ -120,6 +123,13 @@ export default {
   },
   data() {
     return {
+      filterOptions: [
+        { label: '发票类型', prop: 'invoiceTypeCode', default: true, type: 'dict', dictName: 'CW_FP_LX', },
+        {
+          label: '逾期状态', prop: 'overState', default: true, type: 'select',
+          options: [{ label: '全部', value: '' }, { label: '已逾期', value: '1', }, { label: '正常', value: '0' }]
+        }
+      ],
       loading: false,
       // 查询表单
       queryForm: {
