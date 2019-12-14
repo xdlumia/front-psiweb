@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 09:31:33
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-14 14:12:23
  * @Description: 销售换货单详情
 */
 <template>
@@ -149,6 +149,7 @@ export default {
     async getDetail() {
       if (this.code) {
         let { data } = await this.$api.seePsiSaleService.salesexchangeGetInfoByCode({ code: this.code })
+        data.shipmentFinanceSaveVoList = data.shipmentFinanceEntityList
         return data;
       }
     },

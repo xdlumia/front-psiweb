@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-06 12:02:02
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-14 14:12:55
  * @Description: 其他费用
  */
 <template>
@@ -22,6 +22,7 @@
         class="el-icon-remove d-pointer f20 d-absolute"
         style="right:10px; top:10px; z-index:1"
         @click="data.shipmentFinanceSaveVoList.splice(index,1)"
+        v-if="!disabled"
       ></i>
       <el-row :gutter="10">
         <el-col
