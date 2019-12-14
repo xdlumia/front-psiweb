@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 19:54:34
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-14 10:11:02
  * @Description: 销售和采购调价单
 */
 <template>
@@ -101,7 +101,7 @@ export default {
   props: {
     sort: {
       type: Array,
-      default: () => []
+      default: () => ['commodityCode','goodsName','goodsPic','categoryCode','className','specOne',"purchaseAverage", "inventoryPrice", "adjustPriceMoney", "repertoryCost", "usableInventoryNum", "adjustPriceDifference	", "saleReferencePrice", "taxBeforeAdjustPrice", "profitRate",'action']
     },
     hide: {
       type: Array,
