@@ -32,14 +32,8 @@
             <span style="line-height:28px;">结算账户：</span>
           </el-col>
           <el-col :span="18">
-            <el-select
-              size="mini"
-              v-model="queryForm.companySettlementId"
-            >
-              <el-option
-                value
-                label="全部"
-              ></el-option>
+            <el-select size="mini" v-model="queryForm.companySettlementId">
+              <el-option value label="全部"></el-option>
               <el-option
                 v-for="(item, index) in settlementAccount"
                 :key="index"
@@ -73,12 +67,8 @@
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <add
-      :visible.sync="visible"
-      ref="addQuotation"
-      v-if="visible"
-      @refresh="$refs.table.reload"
-    ></add>
+    <add :visible.sync="visible" ref="addQuotation" v-if="visible"
+@refresh="$refs.table.reload"></add>
     <detail
       @refresh="$refs.table.reload(queryForm.page)"
       v-if="showDetail"
@@ -93,31 +83,6 @@
 import invoiceMixin from '../invoice-mixins'
 import add from './add'
 import detail from './detail'
-
-const filterOptions = [
-  {    label: '账单状态',
-    prop: 'settleStatus',
-    type: 'select',
-    default: true,
-    options: [
-      { label: '未结清', value: 0 },
-      { label: '部分结清', value: 1 },
-      { label: '已结清', value: 2 },
-      { label: '已关闭', value: 3 }
-    ]
-  },
-  //   dictName: 'PSI_GSSZ_FPZDXE' },
-  // { label: '费用类型', prop: 'feeTypeCode', default: true, type: 'dict', dictName: 'ZD_DY_LX' },
-  { label: '费用单编号', prop: 'costCode', default: true },
-  // { label: '关联单据编号', prop: 'costCode', default: true },
-  { label: '对方名称', prop: 'clientName', default: true },
-  { label: '创建人', prop: 'creator', default: true, type: 'employee' },
-  // { label: '发票代码', prop: 'invoiceCoding', default: true },
-  { label: '金额', prop: 'Amount', default: true, type: 'numberrange' },
-  // { label: '结束发票号码', prop: 'EndCoding', default: true, type: 'numberrange' },
-  { label: '创建时间', prop: 'CreateTime', default: true, type: 'daterange' }
-  // { label: '作废数量', prop: 'FailureNumber', default: true, type: 'numberrange' }
-]
 
 export default {
   mixins: [invoiceMixin],
@@ -152,9 +117,33 @@ export default {
         companySettlementId: ''
       },
       // 筛选数据
-      filterOptions: filterOptions,
+      filterOptions: [
+        { label: '账单状态',
+          prop: 'settleStatus',
+          type: 'select',
+          default: true,
+          options: [
+            { label: '未结清', value: 0 },
+            { label: '部分结清', value: 1 },
+            { label: '已结清', value: 2 },
+            { label: '已关闭', value: 3 }
+          ]
+        },
+        { label: '费用类型',
+          prop: 'feeTypeCode',
+          type: 'select',
+          default: true,
+          options: []
+        },
+        { label: '费用单编号', prop: 'costCode', default: true },
+        { label: '对方名称', prop: 'clientName', default: true },
+        { label: '创建人', prop: 'creator', default: true, type: 'employee' },
+        { label: '金额', prop: 'Amount', default: true, type: 'numberrange' },
+        { label: '创建时间', prop: 'CreateTime', default: true, type: 'daterange' }
+      ],
       // 当前行数据
       rowData: {},
+      feeTypeCodeList: [],
       stateText: {
         '-1': '新建',
         '0': '审核中',
@@ -190,6 +179,7 @@ export default {
     }
   },
   mounted() {
+    this.getDictionaryValueTreeList()
   },
   methods: {
     detail(row) {
@@ -199,13 +189,29 @@ export default {
     },
     // 多选
     selectionChange(val) {
-      this.$emit("selection-change", val);
+      this.$emit('selection-change', val);
     },
     // 按钮功能操作
     eventHandle(type, row) {
       this[type] = true
       this.rowData = row || {}
       return
+    },
+    getDictionaryValueTreeList() {
+      this.$api.seeDictionaryService.getDictionaryValueTreeList({ dicCode: 'ZD_DY_LX' }).then(res => {
+        this.feeTypeCodeList = [{ label: '全部', value: '' }].concat(res.data.map(item => {
+          return {
+            label: item.content,
+            value: item.code
+          }
+        }))
+        this.$set(this.filterOptions, 1, { label: '费用类型',
+          prop: 'feeTypeCode',
+          type: 'select',
+          default: true,
+          options: this.feeTypeCodeList
+        })
+      })
     }
   }
 };
