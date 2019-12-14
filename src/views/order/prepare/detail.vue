@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 10:02:30
+ * @LastEditTime: 2019-12-14 11:28:12
  * @Description: 备货单详情
 */
 <template>
@@ -112,7 +112,7 @@
       </el-tab-pane>
     </el-tabs>
     <addOrderStorage :joinCode="code" :visible.sync="showAddOrderStorage" @reload="setEdit(),$reload()" from="备货单" />
-    <Edit :rowData="detail" :visible.sync="showEdit" @reload="reload" type="edit" v-if="showEdit&&detail" />
+    <Edit :rowData="detail" :visible.sync="showEdit" @reload="setEdit(),$reload()" type="edit" v-if="showEdit&&detail" />
   </sideDetail>
 </template>
 <script>

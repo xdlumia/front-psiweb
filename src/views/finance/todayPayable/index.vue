@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 17:18:05
+ * @LastEditTime: 2019-12-14 14:36:09
  * @Description: 今日应付账单
 */
 <template>
@@ -104,7 +104,7 @@ export default {
         { label: '预应付', prop: 'PredictAmount', type: 'numberRange', default: true },
         { label: '应付', prop: 'Amount', type: 'numberRange', default: true },
         { label: '实付', prop: 'FactAmount', type: 'numberRange', default: true },
-        { label: '付款日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
+        { label: '应付日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '生成日期', prop: 'CreateTime', type: 'dateRange' },
         { label: '创建人', prop: 'creator', type: 'employee' },
@@ -145,7 +145,7 @@ export default {
   created() {
     // prettier-ignore
     if(this.pageConfig.title=='今日应付账单'){
-      this.$set(this.defaultParams,'state',2)
+      this.$set(this.defaultParams,'state',0)
       this.filterOptions.map((item,i)=>{
         if(item.prop=='settleStatus'){
           this.filterOptions.splice(i,1)
@@ -190,6 +190,8 @@ export default {
       params = JSON.parse(JSON.stringify(params));
       if (this.pageConfig.title == '今日应付账单') {
         params.settleStatus = [0, 1];
+      } else {
+        params.settleStatus = params.state;
       }
       return params;
     },

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 10:17:02
+ * @LastEditTime: 2019-12-14 14:57:41
  * @Description: 退货商品商品信息
 */
 <template>
@@ -48,7 +48,7 @@
           <template slot-scope="scope">
             <el-button
               type="text"
-              class="el-icon-remove f18"
+              class="el-icon-remove f18 d-pointer"
               @click="del(scope.row)"
             ></el-button>
           </template>
@@ -197,7 +197,7 @@
           label="备注"
           show-overflow-tooltip
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="isTeardown"
           min-width="120"
           label="是否拆卸"
@@ -207,6 +207,7 @@
             <el-form-item
               class="mb0"
               prop="isTeardown"
+              v-if="scope.row.categoryCode=='PSI_SP_KIND-1'&&scope.row.configId"
             >
               <el-switch
                 :disabled="disabled"
@@ -217,7 +218,7 @@
             </el-form-item>
           </template>
 
-        </el-table-column>
+        </el-table-column> -->
 
       </el-table>
     </form-card>
@@ -284,11 +285,12 @@ export default {
       let { data } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
         { commodityCode: row.commodityCode }
       );
+      (data || []).map(child => child.$parentCode = row.commodityCode)
       cb(data);
     },
     // 删除退货
     del(row) {
-      let index = this.data.businessCommoditySaveVoList.findIndex(item => item.id == row.id)
+      let index = this.data.businessCommoditySaveVoList.indexOf(row)
       this.data.businessCommoditySaveVoList.splice(index, 1)
       // this.returnTableData.splice(index, 1)
     },
@@ -322,8 +324,8 @@ export default {
       }
 
       let taxRate = (row.taxRate || 100) / 100  ///税率
-      let commodityNumber = row.commodityNumber || 1 //退货数量
-      let alterationPrice = row.alterationPrice || 0 //销售单价
+      let commodityNumber = row.commodityNumber || 0 //退货数量
+      let alterationPrice = row.alterationPrice || 0 //退货单价
       // 税后销售单价  公式:销售单价 * (1-税率)
       row.taxPrice = (alterationPrice * (1 - taxRate)).toFixed(2)
       // 销售税后总价  公式:税后销售单价 * 退货数量
@@ -359,7 +361,7 @@ export default {
 
         }
         //获取应退金额
-        if (col.property == 'taxTotalAmount') {
+        if (col.property == 'alterationPrice') {
           this.data.shouldRefundAmount = sums[index]
         }
         //获取销售数量

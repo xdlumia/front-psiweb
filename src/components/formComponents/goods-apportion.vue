@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 15:36:58
+ * @LastEditTime: 2019-12-14 11:52:25
  * @Description: 新增费用分摊单商品信息
 */
 <template>
@@ -74,9 +74,9 @@
           show-overflow-tooltip
         />
         <el-table-column
-          prop="salesPrice"
-          min-width="80"
-          label="销售单价"
+          prop="discountSprice"
+          min-width="160"
+          label="折后销售单价"
           show-overflow-tooltip
         />
 
@@ -97,8 +97,9 @@
         <el-table-column
           prop="preTaxAmount"
           min-width="120"
-          label="含税总价"
+          label="折后总价"
           show-overflow-tooltip
+          :formatter="(row)=>((row.commodityNumber||0)*(row.discountSprice||0)).toFixed(2)"
         />
         <el-table-column
           prop="apportionmentAmount"
@@ -150,10 +151,16 @@ export default {
       columns.forEach((col, index) => {
         if (index == 0) {
           sums[index] = '总价'
-        } else if (col.property == 'commodityNumber' || col.property == 'preTaxAmount') {
+        } else if (col.property == 'preTaxAmount') {
+
+          sums[index] = data.reduce((sum, curr) => {
+            return sum + (curr.commodityNumber || 0) * (curr.discountSprice || 0)
+          }, 0).toFixed(2)
+        }
+        // 折后金额
+        else if (col.property == 'commodityNumber') {
           const values = data.map(item => Number(item[col.property] || 0));
           sums[index] = values.reduce((sum, curr) => {
-            const val = Number(curr)
             return sum + curr
           }, 0)
         }

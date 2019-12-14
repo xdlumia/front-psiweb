@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 17:21:31
+ * @LastEditTime: 2019-12-14 15:32:02
  * @Description: 退货商品商品信息
 */
 <template>
@@ -21,12 +21,14 @@
         ref="table"
       >
         <el-table-column
+          fixed
           prop="commodityCode"
           min-width="100"
           label="商品编号"
           show-overflow-tooltip
         />
         <el-table-column
+          fixed
           prop="goodsPic"
           min-width="100"
           label="商品图片"
@@ -44,6 +46,7 @@
           </template>
         </el-table-column>
         <el-table-column
+          fixed
           prop="goodsName"
           min-width="100"
           label="商品名称"
@@ -51,6 +54,7 @@
         />
 
         <el-table-column
+          fixed
           prop="categoryCode"
           min-width="80"
           label="商品类别"
@@ -61,6 +65,7 @@
           </template>
         </el-table-column>
         <el-table-column
+          fixed
           v-if="title=='换入商品信息' || title=='退货商品信息'"
           prop="alterationNumber"
           min-width="80"
@@ -71,10 +76,11 @@
             <span
               @click="changeRecord(scope)"
               class="d-text-blue d-pointer"
-            >{{scope.row.alterationNumber}}/{{scope.row.commodityNumber}}</span>
+            >{{scope.row.alterationNumber || 0}}/{{scope.row.commodityNumber}}</span>
           </template>
         </el-table-column>
         <el-table-column
+          fixed
           v-if="title=='换出商品信息'"
           prop="alterationNumber"
           min-width="80"
@@ -159,7 +165,7 @@
           label="备注"
           show-overflow-tooltip
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="isTeardown"
           min-width="120"
           label="是否拆卸"
@@ -174,7 +180,7 @@
             ></el-switch>
           </template>
 
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </form-card>
     <goods-return-record
@@ -250,17 +256,30 @@ export default {
       columns.forEach((col, index) => {
         if (index == 0) {
           sums[index] = '总价'
-        } else if (col.property == 'taxPrice' || col.property == 'taxTotalAmount') {
+        } else if (['alterationNumber', 'taxPrice', 'taxTotalAmount'].includes(col.property)) {
           const values = data.map(item => Number(item[col.property] || 0));
-          sums[index] = values.reduce((sum, curr) => {
-            const val = Number(curr)
-            return sum + curr
-          }, 0).toFixed(2)
+          if (['alterationNumber'].includes(col.property)) {
+            // let commodityNumber = data.map(item => Number(item.commodityNumber || 0))
+            let commodityNumber = data.reduce((sum, cur) => {
+              return sum + Number(cur.commodityNumber || 0)
+            }, 0)
+            let alterationNumber = data.reduce((sum, cur) => {
+              return sum + Number(cur.alterationNumber || 0)
+            }, 0)
+            sums[index] = `${alterationNumber}/${commodityNumber}`
+
+          } else {
+            sums[index] = values.reduce((sum, curr) => {
+              const val = Number(curr)
+              return sum + curr
+            }, 0).toFixed(2)
+          }
+
         }
         //获取税后总价
-        if (col.property == 'taxTotalAmount') {
-          this.form.shouldRefundAmount = sums[index]
-        }
+        // if (col.property == 'taxTotalAmount') {
+        //   this.form.shouldRefundAmount = sums[index]
+        // }
       });
       return sums
     },

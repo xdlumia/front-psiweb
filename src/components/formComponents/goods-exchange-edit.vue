@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 15:49:07
+ * @LastEditTime: 2019-12-14 14:28:58
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -233,7 +233,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column
+      <!-- <el-table-column
         show-overflow-tooltip
         label="是否直发"
         min-width="110"
@@ -249,9 +249,9 @@
             v-model="scope.row.isDirect"
           ></el-switch>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
-      <el-table-column
+      <!-- <el-table-column
         show-overflow-tooltip
         label="是否组装"
         min-width="110"
@@ -267,14 +267,15 @@
             v-model="row.isAssembly"
           ></el-switch>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
         show-overflow-tooltip
-        label="库存数量"
+        label="销售参考价"
         min-width="110"
-        prop="inventoryNumber"
+        prop="saleReferencePrice"
       />
+      <!-- TODO最近销售价不对 -->
       <el-table-column
         show-overflow-tooltip
         label="最近销售价"
