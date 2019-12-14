@@ -127,7 +127,7 @@ export default {
         { label: '预应付', prop: 'PredictAmount', type: 'numberRange', default: true },
         { label: '应付', prop: 'Amount', type: 'numberRange', default: true },
         { label: '实付', prop: 'FactAmount', type: 'numberRange', default: true },
-        { label: '付款日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
+        { label: '应付日期', prop: 'PayEndDate', type: 'dateRange', int: true, default: true },
         { label: '创建部门', prop: 'deptTotalCode', type: 'dept' },
         { label: '生成日期', prop: 'CreateTime', type: 'dateRange' },
         { label: '创建人', prop: 'creator', type: 'employee' },
