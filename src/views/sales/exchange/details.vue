@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 19:57:52
+ * @LastEditTime: 2019-12-14 22:02:25
  * @Description: 销售换货单详情
 */
 <template>
@@ -84,7 +84,7 @@
 </template>
 <script>
 import detail from './details/detail' //详情
-import add from '../return/add'
+import add from './add'
 import returnScan from '../return/return-scan' // 换货扫码
 import VisibleMixin from '@/utils/visibleMixin';
 export default {

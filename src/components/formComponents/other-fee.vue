@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 15:26:48
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-15 09:21:38
  * @Description: 其他费用
  */
 <template>
@@ -109,6 +109,16 @@ export default {
     }
   },
   watch: {
+    'data.shipmentFinanceSaveVoList': {
+      handler(val) {
+        if (!val.length) return;
+        val.forEach((item, index) => {
+          let { children } = this.formItems[0].options.find(v => v.code == item.feeTypeCode)
+          this.$set(this.data.shipmentFinanceSaveVoList[index], 'options', children)
+        })
+      },
+      deep: true
+    }
   },
   mounted() {
     this.getDictionaryValueTreeList()

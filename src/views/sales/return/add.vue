@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 19:03:56
+ * @LastEditTime: 2019-12-15 09:12:17
  * @Description: 生成销售退货单
 */
 <template>
@@ -61,6 +61,7 @@
         <goods-return-edit
           from="return"
           :data="form"
+          type='edit'
           :options="rowData.quotationCodes || []"
           id="goodsChangeEdit"
         />
@@ -70,7 +71,6 @@
           id="otherFee"
           :data="form"
         />
-
         <!-- 账期信息 -->
         <return-bill-info
           id="returnBillInfo"
@@ -121,6 +121,7 @@ export default {
         actualRefundAmount: '',//实退金额
         alterationCode: '',//退换货编号,
         attachList: [],//附件,
+        commodityEntityList: [], //别删 留着
         businessCommoditySaveVoList: [ //商品信息
           // {
           //   alterationNumber: '',//	退换商品数量(出入数量)
@@ -204,15 +205,16 @@ export default {
     async getDetail() {
       if (this.code) {
         let { data } = await this.$api.seePsiSaleService.salesreturnedGetInfoByCode({ code: this.code })
+        data.shipmentFinanceSaveVoList = data.shipmentFinanceEntityList
         return data;
       }
     },
     // 保存表单数据
     async saveHandle() {
-      if (+val > +shouldRefundAmount) {
+      if (+this.form.actualRefundAmount > +this.form.shouldRefundAmount) {
         this.$message({
           message: '实退金额不能大于应退金额',
-          type: 'error',
+          type: 'Warning',
           showClose: true,
         });
         return

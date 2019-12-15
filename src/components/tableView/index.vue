@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 20:03:27
+ * @LastEditTime: 2019-12-14 20:06:39
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -402,7 +402,6 @@ export default {
             obj[next.label] ? '' : obj[next.label] = true && item.push(next);
             return item;
           }, []);
-          console.log(filterOptions);
         } else if (this.filterOptions && !this.mergeFilter) {
           this.autoFilterOptions = this.filterOptions
 
