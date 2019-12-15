@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 18:16:23
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-15 09:27:54
  * @Description: 公司信息  传入 公司发票账户 和公司结算账户id 会自动查询其余信息
 */
 <template>
@@ -133,10 +133,10 @@ export default {
     }
   },
   mounted() {
-    if(this.defaultData){
-       this.invoiceOptions = [this.defaultData]
-       this.settlementOptions = this.defaultData.commonCorporationAccountEntities
-    } else{
+    if (this.defaultData) {
+      this.invoiceOptions = [this.defaultData]
+      this.settlementOptions = this.defaultData.commonCorporationAccountEntities
+    } else {
       this.commoncorporationSelectForJxc()
     }
   },
@@ -164,8 +164,8 @@ export default {
       this.companyInfo.taxpayersNum = row.taxpayersNum
       this.companyInfo.registerAddres = row.address
       this.companyInfo.registerPhone = row.phone
-      this.$set(this.data,'companyAccountId',row.id)
-      this.$set(this.data,'companySettlementId','')
+      this.$set(this.data, 'companyAccountId', row.id)
+      this.$set(this.data, 'companySettlementId', '')
 
       // 这里的接口是公共的 .所以字段不对应
       this.companyInfo.invoiceTitle = row.corporationName
@@ -177,7 +177,7 @@ export default {
     },
     // 公司结算账户更改
     settlementChange(row) {
-      this.$set(this.data,'companySettlementId',row.id)
+      this.$set(this.data, 'companySettlementId', row.id)
       // 这里的接口是公共的 .所以字段不对应
       this.companyInfo.accountBank = row.accountBank
       this.companyInfo.bankAccount = row.account
@@ -197,6 +197,7 @@ export default {
         this.companyInfo.invoiceTitle = invoiceSelected.corporationName
         this.companyInfo.taxpayersNum = invoiceSelected.taxpayersNum
         this.companyInfo.registerAddres = invoiceSelected.address
+        this.companyInfo.registerPhone = invoiceSelected.phone
         if (this.data && this.data.companySettlementId) {
           // 获取公司结算账户当前项
           this.settlementItem = { id: this.data.companySettlementId }
