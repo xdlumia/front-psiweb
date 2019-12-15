@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 17:48:17
+ * @LastEditTime: 2019-12-15 11:45:32
  * @Description: 采购入库单
 */
 <template>
@@ -35,6 +35,7 @@
             }:{}"
             id="arrivalInfo"
             ref="arrivalInfo"
+            :disables="form.source=='请购单'?['saleTime']:[]"
             v-if="form.source!='直发单'"
           />
           <buyingDeliverInfo :data="form" id="deliverInfo" ref="deliverInfo" v-else />

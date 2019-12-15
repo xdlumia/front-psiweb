@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 15:33:27
+ * @LastEditTime: 2019-12-15 11:44:48
  * @Description: 到货信息 已绑定字段 1
  */
 <template>
@@ -10,7 +10,7 @@
     <el-row :gutter="10">
       <el-col :span="8" v-if="!hide.includes('saleTime')">
         <el-form-item :rules="[{ required: true, trigger: 'blur' }]" :label="labels.saleTime?labels.saleTime:'销售要求到货时间'" prop="saleTime">
-          <el-date-picker :disabled="disabled" :placeholder="`请选择${labels.saleTime?labels.saleTime:'销售要求到货时间'}`" class="wfull" v-model="data.saleTime" value-format="timestamp" />
+          <el-date-picker :disabled="disabled||disables.includes('saleTime')" :placeholder="`请选择${labels.saleTime?labels.saleTime:'销售要求到货时间'}`" class="wfull" v-model="data.saleTime" value-format="timestamp" />
         </el-form-item>
       </el-col>
       <el-col :span="8" v-if="!hide.includes('purchaseTime')">
@@ -95,6 +95,10 @@ export default {
     labels:{
       type:Object,
       default:()=>({})
+    },
+    disables:{
+      type:Array,
+      default:()=>[]
     }
   },
   data() {
