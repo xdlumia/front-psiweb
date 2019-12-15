@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-13 09:35:11
+ * @LastEditTime: 2019-12-15 11:28:38
  * @Description: 新增调拨单
 */
 <template>
@@ -112,7 +112,7 @@ export default {
         logisticsFees: '',//物流费用
         note: '',//备注
         serviceGrade: '',
-        wmsCommodityIdList: [],//调出库房商品ids 
+        wmsCommodityIdList: [],//调出库房商品ids  
         wmsNames: [],//庫房名稱
         source: '新增',
       }

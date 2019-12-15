@@ -107,7 +107,7 @@ export default {
       this.$api.seePsiPurchaseService.purchaseGetByCode(null, this.code)
         .then(res => {
           this.detailForm = res.data || {}
-          this.status[0].value = this.detailForm.putinState == 0 ? '待入库' : this.detailForm.putinState == 1 ? '部分完成' : this.detailForm.putinState == 2 ? '完成入库' : this.detailForm.putinState == 3 ? '终止' : '-'
+          this.status[0].value = this.detailForm.putinState == 0 ? '待入库' : this.detailForm.putinState == 1 ? '部分入库' : this.detailForm.putinState == 2 ? '完成入库' : this.detailForm.putinState == 3 ? '终止' : '-'
           this.status[1].value = this.detailForm.createTime
           this.status[2].value = this.detailForm.creatorName
           this.status[3].value = this.detailForm.deptName

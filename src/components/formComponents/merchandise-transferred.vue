@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-13 10:07:12
+ * @LastEditTime: 2019-12-15 11:28:59
  * @Description: 调出商品
 */
 <template>
@@ -80,7 +80,7 @@
         <el-table-column
           prop="wmsName"
           min-width="100"
-          label="借出库房"
+          label="调出库房"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
