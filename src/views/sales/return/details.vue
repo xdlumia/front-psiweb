@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 23:08:39
+ * @LastEditTime: 2019-12-16 15:47:19
  * @Description: 销售出库单详情
 */
 <template>
@@ -73,6 +73,7 @@
       :code="code"
       type="edit"
       :rowData="rowData"
+      @reload="setEdit(),$reload()"
     />
     <!-- 退货扫码 -->
     <return-scan
