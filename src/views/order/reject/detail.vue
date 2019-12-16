@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 16:17:10
+ * @LastEditTime: 2019-12-16 08:47:56
  * @Description: 采购退货单
 */
 <template>
@@ -178,6 +178,7 @@ export default {
           this.code
         );
         data.commodityList = data.commodityList || [];
+        data.source = '采购入库单';
         return data;
       } else if (this.rowData) {
         return this.rowData;
