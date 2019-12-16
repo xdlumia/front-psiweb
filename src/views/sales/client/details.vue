@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 19:57:44
+ * @LastEditTime: 2019-12-16 09:46:36
  * @Description: 客户详情
 */
 <template>
@@ -119,7 +119,7 @@ export default {
         clientData: '客户数据',
         salesQuote: '报价单',
         salesOutLibrary: '销售出库单',
-        salesOutLibrary: '销售合同',
+        contractSale: '销售合同',
         storageSales: '销售单',
         orderDirect: '直发单',
         salesReturn: '销售退货单',

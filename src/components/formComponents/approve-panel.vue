@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 10:05:00
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 10:38:40
+ * @LastEditTime: 2019-12-16 10:23:17
  * @Description: 审核信息
 */
 <template>
@@ -80,11 +80,8 @@ export default {
       progressData: [], // 当前流程节点
     };
   },
-  async mounted() {
-    // 查询当前项共有多少节点
-    if (this.id && this.busType) {
-      await this.processtaskQueryProcessHistoryEntity()
-    }
+  mounted() {
+    this.processtaskQueryProcessHistoryEntity()
   },
   computed: {
   },
@@ -96,7 +93,6 @@ export default {
     }
   },
   methods: {
-
     // 查询历史操作
     processtaskQueryProcessHistoryEntity() {
       if (!this.busType) {
