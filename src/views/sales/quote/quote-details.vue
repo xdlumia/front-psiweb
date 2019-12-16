@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 16:49:09
+ * @LastEditTime: 2019-12-16 17:29:53
  * @Description: 报价单详情
 */
 <template>
@@ -180,7 +180,7 @@ export default {
        * shipmentCode 出库单
        */
       if (label == '生成请购单') {
-        if (this.detail.isPurchaseApply == 1 || this.detail.shipmentCode || nowData > failureTime) {
+        if ((this.detail.isPurchaseApply != '' && this.detail.isPurchaseApply != 0) || this.detail.shipmentCode || nowData > failureTime) {
           return true
         } else {
           return false
