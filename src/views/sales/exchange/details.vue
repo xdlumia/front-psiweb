@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 22:02:25
+ * @LastEditTime: 2019-12-16 15:47:09
  * @Description: 销售换货单详情
 */
 <template>
@@ -71,6 +71,7 @@
       :code="code"
       type="edit"
       :rowData="detail"
+      @reload="setEdit(),$reload()"
     />
     <!-- 换货扫码 -->
     <return-scan

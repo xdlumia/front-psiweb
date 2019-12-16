@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 15:27:51
+ * @LastEditTime: 2019-12-16 15:47:01
  * @Description: 生成销售换货单
 */
 <template>
@@ -235,7 +235,6 @@ export default {
             return sum + Number(curr.commodityNumber)
           }, 0)
           copyParams.shipmentFinanceSaveVoList = copyParams.shipmentFinanceSaveVoList.map(item => {
-            // TODO这里应该让用户自己选择
             item.isBillFee = 1
             return item
           })
