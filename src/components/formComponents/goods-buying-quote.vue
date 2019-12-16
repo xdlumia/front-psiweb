@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 17:36:59
+ * @LastEditTime: 2019-12-16 16:42:03
  * @Description: 生成请购单商品信息
 */
 <template>
@@ -165,7 +165,7 @@ export default {
           this.tableData.forEach(item => {
             // 商品数量-总库存大于0的商品才生成请购单
             let commodityNumber = (item.commodityNumber || 0) - (item.inventoryNumber || 0)
-            if (commodityNumber > 0&&item.isDirect==0) {
+            if (commodityNumber > 0&&item.isDirect!=1) {
               // 生成请购单商品数量是 请求过来的商品数量-总库存数量
               item.commodityNumber = commodityNumber
               item.preTaxAmount = +Number(item.reference*commodityNumber*(1+item.taxRate/100)).toFixed(2)

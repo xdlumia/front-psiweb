@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 19:56:59
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-16 16:44:31
  * @Description: 报价单详情
 */
 <template>
@@ -248,9 +248,17 @@ export default {
       }
     },
     checkAddBuying() {
-      const buyingGoods = this.detail.commodityEntityList.filter(item => item.isDirect == 0 && item.inventoryNumber < item.commodityNumber)
+      const buyingGoods = this.detail.commodityEntityList.filter(item => item.inventoryNumber < item.commodityNumber)
       if (buyingGoods.length > 0) {
-        this.buyingAddVisible = true
+        if(buyingGoods.filter(item=>item.isDirect != 1).length>0){
+          this.buyingAddVisible = true
+        }else{
+          this.$message({
+            message: '没有可请购的商品(仅非直发和库存不足的商品可请购)',
+            showClose: true,
+            type: 'warning'
+          })
+        }
       } else {
         this.$message({
           message: '库存充沛，不能申请采购',
