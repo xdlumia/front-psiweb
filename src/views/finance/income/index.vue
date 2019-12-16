@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 09:33:40
+ * @LastEditTime: 2019-12-16 14:59:36
  * @Description: 销售-收入流水
  */
 <template>
@@ -43,11 +43,12 @@
           v-if="column.columnFields=='incomeRecordCode'"
           @click="eventHandle('detailVisible',row)"
         >
-          {{value}}
           <i
             v-if="row.sourceType==1"
             class="iconfont icon-jie d-text-blue"
           ></i>
+          {{value}}
+
         </span>
         <!-- 匹配状态 -->
         <span v-else-if="column.columnFields=='matchState'"> {{stateText[value]}}</span>
