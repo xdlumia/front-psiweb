@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-21 17:43:50
+ * @LastEditTime: 2019-12-16 09:33:22
  * @Description: 新增转账单
 */
 <template>
@@ -75,7 +75,7 @@ export default {
   },
 
   created() {
-    // this.init()
+    this.init()
   },
   mounted() {
 
@@ -84,7 +84,13 @@ export default {
 
   },
   methods: {
-
+    init() {
+      if (this.type == "add") {
+        for (let key in this.form) {
+          this.form[key] = ""
+        }
+      }
+    },
     // 保存表单数据
     saveHandle() {
       this.$refs.form.validate(valid => {

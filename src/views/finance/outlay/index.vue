@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 20:46:23
+ * @LastEditTime: 2019-12-16 09:33:52
  * @Description: 销售-支出流水
  */
 <template>
@@ -65,6 +65,7 @@
     />
     <!-- 新增转账单 -->
     <addTransfer
+      v-if="addTransferVisible"
       incomeType="1"
       :visible.sync="addTransferVisible"
       type="add"
