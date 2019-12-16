@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 17:10:18
+ * @LastEditTime: 2019-12-15 18:08:32
  * @Description: 今日应付账单
 */
 <template>
@@ -167,7 +167,6 @@ export default {
           '采购入库单',
           '采购退货单',
           '销售出库单',
-          '销售换货单',
           '销售退换单'
         ].map(name => ({
           label: name,
@@ -210,7 +209,6 @@ export default {
   },
   methods: {
     paramInterceptor(params) {
-      params = JSON.parse(JSON.stringify(params));
       if (this.pageConfig.title == '今日应付账单') {
         params.settleStatus = [0, 1];
       } else {

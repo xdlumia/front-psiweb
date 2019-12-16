@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 17:09:48
+ * @LastEditTime: 2019-12-15 18:04:09
  * @Description: 付款单
 */
 <template>
@@ -109,7 +109,7 @@ export default {
       filterOptions: [
         { label: '付款单编号', prop: 'billCode', default: true },
         { label: '账单来源', prop: 'source', default: true,type:'select',options:[{label:'全部',value:''}].concat(
-          ["借入借出任务", "借入单", "借出单", "调拨单", "费用单", "采购入库单", "采购退货单", "销售出库单", "销售换货单", "销售退换单"].map(name=>({
+          ["借入借出任务", "借入单", "借出单", "调拨单", "费用单", "采购入库单", "采购退货单", "销售出库单", "销售退换单"].map(name=>({
             label:name,
             value:name,
           }))
