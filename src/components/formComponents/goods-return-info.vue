@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 17:20:20
+ * @LastEditTime: 2019-12-16 11:24:06
  * @Description: 退货商品商品信息
 */
 <template>
@@ -355,7 +355,9 @@ export default {
             }, 0)
             sums[index] = `${alterationNumber}/${commodityNumber}`
 
-          } else {
+          }
+
+          else {
             sums[index] = values.reduce((sum, curr) => {
               const val = Number(curr)
               return sum + curr
