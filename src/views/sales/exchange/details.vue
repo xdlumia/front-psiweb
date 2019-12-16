@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 15:47:09
+ * @LastEditTime: 2019-12-16 17:56:53
  * @Description: 销售换货单详情
 */
 <template>
@@ -186,7 +186,7 @@ export default {
           '驳回': {
             api: 'seePsiSaleService.salesexchangeReject',
             data: { ...params, ...{} },
-            needNote: null
+            needNote: true
           },
           '删除': {
             api: 'seePsiSaleService.salesexchangeLogicDelete',
