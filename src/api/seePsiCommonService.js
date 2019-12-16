@@ -90,6 +90,11 @@ export default {
     'url': '/commonadjustprice/list',
     'mock': false
   },
+  // 获取列表
+  commonadjustpriceListCG: {
+    'url': 'commonadjustprice/listCG',
+    'mock': false
+  },
 
   // 逻辑删除
   commonadjustpriceLogicDelete: {

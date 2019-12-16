@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 18:45:23
+ * @LastEditTime: 2019-12-16 14:39:33
  * @Description: 采购-采购调价单
 */
 <template>
@@ -11,7 +11,7 @@
       :exportButton="authorityButtons.includes('psi_purchase_adjust_pric_09')"
       :filterOptions="filterOptions"
       :params="Object.assign(defaultParams,params)"
-      api="seePsiCommonService.commonadjustpriceList"
+      api="seePsiCommonService.commonadjustpriceListCG"
       busType="40"
       exportApi="seePsiCommonService.commonadjustpriceExport"
       ref="tableView"
