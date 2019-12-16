@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-15 09:21:38
+ * @LastEditTime: 2019-12-16 10:27:50
  * @Description: 其他费用
  */
 <template>
@@ -111,7 +111,7 @@ export default {
   watch: {
     'data.shipmentFinanceSaveVoList': {
       handler(val) {
-        if (!val.length) return;
+        if (!val.length && this.disabled) return;
         val.forEach((item, index) => {
           let { children } = this.formItems[0].options.find(v => v.code == item.feeTypeCode)
           this.$set(this.data.shipmentFinanceSaveVoList[index], 'options', children)
