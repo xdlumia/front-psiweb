@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 22:07:32
+ * @LastEditTime: 2019-12-16 09:36:01
  * @Description: 生成销售换货单
 */
 <template>
@@ -237,6 +237,7 @@ export default {
           copyParams.shipmentFinanceSaveVoList = copyParams.shipmentFinanceSaveVoList.map(item => {
             item.feeDetailCode = 'ZD_DY_LX-1-3' // 换货费 费用明细",
             item.feeTypeCode = 'ZD_DY_LX-1' // 销售费 费用类型",
+            item.isBillFee = 1
             return item
           })
           this.loading = true
