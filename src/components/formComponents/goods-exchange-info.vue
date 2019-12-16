@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 17:59:27
+ * @LastEditTime: 2019-12-16 09:38:14
  * @Description: 换货商品商品信息
 */
 <template>
@@ -139,7 +139,7 @@
           label="备注"
           show-overflow-tooltip
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="isDirect"
           min-width="120"
           label="是否直发"
@@ -153,8 +153,8 @@
               v-model="scope.row.isDirect"
             ></el-switch>
           </template>
-        </el-table-column>
-        <el-table-column
+        </el-table-column> -->
+        <!-- <el-table-column
           prop="isAssembly"
           min-width="120"
           label="是否组装"
@@ -168,7 +168,7 @@
               v-model="scope.row.isAssembly"
             ></el-switch>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop="reference"
           min-width="120"
