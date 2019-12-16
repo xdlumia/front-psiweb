@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 08:58:17
+ * @LastEditTime: 2019-12-16 10:03:46
  * @Description: 采购-借入借出单
 */
 <template>
@@ -25,8 +25,8 @@
         <span v-if="prop=='borrowLoanCode'">
           <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
-        <span v-else-if="prop=='salesSheetCode'">
-          <el-link :underline="false" class="f12" type="primary">{{value}}</el-link>
+        <span v-else-if="prop=='salesShipmentCode'">
+          <el-link :underline="false" @click="showSaleShipDetail=true,currentSaleShipCode=value" class="f12" type="primary">{{value}}</el-link>
         </span>
         <span v-else-if="prop=='borrowLoanState'">{{stateText[value]}}</span>
         <span v-else-if="prop=='borrowLoanType'">{{value==0?'借入':'借出'}}</span>
@@ -34,10 +34,12 @@
       </template>
     </TableView>
     <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
+    <OutlibDetail :code="currentSaleShipCode" :visible.sync="showSaleShipDetail" @reload="reload" v-if="showSaleShipDetail" />
     <AddIn :visible.sync="showEdit" @reload="reload" type="add" v-if="showEdit" />
   </div>
 </template>
 <script>
+import OutlibDetail from '@/views/sales/outLibrary/outLib-details';
 import TableView from '@/components/tableView';
 
 import Detail from './detail'; // 借入借出单详情
@@ -47,7 +49,8 @@ export default {
   components: {
     TableView,
     Detail,
-    AddIn
+    AddIn,
+    OutlibDetail
   },
   props: {
     // 是否显示按钮
@@ -66,6 +69,8 @@ export default {
       status: [],
       showDetail: false,
       showEdit: false,
+      showSaleShipDetail: false,
+      currentSaleShipCode: '',
       defaultParams: {
         page: 1,
         limit: 20

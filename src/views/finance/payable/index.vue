@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-04 13:36:20
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 14:32:23
+ * @LastEditTime: 2019-12-16 09:41:20
  * @Description: 应付账单
 */
 <template>
@@ -10,7 +10,7 @@
     :button="button"
     :filterOptions="filterOptions"
     :pageConfig="pageConfig"
-    :params="Object.assign({ page: 1, limit: 15,billType:1 },params)"
+    :params="Object.assign(defaultParams,params)"
   />
 </template>
 <script>
@@ -24,11 +24,12 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => ({ page: 1, limit: 15, billType: 1 })
+      default: () => ({ page: 1, limit: 20, billType: 1 })
     }
   },
   data() {
     return {
+      defaultParams: { page: 1, limit: 20, billType: 1 },
       pageConfig: {
         title: '应付账单',
         busType: '52',

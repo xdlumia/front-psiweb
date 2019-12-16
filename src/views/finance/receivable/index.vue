@@ -2,16 +2,16 @@
  * @Author: 赵伦
  * @Date: 2019-11-04 13:36:20
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 15:55:22
+ * @LastEditTime: 2019-12-16 09:41:34
  * @Description: 应收账单
 */
 <template>
   <FinanceTodayPayable
     :button="button"
-    :pageConfig="pageConfig"
-    :params="Object.assign({ page: 1, limit: 15,billType:0 },params)"
-    @selection-change="selectionChange"
     :filterOptions="filterOptions"
+    :pageConfig="pageConfig"
+    :params="Object.assign(defaultParams,params)"
+    @selection-change="selectionChange"
   />
 </template>
 <script>
@@ -25,11 +25,12 @@ export default {
     // 在当做组件引用的时候替换的参数
     params: {
       type: Object,
-      default: () => ({ page: 1, limit: 15, billType: 0 })
+      default: () => ({ page: 1, limit: 20, billType: 0 })
     }
   },
   data() {
     return {
+      defaultParams: { page: 1, limit: 20, billType: 0 },
       pageConfig: {
         title: '应收账单',
         busType: '53',
