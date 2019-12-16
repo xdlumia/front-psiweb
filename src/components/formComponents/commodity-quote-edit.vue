@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 16:12:37
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-16 15:38:27
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -93,7 +93,10 @@
             fit="contain"
             class="d-center"
           >
-            <span slot="error" class="d-text-qgray">暂无图片</span>
+            <span
+              slot="error"
+              class="d-text-qgray"
+            >暂无图片</span>
           </el-image>
         </template>
       </el-table-column>
@@ -244,7 +247,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column
+      <!-- <el-table-column
         show-overflow-tooltip
         label="是否直发"
         min-width="110"
@@ -260,9 +263,9 @@
             v-model="scope.row.isDirect"
           ></el-switch>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
-      <el-table-column
+      <!-- <el-table-column
         show-overflow-tooltip
         label="是否组装"
         min-width="110"
@@ -278,7 +281,7 @@
             v-model="row.isAssembly"
           ></el-switch>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
         show-overflow-tooltip
@@ -286,9 +289,9 @@
         min-width="110"
         prop="inventoryNumber"
       >
-      <template slot-scope="{row}">
-      <span>{{row.inventoryNumber||row.usableInventoryNum||0}}</span>
-      </template>
+        <template slot-scope="{row}">
+          <span>{{row.inventoryNumber||row.usableInventoryNum||0}}</span>
+        </template>
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
@@ -296,9 +299,9 @@
         min-width="110"
         prop="recentDiscountSprice"
       >
-      <template slot-scope="{row}">
-      <span>{{row.recentDiscountSprice}}</span>
-      </template>
+        <template slot-scope="{row}">
+          <span>{{row.recentDiscountSprice}}</span>
+        </template>
       </el-table-column>
 
     </el-table>
@@ -358,18 +361,18 @@ export default {
       visibleData: {
       },
       visible: false,
-      preCommodityBussinessInfo:{},
-      timer:null
+      preCommodityBussinessInfo: {},
+      timer: null
     };
   },
-  watch:{
-    'data.businessCommoditySaveVoList':{
-      deep:true,
-      handler(){
+  watch: {
+    'data.businessCommoditySaveVoList': {
+      deep: true,
+      handler() {
         clearTimeout(this.timer)
-        this.timer = setTimeout(()=>{
+        this.timer = setTimeout(() => {
           this.getCommodityBusinessInfo()
-        },200)
+        }, 200)
       }
     }
   },
@@ -382,20 +385,20 @@ export default {
           commodityCode: row.commodityCode
         }
       );
-      let {data:childList} = await this.$api.seePsiSaleService.businesscommodityQueryGoodsList({
-        commodityCodes:data.map(item=>item.commodityCode),
+      let { data: childList } = await this.$api.seePsiSaleService.businesscommodityQueryGoodsList({
+        commodityCodes: data.map(item => item.commodityCode),
       })
-      let businessInfo = childList.reduce((data,item)=>{
+      let businessInfo = childList.reduce((data, item) => {
         data[item.commodityCode] = item;
         return data;
-      },{})
+      }, {})
 
-      data.map(child=>{
-        child.parentCommodityCode=row.commodityCode
-        child.commodityNumber=child.commodityNum
+      data.map(child => {
+        child.parentCommodityCode = row.commodityCode
+        child.commodityNumber = child.commodityNum
         child.reference = child.saleReferencePrice
-        child.discountSprice='-'
-        child.recentDiscountSprice=businessInfo[child.commodityCode].recentDiscountSprice
+        child.discountSprice = '-'
+        child.recentDiscountSprice = businessInfo[child.commodityCode].recentDiscountSprice
       })
       cb(data);
     },
@@ -432,40 +435,40 @@ export default {
         this.codes = []
       }
     },
-    flatCallback(fn){
-      this.data.businessCommoditySaveVoList.map(item=>{
+    flatCallback(fn) {
+      this.data.businessCommoditySaveVoList.map(item => {
         fn(item)
-        if(item.commonGoodConfigDetailsEntityList){
-          item.commonGoodConfigDetailsEntityList.map(item=>fn(item));
+        if (item.commonGoodConfigDetailsEntityList) {
+          item.commonGoodConfigDetailsEntityList.map(item => fn(item));
         }
       })
     },
-    async getCommodityBusinessInfo(){
+    async getCommodityBusinessInfo() {
       // commonGoodConfigDetailsEntityList
       let needBusList = []
-      this.flatCallback((item)=>{
-        if(!this.preCommodityBussinessInfo[item.commodityCode]&&item.commodityCode){
+      this.flatCallback((item) => {
+        if (!this.preCommodityBussinessInfo[item.commodityCode] && item.commodityCode) {
           needBusList.push(item.commodityCode)
         }
       })
-      if(needBusList.length){
-        let {data} = await this.$api.seePsiSaleService.businesscommodityQueryGoodsList({
-          commodityCodes:needBusList,
+      if (needBusList.length) {
+        let { data } = await this.$api.seePsiSaleService.businesscommodityQueryGoodsList({
+          commodityCodes: needBusList,
         })
-        data.map(item=>{
-          if(!this.preCommodityBussinessInfo[item.commodityCode]){
+        data.map(item => {
+          if (!this.preCommodityBussinessInfo[item.commodityCode]) {
             this.preCommodityBussinessInfo[item.commodityCode] = item;
           }
         })
       }
-      this.flatCallback((item)=>{
-        if(!this.preCommodityBussinessInfo[item.commodityCode]&&needBusList.includes(item.commodityCode)){
-          this.preCommodityBussinessInfo[item.commodityCode]={}
+      this.flatCallback((item) => {
+        if (!this.preCommodityBussinessInfo[item.commodityCode] && needBusList.includes(item.commodityCode)) {
+          this.preCommodityBussinessInfo[item.commodityCode] = {}
         }
-        if(this.preCommodityBussinessInfo[item.commodityCode]){
-          this.$set(item,'taxRate',item.taxRate||this.preCommodityBussinessInfo[item.commodityCode].taxRate)
-          this.$set(item,'inventoryNumber',item.inventoryNumber||this.preCommodityBussinessInfo[item.commodityCode].inventoryNumber||0)
-          this.$set(item,'recentDiscountSprice',this.preCommodityBussinessInfo[item.commodityCode].recentDiscountSprice||0)
+        if (this.preCommodityBussinessInfo[item.commodityCode]) {
+          this.$set(item, 'taxRate', item.taxRate || this.preCommodityBussinessInfo[item.commodityCode].taxRate)
+          this.$set(item, 'inventoryNumber', item.inventoryNumber || this.preCommodityBussinessInfo[item.commodityCode].inventoryNumber || 0)
+          this.$set(item, 'recentDiscountSprice', this.preCommodityBussinessInfo[item.commodityCode].recentDiscountSprice || 0)
         }
       })
     },

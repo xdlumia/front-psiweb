@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 09:35:51
+ * @LastEditTime: 2019-12-16 15:19:03
  * @Description: 生成销售退货单
 */
 <template>
@@ -245,8 +245,9 @@ export default {
             return
           }
           copyParams.shipmentFinanceSaveVoList = copyParams.shipmentFinanceSaveVoList.map(item => {
-            item.feeDetailCode = 'ZD_DY_LX-1-2' //退货费 费用明细",
-            item.feeTypeCode = 'ZD_DY_LX-1' // 销售费 费用类型",
+            // TODO这里应该让用户自己选择
+            // item.feeDetailCode = 'ZD_DY_LX-1-2' //退货费 费用明细",
+            // item.feeTypeCode = 'ZD_DY_LX-1' // 销售费 费用类型",
             item.isBillFee = 1
             return item
           })

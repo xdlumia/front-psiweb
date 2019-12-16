@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 14:56:21
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-16 15:39:07
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -31,9 +31,12 @@
         label="商品编号"
         min-width="150"
       >
-      <template slot-scope="{row}">
-        <span class="d-text-blue d-pointer" @click="showCommodityDetail=true,currentCommodityCode=row.commodityCode">{{row.commodityCode}}</span>
-      </template>
+        <template slot-scope="{row}">
+          <span
+            class="d-text-blue d-pointer"
+            @click="showCommodityDetail=true,currentCommodityCode=row.commodityCode"
+          >{{row.commodityCode}}</span>
+        </template>
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
@@ -54,7 +57,10 @@
             fit="contain"
             class="d-center"
           >
-            <span slot="error" class="d-text-qgray">暂无图片</span>
+            <span
+              slot="error"
+              class="d-text-qgray"
+            >暂无图片</span>
           </el-image>
         </template>
       </el-table-column>
@@ -127,12 +133,12 @@
         prop="discountSprice"
         min-width="110"
       >
-      <template slot-scope="{row}">
-        <span>{{row.discountSprice||0}}</span>
-      </template>
+        <template slot-scope="{row}">
+          <span>{{row.discountSprice||0}}</span>
+        </template>
       </el-table-column>
-      
-      <el-table-column
+
+      <!-- <el-table-column
         show-overflow-tooltip
         label="是否直发"
         min-width="110"
@@ -147,9 +153,9 @@
             :value="scope.row.isDirect"
           ></el-switch>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
-      <el-table-column
+      <!-- <el-table-column
         show-overflow-tooltip
         label="是否组装"
         min-width="110"
@@ -165,7 +171,7 @@
             :value="row.isAssembly"
           ></el-switch>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
         show-overflow-tooltip
@@ -181,9 +187,9 @@
         prop="inventoryNumber"
         min-width="110"
       >
-      <template slot-scope="{row}">
-      <span>{{row.inventoryNumber||row.usableInventoryNum||0}}</span>
-      </template>
+        <template slot-scope="{row}">
+          <span>{{row.inventoryNumber||row.usableInventoryNum||0}}</span>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -192,12 +198,16 @@
         prop="recentDiscountSprice"
         min-width="110"
       >
-      <template slot-scope="{row}">
-      <span>{{row.recentDiscountSprice}}</span>
-      </template>
+        <template slot-scope="{row}">
+          <span>{{row.recentDiscountSprice}}</span>
+        </template>
       </el-table-column>
     </el-table>
-    <CommodityDetail :code="currentCommodityCode" :visible.sync="showCommodityDetail" v-if="showCommodityDetail" />
+    <CommodityDetail
+      :code="currentCommodityCode"
+      :visible.sync="showCommodityDetail"
+      v-if="showCommodityDetail"
+    />
   </form-card>
 </template>
 <script>
@@ -205,7 +215,7 @@ import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 
 export default {
   props: ['data'],
-  components:{
+  components: {
     CommodityDetail
   },
   data() {
@@ -217,8 +227,8 @@ export default {
         putawayType: 0,
         busCode: this.data.quotationCode
       },
-      currentCommodityCode:'',
-      showCommodityDetail:false
+      currentCommodityCode: '',
+      showCommodityDetail: false
     };
   },
   created() {
@@ -236,20 +246,20 @@ export default {
           commodityCode: row.commodityCode
         }
       );
-      let {data:childList} = await this.$api.seePsiSaleService.businesscommodityQueryGoodsList({
-        commodityCodes:data.map(item=>item.commodityCode),
+      let { data: childList } = await this.$api.seePsiSaleService.businesscommodityQueryGoodsList({
+        commodityCodes: data.map(item => item.commodityCode),
       })
-      let businessInfo = childList.reduce((data,item)=>{
+      let businessInfo = childList.reduce((data, item) => {
         data[item.commodityCode] = item;
         return data;
-      },{})
+      }, {})
 
-      data.map(child=>{
-        child.parentCommodityCode=row.commodityCode
-        child.commodityNumber=child.commodityNum
+      data.map(child => {
+        child.parentCommodityCode = row.commodityCode
+        child.commodityNumber = child.commodityNum
         child.reference = child.saleReferencePrice
-        child.discountSprice='-'
-        child.recentDiscountSprice=businessInfo[child.commodityCode]?(businessInfo[child.commodityCode].recentDiscountSprice||0):0
+        child.discountSprice = '-'
+        child.recentDiscountSprice = businessInfo[child.commodityCode] ? (businessInfo[child.commodityCode].recentDiscountSprice || 0) : 0
       })
       cb(data);
     },
@@ -262,10 +272,10 @@ export default {
           sums[index] = '总计';
           return;
         }
-        else if (['reference','commodityNumber','discountSprice','inventoryNumber','recentDiscountSprice'].includes(column.property)) {
+        else if (['reference', 'commodityNumber', 'discountSprice', 'inventoryNumber', 'recentDiscountSprice'].includes(column.property)) {
           sums[index] = +Number(data.reduce((num, item) => {
-            return num + +Number(item[column.property]||0)
-          }, 0)).toFixed(2)||0;
+            return num + +Number(item[column.property] || 0)
+          }, 0)).toFixed(2) || 0;
         }
       })
       return sums;
