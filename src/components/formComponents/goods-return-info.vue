@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 11:24:06
+ * @LastEditTime: 2019-12-16 15:43:29
  * @Description: 退货商品商品信息
 */
 <template>
@@ -215,7 +215,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column
+        <!-- <el-table-column
           prop="isDirect"
           min-width="120"
           label="是否直发"
@@ -231,8 +231,8 @@
             ></el-switch>
           </template>
 
-        </el-table-column>
-        <el-table-column
+        </el-table-column> -->
+        <!-- <el-table-column
           prop="isAssembly"
           min-width="120"
           label="是否组装"
@@ -248,7 +248,7 @@
             ></el-switch>
           </template>
 
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           show-overflow-tooltip
           label="销售参考价"
