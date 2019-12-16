@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 15:39:07
+ * @LastEditTime: 2019-12-16 16:48:08
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -138,7 +138,7 @@
         </template>
       </el-table-column>
 
-      <!-- <el-table-column
+      <el-table-column
         show-overflow-tooltip
         label="是否直发"
         min-width="110"
@@ -148,14 +148,15 @@
           v-if="!scope.row.parentCommodityCode"
         >
           <el-switch
+            disabled
             :active-value="1"
             :inactive-value="0"
             :value="scope.row.isDirect"
           ></el-switch>
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
-      <!-- <el-table-column
+      <el-table-column
         show-overflow-tooltip
         label="是否组装"
         min-width="110"
@@ -167,11 +168,11 @@
           <el-switch
             :active-value="1"
             :inactive-value="0"
-            :disabled="row.isDirect==1"
+            disabled
             :value="row.isAssembly"
           ></el-switch>
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
       <el-table-column
         show-overflow-tooltip

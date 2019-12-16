@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 19:59:41
+ * @LastEditTime: 2019-12-16 16:35:28
  * @Description: 生成请购单
 */
 <template>
