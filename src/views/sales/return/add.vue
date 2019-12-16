@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 15:19:03
+ * @LastEditTime: 2019-12-16 17:06:04
  * @Description: 生成销售退货单
 */
 <template>
@@ -214,7 +214,7 @@ export default {
       if (+this.form.actualRefundAmount > +this.form.shouldRefundAmount) {
         this.$message({
           message: '实退金额不能大于应退金额',
-          type: 'Warning',
+          type: 'warning',
           showClose: true,
         });
         return
