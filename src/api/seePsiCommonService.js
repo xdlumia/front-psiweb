@@ -92,7 +92,7 @@ export default {
   },
   // 获取列表
   commonadjustpriceListCG: {
-    'url': 'commonadjustprice/listCG',
+    'url': '/commonadjustprice/listCG',
     'mock': false
   },
 
