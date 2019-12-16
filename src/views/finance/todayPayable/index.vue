@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-15 18:08:32
+ * @LastEditTime: 2019-12-16 10:08:53
  * @Description: 今日应付账单
 */
 <template>
@@ -210,7 +210,7 @@ export default {
   methods: {
     paramInterceptor(params) {
       if (this.pageConfig.title == '今日应付账单') {
-        params.settleStatus = [0, 1];
+        params.settleStatusList = [0, 1];
       } else {
         params.settleStatus = params.state;
       }
