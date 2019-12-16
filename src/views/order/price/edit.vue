@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 10:11:02
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-16 11:44:04
  * @Description: 销售和采购调价单
 */
 <template>
@@ -101,7 +101,7 @@ export default {
   props: {
     sort: {
       type: Array,
-      default: () => ['commodityCode','goodsName','goodsPic','categoryCode','className','specOne',"purchaseAverage", "inventoryPrice", "adjustPriceMoney", "repertoryCost", "usableInventoryNum", "adjustPriceDifference	", "saleReferencePrice", "taxBeforeAdjustPrice", "profitRate",'action']
+      default: () => ['commodityCode', 'goodsName', 'goodsPic', 'categoryCode', 'className', 'specOne', "purchaseAverage", "inventoryPrice", "adjustPriceMoney", "repertoryCost", "usableInventoryNum", "adjustPriceDifference	", "saleReferencePrice", "taxBeforeAdjustPrice", "profitRate", 'action']
     },
     hide: {
       type: Array,
@@ -174,9 +174,16 @@ export default {
       row.adjustPriceMoney = (inventoryPrice * (1 + (profitRate / 100)) - (row.saleReferencePrice || 0)).toFixed(2);
     },
     calcAdjustPriceDifference(row) {
-      return +Number(
-        (+row.usableInventoryNum || 0) * (+row.adjustPriceMoney || 0)
-      ).toFixed(2);
+      if (this.adjustPriceType == 1) {
+        return +Number(
+          (+row.saleReferencePrice || 0) + (+row.adjustPriceMoney || 0)
+        ).toFixed(2);
+      } else {
+        return +Number(
+          (+row.usableInventoryNum || 0) * (+row.adjustPriceMoney || 0)
+        ).toFixed(2);
+      }
+
     },
     async save() {
       await this.$showFormError(this.$refs.form);
