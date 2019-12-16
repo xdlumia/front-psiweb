@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 09:33:52
+ * @LastEditTime: 2019-12-16 14:58:09
  * @Description: 销售-支出流水
  */
 <template>
@@ -46,7 +46,7 @@
           {{value}}
           <i
             v-if="row.sourceType==2"
-            class="iconfont icon-jie d-text-blue"
+            class="iconfont icon-dai d-text-blue"
           ></i></span>
         <!-- 匹配状态 -->
         <span v-else-if="column.columnFields=='matchState'"> {{stateText[value]}}</span>

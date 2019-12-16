@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 11:44:04
+ * @LastEditTime: 2019-12-16 12:01:35
  * @Description: 销售和采购调价单
 */
 <template>
@@ -174,16 +174,9 @@ export default {
       row.adjustPriceMoney = (inventoryPrice * (1 + (profitRate / 100)) - (row.saleReferencePrice || 0)).toFixed(2);
     },
     calcAdjustPriceDifference(row) {
-      if (this.adjustPriceType == 1) {
-        return +Number(
-          (+row.saleReferencePrice || 0) + (+row.adjustPriceMoney || 0)
-        ).toFixed(2);
-      } else {
-        return +Number(
-          (+row.usableInventoryNum || 0) * (+row.adjustPriceMoney || 0)
-        ).toFixed(2);
-      }
-
+      return +Number(
+        (+row.usableInventoryNum || 0) * (+row.adjustPriceMoney || 0)
+      ).toFixed(2);
     },
     async save() {
       await this.$showFormError(this.$refs.form);
