@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 11:26:16
+ * @LastEditTime: 2019-12-16 09:32:43
  * @Description: 直发单详情
 */
 <template>
@@ -59,7 +59,7 @@
       </el-tab-pane>
       <el-tab-pane label="报价单" name="quotion">
         <FullscreenWrap v-if="isDataReady&&tabStatus.quotion">
-          <salesQuote :button="false" :params="{page:1,limit:15,quotationCode:detail.quotationCode,relationCode:detail.directCode}" />
+          <salesQuote :button="false" :params="{page:1,limit:15,quotationCode:detail.quotationCode}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
