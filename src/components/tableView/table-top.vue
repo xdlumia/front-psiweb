@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 14:50:06
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-17 15:56:35
  * @Description: 表格头部 
  */
 <template>
@@ -200,7 +200,7 @@
 
     </el-dialog>
   </div>
-</template>
+</template> 
 <script>
 import draggable from "vuedraggable";
 export default {
@@ -280,7 +280,28 @@ export default {
       let busType = this.$parent.busType
       this.$api.seePsiCommonService.customcolumnGetListAll({ busType: busType })
         .then(res => {
+          //登陆过来以后请求的数据权限
+          let dataAuthList = this.$local.fetch('dataAuthList') || []
+          //库存查询需要做的所有数据权限的校验数据
+          let colSettingArr = []
+          if (dataAuthList.length > 0) {
+            dataAuthList.forEach((item) => {
+              //psi_wms_data_01  库存查询对应的code , 建平说目前只有库存查询做这个校验，所以写死，不影响其它页面
+              if (item.code == 'psi_wms_data_01') {
+                colSettingArr = item.colSetting || []
+              }
+            })
+          }
           this.tableColList = res.data || [];
+          this.tableColList.forEach((item, index) => {
+            colSettingArr.forEach((n) => {
+              //这里 type = 0 是不显示
+              if ((n.fieldCode == item.columnFields) && (n.type == 0)) {
+                //有一样的，type为0 的，就不在自定义表头里面显示
+                this.tableColList.splice(index, 1)
+              }
+            })
+          })
           let showHeader = this.tableColList.filter(item => !item.isDisplay)
           // 返回列数据
           this.$emit("column", showHeader);
@@ -295,7 +316,7 @@ export default {
     },
     // 自定义列提交
     colConfirm() {
-      // item.isDisplay == 0 或者false的时候证明是选中了 这值定义的很奇怪对不对?
+      // item.isDisplay == 0 或者false的时候证明是选中了 这值定义的很奇怪对不对? enen
       // 获取选中的列
       let showHeader = this.tableColList.filter(item => !item.isDisplay)
       if (!showHeader.length) {
