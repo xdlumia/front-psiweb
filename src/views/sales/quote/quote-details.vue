@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-17 09:45:32
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2019-12-17 11:10:32
  * @Description: 报价单详情
 */
 <template>
@@ -180,7 +180,7 @@ export default {
        * shipmentCode 出库单
        */
       if (label == '生成请购单') {
-        if ((this.detail.isPurchaseApply != '' && this.detail.isPurchaseApply != 0) || this.detail.shipmentCode || nowData > failureTime) {
+        if ((this.detail.isPurchaseApply != '' && this.detail.isPurchaseApply != null && this.detail.isPurchaseApply != 0) || this.detail.shipmentCode || nowData > failureTime) {
           return true
         } else {
           return false

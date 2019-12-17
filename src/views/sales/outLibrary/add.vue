@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-17 09:27:07
+ * @LastEditTime: 2019-12-17 10:37:02
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -46,6 +46,7 @@
         <choose-assembly
           :hide="['note','assemblePerson']"
           id="choose-assembly"
+          type="edit"
           :data="form"
         />
         <!-- 客户信息 -->
@@ -164,7 +165,6 @@ export default {
       let quotationCodes = null
       // 如果是编辑 详情数据里会带多个quotationCodes
       if (this.type == 'edit') {
-        console.log(this.form)
         quotationCodes = this.form.quotationCodes
       }
       // 如果是合并 那操作的是出库单的数据 rowData 一定是多个数据.

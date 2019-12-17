@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-28 14:00:55
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 17:40:46
+ * @LastEditTime: 2019-12-17 10:52:24
  * @Description: 生成拣货单和组装任务 人员分配 1
 */
 <template>
@@ -94,6 +94,7 @@ export default {
       type: Object,
       default: () => ({})
     },
+    type: String,
     // 隐藏
     hide: {
       type: Array,
@@ -109,7 +110,19 @@ export default {
     };
   },
   created() {
-    this.data.employeeName = this.$options.filters.userName(this.data.pickingPerson)
+
+  },
+  mounted() {
+  },
+  watch: {
+    'data.pickingPerson': {
+      handler(val) {
+        if (val && this.type == 'edit') {
+          this.data.employeeName = this.$options.filters.userName(this.data.pickingPerson)
+        }
+      },
+      deep: true
+    }
   },
   methods: {
     //选择拣货人员
