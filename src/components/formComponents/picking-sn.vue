@@ -25,7 +25,6 @@
         style="max-height:300px"
       >
         <el-table-column
-          fixed
           min-width="50"
           label="操作"
           show-overflow-tooltip
@@ -40,14 +39,12 @@
         </el-table-column>
         <el-table-column
           type='index'
-          fixed
           prop="cityName"
           min-width="80"
           label="编号"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          fixed
           prop="snCode"
           label="SN码"
           min-width="160"
@@ -58,7 +55,6 @@
           </template>
         </el-table-column>
         <el-table-column
-          fixed
           prop="robotCode"
           label="机器号"
           min-width="160"
@@ -69,7 +65,6 @@
           </template>
         </el-table-column>
         <el-table-column
-          fixed
           v-for="(item,index) of custom"
           :key="index"
           min-width="150"
@@ -85,7 +80,6 @@
           </template>
         </el-table-column>
         <el-table-column
-          fixed
           prop="wmsName"
           min-width="100"
           label="拣货库房"

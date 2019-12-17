@@ -34,7 +34,7 @@
             <goodsPicking :data='detailForm' />
             <pickingInfo :data='detailForm' />
             <generateDeliver
-              :visible.sync='orderStorageVisible'
+              :visible.sync='orderStorageVisible' 
               v-if='orderStorageVisible'
               :data='detailForm'
               :drawerData='drawerData'
