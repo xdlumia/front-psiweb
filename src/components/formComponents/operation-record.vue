@@ -23,11 +23,17 @@
             class="d-flex"
             style="align-items: center;"
           >
-            <el-avatar icon="el-icon-user-solid" :src="item.userId | userInfo('avatarUrl')"></el-avatar>
+            <el-avatar
+              icon="el-icon-user-solid"
+              :src="item.userId | userInfo('avatarUrl')"
+            ></el-avatar>
             <span class="d-inline ml20">{{item.userName}}</span>
             <!-- <span class="d-inline ml30">审核通过</span> -->
           </div>
-          <p class="mt10">{{item.description}}</p>
+          <p
+            class="mt10"
+            v-html="item.description"
+          ></p>
         </el-card>
       </el-timeline-item>
     </el-timeline>
