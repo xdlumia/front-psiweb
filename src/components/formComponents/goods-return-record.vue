@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-17 15:46:45
+ * @LastEditTime: 2019-12-17 16:11:12
  * @Description: 退货记录里
 */
 <template>
@@ -120,8 +120,8 @@
             show-overflow-tooltip
           >
             <template slot-scope="">
-              <span v-if="title=='换出商品信息'">已换入</span>
-              <span v-else>已退货</span>
+              <span v-if="pre=='换出'">已换出</span>
+              <span v-else>已退入</span>
             </template>
           </el-table-column>
 
