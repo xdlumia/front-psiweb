@@ -298,10 +298,11 @@ export default {
               //这里 type = 0 是不显示
               if ((n.fieldCode == item.columnFields) && (n.type == 0)) {
                 //有一样的，type为0 的，就不在自定义表头里面显示
-                this.tableColList.splice(index, 1)
+                this.tableColList[index] = null
               }
             })
           })
+          this.tableColList = this.tableColList.filter(item => item)
           let showHeader = this.tableColList.filter(item => !item.isDisplay)
           // 返回列数据
           this.$emit("column", showHeader);
