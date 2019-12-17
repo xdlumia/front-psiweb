@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 17:29:53
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-17 09:45:32
  * @Description: 报价单详情
 */
 <template>
@@ -254,7 +254,7 @@ export default {
           this.buyingAddVisible = true
         } else {
           this.$message({
-            message: '没有可请购的商品(仅非直发和库存不足的商品可请购)',
+            message: '直发商品不能申请请购',
             showClose: true,
             type: 'warning'
           })
