@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 17:38:28
+ * @LastEditTime: 2019-12-17 16:37:47
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -62,14 +62,14 @@ ElementUI.Image.props.fit = { default: 'cover', type: String }
 
 // 输入框默认显示字数
 ElementUI.Input.props.showWordLimit.default = true
+
 // 表格单行显示超出隐藏
-// ElementUI.TableColumn.props.showOverflowTooltip.default = true
+ElementUI.TableColumn.props.showOverflowTooltip = { default: true, type: Boolean }
 ElementUI.Input.render = (function (old, defaultMaxLength) {
   return function () {
     if (this.$attrs.maxlength === undefined) {
       this.$attrs.maxlength = this.type == 'text' ? 32 : defaultMaxLength;
     }
-
     return old.apply(this, arguments)
   }
 })(ElementUI.Input.render, 200)
