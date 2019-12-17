@@ -2,11 +2,11 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-10 10:38:06
+ * @LastEditTime: 2019-12-17 12:06:30
  * @Description: 业务设置-财务
  -->
 <template>
-  <div class v-loading="loading" style="min-width:1200px;">
+  <div class="finance-wrapper" v-loading="loading" style="min-width:1200px;">
     <div>
       <el-row>
         <el-col :span="16">
@@ -27,8 +27,7 @@
             style="margin-top: 20px;"
             @click="save"
           >保存</el-button>
-          <el-button v-if="isEdit" size="small" style="margin-top: 20px;"
-@click="cancel">取消</el-button>
+          <el-button v-if="isEdit" size="small" style="margin-top: 20px;" @click="cancel">取消</el-button>
         </el-col>
       </el-row>
     </div>
@@ -46,8 +45,7 @@
         </legend>
         <el-row>
           <el-col :span="24">
-            <el-button size="mini" type="primary" class="mb10 mt10"
-@click="addItem">+新增滞纳金方案</el-button>
+            <el-button size="mini" type="primary" class="mb10 mt10" @click="addItem">+新增滞纳金方案</el-button>
           </el-col>
         </el-row>
         <div v-for="(item, index) in financeConfigEntity.financeConfigList" :key="index">
@@ -124,13 +122,86 @@
           </el-row>
         </div>
       </fieldset>
+      <fieldset class="d-fieldset mb20">
+        <legend>
+          <i class="d-round12 d-circle d-bg-blue"></i>
+          <span class="mr5">逾期预警</span>
+        </legend>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item
+              prop="payableState"
+              :rules="{required:true,message:'请选择',trigger:'change'}"
+            >
+              <span class="text-color mr10 required">是否开启应付账单逾期报警</span>
+              <el-switch
+                v-model="financeConfigEntity.payableState"
+                :active-value="1"
+                :inactive-value="0"
+              ></el-switch>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="payableTime" :rules="{required:true,message:'请输入',trigger:'blur'}">
+              <div>
+                <span class="text-color mr10 required">距应付日期小于</span>
+                <el-input-number
+                  v-model="financeConfigEntity.payableTime"
+                  size="mini"
+                  controls-position="right"
+                  :min="0"
+                  :max="999"
+                  :precision="0"
+                  setp="1"
+                ></el-input-number>
+                <span class="text-color mr10">天</span>
+                <span class="text-color">即为即将逾期</span>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              prop="receivableState"
+              :rules="{required:true,message:'请选择',trigger:'change'}"
+            >
+              <span class="text-color mr10 required">是否开启应收账单逾期报警</span>
+              <el-switch
+                v-model="financeConfigEntity.receivableState"
+                :active-value="1"
+                :inactive-value="0"
+              ></el-switch>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              prop="receivableTime"
+              :rules="{required:true,message:'请输入',trigger:'blur'}"
+            >
+              <div>
+                <span class="text-color mr10 required">距应收日期小于</span>
+                <el-input-number
+                  v-model="financeConfigEntity.receivableTime"
+                  size="mini"
+                  controls-position="right"
+                  :min="0"
+                  :max="999"
+                  :precision="0"
+                  setp="1"
+                ></el-input-number>
+                <span class="text-color mr10">天</span>
+                <span class="text-color">即为即将逾期</span>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </fieldset>
     </el-form>
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
 export default {
-  data() {
+  data () {
     const validateName = (rule, value, callback) => {
       const result = this.financeConfigEntity.financeConfigList.filter(item => item.overdueFineName === value)
       if (result.length > 1) {
@@ -165,7 +236,11 @@ export default {
       isEdit: false,
       tempObj: null,
       financeConfigEntity: {
-        financeConfigList: []
+        financeConfigList: [],
+        payableState: 0, // 是否开启应付逾期
+        payableTime: 0, // 应付逾期天数预警
+        receivableState: 0, // 是否开启应收逾期
+        receivableTime: 0// 应收逾期天数预警
       },
       validateName,
       validateProporsion
@@ -173,11 +248,11 @@ export default {
   },
   components: {
   },
-  mounted() {
+  mounted () {
     this.commonsystemconfigInfo()
   },
   methods: {
-    addItem() {
+    addItem () {
       this.financeConfigEntity.financeConfigList.push({
         limitType: 0,
         overdueFineInterval: 0,
@@ -186,7 +261,7 @@ export default {
         overdueFineUpperLimit: ''
       })
     },
-    save() {
+    save () {
       this.$refs.financeConfigEntity.validate(valid => {
         if (valid) {
           const params = {
@@ -198,7 +273,7 @@ export default {
       })
     },
     // 保存接口
-    commonsystemconfigSave(params) {
+    commonsystemconfigSave (params) {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigSave(params).finally(() => {
         this.commonsystemconfigInfo()
@@ -206,17 +281,17 @@ export default {
         this.isEdit = false
       })
     },
-    cancel() {
+    cancel () {
       this.isEdit = false
       this.handleDefault()
     },
     // 处理返回数据
-    handleDefault() {
+    handleDefault () {
       Object.keys(this.financeConfigEntity).forEach(key => {
         this.financeConfigEntity[key] = this.tempObj[key] || this.financeConfigEntity[key]
       })
     },
-    commonsystemconfigInfo() {
+    commonsystemconfigInfo () {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigInfo(null, 3).then(res => {
         this.tempObj = JSON.parse(res.data.configJson)
@@ -232,5 +307,16 @@ export default {
 <style scoped lang='scss'>
 /deep/ .el-input-number--mini {
   width: 100px;
+}
+.finance-wrapper {
+  .text-color {
+    color: #606266;
+  }
+  .required::before {
+    content: "*";
+    color: #f56c6c;
+    display: inline-block;
+    margin-right: 4px;
+  }
 }
 </style>
