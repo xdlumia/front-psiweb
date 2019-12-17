@@ -291,6 +291,8 @@ export default {
                 colSettingArr = item.colSetting || []
               }
             })
+          } else {
+            colSettingArr = [{ fieldCode: "minimumPurchasePrice", type: 0 }, { fieldCode: "inventoryPrice", type: 0 }]
           }
           this.tableColList = res.data || [];
           this.tableColList.forEach((item, index) => {
