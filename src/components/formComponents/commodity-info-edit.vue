@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-29 16:16:52
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-17 11:55:54
  * @Description: 商品信息 可编辑
 */  
 <template>
