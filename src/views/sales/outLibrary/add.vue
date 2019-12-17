@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 15:20:24
+ * @LastEditTime: 2019-12-17 09:27:07
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -61,10 +61,10 @@
           :data="form"
         />
         <!-- 报价单信息 -->
-        <!-- <quote-info
+        <quote-info
           v-if="quoteCodes && quoteCodes.length"
           :options="quoteCodes"
-        /> -->
+        />
         <!-- 收款滞纳金 -->
         <payment-late-sales
           id="paymentLateSales"
