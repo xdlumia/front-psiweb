@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-16 14:39:33
+ * @LastEditTime: 2019-12-18 16:47:34
  * @Description: 采购-采购调价单
 */
 <template>
@@ -31,7 +31,7 @@
         <span v-else>{{value}}</span>
       </template>
     </TableView>
-    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
+    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" :hide="['saleReferencePrice','taxBeforeAdjustPrice','profitRate']" />
     <Edit :hide="['saleReferencePrice','taxBeforeAdjustPrice','profitRate']" :visible.sync="showEdit" @reload="reload" v-if="showEdit" />
   </div>
 </template>
