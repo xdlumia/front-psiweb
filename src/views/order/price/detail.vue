@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 20:31:55
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-18 14:59:35
  * @Description: 采购调价单
 */
 <template>
@@ -99,7 +99,7 @@
       </el-tab-pane>
     </el-tabs>
     <Edit
-      :hide="['saleReferencePrice','taxBeforeAdjustPrice','profitRate']"
+      :hide="hide"
       :rowData="detail"
       :visible.sync="showEdit"
       @reload="setEdit(),$reload()"
