@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-17 11:10:32
+ * @LastEditTime: 2019-12-18 15:12:15
  * @Description: 报价单详情
 */
 <template>
@@ -172,7 +172,7 @@ export default {
     },
     // 判断禁用的按钮
     isDisabledButton(label) {
-      let nowData = Date.serversDate().getTime() //服务器当前时间
+      let nowData = Date.serversDate().getTime() + 60 * 60 * 24 * 1000 //服务器当前时间
       // let nowData = new Date().getTime() //当前时间
       let failureTime = this.detail.failureTime //报价单有效期截止
       /**

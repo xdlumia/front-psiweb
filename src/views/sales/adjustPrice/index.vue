@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 20:22:39
+ * @LastEditTime: 2019-12-18 14:34:29
  * @Description: 销售-销售调价单
  */
 <template>
@@ -46,6 +46,7 @@
     <Detail
       :code="rowData.code"
       adjustPriceType='1'
+      busType='39'
       :visible.sync="detailVisible"
       :hide="['purchaseAverage','usableInventoryNum','repertoryCost']"
       :sort="['action','commodityCode','goodsPic','goodsName','categoryCode','className','specOne','inventoryPrice','saleReferencePrice','adjustPriceMoney','taxBeforeAdjustPrice','adjustPriceDifference','profitRate']"

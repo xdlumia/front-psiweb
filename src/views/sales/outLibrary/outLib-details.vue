@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 17:31:38
+ * @LastEditTime: 2019-12-18 15:06:43
  * @Description: 销售出库单详情
 */
 <template>
@@ -347,7 +347,10 @@ export default {
           },
           '驳回': {
             api: 'seePsiSaleService.salesshipmentReject',
-            data: params,
+            data: {
+              ...params,
+              apprpvalNode: this.detail.apprpvalNode == 'psi_sales_outlibrary_10' ? 'psi_sales_outlibrary_07' : 'psi_sales_outlibrary_10'
+            },
             needNote: true
           },
           '合同完善': {

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 09:49:13
+ * @LastEditTime: 2019-12-18 15:14:33
  * @Description: 账单调整
  */
 <template>
@@ -187,7 +187,7 @@ export default {
         });
         this.data.adjustAmount = this.sumAmount
       }
-      this.data.adjustAfterAmount = Number(this.sumAmount || 0) + Number(this.data.adjustAmount || 0)
+      this.data.adjustAfterAmount = (Number(this.sumAmount || 0) + Number(this.data.adjustAmount || 0)).toFixed(2)
     },
     confirm() {
       if (this.multipleSelection.length > 1 || !this.multipleSelection.length) {
