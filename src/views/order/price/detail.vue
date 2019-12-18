@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 20:31:55
+ * @LastEditTime: 2019-12-18 14:58:40
  * @Description: 采购调价单
 */
 <template>
@@ -71,7 +71,7 @@
     <el-tabs class="wfull hfull tabs-view">
       <el-tab-pane label="详情">
         <approve-panel
-          :busType="40"
+          :busType="busType"
           :id="detail.id"
           v-if="isDataReady"
         />
@@ -128,6 +128,9 @@ export default {
     },
     adjustPriceType: {
       default: 2
+    },
+    busType: {
+      default: 40
     }
   },
   data() {
@@ -203,6 +206,13 @@ export default {
           limit: 999
         });
         data.commodityList = commodityList || [];
+        // 如果是销售调价单并且审核通过后
+        if (this.adjustPriceType == 1 && data.state == 2) {
+          data.commodityList.map(item => {
+            item.saleReferencePrice = Number(item.saleReferencePrice || 0) - Number(item.adjustPriceMoney || 0)
+            return item
+          })
+        }
         return data;
       } else if (this.rowData) return this.rowData;
     }
