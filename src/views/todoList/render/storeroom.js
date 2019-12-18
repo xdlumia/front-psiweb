@@ -2,21 +2,24 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:20:55
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-15 10:34:25
+ * @LastEditTime: 2019-12-18 10:50:00
  * @Description: description
  */
 const storeroom = [
   {
-    label: '待出库销售单',
-    key: '',
+    label: '带发货销售单',
+    key: 'psi_wms_sales_04',
     component: 'StorageSales',
     authorityCode: '',
     processNum: 0,
-    show: true
+    show: true,
+    params: {
+      deliverStates: [-1, 0]
+    }
   },
   {
     label: '分配给我的组装任务',
-    key: '',
+    key: 'psi_wms_assembleTask',
     component: 'StorageAssembly',
     authorityCode: '',
     processNum: 0,
@@ -24,7 +27,7 @@ const storeroom = [
   },
   {
     label: '分配给我的拣货任务',
-    key: '',
+    key: 'psi_wms_pickingTask',
     component: 'StoragePicking',
     authorityCode: '',
     processNum: 0,
@@ -32,24 +35,19 @@ const storeroom = [
   },
   {
     label: '待入库采购单',
-    key: '',
+    key: 'psi_wms_data_03',
     component: 'StoragePurchase',
     authorityCode: '',
     processNum: 0,
-    show: true
+    show: true,
+    params: {
+      states: [0, 1]
+    }
   },
   {
     label: '分配给我的拆卸任务',
-    key: '',
+    key: 'psi_wms_disassemblyTask',
     component: 'StorageDisassemble',
-    authorityCode: '',
-    processNum: 0,
-    show: true
-  },
-  {
-    label: '待审批换货单',
-    key: '',
-    component: 'StorageExchange',
     authorityCode: '',
     processNum: 0,
     show: true

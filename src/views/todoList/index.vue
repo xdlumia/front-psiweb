@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:16:28
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-28 10:11:27
+ * @LastEditTime: 2019-12-18 10:22:38
  * @Description: 待办事项
  -->
 <template>
@@ -40,7 +40,7 @@
         <component
           :is="componentName"
           :button="false"
-          :params="{page: 1, limit: 15, backlogType: 1}"
+          :params="Object.assign({page: 1, limit: 15, backlogType: 1}, params)"
         ></component>
       </div>
     </div>
@@ -57,24 +57,26 @@
 <script type='text/ecmascript-6'>
 import list from './render'
 export default {
-  data () {
+  data() {
     return {
       list,
       componentName: '',
-      defaultActived: ''
+      defaultActived: '',
+      params: {}
     }
   },
   components: {
   },
-  mounted () {
+  mounted() {
     this.handleList()
     this.defaultMenu()
   },
   methods: {
-    showDetail (item) {
+    showDetail(item) {
       this.componentName = item.component
+      this.params = item.params || {}
     },
-    defaultMenu () {
+    defaultMenu() {
       const menu = this.list.find(item => {
         return item.children.some(sub => {
           return sub.show
@@ -82,17 +84,18 @@ export default {
       })
       const sub = menu.children.find(item => item.show)
       this.componentName = sub.component
+      this.params = sub.params || {}
       this.defaultActived = sub.label
     },
-    filterChildren (list) {
+    filterChildren(list) {
       return list.filter(item => {
         if (item.authorityCode) {
           return item.show && item.processNum && this.authorityButtons.includes(item.authorityCode)
         }
-        return item.show
+        return item.show && item.processNum
       })
     },
-    homePageQueryList () {
+    homePageQueryList() {
       return this.$api.seePsiCommonService.homePageQueryList().then(res => {
         const obj = Object.create(null);
         (res.data || []).forEach(item => {
@@ -105,7 +108,7 @@ export default {
         return obj
       })
     },
-    handleList () {
+    handleList() {
       this.homePageQueryList().then(res => {
         this.list.forEach(item => {
           const num = item.children.reduce((val, sub) => {
