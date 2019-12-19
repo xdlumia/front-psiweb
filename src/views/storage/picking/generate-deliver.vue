@@ -38,6 +38,17 @@
               </template>
             </el-table-column>
 
+            <!-- <el-table-column
+              prop="title"
+              label="已锁定库存"
+              min-width="120"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <span class="d-text-blue">{{scope.row.pickingAccomplishNum}}</span>
+              </template>
+            </el-table-column> -->
+
             <el-table-column
               prop="usableNum"
               min-width="100"
@@ -99,6 +110,76 @@
 
           </el-table>
         </form-card>
+        <!-- <form-card title='已锁定的机器号/SN码'>
+          <d-table
+            api="seePsiWmsService.wmsflowrecordList"
+            :paging='false'
+            :params="{commodityCode:data.commodityCode,businessCode:drawerData.pickingOrderCode,page:1,limit:15}"
+            ref="companyTable"
+            @response='response'
+            class="college-main"
+            style="height:200px"
+          >
+            <el-table-column
+              type="index"
+              min-width="80"
+              label="编号"
+              show-overflow-tooltip
+            ></el-table-column>
+
+            <el-table-column
+              prop="snCode"
+              label="SN码"
+              min-width="100"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <span class="">{{scope.row.snCode}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="robotCode"
+              label="机器号"
+              min-width="100"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <span class="">{{scope.row.robotCode}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              v-for="(item,index) of custom"
+              :key="index"
+              min-width="150"
+              :label="item"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <span>{{scope.row[item]}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="wmsName"
+              min-width="100"
+              label="入库库房"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              prop="operator"
+              min-width="100"
+              label="入库人"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              prop="createTime"
+              min-width="100"
+              label="入库时间"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">{{scope.row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
+            </el-table-column>
+          </d-table>
+        </form-card> -->
         <pickingSn
           ref="pickingSn"
           :data='data'

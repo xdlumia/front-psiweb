@@ -50,10 +50,25 @@
           <template slot-scope="scope">
             <span
               @click="changeDialog(scope.row)"
-              class="d-text-blue"
+              class="d-text-blue d-pointer"
             >{{scope.row.pickingAccomplishNum}}</span>
           </template>
         </el-table-column>
+
+        <!-- <el-table-column
+          fixed
+          prop="pickingAccomplishNum"
+          min-width="100"
+          label="已锁定库存"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span
+              @click="changeLockDialog(scope.row)"
+              class="d-text-blue d-pointer"
+            >{{scope.row.pickingAccomplishNum}}</span>
+          </template>
+        </el-table-column> -->
 
         <el-table-column
           prop="usableNum"
@@ -128,6 +143,12 @@
       :data='row'
       :drawerData='data'
     />
+    <pickingLock
+      :visible.sync='dialogLockVisible'
+      v-if="dialogLockVisible"
+      :data='row'
+      :drawerData='data'
+    />
     <FullscreenElement
       :element="$refs.table"
       :visible.sync="showInFullscreen"
@@ -141,6 +162,7 @@
 </template>
 <script>
 import pickingJsn from './picking-jsn'
+import pickingLock from './picking-lock'
 import CommodityDetail from '@/views/basicSetting/commodityLibrary/detail.vue';
 import FullscreenElement from '@/components/fullscreen-element';
 export default {
@@ -148,6 +170,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      dialogLockVisible: false,
       row: {},
       showCommodityDetail: false,
       currentCommodityCode: '',
@@ -164,12 +187,17 @@ export default {
       this.row = row
       this.dialogVisible = true
     },
+    changeLockDialog(row) {
+      this.row = row
+      this.dialogLockVisible = true
+    },
     fullscreen() {
       this.showInFullscreen = true;
     }
   },
   components: {
     pickingJsn,
+    pickingLock,
     FullscreenElement,
     CommodityDetail
   },
