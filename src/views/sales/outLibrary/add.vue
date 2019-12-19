@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-17 10:37:02
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-19 15:59:18
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -46,7 +46,7 @@
         <choose-assembly
           :hide="['note','assemblePerson']"
           id="choose-assembly"
-          type="edit"
+          :type="type"
           :data="form"
         />
         <!-- 客户信息 -->
