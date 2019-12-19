@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-28 14:00:55
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-19 16:01:53
+ * @LastEditTime: 2019-12-19 16:15:24
  * @Description: 生成拣货单和组装任务 人员分配 1
 */
 <template>
@@ -115,15 +115,15 @@ export default {
   mounted() {
   },
   watch: {
-    'data.pickingPerson': {
-      handler(val) {
-        if (val && this.type == 'edit') {
-          this.data.employeeName = this.$options.filters.userName(this.data.pickingPerson)
-          console.log(this.data.employeeName)
-        }
-      },
-      deep: true
-    }
+    // 'data.pickingPerson': {
+    //   handler(val) {
+    //     if (val && this.type == 'edit') {
+    //       this.data.employeeName = this.$options.filters.userName(this.data.pickingPerson)
+    //       console.log(this.data.employeeName)
+    //     }
+    //   },
+    //   deep: true
+    // }
   },
   methods: {
     //选择拣货人员
