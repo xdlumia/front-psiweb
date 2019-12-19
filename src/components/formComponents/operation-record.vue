@@ -2,8 +2,8 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-17 16:07:00
- * @Description: 操作记录
+ * @LastEditTime: 2019-12-19 09:17:18
+ * @Description: 详情操作记录
 */
 <template>
   <div>
@@ -49,7 +49,8 @@ export default {
     data: {
       type: Object,
       default: () => ({})
-    }
+    },
+    businessType: String
   },
   data() {
     return {
@@ -57,6 +58,8 @@ export default {
     }
   },
   created() {
+    console.log(this.$parent);
+
     this.logQueryList(this.data.id)
   },
   watch: {
@@ -65,8 +68,8 @@ export default {
     logQueryList(id) {
       let params = {
         businessId: id,
-        businessType: '20', // 报价单
-        limit: 99,
+        businessType: this.businessType, // 报价单 这个businessType和 表头查询的busType不一样
+        limit: 999,
         page: 1
       }
       this.$api.operlogService.logQueryList(params)

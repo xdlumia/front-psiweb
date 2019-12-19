@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-18 15:12:15
+ * @LastEditTime: 2019-12-19 09:18:54
  * @Description: 报价单详情
 */
 <template>
@@ -57,7 +57,7 @@
           :rowData="detail"
           :button="false"
           :data="detail || {}"
-          :params="{relationCode:code}"
+          :params="activeName=='operationRecord'?{businessType:'20'}:{relationCode:code}"
           style="height:calc(100vh - 170px) !important"
           :is="activeName"
         ></components>
