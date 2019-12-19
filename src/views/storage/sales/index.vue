@@ -112,9 +112,7 @@ export default {
           label: '客户名称',
           prop: 'clientId',
           type: 'select',
-          options: [
-            { label: '完成拣货', value: '2' }
-          ],
+          options: [],
           default: true
         },
         { label: '销售单编号', prop: 'salesSheetCode', default: true },
