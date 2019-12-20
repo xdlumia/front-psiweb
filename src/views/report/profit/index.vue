@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-19 14:25:38
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-20 14:31:23
+ * @LastEditTime: 2019-12-20 18:01:52
  * @Description: 利润分析报表
 */
 <template>
@@ -63,6 +63,7 @@
       <el-table-column label="销售总金额" min-width="120" prop="salesAmount"></el-table-column>
       <el-table-column label="成本总价" min-width="100" prop="costAmount"></el-table-column>
       <el-table-column label="价税合计" min-width="100" prop="preTaxAmount"></el-table-column>
+      <el-table-column label="成本单价" min-width="100" prop="costPrice"></el-table-column>
       <el-table-column label="毛利" min-width="100" prop="profitAmount"></el-table-column>
       <el-table-column label="毛利率" min-width="100" prop="profitRate">
         <template slot-scope="{row}">{{row.profitRate}}%</template>
@@ -110,6 +111,7 @@ export default {
         { label: '销售总金额', prop: 'SalesAmount', type: 'numberRange',default:true, },
         { label: '成本总价', prop: 'CostAmount', type: 'numberRange',default:true, },
         { label: '税价合计', prop: 'PreTaxAmount', type: 'numberRange',default:true, },
+        { label: '成本单价', prop: 'CostPrice', type: 'numberRange',default:true, },
         { label: '毛利', prop: 'ProfitAmount', type: 'numberRange',default:true, },
         { label: '毛利率', prop: 'ProfitRate', type: 'numberRange',default:true, },
       ],
@@ -175,7 +177,8 @@ export default {
             'costAmount',
             'preTaxAmount',
             'profitAmount',
-            'profitRate'
+            'profitRate',
+            'costPrice'
           ].includes(col.property)
         ) {
           let prop = col.property;
