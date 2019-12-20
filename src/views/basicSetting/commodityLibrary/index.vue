@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-20 14:11:36
+ * @LastEditTime: 2019-12-20 14:21:55
  * @Description: 商品管理
  -->
 <template>
@@ -16,7 +16,7 @@
         <span class="f18 lh50 b">商品库</span>
         <div style="display: flex;align-items: center;">
           <el-button
-            v-if="authorityButtons.includes('decorate_goods_mgr_1001')"
+            v-if="authorityButtons.includes('decorate_goods_mgr_1004')"
             size="mini"
             type="primary"
             @click="showImportFn"
@@ -101,8 +101,7 @@
                 >复制新增</el-button>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="商品编号" min-width="160"
-show-overflow-tooltip>
+            <el-table-column align="center" label="商品编号" min-width="160" show-overflow-tooltip>
               <template slot-scope="scope">
                 <span
                   @click="showDetailDialog(scope.row)"
@@ -206,8 +205,7 @@ show-overflow-tooltip>
       </div>
     </div>
 
-    <el-dialog :visible.sync="visible" title v-dialogDrag
-:show-close="false" width="1000px">
+    <el-dialog :visible.sync="visible" title v-dialogDrag :show-close="false" width="1000px">
       <div slot="title" style="display:flex;">
         <h3 style="flex:1;text-align:center;">新增商品</h3>
         <div>
@@ -215,8 +213,7 @@ show-overflow-tooltip>
           <el-button size="mini" @click="visible=false">关闭</el-button>
         </div>
       </div>
-      <add-good @refresh="refresh" v-if="visible" ref="addGood"
-:code="copycode" :copy="copy"></add-good>
+      <add-good @refresh="refresh" v-if="visible" ref="addGood" :code="copycode" :copy="copy"></add-good>
     </el-dialog>
     <detail
       @refresh="showDetail=false,getGoodsList()"
@@ -240,7 +237,7 @@ import detail from './detail'
 import addGood from './add-good'
 import importExcel from './importExcel'
 export default {
-  data() {
+  data () {
     return {
       filterPopover: false,
       noPic: require('@/assets/img/no-pic.png'),
@@ -300,7 +297,7 @@ export default {
   },
   computed: {
   },
-  created() {
+  created () {
     this.getGoodsClassify()
     this.getGoodsList()
     this.getCategoryList()
@@ -309,62 +306,62 @@ export default {
   watch: {
   },
   methods: {
-    showImportFn() {
+    showImportFn () {
       console.log(444)
       this.showImport = true
     },
-    showDetailDialog(row) {
+    showDetailDialog (row) {
       this.showDetail = true
       this.rowData = row
       this.code = row.goodsCode
     },
-    editGood(goodsCode) {
+    editGood (goodsCode) {
       this.editId = goodsCode
       this.visible = true
     },
-    refresh() {
+    refresh () {
       this.visible = false
       this.getGoodsList()
     },
-    saveGood() {
+    saveGood () {
       this.$refs.addGood && this.$refs.addGood.saveGood()
     },
-    setCategory() {
+    setCategory () {
       this.$refs.categoryTree.setCurrentKey(null)
       this.goodsForm.categoryCode = this.activeName
       this.goodsForm.classId = null
       this.getGoodsList()
     },
-    handleNodeClick(data, node) {
+    handleNodeClick (data, node) {
       this.goodsForm.classId = data.id
       this.goodsForm.categoryCode = null
       this.getGoodsList()
     },
     // 获取分类列表
-    getGoodsClass() {
+    getGoodsClass () {
       this.$api.seeGoodsService.getGoodsClass({ categoryCode: this.activeName }).then(res => {
         this.treeData = res.data
       })
     },
-    handleClick() {
+    handleClick () {
       this.setCategory()
       this.getGoodsClass()
       // this.getGoodsList()
     },
     // 获取类目列表
-    getCategoryList() {
+    getCategoryList () {
       this.$api.seeDictionaryService.getDicCommonValueList('PSI_SP_KIND').then(res => {
         this.categoryList = res.data || []
       })
     },
-    getGoodsList() { // 获取物品列表
+    getGoodsList () { // 获取物品列表
       this.$api.seeGoodsService.getGoodsList(this.goodsForm) //
         .then(res => {
           this.goodsTable = res.data
           this.total = res.count
         }).catch(ero => { })
     },
-    getGoodsClassify() { // 获取物品一级分类
+    getGoodsClassify () { // 获取物品一级分类
       this.$api.seeGoodsService.fgoodsFirstClassList({ page: 1, limit: 15 }) // 获取物品一级类目
         .then(res => {
           for (let i = 0; i < res.data.length; i++) {
@@ -373,10 +370,10 @@ export default {
           this.goodsClassifyList = res.data
         }).catch(ero => { })
     },
-    handleSelectionChange(val) { // 表格复选框勾选
+    handleSelectionChange (val) { // 表格复选框勾选
       this.multipleSelection = val
     },
-    handleChange(value) { // 筛选条件点击
+    handleChange (value) { // 筛选条件点击
       if (value.length === 1) {
         const goodsid = value[0]
         this.$api.seeGoodsService.fgetChildClassList({ id: goodsid }) // 获取物品子类类目
@@ -391,11 +388,11 @@ export default {
       this.goodsForm.classId = this.selectedOptions[this.selectedOptions.length - 1]
       this.getGoodsList()
     },
-    addPictureUrl(url) { // 上传图片
+    addPictureUrl (url) { // 上传图片
       this.picUrl = url.url
     },
     // 导出模板
-    exportExcel() {
+    exportExcel () {
       this.$confirm('是否一键导出物品数据?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -412,20 +409,20 @@ export default {
       })
     },
     // 导入模板
-    importExcel(popname) {
+    importExcel (popname) {
       this.popupRight.dialogVisiblePopup = !this.popupRight.dialogVisiblePopup
       this.popupRight.point = popname
       this.popupRight.tlite = '导入物品'
     },
-    handleCurrentChange(val) { // 分页点击
+    handleCurrentChange (val) { // 分页点击
       this.goodsForm.page = val
       this.getGoodsList()
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.goodsForm.limit = val
       this.getGoodsList()
     },
-    deleteGoodsList() { // 批量删除
+    deleteGoodsList () { // 批量删除
       const ids = []
       this.multipleSelection.forEach(element => {
         ids.push(element.id)
@@ -453,7 +450,7 @@ export default {
         })
       }
     },
-    clearAll() { // 清除筛选
+    clearAll () { // 清除筛选
       this.goodsForm = {
         page: 1,
         limit: 15,
@@ -465,7 +462,7 @@ export default {
       this.selectedOptions = []
       this.getGoodsList()
     },
-    fsupplierList(popname, row) { // 点击查看
+    fsupplierList (popname, row) { // 点击查看
       this.popupRight.dialogVisiblePopup = !this.popupRight.dialogVisiblePopup
       this.popupRight.point = popname
       this.popupRight.goodsCode = row.goodsCode
@@ -474,12 +471,12 @@ export default {
         this.$refs[this.popupRight.point].getSuppliersByGoodsId()
       }, 50)
     },
-    handleAddGood() {
+    handleAddGood () {
       this.copy = false
       this.copycode = null
       this.visible = true
     },
-    fhandelGoods(popname, type, row) { // 点击新增或者编辑
+    fhandelGoods (popname, type, row) { // 点击新增或者编辑
       this.popupRight.dialogVisiblePopup = !this.popupRight.dialogVisiblePopup
       this.popupRight.point = popname
       if (type === 'add') {
@@ -500,7 +497,7 @@ export default {
         }, 50)
       }
     },
-    fcheckGoods(popname, row) { // 点击编码查看
+    fcheckGoods (popname, row) { // 点击编码查看
       this.popupRight.dialogVisiblePopup = !this.popupRight.dialogVisiblePopup
       this.popupRight.point = popname
       this.popupRight.goodsCode = row.goodsCode
@@ -509,7 +506,7 @@ export default {
         this.$refs[this.popupRight.point].getGoodsDetail()
       }, 50)
     },
-    runSubsetRight() { // 新增/编辑确定按钮
+    runSubsetRight () { // 新增/编辑确定按钮
       if (this.popupRight.type === 'add') {
         setTimeout(() => { // 触发子组件方法
           this.$refs[this.popupRight.point].saveGoodsInfo()
