@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-06-18 17:34:58
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-28 10:12:14
+ * @LastEditors  : 赵伦
+ * @LastEditTime : 2019-12-20 17:52:46
  * @Description: 验证过文件
  */
 
@@ -19,7 +19,15 @@ const verify = {
     } else {
       callback(new Error('只能输入0-100的整数'));
     }
-  }
+  },
+  bankCard: function bankCard(_rule, value, callback) {
+    var reg = /^[a-zA-Z0-9\*]{1,25}$/;
+    if (!value || reg.test(value)) {
+      callback();
+    } else {
+      return callback(new Error('请输入1-25位银行卡号'));
+    }
+  },
 };
 
 for (let key of Object.keys(verify)) {
