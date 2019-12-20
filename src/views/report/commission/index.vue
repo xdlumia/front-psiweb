@@ -1,10 +1,10 @@
-<!--
+/*
  * @Author: 高大鹏
  * @Date: 2019-11-22 16:40:16
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-22 17:07:31
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-20 13:47:41
  * @Description: description
- -->
+*/
 <template>
   <div class="wrapper">
     <el-tabs>
@@ -76,6 +76,8 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
+  max-height: 100%;
+  padding: 0 20px;
   .d-table {
     flex: 1;
   }

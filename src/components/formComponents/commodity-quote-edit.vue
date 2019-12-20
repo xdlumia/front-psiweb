@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 16:47:36
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-20 14:06:45
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -56,7 +56,7 @@
           <commoditySelector
             :wmsId="data.type == 2 ? data.wmsId : null"
             @choose='commodityChoose(arguments,scope)'
-            :multiple='true'
+            :multiple='false'
             type="code"
             v-model="scope.row.commodityCode"
             :codes='codes'
@@ -75,6 +75,7 @@
         >
           <commoditySelector
             :wmsId="data.type == 2 ? data.wmsId : null"
+            :multiple='false'
             @choose='commodityChoose(arguments,scope)'
             v-model="scope.row.goodsName"
             :codes='codes'
@@ -409,9 +410,9 @@ export default {
     checkDiscount(rule, value, cb) {
       let num = +(Number(value) || 0)
       let twoNum = num.toFixed(2)
-      if (num >= 0 && num <= 1 && /^(([1-9]{1}\d*)|(0{1}))(\.\d{0,2})?$/.test(String(value))) {
+      if (num >= 0 && /^(([1-9]{1}\d*)|(0{1}))(\.\d{0,2})?$/.test(String(value))) {
         cb();
-      } else cb(new Error('折扣区间[0-1],且保留两位小数'))
+      } else cb(new Error('折扣保留两位小数'))
     },
     getProp(row, prop) {
       let i = this.data.businessCommoditySaveVoList.indexOf(row)
@@ -466,6 +467,7 @@ export default {
           this.preCommodityBussinessInfo[item.commodityCode] = {}
         }
         if (this.preCommodityBussinessInfo[item.commodityCode]) {
+          this.$set(item, 'inventoryPrice', item.inventoryPrice || this.preCommodityBussinessInfo[item.commodityCode].inventoryPrice)
           this.$set(item, 'taxRate', item.taxRate || this.preCommodityBussinessInfo[item.commodityCode].taxRate)
           this.$set(item, 'inventoryNumber', item.inventoryNumber || this.preCommodityBussinessInfo[item.commodityCode].inventoryNumber || 0)
           this.$set(item, 'recentDiscountSprice', this.preCommodityBussinessInfo[item.commodityCode].recentDiscountSprice || 0)
@@ -534,15 +536,6 @@ export default {
     },
     // 商品数量和折扣修改
     numberChange(row) {
-      if (row.discount > 1 && row.discount <= 0) {
-        this.$message({
-          message: '折扣不能大于1且小于0',
-          type: 'info',
-          showClose: true,
-        });
-        row.discount = 1
-        return
-      }
       let reference = row.reference || 0   //销售参考价
       let taxRate = (row.taxRate || 100) / 100  ///税率
       let discountSprice = row.discountSprice || 0 //折后金额
