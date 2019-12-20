@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-19 14:25:38
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-20 11:47:20
+ * @LastEditTime: 2019-12-20 12:06:17
  * @Description: 利润分析报表
 */
 <template>
@@ -13,6 +13,7 @@
     <el-form :model="queryForm" inline size="mini">
       <el-form-item label="选择日期" style="vertical-align:baseline;">
         <el-date-picker
+          :clearable="false"
           :default-time="['00:00:00','23:59:59']"
           @change="dateChange"
           end-placeholder="结束日期"
@@ -26,10 +27,10 @@
       <el-button @click="makeReport" size="mini" type="primary">生成报表</el-button>
       <el-button size="mini" type="primary">下载报表</el-button>
       <!-- 筛选 -->
-      <el-popover placement="bottom" trigger="click" v-model="filterPopover" width="280">
+      <el-popover placement="bottom" trigger="click" v-if="init" v-model="filterPopover" width="280">
         <el-link :underline="false" @click="filterPopover=false" class="el-icon-close close fr" style="margin-top:2px;" title="关闭"></el-link>
         <dFilter :options="filters" @change="makeReport" v-model="queryForm"></dFilter>
-        <el-button class="tool-item ml15" icon="iconfont icon-filter" size="mini" slot="reference" title="筛选"></el-button>
+        <el-button class="tool-item ml15 fr" icon="iconfont icon-filter" size="mini" slot="reference" title="筛选"></el-button>
       </el-popover>
     </el-form>
     <d-table
@@ -120,7 +121,8 @@ export default {
       },
       showDetail: false,
       currentCode: '',
-      currentType: ''
+      currentType: '',
+      init: false
     };
   },
   mounted() {},
@@ -136,6 +138,7 @@ export default {
       });
     },
     makeReport() {
+      this.init = true;
       this.$refs.table.reload();
     },
     getSummary(param) {
