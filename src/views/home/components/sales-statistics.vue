@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-15 16:45:27
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-20 11:32:39
+ * @LastEditTime: 2019-12-20 14:45:09
  * @Description: description
  -->
 <template>
@@ -55,7 +55,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="12" v-loading="salesClassifyStatisticsLoading">
         <div style="display: flex;flex-direction: column;">
           <div style="display:flex;justify-content: space-between;align-items: center;">
             <h3 class="b mb5" style="text-indent:10px;white-space: nowrap;">销售类别占比</h3>
@@ -114,9 +114,10 @@ import filterMix from './filter'
 
 export default {
   mixins: [filterMix],
-  data() {
+  data () {
     return {
       indexSalesLineLoading: false,
+      salesClassifyStatisticsLoading: false,
       salesLine: {
         dateFlag: '0',
         beginTime: '',
@@ -170,18 +171,18 @@ export default {
   watch: {
     salesLine: {
       deep: true,
-      handler() {
+      handler () {
         this.indexSalesLine()
       }
     }
   },
   computed: {
-    salesSum() {
+    salesSum () {
       return this.mockData.reduce((val, item) => {
         return val + parseFloat(item.value)
       }, 0)
     },
-    brokenOptions() {
+    brokenOptions () {
       return {
         tooltip: {
           trigger: 'axis'
@@ -207,7 +208,7 @@ export default {
         }]
       }
     },
-    pieOptions() {
+    pieOptions () {
       return {
         tooltip: {
           trigger: 'axis'
@@ -281,17 +282,28 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     this.indexSalesLine()
+    this.indexSalesClassifyStatistics()
   },
   methods: {
-    indexSalesLine() {
+    // 销售情况
+    indexSalesLine () {
       this.indexSalesLineLoading = true
       this.salesLine.beginTime = this.salesLine.daterange[0]
       this.salesLine.endTime = this.salesLine.daterange[1]
       this.$api.seePsiReportService.indexSalesLine(this.salesLine).then(res => {
-        console.log(res)
+        console.log('销售情况', res.data)
       }).finally(() => { this.indexSalesLineLoading = false })
+    },
+    // 销售类别占比
+    indexSalesClassifyStatistics () {
+      this.salesClassifyStatisticsLoading = true
+      this.salesCategory.beginTime = this.salesCategory.daterange[0]
+      this.salesCategory.endTime = this.salesCategory.daterange[1]
+      this.$api.seePsiReportService.indexSalesClassifyStatistics(this.salesCategory).then(res => {
+        console.log('销售类别占比', res.data)
+      }).finally(() => { this.salesClassifyStatisticsLoading = false })
     }
   }
 }

@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-15 14:30:04
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-20 10:12:40
+ * @LastEditTime: 2019-12-20 14:38:01
  * @Description: 基础数据
  -->
 <template>
@@ -60,20 +60,20 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="6" v-loading="indexInventoryPriceLoading">
         <div class="ba p15 data-item">
           <h5 class="title d-text-qgray">
             <span>库存金额</span>
           </h5>
-          <h1 class="number big-text">{{Math.floor(Math.random() * 10000) | thousandBitSeparator}}</h1>
+          <h1 class="number big-text">{{inventoryPrice | thousandBitSeparator}}</h1>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="6" v-loading="indexReceivableLoading">
         <div class="ba p15 data-item">
           <h5 class="title d-text-qgray">
             <span>财务应收</span>
           </h5>
-          <h1 class="number big-text">{{Math.floor(Math.random() * 10000) | thousandBitSeparator}}</h1>
+          <h1 class="number big-text">{{receivable | thousandBitSeparator}}</h1>
         </div>
       </el-col>
     </el-row>
@@ -85,44 +85,66 @@ import filterMix from './filter'
 
 export default {
   mixins: [filterMix],
-  data() {
+  data () {
     return {
       taskList: Array.from({ length: 14 }, () => Math.floor(Math.random() * 100)),
       cycle: 60,
       dateFlag: '1',
       indexCycleTaskLoading: false,
-      indexTodayTaskLoading: false
+      indexTodayTaskLoading: false,
+      indexInventoryPriceLoading: false,
+      indexReceivableLoading: false,
+      inventoryPrice: 0,
+      receivable: 0
     }
   },
-  mounted() {
-    console.log(this.taskList)
+  mounted () {
     this.indexCycleTask(this.dateFlag)
     this.indexTodayTask()
+    this.indexInventoryPrice()
+    this.indexReceivable()
   },
   computed: {
-    maxTask() {
+    maxTask () {
       return Math.max(...this.taskList)
     }
   },
   watch: {
-    dateFlag(newValue) {
+    dateFlag (newValue) {
       this.indexCycleTask(newValue)
     }
   },
   methods: {
     // 周期任务
-    indexCycleTask(dateFlag) {
+    indexCycleTask (dateFlag) {
       this.indexCycleTaskLoading = true
       this.$api.seePsiReportService.indexCycleTask({ dateFlag }).then(res => {
-        console.log(res)
+        console.log('周期任务', res.data)
       }).finally(() => { this.indexCycleTaskLoading = false })
     },
     // 今日任务
-    indexTodayTask() {
+    indexTodayTask () {
       this.indexTodayTaskLoading = true
       this.$api.seePsiReportService.indexTodayTask().then(res => {
-        console.log(res)
+        console.log('今日任务', res.data)
       }).finally(() => { this.indexTodayTaskLoading = false })
+    },
+    // 库存金额
+    indexInventoryPrice () {
+      this.indexInventoryPriceLoading = true
+      this.$api.seePsiReportService.indexInventoryPrice().then(res => {
+        console.log('库存金额', res.data)
+        this.inventoryPrice = res.data || 0
+      }).finally(() => { this.indexInventoryPriceLoading = false })
+    },
+    // 财务应收
+    indexReceivable () {
+      this.indexReceivableLoading = true
+      this.$api.seePsiReportService.indexReceivable().then(res => {
+        console.log('财务应收', res.data)
+        this.receivable = res.data || 0
+      }).finally(() => { this.indexReceivableLoading = false })
+
     }
   }
 }

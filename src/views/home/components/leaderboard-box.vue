@@ -1,7 +1,7 @@
 <!--
  * @Author: xiaomin
  * @Date: 2019-11-15 15:32:30
- * @LastEditTime: 2019-12-19 17:41:12
+ * @LastEditTime: 2019-12-20 14:37:49
  -->
 <template>
   <div class="leaderboard-box">
@@ -30,7 +30,7 @@ import filterMix from './filter'
 
 export default {
   mixins: [filterMix],
-  data() {
+  data () {
     return {
       currTab: '',
       rankData: [],
@@ -76,24 +76,24 @@ export default {
   },
 
   watch: {
-    currTab(newVal) {
+    currTab (newVal) {
       this.indexProfitTop(newVal)
     }
   },
 
-  created() {
+  created () {
     this.currTab = '5'
   },
 
   methods: {
-    handleClick(tab) {
+    handleClick (tab) {
       this.currTab = tab.name
     },
-
-    indexProfitTop(dateFlag) {
+    // 销售员工利润排行
+    indexProfitTop (dateFlag) {
       this.indexProfitTopLoading = true
       this.$api.seePsiReportService.indexProfitTop({ dateFlag }).then(res => {
-        console.log(res)
+        console.log('销售员工利润排行', res.data)
         this.rankData = this.testData || []
       }).finally(() => { this.indexProfitTopLoading = false })
     }
