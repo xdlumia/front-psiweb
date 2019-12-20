@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-20 14:05:10
+ * @LastEditTime: 2019-12-20 16:02:47
  * @Description: 附加发票 字段对应 但是公式还没计算
 */
 <template>
@@ -31,7 +31,7 @@
           <el-input
             placeholder="请输入"
             :disabled="disabled"
-            @input="preTaxAmountChange"
+            @input="taxRateChange"
             v-model="data.taxRate"
           >
             <template slot="append">%</template>
@@ -92,14 +92,23 @@ export default {
 
       this.data.taxAmount = (preTaxAmount * (1 - taxRate)).toFixed(2)
     },
+    taxRateChange(){
+      if(!+this.data.preTaxAmount){
+        this.taxAmountChange()
+      }else{
+        this.preTaxAmountChange()
+      }
+    },
     // 税后金额变化 计算税率
     taxAmountChange(val) {
       let preTaxAmount = this.data.preTaxAmount || 0   ///税前金额
-      let taxRate = (this.data.taxRate || 100) / 100  ///税率
+      let taxRate = (this.data.taxRate || 0) / 100  ///税率
       let taxAmount = this.data.taxAmount || 0 //税后金额
-      // 税率 = 1- 税后/税前
-      this.data.preTaxAmount = (taxAmount/(1-taxRate)).toFixed(2)
-    }
+      if(taxRate>0){
+        // 税率 = 1- 税后/税前
+        this.data.preTaxAmount = (taxAmount/(1-taxRate)).toFixed(2)
+      }
+    },
   },
   computed: {
     // 税率
