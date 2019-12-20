@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-15 14:30:04
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-16 13:31:24
+ * @LastEditTime: 2019-12-19 17:58:31
  * @Description: 基础数据
  -->
 <template>
@@ -13,11 +13,6 @@
         <div class="ba p15 data-item">
           <h5 class="title d-text-qgray">
             <span>今日任务</span>
-            <div>
-              <el-tooltip content="Top Left 提示文字" placement="top">
-                <i class="el-icon-warning-outline" style="font-size:16px;"></i>
-              </el-tooltip>
-            </div>
           </h5>
           <h1 class="number">500/5000</h1>
           <div style="flex:1;display: flex;justify-content: space-around;align-items: flex-end">
@@ -30,18 +25,27 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="6" v-loading="indexCycleTaskLoading">
         <div class="ba p15 data-item">
           <h5 class="title d-text-qgray">
             <span>周期任务</span>
-            <div class="d-text-blue">
-              <span class="mr15">周</span>
-              <span>季</span>
+            <div class>
+              <span
+                :class="{'d-text-blue': dateFlag == 1}"
+                class="mr15 d-pointer"
+                @click="dateFlag = 1"
+              >周</span>
+              <span
+                :class="{'d-text-blue': dateFlag == 3}"
+                class="d-pointer"
+                @click="dateFlag = 3"
+              >季</span>
             </div>
           </h5>
-          <h1 class="number">{{Math.floor(Math.random() * 10000) | thousandBitSeparator}}/{{756690 | thousandBitSeparator}}</h1>
+          <h1
+            class="number"
+          >{{Math.floor(Math.random() * 10000) | thousandBitSeparator}}/{{756690 | thousandBitSeparator}}</h1>
           <div style="flex:1;display: flex;align-items: center">
-            <!-- <el-slider v-model="cycle" disabled :show-tooltip="false"></el-slider> -->
             <div style="flex:1">
               <el-progress
                 :text-inside="true"
@@ -56,41 +60,16 @@
         <div class="ba p15 data-item">
           <h5 class="title d-text-qgray">
             <span>库存金额</span>
-            <div>
-              <el-tooltip content="Top Left 提示文字" placement="top">
-                <i class="el-icon-warning-outline" style="font-size:16px;"></i>
-              </el-tooltip>
-            </div>
           </h5>
-          <h1 class="number">{{Math.floor(Math.random() * 10000) | thousandBitSeparator}}</h1>
-          <div style="flex:1;">
-            <IEcharts class="store" style="width:100%;height:100%;" :options="options"></IEcharts>
-          </div>
+          <h1 class="number big-text">{{Math.floor(Math.random() * 10000) | thousandBitSeparator}}</h1>
         </div>
       </el-col>
       <el-col :span="6">
         <div class="ba p15 data-item">
           <h5 class="title d-text-qgray">
             <span>财务应收</span>
-            <div>
-              <el-tooltip content="Top Left 提示文字" placement="top">
-                <i class="el-icon-warning-outline" style="font-size:16px;"></i>
-              </el-tooltip>
-            </div>
           </h5>
-          <h1 class="number">{{Math.floor(Math.random() * 10000) | thousandBitSeparator}}</h1>
-          <div style="flex:1;display: flex;justify-content: space-between;align-items: center">
-            <div style="flex:1;display: flex;align-items: center">
-              <span style="flex:0 0 50%;">周同比</span>
-              <i class="el-icon-caret-bottom mr10" style="font-size:20px;color:#f5202d"></i>
-              <span>12％</span>
-            </div>
-            <span style="flex:1;display: flex;align-items: center">
-              <span style="flex:0 0 50%;">日环比</span>
-              <i class="el-icon-caret-top mr10" style="font-size:20px;color:#94da78"></i>
-              <span>11％</span>
-            </span>
-          </div>
+          <h1 class="number big-text">{{Math.floor(Math.random() * 10000) | thousandBitSeparator}}</h1>
         </div>
       </el-col>
     </el-row>
@@ -98,8 +77,6 @@
 </template>
 
 <script type='text/ecmascript-6'>
-import IEcharts from 'vue-echarts'
-import 'echarts/lib/chart/themeRiver' // 引入河流图
 import filterMix from './filter'
 
 export default {
@@ -107,74 +84,42 @@ export default {
   data() {
     return {
       taskList: Array.from({ length: 14 }, () => Math.floor(Math.random() * 100)),
-      cycle: 60
+      cycle: 60,
+      dateFlag: 1,
+      indexCycleTaskLoading: false,
+      indexTodayTaskLoading: false
     }
   },
   mounted() {
     console.log(this.taskList)
+    this.indexCycleTask(this.dateFlag)
+    this.indexTodayTask()
   },
   computed: {
     maxTask() {
       return Math.max(...this.taskList)
-    },
-    options() {
-      return {
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'line',
-            lineStyle: {
-              color: 'rgba(0,0,0,0.2)',
-              width: 0,
-              type: 'solid'
-            }
-          }
-        },
-        color: ['#9760e4'],
-        left: 0,
-        right: 0,
-        width: '100%',
-        height: '100%',
-        singleAxis: {
-          top: 0,
-          bottom: 0,
-          axisTick: {},
-          axisLabel: {},
-          type: 'time',
-          axisPointer: {
-            animation: false,
-            label: {
-              show: false
-            }
-          },
-          splitLine: {
-            show: false
-          }
-        },
-        series: [
-          {
-            type: 'themeRiver',
-            itemStyle: {
-              emphasis: {
-                shadowBlur: 0,
-                shadowColor: '#9760e4'
-              }
-            },
-            label: {
-              show: false
-            },
-            data: [
-              ['2015/11/08', 10, 'DQ'], ['2015/11/09', 7, 'DQ'], ['2015/11/10', 16, 'DQ'],
-              ['2015/11/11', 20, 'DQ'], ['2015/11/12', 31, 'DQ'], ['2015/11/13', 16, 'DQ'],
-              ['2015/11/14', 7, 'DQ'], ['2015/11/15', 10, 'DQ'], ['2015/11/16', 17, 'DQ']
-            ]
-          }
-        ]
-      }
     }
   },
-  components: {
-    IEcharts
+  watch: {
+    dateFlag(newValue) {
+      this.indexCycleTask(newValue)
+    }
+  },
+  methods: {
+    // 周期任务
+    indexCycleTask(dateFlag) {
+      this.indexCycleTaskLoading = true
+      this.$api.seePsiReportService.indexCycleTask({ dateFlag }).then(res => {
+        console.log(res)
+      }).finally(() => { this.indexCycleTaskLoading = false })
+    },
+    // 今日任务
+    indexTodayTask() {
+      this.indexTodayTaskLoading = true
+      this.$api.seePsiReportService.indexTodayTask().then(res => {
+        console.log(res)
+      }).finally(() => { this.indexTodayTaskLoading = false })
+    }
   }
 }
 </script>
@@ -189,6 +134,7 @@ export default {
   flex-direction: column;
   height: 120px;
   .title {
+    flex: 1;
     display: flex;
     justify-content: space-between;
     i {
@@ -198,6 +144,10 @@ export default {
   .number {
     font-size: 40px;
     font-family: "Arial Normal", "Arial";
+  }
+  .big-text {
+    font-size: 48px;
+    text-indent: 40px;
   }
   .store {
     width: 100%;
