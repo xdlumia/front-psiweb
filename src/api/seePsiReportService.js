@@ -119,6 +119,15 @@ export default {
     },
     /**
      * @tag sale-profit-report-controller
+     * @description 合计
+     */
+    saleprofitreportGetSaleProfitSum: {
+        url: '/saleprofitreport/getSaleProfitSum',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag sale-profit-report-controller
      * @description 查看详细信息
      */
     saleprofitreportInfo: {
