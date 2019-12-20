@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-05 10:53:59
+ * @LastEditTime: 2019-12-20 14:11:36
  * @Description: 商品管理
  -->
 <template>
@@ -15,6 +15,14 @@
       >
         <span class="f18 lh50 b">商品库</span>
         <div style="display: flex;align-items: center;">
+          <el-button
+            v-if="authorityButtons.includes('decorate_goods_mgr_1001')"
+            size="mini"
+            type="primary"
+            @click="showImportFn"
+            style="margin-right:5px;margin-top:10px;"
+            class="mr5 mt10"
+          >导入</el-button>
           <el-button
             v-if="authorityButtons.includes('decorate_goods_mgr_1001')"
             size="mini"
@@ -217,6 +225,11 @@ show-overflow-tooltip>
       :code="code"
       :visible.sync="showDetail"
     ></detail>
+    <import-excel
+      @refresh="showImport=false,getGoodsList()"
+      v-if="showImport"
+      :visible.sync="showImport"
+    ></import-excel>
   </div>
 </template>
 
@@ -225,6 +238,7 @@ show-overflow-tooltip>
 // import uploadPic from '@/components/uploadPic'
 import detail from './detail'
 import addGood from './add-good'
+import importExcel from './importExcel'
 export default {
   data() {
     return {
@@ -233,6 +247,7 @@ export default {
       copy: false,
       copycode: null,
       showDetail: false,
+      showImport: false,
       visible: false,
       activeName: 'PSI_SP_KIND-1',
       multipleSelection: [],
@@ -280,7 +295,8 @@ export default {
   },
   components: {
     addGood,
-    detail
+    detail,
+    importExcel
   },
   computed: {
   },
@@ -293,6 +309,10 @@ export default {
   watch: {
   },
   methods: {
+    showImportFn() {
+      console.log(444)
+      this.showImport = true
+    },
     showDetailDialog(row) {
       this.showDetail = true
       this.rowData = row
