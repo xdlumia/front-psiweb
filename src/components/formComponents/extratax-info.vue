@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-20 16:02:47
+ * @LastEditTime: 2019-12-20 16:57:24
  * @Description: 附加发票 字段对应 但是公式还没计算
 */
 <template>
@@ -32,6 +32,7 @@
             placeholder="请输入"
             :disabled="disabled"
             @input="taxRateChange"
+            @focus="checkMode"
             v-model="data.taxRate"
           >
             <template slot="append">%</template>
@@ -79,7 +80,8 @@ export default {
         else {
           callback();
         }
-      }
+      },
+      calcPreMode:false
     };
   },
   methods: {
@@ -92,8 +94,15 @@ export default {
 
       this.data.taxAmount = (preTaxAmount * (1 - taxRate)).toFixed(2)
     },
-    taxRateChange(){
+    checkMode(){
       if(!+this.data.preTaxAmount){
+        this.calcPreMode = false;
+      }else{
+        this.calcPreMode = true
+      }
+    },
+    taxRateChange(){
+      if(!this.calcPreMode){
         this.taxAmountChange()
       }else{
         this.preTaxAmountChange()
