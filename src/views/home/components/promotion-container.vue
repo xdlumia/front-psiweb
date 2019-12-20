@@ -116,16 +116,7 @@ export default {
     padding: 0 20px;
     box-sizing: border-box;
   }
-  // tab
-  /deep/ .no-border-tab {
-    .el-tabs__header {
-      margin: 0;
-    }
-    .el-tabs__nav-wrap::after {
-      height: 0;
-      background: none;
-    }
-  }
+
   /deep/ .promotion-left-col {
     height: 100%;
     .el-tabs {
@@ -158,9 +149,6 @@ export default {
         margin-left: 20px;
         .el-tabs__item {
           padding: 0 12px;
-        }
-        .el-tabs__active-bar {
-          display: none;
         }
       }
 
