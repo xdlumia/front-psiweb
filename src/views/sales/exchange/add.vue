@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 15:47:01
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-20 17:46:56
  * @Description: 生成销售换货单
 */
 <template>
@@ -217,7 +217,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.form.businessCommoditySaveVoList.map(item => item.putawayType = 1) // 退货入库
-          this.form.exChangeCommodityList.map(item => item.putawayType = 0) //换货出库
+          this.form.exChangeCommodityList.map(item => {item.putawayType = 0}) //换货出库
           let copyParams = JSON.parse(JSON.stringify(this.form))
           if (copyParams.businessCommoditySaveVoList.some(item => !item.commodityNumber || !item.alterationPrice)) {
             this.$message({
@@ -232,6 +232,13 @@ export default {
           copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.concat(copyParams.exChangeCommodityList)
           copyParams.businessCommoditySaveVoList.map(v => v.busCode = copyParams.quotationCode)
           copyParams.totalExchangeNumber = copyParams.exChangeCommodityList.reduce((sum, curr) => {
+            
+            // 税后总价
+            curr.preTaxAmount = Number((curr.reference || 0) * (1 + curr.taxRate / 100) * (curr.commodityNumber || 0)).toFixed(2)
+            // 销售单价
+            curr.salesPrice = Number((curr.reference || 0) * (1 + curr.taxRate / 100)).toFixed(2)
+            curr.costAmount = curr.inventoryPrice
+            
             return sum + Number(curr.commodityNumber)
           }, 0)
           copyParams.shipmentFinanceSaveVoList = copyParams.shipmentFinanceSaveVoList.map(item => {
