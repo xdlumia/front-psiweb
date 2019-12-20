@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-12-19 14:25:38
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-20 14:16:43
+ * @LastEditTime: 2019-12-20 14:50:19
  * @Description: 利润分析报表
 */
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-loading="loading">
     <el-tabs>
       <el-tab-pane label="利润分析报表"></el-tab-pane>
     </el-tabs>
@@ -122,7 +122,9 @@ export default {
       showDetail: false,
       currentCode: '',
       currentType: '',
-      init: false
+      init: false,
+      statistic: {},
+      loading: false
     };
   },
   mounted() {},
@@ -137,9 +139,29 @@ export default {
         busType: row.dataType
       });
     },
-    makeReport() {
-      this.init = true;
-      this.$refs.table.reload();
+    async getStatistic() {
+      let {
+        data
+      } = await this.$api.seePsiReportService.saleprofitreportGetSaleProfitSum(
+        this.queryForm
+      );
+      this.statistic = data;
+    },
+    async makeReport() {
+      if (!(this.queryForm.minFinishDate && this.queryForm.maxFinishDate)) {
+        return this.$message({
+          message: '请先选择报表时间',
+          type: 'warning',
+          showClose: true
+        });
+      }
+      this.loading = true;
+      try {
+        this.init = true;
+        await this.getStatistic();
+        this.$refs.table.reload(1);
+      } catch (error) {}
+      this.loading = false;
     },
     getSummary(param) {
       let { columns, data } = param;
@@ -158,11 +180,8 @@ export default {
         ) {
           let prop = col.property;
           sums[index] =
-            +Number(
-              data
-                .map(item => Number(item[prop]) || 0)
-                .reduce((sum, item) => sum + item, 0)
-            ).toFixed(2) + (prop == 'profitRate' ? '%' : '');
+            +Number(this.statistic[prop]).toFixed(2) +
+            (prop == 'profitRate' ? '%' : '');
         } else if (index == 0) {
           sums[0] = '总计';
         } else sums[index] = '';
