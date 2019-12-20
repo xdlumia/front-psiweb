@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-19 14:25:38
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-20 11:39:24
+ * @LastEditTime: 2019-12-20 11:47:20
  * @Description: 利润分析报表
 */
 <template>
@@ -28,7 +28,7 @@
       <!-- 筛选 -->
       <el-popover placement="bottom" trigger="click" v-model="filterPopover" width="280">
         <el-link :underline="false" @click="filterPopover=false" class="el-icon-close close fr" style="margin-top:2px;" title="关闭"></el-link>
-        <dFilter :options="filterOptions" @change="makeReport" v-model="queryForm"></dFilter>
+        <dFilter :options="filters" @change="makeReport" v-model="queryForm"></dFilter>
         <el-button class="tool-item ml15" icon="iconfont icon-filter" size="mini" slot="reference" title="筛选"></el-button>
       </el-popover>
     </el-form>
@@ -93,7 +93,7 @@ export default {
       },
       filterPopover: false,
       // prettier-ignore
-      filterOptions: [
+      filters: [
         { label: '单据编号', prop: 'dataCode',default:true, },
         { label: '单据类型', prop: 'dataType',type:'select',options:[
           // (0销售出库单，1销售退货单，2销售换货单)
@@ -123,9 +123,7 @@ export default {
       currentType: ''
     };
   },
-  mounted() {
-    console.log(this);
-  },
+  mounted() {},
   methods: {
     dateChange(e) {
       this.queryForm.minFinishDate = e ? e[0] : '';
@@ -166,7 +164,6 @@ export default {
           sums[0] = '总计';
         } else sums[index] = '';
       });
-      console.log(sums);
       return sums;
     }
   }
