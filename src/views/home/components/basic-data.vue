@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-15 14:30:04
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-19 17:58:31
+ * @LastEditTime: 2019-12-20 10:12:40
  * @Description: 基础数据
  -->
 <template>
@@ -27,9 +27,13 @@
       </el-col>
       <el-col :span="6" v-loading="indexCycleTaskLoading">
         <div class="ba p15 data-item">
-          <h5 class="title d-text-qgray">
+          <h5 class="title d-text-qgray" style="display:flex;justify-content: space-between;">
             <span>周期任务</span>
-            <div class>
+            <el-tabs style="margin-top: -10px;" class="no-border-tab" v-model="dateFlag">
+              <el-tab-pane label="周" name="1"></el-tab-pane>
+              <el-tab-pane label="季" name="3"></el-tab-pane>
+            </el-tabs>
+            <!-- <div class>
               <span
                 :class="{'d-text-blue': dateFlag == 1}"
                 class="mr15 d-pointer"
@@ -40,7 +44,7 @@
                 class="d-pointer"
                 @click="dateFlag = 3"
               >季</span>
-            </div>
+            </div>-->
           </h5>
           <h1
             class="number"
@@ -85,7 +89,7 @@ export default {
     return {
       taskList: Array.from({ length: 14 }, () => Math.floor(Math.random() * 100)),
       cycle: 60,
-      dateFlag: 1,
+      dateFlag: '1',
       indexCycleTaskLoading: false,
       indexTodayTaskLoading: false
     }
