@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:16:48
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-14 13:46:22
+ * @LastEditTime: 2019-12-20 14:59:10
  * @Description: description
  *
  */
@@ -31,7 +31,7 @@ const list = [
     key: '',
     children: storeroom,
     processNum: 0,
-    show: false
+    show: true
   },
   {
     label: '财务',

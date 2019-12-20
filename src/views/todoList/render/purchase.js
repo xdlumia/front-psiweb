@@ -2,10 +2,32 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:20:37
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-27 11:17:31
+ * @LastEditTime: 2019-12-20 14:59:21
  * @Description: description
  */
 const purchase = [
+  {
+    label: '待采购请购单',
+    key: 'psi_purchase_data_01',
+    component: 'OrderBuying',
+    authorityCode: '',
+    processNum: 0,
+    show: true,
+    params: {
+      states: [0, 1]
+    }
+  },
+  {
+    label: '待发货直发单',
+    key: 'psi_purchase_data_03',
+    component: 'OrderDirect',
+    authorityCode: '',
+    processNum: 0,
+    show: true,
+    params: {
+      states: [0, 1]
+    }
+  },
   {
     label: '备货单审批',
     key: 'psi_purchase_stock',

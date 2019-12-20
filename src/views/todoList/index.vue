@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:16:28
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-28 10:11:27
+ * @LastEditTime: 2019-12-20 14:59:53
  * @Description: 待办事项
  -->
 <template>
@@ -40,7 +40,7 @@
         <component
           :is="componentName"
           :button="false"
-          :params="{page: 1, limit: 15, backlogType: 1}"
+          :params="Object.assign({page: 1, limit: 15, backlogType: 1}, params)"
         ></component>
       </div>
     </div>
@@ -61,7 +61,8 @@ export default {
     return {
       list,
       componentName: '',
-      defaultActived: ''
+      defaultActived: '',
+      params: {}
     }
   },
   components: {
@@ -73,6 +74,7 @@ export default {
   methods: {
     showDetail (item) {
       this.componentName = item.component
+      this.params = item.params || {}
     },
     defaultMenu () {
       const menu = this.list.find(item => {
@@ -82,6 +84,7 @@ export default {
       })
       const sub = menu.children.find(item => item.show)
       this.componentName = sub.component
+      this.params = sub.params || {}
       this.defaultActived = sub.label
     },
     filterChildren (list) {
@@ -89,7 +92,7 @@ export default {
         if (item.authorityCode) {
           return item.show && item.processNum && this.authorityButtons.includes(item.authorityCode)
         }
-        return item.show
+        return item.show && item.processNum
       })
     },
     homePageQueryList () {
