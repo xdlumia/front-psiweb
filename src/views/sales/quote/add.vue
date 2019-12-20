@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-19 15:35:04
+ * @LastEditTime: 2019-12-19 18:27:15
  * @Description: file content
 */
 <template>
@@ -364,8 +364,6 @@ export default {
           } else {
             copyParams.shipmentCode = ''
           }
-          this.loading = false
-          return console.log(copyParams)
           this.$api.seePsiSaleService[api](copyParams)
             .then(res => {
               this.$emit('update:visible', false)

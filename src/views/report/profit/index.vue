@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-19 14:25:38
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-19 14:46:53
+ * @LastEditTime: 2019-12-19 18:26:51
  * @Description: 利润分析报表
 */
 <template>
@@ -13,24 +13,25 @@
     <el-form :model="queryForm" inline size="mini">
       <el-form-item label="选择日期">
         <el-date-picker
+          :default-time="['00:00:00','23:59:59']"
           end-placeholder="结束日期"
           range-separator="至"
           start-placeholder="开始日期"
           type="daterange"
-          v-model="queryForm.daterange"
+          v-model="daterange"
           value-format="timestamp"
         ></el-date-picker>
       </el-form-item>
-      <el-button size="mini" type="primary">生成报表</el-button>
+      <el-button @click="makeReport" size="mini" type="primary">生成报表</el-button>
       <el-button size="mini" type="primary">下载报表</el-button>
       <!-- 筛选 -->
       <el-popover placement="bottom" trigger="click" v-model="filterPopover" width="280">
         <el-link :underline="false" @click="filterPopover=false" class="el-icon-close close fr" style="margin-top:2px;" title="关闭"></el-link>
-        <dFilter :form="queryForm"></dFilter>
+        <dFilter :form="queryForm" :options="filterOptions"></dFilter>
         <el-button class="tool-item ml15" icon="iconfont icon-filter" size="mini" slot="reference" title="筛选"></el-button>
       </el-popover>
     </el-form>
-    <d-table :autoInit="false" :params="queryForm" api="seePsiReportService.royaltyUser" class="d-table" ref="table">
+    <d-table :autoInit="false" :params="queryForm" api="seePsiReportService.saleprofitreportList" class="d-table" ref="table">
       <el-table-column label="单据编号" prop="name"></el-table-column>
       <el-table-column label="单据类型" prop="paidNum" width="140"></el-table-column>
       <el-table-column label="创建人" prop="paidAmount" width="140"></el-table-column>
@@ -52,29 +53,38 @@
 import dFilter from '@/components/filter';
 
 export default {
+  components: {
+    dFilter
+  },
   data() {
     return {
+      daterange: [],
       queryForm: {
-        daterange: [], //
-        beginDate: '',
-        endDate: '',
+        // 当前页数
         page: 1,
-        limit: 15
+        // 每页显示记录数
+        limit: 20,
+        // 最小完成时间
+        minFinishDate: '',
+        // 最大完成时间
+        maxFinishDate: ''
       },
-      filterPopover: false
+      filterPopover: false,
+      filterOptions: []
     };
   },
   watch: {
-    'queryForm.daterange': {
+    daterange: {
       handler(newValue) {
-        this.queryForm.beginDate = newValue[0];
-        this.queryForm.endDate = newValue[1];
-        this.$refs.table.reload();
+        this.queryForm.minFinishDate = newValue[0];
+        this.queryForm.maxFinishDate = newValue[1];
       }
     }
   },
-  components: {
-    dFilter
+  methods: {
+    makeReport() {
+      this.$refs.table.reload();
+    }
   }
 };
 </script>

@@ -1,79 +1,129 @@
-/*
- * @Author: 高大鹏
- * @Date: 2019-12-10 17:26:27
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-19 17:00:55
- * @Description: 报表、首页
- */
-const MOCK_ADDRESS = '/mock/5dd79e1155e5ff0710c433ec/'
-
+// const MOCK_ADDRESS = '/mock/5ddcf2dee8c6606de89f2df3/39.99.132.95:9223'; // pc端用
+// const MOCK_ADDRESS = 'http://10.168.1.145:7300/mock/5ddcf2dee8c6606de89f2df3/39.99.132.95:9223'; // 小程序用
+const MOCK_ADDRESS = ''; // 禁用easymock
+const isUseMock = false;
+/**
+* @date 2019-12-19
+* @host 39.99.132.95:9223
+*/
 export default {
   __mockAddress: MOCK_ADDRESS,
-  /* =============首页统计start=========== */
-  // 周期任务
+
+  /**
+     * @tag 首页统计
+     * @description 周期任务
+     */
   indexCycleTask: {
-    'url': '/index/cycleTask',
-    'mock': false
+    url: '/index/cycleTask',
+    methods: 'get',
+    mock: isUseMock
   },
-
-  // 销售员工利润排行
+  /**
+     * @tag 首页统计
+     * @description 销售员工利润排行
+     */
   indexProfitTop: {
-    'url': '/index/profitTop',
-    'mock': false
+    url: '/index/profitTop',
+    methods: 'get',
+    mock: isUseMock
   },
-
-  // 销售情况
+  /**
+     * @tag 首页统计
+     * @description 销售情况
+     */
   indexSalesLine: {
-    'url': '/index/salesLine',
-    'mock': false
+    url: '/index/salesLine',
+    methods: 'get',
+    mock: isUseMock
   },
-
-  // 今日任务
+  /**
+     * @tag 首页统计
+     * @description 今日任务
+     */
   indexTodayTask: {
-    'url': '/index/todayTask',
-    'mock': false
+    url: '/index/todayTask',
+    methods: 'get',
+    mock: isUseMock
   },
-  /* =============首页统计end=========== */
-
-  /* =============job-controllerstart=========== */
-  // execute
+  /**
+     * @tag job-controller
+     * @description execute
+     */
   jobExecute: {
-    'url': '/job/execute',
-    'mock': false,
-    'methods': 'post'
+    url: '/job/execute',
+    methods: 'post',
+    mock: isUseMock
   },
-  /* =============job-controllerend=========== */
-
-  /* =============RocketMQ失败重试start=========== */
-  // 重试失败消息
+  /**
+     * @tag RocketMQ失败重试
+     * @description 重试失败消息
+     */
   rocketMQRetryFailedMessage: {
-    'url': '/rocketMQ/retryFailedMessage/{className}',
-    'mock': false,
-    'methods': 'post'
+    url: '/rocketMQ/retryFailedMessage/{className}',
+    methods: 'post',
+    mock: isUseMock
   },
-  /* =============RocketMQ失败重试end=========== */
-
-  /* =============提成统计start=========== */
-  // 个人提成统计
+  /**
+     * @tag 提成统计
+     * @description 个人提成统计
+     */
   royaltyUser: {
-    'url': '/royalty/user',
-    'mock': false
+    url: '/royalty/user',
+    methods: 'get',
+    mock: isUseMock
   },
-  /* =============提成统计end=========== */
-
-  /* =============服务健康检查start=========== */
-  // 检查服务健康状况
+  /**
+     * @tag sale-profit-report-controller
+     * @description 删除
+     */
+  saleprofitreportDelete: {
+    url: '/saleprofitreport/delete',
+    methods: 'delete',
+    mock: isUseMock
+  },
+  /**
+     * @tag sale-profit-report-controller
+     * @description 查看详细信息
+     */
+  saleprofitreportInfo: {
+    url: '/saleprofitreport/info/{id}',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
+     * @tag sale-profit-report-controller
+     * @description 获取列表
+     */
+  saleprofitreportList: {
+    url: '/saleprofitreport/list',
+    methods: 'get',
+    mock: isUseMock
+  },
+  /**
+     * @tag sale-profit-report-controller
+     * @description 保存
+     */
+  saleprofitreportSave: {
+    url: '/saleprofitreport/save',
+    methods: 'post',
+    mock: isUseMock
+  },
+  /**
+     * @tag 服务健康检查
+     * @description 检查服务健康状况
+     */
   healthCheck: {
-    'url': '/ws/health/check',
-    'mock': false
+    url: '/ws/health/check',
+    methods: 'get',
+    mock: isUseMock
   },
-  /* =============服务健康检查end=========== */
-
-  /* =============文件压缩下载（日志和配置文件）start=========== */
-  // 根据端口号压缩并下载指定类型文件
+  /**
+     * @tag 文件压缩下载（日志和配置文件）
+     * @description 根据端口号压缩并下载指定类型文件
+     */
   runlogCompressAndDownload: {
-    'url': '/ws/runlog/compressAndDownload',
-    'mock': false
+    url: '/ws/runlog/compressAndDownload',
+    methods: 'get',
+    mock: isUseMock
   }
-  /* =============文件压缩下载（日志和配置文件）end=========== */
 }
