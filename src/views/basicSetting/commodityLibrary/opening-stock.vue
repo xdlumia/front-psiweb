@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-20 09:21:51
+ * @LastEditTime: 2019-12-20 09:24:19
  * @Description: 新增目标
  -->
 <template>
@@ -22,7 +22,8 @@
           <el-button size="mini" @click="$emit('update:visible', false)">关闭</el-button>
         </div>
       </div>
-      <el-form ref="beginnForm" size="mini" :model="beginnForm" :rules="beginnFormRule">
+      <el-form ref="beginnForm" size="mini" :model="beginnForm"
+:rules="beginnFormRule">
         <form-card title="期初信息">
           <el-row :gutter="40">
             <el-col :span="8">
@@ -53,7 +54,8 @@
             </el-col>
           </el-row>
         </form-card>
-        <losses-code ref="lossesCode" :data="beginnForm" :rowData="rowData" :wmsName="wmsName"></losses-code>
+        <losses-code ref="lossesCode" :data="beginnForm" :rowData="rowData"
+:wmsName="wmsName"></losses-code>
       </el-form>
       <!-- <add-facilitator ref="addFacilitator" :editId="editId" v-if="visible" @refresh="refresh"></add-facilitator> -->
     </el-dialog>
@@ -75,7 +77,7 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     return {
       warehouseList: [],
       beginnForm: {
@@ -106,29 +108,29 @@ export default {
     lossesCode
   },
   computed: {
-    maxHeight () {
+    maxHeight() {
       return window.innerHeight - 130;
     },
-    wmsName () {
+    wmsName() {
       const temp = this.warehouseList.find(item => item.id === this.beginnForm.wmsId)
       return temp ? temp.name : ''
     },
-    originalCostDifference () {
-      return this.beginnForm.originalPriceAdjustment * ((this.$refs.lossesCode && this.$refs.lossesCode.tableData.length) || 0)
+    originalCostDifference() {
+      return (this.beginnForm.originalPriceAdjustment * ((this.$refs.lossesCode && this.$refs.lossesCode.tableData.length) || 0)).toFixed(2)
     }
   },
-  mounted () {
+  mounted() {
     this.commonwmsmanagerUsableList()
     console.log(this.$refs.lossesCode)
   },
   methods: {
     // 可用库房列表
-    commonwmsmanagerUsableList () {
+    commonwmsmanagerUsableList() {
       this.$api.seePsiWmsService.commonwmsmanagerUsableList().then(res => {
         this.warehouseList = res.data
       })
     },
-    wmsinventorydetailInitializePutaway () {
+    wmsinventorydetailInitializePutaway() {
       this.$refs.beginnForm.validate(valid => {
         if (valid) {
           if (!this.$refs.lossesCode.tableData.length) {
