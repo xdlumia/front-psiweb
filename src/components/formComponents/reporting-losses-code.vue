@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-17 12:00:44
+ * @LastEditTime: 2019-12-20 16:27:17
  * @Description: 报溢报损扫码公共弹窗
 */
 <template>
@@ -108,7 +108,7 @@
             :data='tableData'
             ref="companyTable"
             class="college-main"
-            style="height:200px"
+            height="200"
           >
             <el-table-column
               min-width="50"
