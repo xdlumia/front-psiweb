@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-20 13:58:52
+ * @LastEditTime: 2019-12-20 14:31:04
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -56,7 +56,7 @@
           <commoditySelector
             :wmsId="data.type == 2 ? data.wmsId : null"
             @choose='commodityChoose(arguments,scope)'
-            :multiple='true'
+            :multiple='false'
             type="code"
             v-model="scope.row.commodityCode"
             :codes='codes'
@@ -75,6 +75,7 @@
         >
           <commoditySelector
             :wmsId="data.type == 2 ? data.wmsId : null"
+            :multiple='false'
             @choose='commodityChoose(arguments,scope)'
             v-model="scope.row.goodsName"
             :codes='codes'
@@ -466,6 +467,7 @@ export default {
           this.preCommodityBussinessInfo[item.commodityCode] = {}
         }
         if (this.preCommodityBussinessInfo[item.commodityCode]) {
+          this.$set(item, 'inventoryPrice', item.inventoryPrice || this.preCommodityBussinessInfo[item.commodityCode].inventoryPrice)
           this.$set(item, 'taxRate', item.taxRate || this.preCommodityBussinessInfo[item.commodityCode].taxRate)
           this.$set(item, 'inventoryNumber', item.inventoryNumber || this.preCommodityBussinessInfo[item.commodityCode].inventoryNumber || 0)
           this.$set(item, 'recentDiscountSprice', this.preCommodityBussinessInfo[item.commodityCode].recentDiscountSprice || 0)

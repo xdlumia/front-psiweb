@@ -47,6 +47,15 @@ export default {
     },
     /**
      * @tag 首页统计
+     * @description 统计销售类占比
+     */
+    indexSalesClassifyStatistics: {
+        url: '/index/salesClassifyStatistics',
+        methods: 'get',
+        mock: isUseMock
+    },
+    /**
+     * @tag 首页统计
      * @description 销售情况
      */
     indexSalesLine: {
@@ -97,6 +106,15 @@ export default {
     saleprofitreportDelete: {
         url: '/saleprofitreport/delete',
         methods: 'delete',
+        mock: isUseMock
+    },
+    /**
+     * @tag sale-profit-report-controller
+     * @description 导出
+     */
+    saleprofitreportExport: {
+        url: '/saleprofitreport/export',
+        methods: 'post',
         mock: isUseMock
     },
     /**

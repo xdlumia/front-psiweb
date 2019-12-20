@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-19 14:25:38
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-20 12:06:17
+ * @LastEditTime: 2019-12-20 14:31:23
  * @Description: 利润分析报表
 */
 <template>
@@ -25,7 +25,7 @@
         ></el-date-picker>
       </el-form-item>
       <el-button @click="makeReport" size="mini" type="primary">生成报表</el-button>
-      <el-button size="mini" type="primary">下载报表</el-button>
+      <el-button @click="download" size="mini" type="primary">下载报表</el-button>
       <!-- 筛选 -->
       <el-popover placement="bottom" trigger="click" v-if="init" v-model="filterPopover" width="280">
         <el-link :underline="false" @click="filterPopover=false" class="el-icon-close close fr" style="margin-top:2px;" title="关闭"></el-link>
@@ -168,6 +168,23 @@ export default {
         } else sums[index] = '';
       });
       return sums;
+    },
+    async download() {
+      if (!(this.queryForm.minFinishDate && this.queryForm.maxFinishDate)) {
+        return this.$message({
+          message: '请先选择报表时间',
+          type: 'warning',
+          showClose: true
+        });
+      }
+      let { data } = await this.$api.seePsiReportService.saleprofitreportExport(
+        this.queryForm
+      );
+      let a = document.createElement('a');
+      a.href = data;
+      a.download = '利润分析报表';
+      a.target = '_blank';
+      a.click();
     }
   }
 };

@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 17:44:40
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-19 18:27:15
  * @Description: file content
 */
 <template>
@@ -336,9 +336,10 @@ export default {
             })
             item.putawayType = 0 //0=出库
             // 税后总价
-            item.preTaxAmount = (item.reference || 0) * (1 + item.taxRate / 100) * (item.commodityNumber || 0)
+            item.preTaxAmount = Number((item.reference || 0) * (1 + item.taxRate / 100) * (item.commodityNumber || 0)).toFixed(2)
             // 销售单价
-            item.salesPrice = item.salesPrice || 0
+            item.salesPrice = Number((item.reference || 0) * (1 + item.taxRate / 100)).toFixed(2)
+            item.costAmount = item.inventoryPrice
           })
           // 验证商品信息
           if (copyParams.businessCommoditySaveVoList.every(item => !item.commodityNumber)) {
