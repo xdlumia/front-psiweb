@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-30 17:43:52
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-21 08:04:37
  * @Description: 组装记录弹窗 
 */
 <template>
@@ -25,7 +25,7 @@
               size='mini'
               ref="companyTable"
               class="college-main"
-              style="max-height:300px"
+              max-height="250"
             >
               <el-table-column
                 min-width="100"

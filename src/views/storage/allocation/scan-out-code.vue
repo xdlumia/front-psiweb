@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-13 10:56:26
+ * @LastEditTime: 2019-12-21 09:19:57
  * @Description: 调出扫码
 */
 <template>
@@ -16,7 +16,7 @@
         <el-table
           border
           :data="dialogData.allocationCommodityList"
-          style="max-height:300px"
+          max-height="300"
           size="mini"
         >
           <el-table-column
