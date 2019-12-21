@@ -90,7 +90,7 @@
             :data="tableData"
             ref="companyTable"
             class="college-main"
-            style="max-height:300px"
+            max-height="300"
           >
             <el-table-column
               min-width="50"
