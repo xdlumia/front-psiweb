@@ -27,7 +27,7 @@
       </div>
       <el-tabs
         class="wfull hfull tabs-view"
-        v-model="activeName"
+        v-model="activeName" 
       >
         <el-tab-pane label="详情">
           <el-form>

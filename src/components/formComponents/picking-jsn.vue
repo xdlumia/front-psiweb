@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-30 17:43:52
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-21 08:10:13
  * @Description: 拣货单 拣货商品 点击 SN码
 机器号/SN码记录
 */
@@ -24,7 +24,7 @@
               :data='[data]'
               ref="companyTable"
               class="college-main"
-              style="max-height:300px"
+              max-height="300"
             >
               <el-table-column
                 fixed

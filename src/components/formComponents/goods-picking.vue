@@ -26,7 +26,7 @@
         :data='data.commodityList'
         ref="table"
         class="college-main"
-        style="max-height:300px"
+        max-height="300"
       >
         <el-table-column
           fixed
