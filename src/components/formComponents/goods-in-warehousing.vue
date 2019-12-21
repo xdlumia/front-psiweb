@@ -238,7 +238,7 @@
         :data='[...data.returnScanData,...data.exchangeScanData]'
         ref="table"
         class="college-main mt15"
-        style="max-height:300px"
+        max-height="300"
       >
         <el-table-column
           min-width="80"
