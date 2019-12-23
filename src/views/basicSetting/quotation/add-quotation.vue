@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-11 18:32:15
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2019-12-23 11:44:56
  * @Description: 新增报价单
  -->
 <template>
@@ -16,7 +16,7 @@
       title="新增库房"
     >
       <div slot="title" style="display:flex;">
-        <h3 style="flex:1;text-align:center;">新增报价单</h3>
+        <h3 style="flex:1;text-align:center;">报价单配置</h3>
         <div>
           <el-button type="primary" size="mini" @click="commonquotationconfigSave">保存</el-button>
           <el-button size="mini" @click="$emit('update:visible', false)">关闭</el-button>
@@ -51,7 +51,7 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
       quotationForm: {
         id: '',
@@ -76,16 +76,16 @@ export default {
     configInfo
   },
   computed: {
-    maxHeight() {
+    maxHeight () {
       return window.innerHeight - 130;
     }
   },
-  mounted() {
+  mounted () {
     this.quotationForm = Object.assign(this.quotationForm, this.detailForm)
     console.log(this.quotationForm)
   },
   methods: {
-    commonquotationconfigSave() {
+    commonquotationconfigSave () {
       this.$refs.quotationForm.validate(valid => {
         if (valid) {
           this.loading = true
