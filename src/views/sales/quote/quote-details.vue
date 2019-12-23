@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-18 15:12:15
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-23 18:01:02
  * @Description: 报价单详情
 */
 <template>
@@ -170,11 +170,14 @@ export default {
         return data;
       }
     },
+    formatDate(value){
+      return +new Date(new Date(value).toLocaleString().match(/(\d{4}\/\d{2}\/\d{2})/)[1])
+    },
     // 判断禁用的按钮
     isDisabledButton(label) {
-      let nowData = Date.serversDate().getTime() + 60 * 60 * 24 * 1000 //服务器当前时间
+      let nowData = this.formatDate(Date.serversDate().getTime()) //服务器当前时间
       // let nowData = new Date().getTime() //当前时间
-      let failureTime = this.detail.failureTime //报价单有效期截止
+      let failureTime = this.formatDate(this.detail.failureTime) //报价单有效期截止
       /**
        * isPurchaseApply 是否存在请购单
        * shipmentCode 出库单
