@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-11 15:12:12
+ * @LastEditTime: 2019-12-21 09:20:16
  * @Description: 借出返还
 */
 <template>
@@ -132,7 +132,7 @@
             :data="tableData"
             ref="companyTable"
             class="college-main"
-            style="max-height:300px"
+            max-height="300"
           >
             <el-table-column
               min-width="50"

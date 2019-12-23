@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-11 15:03:01
+ * @LastEditTime: 2019-12-21 08:07:21
  * @Description: 组装任务组装弹窗 
 */
 <template>
@@ -142,7 +142,7 @@
             border
             ref="companyTable"
             class="college-main mt15"
-            style="max-height:300px"
+            max-height="300"
           >
             <el-table-column
               min-width="50"

@@ -26,7 +26,7 @@
         size="mini"
         ref="table"
         class="college-main"
-        style="max-height:340px"
+        max-height="340"
         row-key="commodityCode"
         :tree-props="{children: 'childrenCommodityList'}"
       >

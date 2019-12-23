@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2019-12-21 08:11:19
  * @Description: 扫码盘点
 */
 <template>
@@ -103,7 +103,7 @@
         :data='tableData'
         ref="companyTable"
         class="college-main"
-        style="max-height:300px"
+        max-height="300"
       >
         <el-table-column
           min-width="50"

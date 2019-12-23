@@ -22,7 +22,7 @@
         :data="tableData"
         ref="companyTable"
         class="college-main mt20"
-        style="max-height:300px"
+        max-height='300'
       >
         <el-table-column
           min-width="50"
