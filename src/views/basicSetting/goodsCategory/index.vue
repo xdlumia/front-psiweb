@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:44:55
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 19:14:33
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2019-12-24 18:39:19
  * @Description: 商品分类
  -->
 <template>
@@ -25,6 +25,8 @@
             <!--<span class="d-inline b">地市(2位)</span>-->
             <span class="b" style="display:inline-block;width:100px;">商品类别</span>
             <span class="b" style="display:inline-block;width:100px;">分类税率</span>
+            <span class="b" style="display:inline-block;width:100px;">库存成本配置</span>
+            <span class="b" style="display:inline-block;width:100px;">销售参考价配置</span>
             <span class="b" style="display:inline-block;width:100px;">分类创建人</span>
             <span class="b" style="display:inline-block;width:200px;">创建时间</span>
             <span
@@ -32,7 +34,7 @@
               class="b"
               style="display:inline-block;width:100px;"
             >是否有效</span>
-            <span class="b ac" style="display:inline-block;width:400px;">操作</span>
+            <span class="b ac" style="display:inline-block;width:360px;">操作</span>
           </div>
         </div>
 
@@ -62,6 +64,14 @@
                   class="d-elip"
                   style="display:inline-block;width:100px;"
                 >{{data.taxRate ? data.taxRate + '%' : '-'}}</span>
+                <span
+                  class="d-elip"
+                  style="display:inline-block;width:100px;"
+                >{{data.taxRate ? data.taxRate + '%' : '-'}}</span>
+                <span
+                  class="d-elip"
+                  style="display:inline-block;width:100px;"
+                >{{data.taxRate ? data.taxRate + '%' : '-'}}</span>
                 <span class="d-elip" style="display:inline-block;width:100px;">{{data.creatorName}}</span>
                 <span class="d-elip" style="width:200px;display:inline-block;">
                   <span>{{node.data.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
@@ -80,7 +90,7 @@
                     inactive-color="#ff4949"
                   ></el-switch>
                 </span>
-                <span class="d-elip" style="width:400px;display:inline-block;">
+                <span class="d-elip" style="width:360px;display:inline-block;">
                   <el-button
                     v-if="authorityButtons.includes('decorate_goods_classmgr_1002')"
                     :disabled="(node.data.parentId == null ? false : true) || (node.data.isEnable != 1)"
@@ -145,8 +155,14 @@
             <span class="el-icon-warning f30 fl" style="color:#e6a23c;"></span>
             <span class="ml10 fl">分类新增成功后，不可更改及删除，请仔细核实分类信息！</span>
           </div>-->
-          <el-form ref="form" :model="form" label-width="100px"
-:rules="rules" class="mt20">
+          <el-form
+            size="small"
+            ref="form"
+            :model="form"
+            label-width="125px"
+            :rules="rules"
+            class="mt20"
+          >
             <el-form-item size="small" label="选择类别" prop="categoryCode">
               <!-- <el-input placeholder="请输入分类名称" v-model="form.categoryCode"></el-input> -->
               <d-select
@@ -159,7 +175,7 @@
               <el-input
                 :disabled="istype === 'child' || isEditChild"
                 placeholder="请输入"
-                v-model="form.className"
+                v-model.trim="form.className"
               ></el-input>
             </el-form-item>
             <el-form-item
@@ -168,12 +184,62 @@
               label="子分类名称"
               prop="childClassName"
             >
-              <el-input placeholder="请输入" v-model="form.childClassName"></el-input>
+              <el-input placeholder="请输入" v-model.trim="form.childClassName"></el-input>
             </el-form-item>
             <el-form-item size="small" label="分类税率" prop="taxRate">
               <el-input placeholder="请输入" v-model="form.taxRate">
                 <template slot="append">%</template>
               </el-input>
+            </el-form-item>
+            <el-form-item
+              size="small"
+              label="库存成本公式"
+              prop="inventoryPriceFormulaRatio"
+              v-if="istype === 'child' || isEditChild"
+            >
+              <div style="display:flex;">
+                <span style="white-space: nowrap;">采购均价*</span>
+                <el-form-item prop="inventoryPriceFormulaRatio">
+                  <el-input-number
+                    controls-position="right"
+                    :show-word-limit="false"
+                    v-model.trim="form.inventoryPriceFormulaRatio"
+                  ></el-input-number>
+                </el-form-item>
+                <span>+</span>
+                <el-form-item prop="inventoryPriceFormulaFixedValue">
+                  <el-input-number
+                    controls-position="right"
+                    :show-word-limit="false"
+                    v-model.trim="form.inventoryPriceFormulaFixedValue"
+                  ></el-input-number>
+                </el-form-item>
+              </div>
+            </el-form-item>
+            <el-form-item
+              size="small"
+              label="销售参考价公式"
+              prop="saleRefPriceFormulaRatio"
+              v-if="istype === 'child' || isEditChild"
+            >
+              <div style="display:flex;" ref="saleFormula">
+                <span style="white-space: nowrap;">销售均价*</span>
+                <el-form-item prop="saleRefPriceFormulaRatio">
+                  <el-input-number
+                    controls-position="right"
+                    :show-word-limit="false"
+                    v-model.trim="form.saleRefPriceFormulaRatio"
+                  ></el-input-number>
+                </el-form-item>
+                <span>+</span>
+                <el-form-item prop="saleRefPriceFormulaFixedValue">
+                  <el-input-number
+                    controls-position="right"
+                    :show-word-limit="false"
+                    v-model.trim="form.saleRefPriceFormulaFixedValue"
+                  ></el-input-number>
+                </el-form-item>
+              </div>
             </el-form-item>
           </el-form>
         </div>
@@ -189,7 +255,7 @@
 <script>
 /* eslint-disable eqeqeq */
 export default {
-  data() {
+  data () {
     return {
       isEnable: false,
       defaultProps: {
@@ -207,7 +273,13 @@ export default {
         taxRate: '',
         className: '',
         childClassName: '',
-        parentid: null
+        parentid: null,
+        inventoryPriceFormula: '',
+        inventoryPriceFormulaRatio: 0,
+        inventoryPriceFormulaFixedValue: 0,
+        saleReferencePriceFormula: '',
+        saleRefPriceFormulaRatio: 0,
+        saleRefPriceFormulaFixedValue: 0
       },
       rules: {
         categoryCode: [
@@ -221,6 +293,22 @@ export default {
         ],
         parentid: [
           { required: true, message: '请选择上级分类', trigger: 'change' }
+        ],
+        inventoryPriceFormulaRatio: [
+          { required: true, message: '请输入', trigger: 'blur' },
+          { pattern: /^[-+]?\d{1,6}(\.\d{1,2})?$/, message: '请输入6位整数，两位小数', trigger: 'blur' }
+        ],
+        inventoryPriceFormulaFixedValue: [
+          { required: true, message: '请输入', trigger: 'blur' },
+          { pattern: /^[-+]?\d{1,6}(\.\d{1,2})?$/, message: '请输入6位整数，两位小数', trigger: 'blur' }
+        ],
+        saleRefPriceFormulaRatio: [
+          { required: true, message: '请输入', trigger: 'blur' },
+          { pattern: /^[-+]?\d{1,6}(\.\d{1,2})?$/, message: '请输入6位整数，两位小数', trigger: 'blur' }
+        ],
+        saleRefPriceFormulaFixedValue: [
+          { required: true, message: '请输入', trigger: 'blur' },
+          { pattern: /^[-+]?\d{1,6}(\.\d{1,2})?$/, message: '请输入6位整数，两位小数', trigger: 'blur' }
         ],
         taxRate: [
           { required: true, message: '请输入', trigger: 'blur' },
@@ -262,11 +350,11 @@ export default {
   },
   computed: {
   },
-  created() {
+  created () {
     // console.log(this.authorityButtons)
     this.fgoodsFirstClassList()
   },
-  mounted() {
+  mounted () {
     this.form = Object.assign(this.form, {
       id: null,
       categoryCode: '',
@@ -279,7 +367,7 @@ export default {
   watch: {
   },
   methods: {
-    fgoodsFirstClassList() {
+    fgoodsFirstClassList () {
       this.defalutOpenArr = []
       this.$api.seeGoodsService.fgoodsFirstClassList(this.firstForm) // 获取物品一级类目
         .then(res => {
@@ -297,7 +385,7 @@ export default {
           this.loading = false
         })
     },
-    lazyTreeData(node, resovle) {
+    lazyTreeData (node, resovle) {
       this.dadnode = node
       this.resovle = resovle
       this.$api.seeGoodsService.fgetChildClassList({ id: node.data.id }) // 获取物品子类类目
@@ -309,13 +397,14 @@ export default {
           return resovle(res.data)
         }).finally(() => { })
     },
-    fcateadd(data) { // 新增
+    fcateadd (data) { // 新增
       this.titleHandel = '新增'
       this.handel = true
       this.istype = null
+      this.isEditChild = false
       this.dialogVisible = true
       // this.$refs.form && this.$refs.form.resetFields()
-      this.form = Object.assign({}, {
+      this.form = Object.assign(this.form, {
         id: null,
         categoryCode: '',
         taxRate: '',
@@ -326,7 +415,7 @@ export default {
       // this.form.handelClassName = ''// 清空
       // this.form.parentid = ''// 清空
     },
-    fcateChange(node, data) { // 是否有效开关
+    fcateChange (node, data) { // 是否有效开关
       this.treeClickNode = node
       this.treeClickData = data
       if (data.isEnable == 1) { // 如果从无效改成有效
@@ -401,7 +490,8 @@ export default {
         })
       }
     },
-    faddchild(data, type, node) { // 新增子类
+    faddchild (data, type, node) { // 新增子类
+      this.isEditChild = false
       this.titleHandel = '新增子类'
       this.treeClickNode = node
       this.treeClickData = data
@@ -417,7 +507,7 @@ export default {
       // this.form.handelClassName = ''// 清空
       this.treeId = data.id
     },
-    fcatehandel(data, type, node) { // 修改
+    fcatehandel (data, type, node) { // 修改
       this.titleHandel = '修改'
       console.log(data)
       console.log(node)
@@ -430,14 +520,17 @@ export default {
       this.dialogVisible = true
       this.treeId = data.id
       this.form.className = data.className
+      Object.keys(this.form).forEach(key => {
+        this.form[key] = data[key]
+      })
       if (this.isEditChild) {
         this.form.className = node.parent.label
         this.form.childClassName = data.className
       }
-      this.form.taxRate = data.taxRate
-      this.form.categoryCode = data.categoryCode
+      // this.form.taxRate = data.taxRate
+      // this.form.categoryCode = data.categoryCode
     },
-    fcatetop(data, node) { // 置顶
+    fcatetop (data, node) { // 置顶
       this.treeClickData = data
       this.$api.seeGoodsService.handelGoodsChild({ id: data.id, isTop: 1 }) //
         .then(res => {
@@ -461,7 +554,7 @@ export default {
           this.loading = false
         })
     },
-    fcatedelete(node, data) { // 删除
+    fcatedelete (node, data) { // 删除
       this.treeClickNode = node
       this.treeClickData = data
       this.$confirm('是否删除?', '提示', {
@@ -496,13 +589,14 @@ export default {
         })
       })
     },
-    curChangeHandle(val) { // 分页
+    curChangeHandle (val) { // 分页
       this.fgoodsFirstClassList()
     },
-    handleClose(done) { // 关闭弹框
+    handleClose (done) { // 关闭弹框
       done()
     },
-    submitForm(formName) { // 新增和编辑类目的弹框确定
+    submitForm (formName) { // 新增和编辑类目的弹框确定
+      console.log(this.$refs.saleFormula.textContent)
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.dialogVisible = false
@@ -611,10 +705,16 @@ export default {
   padding-right: 8px;
 }
 .custom-tree-node .tree-node {
-  width: 1050px;
+  width: 1200px;
 }
 .custom-tree-node .tree-node .d-inline {
   font-size: 14px;
+}
+.required-label::before {
+  content: "*";
+  color: #f56c6c;
+  display: inline-block;
+  margin-right: 4px;
 }
 </style>
 <style>
