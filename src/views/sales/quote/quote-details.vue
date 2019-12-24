@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-23 18:01:02
+ * @LastEditTime: 2019-12-24 17:48:20
  * @Description: 报价单详情
 */
 <template>
@@ -171,7 +171,8 @@ export default {
       }
     },
     formatDate(value){
-      return +new Date(new Date(value).toLocaleString().match(/(\d{4}\/\d{2}\/\d{2})/)[1])
+      let date = new Date(value)||new Date;
+      return +new Date(date.toLocaleString().match(/(\d{4}\/\d{1,2}\/\d{1,2})/)[1])
     },
     // 判断禁用的按钮
     isDisabledButton(label) {

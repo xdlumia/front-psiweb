@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 12:05:49
+ * @LastEditTime: 2019-12-24 17:51:42
  * @Description: 确定配置信息
 */
 <template>
@@ -54,9 +54,10 @@
           border
           default-expand-all
           max-height="350px"
+          ref="kind1table"
           row-key="id"
           size="mini"
-          ref="kind1table"
+          v-if="strictConfirmConfig"
         >
           <el-table-column label="商品分类" prop="className" v-if="!item.disabled" width="130">
             <template slot-scope="{row}">
@@ -88,29 +89,33 @@
             </template>
           </el-table-column>
         </el-table>
+        <CustomConfig :data="data" v-else/>
       </div>
     </quotationInfo>
   </div>
 </template>
 <script>
 import quotationInfo from '@/components/formComponents/quotation-info';
+import CustomConfig from './custom-config';
 import { log } from 'util';
 export default {
   props: {
     data: {
       type: Object,
       default: () => ({})
-    }
+    },
+    strictConfirmConfig: Boolean
   },
   components: {
-    quotationInfo
+    quotationInfo,
+    CustomConfig
   },
   data() {
     return {
       loading: false,
       configList: {},
       preConfigGoods: {},
-      configNames:{},
+      configNames: {},
       wholeCacheList: [] // 存放根据nama查出来的整机配置信息
     };
   },
@@ -233,7 +238,7 @@ export default {
       let configs = this.getCurrentConfig(row);
       let allConfigGoods = [];
       let configName = '';
-      let configId = ''
+      let configId = '';
       if (configs && configs.length >= 1) {
         configs.some(config => {
           let configList = JSON.parse(
@@ -251,8 +256,8 @@ export default {
             );
           if (isFullMatch) {
             allConfigGoods = selectedGoods;
-            configId = config.split('-').pop()
-            configName = this.configNames[configId]
+            configId = config.split('-').pop();
+            configName = this.configNames[configId];
           }
           return isFullMatch;
         });
@@ -378,7 +383,7 @@ export default {
       const newJson = {};
       data.forEach(item => {
         item.checked = false;
-        this.configNames[item.quotationId] = item.quotationName
+        this.configNames[item.quotationId] = item.quotationName;
         let configKey = `${item.configGoodCode}-${item.quotationId}`;
         configList[configKey] = configList[configKey] || [];
         configList[configKey].push(
@@ -445,7 +450,7 @@ export default {
     // 根据名称获取整机信息
     commonquotationconfigdetailsListConfigByGoodName() {
       // 如果没有商品不查询
-      this.data.KIND1List=[]
+      this.data.KIND1List = [];
       if (!this.data.KIND1Data.length) return;
       const params = {
         // doodsName 如果查传的是'' 查的是全部 所以没有值得时候传 ' '
@@ -457,7 +462,9 @@ export default {
         .commonquotationconfigdetailsListConfigByGoodName(params)
         .then(res => {
           // 给整机数据换成新数据
-          const data = (res.data || []).filter(item=>item.quotationState==0);
+          const data = (res.data || []).filter(
+            item => item.quotationState == 0
+          );
           this.filterKIND1List(data);
         });
     }
