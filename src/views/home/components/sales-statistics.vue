@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-11-15 16:45:27
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-20 14:45:09
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2019-12-23 13:51:32
  * @Description: description
  -->
 <template>
@@ -64,6 +64,7 @@
                 style="max-width:280px;"
                 class="no-border-tab"
                 v-model="salesCategory.dateFlag"
+                @tab-click="handleClick"
               >
                 <el-tab-pane label="昨日" name="5"></el-tab-pane>
                 <el-tab-pane label="上周" name="6"></el-tab-pane>
@@ -83,10 +84,14 @@
             </div>
           </div>
           <div class="ba" style="display:flex;flex:0 0 540px">
-            <IEcharts style="flex:1;height:500px;" :option="pieOptions"></IEcharts>
+            <IEcharts
+              v-if="salesCategoryData.length"
+              style="flex:1;height:500px;"
+              :option="pieOptions"
+            ></IEcharts>
             <div style="flex:1;display: flex;align-items: center">
-              <el-row style="flex:1" class="mr20">
-                <div v-for="(item, index) in mockData" :key="index" class="mb20 d-hidden">
+              <el-row style="flex:1" class="mr20" v-if="salesCategoryData.length">
+                <div v-for="(item, index) in salesCategoryData" :key="index" class="mb20 d-hidden">
                   <el-col :span="8" class="br">
                     <span
                       style="display:inline-block;width:10px;height:10px;margin-right:10px;"
@@ -94,10 +99,15 @@
                     ></span>
                     <span>{{item.name}}</span>
                   </el-col>
-                  <el-col :span="4" class="ac">{{Math.floor(item.value / salesSum * 100)}}%</el-col>
+                  <el-col :span="4" class="ac">{{item.percent}}%</el-col>
                   <el-col :span="12" class="ar">￥{{item.value | thousandBitSeparator}}</el-col>
                 </div>
               </el-row>
+              <div
+                v-else
+                class="d-text-qgray"
+                style="flex:1;display:flex;align-items:center;justify-content: center;"
+              >暂无数据</div>
             </div>
           </div>
         </div>
@@ -131,6 +141,7 @@ export default {
         daterange: []
       },
       color: ['#45a1ff', '#5bcb75', '#fcd44b', '#f04864', '#9861e5', '#4ecbcb'],
+      salesCategoryData: [],
       mockData: [
         {
           name: 'test1',
@@ -174,13 +185,19 @@ export default {
       handler () {
         this.indexSalesLine()
       }
+    },
+    salesCategory: {
+      deep: true,
+      handler () {
+        this.indexSalesClassifyStatistics()
+      }
     }
   },
   computed: {
     salesSum () {
-      return this.mockData.reduce((val, item) => {
+      return this.salesCategoryData.reduce((val, item) => {
         return val + parseFloat(item.value)
-      }, 0)
+      }, 0).toFixed(2)
     },
     brokenOptions () {
       return {
@@ -230,7 +247,7 @@ export default {
               zlevel: 100,
               style: {
                 text: '销售额',
-                fontSize: 14,
+                fontSize: 12,
                 textAlign: 'center',
                 fill: '#999999'
               }
@@ -244,9 +261,10 @@ export default {
               style: {
                 y: 100,
                 text: '￥' + this.$options.filter.thousandBitSeparator(this.salesSum),
-                fontSize: 28,
+                fontSize: 24,
                 textAlign: 'center',
-                fontFamily: '"Arial Normal", "Arial"'
+                fontFamily: '"Arial Normal", "Arial"',
+                wordBreak: 'break-all'
               }
             }
           ]
@@ -276,7 +294,7 @@ export default {
                 borderColor: '#ffffff'
               }
             },
-            data: this.mockData
+            data: this.salesCategoryData
           }
         ]
       }
@@ -296,13 +314,20 @@ export default {
         console.log('销售情况', res.data)
       }).finally(() => { this.indexSalesLineLoading = false })
     },
+    handleClick () {
+      this.salesCategory.daterange = []
+    },
     // 销售类别占比
     indexSalesClassifyStatistics () {
       this.salesClassifyStatisticsLoading = true
-      this.salesCategory.beginTime = this.salesCategory.daterange[0]
-      this.salesCategory.endTime = this.salesCategory.daterange[1]
+      if (this.salesCategory.daterange.length) {
+        this.salesCategory.beginTime = this.salesCategory.daterange[0]
+        this.salesCategory.endTime = this.salesCategory.daterange[1]
+        this.salesCategory.dateFlag = ''
+      }
       this.$api.seePsiReportService.indexSalesClassifyStatistics(this.salesCategory).then(res => {
         console.log('销售类别占比', res.data)
+        this.salesCategoryData = res.data
       }).finally(() => { this.salesClassifyStatisticsLoading = false })
     }
   }
