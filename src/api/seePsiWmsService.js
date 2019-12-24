@@ -1161,7 +1161,12 @@ export default {
     'mock': false,
     'methods': 'post'
   },
-
+  // 更新期初商品SN码或者机器号
+  wmsinventorydetailUpdateInitializeSnCode: {
+    'url': '/wmsinventorydetail/updateInitializeSnCode',
+    'mock': false,
+    'methods': 'post'
+  },
   // 获取库房商品清单列表
   wmsinventoryList: {
     'url': '/wmsinventory/list',

@@ -171,6 +171,12 @@
             ></el-table-column>
           </el-table>
         </form-card>
+        <openingInventory
+          :visible.sync="openVisible"
+          :data='openingData'
+          @update='shipmentCommodityCheck'
+          v-if='openVisible'
+        />
       </el-main>
     </el-container>
     <div
@@ -190,9 +196,10 @@
   </div>
 </template>
 <script>
-
+import openingInventory from '@/components/formComponents/opening-inventory'
 export default {
   components: {
+    openingInventory
   },
   props: {
     visible: {
@@ -213,8 +220,10 @@ export default {
     return {
       loading: false,
       activeName: '',
+      openingData: {},
       snCode: '',
       tableData: [],
+      openVisible: false,
     };
   },
   mounted() { },
@@ -230,20 +239,44 @@ export default {
       this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData })
         .then(res => {
           if (res.data) {
+            let commodityCodeList = []
             this.data.commodityShowList.forEach((item, index) => {
               // res.data.commodityCode  C1P0009RCSP20191107000003
-              if (item.commodityCode == res.data.commodityCode) {
-                if (this.data.commodityShowList[index].borrowLoanAccomplishNum < this.data.commodityShowList[index].borrowLoanNum) {
-                  this.data.commodityShowList[index].borrowLoanAccomplishNum++
-                  this.tableData.push(res.data)
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: '当前商品已经扫够啦!'
-                  })
-                }
-              }
+              // if (item.commodityCode == res.data.commodityCode) {
+              //   if (this.data.commodityShowList[index].borrowLoanAccomplishNum < this.data.commodityShowList[index].borrowLoanNum) {
+              //     this.data.commodityShowList[index].borrowLoanAccomplishNum++
+              //     this.tableData.push(res.data)
+              //   } else {
+              //     this.$message({
+              //       type: 'error',
+              //       message: '当前商品已经扫够啦!'
+              //     })
+              //   }
+              // }
+              commodityCodeList.push(item.commodityCode)
             })
+            if (!commodityCodeList.includes(res.data.commodityCode)) {
+              this.$message({
+                type: 'error',
+                message: '当前商品并非借出库商品！'
+              })
+            } else {
+              let index = commodityCodeList.indexOf(res.data.commodityCode)
+              if (this.data.commodityShowList[index].borrowLoanAccomplishNum < this.data.commodityShowList[index].borrowLoanNum) {
+                this.data.commodityShowList[index].borrowLoanAccomplishNum++
+                this.tableData.push(res.data)
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: '当前商品已经扫够啦!'
+                })
+              }
+            }
+          } else {
+            this.openVisible = true
+            this.openingData = {
+              snCode: this.snCode
+            }
           }
         })
         .finally(() => {

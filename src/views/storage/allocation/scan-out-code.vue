@@ -181,6 +181,12 @@
           ></el-table-column>
         </el-table>
       </form-card>
+      <openingInventory
+        :visible.sync="openVisible"
+        :data='openingData'
+        @update='shipmentCommodityCheck'
+        v-if='openVisible'
+      />
     </div>
     <div class="wfull d-center mt10">
       <span>
@@ -207,7 +213,7 @@
 </template>
 <script>
 import commodityChoose from '@/components/formComponents/commodity-choose'
-
+import openingInventory from '@/components/formComponents/opening-inventory'
 export default {
   components: {
   },
@@ -232,6 +238,7 @@ export default {
       chooseVisible: false,
       tableData: [],
       snCode: '',
+      openVisible: false,
       loading: false,
       formInline: {
         user: ''
@@ -283,7 +290,7 @@ export default {
     },
     //扫SN码
     shipmentCommodityCheck(snCode) {
-      this.$api.seePsiWmsService.wmsallocationorderShipmentCommodityCheck({ businessId: this.dialogData.id, snCode: snCode, commodityList: this.downTableData })
+      this.$api.seePsiWmsService.wmsallocationorderShipmentCommodityCheck({ businessId: this.dialogData.id, snCode: this.snCode, commodityList: this.downTableData })
         .then(res => {
           if (res.data) {
             let arr = this.downTableData.filter((item) => {
@@ -297,8 +304,13 @@ export default {
             //     message: '扫过喽'
             //   })
             // }
+          } else {
+            this.openVisible = true
+            this.openingData = {
+              snCode: this.snCode
+            }
           }
-          this.snCode = ''
+          // this.snCode = ''
         })
         .finally(() => {
 
@@ -327,7 +339,8 @@ export default {
     }
   },
   components: {
-    commodityChoose
+    commodityChoose,
+    openingInventory
   }
 };
 </script>
