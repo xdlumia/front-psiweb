@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-20 16:45:29
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2019-12-24 16:33:52
  * @Description: 新增商品
  -->
 <template>
@@ -104,27 +104,55 @@
           </el-col>
         </el-row>
       </form-card>
-      <form-card title="商品价格">
+      <form-card title="商品价格" v-if="goodForm.categoryCode !== 'PSI_SP_KIND-1'">
         <el-row :gutter="40">
           <el-col :span="8">
-            <el-form-item label="库存成本价" prop="values[0].inventoryPrice">
+            <el-form-item prop="values[0].inventoryPrice">
+              <div
+                slot="label"
+                style="flex:1;display: flex;justify-content: space-between;align-items: center;"
+              >
+                <span>库存成本价</span>
+                <el-switch
+                  v-model="goodForm.values[0].inventStatus"
+                  active-text="计算值"
+                  inactive-text="固定值"
+                ></el-switch>
+              </div>
               <el-input
                 @change="inventoryPriceChange"
+                @disabled="goodForm.values[0].inventStatus"
                 v-model.trim="goodForm.values[0].inventoryPrice"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="销售参考价" prop="values[0].saleReferencePrice">
+              <div
+                slot="label"
+                style="flex:1;display: flex;justify-content: space-between;align-items: center;"
+              >
+                <span>销售参考价</span>
+                <el-switch
+                  v-model="goodForm.values[0].saleStatus"
+                  active-text="计算值"
+                  inactive-text="固定值"
+                ></el-switch>
+              </div>
               <el-input
                 @change="saleReferencePriceChange"
+                @disabled="goodForm.values[0].saleStatus"
                 v-model.trim="goodForm.values[0].saleReferencePrice"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="毛利率" prop="values[0].profitRate">
-              <el-input @change="profitRateChange" v-model.trim="goodForm.values[0].profitRate">
+              <el-input
+                @disabled="goodForm.values[0].saleStatus"
+                @change="profitRateChange"
+                v-model.trim="goodForm.values[0].profitRate"
+              >
                 <template slot="append">%</template>
               </el-input>
             </el-form-item>
@@ -238,24 +266,16 @@ export default {
   },
   data () {
     const validateMinInventoryNum = (rule, value, callback) => {
-      // if (!/^\d{1,11}(\.\d{1,2})?$/.test(value)) {
-      //   callback(new Error('11位整数，2位小数'))
-      // } else
       if (parseFloat(value) > parseFloat(this.goodForm.values[0].maxInventoryNum)) {
         callback(new Error('最低库存量不能大于最高库存量'))
       } else {
-        // this.$refs.goodForm.validateField('values[0].maxInventoryNum')
         callback()
       }
     }
     const validateMaxInventoryNum = (rule, value, callback) => {
-      // if (!/^\d{1,11}(\.\d{1,2})?$/.test(value)) {
-      //   callback(new Error('11位整数，2位小数'))
-      // } else
       if (parseFloat(value) < parseFloat(this.goodForm.values[0].minInventoryNum)) {
         callback(new Error('最高库存量不能小于最低库存量'))
       } else {
-        // this.$refs.goodForm.validateField('values[0].minInventoryNum')
         callback()
       }
     }
@@ -440,6 +460,7 @@ export default {
     'goodForm.classId': {
       handler: function (newValue) {
         const temp = this.secondClassList.find(item => item.id === newValue)
+        this.classInfo = temp || {}
         this.goodForm.values[0].taxRate = temp ? temp.taxRate : this.goodForm.values[0].taxRate
       }
     },
@@ -455,6 +476,10 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+/deep/ .el-form--label-top .el-form-item__label {
+  width: 100%;
+  display: flex;
+}
 .upload-wrapper {
   width: 100px;
   height: 100px;
