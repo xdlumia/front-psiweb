@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:44:55
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-25 17:30:21
+ * @LastEditTime : 2019-12-25 17:39:01
  * @Description: 商品分类
  -->
 <template>
@@ -68,21 +68,25 @@
                   <el-tooltip
                     class="item"
                     effect="dark"
-                    :content="data.inventoryPriceFormula || '-'"
+                    :content="data.inventoryPriceFormula"
                     placement="top"
+                    v-if="data.inventoryPriceFormula"
                   >
-                    <span>{{data.inventoryPriceFormula || '-'}}</span>
+                    <span>{{data.inventoryPriceFormula}}</span>
                   </el-tooltip>
+                  <span v-else>-</span>
                 </span>
                 <span class="d-elip" style="display:inline-block;width:150px;">
                   <el-tooltip
                     class="item"
                     effect="dark"
-                    :content="data.saleRefPriceFormula || '-'"
+                    :content="data.saleRefPriceFormula"
                     placement="top"
+                    v-if="data.saleRefPriceFormula"
                   >
-                    <span>{{data.saleRefPriceFormula || '-'}}</span>
+                    <span>{{data.saleRefPriceFormula}}</span>
                   </el-tooltip>
+                  <span v-else>-</span>
                 </span>
                 <span class="d-elip" style="display:inline-block;width:100px;">{{data.creatorName}}</span>
                 <span class="d-elip" style="width:200px;display:inline-block;">
