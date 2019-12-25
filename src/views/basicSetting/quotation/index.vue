@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-10 10:33:41
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2019-12-25 14:02:20
  * @Description: 报价单配置
  -->
 <template>
@@ -67,7 +67,7 @@ export default {
       default: () => ({ page: 1, limit: 15 })
     }
   },
-  data() {
+  data () {
     return {
       rowData: null,
       code: null,
@@ -75,7 +75,8 @@ export default {
       visible: false,
       queryForm: {
         limit: 15,
-        page: 1
+        page: 1,
+        type: 0
       },
       editId: null,
       filterOptions: [
@@ -93,19 +94,19 @@ export default {
       ]
     }
   },
-  mounted() {
+  mounted () {
   },
   components: {
     addQuotation,
     detail
   },
   methods: {
-    detail(row) {
+    detail (row) {
       this.rowData = row
       this.code = row.code
       this.showDetail = true
     },
-    commonwmsmanagerUpdateState(id, state) {
+    commonwmsmanagerUpdateState (id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -121,7 +122,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete(id) {
+    commonwmsmanagerLogicDelete (id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -137,10 +138,10 @@ export default {
         })
       })
     },
-    saveFacilitator() {
+    saveFacilitator () {
       this.$refs.addQuotation && this.$refs.addQuotation.commonserviceproviderSave()
     },
-    refresh() {
+    refresh () {
       this.visible = false
       this.$refs.table.reload()
     }
