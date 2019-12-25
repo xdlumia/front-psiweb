@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-24 17:51:42
+ * @LastEditTime: 2019-12-25 14:44:48
  * @Description: 确定配置信息
 */
 <template>
@@ -11,22 +11,7 @@
     <!-- 配件列表 -->
     <quotationInfo :key="index" :title="`${index+1}.商品名称:${key}`" v-for="(val,key,index) of KIND2List">
       <div slot="body">
-        <el-table :data="val" border max-height="350px" ref="kind2" size="mini">
-          <el-table-column label="商品编号" min-width="100" show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span class="d-text-blue">{{scope.row.goodsCode}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="商品名称" min-width="80" prop="name"></el-table-column>
-          <el-table-column label="商品类别" prop="categoryCode" width="130">
-            <template slot-scope="{row}">
-              <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="商品分类" prop="secondClassName" width="130"></el-table-column>
-          <el-table-column label="规格" min-width="80" prop="specOne" />
-          <el-table-column label="销售参考价" prop="saleReferencePrice" width="90" />
-        </el-table>
+        <SimpleGoods :data="val" />
       </div>
     </quotationInfo>
     <!-- 整机列表信息 -->
@@ -46,6 +31,7 @@
         <el-button @click="recoveryConfig(item,index)" size="mini" type="primary" v-else>挑选配置</el-button>
       </span>
       <div slot="body">
+        <SimpleGoods :data="item.children" v-if="item.disabled" />
         <el-table
           :data="item.children"
           :show-summary="!item.disabled"
@@ -57,7 +43,7 @@
           ref="kind1table"
           row-key="id"
           size="mini"
-          v-if="strictConfirmConfig"
+          v-else-if="strictConfirmConfig"
         >
           <el-table-column label="商品分类" prop="className" v-if="!item.disabled" width="130">
             <template slot-scope="{row}">
@@ -89,7 +75,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <CustomConfig :data="data" v-else/>
+        <CustomConfig :data="item.children" v-else/>
       </div>
     </quotationInfo>
   </div>
@@ -97,6 +83,7 @@
 <script>
 import quotationInfo from '@/components/formComponents/quotation-info';
 import CustomConfig from './custom-config';
+import SimpleGoods from './simple-goods';
 import { log } from 'util';
 export default {
   props: {
@@ -108,7 +95,8 @@ export default {
   },
   components: {
     quotationInfo,
-    CustomConfig
+    CustomConfig,
+    SimpleGoods
   },
   data() {
     return {

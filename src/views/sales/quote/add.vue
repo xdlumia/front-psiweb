@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-24 17:57:13
+ * @LastEditTime: 2019-12-25 14:36:25
  * @Description: file content
 */
 <template>
@@ -98,7 +98,7 @@ export default {
   },
   data() {
     return {
-      strictConfirmConfig: true,
+      strictConfirmConfig: false,
       loading: false,
       currCompont: 'clientInfo',
       // 当前操作步骤

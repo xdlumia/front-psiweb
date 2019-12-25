@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-25 13:54:17
+ * @LastEditTime: 2019-12-25 16:34:05
  * @Description: 整机配置单
 */
 <template>
@@ -46,7 +46,7 @@ export default {
       showEdit: false,
       stateText: {
         '0': '启用中',
-        '1': '停用中',
+        '1': '停用中'
       }
     };
   },
@@ -74,12 +74,9 @@ export default {
         );
         let {
           data: list
-        } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
+        } = await this.$api.seePsiCommonService.commonquotationconfigdetailsQureyListByQuotationInfo(
           { quotationId: data.id }
         );
-        if (list.length) {
-          data.goodName = list[0].configGoodName;
-        }
         data.commodityList = list;
         return data;
       } else if (this.rowData) {

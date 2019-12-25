@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-24 11:36:25
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-25 14:17:15
+ * @LastEditTime: 2019-12-25 15:21:20
  * @Description: 整机配置编辑组件
 */
 <template>
@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     choose(goods) {
-      this.data.commodityId = goods[0].commodityId
+      this.data.commodityId = goods[0].id
       this.data.commodityCode = goods[0].commodityCode;
       this.data.goodName = goods[0].goodsName;
     }
