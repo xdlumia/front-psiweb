@@ -2,8 +2,8 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-24 11:19:46
- * @Description: 所有出库 
+ * @LastEditTime: 2019-12-25 09:17:10
+ * @Description: 20191123 需求 所有出库  增加一个弹窗，期初库存商品可以直接赋给它码
 */
 <template>
   <el-dialog

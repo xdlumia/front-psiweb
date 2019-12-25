@@ -240,6 +240,7 @@ export default {
       snCode: '',
       openVisible: false,
       loading: false,
+      openingData: {},
       formInline: {
         user: ''
       },

@@ -256,12 +256,6 @@ export default {
     'methods': 'post'
   },
 
-  // 调拨单商品扫码调出校验
-  wmsallocationorderShipmentCommodityCheck: {
-    'url': '/wmsallocationorder/shipmentCommodityCheck',
-    'mock': false
-  },
-
   // 临时商品统计
   wmsallocationorderTempCommodityCount: {
     'url': '/wmsallocationorder/tempCommodityCount',
