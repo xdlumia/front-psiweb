@@ -1113,6 +1113,15 @@ export default {
   runlogCompressAndDownload: {
     'url': '/ws/runlog/compressAndDownload',
     'mock': false
-  }
+  },
   /* =============文件压缩下载（日志和配置文件）end=========== */
+    /**
+     * @tag 报价配置单详情表
+     * @description 获取列表
+     */
+    commonquotationconfigdetailsQureyListByQuotationInfo: {
+      url: '/commonquotationconfigdetails/qureyListByQuotationInfo',
+      methods: 'get',
+      mock: false
+  },
 }

@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-15 10:04:59
+ * @LastEditTime: 2019-12-24 11:54:14
  * @Description: 选择商品 字段已绑定 1
 */
 <template>
@@ -341,6 +341,10 @@ export default {
     chooseAssembly
   },
   props: {
+    codes: {
+      type: Array,
+      default: () => []
+    },
     visible: {
       type: Boolean,
       default: false
@@ -454,7 +458,10 @@ export default {
       this.$emit('update:visible', false);
     },
     save () {
-      this.$emit('choose', this.selected);
+      let selected = this.selected.filter(a => !this.codes.includes(a.commodityCode))
+      if(selected.length){
+        this.$emit('choose', selected);
+      }
       this.close();
     },
     onTableData (e) {

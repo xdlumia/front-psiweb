@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-19 18:27:15
+ * @LastEditTime: 2019-12-25 14:36:25
  * @Description: file content
 */
 <template>
@@ -16,6 +16,8 @@
     <div slot="title">
       <span>{{type=='add'?'新建报价单':type=='copy'?`复制:${code}`:`编辑:${code}`}}</span>
       <div class="fr mr30">
+        <el-button size="mini" type="primary" v-show="steps==3&&!strictConfirmConfig" @click="strictConfirmConfig=true">切换为严格匹配</el-button>
+        <el-button size="mini" type="primary" v-show="steps==3&&strictConfirmConfig" @click="strictConfirmConfig=false">切换为范围选择</el-button>
         <el-button
           @click="$emit('update:visible', false)"
           size="mini"
@@ -65,6 +67,7 @@
         <confirm-info
           ref="confirmInfo"
           :data="form"
+          :strictConfirmConfig="strictConfirmConfig"
           v-show="steps==3"
         />
 
@@ -95,6 +98,7 @@ export default {
   },
   data() {
     return {
+      strictConfirmConfig: false,
       loading: false,
       currCompont: 'clientInfo',
       // 当前操作步骤
@@ -166,6 +170,7 @@ export default {
   },
   mounted() {
     // this.initForm()
+    console.log(this)
   },
   computed: {
   },

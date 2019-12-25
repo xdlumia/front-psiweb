@@ -1,8 +1,8 @@
 /*
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:59:21
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-22 16:41:03
+ * @LastEditors  : 赵伦
+ * @LastEditTime : 2019-12-25 14:27:02
  * @Description: description
  */
 import quotation from './quotation' // 报价单设置
@@ -75,6 +75,15 @@ export default [
     meta: {
       parent: '基础配置',
       title: '库房'
+    }
+  },
+  {
+    path: '/psi/productConfig', // 整机配置
+    name: '/psi/productConfig',
+    component: ()=>import('./productConfig'),
+    meta: {
+      parent: '基础配置',
+      title: '整机配置单'
     }
   }
 ]
