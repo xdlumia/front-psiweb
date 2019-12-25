@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:44:55
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-24 18:39:19
+ * @LastEditTime : 2019-12-25 17:30:21
  * @Description: 商品分类
  -->
 <template>
@@ -25,8 +25,8 @@
             <!--<span class="d-inline b">地市(2位)</span>-->
             <span class="b" style="display:inline-block;width:100px;">商品类别</span>
             <span class="b" style="display:inline-block;width:100px;">分类税率</span>
-            <span class="b" style="display:inline-block;width:100px;">库存成本配置</span>
-            <span class="b" style="display:inline-block;width:100px;">销售参考价配置</span>
+            <span class="b" style="display:inline-block;width:150px;">库存成本配置</span>
+            <span class="b" style="display:inline-block;width:150px;">销售参考价配置</span>
             <span class="b" style="display:inline-block;width:100px;">分类创建人</span>
             <span class="b" style="display:inline-block;width:200px;">创建时间</span>
             <span
@@ -34,7 +34,7 @@
               class="b"
               style="display:inline-block;width:100px;"
             >是否有效</span>
-            <span class="b ac" style="display:inline-block;width:360px;">操作</span>
+            <span class="b ac" style="display:inline-block;width:230px;">操作</span>
           </div>
         </div>
 
@@ -64,14 +64,26 @@
                   class="d-elip"
                   style="display:inline-block;width:100px;"
                 >{{data.taxRate ? data.taxRate + '%' : '-'}}</span>
-                <span
-                  class="d-elip"
-                  style="display:inline-block;width:100px;"
-                >{{data.taxRate ? data.taxRate + '%' : '-'}}</span>
-                <span
-                  class="d-elip"
-                  style="display:inline-block;width:100px;"
-                >{{data.taxRate ? data.taxRate + '%' : '-'}}</span>
+                <span class="d-elip" style="display:inline-block;width:150px;">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="data.inventoryPriceFormula || '-'"
+                    placement="top"
+                  >
+                    <span>{{data.inventoryPriceFormula || '-'}}</span>
+                  </el-tooltip>
+                </span>
+                <span class="d-elip" style="display:inline-block;width:150px;">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="data.saleRefPriceFormula || '-'"
+                    placement="top"
+                  >
+                    <span>{{data.saleRefPriceFormula || '-'}}</span>
+                  </el-tooltip>
+                </span>
                 <span class="d-elip" style="display:inline-block;width:100px;">{{data.creatorName}}</span>
                 <span class="d-elip" style="width:200px;display:inline-block;">
                   <span>{{node.data.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
@@ -90,11 +102,10 @@
                     inactive-color="#ff4949"
                   ></el-switch>
                 </span>
-                <span class="d-elip" style="width:360px;display:inline-block;">
+                <span class="d-elip" style="width:230px;display:inline-block;">
                   <el-button
                     v-if="authorityButtons.includes('decorate_goods_classmgr_1002')"
                     :disabled="(node.data.parentId == null ? false : true) || (node.data.isEnable != 1)"
-                    class="ml40"
                     type="text"
                     size="mini"
                     icon="el-icon-plus"
@@ -102,7 +113,7 @@
                   >新增子类</el-button>
                   <el-button
                     v-if="authorityButtons.includes('decorate_goods_classmgr_1003')"
-                    class="ml40"
+                    class="ml20"
                     type="text"
                     size="mini"
                     icon="el-icon-edit"
@@ -111,7 +122,7 @@
                   <el-button
                     v-if="authorityButtons.includes('decorate_goods_classmgr_1005')"
                     :disabled="node.data.isEnable != 1"
-                    class="ml40"
+                    class="ml20"
                     type="text"
                     size="mini"
                     icon="el-icon-upload2"
@@ -119,7 +130,7 @@
                   >置顶</el-button>
                   <el-button
                     v-if="authorityButtons.includes('decorate_goods_classmgr_1004')"
-                    class="ml40"
+                    class="ml20"
                     type="text"
                     size="mini"
                     icon="el-icon-delete"

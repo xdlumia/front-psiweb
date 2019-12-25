@@ -1,26 +1,29 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-11-15 14:30:04
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-20 14:38:01
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2019-12-25 14:51:50
  * @Description: 基础数据
  -->
 <template>
   <div class="mb20">
     <h3 class="b mb5" style="text-indent:20px">基础数据</h3>
     <el-row :gutter="40">
-      <el-col :span="6">
+      <el-col :span="6" v-loading="indexTodayTaskLoading">
         <div class="ba p15 data-item">
           <h5 class="title d-text-qgray">
             <span>今日任务</span>
           </h5>
-          <h1 class="number">500/5000</h1>
+          <h1
+            class="number"
+          >{{todayTask.taskAmount | thousandBitSeparator}}/{{(todayTask.totalTaskAmount || 0).toFixed(2) | thousandBitSeparator}}</h1>
           <div style="flex:1;display: flex;justify-content: space-around;align-items: flex-end">
             <div
               v-for="(item, index) in taskList"
               :key="index"
-              style="background:#1790ff;flex:1;margin-right:10px;"
+              style="background:#1790ff;flex:1;margin-right:10px;min-height:2%;"
               :style="{height: item / maxTask * 100 + '%'}"
+              :title="item"
             ></div>
           </div>
         </div>
@@ -33,28 +36,16 @@
               <el-tab-pane label="周" name="1"></el-tab-pane>
               <el-tab-pane label="季" name="3"></el-tab-pane>
             </el-tabs>
-            <!-- <div class>
-              <span
-                :class="{'d-text-blue': dateFlag == 1}"
-                class="mr15 d-pointer"
-                @click="dateFlag = 1"
-              >周</span>
-              <span
-                :class="{'d-text-blue': dateFlag == 3}"
-                class="d-pointer"
-                @click="dateFlag = 3"
-              >季</span>
-            </div>-->
           </h5>
           <h1
             class="number"
-          >{{Math.floor(Math.random() * 10000) | thousandBitSeparator}}/{{756690 | thousandBitSeparator}}</h1>
+          >{{cycleTask.taskAmount | thousandBitSeparator}}/{{cycleTask.totalTaskAmount | thousandBitSeparator}}</h1>
           <div style="flex:1;display: flex;align-items: center">
             <div style="flex:1">
               <el-progress
                 :text-inside="true"
                 :stroke-width="16"
-                :percentage="Math.floor(Math.random() * 100)"
+                :percentage="cycleTask.percentage"
               ></el-progress>
             </div>
           </div>
@@ -87,7 +78,9 @@ export default {
   mixins: [filterMix],
   data () {
     return {
-      taskList: Array.from({ length: 14 }, () => Math.floor(Math.random() * 100)),
+      taskList: [],
+      todayTask: {},
+      cycleTask: {},
       cycle: 60,
       dateFlag: '1',
       indexCycleTaskLoading: false,
@@ -119,21 +112,23 @@ export default {
     indexCycleTask (dateFlag) {
       this.indexCycleTaskLoading = true
       this.$api.seePsiReportService.indexCycleTask({ dateFlag }).then(res => {
-        console.log('周期任务', res.data)
+        this.cycleTask = res.data
       }).finally(() => { this.indexCycleTaskLoading = false })
     },
     // 今日任务
     indexTodayTask () {
       this.indexTodayTaskLoading = true
       this.$api.seePsiReportService.indexTodayTask().then(res => {
-        console.log('今日任务', res.data)
+        this.todayTask = res.data
+        this.taskList = res.data.dayAmountVos.map(item => {
+          return item.amount || 0
+        })
       }).finally(() => { this.indexTodayTaskLoading = false })
     },
     // 库存金额
     indexInventoryPrice () {
       this.indexInventoryPriceLoading = true
       this.$api.seePsiReportService.indexInventoryPrice().then(res => {
-        console.log('库存金额', res.data)
         this.inventoryPrice = res.data || 0
       }).finally(() => { this.indexInventoryPriceLoading = false })
     },
@@ -141,7 +136,6 @@ export default {
     indexReceivable () {
       this.indexReceivableLoading = true
       this.$api.seePsiReportService.indexReceivable().then(res => {
-        console.log('财务应收', res.data)
         this.receivable = res.data || 0
       }).finally(() => { this.indexReceivableLoading = false })
 

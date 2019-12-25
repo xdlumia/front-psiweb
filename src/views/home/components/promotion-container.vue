@@ -1,10 +1,10 @@
 <template>
   <div class="promotion-container">
     <el-row :gutter="40" class="row-layout">
-      <el-col class="promotion-left-col" :span="17">
+      <el-col class="promotion-left-col" :span="17" v-loading="loading">
         <el-tabs class="no-border-tab" v-model="currTab" @tab-click="handleClick">
-          <el-tab-pane label="促销管理" name="promotion"></el-tab-pane>
-          <el-tab-pane label="目标管理" name="aims"></el-tab-pane>
+          <el-tab-pane label="促销管理" name="indexQueryPromotion"></el-tab-pane>
+          <el-tab-pane label="目标管理" name="indexQueryPromotionGoal"></el-tab-pane>
         </el-tabs>
         <!-- table 数据展示 -->
         <manage-table :paramsData="tableData"></manage-table>
@@ -20,6 +20,7 @@
 <script>
 import ManageTable from './manage-table'
 import LeaderboardBox from './leaderboard-box'
+import chunk from '@/utils/chunk'
 
 export default {
   components: {
@@ -27,77 +28,32 @@ export default {
     LeaderboardBox
   },
 
-  data() {
+  data () {
     return {
       currTab: '',
       tableData: [],
-      res: {
-        promotion: [
-          {
-            id: 1,
-            title: '国庆促销',
-            total: 100,
-            nums: 20,
-            percent: Math.floor(Math.random() * 100)
-          },
-          {
-            id: 2,
-            title: '国庆促销',
-            total: 120,
-            nums: 20,
-            percent: Math.floor(Math.random() * 100)
-          },
-          {
-            id: 3,
-            title: '国庆促销',
-            total: 80,
-            nums: 20,
-            percent: Math.floor(Math.random() * 100)
-          },
-          {
-            id: 4,
-            title: '国庆促销',
-            total: 90,
-            nums: 20,
-            percent: Math.floor(Math.random() * 100)
-          },
-          {
-            id: 5,
-            title: '国庆促销',
-            total: 100,
-            nums: 10,
-            percent: Math.floor(Math.random() * 100)
-          },
-          {
-            id: 6,
-            title: '国庆促销',
-            total: 100,
-            nums: 4,
-            percent: Math.floor(Math.random() * 100)
-          }
-        ],
-        aims: []
+      loading: false
+    }
+  },
+
+  created () {
+    this.currTab = 'indexQueryPromotion'
+  },
+
+  watch: {
+    currTab (newVal) {
+      if (newVal) {
+        this.loading = true
+        this.$api.seePsiReportService[newVal]().then(res => {
+          this.tableData = chunk(res.data, 6)[0]
+        }).finally(() => { this.loading = false })
       }
     }
   },
 
-  created() {
-    this.currTab = 'promotion'
-  },
-
-  watch: {
-    'currTab': function(newVal) {
-      this.getManageTableData(newVal)
-    }
-  },
-
   methods: {
-    handleClick(tab) {
+    handleClick (tab) {
       this.currTab = tab.name
-    },
-
-    getManageTableData(val) {
-      this.tableData = this.res[val]
     }
   }
 }
