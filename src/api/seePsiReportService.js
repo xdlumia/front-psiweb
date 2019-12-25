@@ -21,6 +21,18 @@ export default {
     'mock': false
   },
 
+  // 促销管理
+  indexQueryPromotion: {
+    'url': '/index/queryPromotion',
+    'mock': false
+  },
+
+  // 目标管理
+  indexQueryPromotionGoal: {
+    'url': '/index/queryPromotionGoal',
+    'mock': false
+  },
+
   // 统计财务应收金额
   indexReceivable: {
     'url': '/index/receivable',
@@ -85,6 +97,12 @@ export default {
     'url': '/saleprofitreport/export',
     'mock': false,
     'methods': 'post'
+  },
+
+  // 合计
+  saleprofitreportGetSaleProfitSum: {
+    'url': '/saleprofitreport/getSaleProfitSum',
+    'mock': false
   },
 
   // 查看详细信息
