@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-24 16:33:52
+ * @LastEditTime : 2019-12-25 11:58:04
  * @Description: 新增商品
  -->
 <template>
@@ -114,16 +114,28 @@
               >
                 <span>库存成本价</span>
                 <el-switch
-                  v-model="goodForm.values[0].inventStatus"
+                  v-model="goodForm.values[0].inventoryPriceConfig"
                   active-text="计算值"
                   inactive-text="固定值"
+                  :active-value="1"
+                  :inactive-value="2"
+                  @change="inventoryChange"
                 ></el-switch>
               </div>
-              <el-input
-                @change="inventoryPriceChange"
-                @disabled="goodForm.values[0].inventStatus"
-                v-model.trim="goodForm.values[0].inventoryPrice"
-              ></el-input>
+              <div style="display: flex;">
+                <span
+                  v-if="goodForm.values[0].inventoryPriceConfig == 1"
+                  style="white-space: nowrap;"
+                >{{goodForm.values[0].inventoryPriceFormula}}</span>
+                <!-- <span
+                  v-if="goodForm.values[0].inventoryPriceConfig == 1"
+                >&nbsp;&nbsp; = &nbsp;&nbsp;</span>-->
+                <el-input
+                  @change="inventoryPriceChange"
+                  :disabled="goodForm.values[0].inventoryPriceConfig == 1"
+                  v-model.trim="goodForm.values[0].inventoryPrice"
+                ></el-input>
+              </div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -134,22 +146,32 @@
               >
                 <span>销售参考价</span>
                 <el-switch
-                  v-model="goodForm.values[0].saleStatus"
+                  v-model="goodForm.values[0].saleRefPriceConfig"
                   active-text="计算值"
                   inactive-text="固定值"
+                  :active-value="1"
+                  :inactive-value="2"
+                  @change="salesChange"
                 ></el-switch>
               </div>
-              <el-input
-                @change="saleReferencePriceChange"
-                @disabled="goodForm.values[0].saleStatus"
-                v-model.trim="goodForm.values[0].saleReferencePrice"
-              ></el-input>
+              <div style="display: flex;">
+                <span
+                  v-if="goodForm.values[0].saleRefPriceConfig == 1"
+                  style="white-space: nowrap;"
+                >{{goodForm.values[0].saleRefPriceFormula}}</span>
+                <!-- <span v-if="goodForm.values[0].saleRefPriceConfig == 1">&nbsp;&nbsp; = &nbsp;&nbsp;</span> -->
+                <el-input
+                  @change="saleReferencePriceChange"
+                  :disabled="goodForm.values[0].saleRefPriceConfig == 1"
+                  v-model.trim="goodForm.values[0].saleReferencePrice"
+                ></el-input>
+              </div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="毛利率" prop="values[0].profitRate">
               <el-input
-                @disabled="goodForm.values[0].saleStatus"
+                :disabled="goodForm.values[0].saleRefPriceConfig == 1"
                 @change="profitRateChange"
                 v-model.trim="goodForm.values[0].profitRate"
               >
@@ -199,47 +221,6 @@
                 :active-value="1"
                 :inactive-value="0"
               ></el-switch>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </form-card>
-      <form-card title="期初库存（重要）" v-if="false">
-        <el-row :gutter="40">
-          <el-col :span="8">
-            <el-form-item label="库房" prop="values[0].warehouseId">
-              <el-select class="wfull" v-model="goodForm.values[0].warehouseId">
-                <el-option
-                  :value="item.id"
-                  :label="item.name"
-                  v-for="(item, index) in warehouseList"
-                  :key="index"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="期初库存数量" prop="values[0].originalInventoryNum">
-              <el-input v-model="goodForm.values[0].originalInventoryNum"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="期初库存成本（元）" prop="values[0].originalPrice">
-              <el-input v-model="goodForm.values[0].originalPrice"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="期初调价值（元）" prop="values[0].originalPriceAdjustment">
-              <el-input v-model="goodForm.values[0].originalPriceAdjustment"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="期初调价差异额" prop="values[0].originalCostDifference">
-              <el-input v-model="goodForm.values[0].originalCostDifference" disabled></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="期初总金额" prop="values[0].originalAmount">
-              <el-input v-model="goodForm.values[0].originalAmount" disabled></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -296,21 +277,27 @@ export default {
         brand: 'psi',
         sourceFromCode: 'SP_SOURCE_FROM-1',
         values: [{
-          goodsPic: '',
-          inventoryPrice: '',
-          isEnable: 1,
-          maxInventoryNum: '',
-          minInventoryNum: '',
-          originalAmount: '',
+          goodsPic: '', // 商品图片
+          inventoryPrice: '', // 库存成本价
+          isEnable: 1, // 是否启用
+          maxInventoryNum: '', // 最大库存
+          minInventoryNum: '', // 最小库存
+          originalAmount: '', // 期初总金额
           originalCostDifference: '',
           originalInventoryNum: '',
           originalPrice: '',
           originalPriceAdjustment: '',
           profitRate: '',
-          saleReferencePrice: '',
-          specOne: '',
-          warehouseId: '',
-          taxRate: ''
+          saleReferencePrice: '', // 销售参考价
+          specOne: '', // 规格
+          warehouseId: '', // 库房ID
+          taxRate: '', // 税率
+          inventoryPriceConfig: 2, // 计算值 or 固定值
+          inventoryPriceFormula: '',
+          saleRefPriceConfig: 2, // 计算值 or 固定值
+          saleRefPriceFormula: '',
+          purchaseAvgPrice: 0, // 采购均价
+          salesAvgPrice: 0 // 销售均价
         }]
       },
       goodFormRules: {
@@ -362,29 +349,66 @@ export default {
         'values[0].minInventoryNum': { pattern: /^\d{1,11}?$/, message: '请输入正整数', trigger: 'blur' },
         'values[0].maxInventoryNum': { pattern: /^\d{1,11}?$/, message: '请输入正整数', trigger: 'blur' }
       },
-      warehouseList: []
+      classInfo: null
     }
   },
   components: {
   },
   computed: {
+    // 二级分类列表
     secondClassList () {
       const temp = this.firstClassList.find(item => item.id === this.goodForm.firstClassId)
       return temp ? temp.children : []
     },
-    openingInventory () {
-      const { originalPrice, originalPriceAdjustment, originalInventoryNum } = this.goodForm.values[0] || {}
-      return { originalPrice, originalPriceAdjustment, originalInventoryNum }
+    // 分类计算公式
+    classConfig () {
+      return this.secondClassList.find(item => item.id === this.goodForm.classId)
+    },
+    // 价格分类 计算值 or 固定值
+    priceConfig () {
+      const { inventoryPriceConfig, saleRefPriceConfig } = this.goodForm.values[0] || {}
+      return { inventoryPriceConfig, saleRefPriceConfig, classConfig: this.classConfig }
     }
-
   },
   mounted () {
-    this.commonwmsmanagerUsableList()
     if (this.code) {
       this.getGoodsDetailV2(this.code)
     }
   },
   methods: {
+    // 库存成本价 计算值切换
+    inventoryChange (value) {
+      if (value === 1 && this.goodForm.classId) {
+        this.handleInventoryConfig()
+      } else {
+        this.goodForm.values[0].inventoryPrice = 0
+        this.inventoryPriceChange()
+      }
+    },
+    // 处理库存成本价
+    handleInventoryConfig () {
+      const temp = this.goodForm.values[0]
+      this.goodForm.values[0].inventoryPriceFormula = `${temp.purchaseAvgPrice || 0} * ${this.classConfig.inventoryPriceFormulaRatio} + ${this.classConfig.inventoryPriceFormulaFixedValue} = `
+      this.goodForm.values[0].inventoryPrice = (temp.purchaseAvgPrice || 0) * this.classConfig.inventoryPriceFormulaRatio + this.classConfig.inventoryPriceFormulaFixedValue
+      this.inventoryPriceChange()
+    },
+    // 销售参考价 计算值切换
+    salesChange (value) {
+      if (value === 1 && this.goodForm.classId) {
+        this.handleSalesConfig()
+      } else {
+        this.goodForm.values[0].saleReferencePrice = 0
+        this.saleReferencePriceChange()
+      }
+    },
+    // 处理销售参考价
+    handleSalesConfig () {
+      const temp = this.goodForm.values[0]
+      this.goodForm.values[0].saleRefPriceFormula = `${temp.salesAvgPrice || 0} * ${this.classConfig.saleRefPriceFormulaRatio} + ${this.classConfig.saleRefPriceFormulaFixedValue} = `
+      this.goodForm.values[0].saleReferencePrice = (temp.salesAvgPrice || 0) * this.classConfig.saleRefPriceFormulaRatio + this.classConfig.saleRefPriceFormulaFixedValue
+      this.saleReferencePriceChange()
+    },
+    // 获取详情
     getGoodsDetailV2 (code) {
       this.goodForm = Object.assign(this.goodForm, {})
       this.$api.seeGoodsService.getGoodsDetailV2({ code }).then(res => {
@@ -396,24 +420,29 @@ export default {
         this.$emit('update', this.goodForm)
       })
     },
+    // 库存成本价改变
     inventoryPriceChange () {
       const temp = this.goodForm.values[0]
-      if (temp.saleReferencePrice) {
+      if (temp.saleReferencePrice && temp.inventoryPrice) {
         this.goodForm.values[0].profitRate = ((temp.saleReferencePrice / temp.inventoryPrice - 1) * 100).toFixed(2)
+      } else {
+        this.goodForm.values[0].profitRate = temp.inventoryPrice ? 0 : 100
       }
     },
+    // 销售参考价改变
     saleReferencePriceChange () {
       const temp = this.goodForm.values[0]
-      this.goodForm.values[0].profitRate = ((temp.saleReferencePrice / this.goodForm.values[0].inventoryPrice - 1) * 100).toFixed(2)
+      if (temp.inventoryPrice) {
+        this.goodForm.values[0].profitRate = ((temp.saleReferencePrice / temp.inventoryPrice - 1) * 100).toFixed(2)
+      } else {
+        this.goodForm.values[0].profitRate = temp.saleReferencePrice ? 100 : 0
+      }
     },
+    // 毛利率改变
     profitRateChange () {
       const temp = this.goodForm.values[0]
-      this.goodForm.values[0].saleReferencePrice = ((Number(temp.saleReferencePrice / 100) + 1) * this.goodForm.values[0].inventoryPrice).toFixed(2)
-    },
-    commonwmsmanagerUsableList () {
-      this.$api.seePsiWmsService.commonwmsmanagerUsableList().then(res => {
-        this.warehouseList = res.data
-      })
+      // temp.profitRate / 100 + 1 * temp.inventoryPrice
+      this.goodForm.values[0].saleReferencePrice = ((temp.profitRate / 100 + 1) * temp.inventoryPrice).toFixed(2)
     },
     saveGood () {
       this.$refs.goodForm.validate(valid => {
@@ -435,15 +464,11 @@ export default {
         }
         this.isDetail = false
       })
-    },
-    handleGoodPrice () {
-      const temp = this.goodForm.values[0]
-      this.goodForm.values[0].profitRate = temp.saleReferencePrice / temp.inventoryPrice - 1
     }
   },
   watch: {
     'goodForm.categoryCode': {
-      handler: function (newValue) {
+      handler (newValue) {
         if (!this.isDetail) {
           this.goodForm.firstClassId = null
         }
@@ -451,24 +476,34 @@ export default {
       }
     },
     'goodForm.firstClassId': {
-      handler: function (newValue) {
+      handler (newValue) {
         if (!this.isDetail) {
           this.goodForm.classId = null
         }
       }
     },
     'goodForm.classId': {
-      handler: function (newValue) {
+      handler (newValue) {
         const temp = this.secondClassList.find(item => item.id === newValue)
-        this.classInfo = temp || {}
         this.goodForm.values[0].taxRate = temp ? temp.taxRate : this.goodForm.values[0].taxRate
+        if (this.classConfig) {
+          if (this.goodForm.values[0].inventoryPriceConfig === 1) {
+            this.handleInventoryConfig()
+          }
+          if (this.goodForm.values[0].saleRefPriceConfig === 1) {
+            this.handleSalesConfig()
+          }
+        }
       }
     },
-    'openingInventory': {
-      handler: function (newValue) {
-        const temp = this.goodForm.values[0]
-        temp.originalAmount = temp.originalPrice * temp.originalInventoryNum
-        temp.originalCostDifference = (temp.originalPrice - temp.originalPriceAdjustment) * temp.originalInventoryNum
+    priceConfig () {
+      if (this.classConfig) {
+        if (this.goodForm.values[0].inventoryPriceConfig === 1) {
+          this.handleInventoryConfig()
+        }
+        if (this.goodForm.values[0].saleRefPriceConfig === 1) {
+          this.handleSalesConfig()
+        }
       }
     }
   }

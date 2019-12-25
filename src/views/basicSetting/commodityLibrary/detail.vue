@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-24 18:32:55
+ * @LastEditTime : 2019-12-25 12:02:33
  * @Description: description
  -->
 <template>
@@ -74,23 +74,6 @@
                 <template slot-scope="{row}">{{row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
               </el-table-column>
             </d-table>
-            <!-- <el-row :gutter="40">
-              <el-col :span="8">
-                <el-form-item label="库房">
-                  <el-input v-model="beginnForm.wmsName"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="期初库存数量">
-                  <el-input v-model="beginnForm.num"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="期初调价值（元）">
-                  <el-input v-model="beginnForm.originalPriceAdjustment"></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>-->
           </form-card>
         </el-form>
       </el-tab-pane>
@@ -109,7 +92,7 @@
       :visible.sync="showBeginn"
       ref="addPromotion"
       v-if="showBeginn"
-      @inStorageSuccess="$refs.table.reload"
+      @inStorageSuccess="refresh"
       :rowData="Object.assign(rowData, beginnForm || {})"
     ></opening-stock>
   </sideDetail>
@@ -184,6 +167,7 @@ export default {
     },
     refresh () {
       this.$refs.detail.getGoodsDetailV2(this.code)
+      this.$refs.table.reload()
       this.showEdit = false
       this.$emit('reload')
     },

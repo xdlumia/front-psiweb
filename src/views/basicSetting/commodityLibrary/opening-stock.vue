@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-24 18:47:02
+ * @LastEditTime : 2019-12-25 11:59:39
  * @Description: 新增目标
  -->
 <template>
@@ -177,7 +177,7 @@ export default {
   methods: {
     wmsinventorycommodityinitialinfoInfo () {
       this.$api.seePsiWmsService.wmsinventorycommodityinitialinfoInfo(null, this.rowData.goodsCode).then(res => {
-        this.totalNum = res.data
+        this.totalNum = res.data || 0
       })
     },
     // 可用库房列表
@@ -190,12 +190,6 @@ export default {
       this.$refs.beginnForm.validate(valid => {
         if (valid) {
           this.loading = true
-          // if (!this.$refs.lossesCode.tableData.length) {
-          //   this.$message.error('请至少扫一个SN码或机器号')
-          //   return
-          // }
-          // this.beginnForm.commodityList = this.$refs.lossesCode.tableData
-          // this.beginnForm.num = this.$refs.lossesCode.tableData.length
           this.beginnForm.commodityCode = this.rowData.goodsCode
           this.$api.seePsiWmsService.wmsinventorydetailInitializePutaway(this.beginnForm).then(res => {
             this.$emit('inStorageSuccess')
