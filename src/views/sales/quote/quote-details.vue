@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-24 17:48:20
+ * @LastEditTime: 2019-12-25 18:13:10
  * @Description: 报价单详情
 */
 <template>
@@ -167,6 +167,9 @@ export default {
     async getDetail() {
       if (this.code) {
         const { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
+        data.commodityEntityList.map(item=>{
+          item.children = item.partsInfoCommodityList
+        })
         return data;
       }
     },

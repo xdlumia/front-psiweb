@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-25 14:36:25
+ * @LastEditTime: 2019-12-25 18:11:00
  * @Description: file content
 */
 <template>
@@ -224,12 +224,12 @@ export default {
           if (item.disabled) {
             wholeListNotChoose = wholeListNotChoose.concat(item.children)
           } else {
-            wholeList = wholeList.concat(item.children)
+            wholeList = wholeList.concat(item)
           }
         })
         wholeListNotChoose = this.$$util.jsonFlatten(wholeListNotChoose)
-        let quotationIds = this.form.KIND1List.map(item => this.$refs.confirmInfo.findSelectedConfig(item)).filter(a => a)
         let wholeListData = []
+        let quotationIds = this.strictConfirmConfig?this.form.KIND1List.map(item => this.$refs.confirmInfo.findSelectedConfig(item)).filter(a => a):[]
         // 有quotationIds 值的时候再查询
         if (quotationIds.length) {
           let params = {
@@ -250,6 +250,36 @@ export default {
             item.reference = item.saleReferencePrice
             return item
           })
+        }
+        if(!this.strictConfirmConfig){
+          wholeListData = JSON.parse(JSON.stringify(wholeList)).map(item=>{
+            item.commonGoodConfigDetailsEntityList = item.children.filter(item=>item.selected)
+            item.commonGoodConfigDetailsEntityList.map(sub=>{
+              sub.parentCommodityCode = item.goodsCode
+              sub.isMachine = 1
+            })
+            item.customConfig = true
+
+            this.$api.seeGoodsService.getGoodsByNameForJXC({
+              categoryCode: 'PSI_SP_KIND-1',
+              goodsCode: item.goodsCode
+            }).then(({data:[good]})=>{
+              Object.keys(good).map(key=>{
+                this.$set(item,key,good[key])
+              })
+              this.$set(item,'reference',item.totalAmount)
+            })
+
+            item.goodsName = item.configGoodName
+            item.commodityCode = item.goodsCode
+            item.categoryCode = 'PSI_SP_KIND-1'
+            item.id = 'customId' + item.id
+            item.inventoryNumber = item.usableInventoryNum
+            item.reference = item.totalAmount
+            item.isMachine = 1
+            return item;
+          })
+          console.log(JSON.parse(JSON.stringify(wholeListData)))
         }
         // 配件列表
         let fixingsList = []
@@ -272,12 +302,10 @@ export default {
         // let
         // 第4步整合商品信息
         this.form.businessCommoditySaveVoList = [...wholeListData, ...wholeListNotChoose, ...fixingsList].map(item => {
-          return {
-            ...item,
-            discountSprice: +Number(item.reference * (1 + (item.taxRate || 0) / 100)).toFixed(2),
-            discount: 1,
-            commodityNumber: 1
-          }
+          item.discountSprice = +Number(item.reference * (1 + (item.taxRate || 0) / 100)).toFixed(2)
+          item.discount = 1
+          item.commodityNumber = 1;
+          return item
         })
       }
     },
@@ -355,10 +383,16 @@ export default {
             });
             return
           }
+          let children = []
           copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.map(item => {
+            if(item.customConfig){
+              children = children.concat(item.commonGoodConfigDetailsEntityList)  
+            }
+            item.isMachine = item.isMachine||0
             delete item.commonGoodConfigDetailsEntityList
             return item;
           })
+          copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.concat(children)
           this.loading = true
           // rules 表单验证是否通过
           let api = 'salesquotationSave' // 默认编辑更新

@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 16:48:08
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-25 18:12:59
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -240,6 +240,7 @@ export default {
   },
   methods: {
     async loadChildren(row, node, cb) {
+      if(row.children) cb(row.children)
       let {
         data
       } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(

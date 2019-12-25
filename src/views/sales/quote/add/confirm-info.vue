@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-25 14:44:48
+ * @LastEditTime: 2019-12-25 17:55:32
  * @Description: 确定配置信息
 */
 <template>
@@ -75,7 +75,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <CustomConfig :data="item.children" v-else/>
+        <CustomConfig :data="item.children" v-else @totalAmountChange="setTotalAmount(item,$event)"/>
       </div>
     </quotationInfo>
   </div>
@@ -130,6 +130,9 @@ export default {
     }
   },
   methods: {
+    setTotalAmount(item,money){
+      item.totalAmount = money
+    },
     getSummary(row, param) {
       let { allConfigGoods, configName } = this.getAllConfigGoods(row);
       let { columns } = param;
@@ -218,8 +221,12 @@ export default {
       );
     },
     findSelectedConfig(item) {
-      let { configId } = this.getAllConfigGoods(item);
-      return configId;
+      if(this.strictConfirmConfig){
+        let { configId } = this.getAllConfigGoods(item);
+        return configId;
+      }else{
+        return item.children.some(item=>item.selected)
+      }
     },
     getAllConfigGoods(row) {
       let children = this.flatten(row.children);
@@ -377,6 +384,10 @@ export default {
         configList[configKey].push(
           `${item.commodityCode}-${item.commodityNum}`
         );
+        if(!this.strictConfirmConfig){
+         item.commodityNumber = item.commodityNum
+         item.maxcommodityNumber = item.commodityNum
+        }
         let configItemKey = `${item.configGoodCode}-${item.commodityCode}-${item.commodityNum}`;
         // 把分类名称当做key  如果没有当前key 创建当前key 并赋值为空数组
         if (!newJson.hasOwnProperty(item.configGoodCode)) {
@@ -446,8 +457,14 @@ export default {
         page: 1,
         limit: 100
       };
-      this.$api.seePsiCommonService
-        .commonquotationconfigdetailsListConfigByGoodName(params)
+      if(!this.strictConfirmConfig){
+        params.type=1;
+      }
+      this.$api.seePsiCommonService[
+        this.strictConfirmConfig?
+        'commonquotationconfigdetailsListConfigByGoodName':
+        'commonquotationconfigdetailsListConfigByGoodCode'
+      ](params)
         .then(res => {
           // 给整机数据换成新数据
           const data = (res.data || []).filter(

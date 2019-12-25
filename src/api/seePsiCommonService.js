@@ -1124,4 +1124,13 @@ export default {
       methods: 'get',
       mock: false
   },
+  /**
+   * @tag 报价配置单详情表
+   * @description 获取整机商品的配件列表
+   */
+  commonquotationconfigdetailsListConfigByGoodCode: {
+      url: '/commonquotationconfigdetails/listConfigByGoodCode',
+      methods: 'get',
+      mock: false
+  },
 }
