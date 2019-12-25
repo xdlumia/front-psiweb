@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-24 17:39:48
+ * @LastEditTime: 2019-12-25 14:14:50
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -442,7 +442,15 @@ export default {
       if (selected.length) {
         let info = this.getParentInfo(row);
         info.parentArray.splice(info.index, 1, selected[0]);
+        this.resetColumnsPropForChoose(row)
       }
+    },
+    resetColumnsPropForChoose(row){
+      this.useColumns.map(({prop})=>{
+        if(typeof row[prop]=="undefined"){
+          this.reactiveSet(row,prop,'')
+        }
+      })
     },
     // 生成表单属性路径
     getCurrentFormProp(row, prop) {
@@ -544,6 +552,7 @@ export default {
     choose(e) {
       e = e.map(item => {
         item.adjustPriceMoney = item.adjustPriceMoney || 0;
+        this.resetColumnsPropForChoose(item)
         return item;
       });
       this.data[this.fkey] = this.data[this.fkey] || [];
@@ -588,7 +597,7 @@ export default {
     },
     reactiveSet(item, prop, value) {
       let des = Object.getOwnPropertyDescriptor(item, prop);
-      if (des.get && des.set) {
+      if (des && des.get && des.set) {
         item[prop] = value;
       } else {
         delete item[prop];

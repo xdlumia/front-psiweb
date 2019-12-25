@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-24 11:36:25
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-24 15:19:40
+ * @LastEditTime: 2019-12-25 14:17:15
  * @Description: 整机配置编辑组件
 */
 <template>
@@ -11,7 +11,7 @@
     <form-card id="baseInfo" title="基本信息">
       <el-row :gutter="10">
         <el-col :span="8">
-          <el-form-item :rules="[{required:true}]" class="wfull" label="商品名称" prop="goodsName">
+          <el-form-item :rules="[{required:true}]" class="wfull" label="商品名称" prop="goodName">
             <commodity-selector
               :autoClear="false"
               :disabled="disabled"
@@ -20,7 +20,7 @@
               :params="{isConfig: 0}"
               @choose="choose"
               class="wfull"
-              v-model="data.goodsName"
+              v-model="data.goodName"
             ></commodity-selector>
           </el-form-item>
         </el-col>
@@ -41,7 +41,7 @@
       :customColumns="[
         {label:'商品编号',key:'chooseCommodityCode',type:'chooseCommodityCode',prop:'commodityCode',width:200},
         {label:'商品名称',key:'chooseGoodsName',type:'chooseCommodityName',prop:'goodsName',width:200},
-        {label:'商品最大数量',key:'commodityNumber',type:'inputinteger',prop:'commodityNumber',width:140},
+        {label:'商品最大数量',key:'commodityNum',type:'inputinteger',prop:'commodityNum',width:140},
       ]"
       :data="data"
       :disabled="disabled"
@@ -51,7 +51,7 @@
       ]"
       :show="[disabled?'':'action','goodsPic','className']"
       :showSummary="false"
-      :sort="['action','chooseCommodityCode','chooseGoodsName','goodsPic','className','commodityNumber']"
+      :sort="['action','chooseCommodityCode','chooseGoodsName','goodsPic','className','commodityNum']"
       buttonChoose
       id="goods"
       title="配置信息"
@@ -69,8 +69,9 @@ export default {
   },
   methods: {
     choose(goods) {
+      this.data.commodityId = goods[0].commodityId
       this.data.commodityCode = goods[0].commodityCode;
-      this.data.goodsName = goods[0].goodsName;
+      this.data.goodName = goods[0].goodsName;
     }
   }
 };

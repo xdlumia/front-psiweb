@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-24 15:35:47
+ * @LastEditTime: 2019-12-25 14:08:32
  * @Description: 整机配置单
 */
 <template>
@@ -41,39 +41,13 @@ export default {
   data() {
     return {
       form: {
-        // 借入借出单编号 示例：借入借出单编号
-        borrowLoanCode: '',
-        // 借入借出数量 9
-        borrowLoanNum: '',
-        // 借入借出类型（0-借入 1-借出） 0
-        borrowLoanType: '',
-        // 借入库房ID 100000
-        borrowWmsId: '',
-        // 借入借出商品lsit undefined
-        commodityList: [],
-        // 借入方 示例：借入方
-        debtor: '',
-        // 物流费用 98765432109876.12
-        logisticsFees: '',
-        // 备注 示例：备注
+        id: '',
+        quotationName: '',
+        goodName: '',
+        commodityId: '',
+        commodityCode: '',
         note: '',
-        // 借出方 示例：借出方
-        outSide: '',
-        // 返还数量 9
-        returnNum: '',
-        // 返还时间 1572437406222
-        returnTime: '',
-        // 销售单编号 示例：销售单编号
-        salesSheetCode: '',
-        // 服务类型 示例：服务类型
-        serveType: '',
-        // 服务商ID 100000
-        serviceProviderId: '',
-        // 来源 示例：来源
-        source: '',
-        // 运单号 示例：运单号
-        waybillCode: '',
-        id: ''
+        commonQuotationConfigDetailsEntitys: []
       },
       alwaysDropAndCopyForm: true // 在getDetail返回数据后，重新覆盖form
     };
@@ -88,23 +62,25 @@ export default {
     async save() {
       if (!this.form.commodityList || !this.form.commodityList.length) {
         return this.$message({
-          message: '无商品借入',
+          message: '无配件',
           showClose: true,
           type: 'warning'
         });
       }
       await this.$showFormError(this.$refs.form);
       this.loading = true;
-      this.form.borrowLoanNum = this.form.commodityList.reduce(
-        (data, item) => data + parseInt(item.borrowLoanNum),
-        0
-      );
+      this.form.type = 1;
+      this.form.commonQuotationConfigDetailsEntitys = this.form.commodityList;
       try {
         if (this.isEdit) {
-          await this.$api.seePsiWmsService.wmsborrowloanorderUpdate(this.form);
+          await this.$api.seePsiCommonService.commonquotationconfigUpdate(
+            this.form
+          );
         } else {
           this.form.source = this.from || '新建';
-          await this.$api.seePsiWmsService.wmsborrowloanorderSave(this.form);
+          await this.$api.seePsiCommonService.commonquotationconfigSave(
+            this.form
+          );
         }
         this.setEdit();
         this.close();
