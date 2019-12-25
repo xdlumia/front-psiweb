@@ -318,6 +318,12 @@
             ></el-table-column>
           </el-table>
         </form-card>
+        <openingInventory
+          :visible.sync="openVisible"
+          :data='openingData'
+          @update='shipmentCommodityCheck'
+          v-if='openVisible'
+        />
       </el-main>
     </el-container>
     <span
@@ -337,9 +343,10 @@
   </el-dialog>
 </template>
 <script>
-
+import openingInventory from '@/components/formComponents/opening-inventory'
 export default {
   components: {
+    openingInventory
   },
   props: {
     visible: {
@@ -356,6 +363,8 @@ export default {
   },
   data() {
     return {
+      openVisible: false,
+      openingData: {},
       queryForm: {},
       snCode: '',
       tableData: [],
@@ -425,6 +434,11 @@ export default {
             if (res.data) {
               this.tableData.push(res.data)
               this.data.nowNum ? this.data.nowNum++ : this.data.nowNum = 1
+            } else {
+              this.openVisible = true
+              this.openingData = {
+                snCode: this.snCode
+              }
             }
           })
           .finally(() => {

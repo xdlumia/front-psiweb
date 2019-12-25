@@ -256,12 +256,6 @@ export default {
     'methods': 'post'
   },
 
-  // 调拨单商品扫码调出校验
-  wmsallocationorderShipmentCommodityCheck: {
-    'url': '/wmsallocationorder/shipmentCommodityCheck',
-    'mock': false
-  },
-
   // 临时商品统计
   wmsallocationorderTempCommodityCount: {
     'url': '/wmsallocationorder/tempCommodityCount',
@@ -1210,7 +1204,12 @@ export default {
     'mock': false,
     'methods': 'post'
   },
-
+  // 更新期初商品SN码或者机器号
+  wmsinventorydetailUpdateInitializeSnCode: {
+    'url': '/wmsinventorydetail/updateInitializeSnCode',
+    'mock': false,
+    'methods': 'post'
+  },
   // 获取库房商品清单列表
   wmsinventoryList: {
     'url': '/wmsinventory/list',
