@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-25 14:22:56
+ * @LastEditTime: 2019-12-26 14:54:43
  * @Description: 整机配置单
 */
 <template>
@@ -19,7 +19,7 @@
       title="整机配置单"
     >
       <template slot="button">
-        <el-button @click="showEdit=true" size="mini" type="primary" v-if="authorityButtons.includes('psi_purchase_borrow_09')">新增</el-button>
+        <el-button @click="showEdit=true" size="mini" type="primary" v-if="authorityButtons.includes('psi_pricelist_zj_001')">新增</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='code'">

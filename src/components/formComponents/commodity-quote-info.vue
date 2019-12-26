@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-25 18:12:59
+ * @LastEditTime: 2019-12-26 15:17:22
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -134,7 +134,7 @@
         min-width="110"
       >
         <template slot-scope="{row}">
-          <span>{{row.discountSprice||0}}</span>
+          <span v-if="!row.parentCommodityCode">{{row.discountSprice||0}}</span>
         </template>
       </el-table-column>
 
