@@ -366,7 +366,6 @@ export default {
   computed: {
   },
   created () {
-    // console.log(this.authorityButtons)
     this.fgoodsFirstClassList()
   },
   mounted () {
@@ -524,8 +523,6 @@ export default {
     },
     fcatehandel (data, type, node) { // 修改
       this.titleHandel = '修改'
-      console.log(data)
-      console.log(node)
       this.isEditChild = !!data.parentId
       this.treeClickNode = node
       this.treeClickData = data
@@ -611,7 +608,6 @@ export default {
       done()
     },
     submitForm (formName) { // 新增和编辑类目的弹框确定
-      // console.log(this.$refs.saleFormula.textContent)
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.dialogVisible = false
