@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:44:55
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-25 17:48:46
+ * @LastEditTime : 2019-12-26 16:11:08
  * @Description: 商品分类
  -->
 <template>
@@ -270,7 +270,7 @@
 <script>
 /* eslint-disable eqeqeq */
 export default {
-  data() {
+  data () {
     return {
       isEnable: false,
       defaultProps: {
@@ -365,11 +365,10 @@ export default {
   },
   computed: {
   },
-  created() {
-    // console.log(this.authorityButtons)
+  created () {
     this.fgoodsFirstClassList()
   },
-  mounted() {
+  mounted () {
     this.form = Object.assign(this.form, {
       id: null,
       categoryCode: '',
@@ -382,7 +381,7 @@ export default {
   watch: {
   },
   methods: {
-    fgoodsFirstClassList() {
+    fgoodsFirstClassList () {
       this.defalutOpenArr = []
       this.$api.seeGoodsService.fgoodsFirstClassList(this.firstForm) // 获取物品一级类目
         .then(res => {
@@ -400,7 +399,7 @@ export default {
           this.loading = false
         })
     },
-    lazyTreeData(node, resovle) {
+    lazyTreeData (node, resovle) {
       this.dadnode = node
       this.resovle = resovle
       this.$api.seeGoodsService.fgetChildClassList({ id: node.data.id }) // 获取物品子类类目
@@ -412,7 +411,7 @@ export default {
           return resovle(res.data)
         }).finally(() => { })
     },
-    fcateadd(data) { // 新增
+    fcateadd (data) { // 新增
       this.titleHandel = '新增'
       this.handel = true
       this.istype = null
@@ -430,7 +429,7 @@ export default {
       // this.form.handelClassName = ''// 清空
       // this.form.parentid = ''// 清空
     },
-    fcateChange(node, data) { // 是否有效开关
+    fcateChange (node, data) { // 是否有效开关
       this.treeClickNode = node
       this.treeClickData = data
       if (data.isEnable == 1) { // 如果从无效改成有效
@@ -505,7 +504,7 @@ export default {
         })
       }
     },
-    faddchild(data, type, node) { // 新增子类
+    faddchild (data, type, node) { // 新增子类
       this.isEditChild = false
       this.titleHandel = '新增子类'
       this.treeClickNode = node
@@ -522,10 +521,8 @@ export default {
       // this.form.handelClassName = ''// 清空
       this.treeId = data.id
     },
-    fcatehandel(data, type, node) { // 修改
+    fcatehandel (data, type, node) { // 修改
       this.titleHandel = '修改'
-      console.log(data)
-      console.log(node)
       this.isEditChild = !!data.parentId
       this.treeClickNode = node
       this.treeClickData = data
@@ -545,7 +542,7 @@ export default {
       // this.form.taxRate = data.taxRate
       // this.form.categoryCode = data.categoryCode
     },
-    fcatetop(data, node) { // 置顶
+    fcatetop (data, node) { // 置顶
       this.treeClickData = data
       this.$api.seeGoodsService.handelGoodsChild({ id: data.id, isTop: 1 }) //
         .then(res => {
@@ -569,7 +566,7 @@ export default {
           this.loading = false
         })
     },
-    fcatedelete(node, data) { // 删除
+    fcatedelete (node, data) { // 删除
       this.treeClickNode = node
       this.treeClickData = data
       this.$confirm('是否删除?', '提示', {
@@ -604,14 +601,13 @@ export default {
         })
       })
     },
-    curChangeHandle(val) { // 分页
+    curChangeHandle (val) { // 分页
       this.fgoodsFirstClassList()
     },
-    handleClose(done) { // 关闭弹框
+    handleClose (done) { // 关闭弹框
       done()
     },
-    submitForm(formName) { // 新增和编辑类目的弹框确定
-      console.log(this.$refs.saleFormula.textContent)
+    submitForm (formName) { // 新增和编辑类目的弹框确定
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.dialogVisible = false

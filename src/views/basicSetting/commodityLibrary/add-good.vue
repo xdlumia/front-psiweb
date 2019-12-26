@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-25 11:58:04
+ * @LastEditTime : 2019-12-26 16:34:07
  * @Description: 新增商品
  -->
 <template>
@@ -104,7 +104,7 @@
           </el-col>
         </el-row>
       </form-card>
-      <form-card title="商品价格" v-if="goodForm.categoryCode !== 'PSI_SP_KIND-1'">
+      <form-card title="商品价格">
         <el-row :gutter="40">
           <el-col :span="8">
             <el-form-item prop="values[0].inventoryPrice">
@@ -389,7 +389,7 @@ export default {
     handleInventoryConfig () {
       const temp = this.goodForm.values[0]
       this.goodForm.values[0].inventoryPriceFormula = `${temp.purchaseAvgPrice || 0} * ${this.classConfig.inventoryPriceFormulaRatio} + ${this.classConfig.inventoryPriceFormulaFixedValue} = `
-      this.goodForm.values[0].inventoryPrice = (temp.purchaseAvgPrice || 0) * this.classConfig.inventoryPriceFormulaRatio + this.classConfig.inventoryPriceFormulaFixedValue
+      this.goodForm.values[0].inventoryPrice = ((temp.purchaseAvgPrice || 0) * this.classConfig.inventoryPriceFormulaRatio + this.classConfig.inventoryPriceFormulaFixedValue).toFixed(2)
       this.inventoryPriceChange()
     },
     // 销售参考价 计算值切换
@@ -405,7 +405,7 @@ export default {
     handleSalesConfig () {
       const temp = this.goodForm.values[0]
       this.goodForm.values[0].saleRefPriceFormula = `${temp.salesAvgPrice || 0} * ${this.classConfig.saleRefPriceFormulaRatio} + ${this.classConfig.saleRefPriceFormulaFixedValue} = `
-      this.goodForm.values[0].saleReferencePrice = (temp.salesAvgPrice || 0) * this.classConfig.saleRefPriceFormulaRatio + this.classConfig.saleRefPriceFormulaFixedValue
+      this.goodForm.values[0].saleReferencePrice = ((temp.salesAvgPrice || 0) * this.classConfig.saleRefPriceFormulaRatio + this.classConfig.saleRefPriceFormulaFixedValue).toFixed(2)
       this.saleReferencePriceChange()
     },
     // 获取详情
@@ -423,26 +423,26 @@ export default {
     // 库存成本价改变
     inventoryPriceChange () {
       const temp = this.goodForm.values[0]
-      if (temp.saleReferencePrice && temp.inventoryPrice) {
-        this.goodForm.values[0].profitRate = ((temp.saleReferencePrice / temp.inventoryPrice - 1) * 100).toFixed(2)
+      if (parseFloat(temp.saleReferencePrice) && parseFloat(temp.inventoryPrice)) {
+        this.goodForm.values[0].profitRate = ((parseFloat(temp.saleReferencePrice) / parseFloat(temp.inventoryPrice) - 1) * 100).toFixed(2)
       } else {
-        this.goodForm.values[0].profitRate = temp.inventoryPrice ? 0 : 100
+        this.goodForm.values[0].profitRate = parseFloat(temp.inventoryPrice) ? 0 : 100
       }
     },
     // 销售参考价改变
     saleReferencePriceChange () {
       const temp = this.goodForm.values[0]
-      if (temp.inventoryPrice) {
-        this.goodForm.values[0].profitRate = ((temp.saleReferencePrice / temp.inventoryPrice - 1) * 100).toFixed(2)
+      if (parseFloat(temp.inventoryPrice)) {
+        this.goodForm.values[0].profitRate = ((parseFloat(temp.saleReferencePrice) / parseFloat(temp.inventoryPrice) - 1) * 100).toFixed(2)
       } else {
-        this.goodForm.values[0].profitRate = temp.saleReferencePrice ? 100 : 0
+        this.goodForm.values[0].profitRate = parseFloat(temp.saleReferencePrice) ? 100 : 0
       }
     },
     // 毛利率改变
     profitRateChange () {
       const temp = this.goodForm.values[0]
       // temp.profitRate / 100 + 1 * temp.inventoryPrice
-      this.goodForm.values[0].saleReferencePrice = ((temp.profitRate / 100 + 1) * temp.inventoryPrice).toFixed(2)
+      this.goodForm.values[0].saleReferencePrice = ((parseFloat(temp.profitRate) / 100 + 1) * parseFloat(temp.inventoryPrice)).toFixed(2)
     },
     saveGood () {
       this.$refs.goodForm.validate(valid => {
