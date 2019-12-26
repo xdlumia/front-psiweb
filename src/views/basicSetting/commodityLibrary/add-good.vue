@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-25 11:58:04
+ * @LastEditTime : 2019-12-26 15:25:00
  * @Description: 新增商品
  -->
 <template>
@@ -104,7 +104,7 @@
           </el-col>
         </el-row>
       </form-card>
-      <form-card title="商品价格" v-if="goodForm.categoryCode !== 'PSI_SP_KIND-1'">
+      <form-card title="商品价格">
         <el-row :gutter="40">
           <el-col :span="8">
             <el-form-item prop="values[0].inventoryPrice">
@@ -389,7 +389,7 @@ export default {
     handleInventoryConfig () {
       const temp = this.goodForm.values[0]
       this.goodForm.values[0].inventoryPriceFormula = `${temp.purchaseAvgPrice || 0} * ${this.classConfig.inventoryPriceFormulaRatio} + ${this.classConfig.inventoryPriceFormulaFixedValue} = `
-      this.goodForm.values[0].inventoryPrice = (temp.purchaseAvgPrice || 0) * this.classConfig.inventoryPriceFormulaRatio + this.classConfig.inventoryPriceFormulaFixedValue
+      this.goodForm.values[0].inventoryPrice = ((temp.purchaseAvgPrice || 0) * this.classConfig.inventoryPriceFormulaRatio + this.classConfig.inventoryPriceFormulaFixedValue).toFixed(2)
       this.inventoryPriceChange()
     },
     // 销售参考价 计算值切换
@@ -405,7 +405,7 @@ export default {
     handleSalesConfig () {
       const temp = this.goodForm.values[0]
       this.goodForm.values[0].saleRefPriceFormula = `${temp.salesAvgPrice || 0} * ${this.classConfig.saleRefPriceFormulaRatio} + ${this.classConfig.saleRefPriceFormulaFixedValue} = `
-      this.goodForm.values[0].saleReferencePrice = (temp.salesAvgPrice || 0) * this.classConfig.saleRefPriceFormulaRatio + this.classConfig.saleRefPriceFormulaFixedValue
+      this.goodForm.values[0].saleReferencePrice = ((temp.salesAvgPrice || 0) * this.classConfig.saleRefPriceFormulaRatio + this.classConfig.saleRefPriceFormulaFixedValue).toFixed(2)
       this.saleReferencePriceChange()
     },
     // 获取详情
