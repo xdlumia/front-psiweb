@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-25 14:08:32
+ * @LastEditTime: 2019-12-26 09:56:29
  * @Description: 整机配置单
 */
 <template>
   <el-dialog :visible="showEditPage" @close="close" v-dialogDrag v-loading="loading" width="900px">
     <div slot="title">
-      <span>{{isEdit?'编辑':'新增'}}整机配置单</span>
+      <span>{{isEdit||(form&&form.id)?'编辑':'新增'}}整机配置单</span>
       <span class="fr mr20">
         <el-button @click="save" size="mini" type="primary">保存</el-button>
         <el-button @click="close" size="mini">关闭</el-button>
@@ -72,7 +72,7 @@ export default {
       this.form.type = 1;
       this.form.commonQuotationConfigDetailsEntitys = this.form.commodityList;
       try {
-        if (this.isEdit) {
+        if (this.isEdit||this.form.id) {
           await this.$api.seePsiCommonService.commonquotationconfigUpdate(
             this.form
           );

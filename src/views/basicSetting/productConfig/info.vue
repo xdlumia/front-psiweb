@@ -2,11 +2,11 @@
  * @Author: 赵伦
  * @Date: 2019-12-24 11:36:25
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-25 15:21:20
+ * @LastEditTime: 2019-12-26 09:43:46
  * @Description: 整机配置编辑组件
 */
 <template>
-  <div class="product-config">
+  <div class="product-config" v-loading="loading">
     <!-- 基本信息 -->
     <form-card id="baseInfo" title="基本信息">
       <el-row :gutter="10">
@@ -67,11 +67,46 @@ export default {
     data: Object,
     disabled: Boolean
   },
+  data() {
+    return {
+      loading: false
+    };
+  },
   methods: {
-    choose(goods) {
-      this.data.commodityId = goods[0].id
-      this.data.commodityCode = goods[0].commodityCode;
-      this.data.goodName = goods[0].goodsName;
+    async choose([good]) {
+      this.loading = true;
+      try {
+        let list = await this.checkIsExist(good.commodityCode);
+        if (list.length) {
+          this.data.commodityList = list;
+          let data = await this.getDetail(list[0].quotationId);
+          Object.assign(this.data, data);
+        }
+        this.data.commodityId = good.id;
+        this.data.commodityCode = good.commodityCode;
+        this.data.goodName = good.goodsName;
+      } catch (error) {}
+      this.loading = false;
+    },
+    async checkIsExist(code) {
+      let {
+        data
+      } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodCode(
+        {
+          codes: [code],
+          type: 1
+        }
+      );
+      return data || [];
+    },
+    async getDetail(id) {
+      let {
+        data
+      } = await this.$api.seePsiCommonService.commonquotationconfigInfo(
+        null,
+        id
+      );
+      return data;
     }
   }
 };

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-25 14:14:50
+ * @LastEditTime: 2019-12-26 09:42:03
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -66,7 +66,7 @@
           :label="item.label"
           :min-width="item.width"
           :prop="item.prop"
-          :show-overflow-tooltip="item.showOverflowTip"
+          :show-overflow-tooltip="item.showOverflowTip||false"
           v-for="item of useColumns"
         >
           <template slot-scope="{row}">
