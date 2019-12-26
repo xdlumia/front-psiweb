@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-25 16:34:05
+ * @LastEditTime: 2019-12-26 14:55:30
  * @Description: 整机配置单
 */
 <template>
@@ -15,9 +15,19 @@
     width="990px"
   >
     <template slot="button" v-if="detail">
-      <el-button @click="commonquotationconfigUpdate(detail.id, 1)" size="mini" type="danger" v-if="!detail.state">停用</el-button>
-      <el-button @click="commonquotationconfigUpdate(detail.id, 0)" size="mini" type="primary" v-if="detail.state">启用</el-button>
-      <el-button @click="showEdit = true" size="mini" type="primary">编辑</el-button>
+      <el-button
+        @click="commonquotationconfigUpdate(detail.id, 1)"
+        size="mini"
+        type="danger"
+        v-if="!detail.state&&authorityButtons.includes('psi_pricelist_zj_005')"
+      >停用</el-button>
+      <el-button
+        @click="commonquotationconfigUpdate(detail.id, 0)"
+        size="mini"
+        type="primary"
+        v-if="detail.state&&authorityButtons.includes('psi_pricelist_zj_003')"
+      >启用</el-button>
+      <el-button @click="showEdit = true" size="mini" type="primary" v-if="authorityButtons.includes('psi_pricelist_zj_002')">编辑</el-button>
     </template>
     <el-tabs class="wfull hfull tabs-view" v-model="activeTab">
       <el-tab-pane label="详情">

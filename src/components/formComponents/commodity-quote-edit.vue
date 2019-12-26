@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-26 10:52:44
+ * @LastEditTime: 2019-12-26 15:14:51
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -467,7 +467,7 @@ export default {
           this.preCommodityBussinessInfo[item.commodityCode] = {}
         }
         if (this.preCommodityBussinessInfo[item.commodityCode]) {
-          this.$set(item, 'inventoryPrice', item.customConfig?item.reference:(item.inventoryPrice || this.preCommodityBussinessInfo[item.commodityCode].inventoryPrice))
+          this.$set(item, 'inventoryPrice', item.inventoryPrice || this.preCommodityBussinessInfo[item.commodityCode].inventoryPrice)
           this.$set(item, 'taxRate', item.taxRate || this.preCommodityBussinessInfo[item.commodityCode].taxRate)
           this.$set(item, 'inventoryNumber', item.inventoryNumber || this.preCommodityBussinessInfo[item.commodityCode].inventoryNumber || 0)
           this.$set(item, 'recentDiscountSprice', this.preCommodityBussinessInfo[item.commodityCode].recentDiscountSprice || 0)

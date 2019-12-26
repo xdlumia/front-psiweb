@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-24 15:43:40
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-25 17:52:48
+ * @LastEditTime: 2019-12-26 15:09:37
  * @Description: 自由模式确定配置单
 */
 <template>
@@ -61,7 +61,6 @@ export default {
                 item =>
                   +Number(
                     (item.selected?item.saleReferencePrice:0) *
-                      (1 + item.taxRate / 100) *
                       item.commodityNumber || 0
                   ).toFixed(2)
               )

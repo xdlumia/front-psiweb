@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-26 10:50:36
+ * @LastEditTime: 2019-12-26 15:14:21
  * @Description: file content
 */
 <template>
@@ -170,7 +170,6 @@ export default {
   },
   mounted() {
     // this.initForm()
-    console.log(this)
   },
   computed: {
   },
@@ -257,6 +256,8 @@ export default {
             item.commonGoodConfigDetailsEntityList.map(sub=>{
               sub.parentCommodityCode = item.goodsCode
               sub.isMachine = 1
+              sub.reference=sub.saleReferencePrice
+              sub.costAmount=sub.inventoryPrice
             })
             item.customConfig = true
 
@@ -268,6 +269,7 @@ export default {
                 this.$set(item,key,good[key])
               })
               this.$set(item,'reference',item.totalAmount)
+              this.$set(item,'discountSprice',+Number(item.reference * (1 + (item.taxRate || 0) / 100)).toFixed(2))
             })
 
             item.goodsName = item.configGoodName
@@ -276,11 +278,10 @@ export default {
             item.id = 'customId' + item.id
             item.inventoryNumber = item.usableInventoryNum
             item.reference = item.totalAmount
-            item.costAmount = item.totalAmount
+            item.costAmount = item.inventoryPrice
             item.isMachine = 1
             return item;
           })
-          console.log(JSON.parse(JSON.stringify(wholeListData)))
         }
         // 配件列表
         let fixingsList = []
@@ -348,7 +349,11 @@ export default {
     async getDetail() {
       if (this.code) {
         this.form.id = ''
-        let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
+        let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code });
+        data.commodityEntityList.map(item=>{
+          item.isMachine&&(item.customConfig=true);
+          item.commonGoodConfigDetailsEntityList = item.partsInfoCommodityList
+        })
         return data;
       }
     },
@@ -388,9 +393,12 @@ export default {
           copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.map(item => {
             if(item.customConfig){
               children = children.concat(item.commonGoodConfigDetailsEntityList)  
-              item.costAmount = item.reference
-              item.inventoryPrice = item.reference
-              item.saleReferencePrice = item.reference
+              item.costAmount = item.inventoryPrice;
+              item.inventoryPrice = item.reference;
+              item.saleReferencePrice = item.reference;
+              (item.commonGoodConfigDetailsEntityList||[]).map(item=>{
+                item.costAmount = item.inventoryPrice
+              })
             }
             item.isMachine = item.isMachine||0
             delete item.commonGoodConfigDetailsEntityList
