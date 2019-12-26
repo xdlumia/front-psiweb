@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-26 16:40:53
+ * @LastEditTime: 2019-12-26 16:59:46
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -273,7 +273,7 @@
       >
         <template
           slot-scope="{row}"
-          v-if="!row.parentCommodityCode&&row.categoryCode=='PSI_SP_KIND-1'&&(row.configId||row.configName)"
+          v-if="!row.parentCommodityCode&&row.categoryCode=='PSI_SP_KIND-1'&&(row.configId||row.configName||row.isMachine)"
         >
           <el-switch
             :active-value="1"
