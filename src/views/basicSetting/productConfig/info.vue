@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-24 11:36:25
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-26 09:43:46
+ * @LastEditTime: 2019-12-26 18:16:23
  * @Description: 整机配置编辑组件
 */
 <template>
@@ -40,8 +40,8 @@
     <buying-goods-edit
       :customColumns="[
         {label:'商品编号',key:'chooseCommodityCode',type:'chooseCommodityCode',prop:'commodityCode',width:200},
-        {label:'商品名称',key:'chooseGoodsName',type:'chooseCommodityName',prop:'goodsName',width:200},
-        {label:'商品最大数量',key:'commodityNum',type:'inputinteger',prop:'commodityNum',width:140},
+        {label:'商品名称',key:'chooseGoodsName',type:'chooseCommodityName',prop:'goodsName',width:150},
+        {label:'商品最大数量',key:'commodityNum',type:'inputinteger',prop:'commodityNum',width:80},
       ]"
       :data="data"
       :disabled="disabled"

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-26 09:42:03
+ * @LastEditTime: 2019-12-26 18:18:36
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -110,7 +110,8 @@
                   :multiple="false"
                   :type="item.type=='chooseCommodityCode'?'code':'name'"
                   @choose="chooseInline(row,$event)"
-                  class="ml10"
+                  class="ml10 mr10"
+                  style="width:90%;"
                   v-model="row[item.prop]"
                 />
               </el-form-item>
