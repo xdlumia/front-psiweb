@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-25 18:11:00
+ * @LastEditTime: 2019-12-26 10:50:36
  * @Description: file content
 */
 <template>
@@ -276,6 +276,7 @@ export default {
             item.id = 'customId' + item.id
             item.inventoryNumber = item.usableInventoryNum
             item.reference = item.totalAmount
+            item.costAmount = item.totalAmount
             item.isMachine = 1
             return item;
           })
@@ -387,6 +388,9 @@ export default {
           copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.map(item => {
             if(item.customConfig){
               children = children.concat(item.commonGoodConfigDetailsEntityList)  
+              item.costAmount = item.reference
+              item.inventoryPrice = item.reference
+              item.saleReferencePrice = item.reference
             }
             item.isMachine = item.isMachine||0
             delete item.commonGoodConfigDetailsEntityList
