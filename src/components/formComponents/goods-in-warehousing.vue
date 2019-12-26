@@ -355,10 +355,11 @@
 
     </form-card>
     <openingInventory
-      :visible.sync="openVisible"
-      :data='openingData'
+      :disabled='true'
+      :visible.sync="visible"
+      :data='opingData'
       @update="commodityCheck(snItem,'exchange')"
-      v-if='openVisible'
+      v-if='visible'
     />
   </div>
 </template>
@@ -378,8 +379,8 @@ export default {
   },
   data() {
     return {
-      openVisible: false,
-      openingData: {},
+      visible: false,
+      opingData: {},
       snItem: ''
     };
   },
@@ -449,11 +450,11 @@ export default {
             item.scanNumber = (item.scanNumber || 0) + 1
             item.alterationNumber++
           } else {
-            this.openVisible = true
+            this.visible = true
             this.snItem = item
-            this.openingData = {
+            this.opingData = {
               snCode: item.snCode,
-              wmsId: this.data.wmsId
+              commodityCode: item.commodityCode
             }
           }
         })

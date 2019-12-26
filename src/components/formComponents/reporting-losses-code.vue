@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-20 16:27:17
+ * @LastEditTime: 2019-12-26 10:17:25
  * @Description: 报溢报损扫码公共弹窗
 */
 <template>
@@ -190,7 +190,7 @@
           </el-table>
         </form-card>
         <openingInventory
-          :disabled='disabled'
+          :disabled='true'
           :visible.sync="openVisible"
           :data='openingData'
           @update='getCommodityBySnCode'
@@ -239,7 +239,6 @@ export default {
     return {
       activeName: '',
       snCode: '',
-      disabled: false,
       openVisible: false,
       openingData: {},
       formInline: {
@@ -291,8 +290,7 @@ export default {
                 snCode: this.snCode,
                 wmsId: this.addForm.wmsId,
                 commodityCode: this.commodityForm.commodityCode,
-              },
-                this.disabled = true
+              }
             }
           }
         })

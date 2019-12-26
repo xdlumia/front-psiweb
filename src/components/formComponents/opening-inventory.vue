@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-25 09:17:10
+ * @LastEditTime: 2019-12-26 10:09:18
  * @Description: 20191123 需求 所有出库  增加一个弹窗，期初库存商品可以直接赋给它码
 */
 <template>
@@ -143,7 +143,7 @@ export default {
     response() {
       if (this.data.commodityCode) {
         this.loading = true
-        //这里只针对报损的情况，报损的商品是一对一的，所以这里加一个筛选条件，只能选择当前商品
+        //这里只针对报损的情况，报损的商品是一对一的，所以这里加一个筛选条件，默认选择当前商品,选项直接置灰
         this.$api.seePsiWmsService.wmsinventoryList({ page: 1, limit: 15, commodityCode: this.data.commodityCode })
           .then(res => {
             if (res.data.length > 0) {
@@ -153,19 +153,18 @@ export default {
           .finally(() => {
             this.loading = false
           })
-        // this.tableData = res.filter((item) => {
-        //   return item.commodityCode == this.data.commodityCode
-        // })
       }
     },
     //保存按钮
     submit() {
       if (this.tableData.length > 0 && this.tableData[0].unusedNum > 0) {
+        // snCode: this.tableData[0].categoryCode == 'PSI_SP_KIND-2' ? this.data.snCode : '',
+        // robotCode: this.tableData[0].categoryCode == 'PSI_SP_KIND-1' ? this.data.snCode : '',
         let params = {
           wmsId: this.data.wmsId ? this.data.wmsId : '',//库房id
           commodityCode: this.tableData[0].commodityCode,
-          snCode: this.tableData[0].categoryCode == 'PSI_SP_KIND-2' ? this.data.snCode : '',
-          robotCode: this.tableData[0].categoryCode == 'PSI_SP_KIND-1' ? this.data.snCode : '',
+          categoryCode: this.tableData[0].categoryCode,
+          snCode: this.data.snCode
         }
         this.$api.seePsiWmsService.wmsinventorydetailUpdateInitializeSnCode(params)
           .then(res => {
