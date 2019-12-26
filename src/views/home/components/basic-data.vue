@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-15 14:30:04
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-25 14:51:50
+ * @LastEditTime : 2019-12-26 18:20:39
  * @Description: 基础数据
  -->
 <template>
@@ -56,7 +56,7 @@
           <h5 class="title d-text-qgray">
             <span>库存金额</span>
           </h5>
-          <h1 class="number big-text">{{inventoryPrice | thousandBitSeparator}}</h1>
+          <h1 class="number big-text">{{inventoryPrice.toFixed(2) | thousandBitSeparator}}</h1>
         </div>
       </el-col>
       <el-col :span="6" v-loading="indexReceivableLoading">
@@ -64,7 +64,7 @@
           <h5 class="title d-text-qgray">
             <span>财务应收</span>
           </h5>
-          <h1 class="number big-text">{{receivable | thousandBitSeparator}}</h1>
+          <h1 class="number big-text">{{receivable.toFixed(2) | thousandBitSeparator}}</h1>
         </div>
       </el-col>
     </el-row>
@@ -167,7 +167,7 @@ export default {
   }
   .big-text {
     font-size: 48px;
-    text-indent: 40px;
+    text-indent: 24px;
   }
   .store {
     width: 100%;
