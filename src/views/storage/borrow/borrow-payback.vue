@@ -443,7 +443,8 @@ export default {
           } else {
             this.openVisible = true
             this.openingData = {
-              snCode: this.snCode
+              snCode: this.snCode,
+              wmsId: this.data.borrowWmsId,
             }
           }
         })
