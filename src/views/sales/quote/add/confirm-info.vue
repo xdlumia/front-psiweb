@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-25 17:55:32
+ * @LastEditTime: 2019-12-26 08:51:46
  * @Description: 确定配置信息
 */
 <template>
@@ -106,6 +106,11 @@ export default {
       configNames: {},
       wholeCacheList: [] // 存放根据nama查出来的整机配置信息
     };
+  },
+  watch:{
+    strictConfirmConfig(){
+      this.commonquotationconfigdetailsListConfigByGoodName()
+    }
   },
   created() {},
   mounted() {},
@@ -225,7 +230,7 @@ export default {
         let { configId } = this.getAllConfigGoods(item);
         return configId;
       }else{
-        return item.children.some(item=>item.selected)
+        return item.children.some(item=>item.selected)&&!item.children.filter(item=>item.selected).some(item=>item.commodityNumber<=0)
       }
     },
     getAllConfigGoods(row) {
