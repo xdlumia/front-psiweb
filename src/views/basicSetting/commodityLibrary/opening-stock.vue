@@ -2,7 +2,11 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors  : 高大鹏
+<<<<<<< HEAD
  * @LastEditTime : 2019-12-25 11:59:39
+=======
+ * @LastEditTime : 2019-12-27 10:19:14
+>>>>>>> dev
  * @Description: 新增目标
  -->
 <template>
@@ -79,10 +83,17 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="采购数量" min-width="110" prop="configName">
+            <el-table-column label="采购数量" min-width="130" prop="configName">
               <template>
                 <el-form-item prop="num" style="margin-top:18px;">
-                  <el-input :show-word-limit="false" v-model.trim="beginnForm.num"></el-input>
+                  <el-input-number
+                    style="width:100px;"
+                    controls-position="right"
+                    v-model.trim="beginnForm.num"
+                    :max="500"
+                    :min="1"
+                    :precision="0"
+                  ></el-input-number>
                 </el-form-item>
               </template>
             </el-table-column>

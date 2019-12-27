@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-20 14:31:04
+ * @LastEditTime: 2019-12-26 16:59:46
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>

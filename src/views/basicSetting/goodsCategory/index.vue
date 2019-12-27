@@ -2,7 +2,11 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:44:55
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-26 16:11:08
+<<<<<<< HEAD
+ * @LastEditTime : 2019-12-27 10:28:36
+=======
+ * @LastEditTime : 2019-12-27 10:22:18
+>>>>>>> dev
  * @Description: 商品分类
  -->
 <template>
@@ -288,7 +292,7 @@ export default {
         taxRate: '',
         className: '',
         childClassName: '',
-        parentid: null,
+        parentId: null,
         inventoryPriceFormula: '',
         inventoryPriceFormulaRatio: 0,
         inventoryPriceFormulaFixedValue: 0,
@@ -306,7 +310,7 @@ export default {
         childClassName: [
           { required: true, message: '请输入分类名称', trigger: 'blur' }
         ],
-        parentid: [
+        parentId: [
           { required: true, message: '请选择上级分类', trigger: 'change' }
         ],
         inventoryPriceFormulaRatio: [
@@ -375,7 +379,7 @@ export default {
       taxRate: '',
       className: '',
       childClassName: '',
-      parentid: null
+      parentId: null
     })
   },
   watch: {
@@ -424,10 +428,15 @@ export default {
         taxRate: '',
         className: '',
         childClassName: '',
-        parentid: null
+        parentId: null,
+        inventoryPriceFormulaRatio: 0,
+        inventoryPriceFormulaFixedValue: 0,
+        saleRefPriceFormulaRatio: 0,
+        saleRefPriceFormulaFixedValue: 0
       })
+      console.log(this.form)
       // this.form.handelClassName = ''// 清空
-      // this.form.parentid = ''// 清空
+      // this.form.parentId = ''// 清空
     },
     fcateChange (node, data) { // 是否有效开关
       this.treeClickNode = node
