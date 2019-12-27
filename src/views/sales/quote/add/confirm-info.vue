@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-26 08:51:46
+ * @LastEditTime: 2019-12-27 10:57:01
  * @Description: 确定配置信息
 */
 <template>
@@ -75,7 +75,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <CustomConfig :data="item.children" v-else @totalAmountChange="setTotalAmount(item,$event)"/>
+        <CustomConfig :data="item.children" v-else @totalAmountChange="setTotalAmount(item,$event)" ref="customConfig"/>
       </div>
     </quotationInfo>
   </div>
@@ -230,7 +230,8 @@ export default {
         let { configId } = this.getAllConfigGoods(item);
         return configId;
       }else{
-        return item.children.some(item=>item.selected)&&!item.children.filter(item=>item.selected).some(item=>item.commodityNumber<=0)
+        this.$refs.customConfig.map(item=>item.$refs.form.validate())
+        return item.children.some(item=>item.selected)&&!item.children.filter(item=>item.selected).some(item=>(item.commodityNumber<=0||item.commodityNumber>item.maxcommodityNumber))
       }
     },
     getAllConfigGoods(row) {
