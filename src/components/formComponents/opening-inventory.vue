@@ -42,6 +42,7 @@
               class="d-relative"
             >
               <commoditySelector
+                :params="{wmsId: data.wmsId ? data.wmsId : ''}"
                 :disabled='disabled'
                 :multiple='false'
                 :codes="tableData.map(item=>item.commodityCode)"
@@ -60,6 +61,7 @@
               class="d-relative"
             >
               <commoditySelector
+                :params="{wmsId: data.wmsId ? data.wmsId : ''}"
                 :multiple='false'
                 :disabled='disabled'
                 :codes="tableData.map(item=>item.commodityCode)"
@@ -144,7 +146,7 @@ export default {
       if (this.data.commodityCode) {
         this.loading = true
         //这里只针对报损的情况，报损的商品是一对一的，所以这里加一个筛选条件，默认选择当前商品,选项直接置灰
-        this.$api.seePsiWmsService.wmsinventoryList({ page: 1, limit: 15, commodityCode: this.data.commodityCode })
+        this.$api.seePsiWmsService.wmsinventoryList({ page: 1, limit: 15, commodityCode: this.data.commodityCode, wmsId: this.data.wmsId ? this.data.wmsId : '' })
           .then(res => {
             if (res.data.length > 0) {
               this.tableData = [...res.data]

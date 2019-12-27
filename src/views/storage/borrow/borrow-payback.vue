@@ -403,7 +403,7 @@ export default {
     },
     //回车 出库
     shipmentCommodityCheck() {
-      this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData, })
+      this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData, wmsId: this.data.borrowWmsId, })
         .then(res => {
           if (res.data) {
             let commodityCodeList = []
@@ -443,7 +443,8 @@ export default {
           } else {
             this.openVisible = true
             this.openingData = {
-              snCode: this.snCode
+              snCode: this.snCode,
+              wmsId: this.data.borrowWmsId,
             }
           }
         })
