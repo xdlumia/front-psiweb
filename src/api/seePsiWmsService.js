@@ -236,12 +236,6 @@ export default {
     'methods': 'post'
   },
 
-  // 调拨单商品扫码调入校验
-  wmsallocationorderPutawayCommodityCheck: {
-    'url': '/wmsallocationorder/putawayCommodityCheck',
-    'mock': false
-  },
-
   // 保存库房调拨单信息
   wmsallocationorderSave: {
     'url': '/wmsallocationorder/save',
