@@ -273,7 +273,7 @@
       >
         <template
           slot-scope="{row}"
-          v-if="!row.parentCommodityCode&&row.categoryCode=='PSI_SP_KIND-1'&&(row.configId||row.configName)"
+          v-if="!row.parentCommodityCode&&row.categoryCode=='PSI_SP_KIND-1'&&(row.configId||row.configName||row.isMachine)"
         >
           <el-switch
             :active-value="1"
@@ -301,7 +301,7 @@
         prop="recentDiscountSprice"
       >
         <template slot-scope="{row}">
-          <span>{{row.recentDiscountSprice}}</span>
+          <span>{{row.recentDiscountSprice||0}}</span>
         </template>
       </el-table-column>
 
@@ -399,7 +399,9 @@ export default {
         child.commodityNumber = child.commodityNum
         child.reference = child.saleReferencePrice
         child.discountSprice = '-'
-        child.recentDiscountSprice = businessInfo[child.commodityCode].recentDiscountSprice
+        if(businessInfo[child.commodityCode]){
+          child.recentDiscountSprice = businessInfo[child.commodityCode].recentDiscountSprice
+        }
       })
       cb(data);
     },

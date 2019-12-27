@@ -119,29 +119,37 @@
         ></el-table-column>
       </el-table>
     </form-card>
+    <openingInventory
+      :visible.sync="openVisible"
+      :data='openingData'
+      @update='shipmentCommodityCheck'
+      v-if='openVisible'
+    />
   </div>
 </template> 
 <script>
+import openingInventory from '@/components/formComponents/opening-inventory'
 export default {
   props: ['data'],
   data() {
     return {
       dialogVisible: false,
+      openVisible: false,
       snCode: '',
       tableData: [],
       custom: [],
+      openingData: {}
     }
   },
   mounted() {
     this.commonsystemconfigInfo()
   },
   methods: {
-    //回车机器号和SN码 
+    //回车机器号和SN码  
     shipmentCommodityCheck() {
       this.$api.seePsiWmsService.wmspickingorderShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData, businessCode: this.data.pickingOrderCode, })
         .then(res => {
           if (res.data) {
-
             let Index = this.data.commodityList.findIndex((item) => {
               return item.commodityCode == res.data.commodityCode
             })
@@ -155,8 +163,12 @@ export default {
                 showClose: true,
               });
             }
+          } else {
+            this.openVisible = true
+            this.openingData = {
+              snCode: this.snCode
+            }
           }
-          this.snCode = ''
         })
         .finally(() => {
 
@@ -183,6 +195,7 @@ export default {
     }
   },
   components: {
+    openingInventory
   },
 }
 </script>

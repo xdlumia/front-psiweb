@@ -199,7 +199,7 @@ export default {
     // let list = this.dictionaryOptions('PSI_SP_KIND') 
   },
   methods: {
-    //点击打开右侧边栏
+    //点击打开右侧边栏 
     getTableVisible(data) {
       this.tableVisible = true
       this.drawerData = data

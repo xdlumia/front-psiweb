@@ -330,6 +330,12 @@
           </el-table>
         </form-card>
       </el-main>
+      <openingInventory
+        :visible.sync="openVisible"
+        :data='openingData'
+        @update='shipmentCommodityCheck'
+        v-if='openVisible'
+      />
     </el-container>
     <span
       slot="footer"
@@ -349,9 +355,10 @@
   </el-dialog>
 </template>
 <script>
-
+import openingInventory from '@/components/formComponents/opening-inventory'
 export default {
   components: {
+    openingInventory
   },
   props: {
     visible: {
@@ -366,9 +373,12 @@ export default {
   },
   data() {
     return {
+      dialogVisible: false,
+      openVisible: false,
       queryForm: {},
       snCode: '',
       loading: false,
+      openingData: {},
       tableData: [],
       value: '',
       usableList: [],
@@ -424,21 +434,46 @@ export default {
       this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData, })
         .then(res => {
           if (res.data) {
+            let commodityCodeList = []
             this.data.putoutCommodityList.forEach((item) => {
-              console.log(item, Number(item.swapOutAccomplishNum), 'itemitemitemitem')
-              if (item.commodityCode == res.data.commodityCode) {
-                if (item.swapOutNum - Number(item.swapOutAccomplishNum) > 0) {
-                  item.swapOutAccomplishNum ? item.swapOutAccomplishNum++ : item.swapOutAccomplishNum = 1
-                  this.outNowNum++
-                  this.tableData.push(res.data)
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: '当前商品待出库数量已为0!'
-                  })
-                }
-              }
+              // if (item.commodityCode == res.data.commodityCode) {
+              //   if (item.swapOutNum - Number(item.swapOutAccomplishNum) > 0) {
+              //     item.swapOutAccomplishNum ? item.swapOutAccomplishNum++ : item.swapOutAccomplishNum = 1
+              //     this.outNowNum++
+              //     this.tableData.push(res.data)
+              //   } else {
+              //     this.$message({
+              //       type: 'error',
+              //       message: '当前商品待出库数量已为0!'
+              //     })
+              //   }
+              // }
+              commodityCodeList.push(item.commodityCode)
             })
+            console.log(commodityCodeList, 'commodityCodeListcommodityCodeListcommodityCodeList')
+            if (!commodityCodeList.includes(res.data.commodityCode)) {
+              this.$message({
+                type: 'error',
+                message: '当前商品并非换出库商品！'
+              })
+            } else {
+              let index = commodityCodeList.indexOf(res.data.commodityCode)
+              if (this.data.putoutCommodityList[index].swapOutNum - Number(this.data.putoutCommodityList[index].swapOutAccomplishNum) > 0) {
+                this.data.putoutCommodityList[index].swapOutAccomplishNum ? this.data.putoutCommodityList[index].swapOutAccomplishNum++ : this.data.putoutCommodityList[index].swapOutAccomplishNum = 1
+                this.outNowNum++
+                this.tableData.push(res.data)
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: '当前商品待出库数量已为0!'
+                })
+              }
+            }
+          } else {
+            this.openVisible = true
+            this.openingData = {
+              snCode: this.snCode
+            }
           }
         })
         .finally(() => {

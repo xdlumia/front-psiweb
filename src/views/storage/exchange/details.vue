@@ -127,9 +127,6 @@ export default {
     return {
       status: [{ label: '换货状态', value: '-' }, { label: '生成时间', value: '-', isTime: true }, { label: '单据创建人', value: '-' }, { label: '创建部门', value: '-' }, { label: '来源', value: '-' }],
       exchangeVisible: false,
-      dialogData: {
-        title: '换货扫码UAVBFUSBDFU',
-      },
       activeName: '',
       detailForm: {},
       state: {

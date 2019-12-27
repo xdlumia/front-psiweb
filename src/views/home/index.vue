@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-28 17:11:46
  * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-15 17:31:40
+ * @LastEditTime: 2019-12-20 10:01:53
  * @Description: 首页
  -->
 <template>
@@ -20,7 +20,7 @@ import basicData from './components/basic-data'
 import salesStatistics from './components/sales-statistics'
 import promotion from './components/promotion-container'
 export default {
-  data() {
+  data () {
     return {
     }
   },
@@ -34,4 +34,20 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+// tab
+/deep/ .no-border-tab {
+  .el-tabs__header {
+    margin: 0;
+    .el-tabs__item {
+      padding: 0 12px;
+    }
+  }
+  .el-tabs__nav-wrap::after {
+    height: 0;
+    background: none;
+  }
+  .el-tabs__active-bar {
+    display: none;
+  }
+}
 </style>

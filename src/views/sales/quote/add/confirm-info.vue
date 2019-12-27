@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 12:05:49
+ * @LastEditTime: 2019-12-26 08:51:46
  * @Description: 确定配置信息
 */
 <template>
@@ -11,22 +11,7 @@
     <!-- 配件列表 -->
     <quotationInfo :key="index" :title="`${index+1}.商品名称:${key}`" v-for="(val,key,index) of KIND2List">
       <div slot="body">
-        <el-table :data="val" border max-height="350px" ref="kind2" size="mini">
-          <el-table-column label="商品编号" min-width="100" show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span class="d-text-blue">{{scope.row.goodsCode}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="商品名称" min-width="80" prop="name"></el-table-column>
-          <el-table-column label="商品类别" prop="categoryCode" width="130">
-            <template slot-scope="{row}">
-              <span>{{row.categoryCode | dictionary('PSI_SP_KIND')}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="商品分类" prop="secondClassName" width="130"></el-table-column>
-          <el-table-column label="规格" min-width="80" prop="specOne" />
-          <el-table-column label="销售参考价" prop="saleReferencePrice" width="90" />
-        </el-table>
+        <SimpleGoods :data="val" />
       </div>
     </quotationInfo>
     <!-- 整机列表信息 -->
@@ -46,6 +31,7 @@
         <el-button @click="recoveryConfig(item,index)" size="mini" type="primary" v-else>挑选配置</el-button>
       </span>
       <div slot="body">
+        <SimpleGoods :data="item.children" v-if="item.disabled" />
         <el-table
           :data="item.children"
           :show-summary="!item.disabled"
@@ -54,9 +40,10 @@
           border
           default-expand-all
           max-height="350px"
+          ref="kind1table"
           row-key="id"
           size="mini"
-          ref="kind1table"
+          v-else-if="strictConfirmConfig"
         >
           <el-table-column label="商品分类" prop="className" v-if="!item.disabled" width="130">
             <template slot-scope="{row}">
@@ -88,31 +75,42 @@
             </template>
           </el-table-column>
         </el-table>
+        <CustomConfig :data="item.children" v-else @totalAmountChange="setTotalAmount(item,$event)"/>
       </div>
     </quotationInfo>
   </div>
 </template>
 <script>
 import quotationInfo from '@/components/formComponents/quotation-info';
+import CustomConfig from './custom-config';
+import SimpleGoods from './simple-goods';
 import { log } from 'util';
 export default {
   props: {
     data: {
       type: Object,
       default: () => ({})
-    }
+    },
+    strictConfirmConfig: Boolean
   },
   components: {
-    quotationInfo
+    quotationInfo,
+    CustomConfig,
+    SimpleGoods
   },
   data() {
     return {
       loading: false,
       configList: {},
       preConfigGoods: {},
-      configNames:{},
+      configNames: {},
       wholeCacheList: [] // 存放根据nama查出来的整机配置信息
     };
+  },
+  watch:{
+    strictConfirmConfig(){
+      this.commonquotationconfigdetailsListConfigByGoodName()
+    }
   },
   created() {},
   mounted() {},
@@ -137,6 +135,9 @@ export default {
     }
   },
   methods: {
+    setTotalAmount(item,money){
+      item.totalAmount = money
+    },
     getSummary(row, param) {
       let { allConfigGoods, configName } = this.getAllConfigGoods(row);
       let { columns } = param;
@@ -225,15 +226,19 @@ export default {
       );
     },
     findSelectedConfig(item) {
-      let { configId } = this.getAllConfigGoods(item);
-      return configId;
+      if(this.strictConfirmConfig){
+        let { configId } = this.getAllConfigGoods(item);
+        return configId;
+      }else{
+        return item.children.some(item=>item.selected)&&!item.children.filter(item=>item.selected).some(item=>item.commodityNumber<=0)
+      }
     },
     getAllConfigGoods(row) {
       let children = this.flatten(row.children);
       let configs = this.getCurrentConfig(row);
       let allConfigGoods = [];
       let configName = '';
-      let configId = ''
+      let configId = '';
       if (configs && configs.length >= 1) {
         configs.some(config => {
           let configList = JSON.parse(
@@ -251,8 +256,8 @@ export default {
             );
           if (isFullMatch) {
             allConfigGoods = selectedGoods;
-            configId = config.split('-').pop()
-            configName = this.configNames[configId]
+            configId = config.split('-').pop();
+            configName = this.configNames[configId];
           }
           return isFullMatch;
         });
@@ -378,12 +383,16 @@ export default {
       const newJson = {};
       data.forEach(item => {
         item.checked = false;
-        this.configNames[item.quotationId] = item.quotationName
+        this.configNames[item.quotationId] = item.quotationName;
         let configKey = `${item.configGoodCode}-${item.quotationId}`;
         configList[configKey] = configList[configKey] || [];
         configList[configKey].push(
           `${item.commodityCode}-${item.commodityNum}`
         );
+        if(!this.strictConfirmConfig){
+         item.commodityNumber = item.commodityNum
+         item.maxcommodityNumber = item.commodityNum
+        }
         let configItemKey = `${item.configGoodCode}-${item.commodityCode}-${item.commodityNum}`;
         // 把分类名称当做key  如果没有当前key 创建当前key 并赋值为空数组
         if (!newJson.hasOwnProperty(item.configGoodCode)) {
@@ -445,7 +454,7 @@ export default {
     // 根据名称获取整机信息
     commonquotationconfigdetailsListConfigByGoodName() {
       // 如果没有商品不查询
-      this.data.KIND1List=[]
+      this.data.KIND1List = [];
       if (!this.data.KIND1Data.length) return;
       const params = {
         // doodsName 如果查传的是'' 查的是全部 所以没有值得时候传 ' '
@@ -453,11 +462,19 @@ export default {
         page: 1,
         limit: 100
       };
-      this.$api.seePsiCommonService
-        .commonquotationconfigdetailsListConfigByGoodName(params)
+      if(!this.strictConfirmConfig){
+        params.type=1;
+      }
+      this.$api.seePsiCommonService[
+        this.strictConfirmConfig?
+        'commonquotationconfigdetailsListConfigByGoodName':
+        'commonquotationconfigdetailsListConfigByGoodCode'
+      ](params)
         .then(res => {
           // 给整机数据换成新数据
-          const data = (res.data || []).filter(item=>item.quotationState==0);
+          const data = (res.data || []).filter(
+            item => item.quotationState == 0
+          );
           this.filterKIND1List(data);
         });
     }

@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-28 14:00:55
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-17 10:52:24
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-19 16:15:24
  * @Description: 生成拣货单和组装任务 人员分配 1
 */
 <template>
@@ -21,7 +21,7 @@
               {required:true,message:'必填项',trigger: 'change',}
           ]"
             label="选择拣货人"
-            prop="employeeName"
+            prop="pickingPerson"
             size="mini"
           >
             <employees-chosen
@@ -34,7 +34,7 @@
             >
               <el-input
                 :disabled="disabled"
-                :value="data.employeeName"
+                :value="data.pickingPerson|userName"
                 size="mini"
               ></el-input>
             </employees-chosen>
@@ -115,14 +115,15 @@ export default {
   mounted() {
   },
   watch: {
-    'data.pickingPerson': {
-      handler(val) {
-        if (val && this.type == 'edit') {
-          this.data.employeeName = this.$options.filters.userName(this.data.pickingPerson)
-        }
-      },
-      deep: true
-    }
+    // 'data.pickingPerson': {
+    //   handler(val) {
+    //     if (val && this.type == 'edit') {
+    //       this.data.employeeName = this.$options.filters.userName(this.data.pickingPerson)
+    //       console.log(this.data.employeeName)
+    //     }
+    //   },
+    //   deep: true
+    // }
   },
   methods: {
     //选择拣货人员

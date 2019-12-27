@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 16:48:08
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-26 17:02:06
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -134,7 +134,7 @@
         min-width="110"
       >
         <template slot-scope="{row}">
-          <span>{{row.discountSprice||0}}</span>
+          <span v-if="!row.parentCommodityCode">{{row.discountSprice||0}}</span>
         </template>
       </el-table-column>
 
@@ -163,7 +163,7 @@
       >
         <template
           slot-scope="{row}"
-          v-if="!row.parentCommodityCode&&row.categoryCode=='PSI_SP_KIND-1'&&(row.configId||row.configName)"
+          v-if="!row.parentCommodityCode&&row.categoryCode=='PSI_SP_KIND-1'&&(row.configId||row.configName||row.isMachine)"
         >
           <el-switch
             :active-value="1"
@@ -240,6 +240,7 @@ export default {
   },
   methods: {
     async loadChildren(row, node, cb) {
+      if(row.children) cb(row.children)
       let {
         data
       } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(

@@ -198,14 +198,14 @@ export default {
         },
         {
           label: '待入库数量',
-          prop: 'WaitShipmentNum',
+          prop: 'WaitPutawayNum',
           type: 'numberRange',
           default: true,
           int: true
         },
         {
           label: '待出库数量',
-          prop: 'WaitPutawayNum',
+          prop: 'WaitShipmentNum',
           type: 'numberRange',
           default: true,
           int: true

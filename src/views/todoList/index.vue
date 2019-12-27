@@ -57,7 +57,7 @@
 <script type='text/ecmascript-6'>
 import list from './render'
 export default {
-  data () {
+  data() {
     return {
       list,
       componentName: '',
@@ -67,16 +67,16 @@ export default {
   },
   components: {
   },
-  mounted () {
+  mounted() {
     this.handleList()
     this.defaultMenu()
   },
   methods: {
-    showDetail (item) {
+    showDetail(item) {
       this.componentName = item.component
       this.params = item.params || {}
     },
-    defaultMenu () {
+    defaultMenu() {
       const menu = this.list.find(item => {
         return item.children.some(sub => {
           return sub.show
@@ -87,7 +87,7 @@ export default {
       this.params = sub.params || {}
       this.defaultActived = sub.label
     },
-    filterChildren (list) {
+    filterChildren(list) {
       return list.filter(item => {
         if (item.authorityCode) {
           return item.show && item.processNum && this.authorityButtons.includes(item.authorityCode)
@@ -95,7 +95,7 @@ export default {
         return item.show && item.processNum
       })
     },
-    homePageQueryList () {
+    homePageQueryList() {
       return this.$api.seePsiCommonService.homePageQueryList().then(res => {
         const obj = Object.create(null);
         (res.data || []).forEach(item => {
@@ -108,7 +108,7 @@ export default {
         return obj
       })
     },
-    handleList () {
+    handleList() {
       this.homePageQueryList().then(res => {
         this.list.forEach(item => {
           const num = item.children.reduce((val, sub) => {

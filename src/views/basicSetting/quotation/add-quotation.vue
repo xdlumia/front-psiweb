@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-23 11:44:56
+ * @LastEditTime : 2019-12-25 14:01:25
  * @Description: 新增报价单
  -->
 <template>
@@ -60,7 +60,8 @@ export default {
         commodityId: '',
         commodityCode: '',
         note: '',
-        commonQuotationConfigDetailsEntitys: []
+        commonQuotationConfigDetailsEntitys: [],
+        type: 0
       },
       quotationFormRule: {
         quotationName: { required: true, message: '请输入', trigger: 'blur' },
@@ -82,7 +83,7 @@ export default {
   },
   mounted () {
     this.quotationForm = Object.assign(this.quotationForm, this.detailForm)
-    console.log(this.quotationForm)
+    // console.log(this.quotationForm)
   },
   methods: {
     commonquotationconfigSave () {

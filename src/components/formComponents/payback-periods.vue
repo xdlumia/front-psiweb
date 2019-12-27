@@ -1,71 +1,48 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-05 17:18:17
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-19 14:01:52
  * @Description: 回款周期
 */  
 <template>
   <form-card title="回款周期">
     <div class="d-flex">
-      <echarts
-        style="width:600px"
-        :options="echartOption"
-      ></echarts>
+      <echarts :options="echartOption" style="width:600px"></echarts>
       <div class="ar">
         <el-date-picker
           class="mt20"
-          size="mini"
-          v-model="value1"
-          type="daterange"
-          range-separator="~"
-          start-placeholder="开始日期"
           end-placeholder="结束日期"
-        >
-        </el-date-picker>
-        <el-table
-          :summary-method="getSummaries"
-          show-summary
-          class="d-inline mt10"
-          :data="pieData"
+          range-separator="~"
           size="mini"
-        >
+          start-placeholder="开始日期"
+          type="daterange"
+          v-model="value1"
+        ></el-date-picker>
+        <el-table :data="pieData" :summary-method="getSummaries" class="d-inline mt10" show-summary size="mini">
           <el-table-column width="30">
             <template slot-scope="scope">
               <span
+                :style="{'background-color':colors[scope.$index]}"
                 class="d-block"
                 style="height:11px; background:#000; width:20px; border-radius:5px"
-                :style="{'background-color':colors[scope.$index]}"
               ></span>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="value"
-            label="时间"
-            width="60"
-          />
-          <el-table-column
-            prop="value"
-            label="数量"
-            width="60"
-          />
-          <el-table-column
-            prop="value"
-            label="占比"
-            width="60"
-          />
+          <el-table-column label="时间" prop="value" width="60" />
+          <el-table-column label="数量" prop="value" width="60" />
+          <el-table-column label="占比" prop="value" width="60" />
         </el-table>
       </div>
     </div>
-
   </form-card>
 </template>
 <script>
 import echarts from 'vue-echarts';
-import 'echarts/lib/chart/pie' //bar图
-import 'echarts/lib/component/tooltip' //提示
-import 'echarts/lib/component/title' //类型
-let colors = ['#55acee', '#fa9945', '#35ca93', '#788cf0', '#f96604']
+import 'echarts/lib/chart/pie'; //bar图
+import 'echarts/lib/component/tooltip'; //提示
+import 'echarts/lib/component/title'; //类型
+let colors = ['#55acee', '#fa9945', '#35ca93', '#788cf0', '#f96604'];
 export default {
   name: 'paybackPeriods',
   components: { echarts },
@@ -92,7 +69,7 @@ export default {
         },
         tooltip: {
           trigger: 'item',
-          formatter: "{b} : {c} ({d}%)"
+          formatter: '{b} : {c} ({d}%)'
         },
         series: {
           name: '姓名',
@@ -101,13 +78,12 @@ export default {
           center: ['40%', '50%'],
           label: {
             normal: {
-              formatter: "{b} : {c} ({d}%)",
+              formatter: '{b} : {c} ({d}%)'
             }
           },
-          data: this.pieData,
+          data: this.pieData
         }
-
-      }
+      };
     }
   },
   methods: {
@@ -117,17 +93,17 @@ export default {
       const sums = [];
       columns.forEach((col, index) => {
         if (index == 1) {
-          sums[index] = '合计'
+          sums[index] = '合计';
         } else if (index == 2 || index == 3) {
           const values = data.map(item => Number(item[col.property]));
           sums[index] = values.reduce((sum, curr) => {
-            const val = Number(curr)
-            return sum + curr
-          }, 0)
+            const val = Number(curr);
+            return sum + curr;
+          }, 0);
         }
       });
-      return sums
-    },
+      return sums;
+    }
   }
 };
 </script>

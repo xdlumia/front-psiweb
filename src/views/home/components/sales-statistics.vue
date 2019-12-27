@@ -1,17 +1,33 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-11-15 16:45:27
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-17 14:42:47
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2019-12-25 14:51:13
  * @Description: description
  -->
 <template>
   <div class="mb20">
     <el-row :gutter="40" class="row-layout">
-      <el-col :span="12">
+      <el-col :span="12" v-loading="indexSalesLineLoading">
         <div style="display: flex;flex-direction: column;">
-          <div>
-            <h3 class="b mb5" style="text-indent:20px">销售情况</h3>
+          <div style="display:flex;justify-content: space-between;align-items: center;">
+            <h3 class="b mb5" style="text-indent:20px;flex:1">销售情况</h3>
+            <div style="display: flex;align-items: center;justify-content: flex-end;">
+              <el-tabs style="max-width:120px;" class="no-border-tab" v-model="salesLine.dateFlag">
+                <el-tab-pane label="日" name="0"></el-tab-pane>
+                <el-tab-pane label="周" name="1"></el-tab-pane>
+                <el-tab-pane label="月" name="2"></el-tab-pane>
+              </el-tabs>
+              <el-date-picker
+                v-model="salesLine.daterange"
+                type="daterange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                value-format="timestamp"
+                size="mini"
+              ></el-date-picker>
+            </div>
           </div>
           <div class="ba" style="flex:0 0 540px">
             <div
@@ -39,16 +55,43 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="12" v-loading="salesClassifyStatisticsLoading">
         <div style="display: flex;flex-direction: column;">
-          <div>
-            <h3 class="b mb5" style="text-indent:20px">销售类别占比</h3>
+          <div style="display:flex;justify-content: space-between;align-items: center;">
+            <h3 class="b mb5" style="text-indent:10px;white-space: nowrap;">销售类别占比</h3>
+            <div style="display: flex;align-items: center;justify-content: flex-end;">
+              <el-tabs
+                style="max-width:280px;"
+                class="no-border-tab"
+                v-model="salesCategory.dateFlag"
+                @tab-click="handleClick"
+              >
+                <el-tab-pane label="昨日" name="5"></el-tab-pane>
+                <el-tab-pane label="上周" name="6"></el-tab-pane>
+                <el-tab-pane label="上月" name="7"></el-tab-pane>
+                <el-tab-pane label="上季度" name="8"></el-tab-pane>
+                <el-tab-pane label="去年" name="9"></el-tab-pane>
+              </el-tabs>
+              <el-date-picker
+                v-model="salesCategory.daterange"
+                type="daterange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                value-format="timestamp"
+                size="mini"
+              ></el-date-picker>
+            </div>
           </div>
           <div class="ba" style="display:flex;flex:0 0 540px">
-            <IEcharts style="flex:1;height:500px;" :option="pieOptions"></IEcharts>
+            <IEcharts
+              v-if="salesCategoryData.length"
+              style="flex:1;height:500px;"
+              :option="pieOptions"
+            ></IEcharts>
             <div style="flex:1;display: flex;align-items: center">
-              <el-row style="flex:1" class="mr20">
-                <div v-for="(item, index) in mockData" :key="index" class="mb20 d-hidden">
+              <el-row style="flex:1" class="mr20" v-if="salesCategoryData.length">
+                <div v-for="(item, index) in salesCategoryData" :key="index" class="mb20 d-hidden">
                   <el-col :span="8" class="br">
                     <span
                       style="display:inline-block;width:10px;height:10px;margin-right:10px;"
@@ -56,10 +99,15 @@
                     ></span>
                     <span>{{item.name}}</span>
                   </el-col>
-                  <el-col :span="4" class="ac">{{Math.floor(item.value / salesSum * 100)}}%</el-col>
+                  <el-col :span="4" class="ac">{{item.percent}}%</el-col>
                   <el-col :span="12" class="ar">￥{{item.value | thousandBitSeparator}}</el-col>
                 </div>
               </el-row>
+              <div
+                v-else
+                class="d-text-qgray"
+                style="flex:1;display:flex;align-items:center;justify-content: center;"
+              >暂无数据</div>
             </div>
           </div>
         </div>
@@ -76,9 +124,24 @@ import filterMix from './filter'
 
 export default {
   mixins: [filterMix],
-  data() {
+  data () {
     return {
+      indexSalesLineLoading: false,
+      salesClassifyStatisticsLoading: false,
+      salesLine: {
+        dateFlag: '0',
+        beginTime: '',
+        endTime: '',
+        daterange: []
+      },
+      salesCategory: {
+        dateFlag: '5',
+        beginTime: '',
+        endTime: '',
+        daterange: []
+      },
       color: ['#45a1ff', '#5bcb75', '#fcd44b', '#f04864', '#9861e5', '#4ecbcb'],
+      salesCategoryData: [],
       mockData: [
         {
           name: 'test1',
@@ -116,13 +179,27 @@ export default {
   components: {
     IEcharts
   },
-  computed: {
-    salesSum() {
-      return this.mockData.reduce((val, item) => {
-        return val + parseFloat(item.value)
-      }, 0)
+  watch: {
+    salesLine: {
+      deep: true,
+      handler () {
+        this.indexSalesLine()
+      }
     },
-    brokenOptions() {
+    salesCategory: {
+      deep: true,
+      handler () {
+        this.indexSalesClassifyStatistics()
+      }
+    }
+  },
+  computed: {
+    salesSum () {
+      return this.salesCategoryData.reduce((val, item) => {
+        return val + parseFloat(item.value)
+      }, 0).toFixed(2)
+    },
+    brokenOptions () {
       return {
         tooltip: {
           trigger: 'axis'
@@ -148,7 +225,7 @@ export default {
         }]
       }
     },
-    pieOptions() {
+    pieOptions () {
       return {
         tooltip: {
           trigger: 'axis'
@@ -170,7 +247,7 @@ export default {
               zlevel: 100,
               style: {
                 text: '销售额',
-                fontSize: 14,
+                fontSize: 12,
                 textAlign: 'center',
                 fill: '#999999'
               }
@@ -184,9 +261,10 @@ export default {
               style: {
                 y: 100,
                 text: '￥' + this.$options.filter.thousandBitSeparator(this.salesSum),
-                fontSize: 28,
+                fontSize: 24,
                 textAlign: 'center',
-                fontFamily: '"Arial Normal", "Arial"'
+                fontFamily: '"Arial Normal", "Arial"',
+                wordBreak: 'break-all'
               }
             }
           ]
@@ -216,10 +294,41 @@ export default {
                 borderColor: '#ffffff'
               }
             },
-            data: this.mockData
+            data: this.salesCategoryData
           }
         ]
       }
+    }
+  },
+  mounted () {
+    this.indexSalesLine()
+    this.indexSalesClassifyStatistics()
+  },
+  methods: {
+    // 销售情况
+    indexSalesLine () {
+      this.indexSalesLineLoading = true
+      this.salesLine.beginTime = this.salesLine.daterange[0]
+      this.salesLine.endTime = this.salesLine.daterange[1]
+      this.$api.seePsiReportService.indexSalesLine(this.salesLine).then(res => {
+        console.log('销售情况', res.data)
+      }).finally(() => { this.indexSalesLineLoading = false })
+    },
+    handleClick () {
+      this.salesCategory.daterange = []
+    },
+    // 销售类别占比
+    indexSalesClassifyStatistics () {
+      this.salesClassifyStatisticsLoading = true
+      if (this.salesCategory.daterange.length) {
+        this.salesCategory.beginTime = this.salesCategory.daterange[0]
+        this.salesCategory.endTime = this.salesCategory.daterange[1]
+        this.salesCategory.dateFlag = ''
+      }
+      this.$api.seePsiReportService.indexSalesClassifyStatistics(this.salesCategory).then(res => {
+        console.log('销售类别占比', res.data)
+        this.salesCategoryData = res.data
+      }).finally(() => { this.salesClassifyStatisticsLoading = false })
     }
   }
 }
