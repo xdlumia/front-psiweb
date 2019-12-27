@@ -9,20 +9,40 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 18:39:21
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-26 19:33:39
+ * @LastEditTime: 2019-12-27 17:24:22
  * @Description: layout 页面架构
 */
 <template>
-  <d-layout v-model="isLockkScreen" :lockOutTime="15">
-    <img slot="logo" src="@/assets/img/logo.png" alt />
-    <div style="height: 100vh" v-loading="loading">
+  <d-layout
+    v-model="isLockkScreen"
+    :lockOutTime="15"
+  >
+    <img
+      slot="logo"
+      src="@/assets/img/logo.png"
+      alt
+    />
+    <div
+      style="height: 100vh"
+      v-loading="loading"
+    >
       <el-container class="d-container">
         <!-- 头部区域 -->
-        <el-header height="60px" class="header-top d-hidden">
+        <el-header
+          height="60px"
+          class="header-top d-hidden"
+        >
           <!-- 菜单 -->
-          <el-menu :default-active="path" mode="horizontal" :router="true"
-:unique-opened="true">
-            <el-menu-item class="header-logo pl0" index="/">
+          <el-menu
+            :default-active="path"
+            mode="horizontal"
+            :router="true"
+            :unique-opened="true"
+          >
+            <el-menu-item
+              class="header-logo pl0"
+              index="/"
+            >
               <img
                 class="header-img"
                 :src="this.$store.state.company.companyInfo.picUrl?this.$store.state.company.companyInfo.picUrl:require('@/assets/img/logo.png')"
@@ -38,9 +58,16 @@
               index="/todo"
               style="height: 32px;line-height: 33px;margin-top: 10px;border-bottom:none"
             >
-              <el-badge :value="backlogNum" class="backlog-wrapper">
-                <el-button icon="el-icon-tickets" round size="small"
-class="backlog">待办事项</el-button>
+              <el-badge
+                :value="backlogNum"
+                class="backlog-wrapper"
+              >
+                <el-button
+                  icon="el-icon-tickets"
+                  round
+                  size="small"
+                  class="backlog"
+                >待办事项</el-button>
               </el-badge>
             </el-menu-item>
             <!-- 如果type类型是菜单就不会有二级目录(最多只有2级菜单)
@@ -53,7 +80,10 @@ class="backlog">待办事项</el-button>
               v-if="menu.type == 2"
             >{{menu.name}}</el-menu-item>
             <!-- 二级菜单 -->
-            <el-submenu v-else :index="index+''">
+            <el-submenu
+              v-else
+              :index="index+''"
+            >
               <template slot="title">{{menu.name}}</template>
               <div style="display:flex;">
                 <!-- 二级菜单按 5长度 折行 -->
@@ -63,14 +93,27 @@ class="backlog">待办事项</el-button>
                   :style="{display: menu.children && menu.children[0].children ? 'flex' : ''}"
                   :class="[!(menu.children && menu.children[0].children) ? 'pr10 pl10' : '']"
                 >
-                  <div v-for="(submenu,submenuKey) in chunkMenu" :key="submenuKey">
+                  <div
+                    v-for="(submenu,submenuKey) in chunkMenu"
+                    :key="submenuKey"
+                  >
                     <!-- 二级菜单渲染 -->
-                    <el-menu-item v-if="submenu.type===2" :index="submenu.url+''">{{submenu.name}}</el-menu-item>
+                    <el-menu-item
+                      v-if="submenu.type===2"
+                      :index="submenu.url+''"
+                    >{{submenu.name}}</el-menu-item>
                     <!-- 三级菜单渲染 -->
-                    <div v-else class="hfull pb5" style="display:flex;flex-direction:column;">
+                    <div
+                      v-else
+                      class="hfull pb5"
+                      style="display:flex;flex-direction:column;"
+                    >
                       <h4 class="mt5 mb10 menu-title">{{submenu.name}}</h4>
                       <!-- 三级菜单按 5长度 分割 -->
-                      <div class="hfull mb10" style="display:flex;">
+                      <div
+                        class="hfull mb10"
+                        style="display:flex;"
+                      >
                         <div
                           class="pr10 pl10"
                           v-for="(chunkSubmenu, key) in chunk(submenu.children, WRAP_LENGTH)"
@@ -93,7 +136,10 @@ class="backlog">待办事项</el-button>
             </el-submenu>
 
             <!-- 用户详情 -->
-            <el-submenu index="user" class="fr">
+            <el-submenu
+              index="user"
+              class="fr"
+            >
               <template slot="title">
                 <img
                   class="user-head"
@@ -105,16 +151,41 @@ class="backlog">待办事项</el-button>
                   <p class="f12">{{userInfo.userName}}</p>
                 </div>
               </template>
-              <el-menu-item @click="logout" index="/login" class="f12">退出</el-menu-item>
+              <el-menu-item
+                @click="settingVisible = true"
+                class="f14 iconfont icon-setting"
+              > 个人设置</el-menu-item>
+              <el-menu-item
+                @click="attendanceVisible = true"
+                class="f14 iconfont icon-kaoqin"
+              > 考勤</el-menu-item>
+              <el-menu-item
+                @click="handoverVisible = true"
+                class="f14 iconfont icon-jiaojie"
+              > 工作交接</el-menu-item>
+              <el-menu-item
+                @click="logout"
+                index="/login"
+                class="f14 iconfont icon-logout"
+              > 退出</el-menu-item>
             </el-submenu>
             <!-- 信息 -->
-            <message-list :isLockkScreen="isLockkScreen" class="mr20 fr mt20"></message-list>
+            <message-list
+              :isLockkScreen="isLockkScreen"
+              class="mr20 fr mt20"
+            ></message-list>
             <!-- 版本更新 -->
-            <el-submenu index="/version" class="fr head-version">
+            <el-submenu
+              index="/version"
+              class="fr head-version"
+            >
               <template slot="title">
                 <i class="el-icon-info"></i>
               </template>
-              <el-menu-item index="/version" class="f12">版本更新</el-menu-item>
+              <el-menu-item
+                index="/version"
+                class="f12"
+              >版本更新</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-header>
@@ -127,9 +198,21 @@ class="backlog">待办事项</el-button>
         </el-main>
       </el-container>
     </div>
-    <add-fee :visible.sync="addFeeVisible" v-if="addFeeVisible"></add-fee>
+    <add-fee
+      :visible.sync="addFeeVisible"
+      v-if="addFeeVisible"
+    ></add-fee>
     <!-- 新增收支流水 -->
-    <addIncome :visible.sync="addIncomeVisible" type="add" v-if="addIncomeVisible" />
+    <addIncome
+      :visible.sync="addIncomeVisible"
+      type="add"
+      v-if="addIncomeVisible"
+    />
+    <!-- 个人设置 -->
+    <personalSetting :visible.sync="settingVisible" />
+    <!-- 考勤 -->
+    <attendance :visible.sync="attendanceVisible" />
+    <handover :visible.sync="handoverVisible" />
   </d-layout>
 </template>
 
@@ -140,11 +223,21 @@ import chunk from '@/utils/chunk'
 import addFee from '@/views/finance/fee/add'
 import addIncome from '@/views/finance/income/add.vue' // 新增收支流水
 import messageList from './message-list'
+import { personalSetting } from 'see-web-system' //个人设置
+import attendance from '@/views/settings/attendance.vue' //考勤
+import handover from '@/views/settings/handover.vue' //交接
 
 
 export default {
   name: 'App',
-  components: { addFee, addIncome, messageList },
+  components: {
+    addFee,
+    addIncome,
+    messageList,
+    personalSetting,
+    attendance,
+    handover
+  },
   data() {
     return {
       addFeeVisible: false,
@@ -161,16 +254,22 @@ export default {
       activeName: 'ABC',
       syslistCodeArr: [],
       searchCityName: '', // 搜索城市名字
-      userInfo: this.$local.fetch('userInfo'),
+      // userInfo: this.$local.fetch('userInfo'),
       navData: [], // 所有权限码
       token: '',
       finger: '',
       path: '/',
       chunk,
-      WRAP_LENGTH
+      WRAP_LENGTH,
+      settingVisible: false, //个人设置是否显示
+      attendanceVisible: false, //考勤否显示
+      handoverVisible: false, //工作交接
     };
   },
   computed: {
+    userInfo() {
+      return this.$store.state.setting.userInfo
+    },
     backlogNum() {
       return this.$store.state.backlogNum
     },
@@ -325,12 +424,14 @@ export default {
             const rmDeptEntity = data.rmDeptEntity || {}; // 部门
             const rmRoleEntities = data.rmRoleEntities || []; // 人员
 
-            this.userInfo = {
+            let userInfo = {
               avatarUrl: data.avatarUrl,
               userName: data.name,
               userId: data.id,
               deptId: data.deptId, // 部门id
-              syscode: 'asystem', // 子系统编码
+              syscode: 'psi', // 子系统编码
+              employeeId: data.employeeId, //员工id
+              email: data.email, // 员工email
               companyCode: data.companyCode, // 公司code
               account: data.account, // 帐号
               companyName: data.companyEntity.companyName, // 公司名字
@@ -338,7 +439,7 @@ export default {
               deptName: rmDeptEntity.deptName, // 部门名字
               roleName: rmRoleEntities[0] && rmRoleEntities[0].roleName // 角色名字
             };
-
+            this.$local.save('userInfo', userInfo);
             // 用户数据权限
             this.$local.save('dataAuthList', data.dataAuthList || []);
             // 用户按钮数据权限
@@ -347,7 +448,6 @@ export default {
               data.bizDataAuthCfgList || []
             );
 
-            this.$local.save('userInfo', this.userInfo);
           }
         })
       ]);

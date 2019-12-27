@@ -18,7 +18,7 @@ function recursionNav(list) {
 }
 export const state = {
   navData: [],
-  backlogNum: 0
+  backlogNum: 0,
 }
 export const getters = {
   navData: state => state.navData
