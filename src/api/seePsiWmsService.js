@@ -31,7 +31,7 @@ export default {
   /* =============业务单账期表end=========== */
 
   /* =============库房管理start=========== */
-  // 导出
+  // 导出库房列表
   commonwmsmanagerExport: {
     'url': '/commonwmsmanager/export',
     'mock': false,
@@ -118,6 +118,21 @@ export default {
   },
   /* =============RocketMQ失败重试end=========== */
 
+  /* =============库房业务同步接口start=========== */
+  // 库房业务设置同步
+  wmsBusinessSynchConfig: {
+    'url': '/wmsBusiness/synchConfig',
+    'mock': false,
+    'methods': 'post'
+  },
+
+  // 库房待办统计查询
+  wmsBusinessTodo: {
+    'url': '/wmsBusiness/todo',
+    'mock': false
+  },
+  /* =============库房业务同步接口end=========== */
+
   /* =============库房调拨商品清单start=========== */
   // 删除
   wmsallocationcommodityDelete: {
@@ -182,7 +197,7 @@ export default {
     'methods': 'delete'
   },
 
-  // 导出
+  // 导出调拨单列表
   wmsallocationorderExport: {
     'url': '/wmsallocationorder/export',
     'mock': false,
@@ -313,7 +328,7 @@ export default {
     'methods': 'delete'
   },
 
-  // 导出
+  // 导出组装单列表
   wmsassembleorderExport: {
     'url': '/wmsassembleorder/export',
     'mock': false,
@@ -360,8 +375,21 @@ export default {
 
   // 终止组装单信息
   wmsassembleorderTermination: {
+    'url': '/wmsassembleorder/termination/{code}',
+    'mock': false
+  },
+
+  // 终止组装单信息
+  wmsassembleorderTermination: {
     'url': '/wmsassembleorder/termination/{id}',
     'mock': false
+  },
+
+  // 根据销售单codes终止单状态
+  wmsassembleorderTerminationBySalesSheetCodes: {
+    'url': '/wmsassembleorder/terminationBySalesSheetCodes',
+    'mock': false,
+    'methods': 'post'
   },
 
   // 置顶组装单信息
@@ -400,7 +428,7 @@ export default {
     'methods': 'delete'
   },
 
-  // 导出
+  // 导出组装任务列表
   wmsassembletaskExport: {
     'url': '/wmsassembletask/export',
     'mock': false,
@@ -451,6 +479,12 @@ export default {
     'url': '/wmsassembletask/save',
     'mock': false,
     'methods': 'post'
+  },
+
+  // 确认并开始组装任务
+  wmsassembletaskStart: {
+    'url': '/wmsassembletask/start/{code}',
+    'mock': false
   },
 
   // 确认并开始组装任务
@@ -531,7 +565,7 @@ export default {
     'methods': 'delete'
   },
 
-  // 导出
+  // 导出盘点单列表
   wmsblitemExport: {
     'url': '/wmsblitem/export',
     'mock': false,
@@ -542,10 +576,7 @@ export default {
   wmsblitemGenerateReportingOrder: {
     'url': '/wmsblitem/generateReportingOrder',
     'mock': false,
-    'methods': 'post',
-    config: {
-      showMsg: false
-    }
+    'methods': 'post'
   },
 
   // 查看盘点单详细信息
@@ -695,7 +726,7 @@ export default {
     'methods': 'delete'
   },
 
-  // 导出
+  // 导出借入借出单列表
   wmsborrowloanorderExport: {
     'url': '/wmsborrowloanorder/export',
     'mock': false,
@@ -791,6 +822,12 @@ export default {
     'mock': false
   },
 
+  // 根据业务编号终止借入借出单信息
+  wmsborrowloanorderTermination: {
+    'url': '/wmsborrowloanorder/termination/{businessCode}',
+    'mock': false
+  },
+
   // 终止借入借出单信息
   wmsborrowloanorderTerminationOrder: {
     'url': '/wmsborrowloanorder/terminationOrder/{id}',
@@ -827,7 +864,7 @@ export default {
     'methods': 'delete'
   },
 
-  // 导出
+  // 导出借入借任务列表
   wmsborrowloantaskExport: {
     'url': '/wmsborrowloantask/export',
     'mock': false,
@@ -945,7 +982,7 @@ export default {
     'methods': 'delete'
   },
 
-  // 导出
+  // 导出拆卸单列表
   wmsdisassemblyorderExport: {
     'url': '/wmsdisassemblyorder/export',
     'mock': false,
@@ -1060,7 +1097,7 @@ export default {
     'methods': 'delete'
   },
 
-  // 导出
+  // 导出拆卸任务列表
   wmsdisassemblytaskExport: {
     'url': '/wmsdisassemblytask/export',
     'mock': false,
@@ -1155,13 +1192,18 @@ export default {
   /* =============库房流水记录end=========== */
 
   /* =============库房商品清单start=========== */
-  // 导出
+  // 导出库房商品清单列表
   wmsinventoryExport: {
     'url': '/wmsinventory/export',
     'mock': false,
     'methods': 'post'
   },
-
+  // 更新期初商品SN码或者机器号
+  wmsinventorydetailUpdateInitializeSnCode: {
+    'url': '/wmsinventorydetail/updateInitializeSnCode',
+    'mock': false,
+    'methods': 'post'
+  },
   // 获取库房商品清单列表
   wmsinventoryList: {
     'url': '/wmsinventory/list',
@@ -1193,6 +1235,12 @@ export default {
   // 查看商品期初详细信息
   wmsinventorycommodityinitialinfoInfo: {
     'url': '/wmsinventorycommodityinitialinfo/info/{commodityCode}',
+    'mock': false
+  },
+
+  // 获取商品期初设置列表
+  wmsinventorycommodityinitialinfoList: {
+    'url': '/wmsinventorycommodityinitialinfo/list',
     'mock': false
   },
   /* =============库房商品期初信息end=========== */
@@ -1299,6 +1347,13 @@ export default {
     'mock': false,
     'methods': 'post'
   },
+
+  // 更新期初商品SN码或者机器号
+  wmsinventorydetailUpdateInitializeSnCode: {
+    'url': '/wmsinventorydetail/updateInitializeSnCode',
+    'mock': false,
+    'methods': 'post'
+  },
   /* =============库房商品明细end=========== */
 
   /* =============库房拣货商品清单start=========== */
@@ -1358,7 +1413,7 @@ export default {
     'methods': 'delete'
   },
 
-  // 导出
+  // 导出拣货单列表
   wmspickingorderExport: {
     'url': '/wmspickingorder/export',
     'mock': false,
@@ -1404,6 +1459,12 @@ export default {
     'methods': 'post'
   },
 
+  // 终止拣货单信息
+  wmspickingorderTermination: {
+    'url': '/wmspickingorder/termination/{code}',
+    'mock': false
+  },
+
   // 修改
   wmspickingorderUpdate: {
     'url': '/wmspickingorder/update',
@@ -1420,7 +1481,7 @@ export default {
     'methods': 'delete'
   },
 
-  // 导出
+  // 导出报溢报损单列表
   wmsreportinglossesExport: {
     'url': '/wmsreportinglosses/export',
     'mock': false,
@@ -1510,7 +1571,7 @@ export default {
   /* =============库房发货物流end=========== */
 
   /* =============库房发货单start=========== */
-  // 导出
+  // 导出库房发货单列表
   wmsshipmentsorderExport: {
     'url': '/wmsshipmentsorder/export',
     'mock': false,
@@ -1600,7 +1661,7 @@ export default {
     'methods': 'delete'
   },
 
-  // 导出
+  // 导出换货单列表
   wmsswaporderExport: {
     'url': '/wmsswaporder/export',
     'mock': false,
@@ -1639,7 +1700,7 @@ export default {
     'methods': 'post'
   },
 
-  // 换货单审核驳回
+  // 换货单驳回审核
   wmsswaporderReject: {
     'url': '/wmsswaporder/reject',
     'mock': false,
@@ -1676,7 +1737,7 @@ export default {
     'methods': 'delete'
   },
 
-  // 导出
+  // 导出换货任务列表
   wmsswaptaskExport: {
     'url': '/wmsswaptask/export',
     'mock': false,
@@ -1743,17 +1804,6 @@ export default {
   runlogCompressAndDownload: {
     'url': '/ws/runlog/compressAndDownload',
     'mock': false
-  },
-  /* =============库房业务同步接口start=========== */
-  // 库房业务设置同步
-  wmsBusinessSynchConfig: {
-    'url': '/wmsBusiness/synchConfig',
-    'mock': false,
-    'methods': 'post',
-    config: {
-      showMsg: false
-    }
   }
-  /* =============库房业务同步接口end=========== */
   /* =============文件压缩下载（日志和配置文件）end=========== */
 }

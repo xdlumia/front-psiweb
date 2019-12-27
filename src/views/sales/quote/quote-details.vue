@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-18 15:12:15
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-25 18:13:10
  * @Description: 报价单详情
 */
 <template>
@@ -57,7 +57,7 @@
           :rowData="detail"
           :button="false"
           :data="detail || {}"
-          :params="{relationCode:code}"
+          :params="activeName=='operationRecord'?{businessType:'20'}:{relationCode:code}"
           style="height:calc(100vh - 170px) !important"
           :is="activeName"
         ></components>
@@ -167,14 +167,21 @@ export default {
     async getDetail() {
       if (this.code) {
         const { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
+        data.commodityEntityList.map(item=>{
+          item.children = item.partsInfoCommodityList
+        })
         return data;
       }
     },
+    formatDate(value){
+      let date = new Date(value)||new Date;
+      return +new Date(date.toLocaleString().match(/(\d{4}\/\d{1,2}\/\d{1,2})/)[1])
+    },
     // 判断禁用的按钮
     isDisabledButton(label) {
-      let nowData = Date.serversDate().getTime() + 60 * 60 * 24 * 1000 //服务器当前时间
+      let nowData = this.formatDate(Date.serversDate().getTime()) //服务器当前时间
       // let nowData = new Date().getTime() //当前时间
-      let failureTime = this.detail.failureTime //报价单有效期截止
+      let failureTime = this.formatDate(this.detail.failureTime) //报价单有效期截止
       /**
        * isPurchaseApply 是否存在请购单
        * shipmentCode 出库单

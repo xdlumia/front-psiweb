@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-10 10:15:16
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2019-12-25 12:02:33
  * @Description: description
  -->
 <template>
@@ -15,12 +15,7 @@
     class="good-detail"
   >
     <template slot="button" v-if="button">
-      <el-button
-        v-if="!(beginnForm && Object.keys(beginnForm).length)"
-        size="mini"
-        type="primary"
-        @click="showBeginn = true"
-      >期初库存</el-button>
+      <el-button size="mini" type="primary" @click="showBeginn = true">期初库存</el-button>
       <el-button
         v-if="!rowData.configId && authorityButtons.includes('decorate_goods_mgr_1003')"
         size="mini"
@@ -62,38 +57,28 @@
       style="height: calc(100vh - 270px)!important"
     >
       <el-tab-pane label="详情">
-        <good :code="code" :disabled="true" ref="detail"
-@update="update"></good>
-        <el-form
-          size="mini"
-          :model="beginnForm"
-          disabled
-          v-if="beginnForm && Object.keys(beginnForm).length"
-        >
+        <good :code="code" :disabled="true" ref="detail" @update="update"></good>
+        <el-form size="mini" :model="beginnForm">
           <form-card title="期初库存（重要）">
-            <el-row :gutter="40">
-              <el-col :span="8">
-                <el-form-item label="库房">
-                  <el-input v-model="beginnForm.wmsName"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="期初库存数量">
-                  <el-input v-model="beginnForm.num"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="期初调价值（元）">
-                  <el-input v-model="beginnForm.originalPriceAdjustment"></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
+            <d-table
+              style="height: 280px;"
+              ref="table"
+              api="seePsiWmsService.wmsinventorycommodityinitialinfoList"
+              :params="params"
+            >
+              <el-table-column label="库房" prop="wmsName"></el-table-column>
+              <el-table-column label="期初库存数量" prop="num"></el-table-column>
+              <el-table-column label="期初调价值（元）" prop="originalPriceAdjustment"></el-table-column>
+              <el-table-column label="创建人" prop="creatorName"></el-table-column>
+              <el-table-column label="创建时间" prop="createTime">
+                <template slot-scope="{row}">{{row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
+              </el-table-column>
+            </d-table>
           </form-card>
         </el-form>
       </el-tab-pane>
     </el-tabs>
-    <el-dialog :visible.sync="showEdit" title v-dialogDrag
-:show-close="false" width="1000px">
+    <el-dialog :visible.sync="showEdit" title v-dialogDrag :show-close="false" width="1000px">
       <div slot="title" style="display:flex;">
         <h3 style="flex:1;text-align:center;">编辑商品</h3>
         <div>
@@ -101,15 +86,14 @@
           <el-button size="mini" @click="showEdit=false">关闭</el-button>
         </div>
       </div>
-      <good :code="code" :isEdit="true" @refresh="refresh"
-v-if="showEdit" ref="addGood"></good>
+      <good :code="code" :isEdit="true" @refresh="refresh" v-if="showEdit" ref="addGood"></good>
     </el-dialog>
     <opening-stock
       :visible.sync="showBeginn"
       ref="addPromotion"
       v-if="showBeginn"
-      @inStorageSuccess="wmsinventorycommodityinitialinfoInfo"
-      :rowData="rowData"
+      @inStorageSuccess="refresh"
+      :rowData="Object.assign(rowData, beginnForm || {})"
     ></opening-stock>
   </sideDetail>
 </template>
@@ -139,7 +123,7 @@ export default {
       default: true
     }
   },
-  data() {
+  data () {
     return {
       noPic: require('@/assets/img/no-pic.png'),
       showEdit: false,
@@ -148,29 +132,23 @@ export default {
       showPop: false,
       etailForm: {},
       status: [],
-      beginnForm: {}
+      beginnForm: {},
+      params: { page: 1, limit: 10, commodityCode: this.code }
     }
   },
-  mounted() {
+  mounted () {
     this.checkVisible();
-    this.wmsinventorycommodityinitialinfoInfo()
   },
   watch: {
-    visible() {
+    visible () {
       this.checkVisible();
-      this.wmsinventorycommodityinitialinfoInfo()
     }
   },
   methods: {
-    saveGood() {
+    saveGood () {
       this.$refs.addGood && this.$refs.addGood.saveGood()
     },
-    wmsinventorycommodityinitialinfoInfo() {
-      this.$api.seePsiWmsService.wmsinventorycommodityinitialinfoInfo(null, this.code).then(res => {
-        this.beginnForm = res.data
-      })
-    },
-    deleteGood(id) {
+    deleteGood (id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -187,12 +165,13 @@ export default {
       })
 
     },
-    refresh() {
+    refresh () {
       this.$refs.detail.getGoodsDetailV2(this.code)
+      this.$refs.table.reload()
       this.showEdit = false
       this.$emit('reload')
     },
-    update(temp) {
+    update (temp) {
       this.rowData.categoryCode = temp.categoryCode
       this.rowData.secondClassName = temp.secondClassName
       this.rowData.specOne = temp.values[0].specOne
@@ -209,7 +188,7 @@ export default {
         { label: '来源', value: temp.sourceFromCode, dictName: 'SP_SOURCE_FROM' }
       ]
     },
-    checkVisible() {
+    checkVisible () {
       this.showPop = this.visible;
     }
   }

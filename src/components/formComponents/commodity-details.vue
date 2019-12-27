@@ -26,12 +26,40 @@
         ref="table"
         style="height: calc(100vh - 350px);"
       >
+        <!-- <el-table-column
+          min-width="120"
+          label="操作"
+          show-overflow-tooltip
+        >
+          <template slot-scope="">
+            <el-button
+              type="primary"
+              size="mini"
+            >解除锁定</el-button>
+          </template>
+        </el-table-column> -->
         <el-table-column
           type='index'
           min-width="50"
           label="编号"
           show-overflow-tooltip
         ></el-table-column>
+        <!-- <el-table-column
+          prop="categoryCode"
+          min-width="100"
+          label="锁定状态"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">{{scope.row.categoryCode|dictionary('PSI_SP_KIND')}}</template>
+        </el-table-column>
+        <el-table-column
+          prop="commodityCode"
+          min-width="150"
+          label="锁定状态关联报价单"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope"><span class="d-text-blue">{{scope.row.commodityCode}}</span></template>
+        </el-table-column> -->
         <el-table-column
           prop="commodityCode"
           min-width="140"

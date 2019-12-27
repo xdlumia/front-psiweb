@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 16:19:20
+ * @LastEditTime: 2019-12-26 09:53:02
  * @Description: 商品输入选框 字段已绑定 1
 */
 <template>
@@ -138,17 +138,17 @@ export default {
     choose(e) {
       if (!this.multiple) {
         const index = this.options.findIndex(
-          item => item.commodityCode === e.commodityCode
+          item => item.commodityCode === e[0].commodityCode
         );
         if (index === -1) {
-          this.options.push(e);
+          this.options.push(e[0]);
         }
-        this.selectGood = e.commodityCode;
-        this.preSelectGoods = e.commodityCode;
+        this.selectGood = e[0].commodityCode;
+        this.preSelectGoods = e[0].commodityCode;
       }
       const choose = e.filter(a => !this.codes.includes(a.commodityCode));
       if (choose.length) {
-        this.$emit('choose', e, 'choose');
+        this.$emit('choose', choose, 'choose');
       }
     },
     async search(words = '') {

@@ -2,31 +2,44 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 16:44:49
+ * @LastEditTime: 2019-12-26 18:18:36
  * @Description: 采购模块用的商品信息 1
 */
 <template>
   <div class="buying-goods-selector">
-    <form-card :title="hide.includes('formTitle')||show.includes('!formTitle')?'':'商品信息'">
+    <form-card :class="[noCard?'no-card':'']" :title="hide.includes('formTitle')||show.includes('!formTitle')?'':'商品信息'">
       <div slot="title">
         <span>{{title||'商品信息'}}</span>
-        <commodity-selector
-          :codes="this.data[fkey]?this.data[fkey].map(item=>item.commodityCode):[]"
-          @choose="choose"
-          class="ml10"
-          v-if="(!disabled)&&!hide.includes('add')&&!show.includes(`!add`)"
-        />
-        <span
-          class="fr"
-          v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')"
-        >
-          <span>
-            <el-link
-              :underline="false"
-              @click="showInFull=true"
-              type="primary"
-            >全屏显示</el-link>
+        <span v-if="!buttonChoose">
+          <commodity-selector
+            :codes="this.data[fkey]?this.data[fkey].map(item=>item.commodityCode):[]"
+            :kinds="kinds"
+            @choose="choose"
+            class="ml10"
+            v-if="(!disabled)&&!hide.includes('add')&&!show.includes(`!add`)"
+          />
+          <span class="fr" v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')">
+            <span>
+              <el-link :underline="false" @click="showInFull=true" type="primary">全屏显示</el-link>
+            </span>
           </span>
+        </span>
+        <span v-else>
+          <el-button
+            @click="showChooseDialog=true"
+            class="ml10"
+            plain
+            size="mini"
+            type="primary"
+            v-if="(!disabled)&&!hide.includes('add')&&!show.includes(`!add`)"
+          >+添加商品</el-button>
+          <commodity-choose
+            :codes="this.data[fkey]?this.data[fkey].map(item=>item.commodityCode):[]"
+            :kinds="kinds"
+            :visible.sync="showChooseDialog"
+            @choose="choose"
+            v-if="(!disabled)&&!hide.includes('add')&&!show.includes(`!add`)"
+          ></commodity-choose>
         </span>
       </div>
       <el-table
@@ -53,15 +66,12 @@
           :label="item.label"
           :min-width="item.width"
           :prop="item.prop"
-          :show-overflow-tooltip="item.showOverflowTip"
+          :show-overflow-tooltip="item.showOverflowTip||false"
           v-for="item of useColumns"
         >
           <template slot-scope="{row}">
             <template v-if="item.key=='commodityCode'">
-              <div
-                @click="openCommodityDetail(row.commodityCode)"
-                class="d-text-blue d-elip d-pointer"
-              >{{row.commodityCode}}</div>
+              <div @click="openCommodityDetail(row.commodityCode)" class="d-text-blue d-elip d-pointer">{{row.commodityCode}}</div>
             </template>
             <template v-else-if="item.key=='goodsPic'">
               <el-image
@@ -71,10 +81,7 @@
                 fit="contain"
                 style="width: 100px; height: 40px"
               >
-                <span
-                  class="d-text-qgray"
-                  slot="error"
-                >暂无图片</span>
+                <span class="d-text-qgray" slot="error">暂无图片</span>
               </el-image>
             </template>
             <!-- 字典开始 -->
@@ -87,6 +94,29 @@
               <span v-if="isChildShowColumn(row)">{{row[item.prop]||0}}</span>
             </template>
             <!-- 数字类型，默认0 结束 -->
+            <!-- 行内选择商品 开始 -->
+            <template v-else-if="['chooseCommodityCode','chooseCommodityName'].includes(item.type)">
+              <el-form-item
+                :prop="`${getCurrentFormProp(row,item.prop)}`"
+                :rules="item.rules||[]"
+                size="mini"
+                v-if="isChildShowColumn(row)"
+              >
+                <commodity-selector
+                  :autoClear="false"
+                  :codes="data[fkey]?data[fkey].map(item=>item.commodityCode):[]"
+                  :disabled="disabled"
+                  :kinds="kinds"
+                  :multiple="false"
+                  :type="item.type=='chooseCommodityCode'?'code':'name'"
+                  @choose="chooseInline(row,$event)"
+                  class="ml10 mr10"
+                  style="width:90%;"
+                  v-model="row[item.prop]"
+                />
+              </el-form-item>
+            </template>
+            <!-- 行内选择商品 结束 -->
             <!-- 时间戳开始 -->
             <template v-else-if="item.type=='timestamp'">
               <span>{{row[item.prop]|timeToStr('YYYY-MM-DD HH:mm:ss')}}</span>
@@ -100,11 +130,7 @@
                 size="mini"
                 v-if="isChildShowColumn(row)"
               >
-                <el-input
-                  :disabled="disabled"
-                  class="wfull"
-                  v-model="row[item.prop]"
-                />
+                <el-input :disabled="disabled" class="wfull" maxlength="100" v-model="row[item.prop]" />
               </el-form-item>
             </template>
             <!-- 价格输入结束 -->
@@ -121,19 +147,12 @@
                 size="mini"
                 v-if="isChildShowColumn(row)"
               >
-                <el-input
-                  :disabled="disabled"
-                  class="wfull"
-                  v-model="row[item.prop]"
-                ></el-input>
+                <el-input :disabled="disabled" class="wfull" v-model="row[item.prop]"></el-input>
               </el-form-item>
             </template>
             <!-- 商品数量结束 -->
             <template v-else-if="item.key=='action'">
-              <i
-                @click="deleteChoose(row)"
-                class="el-icon-error d-pointer f20 d-text-red"
-              ></i>
+              <i @click="deleteChoose(row)" class="el-icon-error d-pointer f20 d-text-red"></i>
             </template>
             <!-- 选择开始 -->
             <template v-else-if="item.type=='selection'">
@@ -154,20 +173,9 @@
             <!-- 选择结束 -->
             <!-- 展开子项开始 -->
             <template v-else-if="item.type=='expanded'">
-              <div
-                class="expanded-icons d-text-gray"
-                v-if="(row.children&&row.children.length)||row.configName"
-              >
-                <span
-                  @click="expand(row)"
-                  class="el-icon-plus d-pointer"
-                  v-if="!row.expanded"
-                ></span>
-                <span
-                  @click="expand(row)"
-                  class="el-icon-minus d-pointer"
-                  v-else
-                ></span>
+              <div class="expanded-icons d-text-gray" v-if="(row.children&&row.children.length)||row.configName">
+                <span @click="expand(row)" class="el-icon-plus d-pointer" v-if="!row.expanded"></span>
+                <span @click="expand(row)" class="el-icon-minus d-pointer" v-else></span>
               </div>
             </template>
             <!-- 展开子项结束 -->
@@ -192,30 +200,22 @@
             </template>
             <!-- 其他结束 -->
           </template>
-          <template
-            slot="header"
-            v-if="item.type=='selection'"
-          >
+          <template slot="header" v-if="item.type=='selection'">
             <el-checkbox
               :disabled="disabled"
               :false-label="0"
               :true-label="1"
               @change="headerSelect(item,$event)"
+              v-if="!item.hideHeaderSelection"
               v-model="item.selected"
             >{{item.label}}</el-checkbox>
+            <span v-else>{{item.label}}</span>
           </template>
         </el-table-column>
       </el-table>
     </form-card>
-    <FullscreenElement
-      :element="$refs.table"
-      :visible.sync="showInFull"
-    />
-    <CommodityDetail
-      :code="currentCommodityCode"
-      :visible.sync="showCommodityDetail"
-      v-if="showCommodityDetail"
-    />
+    <FullscreenElement :element="$refs.table" :visible.sync="showInFull" />
+    <CommodityDetail :code="currentCommodityCode" :visible.sync="showCommodityDetail" v-if="showCommodityDetail" />
   </div>
 </template>
 <script>
@@ -272,7 +272,10 @@ export default {
     disabled: Boolean,
     title: String,
     // 显示报价单商品配置
-    showConfig: Boolean
+    showConfig: Boolean,
+    buttonChoose: Boolean,
+    kinds: Array,
+    noCard: Boolean
   },
   data() {
     // prettier-ignore
@@ -314,7 +317,7 @@ export default {
         format: (a, { alterationPrice, taxRate, alterationNumber }) => +Number((alterationPrice * (1 + (taxRate / 100)) * alterationNumber) || 0).toFixed(2)
       },
       { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber', format: (a) => a || 0, showOverflowTip: true, },
-      { label: '备注', key: 'note', width: 200, prop: 'note', type: 'input', rules: [] },
+      { label: '备注', key: 'note', width: 200, prop: 'note', type: 'input', rules: [{type:'string',min:0,max:100}] },
       {        label: '是否组装', key: 'isAssembly', align: "center", width: 120, prop: 'isAssembly', type: 'selection', selected: 0,
         canShowSelection: (row) => row.configName ? true : false
       },
@@ -325,6 +328,7 @@ export default {
       columns,
       expandRowKeys: [],
       showCommodityDetail: false,
+      showChooseDialog: false,
       currentCommodityCode: '',
       realTopRowKey: {}
     };
@@ -386,7 +390,7 @@ export default {
       return list;
     }
   },
-  mounted() { },
+  mounted() {},
   methods: {
     isChildShowColumn(row) {
       return (this.sort || []).includes('expanded') &&
@@ -434,6 +438,20 @@ export default {
         index: isChild ? parent[0].children.indexOf(row) : top.indexOf(row)
       };
       return info;
+    },
+    chooseInline(row, selected) {
+      if (selected.length) {
+        let info = this.getParentInfo(row);
+        info.parentArray.splice(info.index, 1, selected[0]);
+        this.resetColumnsPropForChoose(row)
+      }
+    },
+    resetColumnsPropForChoose(row){
+      this.useColumns.map(({prop})=>{
+        if(typeof row[prop]=="undefined"){
+          this.reactiveSet(row,prop,'')
+        }
+      })
     },
     // 生成表单属性路径
     getCurrentFormProp(row, prop) {
@@ -494,7 +512,6 @@ export default {
         }
       );
       data.map(item => (item.inventoryNumber = item.usableInventoryNum));
-      console.log(row);
       row.children = this.recalcRowKey(data || [], row._rowKey);
       cb(row.children);
     },
@@ -519,8 +536,8 @@ export default {
                 item =>
                   +Number(
                     item[this.priceKey] *
-                    (1 + item.taxRate / 100) *
-                    item.commodityNumber || 0
+                      (1 + item.taxRate / 100) *
+                      item.commodityNumber || 0
                   ).toFixed(2)
               )
               .reduce((sum, item) => sum + item, 0)
@@ -536,6 +553,7 @@ export default {
     choose(e) {
       e = e.map(item => {
         item.adjustPriceMoney = item.adjustPriceMoney || 0;
+        this.resetColumnsPropForChoose(item)
         return item;
       });
       this.data[this.fkey] = this.data[this.fkey] || [];
@@ -573,10 +591,19 @@ export default {
     headerSelect({ prop, canShowSelection }, select) {
       this.data[this.fkey].map(item => {
         if (canShowSelection ? canShowSelection(item) : true) {
-          item[prop] = select;
+          this.reactiveSet(item, prop, select);
         }
       });
       this.$refs.table.store.updateColumns();
+    },
+    reactiveSet(item, prop, value) {
+      let des = Object.getOwnPropertyDescriptor(item, prop);
+      if (des && des.get && des.set) {
+        item[prop] = value;
+      } else {
+        delete item[prop];
+        this.$set(item, prop, value);
+      }
     },
     // 某一行选择
     columnSelect(item, select) {
@@ -596,7 +623,8 @@ export default {
       } else if (this.data[this.fkey].length == 1) {
         item.selected = this.data[this.fkey][0][prop];
       }
-      this.$set(item, 'selected', item.selected);
+      this.reactiveSet(item, 'selected', item.selected);
+      this.$refs.table.store.updateColumns();
     }
   }
 };
@@ -622,6 +650,14 @@ export default {
           color: #fff;
           background-color: #67686c;
           border-radius: 50%;
+        }
+      }
+    }
+    .no-card {
+      .el-card {
+        border: none;
+        .el-card__body {
+          padding: 0 !important;
         }
       }
     }

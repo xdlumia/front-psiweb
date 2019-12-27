@@ -1,18 +1,18 @@
 <!--
  * @Author: xiaomin
  * @Date: 2019-11-15 15:32:30
- * @LastEditTime: 2019-11-16 13:27:02
+ * @LastEditTime: 2019-12-20 14:37:49
  -->
 <template>
   <div class="leaderboard-box">
     <h3 class="b h40 lh40" style="text-indent:20px;margin-bottom: -1px">销售员工利润排行</h3>
     <div class="box leaderboard-content ba">
       <el-tabs class="no-border-tab" v-model="currTab" @tab-click="handleClick">
-        <el-tab-pane label="昨日" name="yesterday"></el-tab-pane>
-        <el-tab-pane label="上周" name="fontWeek"></el-tab-pane>
-        <el-tab-pane label="上月" name="frontMointh"></el-tab-pane>
-        <el-tab-pane label="上季度" name="frontQuarter"></el-tab-pane>
-        <el-tab-pane label="去年" name="frontYear"></el-tab-pane>
+        <el-tab-pane label="昨日" name="5"></el-tab-pane>
+        <el-tab-pane label="上周" name="6"></el-tab-pane>
+        <el-tab-pane label="上月" name="7"></el-tab-pane>
+        <el-tab-pane label="上季度" name="8"></el-tab-pane>
+        <el-tab-pane label="去年" name="9"></el-tab-pane>
       </el-tabs>
       <div class="leaderboard-item-panel">
         <div class="leaderboard-item" v-for="(item, index) in rankData" :key="index">
@@ -30,10 +30,11 @@ import filterMix from './filter'
 
 export default {
   mixins: [filterMix],
-  data() {
+  data () {
     return {
       currTab: '',
       rankData: [],
+      indexProfitTopLoading: false,
       testData: [
         {
           rank: 1,
@@ -75,25 +76,26 @@ export default {
   },
 
   watch: {
-    'currTab': function(newVal) {
-      this.getRankList(newVal)
+    currTab (newVal) {
+      this.indexProfitTop(newVal)
     }
   },
 
-  created() {
-    this.currTab = 'yesterday'
+  created () {
+    this.currTab = '5'
   },
 
   methods: {
-    handleClick(tab) {
+    handleClick (tab) {
       this.currTab = tab.name
     },
-
-    getRankList() {
-      // val: 根据不同参数，取不同排行数据
-      setTimeout(() => {
+    // 销售员工利润排行
+    indexProfitTop (dateFlag) {
+      this.indexProfitTopLoading = true
+      this.$api.seePsiReportService.indexProfitTop({ dateFlag }).then(res => {
+        console.log('销售员工利润排行', res.data)
         this.rankData = this.testData || []
-      }, 1000)
+      }).finally(() => { this.indexProfitTopLoading = false })
     }
   }
 }

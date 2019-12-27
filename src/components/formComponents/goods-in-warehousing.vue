@@ -354,11 +354,20 @@
       </el-table>
 
     </form-card>
+    <openingInventory
+      :disabled='true'
+      :visible.sync="visible"
+      :data='opingData'
+      @update="commodityCheck(snItem,'exchange')"
+      v-if='visible'
+    />
   </div>
 </template>
 <script>
+import openingInventory from '@/components/formComponents/opening-inventory'
 export default {
   components: {
+    openingInventory
   },
   props: {
     rowData: Object,
@@ -370,6 +379,9 @@ export default {
   },
   data() {
     return {
+      visible: false,
+      opingData: {},
+      snItem: ''
     };
   },
   mounted() {
@@ -411,31 +423,40 @@ export default {
       }
       this.$api.seePsiWmsService[api](params)
         .then(res => {
-          let data = res.data || {}
-          data.fromType = type
-          // putawayType操作类型 1入库 0 出库
-          if (item.putawayType == 1) {
-            // operation也是操作类型 0 入库 1出库.  这俩人写的 类型值还不统一.  噗噗噗....
-            data.operation = 0
-            if (item.commodityCode != data.commodityCode) {
-              this.$message({
-                message: '当前扫码出来的商品不是当前操作的商品',
-                type: 'error',
-                showClose: true,
-              });
+          if (res.data) {
+            let data = res.data || {}
+            data.fromType = type
+            // putawayType操作类型 1入库 0 出库
+            if (item.putawayType == 1) {
+              // operation也是操作类型 0 入库 1出库.  这俩人写的 类型值还不统一.  噗噗噗....
+              data.operation = 0
+              if (item.commodityCode != data.commodityCode) {
+                this.$message({
+                  message: '当前扫码出来的商品不是当前操作的商品',
+                  type: 'error',
+                  showClose: true,
+                });
 
-              return
+                return
+              }
+            } else {
+              data.operation = 1
             }
-          } else {
-            data.operation = 1
-          }
-          // this.data.returnScanData.push({ ...item, ...data })
-          data.id = item.id
-          this.data[`${type}ScanData`].push({ ...item, ...data })
+            // this.data.returnScanData.push({ ...item, ...data })
+            data.id = item.id
+            this.data[`${type}ScanData`].push({ ...item, ...data })
 
-          // 本次扫码次数
-          item.scanNumber = (item.scanNumber || 0) + 1
-          item.alterationNumber++
+            // 本次扫码次数
+            item.scanNumber = (item.scanNumber || 0) + 1
+            item.alterationNumber++
+          } else {
+            this.visible = true
+            this.snItem = item
+            this.opingData = {
+              snCode: item.snCode,
+              commodityCode: item.commodityCode
+            }
+          }
         })
     },
     //删除某条

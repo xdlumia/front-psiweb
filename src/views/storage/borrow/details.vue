@@ -17,13 +17,13 @@
     <div>
       <div class="drawer-header">
         <el-button
-          v-if="(detailForm.borrowLoanState == 4 || detailForm.borrowLoanState == 6 || detailForm.borrowLoanState == 9) && authorityButtons.includes('psi_wms_borrow_05')"
+          v-if="(detailForm.borrowLoanType == 0) && authorityButtons.includes('psi_wms_borrow_05') && detailForm.isCanReturn"
           @click="backVisible=true,isComponents = 'borrowPayback',dialogData.title='借入归还-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"
         >归还</el-button>
         <el-button
-          v-if="(detailForm.borrowLoanState == 5 || detailForm.borrowLoanState == 7 || detailForm.borrowLoanState == 8) && authorityButtons.includes('psi_wms_borrow_04')"
+          v-if="(detailForm.borrowLoanType == 1) && authorityButtons.includes('psi_wms_borrow_04') && detailForm.isCanReturn"
           @click="backVisible=true,isComponents = 'lendBack',dialogData.title='借出返还-'+detailForm.borrowLoanCode"
           size="mini"
           type="primary"

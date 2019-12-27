@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-15 11:28:59
+ * @LastEditTime: 2019-12-25 09:22:57
  * @Description: 调出商品
 */
 <template>
@@ -186,6 +186,12 @@
           <template slot-scope="scope">{{scope.row.unit | dictionary('SC_JLDW')}}</template>
         </el-table-column>
       </el-table>
+      <openingInventory
+        :visible.sync="openVisible"
+        :data='openingData'
+        @update='getCommodityBySnCode'
+        v-if='openVisible'
+      />
     </form-card>
     <!-- :params='{wmsId: form.putawayWmsId}' -->
     <commodityChoose
@@ -199,9 +205,11 @@
 </template>
 <script>
 import commodityChoose from './commodity-choose'
+import openingInventory from '@/components/formComponents/opening-inventory'
 export default {
   components: {
-    commodityChoose
+    commodityChoose,
+    openingInventory
   },
   props: {
     visible: {
@@ -231,6 +239,8 @@ export default {
         limit: 20
       },
       snCode: '',
+      openVisible: false,
+      openingData: {},
       chooseVisible: false,
       upTableData: [],
       downTableData: [],
@@ -298,6 +308,11 @@ export default {
                 })
                 this.upTableData.push(res.data)
                 this.doSth()
+              } else {
+                this.openVisible = true
+                this.openingData = {
+                  snCode: this.snCode
+                }
               }
             })
             .finally(() => {

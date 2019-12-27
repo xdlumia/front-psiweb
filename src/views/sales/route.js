@@ -1,8 +1,8 @@
 /*
  * @author: 王晓冬
  * @Date: 2019-10-28 10:29:53
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 10:54:52
+ * @LastEditors  : 赵伦
+ * @LastEditTime : 2019-12-24 11:15:21
  * @Description: 销售模块路由
  */
 const Quote = () => import('@/views/sales/quote') // 报价单
@@ -22,7 +22,7 @@ let routeObj = {
   Client: '客户',
   Apportion: '销售费用分摊单',
   Adjust: '账单调整单',
-  AdjustPrice: '销售调价单'
+  AdjustPrice: '销售调价单',
 }
 
 let routes = []

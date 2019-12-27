@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-19 18:27:15
+ * @LastEditTime: 2019-12-26 15:14:21
  * @Description: file content
 */
 <template>
@@ -16,6 +16,8 @@
     <div slot="title">
       <span>{{type=='add'?'新建报价单':type=='copy'?`复制:${code}`:`编辑:${code}`}}</span>
       <div class="fr mr30">
+        <el-button size="mini" type="primary" v-show="steps==3&&!strictConfirmConfig" @click="strictConfirmConfig=true">切换为严格匹配</el-button>
+        <el-button size="mini" type="primary" v-show="steps==3&&strictConfirmConfig" @click="strictConfirmConfig=false">切换为范围选择</el-button>
         <el-button
           @click="$emit('update:visible', false)"
           size="mini"
@@ -65,6 +67,7 @@
         <confirm-info
           ref="confirmInfo"
           :data="form"
+          :strictConfirmConfig="strictConfirmConfig"
           v-show="steps==3"
         />
 
@@ -95,6 +98,7 @@ export default {
   },
   data() {
     return {
+      strictConfirmConfig: false,
       loading: false,
       currCompont: 'clientInfo',
       // 当前操作步骤
@@ -219,12 +223,12 @@ export default {
           if (item.disabled) {
             wholeListNotChoose = wholeListNotChoose.concat(item.children)
           } else {
-            wholeList = wholeList.concat(item.children)
+            wholeList = wholeList.concat(item)
           }
         })
         wholeListNotChoose = this.$$util.jsonFlatten(wholeListNotChoose)
-        let quotationIds = this.form.KIND1List.map(item => this.$refs.confirmInfo.findSelectedConfig(item)).filter(a => a)
         let wholeListData = []
+        let quotationIds = this.strictConfirmConfig?this.form.KIND1List.map(item => this.$refs.confirmInfo.findSelectedConfig(item)).filter(a => a):[]
         // 有quotationIds 值的时候再查询
         if (quotationIds.length) {
           let params = {
@@ -244,6 +248,39 @@ export default {
             item.inventoryNumber = item.usableInventoryNum
             item.reference = item.saleReferencePrice
             return item
+          })
+        }
+        if(!this.strictConfirmConfig){
+          wholeListData = JSON.parse(JSON.stringify(wholeList)).map(item=>{
+            item.commonGoodConfigDetailsEntityList = item.children.filter(item=>item.selected)
+            item.commonGoodConfigDetailsEntityList.map(sub=>{
+              sub.parentCommodityCode = item.goodsCode
+              sub.isMachine = 1
+              sub.reference=sub.saleReferencePrice
+              sub.costAmount=sub.inventoryPrice
+            })
+            item.customConfig = true
+
+            this.$api.seeGoodsService.getGoodsByNameForJXC({
+              categoryCode: 'PSI_SP_KIND-1',
+              goodsCode: item.goodsCode
+            }).then(({data:[good]})=>{
+              Object.keys(good).map(key=>{
+                this.$set(item,key,good[key])
+              })
+              this.$set(item,'reference',item.totalAmount)
+              this.$set(item,'discountSprice',+Number(item.reference * (1 + (item.taxRate || 0) / 100)).toFixed(2))
+            })
+
+            item.goodsName = item.configGoodName
+            item.commodityCode = item.goodsCode
+            item.categoryCode = 'PSI_SP_KIND-1'
+            item.id = 'customId' + item.id
+            item.inventoryNumber = item.usableInventoryNum
+            item.reference = item.totalAmount
+            item.costAmount = item.inventoryPrice
+            item.isMachine = 1
+            return item;
           })
         }
         // 配件列表
@@ -267,12 +304,10 @@ export default {
         // let
         // 第4步整合商品信息
         this.form.businessCommoditySaveVoList = [...wholeListData, ...wholeListNotChoose, ...fixingsList].map(item => {
-          return {
-            ...item,
-            discountSprice: +Number(item.reference * (1 + (item.taxRate || 0) / 100)).toFixed(2),
-            discount: 1,
-            commodityNumber: 1
-          }
+          item.discountSprice = +Number(item.reference * (1 + (item.taxRate || 0) / 100)).toFixed(2)
+          item.discount = 1
+          item.commodityNumber = 1;
+          return item
         })
       }
     },
@@ -314,7 +349,11 @@ export default {
     async getDetail() {
       if (this.code) {
         this.form.id = ''
-        let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
+        let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code });
+        data.commodityEntityList.map(item=>{
+          item.isMachine&&(item.customConfig=true);
+          item.commonGoodConfigDetailsEntityList = item.partsInfoCommodityList
+        })
         return data;
       }
     },
@@ -350,10 +389,22 @@ export default {
             });
             return
           }
+          let children = []
           copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.map(item => {
+            if(item.customConfig){
+              children = children.concat(item.commonGoodConfigDetailsEntityList)  
+              item.costAmount = item.inventoryPrice;
+              item.inventoryPrice = item.reference;
+              item.saleReferencePrice = item.reference;
+              (item.commonGoodConfigDetailsEntityList||[]).map(item=>{
+                item.costAmount = item.inventoryPrice
+              })
+            }
+            item.isMachine = item.isMachine||0
             delete item.commonGoodConfigDetailsEntityList
             return item;
           })
+          copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.concat(children)
           this.loading = true
           // rules 表单验证是否通过
           let api = 'salesquotationSave' // 默认编辑更新

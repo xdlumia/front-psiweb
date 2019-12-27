@@ -287,6 +287,12 @@
             ></el-table-column>
           </el-table>
         </form-card>
+        <openingInventory
+          :visible.sync="openVisible"
+          :data='openingData'
+          @update='shipmentCommodityCheck'
+          v-if='openVisible'
+        />
       </el-main>
     </el-container>
     <span
@@ -307,9 +313,10 @@
   <!-- </el-dialog> -->
 </template>
 <script>
-
+import openingInventory from '@/components/formComponents/opening-inventory'
 export default {
   components: {
+    openingInventory
   },
   props: {
     visible: {
@@ -332,6 +339,7 @@ export default {
       loading: false,
       snCode: '',
       tableData: [],
+      openingData: {},
       providerList: [],//服务商列表
       serviceTypeList: [],//服务类型
       form: {
@@ -344,6 +352,7 @@ export default {
       codeNowNum: 0,//本次成功扫码
       codeHistoryNum: 0,//历史扫码
       codeAllNum: 0,//所有待扫码
+      openVisible: false,
     };
   },
   mounted() {
@@ -394,7 +403,7 @@ export default {
     },
     //回车 出库
     shipmentCommodityCheck() {
-      this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData, })
+      this.$api.seePsiWmsService.wmsinventorydetailShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData, wmsId: this.data.borrowWmsId, })
         .then(res => {
           if (res.data) {
             let commodityCodeList = []
@@ -431,8 +440,12 @@ export default {
                 })
               }
             }
-
-
+          } else {
+            this.openVisible = true
+            this.openingData = {
+              snCode: this.snCode,
+              wmsId: this.data.borrowWmsId,
+            }
           }
         })
         .finally(() => {

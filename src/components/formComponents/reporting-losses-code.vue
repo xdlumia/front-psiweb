@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-20 16:27:17
+ * @LastEditTime: 2019-12-26 10:17:25
  * @Description: 报溢报损扫码公共弹窗
 */
 <template>
@@ -189,6 +189,13 @@
             ></el-table-column>
           </el-table>
         </form-card>
+        <openingInventory
+          :disabled='true'
+          :visible.sync="openVisible"
+          :data='openingData'
+          @update='getCommodityBySnCode'
+          v-if='openVisible'
+        />
       </el-main>
     </el-container>
     <span
@@ -209,9 +216,10 @@
   </el-dialog>
 </template>
 <script>
-
+import openingInventory from '@/components/formComponents/opening-inventory'
 export default {
   components: {
+    openingInventory
   },
   props: {
     visible: {
@@ -231,6 +239,8 @@ export default {
     return {
       activeName: '',
       snCode: '',
+      openVisible: false,
+      openingData: {},
       formInline: {
         user: ''
       },
@@ -259,9 +269,6 @@ export default {
     },
     //SN码回车
     getCommodityBySnCode() {
-      // if (this.type == 1) {//报溢单 入库
-
-      // }
       let api = this.type == 1 ? 'wmsinventorydetailPutawayCommodityCheck' : 'wmsinventorydetailShipmentCommodityCheck'
       let params = {
         snCode: this.snCode,
@@ -273,7 +280,19 @@ export default {
       }
       this.$api.seePsiWmsService[api](params)
         .then(res => {
-          res.data ? this.tableData.push(res.data) : ''
+          // res.data ? this.tableData.push(res.data) : ''
+          if (res.data) {
+            this.tableData.push(res.data)
+          } else {
+            if (this.type == 2) {
+              this.openVisible = true
+              this.openingData = {
+                snCode: this.snCode,
+                wmsId: this.addForm.wmsId,
+                commodityCode: this.commodityForm.commodityCode,
+              }
+            }
+          }
         })
         .finally(() => {
 
