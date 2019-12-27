@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-26 16:34:07
+ * @LastEditTime : 2019-12-27 18:47:44
  * @Description: 新增商品
  -->
 <template>
@@ -309,11 +309,11 @@ export default {
         'values[0].specOne': { required: true, message: '请输入', trigger: 'blur' },
         'values[0].inventoryPrice': [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
+          { pattern: /^[-+]?\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         'values[0].profitRate': [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
+          { pattern: /^[-+]?\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         'values[0].taxRate': [
           { required: true, message: '请输入', trigger: 'blur' },
@@ -333,7 +333,7 @@ export default {
         ],
         'values[0].saleReferencePrice': [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
+          { pattern: /^[-+]?\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ],
         'values[0].isEnable': { required: true, message: '请选择', trigger: 'change' },
         'values[0].warehouseId': { required: true, message: '请选择', trigger: 'change' },
