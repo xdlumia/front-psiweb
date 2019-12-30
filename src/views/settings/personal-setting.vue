@@ -195,11 +195,12 @@ export default {
     employeeInfo() {
       let userInfo = this.$local.fetch('userInfo') || {}
       if (!userInfo.userId) return
-      this.$api.bizSystemService.rmemployeeInfo(userInfo.userId)
+      this.$api.bizSystemService.getEmployeeInfo(userInfo.employeeId)
         .then(res => {
           let data = res.data || {}
           userInfo.avatarUrl = data.avatarUrl
           userInfo.nickName = data.nickName
+          userInfo.email = data.email
           this.$local.save('userInfo', userInfo)
           this.$store.commit('setUserInfo', userInfo)
         })
