@@ -154,7 +154,7 @@ export default {
         original: false,
         canMoveBox: true, //截图框能否拖动
         autoCrop: true, //是否默认生成截图框
-        enlarge: 2,
+        enlarge: 2.5,
         // 只有自动截图开启 宽度高度才生效
         autoCropWidth: 200,
         autoCropHeight: 200,
