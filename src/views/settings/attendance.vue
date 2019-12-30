@@ -26,7 +26,7 @@
             >{{ isWork ? '上班' : '下班' }}</el-button>
             <el-button
               size="small"
-              :disabled="!isToday || !isWork"
+              :disabled="!isToday || isWork"
               @click="attendanceRecord(isOut ? 3 : 4)"
             >{{ isOut ? '外出' : '归来'}}</el-button>
             <el-button
