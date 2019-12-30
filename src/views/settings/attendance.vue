@@ -7,6 +7,7 @@
       @close="close"
       destroy-on-close
       class="attendance-dialog"
+      v-dialogDrag
     >
       <div class="d-flex attendance-box">
         <div class="a-calendar">
@@ -191,16 +192,27 @@ export default {
         if (res.code == 200) {
 
           this.attendanceRecordList = res.dataRecord || [] // 打卡
-          this.leaveList = res.dataApply || [] // 请假
-          // 改变按钮状态
-          res.dataRecord.reverse().forEach(item => {
-            if (!this.isOut && item.typeCode == 'OA_KQ_TYPE-03') {
+          let firstAtte = this.attendanceRecordList[this.attendanceRecordList.length - 1]
+
+          if (firstAtte) {
+            if (!this.isOut && firstAtte.typeCode == 'OA_KQ_TYPE-03') {
               this.isOut = true;
             }
-            if (!this.isWork && item.typeCode == 'OA_KQ_TYPE-01') {
+            if (!this.isWork && firstAtte.typeCode == 'OA_KQ_TYPE-01') {
               this.isWork = true;
             }
-          })
+          }
+
+          this.leaveList = res.dataApply || [] // 请假
+          // 改变按钮状态
+          // res.dataRecord.reverse().forEach(item => {
+          //   if (!this.isOut && item.typeCode == 'OA_KQ_TYPE-03') {
+          //     this.isOut = true;
+          //   }
+          //   if (!this.isWork && item.typeCode == 'OA_KQ_TYPE-01') {
+          //     this.isWork = true;
+          //   }
+          // })
 
         }
       })
@@ -215,7 +227,7 @@ export default {
         typeCode: type.typeCode
       }).then(res => {
         typeNum < 3 ? this.changeWorkStatus(typeNum) : this.changeOutStatus(typeNum)
-        this.attendanceRecordList.unshift({
+        this.attendanceRecordList.push({
           operationTime: new Date().getTime(),
           typeCode: type.typeCode
         })
