@@ -9,7 +9,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 18:39:21
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-27 17:24:22
+ * @LastEditTime: 2019-12-30 09:30:02
  * @Description: layout 页面架构
 */
 <template>
@@ -223,7 +223,7 @@ import chunk from '@/utils/chunk'
 import addFee from '@/views/finance/fee/add'
 import addIncome from '@/views/finance/income/add.vue' // 新增收支流水
 import messageList from './message-list'
-import { personalSetting } from 'see-web-system' //个人设置
+import personalSetting from '@/views/settings/personal-setting' //考勤
 import attendance from '@/views/settings/attendance.vue' //考勤
 import handover from '@/views/settings/handover.vue' //交接
 

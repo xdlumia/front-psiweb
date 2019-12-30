@@ -117,7 +117,7 @@ export default {
           localStorage.finger = this.form.finger
           this.getNavData()
             .then(() => {
-              // location.reload()
+              location.reload()
             })
             .finally(() => {
               this.loading = false;

@@ -182,7 +182,8 @@ export default {
   watch: {
     visible(val) {
       if (val) {
-        this.form.nickName = this.userInfo.userName
+        this.userInfo = this.$local.fetch('userInfo'),
+          this.form.nickName = this.userInfo.nickName
         this.form.id = this.userInfo.employeeId
         this.form.email = this.userInfo.email
         this.form.avatarUrl = this.userInfo.avatarUrl
@@ -197,11 +198,10 @@ export default {
       this.$api.bizSystemService.rmemployeeInfo(userInfo.userId)
         .then(res => {
           let data = res.data || {}
-          userInfo.userName = data.nickName
           userInfo.avatarUrl = data.avatarUrl
-          userInfo.deptName = data.deptName
-          userInfo.deptId = data.deptId
-          this.$store.commit('setting/setUserInfo', userInfo)
+          userInfo.nickName = data.nickName
+          this.$local.save('userInfo', userInfo)
+          this.$store.commit('setUserInfo', userInfo)
         })
     },
     sliderSizeChange(val) {
@@ -241,11 +241,11 @@ export default {
           this.loading = true
           this.$api.bizSystemService.rmemployeeUpdateAvatar(this.form)
             .then(res => {
-              this.userInfo.userName = this.form.nickName
+              this.userInfo.nickName = this.form.nickName
               this.userInfo.email = this.form.email || ''
               this.userInfo.avatarUrl = this.form.avatarUrl || ''
               this.$local.save('userInfo', this.userInfo);
-              this.$store.commit('setting/setUserInfo', this.userInfo)
+              this.$store.commit('setUserInfo', this.userInfo)
               this.close()
             })
             .finally(() => {
