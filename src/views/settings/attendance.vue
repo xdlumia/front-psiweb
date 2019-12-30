@@ -205,8 +205,8 @@ export default {
               workData = item
             }
           })
-          outData.typeCode == 'OA_KQ_TYPE-04' ? this.isOut = true : this.isOut = false
-          workData.typeCode == 'OA_KQ_TYPE-02' ? this.isWork = true : this.isWork = false
+          outData.typeCode == 'OA_KQ_TYPE-03' ? this.isOut = false : this.isOut = true
+          workData.typeCode == 'OA_KQ_TYPE-01' ? this.isWork = false : this.isWork = true
         }
       })
     },

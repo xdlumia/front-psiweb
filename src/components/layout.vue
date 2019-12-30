@@ -9,7 +9,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 18:39:21
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-30 10:11:28
+ * @LastEditTime: 2019-12-30 18:30:47
  * @Description: layout 页面架构
 */
 <template>
@@ -152,14 +152,17 @@
                 </div>
               </template>
               <el-menu-item
+                v-if="userInfo.type==0"
                 @click="settingVisible = true"
                 class="f14 iconfont icon-setting"
               > 个人设置</el-menu-item>
               <el-menu-item
+                v-if="userInfo.type==0"
                 @click="attendanceVisible = true"
                 class="f14 iconfont icon-kaoqin"
               > 考勤</el-menu-item>
               <el-menu-item
+                v-if="userInfo.type==0"
                 @click="handoverVisible = true"
                 class="f14 iconfont icon-jiaojie"
               > 工作交接</el-menu-item>
