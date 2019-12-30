@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:29
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 18:37:56
+ * @LastEditors  : web.王晓冬
+ * @LastEditTime : 2019-12-27 10:40:34
  * @Description: ip配置文件
  */
 const apiUrl = '/apis/'
@@ -14,6 +14,7 @@ const baseURL = {
   login: apiUrl + 'system-service',
   systemService: apiUrl + 'system-service', // 角色，员工，部门
   seeContractService: apiUrl + 'see-baseinfo-service', // 合同服务韩延峰
+  seeOaService: apiUrl + 'see-oa-service', // OA
 
   //   companyInitService: apiUrl + 'company-init-service',
   //   resourceService: apiUrl + 'resource-service', // 9013
