@@ -195,7 +195,7 @@ export default {
     employeeInfo() {
       let userInfo = this.$local.fetch('userInfo') || {}
       if (!userInfo.userId) return
-      this.$api.bizSystemService.rmemployeeInfo(userInfo.userId)
+      this.$api.bizSystemService.getEmployeeInfo(userInfo.employeeId)
         .then(res => {
           let data = res.data || {}
           userInfo.avatarUrl = data.avatarUrl
