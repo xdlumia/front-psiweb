@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-25 18:13:10
+ * @LastEditTime: 2019-12-27 14:29:19
  * @Description: 报价单详情
 */
 <template>
@@ -33,6 +33,7 @@
             :type="item.type"
           >{{item.label}}</el-button>
         </span>
+        <el-button size="mini" class="mr10" type="primary" @click="showPrint=true">打印</el-button>
 
       </div>
       <el-form
@@ -89,6 +90,7 @@
       @reload="setEdit(),$reload()"
       v-if="buyingAddVisible"
     />
+    <printPdf :rowData="detail" :visible.sync="showPrint" v-if="showPrint" />
   </div>
 </template>
 <script>
@@ -97,6 +99,7 @@ import add from './add' // 编辑
 import outLibAdd from '../outLibrary/add' // 生成出库单
 import buyingAdd from './add-buying' // 生成请购单
 import VisibleMixin from '@/utils/visibleMixin';
+import printPdf from './pdf'
 
 export default {
   mixins: [VisibleMixin],
@@ -104,7 +107,8 @@ export default {
     detail,
     add,
     outLibAdd,
-    buyingAdd
+    buyingAdd,
+    printPdf
   },
   data() {
     return {
@@ -152,7 +156,8 @@ export default {
         orderBuying: '请购单',
         operationRecord: '操作记录'
       },
-      activeName: 'detail'
+      activeName: 'detail',
+      showPrint:false
     }
   },
   computed: {
