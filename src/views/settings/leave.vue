@@ -261,7 +261,7 @@ export default {
           this.$api.seeOaService.absenceapplicationSave(params).then(res => {
             if (res.code == 200) {
               this.close()
-              this.$root.$emit('reload')
+              this.$emit('reload')
             }
           }).finally(() => {
             this.loading = false
