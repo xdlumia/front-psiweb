@@ -200,6 +200,7 @@ export default {
           let data = res.data || {}
           userInfo.avatarUrl = data.avatarUrl
           userInfo.nickName = data.nickName
+          userInfo.email = data.email
           this.$local.save('userInfo', userInfo)
           this.$store.commit('setUserInfo', userInfo)
         })
