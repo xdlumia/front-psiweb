@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-15 14:30:04
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-26 18:20:39
+ * @LastEditTime : 2019-12-30 09:28:00
  * @Description: 基础数据
  -->
 <template>
@@ -166,7 +166,7 @@ export default {
     font-family: "Arial Normal", "Arial";
   }
   .big-text {
-    font-size: 48px;
+    font-size: 40px;
     text-indent: 24px;
   }
   .store {
