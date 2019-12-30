@@ -2,7 +2,11 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:44:55
  * @LastEditors  : 高大鹏
+<<<<<<< HEAD
+ * @LastEditTime : 2019-12-27 10:28:36
+=======
  * @LastEditTime : 2019-12-27 10:22:18
+>>>>>>> dev
  * @Description: 商品分类
  -->
 <template>
