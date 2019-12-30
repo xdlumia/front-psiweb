@@ -15,6 +15,7 @@
         size="small"
         :model="form"
         ref="form"
+        v-if="visible"
       >
         <el-row
           class="mt10 mb10"
