@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-25 12:02:33
+ * @LastEditTime : 2019-12-30 10:27:21
  * @Description: description
  -->
 <template>
@@ -68,7 +68,9 @@
             >
               <el-table-column label="库房" prop="wmsName"></el-table-column>
               <el-table-column label="期初库存数量" prop="num"></el-table-column>
-              <el-table-column label="期初调价值（元）" prop="originalPriceAdjustment"></el-table-column>
+              <el-table-column label="期初调价值（元）" prop="originalPriceAdjustment">
+                <template slot-scope="{row}">{{row.originalPriceAdjustment || 0}}</template>
+              </el-table-column>
               <el-table-column label="创建人" prop="creatorName"></el-table-column>
               <el-table-column label="创建时间" prop="createTime">
                 <template slot-scope="{row}">{{row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
