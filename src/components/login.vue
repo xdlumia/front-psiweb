@@ -343,12 +343,14 @@ export default {
           const rmDeptEntity = data.rmDeptEntity || {} // 部门
           const rmRoleEntities = data.rmRoleEntities || [] // 人员
           // 存储用户信息
-          this.$local.save('userInfo', {
+          let userInfo = {
             avatarUrl: data.avatarUrl || '',
             userName: data.name,
             userId: data.id,
             deptId: data.deptId, // 部门id
             companyCode: data.companyCode, // 公司code
+            employeeId: data.employeeId, //员工id
+            email: data.email, // 员工email
             syscode: this.syscode, // 子系统编码
             account: this.remember ? this.loginForm.account : '', // 是否记住帐号
             pwd: this.remember ? this.loginForm.pwd : '', // 是否记住密码
@@ -357,8 +359,9 @@ export default {
             deptName: rmDeptEntity.deptName, // 部门名字
             roleName: rmRoleEntities[0] && rmRoleEntities[0].roleName, // 角色名字
             type: data.type
-          })
-
+          }
+          this.$local.save('userInfo', userInfo)
+          this.$store.commit('setUserInfo',userInfo)
           this.getUserAuth()
           // if (data.type === 1) {
           //   // 获取用户权限
