@@ -9,7 +9,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 18:39:21
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-30 09:30:02
+ * @LastEditTime: 2019-12-30 10:11:28
  * @Description: layout 页面架构
 */
 <template>
@@ -268,7 +268,7 @@ export default {
   },
   computed: {
     userInfo() {
-      return this.$store.state.setting.userInfo
+      return this.$store.state.userInfo
     },
     backlogNum() {
       return this.$store.state.backlogNum
