@@ -9,7 +9,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-09-23 10:45:2
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-04 16:24:26
+ * @LastEditTime: 2019-12-30 14:52:45
  * @LastEditors: 高大鹏
  * @LastEditTime: 2019-10-28 15:27:49
  * @Description: 登录页
@@ -361,7 +361,7 @@ export default {
             type: data.type
           }
           this.$local.save('userInfo', userInfo)
-          this.$store.commit('setUserInfo',userInfo)
+          this.$store.commit('setUserInfo', userInfo)
           this.getUserAuth()
           // if (data.type === 1) {
           //   // 获取用户权限
