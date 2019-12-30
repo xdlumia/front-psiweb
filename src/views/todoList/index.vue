@@ -1,18 +1,18 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:16:28
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-18 10:22:38
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2019-12-30 14:39:27
  * @Description: 待办事项
  -->
 <template>
-  <div class="todo">
+  <div class="todo" v-loading="loading">
     <h3>待办事项</h3>
-    <div class="todo-wrapper" v-if="list.length">
+    <div class="todo-wrapper" v-if="menus.length">
       <div class="menu">
         <el-menu :default-active="defaultActived">
           <el-submenu
-            v-for="(item, index) in list"
+            v-for="(item, index) in menus"
             :key="index"
             :title="item.label"
             :index="item.label"
@@ -57,26 +57,28 @@
 <script type='text/ecmascript-6'>
 import list from './render'
 export default {
-  data() {
+  data () {
     return {
+      loading: false,
       list,
       componentName: '',
       defaultActived: '',
+      menus: [],
       params: {}
     }
   },
   components: {
   },
-  mounted() {
+  mounted () {
     this.handleList()
     this.defaultMenu()
   },
   methods: {
-    showDetail(item) {
+    showDetail (item) {
       this.componentName = item.component
       this.params = item.params || {}
     },
-    defaultMenu() {
+    defaultMenu () {
       const menu = this.list.find(item => {
         return item.children.some(sub => {
           return sub.show
@@ -87,7 +89,7 @@ export default {
       this.params = sub.params || {}
       this.defaultActived = sub.label
     },
-    filterChildren(list) {
+    filterChildren (list) {
       return list.filter(item => {
         if (item.authorityCode) {
           return item.show && item.processNum && this.authorityButtons.includes(item.authorityCode)
@@ -95,7 +97,7 @@ export default {
         return item.show && item.processNum
       })
     },
-    homePageQueryList() {
+    homePageQueryList () {
       return this.$api.seePsiCommonService.homePageQueryList().then(res => {
         const obj = Object.create(null);
         (res.data || []).forEach(item => {
@@ -108,7 +110,8 @@ export default {
         return obj
       })
     },
-    handleList() {
+    handleList () {
+      this.loading = true
       this.homePageQueryList().then(res => {
         this.list.forEach(item => {
           const num = item.children.reduce((val, sub) => {
@@ -117,8 +120,8 @@ export default {
           }, 0)
           item.processNum = num
         })
-        this.list = this.list.filter(item => item.show && this.filterChildren(item.children).length)
-      })
+        this.menus = this.list.filter(item => item.show && this.filterChildren(item.children).length)
+      }).finally(() => { this.loading = false })
     }
   }
 }
