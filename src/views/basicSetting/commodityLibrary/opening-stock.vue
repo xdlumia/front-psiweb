@@ -2,11 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors  : 高大鹏
-<<<<<<< HEAD
- * @LastEditTime : 2019-12-25 11:59:39
-=======
- * @LastEditTime : 2019-12-27 10:19:14
->>>>>>> dev
+ * @LastEditTime : 2019-12-30 10:27:00
  * @Description: 新增目标
  -->
 <template>
@@ -159,7 +155,6 @@ export default {
         ],
         commonPromotionGoalPersonnelEntities: { required: true, message: '请选择', trigger: 'change' },
         originalPriceAdjustment: [
-          { required: true, message: '请输入', trigger: 'blur' },
           { pattern: /^[-+]?\d{1,11}(\.\d{1,2})?$/, message: '请输入11位整数，两位小数', trigger: 'blur' }
         ]
       }
@@ -177,7 +172,7 @@ export default {
       return temp ? temp.name : ''
     },
     originalCostDifference () {
-      return (this.beginnForm.num * this.beginnForm.originalPriceAdjustment).toFixed(2)
+      return (this.beginnForm.num * (parseFloat(this.beginnForm.originalPriceAdjustment) || 0)).toFixed(2)
     }
   },
   mounted () {
