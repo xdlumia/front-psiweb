@@ -75,7 +75,7 @@
         :visible.sync="innerVisible"
         appendToBody
         width="750px"
-        @reload="getRecordApply()"
+        @reload="getRecordApply(dateToTime(currentDay))"
       />
 
       <div class="ac mt10">
