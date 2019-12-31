@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-31 14:52:51
+ * @LastEditTime: 2019-12-31 17:06:38
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -132,7 +132,7 @@
       <el-table-column
         v-for="(item,index) of customHeaders || headers"
         :key="index"
-        :prop="item.columnFields"
+        :prop="item.tableColumnFields"
         show-overflow-tooltip
         :label="item.columnName"
         :sortable="item.columnFields == 'createTime' ? 'custom' : false"
@@ -264,7 +264,7 @@ export default {
     sortChange(a) {
       let order = a.order;
       this.params.sidx = a.prop
-      this.params.createTime = order == 'ascending' ? 'ASC' : 'DESC'
+      this.params.order = order == 'ascending' ? 'ASC' : 'DESC'
       this.reload()
     },
     // 表格加载成功返回参数
