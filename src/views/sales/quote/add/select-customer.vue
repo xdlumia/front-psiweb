@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 15:19:27
+ * @LastEditTime: 2019-12-31 14:38:35
  * @Description: 选择客户
 */
 <template>
@@ -123,7 +123,14 @@ export default {
       this.loading = true
       this.$api.seePsiCommonService.commonclientinfoInfo(null, this.data.clientId)
         .then(res => {
-          this.clientInfo = res.data || {}
+          this.clientInfo = res.data || {};
+          if(!this.data.id){
+            Object.assign(this.data,{
+              clientLinkman:res.data.linkManName,
+              clientPhone:res.data.phone,
+              clientReceivingAddress:res.data.address||res.data.registerAddres,
+            })
+          }
         })
         .finally(() => {
           this.loading = false

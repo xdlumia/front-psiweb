@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-26 09:35:34
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-31 15:01:05
  * @Description: 退货商品商品信息
 */
 <template>
@@ -139,11 +139,12 @@
               class="mb0"
               :prop="'businessCommoditySaveVoList.' + scope.$index + '.commodityNumber'"
               :rules="[{required:false},{type:'positiveNum'}]"
+              v-if="!scope.row.$parentCode"
             >
               <el-input
                 size="mini"
                 @input="sumTaxPrice(scope.row,scope.$index)"
-                :disabled="disabled"
+                disabled
                 :show-word-limit="false"
                 v-model="scope.row.commodityNumber"
               />
@@ -162,11 +163,12 @@
               class="mb0"
               :prop="`businessCommoditySaveVoList.${scope.$index}.alterationPrice`"
               :rules="[{required:false},{type:'price'}]"
+              v-if="!scope.row.$parentCode"
             >
               <el-input
                 size="mini"
                 @input="sumTaxPrice(scope.row, scope.$index)"
-                :disabled="disabled"
+                disabled
                 :show-word-limit="false"
                 v-model="scope.row.alterationPrice"
               ></el-input>
@@ -332,6 +334,7 @@ export default {
           this.data.businessCommoditySaveVoList.map(item => {
             item.customNumber = item.commodityNumber
             item.commodityNumber = item.actionableNumber || 0
+            item.alterationPrice = item.discountSprice
           })
           // 直接使用this.data.businessCommoditySaveVoList数据响应不过来
           this.returnTableData = this.data.businessCommoditySaveVoList

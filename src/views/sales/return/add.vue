@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 17:06:04
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-31 15:03:02
  * @Description: 生成销售退货单
 */
 <template>
@@ -75,6 +75,7 @@
         <return-bill-info
           id="returnBillInfo"
           :data="form"
+          :hide="['actualRefundAmount']"
         />
 
         <!-- 自定义信息 -->
@@ -211,14 +212,14 @@ export default {
     },
     // 保存表单数据
     async saveHandle() {
-      if (+this.form.actualRefundAmount > +this.form.shouldRefundAmount) {
-        this.$message({
-          message: '实退金额不能大于应退金额',
-          type: 'warning',
-          showClose: true,
-        });
-        return
-      }
+      // if (+this.form.actualRefundAmount > +this.form.shouldRefundAmount) {
+      //   this.$message({
+      //     message: '实退金额不能大于应退金额',
+      //     type: 'warning',
+      //     showClose: true,
+      //   });
+      //   return
+      // }
       await this.$showFormError(this.$refs.form)
       this.$refs.form.validate(valid => {
         if (valid) {
