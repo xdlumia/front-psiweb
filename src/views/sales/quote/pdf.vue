@@ -125,6 +125,7 @@ export default {
           item.preDiscountSprice = +Number(
             item.discountSprice / (1 + item.taxRate / 100)
           ).toFixed(2);
+          (item.children||[]).map(item=>item.commodityNum=item.commodityNumber)
         });
         let {
           data: client
