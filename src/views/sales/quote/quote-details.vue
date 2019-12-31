@@ -86,7 +86,7 @@
       :visible.sync="buyingAddVisible"
       :params="{quotationCode:detail.quotationCode}"
       type="add"
-      :rowData="detail"
+      :rowData="detail" 
       @reload="setEdit(),$reload()"
       v-if="buyingAddVisible"
     />

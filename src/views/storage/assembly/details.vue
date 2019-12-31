@@ -47,6 +47,12 @@
           size="mini"
           type="primary"
         >组装</el-button>
+        <el-button
+          @click="shipmentVisible=true"
+          v-if="detailForm.shipmentCode"
+          size="mini"
+          type="primary"
+        >打印</el-button>
       </div>
       <el-tabs
         class="wfull hfull tabs-view"
@@ -92,6 +98,11 @@
       :data="detailForm"
       @reload="reload"
     />
+    <printShipment
+      :code="detailForm.shipmentCode"
+      :visible.sync="shipmentVisible"
+      v-if="shipmentVisible"
+    />
   </SideDetail>
 
 </template>
@@ -102,7 +113,7 @@ import transfer from '@/components/formComponents/transfer';
 import hangUp from './hang-up';
 import assembledGoodsChoose from '@/components/formComponents/assembled-goods-choose';
 import SideDetail from '@/components/side-detail';
-
+import printShipment from '@/components/formComponents/print-shipment';
 export default {
   props: ['data', 'visible', 'code'],
   data() {
@@ -113,6 +124,7 @@ export default {
       goodsVisible: false,//组装
       loading: false,
       activeName: '',
+      shipmentVisible: '',
       state: {
         '-1': '终止',
         0: '未开始',
@@ -130,6 +142,7 @@ export default {
     SideDetail,
     transfer,
     hangUp,
+    printShipment
   },
   mounted() {
     this.wmsassembleorderInfo()

@@ -24,10 +24,18 @@
           size="mini"
           type="primary"
         >拣货</el-button>
+
+        <!-- v-if="detailForm.shipmentCode" -->
+        <el-button
+          @click="shipmentVisible=true"
+          v-if="detailForm.shipmentCode"
+          size="mini"
+          type="primary"
+        >打印</el-button>
       </div>
       <el-tabs
         class="wfull hfull tabs-view"
-        v-model="activeName" 
+        v-model="activeName"
       >
         <el-tab-pane label="详情">
           <el-form>
@@ -68,6 +76,11 @@
         </el-tab-pane>
       </el-tabs>
     </div>
+    <printShipment
+      :code="detailForm.shipmentCode"
+      :visible.sync="shipmentVisible"
+      v-if="shipmentVisible"
+    />
   </SideDetail>
 </template>
 <script>
@@ -75,6 +88,8 @@ import goodsPicking from '@/components/formComponents/goods-picking'
 import pickingInfo from '@/components/formComponents/picking-info';
 import generateDeliver from './generate-deliver';
 import SideDetail from '@/components/side-detail';
+import printShipment from '@/components/formComponents/print-shipment';
+
 export default {
   props: ['drawerData', 'visible', 'code'],
   data() {
@@ -83,6 +98,7 @@ export default {
       detailForm: {},
       activeName: '',
       loading: false,
+      shipmentVisible: false,
       orderStorageVisible: false
     };
   },
@@ -90,7 +106,8 @@ export default {
     goodsPicking,
     pickingInfo,
     generateDeliver,
-    SideDetail
+    SideDetail,
+    printShipment
   },
   mounted() {
     this.wmspickingorderInfo()
