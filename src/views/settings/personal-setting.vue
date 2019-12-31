@@ -262,7 +262,7 @@ export default {
     },
     employeeInfo() {
       let userInfo = this.$local.fetch('userInfo') || {}
-      if (!userInfo.userId) return
+      if (!userInfo.employeeId) return
       this.$api.bizSystemService.getEmployeeInfo(userInfo.employeeId)
         .then(res => {
           let data = res.data || {}
