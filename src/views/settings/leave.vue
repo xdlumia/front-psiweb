@@ -15,6 +15,7 @@
         size="small"
         :model="form"
         ref="form"
+        v-if="visible"
       >
         <el-row
           class="mt10 mb10"
@@ -183,7 +184,7 @@ export default {
         endTime: '',    // 请假结束时间
         workHandoverMan: '', // 交接人id
         workHandoverName: '',
-        deptId: this.$local.fetch('userInfo').deptId, // 部门id
+        deptId: '', // 部门id
         reasons: '', // 请假事由
         submitType: 0, // 提交方式
       },
@@ -205,6 +206,17 @@ export default {
             return new Date(`${parseTime(time, '{y}-{m}-{d}')} 23:59:59`).getTime() < this.form.beginTime
           }
         }
+      }
+    }
+  },
+  watch: {
+    visible(val) {
+      if (val) {
+        this.$nextTick(() => {
+          for (let key in this.form) {
+            this.form[key] = ''
+          }
+        })
       }
     }
   },
@@ -249,6 +261,8 @@ export default {
       this.form.workHandoverMan = value.userId;
     },
     submit() {
+      this.form.deptId = this.$local.fetch('userInfo').deptId // 部门id
+      this.form.submitType = 0
       this.$refs.form.validate((valid) => {
         if (valid) {
           let params = {

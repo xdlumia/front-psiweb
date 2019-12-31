@@ -6,6 +6,7 @@
       :visible="visible"
       @close="close"
       destroy-on-close
+      v-dialogDrag
     >
       <d-table
         api="seeOaService.absenceapplicationGetWorkHandoverList"

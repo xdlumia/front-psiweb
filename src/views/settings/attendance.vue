@@ -7,6 +7,7 @@
       @close="close"
       destroy-on-close
       class="attendance-dialog"
+      v-dialogDrag
     >
       <div class="d-flex attendance-box">
         <div class="a-calendar">
@@ -21,13 +22,13 @@
             <el-button
               size="small"
               :disabled="!isToday"
-              @click="attendanceRecord(!isWork ? 1 : 2)"
-            >{{ !isWork ? '上班' : '下班' }}</el-button>
+              @click="attendanceRecord(isWork ? 1 : 2)"
+            >{{ isWork ? '上班' : '下班' }}</el-button>
             <el-button
               size="small"
-              :disabled="!isToday || !isWork"
-              @click="attendanceRecord(!isOut ? 3 : 4)"
-            >{{ !isOut ? '外出' : '归来'}}</el-button>
+              :disabled="!isToday || isWork"
+              @click="attendanceRecord(isOut ? 3 : 4)"
+            >{{ isOut ? '外出' : '归来'}}</el-button>
             <el-button
               size="small"
               @click="innerVisible = true"
@@ -75,7 +76,7 @@
         :visible.sync="innerVisible"
         appendToBody
         width="750px"
-        @reload="getRecordApply(dateToTime(currentDay))"
+        @reload="getRecordApply(dateToTime(currentDay)),getAbsenceCalendar(currentDay)"
       />
 
       <div class="ac mt10">
@@ -193,15 +194,19 @@ export default {
           this.attendanceRecordList = res.dataRecord || [] // 打卡
           this.leaveList = res.dataApply || [] // 请假
           // 改变按钮状态
-          res.dataRecord.reverse().forEach(item => {
-            if (!this.isOut && item.typeCode == 'OA_KQ_TYPE-03') {
-              this.isOut = true;
+          let copyDataRecord = [...this.attendanceRecordList].reverse()
+          let outData = {}
+          let workData = {}
+          this.attendanceRecordList.forEach(item => {
+            if (item.typeCode == 'OA_KQ_TYPE-03' || item.typeCode == 'OA_KQ_TYPE-04') {
+              outData = item
             }
-            if (!this.isWork && item.typeCode == 'OA_KQ_TYPE-01') {
-              this.isWork = true;
+            if (item.typeCode == 'OA_KQ_TYPE-01' || item.typeCode == 'OA_KQ_TYPE-02') {
+              workData = item
             }
           })
-
+          outData.typeCode == 'OA_KQ_TYPE-03' ? this.isOut = false : this.isOut = true
+          workData.typeCode == 'OA_KQ_TYPE-01' ? this.isWork = false : this.isWork = true
         }
       })
     },
@@ -215,7 +220,7 @@ export default {
         typeCode: type.typeCode
       }).then(res => {
         typeNum < 3 ? this.changeWorkStatus(typeNum) : this.changeOutStatus(typeNum)
-        this.attendanceRecordList.unshift({
+        this.attendanceRecordList.push({
           operationTime: new Date().getTime(),
           typeCode: type.typeCode
         })
@@ -226,11 +231,11 @@ export default {
 
     // 更改工作状态
     changeWorkStatus(typeNum) {
-      this.isWork = +typeNum === 1
+      this.isWork = +typeNum === 2
     },
     // 更改外出状态
     changeOutStatus(typeNum) {
-      this.isOut = +typeNum === 3
+      this.isOut = +typeNum === 4
     },
 
     // 获取日历请假信息

@@ -63,13 +63,18 @@
         <div class="ac mt10">
           <el-button
             size="small"
-            @click="close"
-          >取 消</el-button>
+            @click="updatePassVisibled = true"
+            type="primary"
+          >修改密码</el-button>
           <el-button
             size="small"
             @click="save"
             type="primary"
           >确 定</el-button>
+          <el-button
+            size="small"
+            @click="close"
+          >取 消</el-button>
         </div>
       </div>
     </el-dialog>
@@ -92,6 +97,7 @@
         :can-move="option.canMove"
         :can-move-box="option.canMoveBox"
         :fixed-box="option.fixedBox"
+        :enlarge="option.enlarge"
         :original="option.original"
         :auto-crop="option.autoCrop"
         :auto-crop-width="option.autoCropWidth"
@@ -110,6 +116,57 @@
         <el-button
           size="small"
           @click="getCropBlob"
+          type="primary"
+        >确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog
+      title="修改密码"
+      width="420px"
+      @close="updatePassVisibled = false"
+      :visible="updatePassVisibled"
+    >
+
+      <el-form
+        :model="updatePassForm"
+        size="small"
+        ref="updatePassForm"
+      >
+        <el-form-item
+          prop="oldPassword"
+          label="当前密码"
+          :rules="{required:true}"
+        >
+          <el-input
+            show-password
+            v-model="updatePassForm.oldPassword"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          prop="newPassword"
+          label="当前密码"
+          :rules="{required:true}"
+        >
+          <el-input
+            show-password
+            v-model="updatePassForm.newPassword"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          prop="confirmNewPassword"
+          label="确认密码"
+          :rules="{required:true}"
+        >
+          <el-input
+            show-password
+            v-model="updatePassForm.confirmNewPassword"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div class="ac mt10">
+        <el-button
+          size="small"
+          @click="savePass"
           type="primary"
         >确 定</el-button>
       </div>
@@ -153,6 +210,7 @@ export default {
         original: false,
         canMoveBox: true, //截图框能否拖动
         autoCrop: true, //是否默认生成截图框
+        enlarge: 2.5,
         // 只有自动截图开启 宽度高度才生效
         autoCropWidth: 200,
         autoCropHeight: 200,
@@ -170,6 +228,13 @@ export default {
         id: '',
         email: '',
         avatarUrl: '',
+      },
+      updatePassVisibled: false,
+      updatePassForm: {
+        confirmNewPassword: '',// 确认新密码,
+        id: '',// id,
+        newPassword: '',// 新密码,
+        oldPassword: '',// 用户原始密码
       }
     }
   },
@@ -192,6 +257,9 @@ export default {
     }
   },
   methods: {
+    updatePass() {
+
+    },
     employeeInfo() {
       let userInfo = this.$local.fetch('userInfo') || {}
       if (!userInfo.userId) return
@@ -205,9 +273,10 @@ export default {
           this.$store.commit('setUserInfo', userInfo)
         })
     },
-    sliderSizeChange(val) {
-      this.$refs.cropper.changeScale(val)
-    },
+    // sliderSizeChange(val) {
+    //   let num = val > 0 ? 1 : -1
+    //   this.$refs.cropper.changeScale(num)
+    // },
     // 获取图片并且上传
     getCropBlob() {
       this.$refs.cropper.getCropBlob((data) => {
@@ -234,6 +303,18 @@ export default {
       this.$nextTick(() => {
         this.option.img = URL.createObjectURL(file.raw)
         this.editAvatarVisible = true;
+      })
+    },
+    // 保存密码
+    savePass() {
+      this.updatePassForm.id = this.userInfo.employeeId
+      this.$refs.updatePassForm.validate(valid => {
+        if (valid) {
+          this.$api.bizSystemService.updatePassword(this.updatePassForm)
+            .then(res => {
+              this.updatePassVisibled = false
+            })
+        }
       })
     },
     save() {
