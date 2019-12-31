@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 17:36:02
+ * @LastEditTime: 2019-12-31 14:43:05
  * @Description: 基本信息 1
  */
 <template>
@@ -20,6 +20,16 @@
         >
           <el-input
             v-if="item.type =='input'"
+            :disabled='disabled'
+            :maxlength="item.maxlength"
+            v-model.trim="data[item.prop]"
+            :placeholder="`请输入${item.label}`"
+          />
+          <el-autocomplete
+            v-if="item.type =='autocomplete'"
+            class="wfull"
+            :fetch-suggestions="querySearch"
+            :trigger-on-focus="false"
             :disabled='disabled'
             :maxlength="item.maxlength"
             v-model.trim="data[item.prop]"
@@ -81,7 +91,9 @@ export default {
         { label: '客户级别', prop: 'grade', type: 'select', rules: [{ required: false }], dicName: 'PSI_KH_KHJB', },
         { label: '行业', prop: 'trade', type: 'select', rules: [{ required: false }], dicName: 'PSI_KH_HY', },
         { label: '来源', prop: 'source', type: 'select', rules: [{ required: false }], dicName: 'PSI_KHGL_LY', },
-        { label: '详细地址', prop: 'address', type: 'input', maxlength: 50, span: 16, rules: [{ required: false }], },
+        { label: '客户责任人', prop: 'source', type: 'select', rules: [{ required: false }], dicName: 'PSI_KHGL_LY', },
+        { label: '客户关联', prop: 'source', type: 'autocomplete', rules: [{ required: false }], dicName: 'PSI_KHGL_LY', },
+        { label: '详细地址', prop: 'address', type: 'input', maxlength: 64, span: 16, rules: [{ required: false }], },
         { label: '备注', prop: 'note', maxlength: 200, span: 16, type: 'input', rules: [{ required: false }], },
       ]
     }
@@ -92,6 +104,12 @@ export default {
     }
   },
   components: {
+  },
+  methods: {
+    querySearch(queryString, cb) {
+
+      cb([{}]);
+    },
   },
 }
 </script>
