@@ -25,13 +25,12 @@
           type="primary"
         >拣货</el-button>
 
-        <!-- v-if="detailForm.shipmentCode" -->
-        <el-button
+        <!-- <el-button
           @click="shipmentVisible=true"
           v-if="detailForm.shipmentCode"
           size="mini"
           type="primary"
-        >打印</el-button>
+        >打印</el-button> -->
       </div>
       <el-tabs
         class="wfull hfull tabs-view"
