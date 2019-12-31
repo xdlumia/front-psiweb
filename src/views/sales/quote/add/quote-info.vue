@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-09 10:06:03
+ * @LastEditTime: 2019-12-31 14:39:26
  * @Description: 填写报价单详情
 */
 <template>
@@ -17,6 +17,7 @@
       <customerInfo
         :data="data"
         id="customerInfo"
+        @change="customerChange"
       />
       <!-- 公司信息 -->
       <companyInfo
@@ -39,6 +40,7 @@
       <payExpire
         :data="data"
         id="payExpire"
+        disabled
       />
       <!-- 附加发票 -->
       <extrataxInfo
@@ -89,6 +91,7 @@ export default {
   mounted() {
   },
   methods: {
+    customerChange(e){}
   },
   watch: {
 

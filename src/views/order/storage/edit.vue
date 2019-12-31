@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-15 11:45:32
+ * @LastEditTime: 2019-12-31 15:44:35
  * @Description: 采购入库单
 */
 <template>
@@ -26,16 +26,16 @@
       <div>
         <el-form :model="form" class="p10" ref="form" size="mini" v-if="visible">
           <supplierInfo :data="form" @change="supplierChange" id="supplierInfo" />
-          <companyInfo :data="form" id="companyInfo" />
+          <companyInfo :data="form" :disabled="['直发单','请购单'].includes(form.source)" id="companyInfo" />
           <arrivalInfo
             :data="form"
+            :disables="form.source=='请购单'?['saleTime']:[]"
             :hide="form.source=='备货单'?['saleTime','collected']:['collected']"
             :labels="form.source=='直发单'?{
               saleTime:'销售预计发货时间'
             }:{}"
             id="arrivalInfo"
             ref="arrivalInfo"
-            :disables="form.source=='请购单'?['saleTime']:[]"
             v-if="form.source!='直发单'"
           />
           <buyingDeliverInfo :data="form" id="deliverInfo" ref="deliverInfo" v-else />
@@ -190,6 +190,10 @@ export default {
         clientLinkman = '',
         clientPhone = '',
         clientAddress = '';
+      let companyData = {
+        companyAccountId: '',
+        companySettlementId: ''
+      };
       try {
         let { data } = await this.$api.seePsiPurchaseService[api[this.from]](
           null,
@@ -213,8 +217,21 @@ export default {
           clientPhone = data.clientPhone;
           clientAddress = data.clientReceivingAddress;
         }
+        if (data.quotationCode) {
+          // 从报价单带入发票账号和结算账户
+          let {
+            data: quotation
+          } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({
+            quotationCode: data.quotationCode
+          });
+          Object.assign(companyData, {
+            companyAccountId: quotation.companyAccountId,
+            companySettlementId: quotation.companySettlementId
+          });
+        }
       } catch (error) {}
       return {
+        ...companyData,
         saleTime,
         commodityList,
         additionalCommodityList: [],

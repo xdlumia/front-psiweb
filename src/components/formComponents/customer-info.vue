@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 21:51:45
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2019-12-31 14:36:33
  * @Description: 客户信息 1  //传入 data:{clientId:'1'} 会自动查询详情
  */
 <template>
@@ -28,6 +28,7 @@
             class="wfull mr5"
             filterable
             v-model="data.clientId"
+            @change="selectCustomer"
           >
             <el-option
               :key="item.id"
@@ -131,6 +132,10 @@ export default {
           this.loading = false
         })
     },
+    selectCustomer(id){
+      let client = this.clientOptions.find(({id:clientId})=>clientId==id)
+      if(client) this.$emit('change',client)
+    }
   }
 }
 </script>
