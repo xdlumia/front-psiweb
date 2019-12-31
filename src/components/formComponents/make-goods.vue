@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-22 11:35:40
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-31 15:01:57
+ * @LastEditTime: 2019-12-31 15:03:17
  * @Description: 发票内容 商品列表 已绑定 1
 */
 <template>
@@ -35,7 +35,7 @@
         prop="quantity"
         show-overflow-tooltip
       >
-        <!-- <template slot-scope="{$index,row}">
+        <template slot-scope="{$index,row}">
           <el-form-item
             :prop="`invoiceDetailList.${$index}.quantity`"
             :rules="[{required:true},{type:'positiveNum'}]"
@@ -47,7 +47,7 @@
               v-model="row.quantity"
             ></el-input>
           </el-form-item>
-        </template> -->
+        </template>
       </el-table-column>
       <el-table-column
         label="商品无税单价"
