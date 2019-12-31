@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-26 16:59:46
+ * @LastEditTime: 2019-12-31 17:48:50
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -538,6 +538,8 @@ export default {
     },
     // 商品数量和折扣修改
     numberChange(row) {
+      if(row.discountSprice==='')return
+      if(!row.reference)return
       let reference = row.reference || 0   //销售参考价
       let taxRate = (row.taxRate || 100) / 100  ///税率
       let discountSprice = row.discountSprice || 0 //折后金额
@@ -546,6 +548,8 @@ export default {
       row.discountSprice = +(reference * (1 + taxRate) * discount).toFixed(2) || 0
     },
     discountSpriceChange(row) {
+      if(row.discountSprice==='')return
+      if(!row.reference)return
       let reference = row.reference || 0   //销售参考价
       let taxRate = (row.taxRate || 100) / 100  ///税率
       let discountSprice = row.discountSprice || 0 //折后金额
