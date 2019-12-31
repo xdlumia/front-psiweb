@@ -138,26 +138,31 @@ export default {
           null,
           data.companyAccountId
         );
-        let {
-          data: configs
-        } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood({
-          ids: data.commodityEntityList
-            .map(item => item.configId)
-            .filter(a => a),
-          page: 1,
-          limit: 999
-        });
-        let configObj = configs.reduce((data, item) => {
-          data[item.commodityCode] = item;
-          return data;
-        }, {});
-        data.commodityEntityList.map(item => {
-          let config = configObj[item.commodityCode];
-          if (config) {
-            item.children = config.commonGoodConfigDetailsEntityList;
-          }
-        });
-        return { ...data, client, company, };
+        let configIds = data.commodityEntityList
+          .map(item => item.configId)
+          .filter(a => a);
+        if (configIds.length) {
+          let {
+            data: configs
+          } = await this.$api.seePsiCommonService.commonquotationconfigInfoGood(
+            {
+              ids: configIds,
+              page: 1,
+              limit: 999
+            }
+          );
+          let configObj = configs.reduce((data, item) => {
+            data[item.commodityCode] = item;
+            return data;
+          }, {});
+          data.commodityEntityList.map(item => {
+            let config = configObj[item.commodityCode];
+            if (config) {
+              item.children = config.commonGoodConfigDetailsEntityList;
+            }
+          });
+        }
+        return { ...data, client, company };
       }
     },
     // prettier-ignore
