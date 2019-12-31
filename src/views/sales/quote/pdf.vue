@@ -72,7 +72,9 @@
                 <el-table :data="item.children" :show-header="false" class="no-border" style="width:100%">
                   <el-table-column label="商品名称" min-width="200" prop="goodsName"></el-table-column>
                   <el-table-column label min-width="100" prop></el-table-column>
-                  <el-table-column label="数量" min-width="80" prop="commodityNum"></el-table-column>
+                  <el-table-column label="数量" min-width="80" prop="commodityNum">
+                    <template slot-scope="{row}">X{{row.commodityNum}}</template>
+                  </el-table-column>
                   <el-table-column label min-width="100" prop></el-table-column>
                 </el-table>
               </div>
