@@ -30,7 +30,7 @@
                   <el-col :span="12">销售方公司名称: {{detail.company.corporationName}}</el-col>
                   <el-col :span="12">销售代表: {{detail.creatorName}}</el-col>
                   <el-col :span="12">电话: {{detail.company.phone}}</el-col>
-                  <el-col :span="12">邮箱: {{detail.creatorInfo.email}}</el-col>
+                  <el-col :span="12">邮箱: {{detail.creator|userInfo('email')}}</el-col>
                 </el-row>
               </div>
               <div class="sub-title mt20">产品汇总</div>
@@ -147,10 +147,6 @@ export default {
           page: 1,
           limit: 999
         });
-        let { data: creator } = await axios.get(
-          baseURL.systemService + '/rmUser/userInfo',
-          { params: { id: data.creator } }
-        );
         let configObj = configs.reduce((data, item) => {
           data[item.commodityCode] = item;
           return data;
@@ -161,7 +157,7 @@ export default {
             item.children = config.commonGoodConfigDetailsEntityList;
           }
         });
-        return { ...data, client, company, creatorInfo: creator || {} };
+        return { ...data, client, company, };
       }
     },
     // prettier-ignore
