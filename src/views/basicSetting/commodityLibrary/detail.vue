@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-30 10:27:21
+ * @LastEditTime : 2019-12-31 14:58:33
  * @Description: description
  -->
 <template>
@@ -67,7 +67,8 @@
               :params="params"
             >
               <el-table-column label="库房" prop="wmsName"></el-table-column>
-              <el-table-column label="期初库存数量" prop="num"></el-table-column>
+              <el-table-column label="采购单价（元）" prop="purchasePrice"></el-table-column>
+              <el-table-column label="采购数量" prop="num"></el-table-column>
               <el-table-column label="期初调价值（元）" prop="originalPriceAdjustment">
                 <template slot-scope="{row}">{{row.originalPriceAdjustment || 0}}</template>
               </el-table-column>
