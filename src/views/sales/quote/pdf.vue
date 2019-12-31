@@ -69,10 +69,12 @@
               </div>
               <div class="border-line p10">
                 <!-- 配置 -->
-                <div :key="item.commodityCode" style="line-height:32px;" v-for="item of item.children">
-                  <span class="d-inline w200">{{item.goodsName}}</span>
-                  <span>X{{item.commodityNum}}</span>
-                </div>
+                <el-table :data="item.children" :show-header="false" class="no-border" style="width:100%">
+                  <el-table-column label="商品名称" min-width="200" prop="goodsName"></el-table-column>
+                  <el-table-column label min-width="100" prop></el-table-column>
+                  <el-table-column label="数量" min-width="80" prop="commodityNum"></el-table-column>
+                  <el-table-column label min-width="100" prop></el-table-column>
+                </el-table>
               </div>
             </div>
           </div>
@@ -125,7 +127,9 @@ export default {
           item.preDiscountSprice = +Number(
             item.discountSprice / (1 + item.taxRate / 100)
           ).toFixed(2);
-          (item.children||[]).map(item=>item.commodityNum=item.commodityNumber)
+          (item.children || []).map(
+            item => (item.commodityNum = item.commodityNumber)
+          );
         });
         let {
           data: client
@@ -239,6 +243,15 @@ $color: #00c1e6;
     .el-table td,
     .el-table th.is-leaf {
       border-bottom: 1px solid #00c1e6;
+    }
+    .no-border.el-table {
+      td,
+      th.is-leaf {
+        border-bottom: 0px solid #00c1e6;
+      }
+      td {
+        padding: 2px 0;
+      }
     }
   }
   .border-line {
