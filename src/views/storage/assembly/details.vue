@@ -47,12 +47,12 @@
           size="mini"
           type="primary"
         >组装</el-button>
-        <el-button
+        <!-- <el-button
           @click="shipmentVisible=true"
           v-if="detailForm.shipmentCode"
           size="mini"
           type="primary"
-        >打印</el-button>
+        >打印</el-button> -->
       </div>
       <el-tabs
         class="wfull hfull tabs-view"
