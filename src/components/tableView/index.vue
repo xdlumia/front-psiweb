@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-31 17:06:38
+ * @LastEditTime: 2019-12-31 17:35:00
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -129,13 +129,13 @@
         width="50"
         type="selection"
       ></el-table-column>
+      <!-- :sortable="item.columnFields == 'createTime' ? 'custom' : false" -->
       <el-table-column
         v-for="(item,index) of customHeaders || headers"
         :key="index"
         :prop="item.tableColumnFields"
         show-overflow-tooltip
         :label="item.columnName"
-        :sortable="item.columnFields == 'createTime' ? 'custom' : false"
         :min-width="item.width || 180"
         :fixed="item.fixed"
       >
