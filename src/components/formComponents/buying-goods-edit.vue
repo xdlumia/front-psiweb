@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-02 14:21:29
+ * @LastEditTime: 2020-01-02 14:43:15
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -605,7 +605,7 @@ export default {
         this.resetColumnsPropForChoose(item)
         return item;
       });
-      if (e.saleRefPriceConfig == 2) {
+      if (e.saleRefPriceConfig == 1) {
         this.$message({
           message: '成本价为计算值不能调价',
           type: 'waring',
