@@ -99,7 +99,24 @@
             <span>{{scope.row.specOne}}</span>
           </template>
         </el-table-column>
-
+        <el-table-column
+          prop="purchasePrice"
+          min-width="100"
+          label="采购单价"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="purchaseCost"
+          min-width="100"
+          label="采购成本"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="purchaseTaxes"
+          min-width="100"
+          label="采购税金"
+          show-overflow-tooltip
+        ></el-table-column>
         <el-table-column
           prop="configName"
           min-width="100"

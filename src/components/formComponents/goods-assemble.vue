@@ -77,7 +77,8 @@
             <span>{{scope.row.usableNum || '-'}}</span>
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- 暂时隐藏，2020.1.2 需求 组装不选库房-->
+        <!-- <el-table-column
           fixed
           prop="accomplishNum"
           min-width="100"
@@ -90,7 +91,7 @@
               @click="changeRecord(scope)"
             >{{scope.row.accomplishNum}}</span>
           </template>
-        </el-table-column>
+        </el-table-column> -->
 
         <el-table-column
           fixed

@@ -86,6 +86,7 @@
           size="mini"
         >
           <el-input
+            disabled
             placeholder="请输入收货人"
             v-model="data.consignee"
           />
@@ -104,6 +105,7 @@
           size="mini"
         >
           <el-input
+            disabled
             placeholder="请输入收货人电话"
             v-model="data.consigneePhone"
           />
@@ -123,6 +125,7 @@
           size="mini"
         >
           <el-input
+            disabled
             placeholder="请输入收货地址"
             v-model="data.consigneeAddress"
           />
@@ -138,6 +141,7 @@
           size="mini"
         >
           <el-input
+            disabled
             type="textarea"
             maxlength="140"
             placeholder="请输入备注"

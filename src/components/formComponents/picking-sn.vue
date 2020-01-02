@@ -147,13 +147,14 @@ export default {
   methods: {
     //回车机器号和SN码  
     shipmentCommodityCheck() {
-      this.$api.seePsiWmsService.wmspickingorderShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData, businessCode: this.data.pickingOrderCode, })
+      this.$api.seePsiWmsService.wmspickingorderShipmentCommodityCheck({ snCode: this.snCode, businessId: this.data.id, commodityList: this.tableData, businessCode: this.data.pickingOrderCode, wmsId: this.data.wmsId })
         .then(res => {
           if (res.data) {
             let Index = this.data.commodityList.findIndex((item) => {
               return item.commodityCode == res.data.commodityCode
             })
             if (Number(this.data.commodityList[Index].pickingAccomplishNum) < this.data.commodityList[Index].pickingNum) {
+              !this.data.wmsId ? this.data.wmsId = res.data.wmsId : ''
               this.tableData.push(res.data)
               this.data.commodityList[Index].pickingAccomplishNum++
             } else {
@@ -181,6 +182,9 @@ export default {
         return item.commodityCode == scope.row.commodityCode
       })
       this.data.commodityList[Index].pickingAccomplishNum--
+      if (this.tableData.length == 0 && this.data.state == 0) {//状态是待拣货并且这个表格里啥也没有了，就把库房id清空
+        this.data.wmsId = ''
+      }
     },
     //查看自定义头部
     commonsystemconfigInfo() {

@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-13 10:32:02
+ * @LastEditTime: 2020-01-02 10:23:46
  * @Description: 物流信息 可编辑
 */
 <template>
@@ -37,9 +37,10 @@
             label="服务商"
             size="mini"
           >
+            <!-- facilitatorNameChange -->
             <el-select
-              @change='facilitatorNameChange($event,index)'
               class="wfull"
+              disabled
               v-model="item.facilitator"
               placeholder="请选择"
             >
@@ -67,11 +68,12 @@
           >
             <el-select
               class="wfull"
+              disabled
               v-model="item.serveType"
               placeholder="请选择"
             >
               <el-option
-                v-for="item1 in item.serviceTypeList"
+                v-for="item1 in serviceTypeList"
                 :key="item1.code"
                 :label="item1.content"
                 :value="item1.code"
@@ -135,12 +137,22 @@ export default {
       default: () => ({})
     },
     data: {},
+    quotationData: {}
   },
   data() {
     return {
+      serviceTypeList: [],
       options: [],
       providerList: [],//服务商列表
     };
+  },
+  watch: {
+    quotationData: {
+      handler(newValue, oldValue) {
+        this.facilitatorNameChange()
+      },
+      deep: true
+    }
   },
   mounted() {
     this.commonserviceproviderList()
@@ -150,9 +162,9 @@ export default {
     //增加物流信息
     addLogArr() {
       this.data.shipmentsLogisticsList.push({
-        facilitator: "",
+        facilitator: this.quotationData.facilitator,
         logisticsFees: 0,
-        serveType: "",
+        serveType: this.quotationData.serveType,
         shipmentsOrderId: 0,
         waybillCode: ""
       })
@@ -172,19 +184,23 @@ export default {
         })
     },
     //服务商列表切换的时候, 找出当前服务商对应的服务类型
-    facilitatorNameChange(val, index) {
-      this.$api.seePsiCommonService.commonserviceproviderInfo(null, val)
-        .then(res => {
-          let serviceTypeList = []
-          let serviceTypeArr = res.data.serviceType.split(',')
-          serviceTypeList = this.dictionaryOptions('PSI_FWS_FWLX').filter((item) => {
-            return serviceTypeArr.includes(item.code)
-          })
-          this.$set(this.data.shipmentsLogisticsList[index], 'serviceTypeList', serviceTypeList)
-        })
-        .finally(() => {
+    facilitatorNameChange() {
+      if (this.quotationData.facilitator) {
+        this.$api.seePsiCommonService.commonserviceproviderInfo(null, this.quotationData.facilitator)
+          .then(res => {
+            let serviceTypeList = []
+            let serviceTypeArr = res.data.serviceType.split(',')
+            serviceTypeList = this.dictionaryOptions('PSI_FWS_FWLX').filter((item) => {
+              return serviceTypeArr.includes(item.code)
+            })
+            // this.$set(this.data.shipmentsLogisticsList[index], 'serviceTypeList', serviceTypeList)
 
-        })
+            this.serviceTypeList = serviceTypeList
+          })
+          .finally(() => {
+
+          })
+      }
     }
   }
 };

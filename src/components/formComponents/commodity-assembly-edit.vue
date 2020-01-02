@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-21 08:07:21
+ * @LastEditTime: 2020-01-02 14:20:12
  * @Description: 组装任务组装弹窗 
 */
 <template>
@@ -16,7 +16,8 @@
     >
       <el-container>
         <el-main style="padding:0;max-height:600px;">
-          <form-card
+          <!-- 新需求，但是老代码暂时不删，防止变故 -->
+          <!-- <form-card
             class="borrow-goods-info"
             title="库房"
           >
@@ -47,7 +48,7 @@
                 </el-select>
               </el-form-item>
             </el-form>
-          </form-card>
+          </form-card> -->
           <!-- 商品列表 -->
           <form-card
             class="borrow-goods-info"
@@ -65,7 +66,7 @@
                 prop="accomplishNum"
               >
                 <template slot-scope="scope">
-                  <span>{{(scope.row.allocationNum || 0) - (scope.row.accomplishNum || 0) - tableData.length}}</span>
+                  <span>{{(scope.row.allocationNum || 0) - (scope.row.accomplishNum || 0)}}</span>
                 </template>
               </el-table-column>
               <el-table-column
@@ -117,15 +118,19 @@
             </el-table>
 
             <div class="mt10 mb10">
-              <span class="b mt5">机器号</span>
-              <el-input
+              <span class="b mt5">完成数量</span>
+              <el-input-number
                 size="mini"
                 style="width:200px;"
                 class="ml10 mt5"
-                v-model="snCode"
-                v-on:keyup.13.native="getCommodityBySnCode()"
-              ></el-input>
-              <span class="fr d-text-black mr10 mt5">
+                v-model="num"
+                :min='1'
+                :max='(data.allocationNum || 0) - (data.accomplishNum || 0)'
+                :controls='false'
+              ></el-input-number>
+              <!-- 新需求，但是老代码暂时不删，防止变故 -->
+              <!-- v-on:keyup.13.native="getCommodityBySnCode()" -->
+              <!-- <span class="fr d-text-black mr10 mt5">
                 <span>本次成功扫码</span>
                 <span class="b d-text-red f16"> {{tableData.length}} </span>
                 <span>件，历史扫码</span>
@@ -133,10 +138,11 @@
                 <span>件，还需扫码</span>
                 <span class="b d-text-blue f16"> {{(data.allocationNum || 0) - (data.accomplishNum || 0) - tableData.length}} </span>
                 <span>件</span>
-              </span>
+              </span> -->
             </div>
           </form-card>
-          <el-table
+          <!-- 新需求，但是老代码暂时不删，防止变故 -->
+          <!-- <el-table
             :data='tableData'
             size='mini'
             border
@@ -235,7 +241,7 @@
               label="配置"
               show-overflow-tooltip
             ></el-table-column>
-          </el-table>
+          </el-table> -->
         </el-main>
       </el-container>
       <span
@@ -271,85 +277,93 @@ export default {
       snCode: '',
       tableData: [],
       usableList: [],
-      wmsId: ''
+      wmsId: '',
+      num: ''
     };
   },
   mounted() {
-    this.commonwmsmanagerUsableList()
-    this.getLastWmId()
+    // this.commonwmsmanagerUsableList()
+    // this.getLastWmId()
   },
   methods: {
     //查询上一次选择的仓库，下一次不能更改
-    getLastWmId() {
-      this.$api.seePsiWmsService.wmsflowrecordList({ page: 1, limit: 2, commodityCode: this.data.commodityCode, businessCode: this.detailForm.assembleTaskCode })
-        .then(res => {
-          let list = res.data || []
-          this.wmsId = list[0].wmsId || ''
-        })
-        .finally(() => {
+    // getLastWmId() {
+    //   this.$api.seePsiWmsService.wmsflowrecordList({ page: 1, limit: 2, commodityCode: this.data.commodityCode, businessCode: this.detailForm.assembleTaskCode })
+    //     .then(res => {
+    //       let list = res.data || []
+    //       this.wmsId = list[0].wmsId || ''
+    //     })
+    //     .finally(() => {
 
-        })
-    },
+    //     })
+    // },
     close() {
       this.$emit('update:visible', false)
     },
-    //请求可用库房
-    commonwmsmanagerUsableList() {
-      this.$api.seePsiWmsService.commonwmsmanagerUsableList()
-        .then(res => {
-          this.usableList = res.data || []
-        })
-        .finally(() => {
-        })
-    },
+    // //请求可用库房
+    // commonwmsmanagerUsableList() {
+    //   this.$api.seePsiWmsService.commonwmsmanagerUsableList()
+    //     .then(res => {
+    //       this.usableList = res.data || []
+    //     })
+    //     .finally(() => {
+    //     })
+    // },
     //点击删除某项
-    assDelete(scope) {
-      this.tableData.splice(scope.$index, 1)
-    },
+    // assDelete(scope) {
+    //   this.tableData.splice(scope.$index, 1)
+    // },
     //回车事件,入库
-    getCommodityBySnCode() {
-      if (this.wmsId) {
-        if (((this.data.allocationNum || 0) - (this.data.accomplishNum || 0) - this.tableData.length) > 0) {
-          if (this.tableData.length < this.data.currAccomplishNum) {
-            this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: this.snCode, commodityCode: this.data.commodityCode, putawayCommodityList: this.tableData, categoryCode: this.data.categoryCode, wmsId: this.wmsId })
-              .then(res => {
-                if (res.data) {
-                  this.tableData.push(res.data)
-                  this.snCode = ''
-                }
-              })
-              .finally(() => {
-              })
-          } else {
-            this.$message({
-              type: 'error',
-              message: '配件不够用啦!'
-            })
-          }
-        } else {
-          this.$message({
-            type: 'error',
-            message: '当前商品待入库数量已为0!'
+    // getCommodityBySnCode() {
+    //   if (this.wmsId) {
+    //     if (((this.data.allocationNum || 0) - (this.data.accomplishNum || 0) - this.tableData.length) > 0) {
+    //       if (this.tableData.length < this.data.currAccomplishNum) {
+    //         this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: this.snCode, commodityCode: this.data.commodityCode, putawayCommodityList: this.tableData, categoryCode: this.data.categoryCode, wmsId: this.wmsId })
+    //           .then(res => {
+    //             if (res.data) {
+    //               this.tableData.push(res.data)
+    //               this.snCode = ''
+    //             }
+    //           })
+    //           .finally(() => {
+    //           })
+    //       } else {
+    //         this.$message({
+    //           type: 'error',
+    //           message: '配件不够用啦!'
+    //         })
+    //       }
+    //     } else {
+    //       this.$message({
+    //         type: 'error',
+    //         message: '当前商品待入库数量已为0!'
+    //       })
+    //     }
+    //   } else {
+    //     this.$message({
+    //       type: 'error',
+    //       message: '请先选择入库库房!'
+    //     })
+    //   }
+    // },
+    //保存
+    submit() {
+      if (this.num < this.data.currAccomplishNum) {
+        this.loading = true
+        this.$api.seePsiWmsService.wmsassembletaskPutawayCommodity({ businessCode: this.detailForm.assembleTaskCode, businessId: this.detailForm.id, commodityCode: this.data.commodityCode, num: this.num })
+          .then(res => {
+            this.close()
+            this.$emit('reload')
           })
-        }
+          .finally(() => {
+            this.loading = false
+          })
       } else {
         this.$message({
           type: 'error',
-          message: '请先选择入库库房!'
+          message: '配件不够用啦!'
         })
       }
-    },
-    //保存
-    submit() {
-      this.loading = true
-      this.$api.seePsiWmsService.wmsassembletaskPutawayCommodity({ businessCode: this.detailForm.assembleTaskCode, businessId: this.detailForm.id, putawayCommodityList: this.tableData })
-        .then(res => {
-          this.close()
-          this.$emit('reload')
-        })
-        .finally(() => {
-          this.loading = false
-        })
     }
   }
 };

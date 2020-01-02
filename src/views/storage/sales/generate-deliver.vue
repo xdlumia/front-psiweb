@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-13 10:31:34
+ * @LastEditTime: 2020-01-02 10:23:10
  * @Description: 生成发货单
 */
 <template>
@@ -66,6 +66,7 @@
           <logisticsEdit
             ref="logisticsEdit"
             :data='addForm'
+            :quotationData='quotationData'
           />
         </el-form>
 
@@ -98,6 +99,7 @@ export default {
     return {
       activeName: '',
       loading: false,
+      quotationData: {},//通过报价单获取出来的信息
       addForm: {
         "clientName": "",
         "consignee": "",
@@ -122,11 +124,32 @@ export default {
       },
     };
   },
+  created() {
+    this.getinfoByCode()
+  },
   mounted() {
     this.addForm.salesShipmentCode = this.form.shipmentCode
     this.addForm.requireShipmentsTime = this.form.salesQuotationEntity.salesExpectedShipmentsTime
   },
   methods: {
+    //根据报价单code查询收货 人 电话 地址 备注 ，物流信息，直接带入并且不准修改
+    getinfoByCode() {
+      this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.form.squotationCode })
+        .then(res => {
+          // res.data.facilitator = 6
+          // res.data.serveType = 'PSI_FWS_FWLX-1'
+          this.quotationData = res.data || {}
+          this.addForm.consignee = res.data.clientLinkman//收货人
+          this.addForm.consigneePhone = res.data.clientPhone//收货人电话
+          this.addForm.consigneeAddress = res.data.clientReceivingAddress//收货地址
+          this.addForm.note = res.data.note//备注
+          this.addForm.shipmentsLogisticsList[0].facilitator = res.data.facilitator
+          this.addForm.shipmentsLogisticsList[0].serveType = res.data.serveType
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
     handleClick({ label, name }) {
       this.activeName = '';
     },
