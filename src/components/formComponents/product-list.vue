@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-06 14:45:49
+ * @LastEditTime: 2020-01-02 17:23:29
  * @Description: 整机列表 和 配件列表  私有组件 你们用不了 
 */
 <template>
@@ -15,6 +15,7 @@
       :data="kind1List"
       border
       row-key="goodsCode"
+      reserve-selection
       @selection-change="selectionChange"
       default-expand-all
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
@@ -41,12 +42,13 @@
     <el-table
       size="mini"
       height="550px"
-      row-key="id"
+      row-key="goodsCode"
       :data="kind2List"
       v-else
       ref="kind2"
       border
       default-expand-all
+      reserve-selection
       @selection-change="selectionChange"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >

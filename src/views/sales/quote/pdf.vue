@@ -4,6 +4,9 @@
     <div slot="title">
       <span>打印报价单</span>
       <div class="fr mr30">
+        <span class="mr20">
+          <el-checkbox v-model="showPrice">分项价格</el-checkbox>
+        </span>
         <el-button @click="close" size="mini">取 消</el-button>
         <el-button @click="print" size="mini" type="primary">打印</el-button>
       </div>
@@ -20,29 +23,33 @@
               <div class="sub-title">客户名称：{{detail.client.clientName}}</div>
               <div class="border-line">
                 <el-row class="large-lenh">
-                  <el-col :span="12">联系人: {{detail.client.linkManName}}</el-col>
-                  <el-col :span="12">电话: {{detail.client.phone}}</el-col>
-                  <el-col :span="12">地址: {{detail.client.registerAddres}}</el-col>
+                  <el-col :span="12">联系人: {{detail.clientLinkman}}</el-col>
+                  <el-col :span="12">电话: {{detail.clientPhone}}</el-col>
+                  <el-col :span="12">地址: {{detail.clientReceivingAddress}}</el-col>
                 </el-row>
               </div>
               <div class="border-line">
                 <el-row class="large-lenh">
                   <el-col :span="12">销售方公司名称: {{detail.company.corporationName}}</el-col>
                   <el-col :span="12">销售代表: {{detail.creatorName}}</el-col>
-                  <el-col :span="12">电话: {{detail.company.phone}}</el-col>
+                  <el-col :span="12">电话: {{detail.creator|userInfo('userAccount')}}</el-col>
                   <el-col :span="12">邮箱: {{detail.creator|userInfo('email')}}</el-col>
                 </el-row>
               </div>
               <div class="sub-title mt20">产品汇总</div>
               <div class="wfull border-line-t">
-                <el-table :data="detail.commodityEntityList" :show-summary="true" :summary-method="getSummarys" style="width:100%">
+                <el-table :data="detail.commodityEntityList" style="width:100%">
                   <el-table-column label="商品名称" min-width="200" prop="goodsName"></el-table-column>
-                  <el-table-column label="单价" min-width="100" prop="preDiscountSprice"></el-table-column>
+                  <el-table-column label="单价" min-width="100" prop="preDiscountSprice" v-if="showPrice"></el-table-column>
                   <el-table-column label="数量" min-width="80" prop="commodityNumber"></el-table-column>
-                  <el-table-column align="right" label="总价" min-width="100" prop="taxTotalAmount">
+                  <el-table-column align="right" label="总价" min-width="100" prop="taxTotalAmount" v-if="showPrice">
                     <template slot-scope="{row}">{{+Number(row.commodityNumber*row.preDiscountSprice).toFixed(2)}}</template>
                   </el-table-column>
                 </el-table>
+              </div>
+              <div class="ar border-line large-lenh">
+                <span class="d-inline w200">税率：{{taxRate}}</span>
+                <span class="d-inline w200">税金：{{taxMoney}}</span>
               </div>
               <div class="ar footer-total">
                 <span class="d-inline w200 al">合计(含税)</span>
@@ -60,9 +67,9 @@
               <div class="border-line-t wfull">
                 <el-table :data="[item]" :show-header="false" style="width:100%">
                   <el-table-column label="商品名称" min-width="200" prop="goodsName"></el-table-column>
-                  <el-table-column label="单价" min-width="100" prop="preDiscountSprice"></el-table-column>
+                  <el-table-column label="单价" min-width="100" prop="preDiscountSprice" v-if="showPrice"></el-table-column>
                   <el-table-column label="数量" min-width="80" prop="commodityNumber"></el-table-column>
-                  <el-table-column align="right" label="总价" min-width="100" prop="taxTotalAmount">
+                  <el-table-column align="right" label="总价" min-width="100" prop="taxTotalAmount" v-if="showPrice">
                     <template slot-scope="{row}">{{+Number(row.commodityNumber*row.preDiscountSprice).toFixed(2)}}</template>
                   </el-table-column>
                 </el-table>
@@ -71,11 +78,11 @@
                 <!-- 配置 -->
                 <el-table :data="item.children" :show-header="false" class="no-border" style="width:100%">
                   <el-table-column label="商品名称" min-width="200" prop="goodsName"></el-table-column>
-                  <el-table-column label min-width="100" prop></el-table-column>
+                  <el-table-column label min-width="100" prop v-if="showPrice"></el-table-column>
                   <el-table-column label="数量" min-width="80" prop="commodityNum">
                     <template slot-scope="{row}">X{{row.commodityNum}}</template>
                   </el-table-column>
-                  <el-table-column label min-width="100" prop></el-table-column>
+                  <el-table-column label min-width="100" prop v-if="showPrice"></el-table-column>
                 </el-table>
               </div>
             </div>
@@ -100,7 +107,9 @@ export default {
     rowData: Object
   },
   data() {
-    return {};
+    return {
+      showPrice: true
+    };
   },
   computed: {
     totalAmount() {
@@ -119,7 +128,27 @@ export default {
           item.children && item.children.length ? true : false
         );
       }
-    }
+    },
+    // prettier-ignore
+    taxMoney(){
+      if (!this.detail) return '';
+      return +Number(this.detail.commodityEntityList.reduce((total, item) => {
+        return total + +Number((item.preDiscountSprice*item.taxRate/100)*item.commodityNumber) || 0;
+      }, 0)).toFixed(2);
+    },
+    // prettier-ignore
+    taxRate(){
+      if (!this.detail) return '';
+      let prodata = this.detail.commodityEntityList.reduce((data, item) => {
+        data.total += Number(item.discountSprice/(1+(+item.taxRate/100))) || 0;
+        data.taxTotal += Number(item.discountSprice) || 0
+        return data;
+      }, {
+        total:0,
+        taxTotal:0,
+      });
+      return +(Number(prodata.taxTotal/prodata.total-1)*100).toFixed(0) + '%'
+    },
   },
   methods: {
     async getDetail() {

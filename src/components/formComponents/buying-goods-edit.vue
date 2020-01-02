@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-02 14:27:56
+ * @LastEditTime: 2020-01-02 14:59:42
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -51,6 +51,21 @@
             v-if="(!disabled)&&!hide.includes('add')&&!show.includes(`!add`)"
           ></commodity-choose>
         </span>
+      </div>
+      <div class="mb10" v-if="hide.includes('!isHasTax')||show.includes(`isHasTax`)">
+        <el-form-item prop="isHasTax" label="是否含税">
+          <el-select placeholder="请选择" v-model="data.isHasTax">
+            <el-option
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              v-for="item in [
+                {label:'含税',value:1},
+                {label:'未税',value:0},
+              ]"
+            ></el-option>
+          </el-select>
+        </el-form-item>
       </div>
       <el-table
         :class="[showSummary?'':'hide-summary',(sort||[]).includes('expanded')?'':'hide-expanded']"
@@ -356,15 +371,15 @@ export default {
       { label: '退货商品数量', key: 'alterationNumber', width: 140, prop: 'alterationNumber', showOverflowTip: true, type: 'inputinteger' },
       { label: '退货数量', key: 'alterationNumberRate', width: 140, prop: 'alterationNumber', showOverflowTip: true, },
       { label: '退货单价', key: 'alterationPrice', width: 80, prop: 'alterationPrice', type: 'input', showOverflowTip: true, rules: [{ required: true }, { type: 'price' }] },
-      { label: '税率%', key: 'taxRate', width: 80, prop: 'taxRate', format: a => a ? `${a}` : '-' },
+      { label: '税率%', key: 'taxRate', width: 80, prop: 'taxRate', format: a => a ? `${this.data.isHasTax==1?a:0}` : '-' },
       {        label: '含税总价', key: 'preTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
-        format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + (taxRate / 100)) * commodityNumber) || 0).toFixed(2)
+        format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + ((this.data.isHasTax==1?taxRate:0) / 100)) * commodityNumber) || 0).toFixed(2)
       },
       {        label: '含税总价', key: 'purchasePreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
-        format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + (taxRate / 100)) * commodityNumber) || 0).toFixed(2)
+        format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + ((this.data.isHasTax==1?taxRate:0) / 100)) * commodityNumber) || 0).toFixed(2)
       },
       {        label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
-        format: (a, { alterationPrice, taxRate, alterationNumber }) => +Number((alterationPrice * (1 + (taxRate / 100)) * alterationNumber) || 0).toFixed(2)
+        format: (a, { alterationPrice, taxRate, alterationNumber }) => +Number((alterationPrice * (1 + ((this.data.isHasTax==1?taxRate:0) / 100)) * alterationNumber) || 0).toFixed(2)
       },
       { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber', format: (a) => a || 0, showOverflowTip: true, },
       { label: '备注', key: 'note', width: 200, prop: 'note', type: 'input', rules: [{ type: 'string', min: 0, max: 100 }] },
@@ -586,7 +601,7 @@ export default {
                 item =>
                   +Number(
                     item[this.priceKey] *
-                    (1 + item.taxRate / 100) *
+                    (1 + (this.data.isHasTax==1?item.taxRate:0) / 100) *
                     item.commodityNumber || 0
                   ).toFixed(2)
               )
