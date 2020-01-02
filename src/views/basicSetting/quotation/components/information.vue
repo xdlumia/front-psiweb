@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-11-09 11:24:00
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 14:17:47
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2020-01-02 18:29:08
  * @Description: description
  -->
 <template>
@@ -26,7 +26,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="商品编号" prop="commodityCode">
-            <el-input v-model="data.commodityCode" disabled></el-input>
+            <el-input :value="$options.filters.codeSlice(data.commodityCode)" disabled></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -46,7 +46,7 @@
 
 <script type='text/ecmascript-6'>
 export default {
-  data() {
+  data () {
     return {
     }
   },
@@ -65,7 +65,7 @@ export default {
   components: {
   },
   methods: {
-    choose(goods) {
+    choose (goods) {
       this.data.commodityCode = goods[0].commodityCode
       this.data.goodName = goods[0].goodsName
     }

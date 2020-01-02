@@ -10,7 +10,7 @@
     :status="status"
     :visible.sync="showPop"
     @close="$emit('update:visible',false)"
-    :title="'促销编号：' + code"
+    :title="'促销编号：' + $options.filters.codeSlice(code)"
     width="990px"
     v-loading="loading"
   >

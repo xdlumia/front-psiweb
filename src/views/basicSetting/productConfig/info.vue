@@ -26,7 +26,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="商品编号" prop="commodityCode">
-            <el-input disabled v-model="data.commodityCode"></el-input>
+            <el-input disabled :value="$options.filters.codeSlice(data.commodityCode)"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="24">

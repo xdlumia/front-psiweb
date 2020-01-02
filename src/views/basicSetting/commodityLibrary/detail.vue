@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2020-01-02 12:02:07
+ * @LastEditTime : 2020-01-02 18:22:33
  * @Description: description
  -->
 <template>
@@ -11,7 +11,7 @@
     @close="$emit('update:visible',false)"
     width="990px"
     v-loading="loading"
-    :title="(rowData.name || rowData.goodsName) + ':' + (rowData.goodsCode || rowData.commodityCode)"
+    :title="(rowData.name || rowData.goodsName) + ':' + $options.filters.codeSlice(rowData.goodsCode || rowData.commodityCode)"
     class="good-detail"
   >
     <template slot="button" v-if="button">
@@ -20,6 +20,7 @@
         size="mini"
         type="primary"
         @click="showBeginn = true"
+        :disabled="!!accountState"
       >期初库存</el-button>
       <el-button
         v-if="!rowData.configId && authorityButtons.includes('decorate_goods_mgr_1003')"
@@ -73,7 +74,12 @@
             >
               <el-table-column label="操作" v-if="authorityButtons.includes('psi_goods_initkc_1002')">
                 <template slot-scope="{row}">
-                  <el-button size="mini" type="danger" @click="deleteBeginn(row)">删除</el-button>
+                  <el-button
+                    :disabled="!!accountState"
+                    size="mini"
+                    type="danger"
+                    @click="deleteBeginn(row)"
+                  >删除</el-button>
                 </template>
               </el-table-column>
               <el-table-column label="库房" prop="wmsName"></el-table-column>
@@ -174,18 +180,28 @@ export default {
       etailForm: {},
       status: [],
       beginnForm: {},
-      params: { page: 1, limit: 10, commodityCode: this.code }
+      params: { page: 1, limit: 10, commodityCode: this.code },
+      accountState: 0
     }
   },
   mounted () {
     this.checkVisible();
+    this.commonsystemconfigInfo()
   },
   watch: {
     visible () {
       this.checkVisible();
+      this.commonsystemconfigInfo()
     }
   },
   methods: {
+    // 获取业务设置开账
+    commonsystemconfigInfo () {
+      this.$api.seePsiCommonService.commonsystemconfigInfo(null, 4).then(res => {
+        const { accountState } = JSON.parse(res.data.configJson)
+        this.accountState = accountState
+      })
+    },
     saveGood () {
       this.$refs.addGood && this.$refs.addGood.saveGood()
     },

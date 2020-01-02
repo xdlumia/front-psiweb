@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:47:01
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-10 10:44:25
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2020-01-02 18:09:42
  * @Description: 目标管理
  -->
 <template>
@@ -29,7 +29,7 @@
           v-if="column.columnFields=='code'"
           @click="detail(scope.row)"
           style="padding:0"
-        >{{scope.row.code}}</el-button>
+        >{{scope.row.code | codeSlice}}</el-button>
         <span v-else-if="column.columnFields=='state'">{{stateText[scope.row.state]}}</span>
         <span
           v-else-if="column.columnFields=='begTime'"
@@ -70,7 +70,7 @@ export default {
       default: () => ({ page: 1, limit: 15 })
     }
   },
-  data() {
+  data () {
     return {
       rowData: null,
       code: null,
@@ -113,19 +113,19 @@ export default {
       ]
     }
   },
-  mounted() {
+  mounted () {
   },
   components: {
     addObjective,
     detail
   },
   methods: {
-    detail(row) {
+    detail (row) {
       this.rowData = row
       this.code = row.code
       this.showDetail = true
     },
-    commonwmsmanagerUpdateState(id, state) {
+    commonwmsmanagerUpdateState (id, state) {
       this.$confirm(`是否${state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -141,7 +141,7 @@ export default {
         })
       })
     },
-    commonwmsmanagerLogicDelete(id) {
+    commonwmsmanagerLogicDelete (id) {
       this.$confirm(`是否删除?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -157,10 +157,10 @@ export default {
         })
       })
     },
-    saveFacilitator() {
+    saveFacilitator () {
       this.$refs.addObjective && this.$refs.addObjective.commonserviceproviderSave()
     },
-    refresh() {
+    refresh () {
       this.visible = false
       this.$refs.table.reload()
     }
