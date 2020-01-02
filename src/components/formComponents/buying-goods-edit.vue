@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-02 18:08:14
+ * @LastEditTime: 2020-01-02 18:17:03
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -99,7 +99,7 @@
               <div
                 @click="openCommodityDetail(row.commodityCode)"
                 class="d-text-blue d-elip d-pointer"
-              >{{row.commodityCode}}</div>
+              >{{row.commodityCode|codeSlice}}</div>
             </template>
             <template v-else-if="item.key=='goodsPic'">
               <el-image

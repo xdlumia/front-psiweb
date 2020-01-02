@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-24 11:54:14
+ * @LastEditTime: 2020-01-02 18:46:00
  * @Description: 选择商品 字段已绑定 1
 */
 <template>
@@ -59,7 +59,7 @@
             show-overflow-tooltip
           >
             <template slot-scope="{row}">
-              <span class="d-text-blue">{{row.commodityCode}}</span>
+              <span class="d-text-blue">{{row.commodityCode|codeSlice}}</span>
             </template>
           </el-table-column>
           <el-table-column

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-26 09:53:02
+ * @LastEditTime: 2020-01-02 18:45:40
  * @Description: 商品输入选框 字段已绑定 1
 */
 <template>
@@ -17,12 +17,12 @@
       popper-class="custom-goods-selector"
       remote
       size="mini"
-      v-model="selectGood"
+      :value="selectGood"
     >
       <!-- // 有Sn码的时候，商品code有可能是重复的，所以要snCode—+机器号作为唯一值 -->
       <el-option
         :key="item.snCode"
-        :label="type=='code'?item.commodityCode:item.goodsName"
+        :label="type=='code'?$options.filters.codeSlice(item.commodityCode):item.goodsName"
         :value="sn?(item.snCode+item.robotCode):item.commodityCode"
         v-for="(item,i) in options"
       >
@@ -45,7 +45,7 @@
             :span="18"
             class="d-hidden d-elip"
           >
-            <span :title="item.commodityCode">{{item.commodityCode}}</span>
+            <span :title="item.commodityCode">{{item.commodityCode|codeSlice}}</span>
           </el-col>
         </el-row>
       </el-option>
@@ -114,6 +114,9 @@ export default {
     if (this.value) {
       this.selectGood = this.value;
       this.preSelectGoods = this.value;
+      if(this.type=='code'){
+        this.selectGood=this.$options.filters.codeSlice(this.selectGood)
+      }
     } else {
       this.search();
       this.$root.$on('loadSearch', () => {
@@ -127,6 +130,9 @@ export default {
   watch: {
     value() {
       this.selectGood = this.value || '';
+      if(this.type=='code'){
+        this.selectGood=this.$options.filters.codeSlice(this.selectGood)
+      }
       this.preSelectGoods = this.value || '';
     }
   },
@@ -144,6 +150,9 @@ export default {
           this.options.push(e[0]);
         }
         this.selectGood = e[0].commodityCode;
+        if(this.type=='code'){
+          this.selectGood=this.$options.filters.codeSlice(this.selectGood)
+        }
         this.preSelectGoods = e[0].commodityCode;
       }
       const choose = e.filter(a => !this.codes.includes(a.commodityCode));
@@ -191,9 +200,17 @@ export default {
         this.$emit('choose', goods, 'select');
         if (this.autoClear) {
           this.selectGood = '';
+        }else{
+          if(this.type=='code'){
+            this.selectGood=this.$options.filters.codeSlice(this.selectGood)
+          }
         }
+      this.$forceUpdate()
       } else {
         this.selectGood = this.preSelectGoods || '';
+        if(this.type=='code'){
+          this.selectGood=this.$options.filters.codeSlice(this.selectGood)
+        }
       }
     }
   }
