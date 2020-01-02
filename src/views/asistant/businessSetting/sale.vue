@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-17 11:54:43
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2020-01-02 15:36:47
  * @Description: 业务设置-销售
  -->
 <template>
@@ -26,11 +26,10 @@
           style="margin-top: 20px;"
           @click="save"
         >保存</el-button>
-        <el-button v-if="isEdit" size="small" style="margin-top: 20px;"
-@click="cancel">取消</el-button>
+        <el-button v-if="isEdit" size="small" style="margin-top: 20px;" @click="cancel">取消</el-button>
       </el-col>
     </div>
-    <el-form size="small" :model="sellEntity" :disabled="!isEdit">
+    <el-form size="small" :model="sellEntity" :disabled="!isEdit" label-position="left">
       <fieldset class="d-fieldset mb20">
         <legend>
           <i class="d-round12 d-circle d-bg-blue"></i>
@@ -108,13 +107,60 @@
           </el-col>
         </el-form-item>
       </fieldset>
+      <el-col :span="24">
+        <h3 class="mt10 mb10 d-text-gray b">附加发票税率</h3>
+      </el-col>
+      <fieldset class="d-fieldset mb20">
+        <legend>
+          <i class="d-round12 d-circle d-bg-blue"></i>
+          <span class="mr5">税率设置</span>
+        </legend>
+        <el-col :span="24">
+          <el-button
+            class="ml10 mb10 mt10"
+            type="primary"
+            size="mini"
+            @click="sellEntity.additionalInvoiceRateArray.push('')"
+          >+新增税率</el-button>
+        </el-col>
+        <el-col :span="9">
+          <el-form-item label label-width="0px">
+            <div v-for="(item, index) in sellEntity.additionalInvoiceRateArray" :key="index">
+              <el-form-item
+                label-width="100px"
+                :label="'选项' + (index + 1)"
+                :rules="taxRate"
+                :prop="'additionalInvoiceRateArray.' + index"
+              >
+                <!-- <span style="flex:0 0 90px;color:#606266" class="f14 ml10">选项{{index + 1}}</span> -->
+                <div style="display:flex;">
+                  <el-input
+                    :show-word-limit="false"
+                    v-model="sellEntity.additionalInvoiceRateArray[index]"
+                  >
+                    <span slot="append">%</span>
+                  </el-input>
+                  <el-button
+                    type="text"
+                    class="ml10"
+                    style="padding:0"
+                    @click="sellEntity.additionalInvoiceRateArray.splice(index, 1)"
+                  >
+                    <i class="el-icon-remove-outline f24"></i>
+                  </el-button>
+                </div>
+              </el-form-item>
+            </div>
+          </el-form-item>
+        </el-col>
+      </fieldset>
     </el-form>
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
 export default {
-  data() {
+  data () {
     return {
       loading: false,
       isEdit: false,
@@ -123,17 +169,30 @@ export default {
         quotationState: 0,
         quotationTime: 15,
         stockOutState: 0,
-        stockStandardState: 0
-      }
+        stockStandardState: 0,
+        additionalInvoiceRateArray: []
+      },
+      taxRate: [
+        { required: true, message: '请输入', trigger: 'blur' },
+        {
+          validator: (rule, value, callback) => {
+            if (!/^\d{1,3}(\.\d{1,2})?$/.test(value)) {
+              callback(new Error('请输入0-999，两位小数'))
+            } else {
+              callback()
+            }
+          }
+        }
+      ]
     }
   },
   components: {
   },
-  mounted() {
+  mounted () {
     this.commonsystemconfigInfo()
   },
   methods: {
-    save() {
+    save () {
       const params = {
         configType: 1,
         configJson: JSON.stringify(this.sellEntity)
@@ -141,7 +200,7 @@ export default {
       this.commonsystemconfigSave(params)
     },
     // 保存接口
-    commonsystemconfigSave(params) {
+    commonsystemconfigSave (params) {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigSave(params).finally(() => {
         this.commonsystemconfigInfo()
@@ -149,18 +208,18 @@ export default {
         this.isEdit = false
       })
     },
-    cancel() {
+    cancel () {
       this.isEdit = false
       this.handleDefault()
     },
     // 处理返回数据
-    handleDefault() {
+    handleDefault () {
       Object.keys(this.sellEntity).forEach(key => {
         this.sellEntity[key] = this.tempObj[key] || this.sellEntity[key]
       })
     },
     // 获取详情
-    commonsystemconfigInfo() {
+    commonsystemconfigInfo () {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigInfo(null, 1).then(res => {
         this.tempObj = JSON.parse(res.data.configJson)

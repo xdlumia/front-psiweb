@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-31 14:58:33
+ * @LastEditTime : 2020-01-02 12:02:07
  * @Description: description
  -->
 <template>
@@ -15,7 +15,12 @@
     class="good-detail"
   >
     <template slot="button" v-if="button">
-      <el-button size="mini" type="primary" @click="showBeginn = true">期初库存</el-button>
+      <el-button
+        v-if="authorityButtons.includes('psi_goods_initkc_1001')"
+        size="mini"
+        type="primary"
+        @click="showBeginn = true"
+      >期初库存</el-button>
       <el-button
         v-if="!rowData.configId && authorityButtons.includes('decorate_goods_mgr_1003')"
         size="mini"
@@ -66,9 +71,14 @@
               api="seePsiWmsService.wmsinventorycommodityinitialinfoList"
               :params="params"
             >
+              <el-table-column label="操作" v-if="authorityButtons.includes('psi_goods_initkc_1002')">
+                <template slot-scope="{row}">
+                  <el-button size="mini" type="danger" @click="deleteBeginn(row)">删除</el-button>
+                </template>
+              </el-table-column>
               <el-table-column label="库房" prop="wmsName"></el-table-column>
               <el-table-column label="采购单价（元）" prop="purchasePrice"></el-table-column>
-              <el-table-column label="采购数量" prop="num"></el-table-column>
+              <el-table-column label="期初库存数量" prop="num"></el-table-column>
               <el-table-column label="期初调价值（元）" prop="originalPriceAdjustment">
                 <template slot-scope="{row}">{{row.originalPriceAdjustment || 0}}</template>
               </el-table-column>
@@ -81,6 +91,7 @@
         </el-form>
       </el-tab-pane>
     </el-tabs>
+    <!-- 编辑商品  -->
     <el-dialog :visible.sync="showEdit" title v-dialogDrag :show-close="false" width="1000px">
       <div slot="title" style="display:flex;">
         <h3 style="flex:1;text-align:center;">编辑商品</h3>
@@ -91,6 +102,31 @@
       </div>
       <good :code="code" :isEdit="true" @refresh="refresh" v-if="showEdit" ref="addGood"></good>
     </el-dialog>
+    <!-- 删除期初 -->
+    <el-dialog top="25vh" :visible.sync="showDeleteBeginn" title="删除期初" v-dialogDrag width="800px">
+      <h2 class="b ac">是否删除期初库存数据和已录入的期初商品</h2>
+      <el-table :data="deleteBeginnData">
+        <el-table-column label="库房" prop="wmsName"></el-table-column>
+        <el-table-column label="采购单价（元）" prop="purchasePrice"></el-table-column>
+        <el-table-column label="期初库存数量" prop="num"></el-table-column>
+        <el-table-column width="140" label="期初调价值（元）" prop="originalPriceAdjustment">
+          <template slot-scope="{row}">{{row.originalPriceAdjustment || 0}}</template>
+        </el-table-column>
+        <el-table-column label="创建人" prop="creatorName"></el-table-column>
+        <el-table-column label="创建时间" prop="createTime">
+          <template slot-scope="{row}">{{row.createTime | timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
+        </el-table-column>
+      </el-table>
+      <span slot="footer" class="ac">
+        <el-button
+          size="mini"
+          type="primary"
+          @click="wmsinventorydetailLogicDelete(deleteBeginnData[0].id)"
+        >确 定</el-button>
+        <el-button size="mini" @click="showDeleteBeginn = false">取 消</el-button>
+      </span>
+    </el-dialog>
+    <!-- 期初库存录入 -->
     <opening-stock
       :visible.sync="showBeginn"
       ref="addPromotion"
@@ -131,6 +167,8 @@ export default {
       noPic: require('@/assets/img/no-pic.png'),
       showEdit: false,
       showBeginn: false,
+      showDeleteBeginn: false,
+      deleteBeginnData: [],
       loading: false,
       showPop: false,
       etailForm: {},
@@ -167,6 +205,17 @@ export default {
         })
       })
 
+    },
+    deleteBeginn (row) {
+      this.showDeleteBeginn = true
+      this.deleteBeginnData = [row]
+    },
+    wmsinventorydetailLogicDelete (id) {
+      this.$api.seePsiWmsService.wmsinventorydetailLogicDelete({ id }).then(res => {
+        this.$refs.detail.getGoodsDetailV2(this.code)
+        this.$refs.table.reload()
+        this.showDeleteBeginn = false
+      })
     },
     refresh () {
       this.$refs.detail.getGoodsDetailV2(this.code)
