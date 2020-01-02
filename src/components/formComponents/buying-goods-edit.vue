@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-02 14:43:15
+ * @LastEditTime: 2020-01-02 14:44:39
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -324,7 +324,8 @@ export default {
     showConfig: Boolean,
     buttonChoose: Boolean,
     kinds: Array,
-    noCard: Boolean
+    noCard: Boolean,
+    preChooseGoodCheck: Function
   },
   data() {
     // prettier-ignore
@@ -600,6 +601,9 @@ export default {
     },
     // 选择商品
     choose(e) {
+      if (this.preChooseGoodCheck) {
+        e = this.preChooseGoodCheck(e) || []
+      }
       e = e.map(item => {
         item.adjustPriceMoney = item.adjustPriceMoney || 0;
         this.resetColumnsPropForChoose(item)
