@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-31 17:35:00
+ * @LastEditTime: 2020-01-02 09:25:08
  * @Description: table-view组件
  * 在原有d-table组件上增加以下功能
  * @params title 表格顶部title
@@ -137,6 +137,7 @@
         show-overflow-tooltip
         :label="item.columnName"
         :min-width="item.width || 180"
+        :sortable="item.columnFields == 'createTime' ? 'custom' : false"
         :fixed="item.fixed"
       >
         <template slot-scope="scope">
@@ -308,8 +309,6 @@ export default {
         }
         // 格式化导出接口
         let apiFn = this.exportApi.split('.').reduce((api, item) => api[item], this.$api)
-
-
         apiFn(params)
           .then(res => {
             if (res.data) {

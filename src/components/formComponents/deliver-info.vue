@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 17:40:27
+ * @LastEditTime: 2019-12-31 18:10:32
  * @Description: 发货信息 1
 */
 <template>
@@ -79,7 +79,7 @@ export default {
         { label: '销售预计发货时间', prop: 'salesExpectedShipmentsTime', type: 'date', rules: [{ required: true && !this.disabled, trigger: 'blur' }], },
         // { label: '客户名称', prop: 'clientName', type: 'input', rules: [{ required: false, trigger: 'blur' }], },
         { label: '客户联系人', prop: 'clientLinkman', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }, { type: 'name' }], },
-        { label: '客户联系电话', prop: 'clientPhone', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }, { type: 'phone' }], },
+        { label: '客户联系电话', prop: 'clientPhone', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }, { type: 'telePhone' }], },
         { label: '客户收货地址', prop: 'clientReceivingAddress', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' },], },
         { label: '销售要求到货时间', prop: 'salesRequireArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
         { label: '采购预计到货时间', prop: 'procurementExpectedArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
