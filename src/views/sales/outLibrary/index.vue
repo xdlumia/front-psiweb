@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 20:18:09
+ * @LastEditTime: 2020-01-02 17:52:45
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -27,7 +27,7 @@
           v-if="column.columnFields=='shipmentCode'"
           class="d-text-blue d-pointer"
           @click="eventHandle('detailVisible',row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
 
         <!-- 采购预计到货时间 -->
         <span
