@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-10-28 17:06:25
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-10-29 11:16:55
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2020-01-02 14:43:58
  * @Description: description
  -->
 <template>
@@ -29,18 +29,19 @@
 import sale from './sale' // 销售
 import warehouse from './warehouse' // 库房
 import finance from './finance' // 财务
-import statement from './statement' // 财务
-// import common from './common' // 财务
-import common from 'see-web-system/dist/components/businessSetting/companyAccount/index' 
+import statement from './statement' // 报表
+import account from './account' // 开账
+import common from 'see-web-system/dist/components/businessSetting/companyAccount/index'
 const defaultComponent = [
   { component: sale, componentName: 'sale', sort: 1, label: '销售', authorityCode: '' },
   { component: warehouse, componentName: 'warehouse', sort: 2, label: '库房', authorityCode: '' },
   { component: finance, componentName: 'finance', sort: 3, label: '财务', authorityCode: '' },
   { component: statement, componentName: 'statement', sort: 4, label: '报表', authorityCode: '' },
-  { component: common, componentName: 'common', sort: 5, label: '公共', authorityCode: '' }
+  { component: common, componentName: 'common', sort: 5, label: '公司', authorityCode: '' },
+  { component: account, componentName: 'account', sort: 5, label: '开账', authorityCode: '' }
 ]
 export default {
-  data() {
+  data () {
     return {
       defaultComponent,
       syscode: this.$local.fetch('userInfo').syscode,
@@ -52,11 +53,12 @@ export default {
     warehouse,
     finance,
     statement,
-    common
+    common,
+    account
     // hotel
   },
-  mounted() { },
-  created() {
+  mounted () { },
+  created () {
     // for (const item of this.$options.defaultSlot) {
     //   if (this.authorityButtons.includes(item.authorityCode)) {
     //     this.componentActive = item.componentName

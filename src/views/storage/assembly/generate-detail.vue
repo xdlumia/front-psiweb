@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2020-01-02 14:16:47
  * @Description: 选择组装商品
 */
 <template>

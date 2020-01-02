@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-09-24 14:11:28
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-17 16:37:47
+ * @LastEditors  : web.王晓冬
+ * @LastEditTime : 2020-01-02 17:47:54
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -27,6 +27,7 @@ import './assets/css/editor.css'
 import './utils/verify.js'
 import './utils/anchor.js'
 import './utils/utils'
+import './utils/filters'
 import citys from './utils/citys'
 
 import './api'
