@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-17 09:04:39
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2020-01-02 13:53:59
  * @Description: 销售和采购调价单
 */
 <template>
@@ -50,6 +50,7 @@
             ]"
             :sort="sort"
             :showSummary="false"
+            :preChooseGoodCheck="preChooseGoodCheck"
             title="商品信息"
           >
             <template
@@ -143,6 +144,17 @@ export default {
     },
   },
   methods: {
+    preChooseGoodCheck(goods){
+      let canAdjustGoods = goods.filter(item=>item[this.adjustPriceType==1?'saleRefPriceConfig':'inventoryPriceConfig']==2);
+      if(goods.length!=canAdjustGoods.length){
+        this.$message({
+          message:`商品${this.adjustPriceType==1?'销售参考价':'库存成本价'}为计算值，无法进行调价`,
+          showClose:true,
+          type:'warning'
+        })
+      }
+      return canAdjustGoods;
+    },
     getDetail() {
       if (this.rowData) return this.rowData;
       return {
