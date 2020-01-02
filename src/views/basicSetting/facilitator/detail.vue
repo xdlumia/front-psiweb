@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-10 10:35:44
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2020-01-02 18:25:01
  * @Description: description
  -->
 <template>
@@ -10,7 +10,7 @@
     :status="status"
     :visible.sync="showDetailPage"
     @close="$emit('update:visible',false)"
-    :title="'服务商编号：' + code"
+    :title="'服务商编号：' + $options.filters.codeSlice(code)"
     width="990px"
     v-loading="loading"
   >
@@ -97,7 +97,7 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     return {
       activeTab: 'detail',
       showEdit: false,
@@ -108,24 +108,24 @@ export default {
       status: []
     }
   },
-  mounted() {
+  mounted () {
     this.checkVisible();
     this.commonserviceproviderInfoBycode()
   },
   watch: {
-    visible() {
+    visible () {
       this.checkVisible();
     }
   },
   methods: {
-    refresh() {
+    refresh () {
       this.commonserviceproviderInfoBycode()
       this.$emit('refresh')
     },
-    checkVisible() {
+    checkVisible () {
       this.showDetailPage = this.visible;
     },
-    commonserviceproviderInfoBycode() {
+    commonserviceproviderInfoBycode () {
       this.loading = true
       this.$api.seePsiCommonService.commonserviceproviderInfoBycode(null, this.code).then(res => {
         this.detailForm = res.data || {}
@@ -143,7 +143,7 @@ export default {
         this.loading = false
       })
     },
-    fbillGetClientFbillStatistics() {
+    fbillGetClientFbillStatistics () {
       this.$api.seePsiFinanceService.fbillGetClientFbillStatistics({
         clientType: 2,
         clientId: this.detailForm.id,
@@ -153,7 +153,7 @@ export default {
         this.totalAmount = res.data
       })
     },
-    commonserviceproviderUpdate(id, state) {
+    commonserviceproviderUpdate (id, state) {
       this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

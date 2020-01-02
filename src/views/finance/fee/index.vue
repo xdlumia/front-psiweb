@@ -58,7 +58,7 @@
           v-if="column.columnFields=='costCode'"
           @click="detail(row)"
           style="padding:0"
-        >{{row.costCode}}</el-button>
+        >{{row.costCode | codeSlice}}</el-button>
         <span v-else-if="column.columnFields=='state'">{{stateText[row.state]}}</span>
         <span v-else-if="column.columnFields=='settleStatus'">{{billText[row.settleStatus]}}</span>
         <span v-else-if="column.columnFields=='feeTypeCode'">{{value | dictionary('ZD_DY_LX')}}</span>

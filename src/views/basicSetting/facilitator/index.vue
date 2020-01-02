@@ -29,7 +29,7 @@
           v-if="column.columnFields=='code'"
           @click="detail(scope.row)"
           style="padding:0"
-        >{{scope.row.code}}</el-button>
+        >{{scope.row.code | codeSlice}}</el-button>
         <span v-else-if="column.columnFields=='state'">{{scope.row.state ? '已停用' : '已启用'}}</span>
         <span v-else>{{value}}</span>
       </template>

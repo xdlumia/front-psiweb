@@ -3,7 +3,7 @@
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
  * @LastEditTime: 2019-12-13 17:14:38
- * @Description: 销售-销售退货单
+ * @Description: 待开票
  */
 <template>
   <div>
@@ -76,7 +76,7 @@
             @click="openBusPage(row)"
             class="f12"
             type="primary"
-          >{{value}}</el-link>
+          >{{value | codeSlice}}</el-link>
         </span>
 
         <span v-else-if="column.columnFields=='state'">{{stateText[row.state]}}</span>
