@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-02 11:32:13
+ * @LastEditTime: 2020-01-02 14:17:16
  * @Description: 采购调价单
 */
 <template>
@@ -207,8 +207,6 @@ export default {
         });
         data.commodityList = commodityList || [];
         // 如果是销售调价单并且审核通过后
-        console.log(this.adjustPriceType == 1 && data.state == 2);
-
         if (this.adjustPriceType == 1 && data.state == 2) {
           data.commodityList.map(item => {
             item.saleReferencePrice = Number(item.saleReferencePrice || 0) - Number(item.adjustPriceMoney || 0)
