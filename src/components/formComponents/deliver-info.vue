@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 10:54:30
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2020-01-03 15:08:16
  * @Description: 发货信息 1
 */
 <template>
@@ -73,7 +73,12 @@
               v-model="data[item.prop]"
               @change="serciceChange"
             >
-              <el-option :key="item.code" :label="item.serviceName" :value="item.id" v-for="item in serviceOptions" />
+              <el-option
+                :key="item.code"
+                :label="item.serviceName"
+                :value="item.id"
+                v-for="item in serviceOptions"
+              />
             </el-select>
           </el-form-item>
         </el-col>
@@ -108,8 +113,8 @@ export default {
         { label: '客户联系人', prop: 'clientLinkman', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }, { type: 'name' }], },
         { label: '客户联系电话', prop: 'clientPhone', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' }, { type: 'telePhone' }], },
         { label: '客户收货地址', prop: 'clientReceivingAddress', type: 'input', rules: [{ required: true && !this.disabled, trigger: 'blur' },], },
-        { label: '服务商名称', prop: 'facilitator', type: 'serviceProvider', rules: [{required:true}] },
-        { label: '服务类型', prop: 'serveType', type: 'serviceCodeSelect', dictName:'PSI_FWS_FWLX', exclude:'serviceFilter', rules: [{required:true}] },
+        { label: '服务商名称', prop: 'facilitator', type: 'serviceProvider', rules: [{ required: true }] },
+        { label: '服务类型', prop: 'serveType', type: 'serviceCodeSelect', dictName: 'PSI_FWS_FWLX', exclude: 'serviceFilter', rules: [{ required: true }] },
         { label: '销售要求到货时间', prop: 'salesRequireArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
         { label: '采购预计到货时间', prop: 'procurementExpectedArrivalTime', type: 'date', rules: [{ required: false, trigger: 'blur' }], },
         { label: '备注', prop: 'note', type: 'note', maxlength: 200, rules: [{ required: false, trigger: 'blur' }], },
@@ -124,21 +129,21 @@ export default {
       return this.Items.filter(item => !this.hide.includes(item.prop))
     }
   },
-  mounted(){
-    if(this.data){
+  mounted() {
+    if (this.data) {
       this.getServiceInfo()
     }
   },
-  watch:{
-    'data.facilitator':{
-      handler(){
+  watch: {
+    'data.facilitator': {
+      handler() {
         this.getServiceInfo()
       },
       deep: true,
       immediate: true
     }
   },
-  methods:{
+  methods: {
     async getServiceInfo() {
       if (
         !this.data ||
@@ -181,11 +186,11 @@ export default {
       this.serviceOptions = data;
       this.serviceLoading = false;
     },
-    serciceChange(){
+    serciceChange() {
       let service = this.serviceOptions.find(
         a => a.id == this.data.facilitator
       );
-      if(service){
+      if (service) {
         this.data.bmcName = service.serviceName
       }
     }
