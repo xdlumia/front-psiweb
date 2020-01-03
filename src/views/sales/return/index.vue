@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 15:37:49
+ * @LastEditTime: 2020-01-03 15:01:03
  * @Description: 销售-销售退货单
  */
 <template>
@@ -19,8 +19,16 @@
       :params="Object.assign(queryForm,params)"
       :mergeFilter="true"
       :filterOptions="filterOptions"
+      @selection-change="selectionChange"
     >
-
+      <!-- 自定义按钮功能 -->
+      <template v-slot:button>
+        <el-button
+          size="mini"
+          @click="eventHandle('quoteCopyVisible')"
+          v-if="authorityButtons.includes('psi_sales_quote_04')"
+        >复制生成报价单</el-button>
+      </template>
       <template slot-scope="{column,row,value}">
         <!-- 退货单编号 -->
         <span
@@ -43,6 +51,14 @@
         <span v-else>{{value}}</span>
       </template>
     </table-view>
+    <!-- 复制 -->
+    <quote-add
+      :visible.sync="quoteCopyVisible"
+      type="copy"
+      :rowData="rowData"
+      :code="rowData.quotationCode"
+      @reload="$refs.table.reload()"
+    ></quote-add>
     <!-- 销售退货单详情 -->
     <returnDetails
       v-if="returnVisible"
@@ -62,8 +78,10 @@
   </div>
 </template>
 <script>
+import quoteAdd from '../quote/add'
 import returnDetails from './details' //销售退货单详情
 import outLibDetails from '../outLibrary/outLib-details' //销售出库单详情
+
 let filterOptions = [
   { label: '退货数量', prop: 'TotalRefundNumber', default: true, type: 'numberrange' },
 ]
@@ -73,6 +91,7 @@ export default {
   components: {
     returnDetails,
     outLibDetails,
+    quoteAdd
   },
   props: {
     // 是否显示按钮
@@ -108,8 +127,10 @@ export default {
       },
       // 筛选数据
       filterOptions: filterOptions,
+      selectionData: [],
       // 当前行数据
       rowData: {},
+      quoteCopyVisible: false,
       returnVisible: false,
       outLibVisible: false,
     };
@@ -120,8 +141,24 @@ export default {
   watch: {
   },
   methods: {
+    // 多选
+    selectionChange(val) {
+      this.selectionData = val
+    },
     // 按钮功能操作
     eventHandle(type, row) {
+      if (type === 'quoteCopyVisible') {
+        if (this.selectionData.length != 1) {
+          this.$message.error({
+            showClose: true,
+            message: '复制生成报价单只能选择一条数据'
+          })
+          return
+        }
+        this.rowData = this.selectionData[0]
+        this[type] = true
+        return
+      }
       this[type] = true
       this.rowData = row ? row : {}
       return

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 14:50:29
+ * @LastEditTime: 2020-01-03 14:54:07
  * @Description: 销售-客户管理
  */
 <template>
@@ -141,6 +141,7 @@ export default {
       // 筛选框数据
       filterOptions: [
         { label: '客户名称', prop: 'clientName', default: true, type: 'text' },
+        { label: '客户关联', prop: 'customerAssociated', default: true, type: 'text' },
       ]
     };
   },
