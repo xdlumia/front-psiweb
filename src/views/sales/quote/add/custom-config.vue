@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-24 15:43:40
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 12:36:17
+ * @LastEditTime: 2020-01-03 13:16:16
  * @Description: 自由模式确定配置单
 */
 <template>

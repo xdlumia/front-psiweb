@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 10:51:35
+ * @LastEditTime: 2020-01-03 13:15:41
  * @Description: file content
 */
 <template>
@@ -255,7 +255,7 @@ export default {
         }
         if(!this.strictConfirmConfig){
           wholeListData = JSON.parse(JSON.stringify(wholeList)).map(item=>{
-            item.commonGoodConfigDetailsEntityList = item.children.filter(item=>item.selected)
+            item.commonGoodConfigDetailsEntityList = this.$refs.confirmInfo.flatten(item.children).filter(item=>item.selected)
             item.commonGoodConfigDetailsEntityList.map(sub=>{
               sub.parentCommodityCode = item.goodsCode
               sub.isMachine = 1
