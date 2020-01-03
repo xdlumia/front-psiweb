@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-26 15:14:21
+ * @LastEditTime: 2020-01-03 10:51:35
  * @Description: file content
 */
 <template>
@@ -162,6 +162,9 @@ export default {
         totalNumber: '', //总计数量,
         totalSalesAmount: '', //总计销售价
         totalCostAmount: '',//  销售参考价总计
+        facilitator: '',
+        serveType: '',
+        bmcName: '',
       }
     }
   },
