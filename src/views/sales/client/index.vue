@@ -2,12 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 20:04:55
+ * @LastEditTime: 2020-01-03 14:50:29
  * @Description: 销售-客户管理
  */
 <template>
   <div>
     <table-view
+      class="client-table"
       busType="41"
       ref="table"
       :filter="true"
@@ -46,6 +47,36 @@
         <span v-else-if="column.columnFields=='grade'">{{value | dictionary('PSI_KH_KHJB')}}</span>
         <span v-else>{{value}}</span>
       </template>
+      <!-- 右侧内容 -->
+      <el-aside
+        slot='tree'
+        width="250px"
+        class="choose-aside fl"
+      >
+        <el-input
+          class="mt5 mb5 ml5"
+          size="small"
+          v-model="filterText"
+          placeholder="搜索责任人"
+        ></el-input>
+
+        <el-button
+          type="text"
+          class="ml10"
+          @click="clickAll"
+        >全部</el-button>
+        <el-tree
+          style="height: calc(100vh - 220px);"
+          class="ml10 d-auto-x"
+          :data="treeData"
+          @node-click="handleNodeClick"
+          default-expand-all
+          :props="{children: 'children', label: 'deptName' }"
+          :filter-node-method="filterNode"
+          ref="tree"
+        >
+        </el-tree>
+      </el-aside>
     </table-view>
 
     <!-- 客户详情  有些信息是点击后才加载 所以使用v-if-->
@@ -102,6 +133,8 @@ export default {
         page: 1,
         limit: 20,
       },
+      filterText: '',
+      treeData: [],
       rowData: {},
       addVisible: false,
       detailVisible: false,
@@ -111,8 +144,41 @@ export default {
       ]
     };
   },
+  watch: {
+    filterText(val) {
+      this.$refs.tree.filter(val);
+    }
+  },
+  created() {
+    this.getTreeData()
+  },
   methods: {
-    // 按钮功能操作
+    // 重新加载表格
+    reload() {
+      this.$refs.table.reload()
+    },
+    //请求树列表的数据
+    getTreeData() {
+      this.$api.bizSystemService.getDeptList({ type: 1 })
+        .then(res => {
+          this.treeData = res.data || []
+        })
+        .finally(() => {
+
+        })
+    },
+    //点击树节点
+    handleNodeClick(data) {
+
+    },
+    clickAll() {
+      this.params.classId = null
+      this.reload()
+    },
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.className.indexOf(value) !== -1;
+    },
     // 按钮功能操作
     eventHandle(type, row) {
       this.rowData = row ? row : {}
@@ -121,3 +187,14 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.choose-aside {
+  border: 1px solid #f2f2f2;
+  border-bottom: none;
+  float: left;
+}
+/deep/.client-table .d-table {
+  float: left;
+  width: calc(100% - 250px) !important;
+}
+</style>

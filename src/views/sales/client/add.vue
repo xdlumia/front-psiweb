@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-10 16:15:28
+ * @LastEditTime: 2020-01-03 11:18:48
  * @Description: 客户管理-新增客户
 */
 <template>
@@ -97,6 +97,8 @@ export default {
           // string
         ],
         source: '', // 示例：客户来源,
+        responsibleUser: '',//客户责任人 
+        customerAssociated: '', //客户关联
         taxpayersNum: '', // 示例：纳税人识别号,
         trade: '', // 示例：行业
       },
