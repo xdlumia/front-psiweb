@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 11:25:58
+ * @LastEditTime: 2020-01-03 16:32:58
  * @Description: 附加发票 字段对应 但是公式还没计算
 */
 <template>
@@ -93,6 +93,7 @@ export default {
   },
   methods: {
     checkMoney(rule,value,cb){
+      if(String(value)==''||value===undefined||value===null)return cb()
       value = +Number(value)||0
       if(value>0)cb()
       else cb(new Error('金额必须大于0'))

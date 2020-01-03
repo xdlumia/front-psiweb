@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 15:12:16
+ * @LastEditTime: 2020-01-03 16:37:40
  * @Description: 报价单详情
 */
 <template>
@@ -41,6 +41,7 @@
         :model="form"
         size="mini"
         label-position="top"
+        class="hide-form-error"
       >
         <el-tabs v-model="activeName">
           <el-tab-pane

@@ -2,6 +2,16 @@ const MOCK_ADDRESS = '/mock/5dbfdd1bbc54fc3da273f35d/see-psi-sale-service'
 
 export default {
   __mockAddress: MOCK_ADDRESS,
+  
+  /**
+   * @tag 报价单
+   * @description 获取附加发票账期
+   */
+  salesquotationGetAdditionalInvoiceFbill: {
+    url: '/salesquotation/getAdditionalInvoiceFbill',
+    methods: 'get',
+    mock: false
+  },
   /**
    * @tag 单据业务商品表
    * @description 查询商品业务数据

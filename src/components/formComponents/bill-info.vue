@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-09 11:14:24
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2020-01-03 17:07:16
  * @Description: 账期信息
  */
 <template>
@@ -52,7 +52,7 @@
       <el-table-column
         prop="paymenDays"
         label="账期"
-        width="100"
+        width="140"
         show-overflow-tooltip
       >
       </el-table-column>
@@ -111,7 +111,7 @@
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.payAmount`"
           >
             <el-input
-              :disabled="disabled || billDisable || scope.$index==0"
+              :disabled="disabled || billDisable || scope.$index==firstBillIndex || preBills.includes(scope.row.paymenDays)"
               size="mini"
               placeholder="请输入"
               @input="payAmountChange(scope)"
@@ -151,7 +151,9 @@ export default {
       handler(val) {
         // 如果是现结
         if (val === 'PSI_SALE_JZFS-2') {
-          this.data.shipmentFinanceSaveVoList = [{
+          let prebills = this.data.shipmentFinanceSaveVoList.filter(item=>this.preBills.includes(item.paymenDays))
+          prebills.map(item=>item.payTime=new Date().getTime())
+          this.data.shipmentFinanceSaveVoList = [...prebills,{
             feeDetailCode: '', // 费用明细",
             feeTypeCode: '', // 费用类型",
             isBillFee: 1, // 0,
@@ -166,37 +168,44 @@ export default {
   },
   data() {
     return {
-
+      // 内置账期，不可更改，不可删除，不参与账期计算
+      preBills:['附加发票']
     }
   },
   computed: {
     // 结账方式如果是现结不能增加账期 不能修改操作
     billDisable() {
       return this.data.paymentTypeCode == 'PSI_SALE_JZFS-2'
+    },
+    firstBillIndex(){
+      let i = 0;
+      this.data.shipmentFinanceSaveVoList.some((item,a)=>{
+        if(!this.preBills.includes(item.paymenDays)){
+          i=a
+          return true;
+        }
+      })
+      return i
     }
   },
   methods: {
-    payAmountChange(scope) {
-      let row = scope.row
-      let payAmount = row.payAmount
-      let index = scope.$index
+    payAmountChange() {
       let total = 0;
-      if (index != 0) {
-        total = this.data.shipmentFinanceSaveVoList.filter((item, index) => index != 0).reduce((sum, curr, index) => {
-          const val = Number(curr.payAmount)
-          return sum + val
-        }, 0)
-      }
-      this.data.shipmentFinanceSaveVoList[0].payAmount = +Number(this.data.totalAmount - total).toFixed(2)
+      total = this.data.shipmentFinanceSaveVoList.filter((item, index) => index != this.firstBillIndex&&!this.preBills.includes(item.paymenDays)).reduce((sum, curr, index) => {
+        const val = Number(curr.payAmount)
+        return sum + val
+      }, 0)
+      this.data.shipmentFinanceSaveVoList[this.firstBillIndex].payAmount = +Number(this.data.totalAmount - total).toFixed(2)
     },
     // 删除账单
     delBill(index) {
       this.data.shipmentFinanceSaveVoList.splice(index, 1)
       // 重新修改账期名称
-      this.data.shipmentFinanceSaveVoList.map((item, index) => {
+      this.data.shipmentFinanceSaveVoList.filter(item=>!this.preBills.includes(item.paymenDays)).map((item, index) => {
         item.paymenDays = `第${index + 1}期`
         return item
       })
+      this.payAmountChange()
     },
     addBill() {
       // 账期
@@ -224,7 +233,15 @@ export default {
             const val = Number(curr)
             return sum + curr
           }, 0)
-          if (tatal > this.data.totalAmount) {
+          let billTotal = data.filter(item=>!this.preBills.includes(item.paymenDays)).map(item=>Number(item.payAmount||0)).reduce((sum, curr) => {
+            const val = Number(curr)
+            return sum + curr
+          }, 0)
+          let extrasTotal = data.filter(item=>this.preBills.includes(item.paymenDays)).map(item=>Number(item.payAmount||0)).reduce((sum, curr) => {
+            const val = Number(curr)
+            return sum + curr
+          }, 0)
+          if (billTotal > this.data.totalAmount) {
             this.$message({
               message: '所有账期的付款金额不能大于或小于总价',
               type: 'error',
@@ -232,7 +249,7 @@ export default {
             });
           }
           // 最大不能超过销售单总金额
-          sums[index] = this.data.totalAmount
+          sums[index] = +Number(this.data.totalAmount+extrasTotal).toFixed(2)
         }
       });
       return sums
