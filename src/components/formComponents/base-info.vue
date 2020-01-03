@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 14:52:54
+ * @LastEditTime: 2020-01-03 15:13:02
  * @Description: 基本信息 1
  */
 <template>
@@ -91,7 +91,7 @@ export default {
         { label: '客户级别', prop: 'grade', type: 'select', rules: [{ required: false }], dicName: 'PSI_KH_KHJB', },
         { label: '行业', prop: 'trade', type: 'select', rules: [{ required: false }], dicName: 'PSI_KH_HY', },
         { label: '来源', prop: 'source', type: 'select', rules: [{ required: false }], dicName: 'PSI_KHGL_LY', },
-        { label: '客户责任人', prop: 'responsibleUser', type: 'select', rules: [{ required: false }], },
+        { label: '客户责任人', prop: 'responsibleUser', type: 'input', rules: [{ required: false }], },
         { label: '客户关联', prop: 'customerAssociated', type: 'input', rules: [{ required: false }], },
         { label: '详细地址', prop: 'address', type: 'input', maxlength: 64, span: 16, rules: [{ required: false }], },
         { label: '备注', prop: 'note', maxlength: 200, span: 16, type: 'input', rules: [{ required: false }], },
