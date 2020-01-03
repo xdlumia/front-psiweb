@@ -729,6 +729,12 @@ export default {
     'mock': false,
     'methods': 'post'
   },
+  // 追加合同附件
+  salesshipmentAdditionalcontractAttachs: {
+    'url': '/salesshipment/additionalcontractAttachs',
+    'mock': false,
+    'methods': 'post'
+  },
 
   // 审核通过
   salesshipmentPassApproval: {

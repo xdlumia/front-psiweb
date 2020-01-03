@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 19:48:42
+ * @LastEditTime: 2020-01-03 20:24:18
  * @Description: 销售出库单详情
 */
 <template>
@@ -146,6 +146,16 @@
       @reload="setEdit(),$reload()"
     >
     </emailAssure>
+    <!-- 追加合同收回附件 -->
+    <emailAssure
+      :params="{id:detail.id}"
+      type="contractAttachsInfo"
+      v-if="addBackVisible"
+      :visible.sync="addBackVisible"
+      :rowData="detail"
+      @reload="setEdit(),$reload()"
+    >
+    </emailAssure>
   </div>
 </template>
 <script>
@@ -193,9 +203,10 @@ export default {
         { label: '合同完善', type: 'primary', authCode: 'psi_sales_outlibrary_10' },
         { label: '审核采购时间', type: 'primary', authCode: 'psi_sales_outlibrary_12' },
         { label: '合同收回', type: 'primary', authCode: 'psi_sales_outlibrary_13' },
-        // TODO 邮件担保权限码没有加
         { label: '邮件担保', type: 'primary', authCode: 'psi_sales_outlibrary_20' },
         { label: '追加合同附件', type: 'primary', authCode: 'psi_sales_outlibrary_11' },
+        // TODO 权限码21
+        { label: '追加合同收回附件', type: 'primary', authCode: 'psi_sales_outlibrary_11' },
       ],
       stateText: {
         '-1': '新建',
@@ -215,8 +226,8 @@ export default {
         '0': ['撤销审核', '审核通过', '驳回', '合同完善', '追加合同附件'], //审核中
         '1': ['审核采购时间', '追加合同附件'], //请购处理
         '2': ['合同收回', '邮件担保', '追加合同附件'], //合同收回
-        '3': ['终止', '追加合同附件'], //已通过
-        '4': ['生成退货单', '生成换货单', '开票申请', '追加合同附件'], //已完成
+        '3': ['终止', '追加合同附件', '追加合同收回附件'], //已通过
+        '4': ['生成退货单', '生成换货单', '开票申请', '追加合同附件', '追加合同收回附件'], //已完成
         '5': ['提交审核', '编辑', '删除', '编辑合同'], //已驳回
         '6': ['生成退货单'] //已终止
       },
@@ -246,6 +257,7 @@ export default {
       timeApprovalVisible: false, //审核采购时间
       emailVisible: false, //邮件担保
       contractVisible: false,//合同收回
+      addBackVisible: false, //追加收回合同附件
       collectInvoiceData: {},
 
     }
@@ -275,7 +287,11 @@ export default {
     isShowButton(label) {
       let state = this.detail.state || 0
       let nodes = (this.detail.apprpvalNode || '').split(',')
-      if (state == 4 && label == '开票申请') {
+      if (label == '追加合同收回附件') {
+        // 如果 节点里有07 不显示审核通过
+        return this.detail.contractRecycleState == 1
+      }
+      else if (state == 4 && label == '开票申请') {
         // 如果 节点里有07 不显示审核通过
         return this.detail.isFinvoice == 0
       }
@@ -301,6 +317,7 @@ export default {
         '审核采购时间': 'timeApprovalVisible',
         '邮件担保': 'emailVisible',
         '合同收回': 'contractVisible',
+        '追加合同收回附件': 'addBackVisible',
       }
       // 需要弹出操作的功能
       if (labelObj.hasOwnProperty(label)) {

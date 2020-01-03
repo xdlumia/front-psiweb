@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 19:50:18
+ * @LastEditTime: 2020-01-03 20:22:33
  * @Description: 邮件担保 or 合同收回
 */
 <template>
@@ -15,7 +15,7 @@
     >
       <!-- 确定按钮 -->
       <div slot="title">
-        <span>确认邮件担保</span>
+        <span>{{type == 'contractAttachsInfo'?'确认合同收回':'确认邮件担保'}}</span>
         <div class="fr mr30">
           <el-button
             type="primary"
@@ -124,8 +124,11 @@ export default {
           this.loading = true
           // rules 表单验证是否通过
           let api = 'salesshipmentMailEnsureApproval'
-          if (this.type == 'type') {
-            let api = 'salesshipmentWithdrawApproval'  //收回合同
+          if (this.type == 'contractAttachsInfo') {
+            api = 'salesshipmentWithdrawApproval'  //收回合同
+          }
+          if (this.params.id) {
+            api = 'salesshipmentAdditionalcontractAttachs'  //追加收回合同
           }
           const params = Object.assign(this.form, this.params)
           params[this.type].fileNames = params[this.type].fileNames.map(item => item.name)
