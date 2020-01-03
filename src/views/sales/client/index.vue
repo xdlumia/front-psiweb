@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 14:54:07
+ * @LastEditTime: 2020-01-03 15:50:58
  * @Description: 销售-客户管理
  */
 <template>
@@ -160,7 +160,7 @@ export default {
     },
     //请求树列表的数据
     getTreeData() {
-      this.$api.bizSystemService.getDeptList({ type: 1 })
+      this.$api.bizSystemService.getDeptList({ type: '1' })
         .then(res => {
           this.treeData = res.data || []
         })
