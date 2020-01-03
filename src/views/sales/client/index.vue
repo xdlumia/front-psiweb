@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 16:10:30
+ * @LastEditTime: 2020-01-03 17:34:10
  * @Description: 销售-客户管理
  */
 <template>
@@ -65,13 +65,19 @@
           class="ml10"
           @click="clickAll"
         >全部</el-button>
+        <p
+          class="d-pointer common-btn"
+          :class="{active:queryForm.responsibleUser == -1}"
+          style="color:#606266"
+          @click="handleNodeClick({userId:-1})"
+        >公共</p>
         <el-tree
-          style="height: calc(100vh - 220px);"
+          style="height: calc(100vh - 242px);"
           class="ml10 d-auto-x"
           :data="treeData"
           @node-click="handleNodeClick"
           default-expand-all
-          :props="{children: 'children', label: 'deptName' }"
+          :props="{children: 'employeeList', label: 'employeeName' }"
           :filter-node-method="filterNode"
           ref="tree"
         >
@@ -130,6 +136,7 @@ export default {
         grade: '', // 示例：客户级别,
         linkManName: '', // 示例：联系人,
         phone: '', // 示例：客户手机号,
+        responsibleUser: '', //责任人
         page: 1,
         limit: 20,
       },
@@ -162,7 +169,18 @@ export default {
     getTreeData() {
       this.$api.bizSystemService.getDeptList({ type: '1' })
         .then(res => {
-          this.treeData = res.data || []
+          let data = res.data || []
+          let formatTree = treeData => treeData.map(item => {
+            item.employeeName = item.deptName
+            if (item.children) {
+              formatTree(item.children)
+              item.employeeList.unshift(...item.children)
+              return item
+            } else {
+              return []
+            }
+          })
+          this.treeData = formatTree(data)
         })
         .finally(() => {
 
@@ -170,15 +188,19 @@ export default {
     },
     //点击树节点
     handleNodeClick(data) {
-      this.reload()
+      // 点击人员的时候才能查询
+      if (!data.totalCode) {
+        this.queryForm.responsibleUser = data.userId
+        this.reload()
+      }
     },
     clickAll() {
-      this.params.classId = null
+      this.queryForm.responsibleUser = ''
       this.reload()
     },
     filterNode(value, data) {
       if (!value) return true;
-      return data.className.indexOf(value) !== -1;
+      return data.employeeName.indexOf(value) !== -1;
     },
     // 按钮功能操作
     eventHandle(type, row) {
@@ -193,6 +215,18 @@ export default {
   border: 1px solid #f2f2f2;
   border-bottom: none;
   float: left;
+}
+.common-btn {
+  margin-left: 10px;
+  padding-left: 10px;
+  height: 28px;
+  line-height: 28px;
+  &:hover {
+    background-color: #f3f6f9;
+  }
+  &.active {
+    background-color: #f3f6f9;
+  }
 }
 /deep/.client-table .d-table {
   float: left;
