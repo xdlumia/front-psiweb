@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-24 15:43:40
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-26 15:09:37
+ * @LastEditTime: 2020-01-03 12:43:39
  * @Description: 自由模式确定配置单
 */
 <template>
@@ -86,4 +86,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.custom-config{
+  /deep/ {
+    .hide-expanded .el-table__expand-icon{
+      display: inline-block !important;
+    }
+  }
+}
 </style>
