@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 17:51:39
+ * @LastEditTime: 2020-01-03 19:48:42
  * @Description: 销售出库单详情
 */
 <template>
@@ -127,10 +127,21 @@
       @reload="setEdit(),$reload()"
     >
     </approvalTime>
-    <!-- 采购审核时间 -->
+    <!-- 邮件担保 -->
     <emailAssure
+      type="mailEnsureAttachsInfo"
       v-if="emailVisible"
+      :params="{apprpvalNode: 'psi_sales_outlibrary_20',contractRecycleState:1}"
       :visible.sync="emailVisible"
+      :rowData="detail"
+      @reload="setEdit(),$reload()"
+    ></emailAssure>
+    <!-- 合同收回 -->
+    <emailAssure
+      :params="{apprpvalNode: 'psi_sales_outlibrary_13',contractRecycleState:0}"
+      type="contractAttachsInfo"
+      v-if="contractVisible"
+      :visible.sync="contractVisible"
       :rowData="detail"
       @reload="setEdit(),$reload()"
     >
@@ -183,7 +194,7 @@ export default {
         { label: '审核采购时间', type: 'primary', authCode: 'psi_sales_outlibrary_12' },
         { label: '合同收回', type: 'primary', authCode: 'psi_sales_outlibrary_13' },
         // TODO 邮件担保权限码没有加
-        { label: '邮件担保', type: 'primary', authCode: 'psi_sales_outlibrary_13' },
+        { label: '邮件担保', type: 'primary', authCode: 'psi_sales_outlibrary_20' },
         { label: '追加合同附件', type: 'primary', authCode: 'psi_sales_outlibrary_11' },
       ],
       stateText: {
@@ -234,6 +245,7 @@ export default {
       collectInvoiceVisible: false, //开票申请
       timeApprovalVisible: false, //审核采购时间
       emailVisible: false, //邮件担保
+      contractVisible: false,//合同收回
       collectInvoiceData: {},
 
     }
@@ -287,7 +299,8 @@ export default {
         '生成换货单': 'exchangeAddVisible',
         '开票申请': 'collectInvoiceVisible',
         '审核采购时间': 'timeApprovalVisible',
-        '邮件担保': 'emailVisible'
+        '邮件担保': 'emailVisible',
+        '合同收回': 'contractVisible',
       }
       // 需要弹出操作的功能
       if (labelObj.hasOwnProperty(label)) {
@@ -372,11 +385,11 @@ export default {
             data: { ...params, apprpvalNode: 'psi_sales_outlibrary_10' },
             needNote: null
           },
-          '合同收回': {
-            api: 'seePsiSaleService.salesshipmentWithdrawApproval',
-            data: { ...params, apprpvalNode: 'psi_sales_outlibrary_13' },
-            needNote: null
-          },
+          // '合同收回': {
+          //   api: 'seePsiSaleService.salesshipmentWithdrawApproval',
+          //   data: { ...params, apprpvalNode: 'psi_sales_outlibrary_13' },
+          //   needNote: null
+          // },
           '删除': {
             api: 'seePsiSaleService.salesshipmentLogicDelete',
             data: params,

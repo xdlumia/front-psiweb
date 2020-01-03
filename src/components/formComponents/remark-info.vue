@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 10:18:11
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2020-01-03 19:51:01
  * @Description: 备注信息 字段已绑定 1
 */
 <template>
@@ -107,27 +107,26 @@
               </div>
             </div>
           </upload-file>
+          附件文件名称清单：
+          <div
+            v-for="(item,i) of data.fileNames ||[]"
+            :key="i"
+          >
+            <span>{{i+1}}</span>
+            <el-input
+              v-model="item.name"
+              style="width:220px"
+              inline
+              placeholder
+            ></el-input>
+          </div>
+          <el-button
+            type="text"
+            class="d-block"
+            @click="data.fileNames.push({name:''})"
+          >增加附件文件名称</el-button>
         </el-form-item>
       </el-col>
-      <!-- 贺兴龙说，跟产品沟通过，清单可以不要 -->
-      <!-- <el-col :span="24" v-if="needUpload">
-        <el-form-item label="附件文件名称清单" size="mini">
-          <div class="wfull d-clear">
-            <el-row :gutter="10">
-              <el-col :span="2" class="ar">
-                <span>1.</span>
-              </el-col>
-              <el-col :span="22">
-                <div class="d-text-gray d-elip wfull" v-if="!canEditable">附件文件名称</div>
-                <el-input inline placeholder v-else></el-input>
-              </el-col>
-              <el-col :offset="2" :span="22">
-                <el-link :underline="false" class="el-icon-circle-plus-outline" size="mini" type="primary" v-if="canEditable">增加附件文件名称</el-link>
-              </el-col>
-            </el-row>
-          </div>
-        </el-form-item>
-      </el-col>-->
     </el-row>
   </form-card>
 </template>

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-02 17:52:45
+ * @LastEditTime: 2020-01-03 18:45:08
  * @Description: 销售-销售出库单首页
  */
 <template>
@@ -34,6 +34,8 @@
           v-else-if="column.columnFields=='procurementExpectedArrivalTime'"
           :class="row.salesRequireArrivalTime && row.procurementExpectedArrivalTime>row.salesRequireArrivalTime?'d-text-red':''"
         >{{value}} </span>
+        <!-- 合同收回状态 -->
+        <span v-else-if="column.columnFields=='contractRecycleState'">{{value==1?'邮件担保':value==0?'收回合同':''}} </span>
         <!-- 有无合同 -->
         <span v-else-if="column.columnFields=='isContract'">{{value==1?'有':value==0?'无':''}}</span>
 
