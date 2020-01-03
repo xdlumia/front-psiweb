@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 15:50:58
+ * @LastEditTime: 2020-01-03 16:10:30
  * @Description: 销售-客户管理
  */
 <template>
@@ -170,7 +170,7 @@ export default {
     },
     //点击树节点
     handleNodeClick(data) {
-
+      this.reload()
     },
     clickAll() {
       this.params.classId = null
