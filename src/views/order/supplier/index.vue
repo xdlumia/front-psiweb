@@ -2,47 +2,52 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 11:49:42
+ * @LastEditTime: 2020-01-03 18:08:52
  * @Description: 采购-供应商
 */
 <template>
   <div class="buying-requisition-page wfull hfull">
-    <TableView
-      :exportButton="authorityButtons.includes('psi_supplier_03')"
-      :filterOptions="filterOptions"
-      :params="Object.assign(defaultParams,params)"
-      api="seePsiCommonService.commonsupplierinfoPagelist"
-      busType="42"
-      exportApi="seePsiCommonService.commonsupplierinfoExport"
-      ref="tableView"
-      title="供应商"
-    >
-      <template slot="button">
-        <el-button @click="showCat=true" size="mini" type="primary" v-if="authorityButtons.includes('psi_supplier_06')">商品供应分类表</el-button>
-        <el-button @click="showEdit=true" size="mini" type="primary" v-if="authorityButtons.includes('psi_supplier_07')">新增供应商</el-button>
-      </template>
-      <template slot-scope="{column,row,value,prop}">
-        <span v-if="prop=='code'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
-        </span>
-        <span v-else-if="prop=='productRange'">
-          <el-tag
-            :disable-transitions="false"
-            :key="item"
-            @close="delProductRange(row,item)"
-            class="mr5"
-            closable
-            size="mini"
-            type="info"
-            v-for="item of getProductRangeList(value)"
-          >{{item|dictionary('PSI_GYS_CPFW')}}</el-tag>
-        </span>
-        <span v-else>{{value}}</span>
-      </template>
-    </TableView>
-    <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
-    <Edit :visible.sync="showEdit" @reload="reload" v-if="showEdit" />
-    <Cat :visible.sync="showCat" @reload="reload" v-if="showCat" />
+    <div class="supplier-cat-page wfull" style="position:relative;">
+      <div class="cat-tree">
+        <ProductArea @change="reload" v-model="defaultParams.productRange" />
+      </div>
+      <TableView
+        :exportButton="authorityButtons.includes('psi_supplier_03')"
+        :filterOptions="filterOptions"
+        :params="Object.assign(defaultParams,params)"
+        api="seePsiCommonService.commonsupplierinfoPagelist"
+        busType="42"
+        exportApi="seePsiCommonService.commonsupplierinfoExport"
+        ref="tableView"
+        title="供应商"
+      >
+        <template slot="button">
+          <el-button @click="showCat=true" size="mini" type="primary" v-if="authorityButtons.includes('psi_supplier_06')">商品供应分类表</el-button>
+          <el-button @click="showEdit=true" size="mini" type="primary" v-if="authorityButtons.includes('psi_supplier_07')">新增供应商</el-button>
+        </template>
+        <template slot-scope="{column,row,value,prop}">
+          <span v-if="prop=='code'">
+            <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          </span>
+          <span v-else-if="prop=='productRange'">
+            <el-tag
+              :disable-transitions="false"
+              :key="item"
+              @close="delProductRange(row,item)"
+              class="mr5"
+              closable
+              size="mini"
+              type="info"
+              v-for="item of getProductRangeList(value)"
+            >{{item|dictionary('PSI_GYS_CPFW')}}</el-tag>
+          </span>
+          <span v-else>{{value}}</span>
+        </template>
+      </TableView>
+      <Detail :code="currentCode" :visible.sync="showDetail" @reload="reload" v-if="showDetail" />
+      <Edit :visible.sync="showEdit" @reload="reload" v-if="showEdit" />
+      <Cat :visible.sync="showCat" @reload="reload" v-if="showCat" />
+    </div>
   </div>
 </template>
 <script>
@@ -52,12 +57,15 @@ import Detail from './detail'; // 供应商详情
 import Edit from './edit'; // 供应商详情
 import Cat from './cat'; // 供应商详情
 
+import ProductArea from './product-area';
+
 export default {
   components: {
     TableView,
     Detail,
     Edit,
-    Cat
+    Cat,
+    ProductArea
   },
   props: {
     // 是否显示按钮
@@ -75,7 +83,8 @@ export default {
     return {
       defaultParams: {
         page: 1,
-        limit: 20
+        limit: 20,
+        productRange: ''
       },
       status: [],
       showDetail: false,
@@ -89,7 +98,10 @@ export default {
           label: '状态',
           prop: 'state',
           type: 'select',
-          options: [{ label: '启用中', value: 0 }, { label: '停用中', value: 1 }],
+          options: [
+            { label: '启用中', value: 0 },
+            { label: '停用中', value: 1 }
+          ],
           default: true
         },
         { label: '联系人', prop: 'linkManName', default: true },
@@ -140,5 +152,29 @@ export default {
 </script>
 <style lang="scss" scoped>
 .buying-requisition-page {
+  .supplier-cat-page {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    .cat-tree {
+      position: absolute;
+      top: 47px;
+      width: 320px;
+      height: calc(100% - 80px);
+      border: 1px solid #f1f1f1;
+      border-right: 0px;
+    }
+    .main-content {
+      height: 100%;
+      /deep/ {
+        > div:first-child + div {
+          > .el-table {
+            width: calc(100% - 320px) !important;
+            margin-left: 320px;
+          }
+        }
+      }
+    }
+  }
 }
 </style>

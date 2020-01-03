@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 15:08:05
+ * @LastEditTime: 2020-01-03 17:44:24
  * @Description: 商品供应分类表
 */
 <template>
@@ -148,6 +148,7 @@ export default {
   }
   .main-content {
     height: 100%;
+    width: 100%;
     /deep/ {
       > div:first-child + div {
         > .el-table {
