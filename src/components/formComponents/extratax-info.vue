@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-20 16:57:24
+ * @LastEditTime: 2020-01-03 10:20:24
  * @Description: 附加发票 字段对应 但是公式还没计算
 */
 <template>
@@ -26,9 +26,12 @@
         <el-form-item
           label="税率"
           prop="taxRate"
-          :rules="[{required:false},{type:'taxRate'}]"
+          :rules="[{required:false}]"
         >
-          <el-input
+        <el-select v-model="data.taxRate" class="wfull" :disabled="disabled" placeholder="请输入" @change="taxRateChange">
+          <el-option v-for="item of taxRateList" :key="item" :value="item" :label="item+'%'"></el-option>
+        </el-select>
+          <!-- <el-input
             placeholder="请输入"
             :disabled="disabled"
             @input="taxRateChange"
@@ -36,7 +39,7 @@
             v-model="data.taxRate"
           >
             <template slot="append">%</template>
-          </el-input>
+          </el-input> -->
         </el-form-item>
       </el-col>
       <el-col :span="8">
@@ -81,8 +84,12 @@ export default {
           callback();
         }
       },
+      taxRateList:[],
       calcPreMode:false
     };
+  },
+  mounted(){
+    this.getTaxRate()
   },
   methods: {
     // 税前金额变化 和 税率变化 的计算方法一样
@@ -102,6 +109,7 @@ export default {
       }
     },
     taxRateChange(){
+      this.checkMode()
       if(!this.calcPreMode){
         this.taxAmountChange()
       }else{
@@ -118,6 +126,16 @@ export default {
         this.data.preTaxAmount = (taxAmount/(1-taxRate)).toFixed(2)
       }
     },
+    async getTaxRate(){
+      try {
+        let {data:{configJson}} = await this.$api.seePsiCommonService.commonsystemconfigInfo(null,1)
+        configJson = JSON.parse(configJson)
+        this.taxRateList = configJson.additionalInvoiceRateArray||[]
+      } catch (error) {
+        console.error(error)
+      }
+
+    }
   },
   computed: {
     // 税率
