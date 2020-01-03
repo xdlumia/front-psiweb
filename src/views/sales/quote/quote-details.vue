@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-27 14:29:19
+ * @LastEditTime: 2020-01-03 14:17:18
  * @Description: 报价单详情
 */
 <template>
@@ -175,6 +175,7 @@ export default {
         data.commodityEntityList.map(item=>{
           item.children = item.partsInfoCommodityList
         })
+        data.isTax=data.isTax||0
         return data;
       }
     },

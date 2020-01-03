@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 13:15:26
+ * @LastEditTime: 2020-01-03 14:23:00
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -13,9 +13,9 @@
     <div slot="title">
       <span>商品信息</span>
     </div>
-    <div class="mb10" v-if="hide&&!hide.includes('isTax')">
+    <div class="mb10">
       <el-form-item prop="isTax" label="是否含税">
-        <el-select placeholder="请选择" v-model="data.isTax" :disabled="disabled">
+        <el-select placeholder="请选择" v-model="data.isTax">
           <el-option
             :key="item.value"
             :label="item.label"
@@ -193,7 +193,11 @@
         label="税率%"
         min-width="100"
         prop="taxRate"
-      ></el-table-column>
+      >
+      <template slot-scope="{row}">
+        <span>{{(!data.isTax)?row.taxRate:0}}</span>
+      </template>
+      </el-table-column>
 
       <el-table-column
         show-overflow-tooltip
@@ -392,6 +396,12 @@ export default {
           this.getCommodityBusinessInfo()
         }, 200)
       }
+    },
+    'data.isTax':{
+      deep:true,
+      handler(){
+        this.data.businessCommoditySaveVoList.map(item=>this.numberChange(item))
+      }
     }
   },
   methods: {
@@ -558,7 +568,7 @@ export default {
       if(row.discount==='')return
       if(!row.reference)return
       let reference = row.reference || 0   //销售参考价
-      let taxRate = (row.taxRate || 100) / 100  ///税率
+      let taxRate = (!this.data.isTax)?((row.taxRate || 100) / 100):0  ///税率
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
       // 折扣价格  公式:税前金额  * (1-税率) * 折扣
@@ -568,7 +578,7 @@ export default {
       if(row.discount==='')return
       if(!row.reference)return
       let reference = row.reference || 0   //销售参考价
-      let taxRate = (row.taxRate || 100) / 100  ///税率
+      let taxRate = (!this.data.isTax)?((row.taxRate || 100) / 100):0  ///税率
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
       // 折后价格 / (税后价格*(1-税率)

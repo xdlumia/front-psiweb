@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 13:15:41
+ * @LastEditTime: 2020-01-03 14:20:49
  * @Description: file content
 */
 <template>
@@ -165,6 +165,7 @@ export default {
         facilitator: '',
         serveType: '',
         bmcName: '',
+        isTax:0// 是否含税 0含税 1未税
       }
     }
   },
@@ -188,6 +189,7 @@ export default {
               this.form[key] = ""
             }
           }
+          this.form.isTax=0
           this.getFailureTimeConfig()
         } else {
           this.steps = 4
@@ -357,6 +359,7 @@ export default {
           item.isMachine&&(item.customConfig=true);
           item.commonGoodConfigDetailsEntityList = item.partsInfoCommodityList
         })
+        data.isTax=data.isTax||0
         return data;
       }
     },
@@ -367,6 +370,7 @@ export default {
         if (valid) {
           let params = Object.assign(this.form, this.params)
           let copyParams = JSON.parse(JSON.stringify(params))
+          copyParams.isTax=copyParams.isTax||0
 
           delete copyParams.KIND1Data
           delete copyParams.KIND2Data
@@ -378,9 +382,9 @@ export default {
             })
             item.putawayType = 0 //0=出库
             // 税后总价
-            item.preTaxAmount = Number((item.reference || 0) * (1 + item.taxRate / 100) * (item.commodityNumber || 0)).toFixed(2)
+            item.preTaxAmount = Number((item.reference || 0) * (1 + (copyParams.isTax?0:item.taxRate) / 100) * (item.commodityNumber || 0)).toFixed(2)
             // 销售单价
-            item.salesPrice = Number((item.reference || 0) * (1 + item.taxRate / 100)).toFixed(2)
+            item.salesPrice = Number((item.reference || 0) * (1 + (copyParams.isTax?0:item.taxRate) / 100)).toFixed(2)
             item.costAmount = item.inventoryPrice
           })
           // 验证商品信息

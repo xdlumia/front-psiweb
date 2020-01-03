@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-20 17:46:56
+ * @LastEditTime: 2020-01-03 14:42:41
  * @Description: 生成销售换货单
 */
 <template>
@@ -184,6 +184,7 @@ export default {
         totalExchangeNumber: '',//换货总数量
         totalRefundAmount: '',//总计退货价格
         totalRefundNumber: '',//退货总数量
+        isTax:0
       }
     }
   },
@@ -208,6 +209,7 @@ export default {
       if (this.code) {
         let { data } = await this.$api.seePsiSaleService.salesexchangeGetInfoByCode({ code: this.code })
         data.shipmentFinanceSaveVoList = data.shipmentFinanceEntityList
+        data.isTax=data.isTax||0
         return data;
       }
     },
@@ -234,9 +236,9 @@ export default {
           copyParams.totalExchangeNumber = copyParams.exChangeCommodityList.reduce((sum, curr) => {
             
             // 税后总价
-            curr.preTaxAmount = Number((curr.reference || 0) * (1 + curr.taxRate / 100) * (curr.commodityNumber || 0)).toFixed(2)
+            curr.preTaxAmount = Number((curr.reference || 0) * (1 + (copyParams.isTax?0:(curr.taxRate)) / 100) * (curr.commodityNumber || 0)).toFixed(2)
             // 销售单价
-            curr.salesPrice = Number((curr.reference || 0) * (1 + curr.taxRate / 100)).toFixed(2)
+            curr.salesPrice = Number((curr.reference || 0) * (1 + (copyParams.isTax?0:(curr.taxRate)) / 100)).toFixed(2)
             curr.costAmount = curr.inventoryPrice
             
             return sum + Number(curr.commodityNumber)

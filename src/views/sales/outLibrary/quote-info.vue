@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-04 21:05:43
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2020-01-03 14:26:41
  * @Description: 报价单信息 编辑查看时使用
 */
 <template>
@@ -101,6 +101,7 @@ export default {
       }
       this.loading = true
       let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.activeName })
+      data.isTax=data.isTax||0
       this.detail = data || {}
       // this.$refs.commodity.businesscommodityGetBusinessCommodityList(this.detail.quotationCode)
       this.loading = false
