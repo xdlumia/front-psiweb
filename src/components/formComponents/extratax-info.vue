@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 10:20:24
+ * @LastEditTime: 2020-01-03 11:25:58
  * @Description: 附加发票 字段对应 但是公式还没计算
 */
 <template>
@@ -11,7 +11,7 @@
       <el-col :span="8">
         <el-form-item
           label="税前金额"
-          :rules="[{required:false,},{type:'price'}]"
+          :rules="[{required:false,},{type:'price'},{validator:checkMoney}]"
           prop="preTaxAmount"
         >
           <el-input
@@ -92,6 +92,11 @@ export default {
     this.getTaxRate()
   },
   methods: {
+    checkMoney(rule,value,cb){
+      value = +Number(value)||0
+      if(value>0)cb()
+      else cb(new Error('金额必须大于0'))
+    },
     // 税前金额变化 和 税率变化 的计算方法一样
     preTaxAmountChange(val) {
       let preTaxAmount = this.data.preTaxAmount || 0   ///税前金额

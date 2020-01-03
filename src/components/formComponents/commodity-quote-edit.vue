@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-02 09:08:39
+ * @LastEditTime: 2020-01-03 11:34:43
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -12,6 +12,21 @@
   >
     <div slot="title">
       <span>商品信息</span>
+    </div>
+    <div class="mb10" v-if="hide&&!hide.includes('isTax')">
+      <el-form-item prop="isTax" label="是否含税">
+        <el-select placeholder="请选择" v-model="data.isTax" :disabled="disabled">
+          <el-option
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            v-for="item in [
+              {label:'含税',value:0},
+              {label:'未税',value:1},
+            ]"
+          ></el-option>
+        </el-select>
+      </el-form-item>
     </div>
     <el-table
       show-summary

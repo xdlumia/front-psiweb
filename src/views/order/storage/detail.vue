@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 17:41:11
+ * @LastEditTime: 2020-01-03 11:06:12
  * @Description: 采购入库单
 */
 <template>
@@ -116,7 +116,7 @@
           <buying-goods-edit
             :data="detail"
             :show="[
-                'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
+                'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber','isTax'
               ]"
             :sort="detail.source=='备货单'?[]:['expanded']"
             disabled
@@ -179,6 +179,7 @@
     </el-tabs>
     <OrderRejectEdit
       :params="{
+        isTax:0,
         putinCode:detail.putinCode,
         companyAccountId:detail.companyAccountId,
         companySettlementId:detail.companySettlementId,

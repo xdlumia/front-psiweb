@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-27 10:57:01
+ * @LastEditTime: 2020-01-03 11:50:25
  * @Description: 确定配置信息
 */
 <template>
@@ -425,6 +425,14 @@ export default {
           children: this.$$util.formatChildren(childrenData, 'className')
         });
       }
+      this.data.KIND1List.map(item=>{
+        item.children.map(item=>{
+          if(item.children&&item.children.length){
+            item._$children=true
+          }
+        })
+      })
+      console.log(this.data.KIND1List)
       for (let key in Kind1DataList) {
         if (!Kind1DataList[key]) {
           this.data.KIND1List.push({

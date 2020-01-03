@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-02 14:56:49
+ * @LastEditTime: 2020-01-03 11:05:26
  * @Description: 采购入库单
 */
 <template>
@@ -24,7 +24,7 @@
       <d-tab-pane label="自定义信息" name="customInfo" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
       <div>
-        <el-form :model="form" class="p10" ref="form" size="mini" v-if="visible" label-position="top">
+        <el-form :model="form" class="p10" label-position="top" ref="form" size="mini" v-if="visible">
           <supplierInfo :data="form" @change="supplierChange" id="supplierInfo" />
           <companyInfo :data="form" :disabled="['直发单','请购单'].includes(form.source)" id="companyInfo" />
           <arrivalInfo
@@ -42,7 +42,7 @@
           <buying-goods-edit
             :data="form"
             :show="[
-              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber','!add','action','isHasTax'
+              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber','!add','action','isTax'
             ]"
             :sort="form.source=='备货单'?[]:['expanded']"
             @totalAmountChange="setGoodsTotalPrice(0,$event)"
@@ -91,7 +91,7 @@ export default {
       goodsTotalSum: 0,
       alwaysDropAndCopyForm: true, // 在getDetail返回数据后，重新覆盖form
       form: {
-        isHasTax: 1,
+        isTax: 0,
         // 流程审批状态（0 未审核 1审核中 2 完成 3 驳回） 0
         approvalState: '',
         // 到货信息 示例：到货信息
@@ -233,6 +233,7 @@ export default {
       } catch (error) {}
       return {
         ...companyData,
+        isTax: 0,
         saleTime,
         commodityList,
         additionalCommodityList: [],

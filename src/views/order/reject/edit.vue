@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-02 15:15:06
+ * @LastEditTime: 2020-01-03 11:05:08
  * @Description: 采购退货单
 */
 <template>
@@ -32,7 +32,7 @@
           <buyingGoodsEdit
             :data="form"
             :show="[
-              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','action','!add','isHasTax'
+              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','action','!add','isTax'
             ]"
             :sort="['expanded']"
             :summaryMethod="getSummarys"
@@ -143,7 +143,7 @@ export default {
                 item =>
                   +Number(
                     item.alterationPrice *
-                      (1 + (this.form.isHasTax==1?item.taxRate:0) / 100) *
+                      (1 + ((!this.form.isTax)?item.taxRate:0) / 100) *
                       item.alterationNumber || 0
                   ).toFixed(2)
               )
