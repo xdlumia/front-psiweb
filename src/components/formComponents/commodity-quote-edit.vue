@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-31 17:48:50
+ * @LastEditTime: 2020-01-03 13:14:11
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -50,7 +50,6 @@
         <template
           slot-scope="scope"
           class="d-relative"
-          v-if="!scope.row.parentCommodityCode"
         >
           <!-- 报溢的话 需要选择库房以后再选 商品, 要传过去库房id, 商品是跟库库房来的 报损不需要 -->
           <commoditySelector
@@ -59,8 +58,10 @@
             :multiple='false'
             type="code"
             v-model="scope.row.commodityCode"
+            v-if="!scope.row.parentCommodityCode"
             :codes='codes'
           />
+          <span v-else>{{scope.row.commodityCode}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -71,15 +72,16 @@
         <template
           slot-scope="scope"
           class="d-relative"
-          v-if="!scope.row.parentCommodityCode"
         >
           <commoditySelector
             :wmsId="data.type == 2 ? data.wmsId : null"
             :multiple='false'
             @choose='commodityChoose(arguments,scope)'
             v-model="scope.row.goodsName"
+            v-if="!scope.row.parentCommodityCode"
             :codes='codes'
           />
+          <span v-else>{{scope.row.goodsName}}</span>
         </template>
       </el-table-column>
       <el-table-column

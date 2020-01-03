@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-27 10:57:01
+ * @LastEditTime: 2020-01-03 12:44:52
  * @Description: 确定配置信息
 */
 <template>
@@ -231,7 +231,8 @@ export default {
         return configId;
       }else{
         this.$refs.customConfig.map(item=>item.$refs.form.validate())
-        return item.children.some(item=>item.selected)&&!item.children.filter(item=>item.selected).some(item=>(item.commodityNumber<=0||item.commodityNumber>item.maxcommodityNumber))
+        let childrens = this.flatten(item.children)
+        return childrens.some(item=>item.selected)&&!childrens.filter(item=>item.selected).some(item=>(item.commodityNumber<=0||item.commodityNumber>item.maxcommodityNumber))
       }
     },
     getAllConfigGoods(row) {
@@ -425,6 +426,13 @@ export default {
           children: this.$$util.formatChildren(childrenData, 'className')
         });
       }
+      this.data.KIND1List.map(item=>{
+        (item.children||[]).map(item=>{
+          if(item.children&&item.children.length){
+            item._$children=true;
+          }
+        })
+      })
       for (let key in Kind1DataList) {
         if (!Kind1DataList[key]) {
           this.data.KIND1List.push({
