@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 10:20:23
+ * @LastEditTime: 2020-01-06 11:25:46
  * @Description: 采购-请购单
 */
 <template>
@@ -28,10 +28,10 @@
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='purchaseApplyCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value|codeSlice}}</el-link>
         </span>
         <span v-else-if="prop=='quotationCode'">
-          <el-link :underline="false" @click="showQuotationDetail=true,currentQuotationCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="showQuotationDetail=true,currentQuotationCode=value" class="f12" type="primary">{{value|codeSlice}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>

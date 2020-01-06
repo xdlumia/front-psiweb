@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-15 18:04:09
+ * @LastEditTime: 2020-01-06 11:25:00
  * @Description: 付款单
 */
 <template>
@@ -34,7 +34,7 @@
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='billCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value|codeSlice}}</el-link>
         </span>
         <span v-else-if="['feeDetailCode','feeTypeCode'].includes(prop)">
           <span>{{value|dictionary('ZD_DY_LX')}}</span>
@@ -52,7 +52,7 @@
         </span>
         <span v-else-if="prop=='busCode'">
           <!-- 关联单据编号 -->
-          <el-link :type="hasBusPage(row)?'primary':'info'" :underline="false" @click="openBusPage(row)" class="f12">{{value}}</el-link>
+          <el-link :type="hasBusPage(row)?'primary':'info'" :underline="false" @click="openBusPage(row)" class="f12">{{value|codeSlice}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>

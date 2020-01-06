@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 11:06:12
+ * @LastEditTime: 2020-01-06 11:28:21
  * @Description: 采购入库单
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`采购入库单 ${detail?(detail.putinCode||''):''}`"
+    :title="`采购入库单 ${detail?(codeSlice(detail.putinCode)||''):''}`"
     :visible.sync="showDetailPage"
     @close="close"
     v-loading="loading"

@@ -1,14 +1,14 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-02 14:17:16
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2020-01-06 11:27:26
  * @Description: 采购调价单
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`调价单: ${detail?(detail.code||''):''}`"
+    :title="`调价单: ${detail?(codeSlice(detail.code)||''):''}`"
     :visible="showDetailPage"
     @close="close"
     v-loading="loading"

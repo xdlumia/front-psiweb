@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 11:02:53
+ * @LastEditTime: 2020-01-06 11:28:00
  * @Description: 采购退货单
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`采购退货单 ${detail?(detail.alterationCode||''):''}`"
+    :title="`采购退货单 ${detail?(codeSlice(detail.alterationCode)||''):''}`"
     :visible.sync="showDetailPage"
     @close="close"
     v-loading="loading"

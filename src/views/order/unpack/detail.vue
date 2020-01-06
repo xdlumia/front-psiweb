@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 11:12:44
+ * @LastEditTime: 2020-01-06 11:29:23
  * @Description: 拆卸单
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`拆卸单 ${detail?(detail.disassemblyOrderCode||''):''}`"
+    :title="`拆卸单 ${detail?(codeSlice(detail.disassemblyOrderCode)||''):''}`"
     :visible.sync="showDetailPage"
     @close="close"
     v-loading="loading"
