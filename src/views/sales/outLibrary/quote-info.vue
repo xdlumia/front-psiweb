@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 14:26:41
+ * @LastEditTime: 2020-01-06 14:16:58
  * @Description: 报价单信息 编辑查看时使用
 */
 <template>
@@ -25,6 +25,7 @@
         label-position="top"
         :model="detail"
         size="small"
+        class="hide-form-error"
       >
         <!-- 发货信息 -->
         <deliverInfo
