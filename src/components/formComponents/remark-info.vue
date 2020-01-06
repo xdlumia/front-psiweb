@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 19:51:01
- * @Description: 备注信息 字段已绑定 1
+ * @LastEditTime: 2020-01-06 10:46:24
+ * @Description: 邮件担保 or 合同收回 备注信息 字段已绑定 1
 */
 <template>
   <form-card title="备注信息">
     <div slot="title">
-      <span>备注信息</span>
+      <span>{{title}}</span>
       <span
         class="fr"
         v-if="canModify"
@@ -44,10 +44,6 @@
           prop="note"
           size="mini"
         >
-          <!-- <div
-            class="d-text-gray mt10 d-elip wfull"
-            v-if="!canEditable"
-          >{{data.note}}</div>-->
           <el-input
             :disabled="!canEditable"
             :rows="3"
@@ -64,12 +60,8 @@
       >
         <el-form-item
           label="上传附件:"
-          prop="attachList"
+          prop="attachsVos"
         >
-          <!-- <div
-            class="d-text-gray mt10 d-elip wfull"
-            v-if="!canEditable"
-          >上传附件</div>-->
           <upload-file
             :disabled="!canEditable"
             :limit="{
@@ -83,11 +75,11 @@
               <el-button
                 size="mini"
                 type="primary"
-                v-if="canEditable && (data.attachList || []).length<10"
+                v-if="canEditable && (data.attachsVos || []).length<10"
               >点击上传</el-button>
               <div
                 :key="item.url"
-                v-for="(item,i) of data.attachList || []"
+                v-for="(item,i) of data.attachsVos || []"
               >
                 <span class="el-icon-document"></span>
                 <span
@@ -108,21 +100,30 @@
             </div>
           </upload-file>
           附件文件名称清单：
+          <div v-if="disabled && !(data.fileNames || []).length">暂无数据</div>
           <div
             v-for="(item,i) of data.fileNames ||[]"
             :key="i"
+            class="mb5"
           >
-            <span>{{i+1}}</span>
+            <span>{{i+1}}. </span>
             <el-input
               v-model="item.name"
               style="width:220px"
               inline
-              placeholder
+              placeholder="请输入担保内容"
             ></el-input>
+            <i
+              v-if="canEditable"
+              @click="data.fileNames.splice(i, 1)"
+              class="f18 d-text-gray ml10 el-icon-remove-outline"
+            ></i>
           </div>
           <el-button
+            v-if="canEditable"
             type="text"
             class="d-block"
+            icon="el-icon-circle-plus-outline"
             @click="data.fileNames.push({name:''})"
           >增加附件文件名称</el-button>
         </el-form-item>
@@ -145,6 +146,9 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    title: {
+      default: '备注'
     },
     needUpload: {
       type: Boolean,
@@ -179,36 +183,36 @@ export default {
   },
   methods: {
     // init() {
-    //   if (this.data && this.data.attachList) {
-    //     if (typeof this.data.attachList == 'string') {
-    //       this.data.attachList = JSON.parse(this.data.attachList);
+    //   if (this.data && this.data.attachsVos) {
+    //     if (typeof this.data.attachsVos == 'string') {
+    //       this.data.attachsVos = JSON.parse(this.data.attachsVos);
     //     }
-    //     this.fileList = this.data.attachList || [];
+    //     this.fileList = this.data.attachsVos || [];
     //   }
     // },
     uploadFile({ name, url, oldName }) {
-      if (!this.data.attachList) this.$set(this.data, 'attachList', []);
-      this.data.attachList = this.data.attachList || [];
-      this.data.attachList.push({
+      if (!this.data.attachsVos) this.$set(this.data, 'attachsVos', []);
+      this.data.attachsVos = this.data.attachsVos || [];
+      this.data.attachsVos.push({
         fileName: oldName,
         fileUrl: url
       });
     },
     delFile(i) {
-      this.data.attachList.splice(i, 1);
+      this.data.attachsVos.splice(i, 1);
       // this.fileList.splice(i, 1);
     },
     openFile(item) {
       window.open(item.fileUrl, '_blank');
     },
     cancel() {
-      this.data.attachList = this.preData.attachList;
+      this.data.attachsVos = this.preData.attachsVos;
       this.data.note = this.preData.note;
       this.isEdit = false;
     },
     save() {
       this.$emit('change', {
-        attachList: this.data.attachList,
+        attachsVos: this.data.attachsVos,
         note: this.data.note
       });
       this.isEdit = false;
