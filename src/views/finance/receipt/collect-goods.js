@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-30 12:52:08
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 19:19:04
+ * @LastEditors  : 赵伦
+ * @LastEditTime : 2020-01-06 11:41:39
  * @Description: file content
  */
 /**
@@ -33,6 +33,13 @@ export default {
                     transfer: {
                         articleName: 'goodsName', commodityCode: 'commodityCode',
                         taxRate: 'taxRate', price: 'alterationPrice', quantity: 'alterationNumber'
+                    },
+                    callback: async (list, code) => {
+                        let { data } = await this.$api.seePsiSaleService.salesreturnedGetInfoByCode({ code })
+                        if (data.isTax == 1) {
+                            list.map(item => item.taxRate = 0)
+                        }
+                        return list;
                     }
                 },
                 // 销售换货单
@@ -61,6 +68,13 @@ export default {
                     transfer: {
                         articleName: 'goodsName', commodityCode: 'commodityCode',
                         taxRate: 'taxRate', price: 'price', quantity: 'quantity'
+                    },
+                    callback: async (list, code) => {
+                        let { data } = await this.$api.seePsiSaleService.salesexchangeGetInfoByCode({ code })
+                        if (data.isTax == 1) {
+                            list.map(item => item.taxRate = 0)
+                        }
+                        return list;
                     }
                 },
                 // 费用单
@@ -117,13 +131,13 @@ export default {
             )
             let commodityList = [];
             if (typeof config.getCommodityList == "function") {
-                commodityList = config.getCommodityList(data) || [];
+                commodityList = await config.getCommodityList(data) || [];
             } else {
                 if (!Array.isArray(data) && data) {
                     commodityList = data[config.commodityKey || 'commodityList'] || []
                 } else commodityList = data;
             }
-            return commodityList.map(item => {
+            let resultCommodityList = commodityList.map(item => {
                 let data = typeof config.transfer == 'function' ? config.transfer(item) : {
                     ...Object.keys(config.transfer).reduce((data, key) => {
                         data[key] = item[config.transfer[key] || key]
@@ -135,8 +149,17 @@ export default {
                 if (busType == 0) {
                     data.price = +Number(item.discountSprice / (1 + item.taxRate / 100)).toFixed(2);
                 }
+                if (!Array.isArray(data)) {
+                    if (data.isTax == 1) {
+                        data.taxRate = 0
+                    }
+                }
                 return data;
             })
+            if (typeof config.callback == "function") {
+                resultCommodityList = await config.callback(resultCommodityList, code, data)
+            }
+            return resultCommodityList;
         }
     }
 }

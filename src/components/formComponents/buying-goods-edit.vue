@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 11:34:05
+ * @LastEditTime: 2020-01-06 13:52:04
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -372,13 +372,17 @@ export default {
       { label: '退货数量', key: 'alterationNumberRate', width: 140, prop: 'alterationNumber', showOverflowTip: true, },
       { label: '退货单价', key: 'alterationPrice', width: 80, prop: 'alterationPrice', type: 'input', showOverflowTip: true, rules: [{ required: true }, { type: 'price' }] },
       { label: '税率%', key: 'taxRate', width: 80, prop: 'taxRate', format: a => a ? `${(!this.data.isTax)?a:0}` : '-' },
-      {        label: '含税总价', key: 'preTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+      { label: '含税总价', key: 'preTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+        format: (a, data) => {
+          let { costAmount, taxRate, commodityNumber } = data
+          costAmount = ((!this.priceKey)?data.costAmount:data[this.priceKey])||0
+          return +Number((costAmount * (1 + (((!this.data.isTax)?taxRate:0) / 100)) * commodityNumber) || 0).toFixed(2)
+        }
+      },
+      { label: '含税总价', key: 'purchasePreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + (((!this.data.isTax)?taxRate:0) / 100)) * commodityNumber) || 0).toFixed(2)
       },
-      {        label: '含税总价', key: 'purchasePreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
-        format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + (((!this.data.isTax)?taxRate:0) / 100)) * commodityNumber) || 0).toFixed(2)
-      },
-      {        label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
+      { label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { alterationPrice, taxRate, alterationNumber }) => +Number((alterationPrice * (1 + (((!this.data.isTax)?taxRate:0) / 100)) * alterationNumber) || 0).toFixed(2)
       },
       { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber', format: (a) => a || 0, showOverflowTip: true, },
