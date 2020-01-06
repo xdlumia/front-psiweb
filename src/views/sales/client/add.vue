@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 11:18:48
+ * @LastEditTime: 2020-01-06 14:58:40
  * @Description: 客户管理-新增客户
 */
 <template>
@@ -115,7 +115,7 @@ export default {
     },
     // title
     title() {
-      return this.type == 'add' ? '新增客户' : `编辑:${this.rowData.code}`
+      return this.type == 'add' ? '新增客户' : `编辑:${this.$options.filters.codeSlice(this.code)}`
     },
   },
   mounted() {
