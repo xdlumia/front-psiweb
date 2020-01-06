@@ -37,7 +37,7 @@
             show-overflow-tooltip
           >
             <template slot-scope="scope">
-              <span>{{scope.row.commodityCode}}</span>
+              <span>{{scope.row.commodityCode | codeSlice}}</span>
             </template>
           </el-table-column>
           <el-table-column
