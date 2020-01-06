@@ -403,6 +403,9 @@ export default {
         snCode: item.snCode,
         commodityCode: item.commodityCode,
         categoryCode: item.categoryCode,
+        purchasePrice: item.alterationPrice,// -采购价
+        purchaseTaxes: item.taxTotalAmount, //-采购税金  采购价 *商品税率
+        purchaseCost: item.reference,// -库存成本
         wmsId: this.data.wmsId
       }
       // 入库扫码

@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
- * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-21 09:18:23
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2020-01-06 18:10:55
  * @Description: 退货扫码
 */
 
@@ -112,6 +112,9 @@ export default {
           alterationNumber: item.alterationNumber,//退货数量/扫码次数
           commodityCode: item.commodityCode,//"示例：商品编号",
           putawayType: item.putawayType,// 入库1
+          purchasePrice: item.alterationPrice,// -采购价
+          purchaseTaxes: item.taxTotalAmount, //-采购税金  采购价 *商品税率
+          purchaseCost: item.reference,// -库存成本
         }
       })
       let copyParams = JSON.parse(JSON.stringify(this.form))
