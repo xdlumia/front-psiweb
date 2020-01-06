@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 14:36:06
+ * @LastEditTime: 2020-01-06 16:05:21
  * @Description: 退货商品商品信息
 */
 <template>
@@ -31,7 +31,7 @@
       </div>
       <div class="mb10">
         <el-form-item prop="isTax" label="是否含税">
-          <el-select placeholder="请选择" v-model="data.isTax">
+          <el-select placeholder="请选择" v-model="data.isTax" disabled>
             <el-option
               :key="item.value"
               :label="item.label"
@@ -319,6 +319,9 @@ export default {
       // this.returnTableData.splice(index, 1)
     },
     salesquotationQueryMayCommodity() {
+      this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotaionCode: this.data.quotationCode }).then((data)=>{
+        this.data.isTax = data.isTax||0
+      })
       this.$api.seePsiSaleService.salesquotationQueryMayCommodity({ quotaionCode: this.data.quotationCode })
         .then(res => {
           let data = res.data || []

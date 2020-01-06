@@ -33,13 +33,6 @@ export default {
                     transfer: {
                         articleName: 'goodsName', commodityCode: 'commodityCode',
                         taxRate: 'taxRate', price: 'alterationPrice', quantity: 'alterationNumber'
-                    },
-                    callback: async (list, code) => {
-                        let { data } = await this.$api.seePsiSaleService.salesreturnedGetInfoByCode({ code })
-                        if (data.isTax == 1) {
-                            list.map(item => item.taxRate = 0)
-                        }
-                        return list;
                     }
                 },
                 // 销售换货单
@@ -68,13 +61,6 @@ export default {
                     transfer: {
                         articleName: 'goodsName', commodityCode: 'commodityCode',
                         taxRate: 'taxRate', price: 'price', quantity: 'quantity'
-                    },
-                    callback: async (list, code) => {
-                        let { data } = await this.$api.seePsiSaleService.salesexchangeGetInfoByCode({ code })
-                        if (data.isTax == 1) {
-                            list.map(item => item.taxRate = 0)
-                        }
-                        return list;
                     }
                 },
                 // 费用单
