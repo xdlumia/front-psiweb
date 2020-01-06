@@ -1,11 +1,11 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-07 09:47:39
- * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-24 15:54:23
+ * @LastEditors  : web.王晓冬
+ * @LastEditTime : 2020-01-06 09:47:21
  * @Description: 编辑、详情 visible 辅助 mixin ，这是一个和业务紧密结合的mixin，所以需要在特定业务环境下使用
  */
-
+import Vue from 'vue'
 export default {
   props: {
     visible: Boolean,
@@ -28,7 +28,7 @@ export default {
       alwaysDropAndCopyForm: false,
       isDataReady: false, // 是否数据准备完毕，可以渲染视图了
       activeTab: '', // 页签
-      tabStatus: {} // 页签状态
+      tabStatus: {}, // 页签状态
     }
   },
   watch: {
@@ -82,6 +82,9 @@ export default {
     }
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     async $reload() {
       this.loading = true;
       this.isDataReady = false;
