@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 14:59:36
+ * @LastEditTime: 2020-01-06 11:40:42
  * @Description: 销售-收入流水
  */
 <template>
@@ -47,7 +47,7 @@
             v-if="row.sourceType==1"
             class="iconfont icon-jie d-text-blue"
           ></i>
-          {{value}}
+          {{value | codeSlice}}
 
         </span>
         <!-- 匹配状态 -->

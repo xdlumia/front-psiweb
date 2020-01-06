@@ -2,12 +2,12 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 19:42:53
+ * @LastEditTime: 2020-01-06 11:41:27
  * @Description: 详情
 <template>
   <div>
     <side-detail
-      :title="`借款单编号:${code}`"
+      :title="`借款单编号:${codeSlice(code)}`"
       :visible.sync="showDetailPage"
       width="920px"
       :status="statusArr"
