@@ -41,7 +41,7 @@
                 <el-table :data="detail.commodityEntityList" style="width:100%">
                   <el-table-column label="商品名称" min-width="200" prop="goodsName"></el-table-column>
                   <el-table-column label="单价" min-width="100" prop="preDiscountSprice" v-if="showPrice"></el-table-column>
-                  <el-table-column label="数量" min-width="80" prop="commodityNumber"></el-table-column>
+                  <el-table-column :align="showPrice?'left':'right'" label="数量" min-width="80" prop="commodityNumber"></el-table-column>
                   <el-table-column align="right" label="总价" min-width="100" prop="taxTotalAmount" v-if="showPrice">
                     <template slot-scope="{row}">{{+Number(row.commodityNumber*row.preDiscountSprice).toFixed(2)}}</template>
                   </el-table-column>
@@ -68,7 +68,7 @@
                 <el-table :data="[item]" :show-header="false" style="width:100%">
                   <el-table-column label="商品名称" min-width="200" prop="goodsName"></el-table-column>
                   <el-table-column label="单价" min-width="100" prop="preDiscountSprice" v-if="showPrice"></el-table-column>
-                  <el-table-column label="数量" min-width="80" prop="commodityNumber"></el-table-column>
+                  <el-table-column :align="showPrice?'left':'right'" label="数量" min-width="80" prop="commodityNumber"></el-table-column>
                   <el-table-column align="right" label="总价" min-width="100" prop="taxTotalAmount" v-if="showPrice">
                     <template slot-scope="{row}">{{+Number(row.commodityNumber*row.preDiscountSprice).toFixed(2)}}</template>
                   </el-table-column>
@@ -79,7 +79,7 @@
                 <el-table :data="item.children" :show-header="false" class="no-border" style="width:100%">
                   <el-table-column label="商品名称" min-width="200" prop="goodsName"></el-table-column>
                   <el-table-column label min-width="100" prop v-if="showPrice"></el-table-column>
-                  <el-table-column label="数量" min-width="80" prop="commodityNum">
+                  <el-table-column :align="showPrice?'left':'right'" label="数量" min-width="80" prop="commodityNum">
                     <template slot-scope="{row}">X{{row.commodityNum}}</template>
                   </el-table-column>
                   <el-table-column label min-width="100" prop v-if="showPrice"></el-table-column>
