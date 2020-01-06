@@ -2,14 +2,14 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 09:46:36
+ * @LastEditTime: 2020-01-06 10:18:54
  * @Description: 客户详情
 */
 <template>
   <div>
     <side-detail
       destroy-on-close
-      :title="`客户详情:${rowData.code}`"
+      :title="`客户详情:${codeSlice(code)}`"
       :visible.sync="showDetailPage"
       @close="close"
       width="920px"

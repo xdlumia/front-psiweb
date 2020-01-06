@@ -1,14 +1,14 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 16:37:40
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2020-01-06 10:22:35
  * @Description: 报价单详情
 */
 <template>
   <div>
     <side-detail
-      :title="`报价单详情: ${code}`"
+      :title="`报价单详情: ${codeSlice(code)}`"
       :visible.sync="showDetailPage"
       width="920px"
       :status="status"
@@ -33,7 +33,12 @@
             :type="item.type"
           >{{item.label}}</el-button>
         </span>
-        <el-button size="mini" class="mr10" type="primary" @click="showPrint=true">打印</el-button>
+        <el-button
+          size="mini"
+          class="mr10"
+          type="primary"
+          @click="showPrint=true"
+        >打印</el-button>
 
       </div>
       <el-form
@@ -87,11 +92,15 @@
       :visible.sync="buyingAddVisible"
       :params="{quotationCode:detail.quotationCode}"
       type="add"
-      :rowData="detail" 
+      :rowData="detail"
       @reload="setEdit(),$reload()"
       v-if="buyingAddVisible"
     />
-    <printPdf :rowData="detail" :visible.sync="showPrint" v-if="showPrint" />
+    <printPdf
+      :rowData="detail"
+      :visible.sync="showPrint"
+      v-if="showPrint"
+    />
   </div>
 </template>
 <script>
@@ -158,7 +167,7 @@ export default {
         operationRecord: '操作记录'
       },
       activeName: 'detail',
-      showPrint:false
+      showPrint: false
     }
   },
   computed: {
@@ -173,16 +182,16 @@ export default {
     async getDetail() {
       if (this.code) {
         const { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code })
-        data.commodityEntityList.map(item=>{
+        data.commodityEntityList.map(item => {
           item.children = item.partsInfoCommodityList
         })
-        data.isTax=data.isTax||0
+        data.isTax = data.isTax || 0
         return data;
       }
     },
-    formatDate(value){
-      let date = new Date(value)||new Date;
-      return +new Date(date.toLocaleString('zh-cn',{hour12:false}).match(/(\d{4}\/\d{1,2}\/\d{1,2})/)[1])
+    formatDate(value) {
+      let date = new Date(value) || new Date;
+      return +new Date(date.toLocaleString('zh-cn', { hour12: false }).match(/(\d{4}\/\d{1,2}\/\d{1,2})/)[1])
     },
     // 判断禁用的按钮
     isDisabledButton(label) {

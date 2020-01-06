@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 18:42:30
+ * @LastEditTime: 2020-01-06 10:11:33
  * @Description: 基本信息 1
  */
 <template>
@@ -27,8 +27,9 @@
           />
           <tree-select
             class="wfull"
+            ref="treeSelect"
             v-if="item.type =='tree'"
-            v-model.trim="data[item.prop]"
+            v-model="responsibleUser"
             node-key="userId"
             size="mini"
             defaultExpandAll
@@ -37,8 +38,9 @@
             placeholder="请选择部门"
           >
             <div
+              class="d-pointer"
               slot="extend"
-              @change="commonBtn"
+              @click="commonBtn('-1')"
             >公共</div>
           </tree-select>
           <el-select
@@ -106,6 +108,15 @@ export default {
     }
   },
   computed: {
+    responsibleUser: {
+      get() {
+        let responsibleUser = this.data.responsibleUser || ''
+        return responsibleUser == '-1' ? '公共' : responsibleUser
+      },
+      set(val) {
+        this.data.responsibleUser = val
+      }
+    },
     formItems() {
       return this.items.filter(item => !this.hide.includes(item.prop))
     }
@@ -116,8 +127,10 @@ export default {
     this.getTreeData()
   },
   methods: {
-    commonBtn() {
-      this.data.responsibleUser = -1
+    // 选择公共
+    commonBtn(val) {
+      this.data.responsibleUser = val
+      this.$refs.treeSelect[0].isShowSelect = false
     },
     //请求树列表的数据
     getTreeData() {

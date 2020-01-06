@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 21:38:01
+ * @LastEditTime: 2020-01-06 10:16:55
  * @Description: 销售-账单调整单
  */
 <template>
@@ -32,13 +32,13 @@
           v-if="column.columnFields == 'adjustCode'"
           class="d-text-blue d-pointer"
           @click="eventHandle('detailVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
         <!-- 销售出库单编号 -->
         <span
           v-else-if="column.columnFields == 'fbiiBusCode'"
           class="d-text-blue d-pointer"
           @click="eventHandle('outLibVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
         <span v-else-if="prop == 'companySettlementId'"> {{row.companySettlementInfo}}</span>
         <span v-else-if="prop == 'feeTypeCode'"> {{value | dictionary('ZD_DY_LX')}}</span>
         <span v-else>{{value}}</span>

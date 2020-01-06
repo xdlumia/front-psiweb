@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 17:34:10
+ * @LastEditTime: 2020-01-06 10:19:13
  * @Description: 销售-客户管理
  */
 <template>
@@ -37,7 +37,7 @@
           class="d-text-blue d-pointer"
           v-if="column.columnFields=='code'"
           @click="eventHandle('detailVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
 
         <!-- 行业 -->
         <span v-else-if="column.columnFields=='trade'">{{value | dictionary('PSI_KH_HY')}}</span>

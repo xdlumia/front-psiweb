@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 09:45:03
+ * @LastEditTime: 2020-01-06 10:18:02
  * @Description: 客户管理-账单调整单
 */
 <template>
@@ -17,7 +17,7 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{type=='add'?'新增账单调整单':`编辑:${code}`}}</span>
+      <span>{{type=='add'?'新增账单调整单':`编辑:${codeSlice(code)}`}}</span>
       <div class="fr mr30">
         <el-button
           type="primary"
