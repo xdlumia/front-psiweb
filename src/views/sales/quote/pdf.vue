@@ -116,7 +116,7 @@ export default {
       if (!this.detail) return 0;
       else {
         return this.detail.commodityEntityList.reduce(
-          (total, item) => total + item.discountSprice,
+          (total, item) => total + (item.discountSprice * item.commodityNumber),
           0
         );
       }
@@ -133,15 +133,15 @@ export default {
     taxMoney(){
       if (!this.detail) return '';
       return +Number(this.detail.commodityEntityList.reduce((total, item) => {
-        return total + +Number((item.preDiscountSprice*item.taxRate/100)*item.commodityNumber) || 0;
+        return total + +Number((item.preDiscountSprice*(this.detail.isTax?0:item.taxRate)/100)*item.commodityNumber) || 0;
       }, 0)).toFixed(2);
     },
     // prettier-ignore
     taxRate(){
       if (!this.detail) return '';
       let prodata = this.detail.commodityEntityList.reduce((data, item) => {
-        data.total += Number(item.discountSprice/(1+(+item.taxRate/100))) || 0;
-        data.taxTotal += Number(item.discountSprice) || 0
+        data.total += (Number(item.discountSprice/(1+(+(this.detail.isTax?0:item.taxRate)/100))) || 0)*item.commodityNumber;
+        data.taxTotal += (Number(item.discountSprice) || 0)*item.commodityNumber
         return data;
       }, {
         total:0,
@@ -156,7 +156,7 @@ export default {
         let data = JSON.parse(JSON.stringify(this.rowData));
         data.commodityEntityList.map(item => {
           item.preDiscountSprice = +Number(
-            item.discountSprice / (1 + item.taxRate / 100)
+            item.discountSprice / (1 + (data.isTax?0:item.taxRate) / 100)
           ).toFixed(2);
           (item.children || []).map(
             item => (item.commodityNum = item.commodityNumber)
@@ -200,33 +200,6 @@ export default {
         }
         return { ...data, client, company };
       }
-    },
-    // prettier-ignore
-    getSummarys(params) {
-      const { columns, data } = params;
-      const sums = [];
-      columns.forEach((col, index) => {
-        let prop = col.property;
-        if (['taxTotalAmount'].includes(prop)) {
-          sums[index] = '税金: ' + +Number(data.reduce((total, item) => {
-            return total + +Number((item.preDiscountSprice*item.taxRate/100)*item.commodityNumber) || 0;
-          }, 0)).toFixed(2);
-        } else if (['commodityNumber'].includes(prop)) {
-          // o*(1+rate)=n/o-1
-          let prodata = data.reduce((data, item) => {
-            data.total += Number(item.discountSprice/(1+(+item.taxRate/100))) || 0;
-            data.taxTotal += Number(item.discountSprice) || 0
-            return data;
-          }, {
-            total:0,
-            taxTotal:0,
-          });
-          sums[index] = '税率: ' + +(Number(prodata.taxTotal/prodata.total-1)*100).toFixed(0) + '%';
-        } else {
-          sums[index] = '';
-        }
-      });
-      return sums;
     },
     print() {
       Print(this.$refs.detail, {
