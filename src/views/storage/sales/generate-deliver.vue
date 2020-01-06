@@ -128,7 +128,7 @@ export default {
     this.getinfoByCode()
   },
   mounted() {
-    this.addForm.salesShipmentCode = this.form.shipmentCode
+    this.addForm.salesShipmentCode = this.$options.filters.codeSlice(this.form.shipmentCode)
     this.addForm.requireShipmentsTime = this.form.salesQuotationEntity.salesExpectedShipmentsTime
   },
   methods: {
@@ -137,7 +137,7 @@ export default {
       this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.form.squotationCode })
         .then(res => {
           // res.data.facilitator = 6
-          // res.data.serveType = 'PSI_FWS_FWLX-1'
+          // res.data.serveType = 'PSI_FWS_FWLX-1' 
           this.quotationData = res.data || {}
           this.addForm.consignee = res.data.clientLinkman//收货人
           this.addForm.consigneePhone = res.data.clientPhone//收货人电话

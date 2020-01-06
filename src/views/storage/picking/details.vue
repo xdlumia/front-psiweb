@@ -11,7 +11,7 @@
     :visible="visible"
     v-loading="loading"
     @close="$emit('update:visible',false)"
-    :title="'拣货单-'+ detailForm.pickingOrderCode"
+    :title="`拣货单-${codeSlice(detailForm.pickingOrderCode)}`"
     width="990px"
   >
     <!-- class="d-auto-y"
@@ -112,6 +112,9 @@ export default {
     this.wmspickingorderInfo()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     //查看拣货单详情 
     wmspickingorderInfo() {
       this.loading = true

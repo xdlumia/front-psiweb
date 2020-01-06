@@ -12,7 +12,7 @@
     :visible="visible"
     v-loading="loading"
     @close="$emit('update:visible',false)"
-    :title="`采购单-${code}`"
+    :title="`采购单-${codeSlice(code)}`"
     width="990px"
   >
     <!-- class="d-auto-y"
@@ -101,6 +101,9 @@ export default {
     this.wmsallocationorderInfo()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     // 查看详情
     wmsallocationorderInfo() {
       this.loading = true

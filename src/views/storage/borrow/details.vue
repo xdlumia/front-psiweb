@@ -11,32 +11,32 @@
     :status="status"
     :visible="visible"
     @close="close"
-    :title="'借入借出任务-'+code"
+    :title="`借入借出任务-${codeSlice(code)}`"
     width="990px"
   >
     <div>
       <div class="drawer-header">
         <el-button
           v-if="(detailForm.borrowLoanType == 0) && authorityButtons.includes('psi_wms_borrow_05') && detailForm.isCanReturn"
-          @click="backVisible=true,isComponents = 'borrowPayback',dialogData.title='借入归还-'+detailForm.borrowLoanCode"
+          @click="backVisible=true,isComponents = 'borrowPayback',dialogData.title='借入归还-'+codeSlice(detailForm.borrowLoanCode)"
           size="mini"
           type="primary"
         >归还</el-button>
         <el-button
           v-if="(detailForm.borrowLoanType == 1) && authorityButtons.includes('psi_wms_borrow_04') && detailForm.isCanReturn"
-          @click="backVisible=true,isComponents = 'lendBack',dialogData.title='借出返还-'+detailForm.borrowLoanCode"
+          @click="backVisible=true,isComponents = 'lendBack',dialogData.title='借出返还-'+codeSlice(detailForm.borrowLoanCode)"
           size="mini"
           type="primary"
         >返还</el-button>
         <el-button
           v-if="(detailForm.borrowLoanState == 2 || detailForm.borrowLoanState == 4 || detailForm.borrowLoanState == 9) && (inNum < inAllNum) && authorityButtons.includes('psi_wms_borrow_06')"
-          @click="backVisible=true,isComponents = 'borrowScanCode',dialogData.title='借入扫码-'+detailForm.borrowLoanCode"
+          @click="backVisible=true,isComponents = 'borrowScanCode',dialogData.title='借入扫码-'+codeSlice(detailForm.borrowLoanCode)"
           size="mini"
           type="primary"
         >借入扫码</el-button>
         <el-button
           v-if="(detailForm.borrowLoanState == 3 || detailForm.borrowLoanState == 5 || detailForm.borrowLoanState == 8) && (inNum < inAllNum) && authorityButtons.includes('psi_wms_borrow_07')"
-          @click="backVisible=true,isComponents = 'lendScanCode',dialogData.title='借出扫码-'+detailForm.borrowLoanCode"
+          @click="backVisible=true,isComponents = 'lendScanCode',dialogData.title='借出扫码-'+codeSlice(detailForm.borrowLoanCode)"
           size="mini"
           type="primary"
         >借出扫码</el-button>
@@ -150,6 +150,9 @@ export default {
     this.wmsallocationorderInfo()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     close() {
       // this.backVisible = false
       this.$emit('update:visible', false)

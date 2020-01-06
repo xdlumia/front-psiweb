@@ -11,7 +11,7 @@
     :status="status"
     :visible="visible"
     @close="close"
-    :title="'盘点单-'+drawerData.blitemCode"
+    :title="`盘点单-${codeSlice(drawerData.blitemCode)}`"
     width="990px"
   >
     <div>
@@ -101,6 +101,9 @@ export default {
     this.wmsreportinglossesInfo()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     wmsreportinglossesInfo() {
       this.$api.seePsiWmsService.wmsblitemInfo(null, this.drawerData.id)
         .then(res => {

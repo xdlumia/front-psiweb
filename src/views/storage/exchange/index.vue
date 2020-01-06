@@ -24,7 +24,7 @@
           v-if="column.columnFields=='swapTaskCode'"
           class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span v-else-if="column.columnFields=='swapState'">{{state[value]}}</span>
         <span v-else>{{value}}</span>
       </template>

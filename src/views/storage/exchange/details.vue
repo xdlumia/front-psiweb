@@ -11,7 +11,7 @@
     :status="status"
     :visible="visible"
     @close="close"
-    :title="'换货任务-'+drawerData.swapTaskCode"
+    :title="`换货任务-${codeSlice(drawerData.swapTaskCode)}`"
     width="990px"
   >
     <div>
@@ -147,6 +147,9 @@ export default {
     this.wmsassembleorderInfo()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     //查看详情
     wmsassembleorderInfo() {
       this.$api.seePsiWmsService.wmsswaptaskGetByCode(null, this.code)

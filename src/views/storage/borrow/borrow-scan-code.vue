@@ -293,7 +293,16 @@ export default {
     },
     //回车 入库
     shipmentCommodityCheck(item) {
-      this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: item.snCode, putawayCommodityList: this.tableData, categoryCode: item.categoryCode, commodityCode: item.commodityCode, wmsId: this.data.borrowWmsId })
+      this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({
+        snCode: item.snCode,
+        putawayCommodityList: this.tableData,
+        categoryCode: item.categoryCode,
+        commodityCode: item.commodityCode,
+        wmsId: this.data.borrowWmsId,
+        purchasePrice: item.costUnivalence,//采购价
+        purchaseTaxes: item.costUnivalence * item.taxRate * 0.01,//采购税金
+        purchaseCost: item.inventoryPrice,//采购成本
+      })
         .then(res => {
           if (res.data) {
             if ((item.borrowLoanNum - item.borrowLoanAccomplishNum - (item.timeNum || 0)) > 0) {

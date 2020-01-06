@@ -11,7 +11,7 @@
     :status="status"
     :visible="visible"
     @close="close"
-    :title="`拆卸任务-${detailForm.disassemblyTaskCode}`"
+    :title="`拆卸任务-${codeSlice(detailForm.disassemblyTaskCode)}`"
     width="990px"
   >
     <div>
@@ -134,6 +134,9 @@ export default {
     this.wmsallocationorderInfo()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     //查看拆卸任务详情
     wmsallocationorderInfo() {
       this.$api.seePsiWmsService.wmsdisassemblytaskGetByCode(null, this.code)
