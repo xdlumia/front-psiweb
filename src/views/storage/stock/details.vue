@@ -108,6 +108,9 @@ export default {
     this.init()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     changeBackVisible() {
       this.backVisible = true
     },

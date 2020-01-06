@@ -11,7 +11,7 @@
     :status="status"
     :visible="visible"
     @close="$emit('update:visible',false)"
-    :title="`组装单-${detailForm.assembleOrderCode}`"
+    :title="`组装单-${codeSlice(detailForm.assembleOrderCode)}`"
     width="990px"
   >
     <div>
@@ -127,6 +127,9 @@ export default {
     this.wmsassembleorderInfo()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     //查看详情
     wmsassembleorderInfo() {
       this.loading = true

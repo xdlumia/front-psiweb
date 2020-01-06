@@ -8,13 +8,33 @@
 <template>
   <form-card title="到货信息">
     <el-row :gutter="10">
-      <el-col :span="8" v-if="!hide.includes('saleTime')">
-        <el-form-item :rules="[{ required: true, trigger: 'blur' }]" :label="labels.saleTime?labels.saleTime:'销售要求到货时间'" prop="saleTime">
-          <el-date-picker :disabled="disabled||disables.includes('saleTime')" :placeholder="`请选择${labels.saleTime?labels.saleTime:'销售要求到货时间'}`" class="wfull" v-model="data.saleTime" value-format="timestamp" />
+      <el-col
+        :span="8"
+        v-if="!hide.includes('saleTime')"
+      >
+        <el-form-item
+          :rules="[{ required: true, trigger: 'blur' }]"
+          :label="labels.saleTime?labels.saleTime:'销售要求到货时间'"
+          prop="saleTime"
+        >
+          <el-date-picker
+            :disabled="disabled||disables.includes('saleTime')"
+            :placeholder="`请选择${labels.saleTime?labels.saleTime:'销售要求到货时间'}`"
+            class="wfull"
+            v-model="data.saleTime"
+            value-format="timestamp"
+          />
         </el-form-item>
       </el-col>
-      <el-col :span="8" v-if="!hide.includes('purchaseTime')">
-        <el-form-item :rules="[{ required: true, trigger: 'blur' }]" label="采购预计到货时间" prop="purchaseTime">
+      <el-col
+        :span="8"
+        v-if="!hide.includes('purchaseTime')"
+      >
+        <el-form-item
+          :rules="[{ required: true, trigger: 'blur' }]"
+          label="采购预计到货时间"
+          prop="purchaseTime"
+        >
           <el-date-picker
             :disabled="disabled"
             :placeholder="`请选择采购预计到货时间`"
@@ -24,8 +44,17 @@
           />
         </el-form-item>
       </el-col>
-      <el-col :key="index" :span="item.span || 8" v-for="(item,index) of formItems" v-if="data.logistics">
-        <el-form-item :label="item.label" :prop="`logistics.${item.prop}`" :rules="item.rules">
+      <el-col
+        :key="index"
+        :span="item.span || 8"
+        v-for="(item,index) of formItems"
+        v-if="data.logistics"
+      >
+        <el-form-item
+          :label="item.label"
+          :prop="`logistics.${item.prop}`"
+          :rules="item.rules"
+        >
           <el-input
             :disabled="disabled"
             :placeholder="`请输入${item.label}`"
@@ -59,7 +88,12 @@
             v-else-if="item.type=='serviceProvider'"
             v-model="data.logistics[item.prop]"
           >
-            <el-option :key="item.code" :label="item.serviceName" :value="item.code" v-for="item in serviceOptions" />
+            <el-option
+              :key="item.code"
+              :label="item.serviceName"
+              :value="item.code"
+              v-for="item in serviceOptions"
+            />
           </el-select>
           <el-date-picker
             :disabled="disabled"
@@ -92,13 +126,13 @@ export default {
       type: Array,
       default: () => []
     },
-    labels:{
-      type:Object,
-      default:()=>({})
+    labels: {
+      type: Object,
+      default: () => ({})
     },
-    disables:{
-      type:Array,
-      default:()=>[]
+    disables: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -106,19 +140,19 @@ export default {
     let formItems = [
       { label: '供应商联系人', prop: 'supplierLinkman', type: 'input', rules: [{ required: true, trigger: 'blur' }], },
       { label: '供应商联系人电话', prop: 'supplierPhone', type: 'input', rules: [{ required: true, }, { type: 'phone' }], },
-      { label: '服务商名称', prop: 'serviceCode', type: 'serviceProvider', rules: [{validator:(rule,value,cb)=>{
-        if(this.data.logistics.totalAmount>0){
-          if(!value) cb(new Error('此处为必填项'))
-          else cb()
-        }else cb();
-      }}] },
-      { label: '服务类型', prop: 'logisticsModelCode', type: 'select', dictName:'PSI_FWS_FWLX',
-        exclude:'serviceFilter' },
+      {        label: '服务商名称', prop: 'serviceCode', type: 'serviceProvider', rules: [{          validator: (rule, value, cb) => {
+            if (this.data.logistics.totalAmount > 0) {
+              if (!value) cb(new Error('此处为必填项'))
+              else cb()
+            } else cb();
+          }        }]      },
+      {        label: '服务类型', prop: 'logisticsModelCode', type: 'select', dictName: 'PSI_FWS_FWLX',
+        exclude: 'serviceFilter'      },
       { label: '物流单号', prop: 'logisticsSn', type: 'input', },
-      { label: '是否到付', prop: 'collected', type: 'select',options:[
-        {code:0,content:'否'},
-        {code:1,content:'是'},
-      ] },
+      {        label: '是否到付', prop: 'collected', type: 'select', options: [
+          { code: 0, content: '否' },
+          { code: 1, content: '是' },
+        ]      },
       { label: '物流费用', prop: 'totalAmount', type: 'input', rules: [{ type: 'price' }], },
     ];
     return {

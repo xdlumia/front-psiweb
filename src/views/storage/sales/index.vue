@@ -24,12 +24,12 @@
           v-if="column.columnFields=='salesSheetCode'"
           class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span
           v-else-if="column.columnFields=='shipmentCode'"
           class="d-text-blue d-pointer"
           @click="getDetailVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span v-else-if="column.columnFields=='pickingState'">{{pickingStateText[value]}}</span>
         <span v-else-if="column.columnFields=='assemblyState'">{{assemblyStateText[value]}}</span>
         <span v-else-if="column.columnFields=='deliverState'">{{value == 0 ? '待发货' : value == 1 ? '完成发货' : value == 2 ? '终止' : '-'}}</span>

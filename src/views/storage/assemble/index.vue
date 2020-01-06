@@ -44,7 +44,7 @@
           v-if="column.columnFields=='assembleOrderCode'"
           class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span v-else-if="column.columnFields=='generateOrder'"><span v-if="row.generateOrder>0">{{value}}</span></span>
         <span v-else-if="column.columnFields=='operation'">
           <span

@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 10:22:57
+ * @LastEditTime: 2020-01-06 16:01:00
  * @Description: 销售-销售退货单
  */
 <template>
@@ -41,7 +41,7 @@
           class="d-text-blue d-pointer"
           v-else-if="column.columnFields=='salesShipmentCode'"
           @click="eventHandle('outLibVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
         <!-- 状态 -->
         <span v-else-if="column.columnFields=='state'">{{value}}</span>
         <!-- 状态 -->

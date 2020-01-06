@@ -11,7 +11,7 @@
       <el-row>
         <el-col :span="8">
           <div class="d-text-qgray">销售单编号</div>
-          <div class="d-text-black mt5 mb20">{{data.salesSheetCode}}</div>
+          <div class="d-text-black mt5 mb20">{{data.salesSheetCode | codeSlice}}</div>
         </el-col>
         <el-col :span="8">
           <div class="d-text-qgray">发货时间</div>

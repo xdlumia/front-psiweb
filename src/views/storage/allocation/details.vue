@@ -11,7 +11,7 @@
     :status="status"
     :visible="visible"
     @close="close"
-    :title="`调拨单-${code}`"
+    :title="`调拨单-${codeSlice(code)}`"
     width="990px"
   >
     <div>
@@ -103,6 +103,9 @@ export default {
     this.wmsallocationorderInfo()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     closedia() {
       this.backVisible = false
       this.wmsallocationorderInfo()

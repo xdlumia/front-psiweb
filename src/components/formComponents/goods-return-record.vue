@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-17 16:11:12
+ * @LastEditTime: 2020-01-06 16:03:13
  * @Description: 退货记录里
 */
 <template>
@@ -47,7 +47,11 @@
             min-width="100"
             label="商品编号"
             show-overflow-tooltip
-          />
+          >
+            <template slot-scope="{row}">
+              <span>{{row.commodityCode | codeSlice}}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             prop="categoryCode"
             min-width="80"

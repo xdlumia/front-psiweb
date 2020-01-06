@@ -194,9 +194,9 @@
         min-width="100"
         prop="taxRate"
       >
-      <template slot-scope="{row}">
-        <span>{{(!data.isTax)?row.taxRate:0}}</span>
-      </template>
+        <template slot-scope="{row}">
+          <span>{{(!data.isTax)?row.taxRate:0}}</span>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -398,10 +398,10 @@ export default {
         }, 200)
       }
     },
-    'data.isTax':{
-      deep:true,
-      handler(){
-        this.data.businessCommoditySaveVoList.map(item=>this.numberChange(item))
+    'data.isTax': {
+      deep: true,
+      handler() {
+        this.data.businessCommoditySaveVoList.map(item => this.numberChange(item))
       }
     }
   },
@@ -459,7 +459,7 @@ export default {
         child.commodityNumber = child.commodityNum
         child.reference = child.saleReferencePrice
         child.discountSprice = '-'
-        if(businessInfo[child.commodityCode]){
+        if (businessInfo[child.commodityCode]) {
           child.recentDiscountSprice = businessInfo[child.commodityCode].recentDiscountSprice
         }
       })
@@ -598,20 +598,20 @@ export default {
     },
     // 商品数量和折扣修改
     numberChange(row) {
-      if(row.discount==='')return
-      if(!row.reference)return
+      if (row.discount === '') return
+      if (!row.reference) return
       let reference = row.reference || 0   //销售参考价
-      let taxRate = (!this.data.isTax)?((row.taxRate || 100) / 100):0  ///税率
+      let taxRate = (!this.data.isTax) ? ((row.taxRate || 100) / 100) : 0  ///税率
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
       // 折扣价格  公式:税前金额  * (1-税率) * 折扣
       row.discountSprice = +(reference * (1 + taxRate) * discount).toFixed(2) || 0
     },
     discountSpriceChange(row) {
-      if(row.discount==='')return
-      if(!row.reference)return
+      if (row.discount === '') return
+      if (!row.reference) return
       let reference = row.reference || 0   //销售参考价
-      let taxRate = (!this.data.isTax)?((row.taxRate || 100) / 100):0  ///税率
+      let taxRate = (!this.data.isTax) ? ((row.taxRate || 100) / 100) : 0  ///税率
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
       // 折后价格 / (税后价格*(1-税率)

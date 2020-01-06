@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 14:15:42
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2020-01-06 15:57:24
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -12,8 +12,15 @@
     v-loading="loading"
   >
     <div class="mb10">
-      <el-form-item prop="isTax" label="是否含税">
-        <el-select placeholder="请选择" v-model="data.isTax" disabled>
+      <el-form-item
+        prop="isTax"
+        label="是否含税"
+      >
+        <el-select
+          placeholder="请选择"
+          v-model="data.isTax"
+          disabled
+        >
           <el-option
             :key="item.value"
             :label="item.label"
@@ -50,7 +57,7 @@
           <span
             class="d-text-blue d-pointer"
             @click="showCommodityDetail=true,currentCommodityCode=row.commodityCode"
-          >{{row.commodityCode}}</span>
+          >{{row.commodityCode | codeSlice}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -133,9 +140,9 @@
         min-width="100"
         prop="taxRate"
       >
-      <template slot-scope="{row}">
-        <span>{{(!data.isTax)?row.taxRate:0}}</span>
-      </template>
+        <template slot-scope="{row}">
+          <span>{{(!data.isTax)?row.taxRate:0}}</span>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -259,7 +266,7 @@ export default {
   },
   methods: {
     async loadChildren(row, node, cb) {
-      if(row.children) cb(row.children)
+      if (row.children) cb(row.children)
       let {
         data
       } = await this.$api.seePsiCommonService.commonquotationconfigdetailsListConfigByGoodName(
@@ -293,9 +300,14 @@ export default {
           sums[index] = '总计';
           return;
         }
-        else if (['reference', 'commodityNumber', 'discountSprice', 'inventoryNumber', 'recentDiscountSprice'].includes(column.property)) {
+        else if (['reference', 'commodityNumber', 'inventoryNumber',].includes(column.property)) {
           sums[index] = +Number(data.reduce((num, item) => {
             return num + +Number(item[column.property] || 0)
+          }, 0)).toFixed(2) || 0;
+        }
+        else if (['discountSprice', 'recentDiscountSprice'].includes(column.property)) {
+          sums[index] = +Number(data.reduce((num, item) => {
+            return num + (+Number(item[column.property] || 0) * item.commodityNumber)
           }, 0)).toFixed(2) || 0;
         }
       })

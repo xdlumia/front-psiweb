@@ -23,12 +23,12 @@
           v-if="column.columnFields=='assembleTaskCode'"
           class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span
           v-else-if="column.columnFields=='assembleOrderCode'"
           class="d-text-blue d-pointer"
           @click="getassembleVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span v-else-if="column.columnFields=='assembleTaskState'">{{state[value]}}</span>
         <span v-else-if="column.columnFields=='pickingState'">{{pickingState[value]}}</span>
         <span v-else>{{value}}</span>

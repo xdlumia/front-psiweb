@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 15:43:29
+ * @LastEditTime: 2020-01-06 16:02:53
  * @Description: 退货商品商品信息
 */
 <template>
@@ -26,7 +26,11 @@
           min-width="100"
           label="商品编号"
           show-overflow-tooltip
-        />
+        >
+          <template slot-scope="{row}">
+            <span>{{row.commodityCode | codeSlice}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           fixed
           prop="goodsPic"

@@ -11,7 +11,7 @@
     :status="status"
     :visible="visible"
     @close="$emit('update:visible',false)"
-    :title="drawerData.type == 1 ? '报溢单-'+ drawerData.reportingLossesCode : '报损单-' + drawerData.reportingLossesCode"
+    :title="drawerData.type == 1 ? '报溢单-'+ codeSlice(drawerData.reportingLossesCode) : '报损单-' + codeSlice(drawerData.reportingLossesCode)"
     width="990px"
   >
     <div>
@@ -79,6 +79,9 @@ export default {
     this.wmsreportinglossesInfo()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     //查看报溢报损详情
     wmsreportinglossesInfo() {
       this.$api.seePsiWmsService.wmsreportinglossesInfo(null, this.drawerData.id)

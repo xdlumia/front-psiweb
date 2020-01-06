@@ -75,7 +75,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            {{scope.row.commodityCode}}
+            {{scope.row.commodityCode | codeSlice}}
           </template>
         </el-table-column>
         <el-table-column
@@ -196,9 +196,9 @@
           label="税率%"
           show-overflow-tooltip
         >
-        <template slot-scope="{row}">
-          <span>{{(!data.isTax)?row.taxRate:0}}</span>
-        </template>
+          <template slot-scope="{row}">
+            <span>{{(!data.isTax)?row.taxRate:0}}</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="taxPrice"
@@ -364,7 +364,7 @@ export default {
     },
     // 税后销售单价
     formatTaxPrice(row) {
-      let taxRate = this.data.isTax?0:((row.taxRate || 100) / 100)  ///税率
+      let taxRate = this.data.isTax ? 0 : ((row.taxRate || 100) / 100)  ///税率
       let commodityNumber = row.commodityNumber || 0 //退货数量
       let alterationPrice = row.alterationPrice || 0 //退货单价
       // 税后销售单价  公式:销售单价 * (1-税率)
@@ -373,7 +373,7 @@ export default {
     },
     // 销售税后总价
     formatTaxTotalAmount(row) {
-      let taxRate = this.data.isTax?0:((row.taxRate || 100) / 100)  ///税率
+      let taxRate = this.data.isTax ? 0 : ((row.taxRate || 100) / 100)  ///税率
       let commodityNumber = row.commodityNumber || 0 //退货数量
       let alterationPrice = row.alterationPrice || 0 //退货单价
       let taxPrice = (alterationPrice * (1 - taxRate))
@@ -393,7 +393,7 @@ export default {
         return
       }
 
-      let taxRate = this.data.isTax?0:((row.taxRate || 100) / 100)  ///税率
+      let taxRate = this.data.isTax ? 0 : ((row.taxRate || 100) / 100)  ///税率
       let commodityNumber = row.commodityNumber || 0 //退货数量
       let alterationPrice = row.alterationPrice || 0 //退货单价
       // 税后销售单价  公式:销售单价 * (1-税率)

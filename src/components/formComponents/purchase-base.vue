@@ -11,7 +11,7 @@
       <el-row>
         <el-col :span="8">
           <div class="d-text-qgray">采购入库单编号</div>
-          <div class="d-text-black mt5 mb20">{{data.putinCode || '-'}}</div>
+          <div class="d-text-black mt5 mb20">{{data.putinCode | codeSlice}}</div>
         </el-col>
         <el-col :span="8">
           <div class="d-text-qgray">供应商名称</div>

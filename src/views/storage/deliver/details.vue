@@ -11,7 +11,7 @@
     :visible="visible"
     @close="$emit('update',false)"
     v-loading='loading'
-    :title="'发货单-'+detailForm.shipmentsOrderCode"
+    :title="`发货单-${codeSlice(detailForm.shipmentsOrderCode)}`"
     width="990px"
   >
     <div>
@@ -66,6 +66,9 @@ export default {
     this.wmsallocationorderInfo()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     //查看调拨单详情
     wmsallocationorderInfo() {
       this.loading = true

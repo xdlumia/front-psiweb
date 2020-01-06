@@ -25,12 +25,12 @@
           v-if="column.columnFields=='pickingOrderCode'"
           class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span
           v-else-if="column.columnFields=='assembleTaskCode'"
           class="d-text-blue d-pointer"
           @click="getVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span v-else-if="column.columnFields=='commodityCategorys'">
           {{(dictionaryOptions('PSI_SP_KIND').forEach((item) => {
           classForm[item.code] = item.content
@@ -40,7 +40,7 @@
           v-else-if="column.columnFields=='salesSheetCode'"
           class="d-text-blue d-pointer"
           @click="getshipVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
 
         <span v-else>{{value}}</span>
       </template>

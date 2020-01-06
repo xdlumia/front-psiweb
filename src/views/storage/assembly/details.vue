@@ -12,7 +12,7 @@
     :visible="visible"
     @close="close"
     v-loading="loading"
-    :title="`组装任务-${detailForm.assembleTaskCode}`"
+    :title="`组装任务-${codeSlice(detailForm.assembleTaskCode)}`"
     width="990px"
   >
     <div>
@@ -148,6 +148,9 @@ export default {
     this.wmsassembleorderInfo()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     //查看详情
     wmsassembleorderInfo() {
       this.loading = true
