@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 10:11:33
+ * @LastEditTime: 2020-01-06 14:51:01
  * @Description: 基本信息 1
  */
 <template>
@@ -27,6 +27,7 @@
           />
           <tree-select
             class="wfull"
+            :disabled='disabled'
             ref="treeSelect"
             v-if="item.type =='tree'"
             v-model="responsibleUser"

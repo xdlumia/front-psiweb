@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 20:22:33
+ * @LastEditTime: 2020-01-06 14:48:53
  * @Description: 邮件担保 or 合同收回
 */
 <template>
@@ -134,8 +134,8 @@ export default {
           params[this.type].fileNames = params[this.type].fileNames.map(item => item.name)
           this.$api.seePsiSaleService[api](params)
             .then(res => {
+              this.$emit('reload')
               this.close()
-              this.setEdit()
             })
             .finally(() => {
               this.loading = false
