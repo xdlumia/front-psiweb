@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-29 11:33:47
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2020-01-06 10:52:56
  * @Description: 选择产品
 */
 <template>
@@ -161,6 +161,9 @@ export default {
       else if (this.queryForm.categoryCode === 'PSI_SP_KIND-2') {
         this.$refs.kind2.filter(this.queryForm.name)
       }
+      setTimeout(() => {
+        this.$nextTick(()=>this.$refs[this.queryForm.categoryCode === 'PSI_SP_KIND-1'?'kind1':'kind2'].resetSelection())
+      }, 100);
     },
     // 整机数据多选
     kind1Select(val) {

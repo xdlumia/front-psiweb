@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-02 17:23:29
+ * @LastEditTime: 2020-01-06 10:56:54
  * @Description: 整机列表 和 配件列表  私有组件 你们用不了 
 */
 <template>
@@ -15,7 +15,6 @@
       :data="kind1List"
       border
       row-key="goodsCode"
-      reserve-selection
       @selection-change="selectionChange"
       default-expand-all
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
@@ -29,6 +28,7 @@
       <el-table-column
         type="selection"
         width="180"
+        reserve-selection
       >
       </el-table-column>
       <el-table-column
@@ -48,7 +48,6 @@
       ref="kind2"
       border
       default-expand-all
-      reserve-selection
       @selection-change="selectionChange"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
@@ -61,6 +60,7 @@
       <el-table-column
         type="selection"
         width="120"
+        reserve-selection
       >
       </el-table-column>
       <el-table-column
@@ -116,6 +116,11 @@ export default {
       // 本地搜索
       kind1Name: '',
       kind2Name: '',
+      selections:[],
+      preKind1List:[],
+      preKind1Name:'',
+      preKind2List:[],
+      preKind2Name:'',
     };
   },
   created() {
@@ -125,12 +130,14 @@ export default {
   computed: {
     kind1List() {
       if (this.kind1Name) {
+        if(this.preKind1Name==this.kind1Name) return this.preKind1List;
+        this.preKind1Name = this.kind1Name;
         // 变平化数据
         let flattenKindData = this.$$util.jsonFlatten(this.kind1Data)
         // 根据nama筛选数据
         let filterData = flattenKindData.filter(item => item.name.indexOf(this.kind1Name) != -1)
         let newData = this.$$util.formatChildren(filterData, 'className')
-        return newData
+        return this.preKind1List = newData
       } else {
         return this.kind1Data
       }
@@ -139,12 +146,14 @@ export default {
     // 配件列表
     kind2List() {
       if (this.kind2Name) {
+        if(this.preKind2Name==this.kind2Name) return this.preKind2List;
+        this.preKind2Name = this.kind2Name;
         // 变平化数据
         let flattenKindData = this.$$util.jsonFlatten(this.kind2Data)
         // 根据nama筛选数据
         let filterData = flattenKindData.filter(item => item.name.indexOf(this.kind2Name) != -1)
         let newData = this.$$util.formatChildren(filterData, 'secondClassName')
-        return newData
+        return this.preKind2List = newData
       } else {
         return this.kind2Data
       }
@@ -165,6 +174,32 @@ export default {
       } else if (this.title == '配件列表') {
         this.kind2Name = name
       }
+    },
+    flatCallback(list,fn) {
+      list.map(item => {
+        fn(item)
+        if (item.children) {
+          this.flatCallback(item.children,fn);
+        }
+      })
+    },
+    resetSelection(){
+      let selections = this.selections
+      let table = this.$refs[this.title=='整机列表'?'kind1':'kind2']
+      table.clearSelection()
+      this.$nextTick(()=>{
+        let items = {}
+        this.flatCallback(table.data,item=>{
+          items[item.goodsCode] = item;
+        })
+        selections.map(sel=>{
+          if(items[sel.goodsCode]){
+            this.toggleRowSelection(items[sel.goodsCode],true,false)
+          }else{
+            this.toggleRowSelection(sel,true,false)
+          }
+        })
+      })
     },
     // 重新加载
     reload() {
@@ -190,8 +225,8 @@ export default {
     },
     // 多选
     selectionChange(val) {
-      console.log(val)
       this.$emit('selection-change', val)
+      this.selections = val;
     }
   },
 };

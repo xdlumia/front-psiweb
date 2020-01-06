@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-05 17:31:44
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 18:05:08
+ * @LastEditTime: 2020-01-06 10:44:50
  * @Description: 商品分类树组件  字段已绑定 1 
 */
 <template>
@@ -73,7 +73,6 @@ export default {
     },
     selectAll() {
       this.$emit('update:subCat', '');
-      this.$refs.tree.setCurrentKey()
       this.changed();
     },
     // 树点击
