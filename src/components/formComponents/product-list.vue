@@ -2,11 +2,15 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-06 10:56:54
+ * @LastEditTime: 2020-01-06 14:10:39
  * @Description: 整机列表 和 配件列表  私有组件 你们用不了 
 */
 <template>
   <form-card :title="title">
+    <div class="mb10">
+      <el-button type="primary" size="mini" @click="expanded(true)">展开全部</el-button>
+      <el-button type="primary" size="mini" @click="expanded(false)">收起全部</el-button>
+    </div>
     <el-table
       size="mini"
       height="550px"
@@ -70,7 +74,7 @@
         prop="goodsCode"
       >
         <template slot-scope="scope">
-          <span class="d-text-blue">{{scope.row.goodsCode}}</span>
+          <span class="d-text-blue">{{scope.row.goodsCode|codeSlice}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -135,7 +139,7 @@ export default {
         // 变平化数据
         let flattenKindData = this.$$util.jsonFlatten(this.kind1Data)
         // 根据nama筛选数据
-        let filterData = flattenKindData.filter(item => item.name.indexOf(this.kind1Name) != -1)
+        let filterData = flattenKindData.filter(item => String(item.name).toLowerCase().indexOf(String(this.kind1Name).toLowerCase()) != -1)
         let newData = this.$$util.formatChildren(filterData, 'className')
         return this.preKind1List = newData
       } else {
@@ -151,7 +155,7 @@ export default {
         // 变平化数据
         let flattenKindData = this.$$util.jsonFlatten(this.kind2Data)
         // 根据nama筛选数据
-        let filterData = flattenKindData.filter(item => item.name.indexOf(this.kind2Name) != -1)
+        let filterData = flattenKindData.filter(item => String(item.name).toLowerCase().indexOf(String(this.kind2Name).toLowerCase()) != -1)
         let newData = this.$$util.formatChildren(filterData, 'secondClassName')
         return this.preKind2List = newData
       } else {
@@ -161,6 +165,12 @@ export default {
     }
   },
   methods: {
+    expanded(isExpanded){
+      let table = this.$refs[this.title=='整机列表'?'kind1':'kind2'];
+      let data = table.data;
+      let expands = table.store.states.expandRows
+      data.map(item=>table.toggleRowExpansion(item,isExpanded))
+    },
     toggleRowSelection(row, selected = true) {
       if (this.title == '整机列表') {
         this.$refs.kind1.toggleRowSelection(row, selected);
