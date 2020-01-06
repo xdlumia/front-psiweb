@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 20:09:28
+ * @LastEditTime: 2020-01-06 10:17:46
  * @Description: 销售-费用分摊单
  */
 <template>
@@ -34,13 +34,13 @@
           v-if="column.columnFields == 'costApportionCode'"
           class="d-text-blue d-pointer"
           @click="eventHandle('detailVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
         <!-- 费用单单编号 -->
         <span
           v-else-if="column.columnFields == 'costCode'"
           class="d-text-blue d-pointer"
           @click="eventHandle('feeVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>

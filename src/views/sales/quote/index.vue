@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 11:11:06
+ * @LastEditTime: 2020-01-06 10:22:28
  * @Description: 销售-报价单
  */
 <template>
@@ -45,13 +45,13 @@
           v-if="prop == 'quotationCode'"
           class="d-text-blue d-pointer"
           @click="eventHandle('quoteVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
         <!-- 销售出库单编号 -->
         <span
           v-else-if="prop == 'shipmentCode'"
           class="d-text-blue d-pointer"
           @click="eventHandle('outLibVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>

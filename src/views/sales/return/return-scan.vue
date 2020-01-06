@@ -17,7 +17,7 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{`销售${from == 'exchange'?'换':'退'}货单:${code}`}}</span>
+      <span>{{`销售${from == 'exchange'?'换':'退'}货单:${codeSlice(code)}`}}</span>
       <div class="fr mr30">
         <el-button
           type="primary"

@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 19:57:15
+ * @LastEditTime: 2020-01-06 10:16:27
  * @Description: 账单调整详情
 */
 <template>
   <div>
     <side-detail
-      :title="`账单调整详情: ${code}`"
+      :title="`账单调整详情: ${codeSlice(code)}`"
       :visible.sync="showDetailPage"
       width="920px"
       :status="statusArr"

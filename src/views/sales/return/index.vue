@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 15:01:03
+ * @LastEditTime: 2020-01-06 10:22:57
  * @Description: 销售-销售退货单
  */
 <template>
@@ -35,7 +35,7 @@
           class="d-text-blue d-pointer"
           v-if="column.columnFields=='alterationCode'"
           @click="eventHandle('returnVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
         <!-- 销售出库单编号 -->
         <span
           class="d-text-blue d-pointer"

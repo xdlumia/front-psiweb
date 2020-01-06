@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-18 14:34:29
+ * @LastEditTime: 2020-01-06 10:17:29
  * @Description: 销售-销售调价单
  */
 <template>
@@ -34,7 +34,7 @@
           v-if="prop == 'code'"
           class="d-text-blue d-pointer"
           @click="eventHandle('detailVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
         <span v-else-if="prop=='state'">
           <span>{{stateText[row.state]}}</span>
         </span>

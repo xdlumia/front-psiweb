@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 15:10:48
+ * @LastEditTime: 2020-01-06 10:22:05
  * @Description: file content
 */
 <template>
@@ -14,7 +14,7 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{type=='add'?'新建报价单':type=='copy'?`复制:${code}`:`编辑:${code}`}}</span>
+      <span>{{type=='add'?'新建报价单':type=='copy'?`复制:${codeSlice(code)}`:`编辑:${codeSlice(code)}`}}</span>
       <div class="fr mr30">
         <el-button
           size="mini"

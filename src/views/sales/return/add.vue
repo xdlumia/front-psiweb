@@ -15,7 +15,7 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{type=='add'?'生成销售退货单':`编辑:${code}`}}</span>
+      <span>{{type=='add'?'生成销售退货单':`编辑:${codeSlice(code)}`}}</span>
       <div class="fr mr30">
         <el-button
           type="primary"
@@ -180,7 +180,7 @@ export default {
         totalExchangeNumber: '',//换货总数量,
         totalRefundAmount: '',//总计退货价格（影响金额）
         totalRefundNumber: '',//退货总数量
-        isTax:0// 是否含税，0含税 1未税
+        isTax: 0// 是否含税，0含税 1未税
       }
     }
   },
@@ -208,7 +208,7 @@ export default {
       if (this.code) {
         let { data } = await this.$api.seePsiSaleService.salesreturnedGetInfoByCode({ code: this.code })
         data.shipmentFinanceSaveVoList = data.shipmentFinanceEntityList
-        data.isTax=data.isTax||0
+        data.isTax = data.isTax || 0
         return data;
       }
     },

@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 17:57:31
+ * @LastEditTime: 2020-01-06 10:22:45
  * @Description: 销售出库单详情
 */
 <template>
   <div>
     <side-detail
-      :title="`销售退货单: ${code}`"
+      :title="`销售退货单: ${codeSlice(code)}`"
       :visible.sync="showDetailPage"
       width="920px"
       :status="status"
