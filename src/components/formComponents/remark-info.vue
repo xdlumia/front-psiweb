@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 10:46:24
+ * @LastEditTime: 2020-01-06 11:40:09
  * @Description: 邮件担保 or 合同收回 备注信息 字段已绑定 1
 */
 <template>
@@ -108,6 +108,15 @@
           >
             <span>{{i+1}}. </span>
             <el-input
+              v-if="disabled"
+              :disabled="disabled"
+              style="width:220px"
+              inline
+              :value="item"
+            ></el-input>
+            <el-input
+              v-else
+              :disabled="disabled"
               v-model="item.name"
               style="width:220px"
               inline
@@ -165,11 +174,9 @@ export default {
     };
   },
   watch: {
-    data() {
-      // this.init();
-    }
   },
   mounted() {
+
     // this.init();
   },
   computed: {
