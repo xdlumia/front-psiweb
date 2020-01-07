@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-29 16:16:52
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2020-01-07 23:21:34
  * @Description: 商品信息 可编辑
 */  
 <template>
@@ -115,7 +115,7 @@
       </el-table-column>
       <el-table-column
         label="组装数量"
-        min-width="150"
+        width="150"
         prop="num"
       >
         <template
@@ -123,6 +123,7 @@
           class="d-relative"
         >
           <el-input-number
+            style="width:100%"
             v-if="scope.row.commodityCode && !scope.row.quotationId"
             size="mini"
             v-model="scope.row.num"
