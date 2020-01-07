@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-07 14:53:36
+ * @LastEditTime: 2020-01-07 20:10:38
  * @Description: 组装任务组装弹窗 
 */
 <template>
@@ -352,7 +352,7 @@ export default {
     // },
     //保存
     submit() {
-      if (this.num < this.data.currAccomplishNum) {
+      if (this.num <= this.data.currAccomplishNum) {
         this.loading = true
         this.$api.seePsiWmsService.wmsassembletaskPutawayCommodity({ businessCode: this.detailForm.assembleTaskCode, businessId: this.detailForm.id, commodityCode: this.data.commodityCode, num: this.num })
           .then(res => {
