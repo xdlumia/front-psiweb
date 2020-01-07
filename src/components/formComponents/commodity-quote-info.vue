@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 15:57:24
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2020-01-07 13:53:22
  * @Description: 新增销售报价单 商品信息 可查看
 */  
 <template>
@@ -274,21 +274,23 @@ export default {
           commodityCode: row.commodityCode
         }
       );
-      let { data: childList } = await this.$api.seePsiSaleService.businesscommodityQueryGoodsList({
-        commodityCodes: data.map(item => item.commodityCode),
-      })
-      let businessInfo = childList.reduce((data, item) => {
-        data[item.commodityCode] = item;
-        return data;
-      }, {})
+      if(data.length){
+        let { data: childList } = await this.$api.seePsiSaleService.businesscommodityQueryGoodsList({
+          commodityCodes: data.map(item => item.commodityCode),
+        })
+        let businessInfo = childList.reduce((data, item) => {
+          data[item.commodityCode] = item;
+          return data;
+        }, {})
 
-      data.map(child => {
-        child.parentCommodityCode = row.commodityCode
-        child.commodityNumber = child.commodityNum
-        child.reference = child.saleReferencePrice
-        child.discountSprice = '-'
-        child.recentDiscountSprice = businessInfo[child.commodityCode] ? (businessInfo[child.commodityCode].recentDiscountSprice || 0) : 0
-      })
+        data.map(child => {
+          child.parentCommodityCode = row.commodityCode
+          child.commodityNumber = child.commodityNum
+          child.reference = child.saleReferencePrice
+          child.discountSprice = '-'
+          child.recentDiscountSprice = businessInfo[child.commodityCode] ? (businessInfo[child.commodityCode].recentDiscountSprice || 0) : 0
+        })
+      }
       cb(data);
     },
     //算合计的
