@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:44:55
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2020-01-02 18:24:07
+ * @LastEditTime : 2020-01-07 17:49:18
  * @Description: 商品分类
  -->
 <template>
@@ -218,6 +218,9 @@
                   <el-input-number
                     controls-position="right"
                     :show-word-limit="false"
+                    :min="0.1"
+                    :precision="2"
+                    :step="0.1"
                     v-model.trim="form.inventoryPriceFormulaRatio"
                   ></el-input-number>
                 </el-form-item>
@@ -243,6 +246,9 @@
                   <el-input-number
                     controls-position="right"
                     :show-word-limit="false"
+                    :min="0.1"
+                    :precision="2"
+                    :step="0.1"
                     v-model.trim="form.saleRefPriceFormulaRatio"
                   ></el-input-number>
                 </el-form-item>
@@ -290,10 +296,10 @@ export default {
         childClassName: '',
         parentId: null,
         inventoryPriceFormula: '',
-        inventoryPriceFormulaRatio: 0,
+        inventoryPriceFormulaRatio: 1,
         inventoryPriceFormulaFixedValue: 0,
         saleReferencePriceFormula: '',
-        saleRefPriceFormulaRatio: 0,
+        saleRefPriceFormulaRatio: 1,
         saleRefPriceFormulaFixedValue: 0
       },
       rules: {
@@ -311,7 +317,7 @@ export default {
         ],
         inventoryPriceFormulaRatio: [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^[-+]?\d{1,6}(\.\d{1,2})?$/, message: '请输入6位整数，两位小数', trigger: 'blur' }
+          { pattern: /^\d{1,6}(\.\d{1,2})?$/, message: '请输入6位整数，两位小数', trigger: 'blur' }
         ],
         inventoryPriceFormulaFixedValue: [
           { required: true, message: '请输入', trigger: 'blur' },
@@ -319,7 +325,7 @@ export default {
         ],
         saleRefPriceFormulaRatio: [
           { required: true, message: '请输入', trigger: 'blur' },
-          { pattern: /^[-+]?\d{1,6}(\.\d{1,2})?$/, message: '请输入6位整数，两位小数', trigger: 'blur' }
+          { pattern: /^\d{1,6}(\.\d{1,2})?$/, message: '请输入6位整数，两位小数', trigger: 'blur' }
         ],
         saleRefPriceFormulaFixedValue: [
           { required: true, message: '请输入', trigger: 'blur' },
@@ -425,9 +431,9 @@ export default {
         className: '',
         childClassName: '',
         parentId: null,
-        inventoryPriceFormulaRatio: 0,
+        inventoryPriceFormulaRatio: 1,
         inventoryPriceFormulaFixedValue: 0,
-        saleRefPriceFormulaRatio: 0,
+        saleRefPriceFormulaRatio: 1,
         saleRefPriceFormulaFixedValue: 0
       })
       console.log(this.form)
