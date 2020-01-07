@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-24 15:43:40
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 13:16:16
+ * @LastEditTime: 2020-01-07 11:52:58
  * @Description: 自由模式确定配置单
 */
 <template>
@@ -56,7 +56,7 @@ export default {
           ).toFixed(2);
         } else if (['saleReferencePrice'].includes(col.property)) {
           sums[index] = +Number(
-            data
+            this.flatten(data)
               .map(
                 item =>
                   +Number(
@@ -72,6 +72,16 @@ export default {
         } else sums[index] = '';
       });
       return sums;
+    },
+    flatten(data) {
+      let all = [];
+      data.map(item => {
+        all.push(item);
+        if (item.children && item.children.length) {
+          all = all.concat(this.flatten(item.children));
+        }
+      });
+      return all;
     },
     checkCommodityNumber(row,rule,value,cb){
       console.log(row)
