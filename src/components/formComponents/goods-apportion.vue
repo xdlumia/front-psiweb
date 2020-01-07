@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 11:52:25
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2020-01-07 14:55:50
  * @Description: 新增费用分摊单商品信息
 */
 <template>
@@ -25,7 +25,11 @@
           min-width="100"
           label="商品编号"
           show-overflow-tooltip
-        />
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.commodityCode | codeSlice}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="goodsPic"
           min-width="100"

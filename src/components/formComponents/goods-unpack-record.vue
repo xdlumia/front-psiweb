@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-28 15:04:02
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2020-01-07 14:57:25
  * @Description: 拆卸记录 已绑定 1
 */
 <template>
@@ -73,7 +73,11 @@
                 min-width="100"
                 prop="commodityCode"
                 show-overflow-tooltip
-              ></el-table-column>
+              >
+                <template slot-scope="scope">
+                  <span>{{scope.row.commodityCode | codeSlice}}</span>
+                </template>
+              </el-table-column>
               <el-table-column
                 label="商品名称"
                 min-width="100"

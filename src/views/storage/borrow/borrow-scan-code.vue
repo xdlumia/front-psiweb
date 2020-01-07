@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-11 15:11:31
+ * @LastEditTime: 2020-01-07 14:35:58
  * @Description: 借入扫码
 */
 <template>
@@ -70,7 +70,7 @@
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+                <span class="d-text-blue">{{scope.row.commodityCode | codeSlice}}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -199,7 +199,11 @@
               min-width="100"
               label="商品编号"
               show-overflow-tooltip
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span>{{scope.row.commodityCode | codeSlice}}</span>
+              </template>
+            </el-table-column>
             <el-table-column
               label="商品分类"
               min-width="110"
