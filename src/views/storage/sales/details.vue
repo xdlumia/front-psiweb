@@ -28,16 +28,20 @@
         v-model="activeName"
       >
         <el-tab-pane label="详情">
-          <el-form size="mini">
+          <el-form
+            size="mini"
+            :model="detailForm.salesQuotationEntity"
+            ref="form"
+            v-if='detailForm'
+          >
             <goodsExported
               v-if='detailForm'
               :detailForm='detailForm'
               :code='code'
             />
             <deliverInfo
-              v-if='detailForm' 
               :data='detailForm.salesQuotationEntity'
-              :disabled='true'
+              disabled
               :hide="['note']"
             />
             <generateDeliver
