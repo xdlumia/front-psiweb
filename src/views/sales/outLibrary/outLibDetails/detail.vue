@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 10:42:43
+ * @LastEditTime: 2020-01-07 18:38:09
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -67,7 +67,7 @@
       <remark-info
         disabled
         title="合同收回"
-        :data="data.contractAttachsInfo || {}"
+        :data="data.contractAttachInfo || {}"
       />
     </div>
   </div>
