@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-22 16:39:19
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-05 17:52:38
+ * @LastEditors  : 赵伦
+ * @LastEditTime : 2020-01-07 21:55:03
  * @Description: 关联业务辅助
  */
 
@@ -145,6 +145,14 @@ export default {
           listPage: 'StorageBorrow',
           codeFilterKey: 'borrowLoanTaskCode',
           title: '借入借出任务'
+        },
+        // 报价单
+        11: {
+          stateText: {"0":"审核中","1":"已通过","2":"已驳回","3":"完成","4":"终止","null":"全部","-1":"新建"},
+          detailPage: () => import('@/views/sales/quote/quote-details.vue'),
+          listPage: 'SalesQuote',
+          codeFilterKey: 'quotationCode',
+          title: '报价单'
         }
       }
     }
