@@ -2,14 +2,14 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-06 14:10:39
+ * @LastEditTime: 2020-01-07 11:18:17
  * @Description: 整机列表 和 配件列表  私有组件 你们用不了 
 */
 <template>
   <form-card :title="title">
-    <div class="mb10">
-      <el-button type="primary" size="mini" @click="expanded(true)">展开全部</el-button>
-      <el-button type="primary" size="mini" @click="expanded(false)">收起全部</el-button>
+    <div class="mb10 ar">
+      <el-button type="primary" size="mini" @click="expanded(true)" plain>展开全部</el-button>
+      <el-button type="primary" size="mini" @click="expanded(false)" plain>收起全部</el-button>
     </div>
     <el-table
       size="mini"

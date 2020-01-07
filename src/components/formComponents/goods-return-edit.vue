@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-06 16:05:21
+ * @LastEditTime: 2020-01-07 13:53:46
  * @Description: 退货商品商品信息
 */
 <template>
@@ -319,7 +319,7 @@ export default {
       // this.returnTableData.splice(index, 1)
     },
     salesquotationQueryMayCommodity() {
-      this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotaionCode: this.data.quotationCode }).then((data)=>{
+      this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.data.quotationCode }).then(({data})=>{
         this.data.isTax = data.isTax||0
       })
       this.$api.seePsiSaleService.salesquotationQueryMayCommodity({ quotaionCode: this.data.quotationCode })
@@ -364,7 +364,7 @@ export default {
     },
     // 税后销售单价
     formatTaxPrice(row) {
-      let taxRate = this.data.isTax ? 0 : ((row.taxRate || 100) / 100)  ///税率
+      let taxRate = ((row.taxRate || 100) / 100)  ///税率
       let commodityNumber = row.commodityNumber || 0 //退货数量
       let alterationPrice = row.alterationPrice || 0 //退货单价
       // 税后销售单价  公式:销售单价 * (1-税率)
@@ -373,7 +373,7 @@ export default {
     },
     // 销售税后总价
     formatTaxTotalAmount(row) {
-      let taxRate = this.data.isTax ? 0 : ((row.taxRate || 100) / 100)  ///税率
+      let taxRate = ((row.taxRate || 100) / 100)  ///税率
       let commodityNumber = row.commodityNumber || 0 //退货数量
       let alterationPrice = row.alterationPrice || 0 //退货单价
       let taxPrice = (alterationPrice * (1 - taxRate))
@@ -393,7 +393,7 @@ export default {
         return
       }
 
-      let taxRate = this.data.isTax ? 0 : ((row.taxRate || 100) / 100)  ///税率
+      let taxRate = ((row.taxRate || 100) / 100)  ///税率
       let commodityNumber = row.commodityNumber || 0 //退货数量
       let alterationPrice = row.alterationPrice || 0 //退货单价
       // 税后销售单价  公式:销售单价 * (1-税率)

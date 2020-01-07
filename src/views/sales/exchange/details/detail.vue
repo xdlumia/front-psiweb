@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-12 16:09:34
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2020-01-07 11:13:45
  * @Description: 销售换货单详情-详情
 */
 <template>
@@ -29,6 +29,7 @@
       title="换入商品信息"
       :code="rowData.alterationCode"
       pre="换入"
+      :form="rowData"
     />
     <!-- 换出商品信息 -->
     <goods-return-info
@@ -36,6 +37,7 @@
       title="换出商品信息"
       :code="rowData.alterationCode"
       pre="换出"
+      :hide="['isTax']"
     />
     <!-- 其他费用 -->
     <other-fee

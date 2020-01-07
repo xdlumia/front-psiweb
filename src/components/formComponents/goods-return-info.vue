@@ -1,13 +1,28 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 16:02:53
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2020-01-07 11:14:53
  * @Description: 退货商品商品信息
 */
 <template>
   <div>
     <form-card :title="title">
+      <div class="mb10" v-if="!hide||!hide.includes('isTax')">
+        <el-form-item prop="isTax" label="是否含税">
+          <el-select placeholder="请选择" v-model="form.isTax" disabled>
+            <el-option
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              v-for="item in [
+                {label:'含税',value:0},
+                {label:'未税',value:1},
+              ]"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </div>
       <el-table
         show-summary
         :summary-method="getSummaries"
@@ -309,6 +324,7 @@ export default {
     // 销售单编号列表下拉
     options: Array,
     pre: String,
+    hide:Array,
   },
   data() {
     return {
