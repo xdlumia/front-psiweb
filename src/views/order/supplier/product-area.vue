@@ -2,12 +2,12 @@
  * @Author: 赵伦
  * @Date: 2019-11-05 17:31:44
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 18:09:19
+ * @LastEditTime: 2020-01-08 00:28:44
  * @Description: 商品分类树组件  字段已绑定 1 
 */
 <template>
   <div class="wfull hfull d-auto-y commodity-cat-tree">
-    <el-input class="ml5 mt5" placeholder="搜索产品范围名称" prefix-icon="el-icon-search" size="small" style="width:93%" v-model="filterText"></el-input>
+    <el-input class="ml5 mt5" placeholder="搜索产品范围名称" prefix-icon="el-icon-search" size="small" style="width:93%" v-model="filterText" @change="filterTree"></el-input>
     <el-button @click="selectAll()" class="ml5" type="text">全部</el-button>
     <el-tree
       :data="catTree"
@@ -55,6 +55,9 @@ export default {
     });
   },
   methods: {
+    filterTree(){
+      this.$refs.tree.filter(this.filterText);
+    },
     // 获取主分类下商品分类树
     async getProductArea() {
       let { data } = await this.$api.seeDictionaryService.getDicCommonValueList(
