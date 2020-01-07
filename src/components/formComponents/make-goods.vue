@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-22 11:35:40
- * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-06 08:54:45
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2020-01-07 14:57:41
  * @Description: 发票内容 商品列表 已绑定 1
 */
 <template>
@@ -22,7 +22,11 @@
         min-width="140"
         prop="commodityCode"
         show-overflow-tooltip
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <span>{{scope.row.commodityCode | codeSlice}}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         label="商品名称"
         min-width="100"

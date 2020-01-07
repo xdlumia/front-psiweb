@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 10:22:45
+ * @LastEditTime: 2020-01-07 16:06:31
  * @Description: 销售出库单详情
 */
 <template>
@@ -55,7 +55,7 @@
         <components
           ref="detail"
           :code="code"
-          :rowData="rowData"
+          :rowData="detail || {}"
           :data="detail || {}"
           class="d-auto-y"
           :params="{relationCode:code}"
@@ -72,7 +72,7 @@
       :visible.sync="editVisible"
       :code="code"
       type="edit"
-      :rowData="rowData"
+      :rowData="detail||{}"
       @reload="setEdit(),$reload()"
     />
     <!-- 退货扫码 -->
@@ -80,7 +80,7 @@
       v-if="scanVisible"
       :visible.sync='scanVisible'
       :code="code"
-      :rowData='rowData'
+      :rowData='detail||{}'
       from="return"
       @reload="setEdit(),$reload()"
     />

@@ -47,13 +47,13 @@
                   </el-table-column>
                 </el-table>
               </div>
-              <div class="ar border-line large-lenh">
+              <div class="ar border-line large-lenh" v-if="showPrice">
                 <span class="d-inline w200">税率：{{taxRate}}</span>
                 <span class="d-inline w200">税金：{{taxMoney}}</span>
               </div>
               <div class="ar footer-total">
                 <span class="d-inline w200 al">合计(含税)</span>
-                <span>{{+Number(totalAmount).toFixed(2)}}</span>
+                <span>{{+Number(totalAmount+detail.preTaxAmount).toFixed(2)}}</span>
               </div>
             </div>
           </div>
