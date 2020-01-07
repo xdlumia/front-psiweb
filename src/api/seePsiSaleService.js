@@ -469,6 +469,12 @@ export default {
     'mock': false,
     'methods': 'post'
   },
+  // 生成附加发票账单
+  salesquotationSaveAdditionalInvoiceFbill: {
+    'url': '/salesquotation/saveAdditionalInvoiceFbill',
+    'mock': false,
+    'methods': 'post'
+  },
 
   // 提交审核
   salesquotationSubmitApproval: {

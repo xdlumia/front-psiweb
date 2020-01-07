@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 10:22:35
+ * @LastEditTime: 2020-01-07 20:49:16
  * @Description: 报价单详情
 */
 <template>
@@ -133,6 +133,7 @@ export default {
         { label: '驳回', authCode: 'psi_sales_quote_11' },
         { label: '生成销售出库单', type: 'primary', authCode: 'psi_sales_quote_12' },
         { label: '生成请购单', type: 'primary', authCode: 'psi_sales_quote_13' },
+        { label: '生成附加发票账单', type: 'primary', authCode: 'psi_sales_quote_16' },
         { label: '终止', authCode: 'psi_sales_quote_14' }
       ],
       stateText: {
@@ -152,7 +153,7 @@ export default {
         '0': ['撤销审核', '审核通过', '驳回'], // 审核中
         '1': ['生成销售出库单', '生成请购单', '终止'], // 已通过
         '2': ['提交审核', '编辑', '删除'], // 已驳回
-        '3': [], // 完成
+        '3': ['生成附加发票账单'], // 完成
         '4': [] // 终止
       },
       editVisible: false, // 销售单编辑
@@ -244,6 +245,11 @@ export default {
           '撤销审核': {
             api: 'seePsiSaleService.salesquotationCancel',
             data: params,
+            needNote: null
+          },
+          '生成附加发票账单': {
+            api: 'seePsiSaleService.salesquotationSaveAdditionalInvoiceFbill',
+            data: { id: this.detail.id },
             needNote: null
           },
           '驳回': {
