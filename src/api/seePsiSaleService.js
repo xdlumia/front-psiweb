@@ -156,6 +156,11 @@ export default {
     'url': '/salesalterationsheet/getInfoByCode',
     'mock': false
   },
+  // 获取退换货默认库房
+  salesalterationsheetGetWmsCommodity: {
+    'url': '/salesalterationsheet/getWmsCommodity',
+    'mock': false
+  },
 
   // 查看详细信息
   salesalterationsheetInfo: {

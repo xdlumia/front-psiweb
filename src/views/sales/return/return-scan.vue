@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-07 16:18:25
+ * @LastEditTime: 2020-01-07 17:31:28
  * @Description: 退货扫码
 */
 
@@ -95,13 +95,17 @@ export default {
   },
   methods: {
     // 查询默认库房
-    // fn() {
-    //   this.$api.seePsiSaleService.salesreturnedGetInfoByCode({ code: this.rowData.quotationCode })
-    //     .then(res => {
-    //       let data = res.data || {}
-    //       this.form.putawayCommodityList = data.commodityEntityList
-    //     })
-    // },
+    salesalterationsheetGetWmsCommodity(commodityCode) {
+      let params = {
+        quotationCode: this.rowData.quotationCode,
+        commodityCode: commodityCode,
+      }
+      this.$api.seePsiSaleService.salesalterationsheetGetWmsCommodity(params)
+        .then(res => {
+          let data = res.data || {}
+          this.form.wmsId = data.wmsId || ''
+        })
+    },
     // 获取商品信息
     salesreturnedGetInfoByCode() {
       if (this.code) {
@@ -109,6 +113,10 @@ export default {
           .then(res => {
             let data = res.data || {}
             this.form.putawayCommodityList = data.commodityEntityList
+            let firstCommodity = this.form.putawayCommodityList[0]
+            if (firstCommodity) {
+              this.salesalterationsheetGetWmsCommodity(firstCommodity.commodityCode)
+            }
           })
       }
     },

@@ -28,7 +28,7 @@
           <el-form>
             <purchaseBase :data="detailForm" />
             <purchaseReceivingInfo :data="detailForm" />
-            <goodsWarehousing
+            <goodsWarehousing 
               @reload='reload'
               :data="detailForm"
               :drawerData="drawerData"

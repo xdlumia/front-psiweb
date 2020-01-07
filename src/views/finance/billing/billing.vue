@@ -22,8 +22,7 @@
           <el-button size="mini" @click="$emit('update:visible', false)">关闭</el-button>
         </div>
       </div>
-      <el-form ref="invoiceForm" size="mini" :model="invoiceForm"
-:rules="invoiceFormRule">
+      <el-form ref="invoiceForm" size="mini" :model="invoiceForm" :rules="invoiceFormRule">
         <form-card title="发票信息">
           <el-row :gutter="10">
             <el-col :span="8">
@@ -139,7 +138,7 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
       serviceOptions: [],
       serviceLoading: false,
@@ -172,13 +171,13 @@ export default {
   },
   watch: {
     'invoiceForm.invoiceCoding': {
-      handler(newValue) {
+      handler (newValue) {
         console.log(newValue)
         this.finvoicecodingList()
       }
     },
     'invoiceForm.isLogistics': {
-      handler(newValue) {
+      handler (newValue) {
         if (!newValue) {
           this.invoiceForm.transportAmount = ''
           this.invoiceForm.serveType = ''
@@ -190,11 +189,11 @@ export default {
     }
   },
   computed: {
-    maxHeight() {
+    maxHeight () {
       return window.innerHeight - 130;
     }
   },
-  mounted() {
+  mounted () {
     this.invoiceForm.invoiceTypeCode = this.detailForm.invoiceTypeCode
     this.invoiceForm.id = this.detailForm.id
     this.finvoicedatumList()
@@ -202,10 +201,10 @@ export default {
     this.finvoicecodingList()
   },
   methods: {
-    bmcIdChange(val) {
+    bmcIdChange (val) {
       this.invoiceForm.bmcName = this.serviceOptions.find(item => item.id === val).serviceName
     },
-    getServiceProvider(words = '') {
+    getServiceProvider (words = '') {
       this.serviceLoading = true;
       this.$api.seePsiCommonService.commonserviceproviderList({
         page: 1,
@@ -217,7 +216,7 @@ export default {
         this.serviceLoading = false;
       });
     },
-    finvoicecodingList(words = '') {
+    finvoicecodingList (words = '') {
       if (!this.invoiceForm.invoiceCoding) {
         return
       }
@@ -225,12 +224,12 @@ export default {
         this.invoiceCodeList = res.data
       })
     },
-    finvoicedatumList() {
+    finvoicedatumList () {
       this.$api.seePsiFinanceService.finvoicedatumList({ page: 1, limit: 999 }).then(res => {
         this.quoteList = res.data
       })
     },
-    finvoicebillingBilling() {
+    finvoicebillingBilling () {
       this.$refs.invoiceForm.validate(valid => {
         if (valid) {
           this.loading = true

@@ -43,7 +43,7 @@
             <generateDeliver
               :visible.sync='orderStorageVisible'
               v-if='orderStorageVisible'
-              :data='detailForm'
+              :data='JSON.parse(JSON.stringify(detailForm))'
               :drawerData='drawerData'
               @reload='reload'
             />
