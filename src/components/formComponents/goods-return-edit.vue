@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-06 16:05:21
+ * @LastEditTime: 2020-01-07 11:06:48
  * @Description: 退货商品商品信息
 */
 <template>
@@ -319,7 +319,7 @@ export default {
       // this.returnTableData.splice(index, 1)
     },
     salesquotationQueryMayCommodity() {
-      this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotaionCode: this.data.quotationCode }).then((data)=>{
+      this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.data.quotationCode }).then(({data})=>{
         this.data.isTax = data.isTax||0
       })
       this.$api.seePsiSaleService.salesquotationQueryMayCommodity({ quotaionCode: this.data.quotationCode })
