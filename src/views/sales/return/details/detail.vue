@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 15:31:38
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2020-01-07 19:29:45
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -40,6 +40,7 @@
     <return-bill-info
       disabled
       :data="data"
+      :hide="['actualRefundAmount']"
     />
     <!-- 自定义信息 -->
     <custom-info
