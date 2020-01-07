@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 10:21:07
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2020-01-07 22:16:49
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -191,7 +191,6 @@ export default {
         this.form.clientId = row.clientId // 100000,
         let ids = this.rowData.map(item => item.id)
         this.salesshipmentGetAddShipemtAmount(ids)
-        this.getExtrasBill()
       } else {
         this.form.companyAccountId = this.rowData.companyAccountId
         this.form.companySettlementId = this.rowData.companySettlementId
@@ -199,7 +198,6 @@ export default {
         let ids = [this.rowData].map(item => item.id)
         if (this.type == 'add') {
           this.salesshipmentGetAddShipemtAmount(ids)
-          this.getExtrasBill()
         }
       }
     },
@@ -210,7 +208,6 @@ export default {
       if (data) {
         this.form.shipmentFinanceSaveVoList.splice(0, 0, data)
       }
-      console.log(data)
     },
     // 根据报价单id，计算获取销售出库单金额数据
     salesshipmentGetAddShipemtAmount(ids) {
@@ -221,6 +218,7 @@ export default {
           this.form.totalCostAmount = data.totalCostAmount || 0
           this.form.totalNumber = data.totalNumber || 0
           this.form.shipmentFinanceSaveVoList[0].payAmount = this.form.totalAmount
+          this.getExtrasBill()
         })
     },
     async getDetail() {

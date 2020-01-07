@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 17:07:16
+ * @LastEditTime: 2020-01-07 22:08:57
  * @Description: 账期信息
  */
 <template>
@@ -107,11 +107,11 @@
         <template slot-scope="scope">
           <el-form-item
             class="mb0"
-            :rules="[{required:true},{type:'price'}]"
+            :rules="[{required:true},{type:'price'},{validator:checkPreBills.bind(this,scope.row)}]"
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.payAmount`"
           >
             <el-input
-              :disabled="disabled || billDisable || scope.$index==firstBillIndex || preBills.includes(scope.row.paymenDays)"
+              :disabled="disabled || (billDisable&&!preBills.includes(scope.row.paymenDays)) || scope.$index==firstBillIndex"
               size="mini"
               placeholder="请输入"
               @input="payAmountChange(scope)"
@@ -189,6 +189,13 @@ export default {
     }
   },
   methods: {
+    checkPreBills(row,rule,value,cb){
+      if(this.preBills.includes(row.paymenDays)){
+        value = Number(value)||0
+        if(value>0)cb()
+        else cb(new Error('金额必须大于0'))
+      } else cb()
+    },
     payAmountChange() {
       let total = 0;
       total = this.data.shipmentFinanceSaveVoList.filter((item, index) => index != this.firstBillIndex&&!this.preBills.includes(item.paymenDays)).reduce((sum, curr, index) => {
