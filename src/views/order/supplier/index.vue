@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-06 11:29:13
+ * @LastEditTime: 2020-01-08 00:10:08
  * @Description: 采购-供应商
 */
 <template>
@@ -155,7 +155,7 @@ export default {
   .supplier-cat-page {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 80px);
     .cat-tree {
       position: absolute;
       top: 47px;
