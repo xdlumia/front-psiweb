@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-25 09:22:57
+ * @LastEditTime: 2020-01-07 14:57:49
  * @Description: 调出商品
 */
 <template>
@@ -103,7 +103,11 @@
           min-width="100"
           label="商品编号"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.commodityCode | codeSlice}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="goodsName"
           min-width="100"
@@ -139,7 +143,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.commodityCode}}</span>
+            <span>{{scope.row.commodityCode | codeSlice}}</span>
           </template>
         </el-table-column>
         <el-table-column

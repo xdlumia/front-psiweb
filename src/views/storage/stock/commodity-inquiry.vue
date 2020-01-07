@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2020-01-07 14:37:19
  * @Description: 商品查询
 */
 <template>
@@ -37,7 +37,11 @@
               min-width="140"
               prop="commodityCode"
               show-overflow-tooltip
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span>{{scope.row.commodityCode | codeSlice}}</span>
+              </template>
+            </el-table-column>
             <el-table-column
               label="商品类别"
               min-width="100"

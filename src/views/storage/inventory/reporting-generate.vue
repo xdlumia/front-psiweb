@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-26 18:17:56
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2020-01-07 14:36:48
  * @Description: 生成报溢报损单
 */
 <template>
@@ -161,6 +161,9 @@
               prop="commodityCode"
               show-overflow-tooltip
             >
+              <template slot-scope="scope">
+                <span>{{scope.row.commodityCode | codeSlice}}</span>
+              </template>
             </el-table-column>
             <el-table-column
               label="商品名称"

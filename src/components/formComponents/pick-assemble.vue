@@ -62,7 +62,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+            <span class="d-text-blue">{{scope.row.commodityCode | codeSlice}}</span>
           </template>
         </el-table-column>
 

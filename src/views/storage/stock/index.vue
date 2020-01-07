@@ -58,7 +58,7 @@
           <span
             class="d-text-blue d-pointer"
             @click="changeTableVisible(row)"
-          >{{value}}</span>
+          >{{value | codeSlice}}</span>
         </span>
         <span v-else>{{value}}</span>
       </template>

@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-29 16:16:52
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2020-01-07 14:54:59
  * @Description: 选择拆卸商品
 */  
 <template>
@@ -87,7 +87,7 @@
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+                <span class="d-text-blue">{{scope.row.commodityCode | codeSlice}}</span>
               </template>
             </el-table-column>
             <el-table-column

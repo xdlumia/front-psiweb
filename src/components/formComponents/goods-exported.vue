@@ -116,7 +116,7 @@
             <div
               @click="openCommodityDetail(row.commodityCode)"
               class="d-text-blue d-elip d-pointer"
-            >{{row.commodityCode}}</div>
+            >{{row.commodityCode | codeSlice}}</div>
           </template>
         </el-table-column>
         <el-table-column

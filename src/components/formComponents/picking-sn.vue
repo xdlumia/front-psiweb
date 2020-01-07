@@ -104,7 +104,11 @@
           min-width="100"
           label="商品编号"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.commodityCode | codeSlice}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="goodsName"
           min-width="100"

@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-30 17:43:52
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2020-01-07 14:58:23
  * @Description: 拣货单 拣货商品 点击 锁库量
 */
 <template>
@@ -47,7 +47,7 @@
                   <div
                     @click="openCommodityDetail(row.commodityCode)"
                     class="d-text-blue d-elip d-pointer"
-                  >{{row.commodityCode}}</div>
+                  >{{row.commodityCode | codeSlice}}</div>
                 </template>
               </el-table-column>
 
