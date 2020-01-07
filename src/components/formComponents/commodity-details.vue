@@ -65,7 +65,11 @@
           min-width="140"
           label="商品编号"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.commodityCode | codeSlice}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="categoryCode"
           min-width="100"
@@ -163,7 +167,11 @@
           min-width="140"
           label="关联业务编号"
           show-overflow-tooltip
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.businessCode | codeSlice}}</span>
+          </template>
+        </el-table-column>
       </d-table>
       <FullscreenElement
         :element="$refs.table"

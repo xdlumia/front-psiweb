@@ -29,7 +29,7 @@
           ></el-image>
         </div>
         <div class="ml15">
-          <p class="f16 b">{{drawerData.goodsName}}-{{drawerData.commodityCode}}</p>
+          <p class="f16 b">{{drawerData.goodsName}}-{{drawerData.commodityCode | codeSlice}}</p>
           <p class='d-text-qgray mt5'>商品类别：{{drawerData.categoryCode | dictionary('PSI_SP_KIND')}}</p>
           <p class='d-text-qgray mt5'>商品分类：{{drawerData.className}}</p>
           <p class='d-text-qgray mt5'>商品规格：{{drawerData.specOne}}</p>

@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-21 08:04:37
+ * @LastEditTime: 2020-01-07 14:53:11
  * @Description: 组装记录弹窗 
 */
 <template>
@@ -47,7 +47,7 @@
                   <div
                     @click="openCommodityDetail(row.commodityCode)"
                     class="d-text-blue d-elip d-pointer"
-                  >{{row.commodityCode}}</div>
+                  >{{row.commodityCode | codeSlice}}</div>
                 </template>
               </el-table-column>
 
@@ -163,7 +163,11 @@
                 min-width="100"
                 label="商品编号"
                 show-overflow-tooltip
-              ></el-table-column>
+              >
+                <template slot-scope="scope">
+                  <span>{{scope.row.commodityCode | codeSlice}}</span>
+                </template>
+              </el-table-column>
               <el-table-column
                 prop="goodsName"
                 min-width="100"

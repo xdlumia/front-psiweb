@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-13 09:33:12
+ * @LastEditTime: 2020-01-07 14:54:42
  * @Description: 采购单 详情  拆卸任务 拆卸公共弹窗 
 */
 <template>
@@ -73,7 +73,7 @@
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+                <span class="d-text-blue">{{scope.row.commodityCode | codeSlice}}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -163,7 +163,7 @@
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+                <span class="d-text-blue">{{scope.row.commodityCode | codeSlice}}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -309,7 +309,11 @@
               min-width="100"
               label="商品名称"
               show-overflow-tooltip
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span>{{scope.row.commodityCode | codeSlice}}</span>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="configName"
               min-width="100"
@@ -466,7 +470,7 @@ export default {
     },
     //下边的,入库
     getCommodityBySnCode(item) {
-      if (this.wmsId) { 
+      if (this.wmsId) {
         if ((item.disassemblyNum - (item.accomplishDisassemblyNum || 0) - (item.nowNum || 0)) != 0) {
           if ((item.singleNum || 0) * ((this.data.accomplishDisassemblyNum || 0) + this.data.nowNum) > ((item.accomplishDisassemblyNum || 0) + (item.nowNum || 0))) {
             this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({

@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 15:08:16
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2020-01-07 14:26:41
  * @Description: 发货信息 1
 */
 <template>
