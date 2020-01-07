@@ -47,7 +47,7 @@
                   </el-table-column>
                 </el-table>
               </div>
-              <div class="ar border-line large-lenh">
+              <div class="ar border-line large-lenh" v-if="showPrice">
                 <span class="d-inline w200">税率：{{taxRate}}</span>
                 <span class="d-inline w200">税金：{{taxMoney}}</span>
               </div>
