@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-11-23 17:02:58
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 18:10:55
+ * @LastEditTime: 2020-01-07 16:18:25
  * @Description: 退货扫码
 */
 
@@ -94,6 +94,14 @@ export default {
     this.salesreturnedGetInfoByCode()
   },
   methods: {
+    // 查询默认库房
+    // fn() {
+    //   this.$api.seePsiSaleService.salesreturnedGetInfoByCode({ code: this.rowData.quotationCode })
+    //     .then(res => {
+    //       let data = res.data || {}
+    //       this.form.putawayCommodityList = data.commodityEntityList
+    //     })
+    // },
     // 获取商品信息
     salesreturnedGetInfoByCode() {
       if (this.code) {

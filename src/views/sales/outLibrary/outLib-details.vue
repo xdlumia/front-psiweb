@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 09:47:06
+ * @LastEditTime: 2020-01-07 16:20:47
  * @Description: 销售出库单详情
 */
 <template>
@@ -206,7 +206,7 @@ export default {
         { label: '邮件担保', type: 'primary', authCode: 'psi_sales_outlibrary_20' },
         { label: '追加合同附件', type: 'primary', authCode: 'psi_sales_outlibrary_11' },
         // TODO 权限码21
-        { label: '追加合同收回附件', type: 'primary', authCode: 'psi_sales_outlibrary_11' },
+        { label: '追加合同收回附件', type: 'primary', authCode: 'psi_sales_outlibrary_21' },
       ],
       stateText: {
         '-1': '新建',
