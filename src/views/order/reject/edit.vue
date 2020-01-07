@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-16 16:32:15
+ * @LastEditTime: 2020-01-03 11:05:08
  * @Description: 采购退货单
 */
 <template>
@@ -23,7 +23,7 @@
       <d-tab-pane label="自定义信息" name="customInfo" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
       <div>
-        <el-form :model="form" class="p10" ref="form" size="mini" v-if="visible&&form">
+        <el-form :model="form" class="p10" ref="form" size="mini" v-if="visible&&form" label-position="top">
           <supplierInfo :data="form" @change="supplierChange" disabled id="supplierInfo"></supplierInfo>
           <companyInfo :data="form" disabled id="companyInfo"></companyInfo>
           <buyingRejectDeliver :data="form" :hide="[
@@ -32,7 +32,7 @@
           <buyingGoodsEdit
             :data="form"
             :show="[
-              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','action','!add'
+              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','action','!add','isTax'
             ]"
             :sort="['expanded']"
             :summaryMethod="getSummarys"
@@ -143,7 +143,7 @@ export default {
                 item =>
                   +Number(
                     item.alterationPrice *
-                      (1 + item.taxRate / 100) *
+                      (1 + ((!this.form.isTax)?item.taxRate:0) / 100) *
                       item.alterationNumber || 0
                   ).toFixed(2)
               )

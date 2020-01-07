@@ -2,14 +2,24 @@ const MOCK_ADDRESS = '/mock/5dbfdd1bbc54fc3da273f35d/see-psi-sale-service'
 
 export default {
   __mockAddress: MOCK_ADDRESS,
+
+  /**
+   * @tag 报价单
+   * @description 获取附加发票账期
+   */
+  salesquotationGetAdditionalInvoiceFbill: {
+    url: '/salesquotation/getAdditionalInvoiceFbill',
+    methods: 'get',
+    mock: false
+  },
   /**
    * @tag 单据业务商品表
    * @description 查询商品业务数据
    */
   businesscommodityQueryGoodsList: {
-      url: '/businesscommodity/queryGoodsList',
-      methods: 'get',
-      mock: false
+    url: '/businesscommodity/queryGoodsList',
+    methods: 'get',
+    mock: false
   },
   /* =============单据业务商品表start=========== */
   // 删除
@@ -712,6 +722,18 @@ export default {
     'url': '/salesshipment/logicDelete',
     'mock': false,
     'methods': 'delete'
+  },
+  // 邮件担保
+  salesshipmentMailEnsureApproval: {
+    'url': '/salesshipment/mailEnsureApproval',
+    'mock': false,
+    'methods': 'post'
+  },
+  // 追加合同附件
+  salesshipmentAdditionalcontractAttachs: {
+    'url': '/salesshipment/additionalcontractAttachs',
+    'mock': false,
+    'methods': 'post'
   },
 
   // 审核通过

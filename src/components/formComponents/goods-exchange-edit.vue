@@ -2,7 +2,7 @@
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-20 17:45:03
+ * @LastEditTime: 2020-01-07 11:48:25
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -163,7 +163,11 @@
         label="税率%"
         min-width="100"
         prop="taxRate"
-      ></el-table-column>
+      >
+      <template slot-scope="{row}">
+        <span>{{(!data.isTax)?row.taxRate:0}}</span>
+      </template>
+      </el-table-column>
 
       <el-table-column
         show-overflow-tooltip
@@ -352,6 +356,12 @@ export default {
           this.getCommodityBusinessInfo()
         }, 200)
       }
+    },
+    'data.isTax':{
+      deep:true,
+      handler(){
+        this.data.exChangeCommodityList.map(item=>this.numberChange(item))
+      }
     }
   },
   methods: {
@@ -451,7 +461,7 @@ export default {
     // 商品数量和折扣修改
     numberChange(row) {
       let reference = row.reference || 0   //销售参考价
-      let taxRate = (row.taxRate || 100) / 100  ///税率
+      let taxRate = this.data.isTax?0:((row.taxRate || 100) / 100)  ///税率
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
       // 折扣价格  公式:税前金额  * (1-税率) * 折扣
@@ -460,7 +470,7 @@ export default {
     },
     discountSpriceChange(row) {
       let reference = row.reference || 0   //销售参考价
-      let taxRate = (row.taxRate || 100) / 100  ///税率
+      let taxRate = this.data.isTax?0:((row.taxRate || 100) / 100)  ///税率
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
       // 折后价格 / (税后价格*(1-税率)
@@ -504,7 +514,7 @@ export default {
         }
         if (this.preCommodityBussinessInfo[item.commodityCode]) {
           this.$set(item, 'inventoryPrice', item.inventoryPrice || this.preCommodityBussinessInfo[item.commodityCode].inventoryPrice)
-          this.$set(item, 'taxRate', item.taxRate || this.preCommodityBussinessInfo[item.commodityCode].taxRate)
+          this.$set(item, 'taxRate', this.data.isTax==0?(item.taxRate || this.preCommodityBussinessInfo[item.commodityCode].taxRate):0)
           this.$set(item, 'inventoryNumber', item.inventoryNumber || this.preCommodityBussinessInfo[item.commodityCode].inventoryNumber || 0)
           this.$set(item, 'recentDiscountSprice', this.preCommodityBussinessInfo[item.commodityCode].recentDiscountSprice || 0)
         }

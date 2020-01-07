@@ -11,7 +11,7 @@
     :status="status"
     :visible="visible"
     @close="$emit('update:visible',false)"
-    :title="'销售单-' + detailForm.salesSheetCode"
+    :title="`销售单-${codeSlice(detailForm.salesSheetCode)}`"
     width="990px"
   >
     <div>
@@ -28,7 +28,12 @@
         v-model="activeName"
       >
         <el-tab-pane label="详情">
-          <el-form size="mini">
+          <el-form
+            size="mini"
+            :model="detailForm.salesQuotationEntity"
+            ref="form"
+            v-if='detailForm'
+          >
             <goodsExported
               v-if='detailForm'
               :detailForm='detailForm'
@@ -36,7 +41,7 @@
             />
             <deliverInfo
               :data='detailForm.salesQuotationEntity'
-              :disabled='true'
+              disabled
               :hide="['note']"
             />
             <generateDeliver
@@ -148,6 +153,9 @@ export default {
     this.salessheetInfo()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     //查询详情  
     salessheetInfo() {
       this.$api.seePsiSaleService.salessheetGetInfoByCode({ code: this.code })

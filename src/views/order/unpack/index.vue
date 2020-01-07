@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 11:06:59
+ * @LastEditTime: 2020-01-06 11:29:46
  * @Description: 采购-拆卸单
 */
 <template>
@@ -39,7 +39,7 @@
         </span>
         <span v-else-if="prop=='disassemblyOrderState'">{{stateText[value]}}</span>
         <span v-else-if="prop=='disassemblyOrderCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value|codeSlice}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>

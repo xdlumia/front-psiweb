@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-19 14:25:38
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-20 18:01:52
+ * @LastEditTime: 2020-01-06 11:30:08
  * @Description: 利润分析报表
 */
 <template>
@@ -45,7 +45,7 @@
     >
       <el-table-column label="单据编号" min-width="220" prop="dataCode">
         <template slot-scope="{row}">
-          <el-link :underline="false" @click="openDetail(row)" class="f12" type="primary">{{row.dataCode}}</el-link>
+          <el-link :underline="false" @click="openDetail(row)" class="f12" type="primary">{{row.dataCode|codeSlice}}</el-link>
         </template>
       </el-table-column>
       <el-table-column label="单据类型" min-width="120" prop="paidNum">

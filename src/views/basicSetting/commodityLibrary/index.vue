@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:43:46
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-20 16:44:08
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2020-01-02 18:21:04
  * @Description: 商品管理
  -->
 <template>
@@ -106,7 +106,7 @@
                 <span
                   @click="showDetailDialog(scope.row)"
                   class="d-text-blue d-pointer"
-                >{{ scope.row.goodsCode }}</span>
+                >{{ scope.row.goodsCode | codeSlice }}</span>
               </template>
             </el-table-column>
 

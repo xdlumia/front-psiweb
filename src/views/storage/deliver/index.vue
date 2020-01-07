@@ -23,12 +23,12 @@
           v-if="column.columnFields=='salesShipmentCode'"
           class="d-text-blue d-pointer"
           @click="getDetailVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span
           v-else-if="column.columnFields=='shipmentsOrderCode'"
           class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span v-else>{{value}}</span>
       </template>
     </TableView>

@@ -2,12 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 20:04:55
+ * @LastEditTime: 2020-01-06 10:19:13
  * @Description: 销售-客户管理
  */
 <template>
   <div>
     <table-view
+      class="client-table"
       busType="41"
       ref="table"
       :filter="true"
@@ -36,7 +37,7 @@
           class="d-text-blue d-pointer"
           v-if="column.columnFields=='code'"
           @click="eventHandle('detailVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
 
         <!-- 行业 -->
         <span v-else-if="column.columnFields=='trade'">{{value | dictionary('PSI_KH_HY')}}</span>
@@ -46,6 +47,42 @@
         <span v-else-if="column.columnFields=='grade'">{{value | dictionary('PSI_KH_KHJB')}}</span>
         <span v-else>{{value}}</span>
       </template>
+      <!-- 右侧内容 -->
+      <el-aside
+        slot='tree'
+        width="250px"
+        class="choose-aside fl"
+      >
+        <el-input
+          class="mt5 mb5 ml5"
+          size="small"
+          v-model="filterText"
+          placeholder="搜索责任人"
+        ></el-input>
+
+        <el-button
+          type="text"
+          class="ml10"
+          @click="clickAll"
+        >全部</el-button>
+        <p
+          class="d-pointer common-btn"
+          :class="{active:queryForm.responsibleUser == -1}"
+          style="color:#606266"
+          @click="handleNodeClick({userId:-1})"
+        >公共</p>
+        <el-tree
+          style="height: calc(100vh - 242px);"
+          class="ml10 d-auto-x"
+          :data="treeData"
+          @node-click="handleNodeClick"
+          default-expand-all
+          :props="{children: 'employeeList', label: 'employeeName' }"
+          :filter-node-method="filterNode"
+          ref="tree"
+        >
+        </el-tree>
+      </el-aside>
     </table-view>
 
     <!-- 客户详情  有些信息是点击后才加载 所以使用v-if-->
@@ -99,20 +136,72 @@ export default {
         grade: '', // 示例：客户级别,
         linkManName: '', // 示例：联系人,
         phone: '', // 示例：客户手机号,
+        responsibleUser: '', //责任人
         page: 1,
         limit: 20,
       },
+      filterText: '',
+      treeData: [],
       rowData: {},
       addVisible: false,
       detailVisible: false,
       // 筛选框数据
       filterOptions: [
         { label: '客户名称', prop: 'clientName', default: true, type: 'text' },
+        { label: '客户关联', prop: 'customerAssociated', default: true, type: 'text' },
       ]
     };
   },
+  watch: {
+    filterText(val) {
+      this.$refs.tree.filter(val);
+    }
+  },
+  created() {
+    this.getTreeData()
+  },
   methods: {
-    // 按钮功能操作
+    // 重新加载表格
+    reload() {
+      this.$refs.table.reload()
+    },
+    //请求树列表的数据
+    getTreeData() {
+      this.$api.bizSystemService.getDeptList({ type: '1' })
+        .then(res => {
+          let data = res.data || []
+          let formatTree = treeData => treeData.map(item => {
+            item.employeeName = item.deptName
+            if (item.children) {
+              formatTree(item.children)
+              item.employeeList.unshift(...item.children)
+              return item
+            } else {
+              return []
+            }
+          })
+          this.treeData = formatTree(data)
+        })
+        .finally(() => {
+
+        })
+    },
+    //点击树节点
+    handleNodeClick(data) {
+      // 点击人员的时候才能查询
+      if (!data.totalCode) {
+        this.queryForm.responsibleUser = data.userId
+        this.reload()
+      }
+    },
+    clickAll() {
+      this.queryForm.responsibleUser = ''
+      this.reload()
+    },
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.employeeName.indexOf(value) !== -1;
+    },
     // 按钮功能操作
     eventHandle(type, row) {
       this.rowData = row ? row : {}
@@ -121,3 +210,26 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.choose-aside {
+  border: 1px solid #f2f2f2;
+  border-bottom: none;
+  float: left;
+}
+.common-btn {
+  margin-left: 10px;
+  padding-left: 10px;
+  height: 28px;
+  line-height: 28px;
+  &:hover {
+    background-color: #f3f6f9;
+  }
+  &.active {
+    background-color: #f3f6f9;
+  }
+}
+/deep/.client-table .d-table {
+  float: left;
+  width: calc(100% - 250px) !important;
+}
+</style>

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 19:47:57
+ * @LastEditTime: 2020-01-03 15:25:43
  * @Description: 收票申请
 */
 <template>
@@ -74,6 +74,7 @@
             prefix="market"
           />
           <make-goods
+            :disabled="disabled"
             :data="form"
             id="goods"
           />
@@ -96,8 +97,15 @@ import VisibleMixin from '@/utils/visibleMixin';
 import CollectGoodsMixin from './collect-goods';
 
 export default {
-  // 票据类型(1收票，0开票)
-  props: ['invoiceType', 'id'],
+  props: {
+    // 票据类型(1收票，0开票)
+    invoiceType: [Number, String],
+    id: [Number, String],
+    disabled: {
+      type: Boolean,
+      default: true
+    }
+  },
   mixins: [VisibleMixin, CollectGoodsMixin],
   components: {},
   data() {

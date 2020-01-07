@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-16 08:47:56
+ * @LastEditTime: 2020-01-06 11:28:00
  * @Description: 采购退货单
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`采购退货单 ${detail?(detail.alterationCode||''):''}`"
+    :title="`采购退货单 ${detail?(codeSlice(detail.alterationCode)||''):''}`"
     :visible.sync="showDetailPage"
     @close="close"
     v-loading="loading"
@@ -89,7 +89,7 @@
           <buyingGoodsEdit
             :data="detail"
             :show="[
-                'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','!add'
+                'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','!add','isTax'
               ]"
             :sort="['expanded']"
             :summaryMethod="getSummarys"

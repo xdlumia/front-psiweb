@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-16 10:03:46
+ * @LastEditTime: 2020-01-02 18:12:02
  * @Description: 采购-借入借出单
 */
 <template>
@@ -23,10 +23,10 @@
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='borrowLoanCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value|codeSlice}}</el-link>
         </span>
         <span v-else-if="prop=='salesShipmentCode'">
-          <el-link :underline="false" @click="showSaleShipDetail=true,currentSaleShipCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="showSaleShipDetail=true,currentSaleShipCode=value" class="f12" type="primary">{{value|codeSlice}}</el-link>
         </span>
         <span v-else-if="prop=='borrowLoanState'">{{stateText[value]}}</span>
         <span v-else-if="prop=='borrowLoanType'">{{value==0?'借入':'借出'}}</span>

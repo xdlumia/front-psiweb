@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-19 15:59:18
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2020-01-06 10:21:07
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -15,7 +15,7 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{type=='edit'?`编辑:${code}`:'生成销售出库单'}}</span>
+      <span>{{type=='edit'?`编辑:${codeSlice(code)}`:'生成销售出库单'}}</span>
       <div class="fr mr30">
         <el-button
           type="primary"
@@ -191,6 +191,7 @@ export default {
         this.form.clientId = row.clientId // 100000,
         let ids = this.rowData.map(item => item.id)
         this.salesshipmentGetAddShipemtAmount(ids)
+        this.getExtrasBill()
       } else {
         this.form.companyAccountId = this.rowData.companyAccountId
         this.form.companySettlementId = this.rowData.companySettlementId
@@ -198,8 +199,18 @@ export default {
         let ids = [this.rowData].map(item => item.id)
         if (this.type == 'add') {
           this.salesshipmentGetAddShipemtAmount(ids)
+          this.getExtrasBill()
         }
       }
+    },
+    async getExtrasBill() {
+      let { data } = await this.$api.seePsiSaleService.salesquotationGetAdditionalInvoiceFbill({
+        quotaionCodes: this.quoteCodes
+      })
+      if (data) {
+        this.form.shipmentFinanceSaveVoList.splice(0, 0, data)
+      }
+      console.log(data)
     },
     // 根据报价单id，计算获取销售出库单金额数据
     salesshipmentGetAddShipemtAmount(ids) {
@@ -225,7 +236,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           // 最大不能超过销售单总金额
-          const values = this.form.shipmentFinanceSaveVoList.map(item => Number(item.payAmount || 0));
+          const values = this.form.shipmentFinanceSaveVoList.filter(item => !['附加发票'].includes(item.paymenDays)).map(item => Number(item.payAmount || 0));
           let tatal = +Number(values.reduce((sum, curr) => {
             const val = Number(curr)
             return sum + curr

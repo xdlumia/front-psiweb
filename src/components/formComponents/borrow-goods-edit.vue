@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 17:36:27
+ * @LastEditTime: 2020-01-02 18:44:04
  * @Description: 借入/借出商品编辑页面
 */  
 <template>
@@ -31,7 +31,7 @@
           v-model="row.commodityCode"
         />
       </el-form-item>
-      <span v-else>{{row.commodityCode}}</span>
+      <span v-else>{{row.commodityCode|codeSlice}}</span>
     </template>
     <template slot="goodsName" slot-scope="{row,info,formProp}">
       <el-form-item :prop="formProp" :rules="[{required:true}]" v-if="!info.isChild">

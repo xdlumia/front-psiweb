@@ -228,11 +228,25 @@ export default {
   data() {
     return {
       loading: false,
-      activeName: ''
+      activeName: '',
     };
+  },
+  created() {
+    this.getLastWmId()
   },
   mounted() { },
   methods: {
+    //查询上一次选择的仓库，下一次不能更改
+    getLastWmId() {
+      this.$api.seePsiWmsService.wmsflowrecordList({ page: 1, limit: 2, businessCode: this.data.pickingOrderCode })
+        .then(res => {
+          let list = res.data || []
+          this.data.wmsId = list.length > 0 ? list[0].wmsId : ''
+        })
+        .finally(() => {
+
+        })
+    },
     handleClick({ label, name }) {
       this.activeName = '';
     },

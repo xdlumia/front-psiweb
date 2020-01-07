@@ -32,7 +32,7 @@
           v-if="column.columnFields=='blitemCode'"
           class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span v-else-if="column.columnFields=='blitemState'">{{value == 1 ? '进行中' :value == 2? '盘点完成' : value == -1? '已终止' : '-'}}</span>
         <span v-else-if="column.columnFields=='result'">{{value == 1 ? '盘盈' : value == 2 ? '盘亏' : value == 3 ? '有盈亏' : value == 4 ? '吻合' : '-'}}</span>
         <span v-else>{{value}}</span>

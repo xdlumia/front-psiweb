@@ -2,13 +2,13 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-18 15:06:43
+ * @LastEditTime: 2020-01-06 09:47:06
  * @Description: 销售出库单详情
 */
 <template>
   <div>
     <side-detail
-      :title="`出库单详情: ${code}`"
+      :title="`出库单详情: ${codeSlice(code)}`"
       :visible.sync="showDetailPage"
       width="920px"
       :status="status"
@@ -127,6 +127,35 @@
       @reload="setEdit(),$reload()"
     >
     </approvalTime>
+    <!-- 邮件担保 -->
+    <emailAssure
+      type="mailEnsureAttachsInfo"
+      v-if="emailVisible"
+      :params="{apprpvalNode: 'psi_sales_outlibrary_20',contractRecycleState:1}"
+      :visible.sync="emailVisible"
+      :rowData="detail"
+      @reload="setEdit(),$reload()"
+    ></emailAssure>
+    <!-- 合同收回 -->
+    <emailAssure
+      :params="{apprpvalNode: 'psi_sales_outlibrary_13',contractRecycleState:0}"
+      type="contractAttachsInfo"
+      v-if="contractVisible"
+      :visible.sync="contractVisible"
+      :rowData="detail"
+      @reload="setEdit(),$reload()"
+    >
+    </emailAssure>
+    <!-- 追加合同收回附件 -->
+    <emailAssure
+      :params="{id:detail.id}"
+      type="contractAttachsInfo"
+      v-if="addBackVisible"
+      :visible.sync="addBackVisible"
+      :rowData="detail"
+      @reload="setEdit(),$reload()"
+    >
+    </emailAssure>
   </div>
 </template>
 <script>
@@ -137,6 +166,7 @@ import returnAdd from '../return/add' //退货单新增
 import exchangeAdd from '../exchange/add' //换货单新增
 import collectInvoice from '@/views/finance/receipt/collect-invoice' //开票申请
 import approvalTime from './approvalTime' //审核采购时间
+import emailAssure from './email-assure' //审核采购时间
 
 import detail from './outLibDetails/detail' //详情
 import VisibleMixin from '@/utils/visibleMixin';
@@ -149,7 +179,8 @@ export default {
     returnAdd,
     exchangeAdd,
     collectInvoice,
-    approvalTime
+    approvalTime,
+    emailAssure
   },
 
   data() {
@@ -172,7 +203,10 @@ export default {
         { label: '合同完善', type: 'primary', authCode: 'psi_sales_outlibrary_10' },
         { label: '审核采购时间', type: 'primary', authCode: 'psi_sales_outlibrary_12' },
         { label: '合同收回', type: 'primary', authCode: 'psi_sales_outlibrary_13' },
+        { label: '邮件担保', type: 'primary', authCode: 'psi_sales_outlibrary_20' },
         { label: '追加合同附件', type: 'primary', authCode: 'psi_sales_outlibrary_11' },
+        // TODO 权限码21
+        { label: '追加合同收回附件', type: 'primary', authCode: 'psi_sales_outlibrary_11' },
       ],
       stateText: {
         '-1': '新建',
@@ -191,9 +225,9 @@ export default {
         '-1': ['提交审核', '编辑', '删除', '生成合同'], // 新建
         '0': ['撤销审核', '审核通过', '驳回', '合同完善', '追加合同附件'], //审核中
         '1': ['审核采购时间', '追加合同附件'], //请购处理
-        '2': ['合同收回', '追加合同附件'], //合同收回
-        '3': ['终止', '追加合同附件'], //已通过
-        '4': ['生成退货单', '生成换货单', '开票申请', '追加合同附件'], //已完成
+        '2': ['合同收回', '邮件担保', '追加合同附件'], //合同收回
+        '3': ['终止', '追加合同附件', '追加合同收回附件'], //已通过
+        '4': ['生成退货单', '生成换货单', '开票申请', '追加合同附件', '追加合同收回附件'], //已完成
         '5': ['提交审核', '编辑', '删除', '编辑合同'], //已驳回
         '6': ['生成退货单'] //已终止
       },
@@ -221,6 +255,9 @@ export default {
       exchangeAddVisible: false,
       collectInvoiceVisible: false, //开票申请
       timeApprovalVisible: false, //审核采购时间
+      emailVisible: false, //邮件担保
+      contractVisible: false,//合同收回
+      addBackVisible: false, //追加收回合同附件
       collectInvoiceData: {},
 
     }
@@ -250,7 +287,11 @@ export default {
     isShowButton(label) {
       let state = this.detail.state || 0
       let nodes = (this.detail.apprpvalNode || '').split(',')
-      if (state == 4 && label == '开票申请') {
+      if (label == '追加合同收回附件') {
+        // 如果 节点里有07 不显示审核通过
+        return this.detail.contractRecycleState == 1
+      }
+      else if (state == 4 && label == '开票申请') {
         // 如果 节点里有07 不显示审核通过
         return this.detail.isFinvoice == 0
       }
@@ -273,7 +314,10 @@ export default {
         '生成退货单': 'returnAddVisible',
         '生成换货单': 'exchangeAddVisible',
         '开票申请': 'collectInvoiceVisible',
-        '审核采购时间': 'timeApprovalVisible'
+        '审核采购时间': 'timeApprovalVisible',
+        '邮件担保': 'emailVisible',
+        '合同收回': 'contractVisible',
+        '追加合同收回附件': 'addBackVisible',
       }
       // 需要弹出操作的功能
       if (labelObj.hasOwnProperty(label)) {
@@ -358,11 +402,11 @@ export default {
             data: { ...params, apprpvalNode: 'psi_sales_outlibrary_10' },
             needNote: null
           },
-          '合同收回': {
-            api: 'seePsiSaleService.salesshipmentWithdrawApproval',
-            data: { ...params, apprpvalNode: 'psi_sales_outlibrary_13' },
-            needNote: null
-          },
+          // '合同收回': {
+          //   api: 'seePsiSaleService.salesshipmentWithdrawApproval',
+          //   data: { ...params, apprpvalNode: 'psi_sales_outlibrary_13' },
+          //   needNote: null
+          // },
           '删除': {
             api: 'seePsiSaleService.salesshipmentLogicDelete',
             data: params,

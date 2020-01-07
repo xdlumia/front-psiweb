@@ -1,8 +1,8 @@
 /*
  * @Author: 高大鹏
  * @Date: 2019-10-31 15:09:35
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-11-19 16:42:02
+ * @LastEditors  : 赵伦
+ * @LastEditTime : 2020-01-06 16:13:27
  * @Description: description
  */
 /**
@@ -147,6 +147,10 @@ export default {
   // 选择商品名称列表 整机选择
   selectGoodsNameList(params) {
     return Api.get(`${baseURL.seeGoodsService}/goods/jxc/selectGoodsNameList`, params)
+  },
+  // 选择商品名称列表 整机选择
+  goodsGetGoodsByCodes(params) {
+    return Api.post(`${baseURL.seeGoodsService}/goods/getGoodsByCodes`, params)
   }
 
 

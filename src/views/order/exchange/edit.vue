@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 15:48:32
+ * @LastEditTime: 2020-01-03 15:40:27
  * @Description: 换货单
 */
 <template>
@@ -22,7 +22,7 @@
       <d-tab-pane label="自定义信息" name="customInfo" />
       <d-tab-pane label="备注信息" name="extrasInfo" />
       <div v-if="form&&showEditPage&&!loading">
-        <el-form :model="form" class="p10" ref="form" size="mini">
+        <el-form :model="form" class="p10" ref="form" size="mini" label-position="top">
           <exchange-info :data="form" id="exchangeInfo" />
           <buying-exchange-goods :data="form" @totalAmountChange="onInMoneyChange" exchangeType="in" id="inGoods" />
           <buying-exchange-goods :data="form" @totalAmountChange="onOutMoneyChange" exchangeType="out" id="outGoods" />
@@ -72,12 +72,13 @@ export default {
       let np = type == 'in' ? 'swapInNum' : 'swapOutNum';
       let mp = type == 'in' ? 'swapInMoney' : 'swapOutMoney';
       return +Number(
-        (row[mp] || 0) * (1 + (row.taxRate || 0) / 100) * (row[np] || 0) || 0
+        (row[mp] || 0) * (1 + ((this.form.isTax?0:row.taxRate) || 0) / 100) * (row[np] || 0) || 0
       ).toFixed(2);
     },
     getDetail() {
-      if (this.rowData) return this.rowData;
+      if (this.rowData) return {...this.rowData,isTax:this.rowData.isTax||0};
       return {
+        isTax:0,
         putinCommodityList: [],
         putoutCommodityList: [],
         fieldList: [],
@@ -96,7 +97,7 @@ export default {
           item.swapInCommodityCode = item.commodityCode;
           item.taxAmount = +Number(
             (item.swapInMoney || 0) *
-              (1 + (item.taxRate || 0) / 100) *
+              (1 + ((this.form.isTax?0:item.taxRate) || 0) / 100) *
               (item.swapInNum || 0) || 0
           ).toFixed(2);
         });
@@ -107,7 +108,7 @@ export default {
           item.swapOutCommodityCode = item.commodityCode;
           item.taxAmount = +Number(
             (item.swapOutMoney || 0) *
-              (1 + (item.taxRate || 0) / 100) *
+              (1 + ((this.form.isTax?0:item.taxRate) || 0) / 100) *
               (item.swapOut || 0) || 0
           ).toFixed(2);
         });

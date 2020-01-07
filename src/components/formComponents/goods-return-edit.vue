@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-31 15:01:05
+ * @LastEditTime: 2020-01-07 13:53:46
  * @Description: 退货商品商品信息
 */
 <template>
@@ -28,6 +28,21 @@
           </el-select>
         </span>
 
+      </div>
+      <div class="mb10">
+        <el-form-item prop="isTax" label="是否含税">
+          <el-select placeholder="请选择" v-model="data.isTax" disabled>
+            <el-option
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              v-for="item in [
+                {label:'含税',value:0},
+                {label:'未税',value:1},
+              ]"
+            ></el-option>
+          </el-select>
+        </el-form-item>
       </div>
       <el-table
         show-summary
@@ -60,7 +75,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            {{scope.row.commodityCode}}
+            {{scope.row.commodityCode | codeSlice}}
           </template>
         </el-table-column>
         <el-table-column
@@ -180,7 +195,11 @@
           min-width="70"
           label="税率%"
           show-overflow-tooltip
-        />
+        >
+          <template slot-scope="{row}">
+            <span>{{(!data.isTax)?row.taxRate:0}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="taxPrice"
           min-width="120"
@@ -300,6 +319,9 @@ export default {
       // this.returnTableData.splice(index, 1)
     },
     salesquotationQueryMayCommodity() {
+      this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.data.quotationCode }).then(({data})=>{
+        this.data.isTax = data.isTax||0
+      })
       this.$api.seePsiSaleService.salesquotationQueryMayCommodity({ quotaionCode: this.data.quotationCode })
         .then(res => {
           let data = res.data || []
@@ -342,7 +364,7 @@ export default {
     },
     // 税后销售单价
     formatTaxPrice(row) {
-      let taxRate = (row.taxRate || 100) / 100  ///税率
+      let taxRate = ((row.taxRate || 100) / 100)  ///税率
       let commodityNumber = row.commodityNumber || 0 //退货数量
       let alterationPrice = row.alterationPrice || 0 //退货单价
       // 税后销售单价  公式:销售单价 * (1-税率)
@@ -351,7 +373,7 @@ export default {
     },
     // 销售税后总价
     formatTaxTotalAmount(row) {
-      let taxRate = (row.taxRate || 100) / 100  ///税率
+      let taxRate = ((row.taxRate || 100) / 100)  ///税率
       let commodityNumber = row.commodityNumber || 0 //退货数量
       let alterationPrice = row.alterationPrice || 0 //退货单价
       let taxPrice = (alterationPrice * (1 - taxRate))
@@ -371,7 +393,7 @@ export default {
         return
       }
 
-      let taxRate = (row.taxRate || 100) / 100  ///税率
+      let taxRate = ((row.taxRate || 100) / 100)  ///税率
       let commodityNumber = row.commodityNumber || 0 //退货数量
       let alterationPrice = row.alterationPrice || 0 //退货单价
       // 税后销售单价  公式:销售单价 * (1-税率)

@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 12:46:02
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2020-01-06 10:22:05
  * @Description: file content
 */
 <template>
@@ -14,10 +14,20 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{type=='add'?'新建报价单':type=='copy'?`复制:${code}`:`编辑:${code}`}}</span>
+      <span>{{type=='add'?'新建报价单':type=='copy'?`复制:${codeSlice(code)}`:`编辑:${codeSlice(code)}`}}</span>
       <div class="fr mr30">
-        <el-button size="mini" type="primary" v-show="steps==3&&!strictConfirmConfig" @click="strictConfirmConfig=true">切换为严格匹配</el-button>
-        <el-button size="mini" type="primary" v-show="steps==3&&strictConfirmConfig" @click="strictConfirmConfig=false">切换为范围选择</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          v-show="steps==3&&!strictConfirmConfig"
+          @click="strictConfirmConfig=true"
+        >切换为严格匹配</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          v-show="steps==3&&strictConfirmConfig"
+          @click="strictConfirmConfig=false"
+        >切换为范围选择</el-button>
         <el-button
           @click="$emit('update:visible', false)"
           size="mini"
@@ -162,6 +172,10 @@ export default {
         totalNumber: '', //总计数量,
         totalSalesAmount: '', //总计销售价
         totalCostAmount: '',//  销售参考价总计
+        facilitator: '',
+        serveType: '',
+        bmcName: '',
+        isTax: 0// 是否含税 0含税 1未税
       }
     }
   },
@@ -185,6 +199,7 @@ export default {
               this.form[key] = ""
             }
           }
+          this.form.isTax = 0
           this.getFailureTimeConfig()
         } else {
           this.steps = 4
@@ -228,7 +243,7 @@ export default {
         })
         wholeListNotChoose = this.$$util.jsonFlatten(wholeListNotChoose)
         let wholeListData = []
-        let quotationIds = this.strictConfirmConfig?this.form.KIND1List.map(item => this.$refs.confirmInfo.findSelectedConfig(item)).filter(a => a):[]
+        let quotationIds = this.strictConfirmConfig ? this.form.KIND1List.map(item => this.$refs.confirmInfo.findSelectedConfig(item)).filter(a => a) : []
         // 有quotationIds 值的时候再查询
         if (quotationIds.length) {
           let params = {
@@ -250,26 +265,26 @@ export default {
             return item
           })
         }
-        if(!this.strictConfirmConfig){
-          wholeListData = JSON.parse(JSON.stringify(wholeList)).map(item=>{
-            item.commonGoodConfigDetailsEntityList = this.$refs.confirmInfo.flatten(item.children).filter(item=>item.selected)
-            item.commonGoodConfigDetailsEntityList.map(sub=>{
+        if (!this.strictConfirmConfig) {
+          wholeListData = JSON.parse(JSON.stringify(wholeList)).map(item => {
+            item.commonGoodConfigDetailsEntityList = this.$refs.confirmInfo.flatten(item.children).filter(item => item.selected)
+            item.commonGoodConfigDetailsEntityList.map(sub => {
               sub.parentCommodityCode = item.goodsCode
               sub.isMachine = 1
-              sub.reference=sub.saleReferencePrice
-              sub.costAmount=sub.inventoryPrice
+              sub.reference = sub.saleReferencePrice
+              sub.costAmount = sub.inventoryPrice
             })
             item.customConfig = true
 
             this.$api.seeGoodsService.getGoodsByNameForJXC({
               categoryCode: 'PSI_SP_KIND-1',
               goodsCode: item.goodsCode
-            }).then(({data:[good]})=>{
-              Object.keys(good).map(key=>{
-                this.$set(item,key,good[key])
+            }).then(({ data: [good] }) => {
+              Object.keys(good).map(key => {
+                this.$set(item, key, good[key])
               })
-              this.$set(item,'reference',item.totalAmount)
-              this.$set(item,'discountSprice',+Number(item.reference * (1 + (item.taxRate || 0) / 100)).toFixed(2))
+              this.$set(item, 'reference', item.totalAmount)
+              this.$set(item, 'discountSprice', +Number(item.reference * (1 + (item.taxRate || 0) / 100)).toFixed(2))
             })
 
             item.goodsName = item.configGoodName
@@ -350,10 +365,11 @@ export default {
       if (this.code) {
         this.form.id = ''
         let { data } = await this.$api.seePsiSaleService.salesquotationGetinfoByCode({ quotationCode: this.code });
-        data.commodityEntityList.map(item=>{
-          item.isMachine&&(item.customConfig=true);
+        data.commodityEntityList.map(item => {
+          item.isMachine && (item.customConfig = true);
           item.commonGoodConfigDetailsEntityList = item.partsInfoCommodityList
         })
+        data.isTax = data.isTax || 0
         return data;
       }
     },
@@ -364,6 +380,7 @@ export default {
         if (valid) {
           let params = Object.assign(this.form, this.params)
           let copyParams = JSON.parse(JSON.stringify(params))
+          copyParams.isTax = copyParams.isTax || 0
 
           delete copyParams.KIND1Data
           delete copyParams.KIND2Data
@@ -375,9 +392,9 @@ export default {
             })
             item.putawayType = 0 //0=出库
             // 税后总价
-            item.preTaxAmount = Number((item.reference || 0) * (1 + item.taxRate / 100) * (item.commodityNumber || 0)).toFixed(2)
+            item.preTaxAmount = Number((item.reference || 0) * (1 + (copyParams.isTax ? 0 : item.taxRate) / 100) * (item.commodityNumber || 0)).toFixed(2)
             // 销售单价
-            item.salesPrice = Number((item.reference || 0) * (1 + item.taxRate / 100)).toFixed(2)
+            item.salesPrice = Number((item.reference || 0) * (1 + (copyParams.isTax ? 0 : item.taxRate) / 100)).toFixed(2)
             item.costAmount = item.inventoryPrice
           })
           // 验证商品信息
@@ -391,16 +408,16 @@ export default {
           }
           let children = []
           copyParams.businessCommoditySaveVoList = copyParams.businessCommoditySaveVoList.map(item => {
-            if(item.customConfig){
-              children = children.concat(item.commonGoodConfigDetailsEntityList)  
+            if (item.customConfig) {
+              children = children.concat(item.commonGoodConfigDetailsEntityList)
               item.costAmount = item.inventoryPrice;
               item.inventoryPrice = item.reference;
               item.saleReferencePrice = item.reference;
-              (item.commonGoodConfigDetailsEntityList||[]).map(item=>{
+              (item.commonGoodConfigDetailsEntityList || []).map(item => {
                 item.costAmount = item.inventoryPrice
               })
             }
-            item.isMachine = item.isMachine||0
+            item.isMachine = item.isMachine || 0
             delete item.commonGoodConfigDetailsEntityList
             return item;
           })

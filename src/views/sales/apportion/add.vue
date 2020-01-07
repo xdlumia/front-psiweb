@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 20:16:34
+ * @LastEditTime: 2020-01-06 10:18:10
  * @Description: 客户管理-新增分摊
 */
 <template>
@@ -16,7 +16,7 @@
   >
     <!-- 确定按钮 -->
     <div slot="title">
-      <span>{{type=='add'?'新增分摊':`编辑:${code}`}}</span>
+      <span>{{type=='add'?'新增分摊':`编辑:${codeSlice(code)}`}}</span>
       <div class="fr mr30">
         <el-button
           type="primary"

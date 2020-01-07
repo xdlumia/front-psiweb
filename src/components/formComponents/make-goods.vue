@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-11-22 11:35:40
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-31 15:03:17
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2020-01-06 08:54:45
  * @Description: 发票内容 商品列表 已绑定 1
 */
 <template>
@@ -89,16 +89,6 @@
       >
         <template slot-scope="{row}">
           <span>{{calcAfterTaxAmount(row)}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="是否与订单一致"
-        min-width="140"
-        prop="isOrder"
-        show-overflow-tooltip
-      >
-        <template slot-scope="{row}">
-          <span>{{row.isOrder==0?'否':'是'}}</span>
         </template>
       </el-table-column>
       <el-table-column

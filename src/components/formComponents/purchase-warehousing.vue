@@ -303,7 +303,16 @@ export default {
         if (!this.loading) {
           if ((this.rowData.commodityNumber - (this.rowData.putinNumber || 0) - this.tableData.length) > 0) {
             this.loading = true
-            this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: this.snCode, commodityCode: this.rowData.commodityCode, putawayCommodityList: this.tableData, categoryCode: this.rowData.categoryCode, wmsId: this.wmsId })
+            this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({
+              snCode: this.snCode,
+              commodityCode: this.rowData.commodityCode,
+              putawayCommodityList: this.tableData,
+              categoryCode: this.rowData.categoryCode,
+              wmsId: this.wmsId,
+              purchasePrice: this.rowData.purchasePrice,//采购价
+              purchaseTaxes: this.rowData.purchasePrice * this.rowData.taxRate * 0.01,//采购税金
+              purchaseCost: this.rowData.costAmount,//采购成本
+            })
               .then(res => {
                 if (res.data) {
                   this.tableData.push(res.data)

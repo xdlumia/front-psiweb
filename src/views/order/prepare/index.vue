@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 10:22:03
+ * @LastEditTime: 2020-01-06 11:27:07
  * @Description: 采购-备货单
 */
 <template>
@@ -22,7 +22,7 @@
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='stockCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value|codeSlice}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>

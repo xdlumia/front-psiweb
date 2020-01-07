@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 17:41:11
+ * @LastEditTime: 2020-01-06 13:48:34
  * @Description: 采购入库单
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`采购入库单 ${detail?(detail.putinCode||''):''}`"
+    :title="`采购入库单 ${detail?(codeSlice(detail.putinCode)||''):''}`"
     :visible.sync="showDetailPage"
     @close="close"
     v-loading="loading"
@@ -116,7 +116,7 @@
           <buying-goods-edit
             :data="detail"
             :show="[
-                'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber'
+                'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber','isTax'
               ]"
             :sort="detail.source=='备货单'?[]:['expanded']"
             disabled
@@ -179,6 +179,7 @@
     </el-tabs>
     <OrderRejectEdit
       :params="{
+        isTax:0,
         putinCode:detail.putinCode,
         companyAccountId:detail.companyAccountId,
         companySettlementId:detail.companySettlementId,
@@ -259,6 +260,7 @@ export default {
           null,
           this.code
         );
+        data.isTax = data.isTax||0
         data.commodityList = data.commodityList || [];
         return data;
       } else if (this.rowData) {
@@ -351,7 +353,7 @@ export default {
               commodityCode: item.commodityCode,
               isOrder: 1,
               type: 0,
-              taxRate: item.taxRate,
+              taxRate: this.detail.isTax==1?0:item.taxRate,
               price: item.purchasePrice,
               quantity: item.commodityNumber
             };

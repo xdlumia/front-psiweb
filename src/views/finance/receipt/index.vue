@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-14 15:14:46
+ * @LastEditTime: 2020-01-06 11:42:20
  * @Description: 销售-待收票
  */
 <template>
@@ -56,7 +56,7 @@
           class="d-text-blue d-pointer"
           v-if="column.columnFields=='invoiceCode'"
           @click="eventHandle('detailVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
 
         <span v-else-if="column.columnFields=='busCode'">
           <!-- 关联单据编号 -->
@@ -65,7 +65,7 @@
             :underline="false"
             @click="openBusPage(row)"
             class="f12"
-          >{{value}}</el-link>
+          >{{value | codeSlice}}</el-link>
         </span>
         <!-- 发票类型 -->
         <span v-else-if="column.columnFields=='overState'">{{value==0?'正常':value==1?'已逾期':''}}</span>

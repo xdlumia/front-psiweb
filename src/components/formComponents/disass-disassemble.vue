@@ -466,10 +466,19 @@ export default {
     },
     //下边的,入库
     getCommodityBySnCode(item) {
-      if (this.wmsId) {
+      if (this.wmsId) { 
         if ((item.disassemblyNum - (item.accomplishDisassemblyNum || 0) - (item.nowNum || 0)) != 0) {
           if ((item.singleNum || 0) * ((this.data.accomplishDisassemblyNum || 0) + this.data.nowNum) > ((item.accomplishDisassemblyNum || 0) + (item.nowNum || 0))) {
-            this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({ snCode: item.snCode, commodityCode: item.commodityCode, putawayCommodityList: this.tableData, categoryCode: item.categoryCode, wmsId: this.wmsId })
+            this.$api.seePsiWmsService.wmsinventorydetailPutawayCommodityCheck({
+              snCode: item.snCode,
+              commodityCode: item.commodityCode,
+              putawayCommodityList: this.tableData,
+              categoryCode: item.categoryCode,
+              wmsId: this.wmsId,
+              purchasePrice: item.purchaseUnivalence,//采购价
+              purchaseTaxes: item.purchaseUnivalence * item.taxRate * 0.01,//采购税金
+              purchaseCost: item.inventoryPrice,//采购成本
+            })
               .then(res => {
                 if (res.data) {
                   this.tableData.push(res.data)

@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-02 09:08:39
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2020-01-07 15:12:06
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -12,6 +12,28 @@
   >
     <div slot="title">
       <span>商品信息</span>
+    </div>
+    <div class="mb10">
+      <el-form-item
+        prop="isTax"
+        label="是否含税"
+      >
+        <el-select
+          placeholder="请选择"
+          v-model="data.isTax"
+          @change="taxStatusChange"
+        >
+          <el-option
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            v-for="item in [
+              {label:'含税',value:0},
+              {label:'未税',value:1},
+            ]"
+          ></el-option>
+        </el-select>
+      </el-form-item>
     </div>
     <el-table
       show-summary
@@ -61,7 +83,7 @@
             v-if="!scope.row.parentCommodityCode"
             :codes='codes'
           />
-          <span v-else>{{scope.row.commodityCode}}</span>
+          <span v-else>{{scope.row.commodityCode|codeSlice}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -178,7 +200,11 @@
         label="税率%"
         min-width="100"
         prop="taxRate"
-      ></el-table-column>
+      >
+        <template slot-scope="{row}">
+          <span>{{(!data.isTax)?row.taxRate:0}}</span>
+        </template>
+      </el-table-column>
 
       <el-table-column
         show-overflow-tooltip
@@ -365,7 +391,8 @@ export default {
       },
       visible: false,
       preCommodityBussinessInfo: {},
-      timer: null
+      timer: null,
+      goodsInfos: {}
     };
   },
   watch: {
@@ -377,9 +404,47 @@ export default {
           this.getCommodityBusinessInfo()
         }, 200)
       }
+    },
+    'data.isTax': {
+      deep: true,
+      handler() {
+        this.data.businessCommoditySaveVoList.map(item => this.numberChange(item))
+      }
     }
   },
   methods: {
+    async taxStatusChange() {
+      if (this.data.isTax == 0) {
+        let codes = []
+        this.flatCallback(item => {
+          if (!this.goodsInfos[item.commodityCode]) {
+            codes.push(item.commodityCode);
+          }
+        })
+        if (codes.length) {
+          let { data } = await this.$api.seeGoodsService.goodsGetGoodsByCodes(codes)
+          data.map(item => {
+            this.goodsInfos[item.goodsCode] = item;
+          })
+        }
+        this.flatCallback(item => {
+          let good = this.goodsInfos[item.commodityCode]
+          if (good) {
+            item.taxRate = good.taxRate;
+            if (!item.parentCommodityCode) {
+              this.numberChange(item)
+            }
+          }
+        })
+      } else {
+        this.flatCallback(item => {
+          item.taxRate = 0;
+          if (!item.parentCommodityCode) {
+            this.numberChange(item)
+          }
+        })
+      }
+    },
     async loadChildren(row, node, cb) {
       let {
         data
@@ -401,7 +466,7 @@ export default {
         child.commodityNumber = child.commodityNum
         child.reference = child.saleReferencePrice
         child.discountSprice = '-'
-        if(businessInfo[child.commodityCode]){
+        if (businessInfo[child.commodityCode]) {
           child.recentDiscountSprice = businessInfo[child.commodityCode].recentDiscountSprice
         }
       })
@@ -472,7 +537,7 @@ export default {
         }
         if (this.preCommodityBussinessInfo[item.commodityCode]) {
           this.$set(item, 'inventoryPrice', item.inventoryPrice || this.preCommodityBussinessInfo[item.commodityCode].inventoryPrice)
-          this.$set(item, 'taxRate', item.taxRate || this.preCommodityBussinessInfo[item.commodityCode].taxRate)
+          this.$set(item, 'taxRate', this.data.isTax == 0 ? (item.taxRate || this.preCommodityBussinessInfo[item.commodityCode].taxRate) : 0)
           this.$set(item, 'inventoryNumber', item.inventoryNumber || this.preCommodityBussinessInfo[item.commodityCode].inventoryNumber || 0)
           this.$set(item, 'recentDiscountSprice', this.preCommodityBussinessInfo[item.commodityCode].recentDiscountSprice || 0)
         }
@@ -540,20 +605,20 @@ export default {
     },
     // 商品数量和折扣修改
     numberChange(row) {
-      if(row.discount==='')return
-      if(!row.reference)return
+      if (row.discount === '') return
+      if (!row.reference) return
       let reference = row.reference || 0   //销售参考价
-      let taxRate = (row.taxRate || 100) / 100  ///税率
+      let taxRate = (!this.data.isTax) ? ((row.taxRate || 100) / 100) : 0  ///税率
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
       // 折扣价格  公式:税前金额  * (1-税率) * 折扣
       row.discountSprice = +(reference * (1 + taxRate) * discount).toFixed(2) || 0
     },
     discountSpriceChange(row) {
-      if(row.discount==='')return
-      if(!row.reference)return
+      if (row.discount === '') return
+      if (!row.reference) return
       let reference = row.reference || 0   //销售参考价
-      let taxRate = (row.taxRate || 100) / 100  ///税率
+      let taxRate = (!this.data.isTax) ? ((row.taxRate || 100) / 100) : 0  ///税率
       let discountSprice = row.discountSprice || 0 //折后金额
       let discount = row.discount || 1 //折扣
       // 折后价格 / (税后价格*(1-税率)

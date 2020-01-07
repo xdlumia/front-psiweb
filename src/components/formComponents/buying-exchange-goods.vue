@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-13 16:15:44
+ * @LastEditTime: 2020-01-03 15:41:21
  * @Description: 换货单换货商品 已绑定字段 1
 */  
 <template>
@@ -14,7 +14,7 @@
       :fkey="fkey"
       :show="[
         'categoryCode','className','specOne','configName','costAmountPrice','taxRate','!add','unit',
-      ].concat(disabled?[]:['goodsPic'])"
+      ].concat(disabled?[]:['goodsPic'],exchangeType=='in'?['isTax']:[])"
       :sort="['expanded'].concat(
         disabled?['snCodes','swapInNum','swapOutNum','swapInWmsNames','swapOutWmsNames']:[],
         ['actions','commodityCodes','commodityCode','goodsNames','swapInNum','swapInMoney','swapOutNum','swapOutMoney','taxRate','preTaxAmount','goodsPic']
@@ -185,7 +185,7 @@ export default {
       let np = this.exchangeType == 'in' ? 'swapInNum' : 'swapOutNum';
       let mp = this.exchangeType == 'in' ? 'swapInMoney' : 'swapOutMoney';
       return +Number(
-        (row[mp] || 0) * (1 + (row.taxRate || 0) / 100) * (row[np] || 0) || 0
+        (row[mp] || 0) * (1 + ((this.data.isTax?0:row.taxRate) || 0) / 100) * (row[np] || 0) || 0
       ).toFixed(2);
     },
     getSummaries(param) {

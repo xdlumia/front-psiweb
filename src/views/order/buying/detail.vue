@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 16:28:24
+ * @LastEditTime: 2020-01-06 11:23:01
  * @Description: 采购单详情
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`请购单 ${detail?(detail.purchaseApplyCode||''):''}`"
+    :title="`请购单 ${detail?(codeSlice(detail.purchaseApplyCode)||''):''}`"
     :visible.sync="showDetailPage"
     @close="close"
     v-loading="loading"

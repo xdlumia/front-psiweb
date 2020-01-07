@@ -1,14 +1,14 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-21 10:18:11
- * @Description: 备注信息 字段已绑定 1
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2020-01-06 11:40:09
+ * @Description: 邮件担保 or 合同收回 备注信息 字段已绑定 1
 */
 <template>
   <form-card title="备注信息">
     <div slot="title">
-      <span>备注信息</span>
+      <span>{{title}}</span>
       <span
         class="fr"
         v-if="canModify"
@@ -44,10 +44,6 @@
           prop="note"
           size="mini"
         >
-          <!-- <div
-            class="d-text-gray mt10 d-elip wfull"
-            v-if="!canEditable"
-          >{{data.note}}</div>-->
           <el-input
             :disabled="!canEditable"
             :rows="3"
@@ -64,12 +60,8 @@
       >
         <el-form-item
           label="上传附件:"
-          prop="attachList"
+          prop="attachsVos"
         >
-          <!-- <div
-            class="d-text-gray mt10 d-elip wfull"
-            v-if="!canEditable"
-          >上传附件</div>-->
           <upload-file
             :disabled="!canEditable"
             :limit="{
@@ -83,11 +75,11 @@
               <el-button
                 size="mini"
                 type="primary"
-                v-if="canEditable && (data.attachList || []).length<10"
+                v-if="canEditable && (data.attachsVos || []).length<10"
               >点击上传</el-button>
               <div
                 :key="item.url"
-                v-for="(item,i) of data.attachList || []"
+                v-for="(item,i) of data.attachsVos || []"
               >
                 <span class="el-icon-document"></span>
                 <span
@@ -107,27 +99,44 @@
               </div>
             </div>
           </upload-file>
+          附件文件名称清单：
+          <div v-if="disabled && !(data.fileNames || []).length">暂无数据</div>
+          <div
+            v-for="(item,i) of data.fileNames ||[]"
+            :key="i"
+            class="mb5"
+          >
+            <span>{{i+1}}. </span>
+            <el-input
+              v-if="disabled"
+              :disabled="disabled"
+              style="width:220px"
+              inline
+              :value="item"
+            ></el-input>
+            <el-input
+              v-else
+              :disabled="disabled"
+              v-model="item.name"
+              style="width:220px"
+              inline
+              placeholder="请输入担保内容"
+            ></el-input>
+            <i
+              v-if="canEditable"
+              @click="data.fileNames.splice(i, 1)"
+              class="f18 d-text-gray ml10 el-icon-remove-outline"
+            ></i>
+          </div>
+          <el-button
+            v-if="canEditable"
+            type="text"
+            class="d-block"
+            icon="el-icon-circle-plus-outline"
+            @click="data.fileNames.push({name:''})"
+          >增加附件文件名称</el-button>
         </el-form-item>
       </el-col>
-      <!-- 贺兴龙说，跟产品沟通过，清单可以不要 -->
-      <!-- <el-col :span="24" v-if="needUpload">
-        <el-form-item label="附件文件名称清单" size="mini">
-          <div class="wfull d-clear">
-            <el-row :gutter="10">
-              <el-col :span="2" class="ar">
-                <span>1.</span>
-              </el-col>
-              <el-col :span="22">
-                <div class="d-text-gray d-elip wfull" v-if="!canEditable">附件文件名称</div>
-                <el-input inline placeholder v-else></el-input>
-              </el-col>
-              <el-col :offset="2" :span="22">
-                <el-link :underline="false" class="el-icon-circle-plus-outline" size="mini" type="primary" v-if="canEditable">增加附件文件名称</el-link>
-              </el-col>
-            </el-row>
-          </div>
-        </el-form-item>
-      </el-col>-->
     </el-row>
   </form-card>
 </template>
@@ -147,6 +156,9 @@ export default {
       type: Boolean,
       default: false
     },
+    title: {
+      default: '备注'
+    },
     needUpload: {
       type: Boolean,
       default: true
@@ -162,11 +174,9 @@ export default {
     };
   },
   watch: {
-    data() {
-      // this.init();
-    }
   },
   mounted() {
+
     // this.init();
   },
   computed: {
@@ -180,36 +190,36 @@ export default {
   },
   methods: {
     // init() {
-    //   if (this.data && this.data.attachList) {
-    //     if (typeof this.data.attachList == 'string') {
-    //       this.data.attachList = JSON.parse(this.data.attachList);
+    //   if (this.data && this.data.attachsVos) {
+    //     if (typeof this.data.attachsVos == 'string') {
+    //       this.data.attachsVos = JSON.parse(this.data.attachsVos);
     //     }
-    //     this.fileList = this.data.attachList || [];
+    //     this.fileList = this.data.attachsVos || [];
     //   }
     // },
     uploadFile({ name, url, oldName }) {
-      if (!this.data.attachList) this.$set(this.data, 'attachList', []);
-      this.data.attachList = this.data.attachList || [];
-      this.data.attachList.push({
+      if (!this.data.attachsVos) this.$set(this.data, 'attachsVos', []);
+      this.data.attachsVos = this.data.attachsVos || [];
+      this.data.attachsVos.push({
         fileName: oldName,
         fileUrl: url
       });
     },
     delFile(i) {
-      this.data.attachList.splice(i, 1);
+      this.data.attachsVos.splice(i, 1);
       // this.fileList.splice(i, 1);
     },
     openFile(item) {
       window.open(item.fileUrl, '_blank');
     },
     cancel() {
-      this.data.attachList = this.preData.attachList;
+      this.data.attachsVos = this.preData.attachsVos;
       this.data.note = this.preData.note;
       this.isEdit = false;
     },
     save() {
       this.$emit('change', {
-        attachList: this.data.attachList,
+        attachsVos: this.data.attachsVos,
         note: this.data.note
       });
       this.isEdit = false;

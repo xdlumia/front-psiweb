@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 12:44:52
+ * @LastEditTime: 2020-01-03 13:16:09
  * @Description: 确定配置信息
 */
 <template>

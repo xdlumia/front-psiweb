@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-11-06 17:45:14
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-04 15:11:12
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2020-01-02 18:18:57
  * @Description: 商品信息
  -->
 <template>
@@ -27,7 +27,7 @@
       >
         <el-table-column label="商品编号" prop="commodityCode" width="200px" show-overflow-tooltip>
           <template slot-scope="{row}">
-            <span class="d-text-blue">{{row.commodityCode || row.goodsCode}}</span>
+            <span class="d-text-blue">{{(row.commodityCode || row.goodsCode) | codeSlice}}</span>
           </template>
         </el-table-column>
         <el-table-column label="商品图片" widht="60px" align="center">

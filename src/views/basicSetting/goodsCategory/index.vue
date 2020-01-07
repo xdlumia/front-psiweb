@@ -2,17 +2,13 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:44:55
  * @LastEditors  : 高大鹏
-<<<<<<< HEAD
- * @LastEditTime : 2019-12-27 10:28:36
-=======
- * @LastEditTime : 2019-12-27 10:22:18
->>>>>>> dev
+ * @LastEditTime : 2020-01-02 18:24:07
  * @Description: 商品分类
  -->
 <template>
   <!-- 类目管理 -->
   <div v-loading="loading">
-    <div class="cate" style="min-width:1256px;">
+    <div class="cate" style="min-width:1400px;">
       <div class="cate-top">
         <el-button
           v-if="authorityButtons.includes('decorate_goods_classmgr_1001')"

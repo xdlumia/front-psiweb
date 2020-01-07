@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-14 18:16:23
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2020-01-03 13:37:34
  * @Description: description
  -->
 <template>
@@ -17,7 +17,7 @@
     <template slot="button">
       <el-button
         size="mini"
-        v-if="buttonState == -1"
+        v-if="buttonState == 0"
         type="primary"
         @click="collectInvoiceVisible = true && authorityButtons.includes('psi_billing_1008')"
       >编辑</el-button>

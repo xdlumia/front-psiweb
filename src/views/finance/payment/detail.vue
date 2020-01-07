@@ -2,13 +2,13 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 20:10:38
+ * @LastEditTime: 2020-01-06 11:25:09
  * @Description: 付款单
 */
 <template>
   <sideDetail
     :status="status"
-    :title="`付款单 ${detail?(detail.billCode||''):''}`"
+    :title="`付款单 ${detail?(codeSlice(detail.billCode)||''):''}`"
     :visible="showDetailPage"
     @close="close"
     v-loading="loading"

@@ -25,12 +25,12 @@
           v-if="column.columnFields=='putinCode'"
           class="d-text-blue d-pointer"
           @click="getputinVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span
           v-else-if="column.columnFields=='purchaseCode'"
           class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span v-else-if="column.columnFields=='putinState'">{{value == 0 ? '待入库' : value == 1 ? '部分入库' : value == 2 ? '完成入库' : value == 3 ? '终止' : ''}}</span>
         <span v-else>{{value}}</span>
       </template>

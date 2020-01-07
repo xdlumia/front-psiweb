@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 18:13:26
+ * @LastEditTime: 2020-01-06 11:41:36
  * @Description: 销售-借款单
  */
 <template>
@@ -36,7 +36,7 @@
           class="d-text-blue d-pointer"
           v-if="column.columnFields=='borrowingCode'"
           @click="eventHandle('detailVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
 
         <!-- 创建时间 -->
         <span v-else>{{value}}</span>

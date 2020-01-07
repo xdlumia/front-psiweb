@@ -26,12 +26,12 @@
           v-if="column.columnFields=='salesShipmentCode'"
           class="d-text-blue d-pointer"
           @click="getdisassemblyVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span
           v-else-if="column.columnFields=='borrowLoanTaskCode'"
           class="d-text-blue d-pointer"
           @click="getTableVisible(row)"
-        >{{value}}</span>
+        >{{value | codeSlice}}</span>
         <span v-else-if="column.columnFields=='borrowLoanType'">{{value == 0 ? '借入' : '借出'}}</span>
         <span v-else-if="column.columnFields=='borrowLoanState'">{{state[value] || '全部'}}</span>
         <span v-else>{{value}}</span>

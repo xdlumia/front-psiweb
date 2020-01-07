@@ -2,24 +2,22 @@
  * @Author: 赵伦
  * @Date: 2019-11-05 17:31:44
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-06 10:44:50
+ * @LastEditTime: 2020-01-03 18:09:19
  * @Description: 商品分类树组件  字段已绑定 1 
 */
 <template>
   <div class="wfull hfull d-auto-y commodity-cat-tree">
-    <el-tabs @tab-click="handleMainCatClick" v-model="activeMainCat">
-      <el-tab-pane :key="item.value" :label="item.label" :name="item.value" v-for="item of kinds"></el-tab-pane>
-    </el-tabs>
-    <el-input class="ml5" placeholder="搜索分类名称" prefix-icon="el-icon-search" size="small" style="width:93%" v-model="filterText"></el-input>
+    <el-input class="ml5 mt5" placeholder="搜索产品范围名称" prefix-icon="el-icon-search" size="small" style="width:93%" v-model="filterText"></el-input>
     <el-button @click="selectAll()" class="ml5" type="text">全部</el-button>
     <el-tree
       :data="catTree"
       :default-expand-all="false"
       :filter-node-method="filterNode"
       :props="defaultProps"
-      @node-click="handleCatClick"
+      @node-click="handleTreeClick"
       class="filter-tree"
       highlight-current
+      node-key="code"
       ref="tree"
     ></el-tree>
   </div>
@@ -28,16 +26,7 @@
 export default {
   components: {},
   props: {
-    mainCat: [String, Number],
-    subCat: [String, Number],
-    kinds: {
-      type: Array,
-      default: () => [
-        { label: '整机', value: 'PSI_SP_KIND-1' },
-        { label: '配件', value: 'PSI_SP_KIND-2' },
-        { label: '服务', value: 'PSI_SP_KIND-3' }
-      ]
-    }
+    value: String
   },
   watch: {
     filterText(val) {
@@ -51,33 +40,36 @@ export default {
       filterText: '',
       defaultProps: {
         children: 'children',
-        label: 'className'
+        label: 'content'
       }
     };
   },
+  watch: {
+    value() {
+      this.$refs.tree.setCurrentKey(this.value);
+    }
+  },
   mounted() {
     this.$nextTick(() => {
-      this.activeMainCat = this.kinds[0].value;
-      this.handleMainCatClick();
+      this.getProductArea();
     });
   },
   methods: {
     // 获取主分类下商品分类树
-    async handleMainCatClick() {
-      let { data } = await this.$api.seeGoodsService.getGoodsClass({
-        categoryCode: this.activeMainCat
-      });
+    async getProductArea() {
+      let { data } = await this.$api.seeDictionaryService.getDicCommonValueList(
+        'PSI_GYS_CPFW'
+      );
       this.catTree = data;
-      this.$emit('update:mainCat', this.activeMainCat);
-      this.selectAll();
     },
     selectAll() {
-      this.$emit('update:subCat', '');
+      this.$emit('input', '');
+      this.$refs.tree.setCurrentKey();
       this.changed();
     },
     // 树点击
-    handleCatClick(data, node) {
-      this.$emit('update:subCat', data.id);
+    handleTreeClick(data, node) {
+      this.$emit('input', data.code);
       this.changed();
     },
     changed() {
@@ -86,7 +78,11 @@ export default {
     // 树过滤
     filterNode(value, data) {
       if (!value) return true;
-      return data.className.indexOf(value) !== -1;
+      return (
+        String(data.content)
+          .toLowerCase()
+          .indexOf(String(value).toLowerCase()) !== -1
+      );
     }
   }
 };

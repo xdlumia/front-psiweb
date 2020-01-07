@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-16 16:42:03
+ * @LastEditTime: 2020-01-07 10:47:10
  * @Description: 生成请购单商品信息
 */
 <template>
@@ -13,7 +13,7 @@
         :summary-method="getSummaries"
         size="mini"
         border
-        :data="tableData"
+        :data="data.commodityList"
         default-expand-all
         :tree-props="{children: 'children'}"
         row-key="id"

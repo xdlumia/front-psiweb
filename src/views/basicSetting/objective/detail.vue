@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-10 10:45:20
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2020-01-02 18:17:34
  * @Description: 促销详情
  -->
 <template>
@@ -10,7 +10,7 @@
     :status="status"
     :visible.sync="showPop"
     @close="$emit('update:visible',false)"
-    :title="'目标编号：' + code"
+    :title="'目标编号：' + $options.filters.codeSlice(code)"
     width="990px"
     v-loading="loading"
   >
@@ -87,7 +87,7 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     return {
       showEdit: false,
       loading: false,
@@ -102,24 +102,24 @@ export default {
 
     }
   },
-  mounted() {
+  mounted () {
     this.checkVisible();
     this.commonpromotiongoalInfoBycode()
   },
   watch: {
-    visible() {
+    visible () {
       this.checkVisible();
     }
   },
   methods: {
-    refresh() {
+    refresh () {
       this.commonpromotiongoalInfoBycode()
       this.$emit('refresh')
     },
-    checkVisible() {
+    checkVisible () {
       this.showPop = this.visible;
     },
-    commonpromotiongoalInfoBycode() {
+    commonpromotiongoalInfoBycode () {
       this.loading = true
       this.$api.seePsiCommonService.commonpromotiongoalInfoBycode(null, this.code).then(res => {
         this.detailForm = res.data || {}
@@ -135,7 +135,7 @@ export default {
         this.loading = false
       })
     },
-    commonpromotiongoalUpdate(id, state) {
+    commonpromotiongoalUpdate (id, state) {
       this.$confirm(`是否${!state ? '启用' : '停用'}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -152,7 +152,7 @@ export default {
         })
       })
     },
-    commonpromotiongoalUpdateDefault(id, type) {
+    commonpromotiongoalUpdateDefault (id, type) {
       this.$confirm(`是否设为默认?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

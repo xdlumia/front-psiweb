@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-05 16:57:15
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 14:17:14
+ * @LastEditTime: 2020-01-06 11:34:52
  * @Description: 可供商品 以调试 1
 */
 <template>
@@ -32,7 +32,7 @@
           </el-table-column>
           <el-table-column label="商品编号" min-width="200" prop="title" show-overflow-tooltip>
             <template slot-scope="{row}">
-              <span @click="showCommodityDetail=true,currentCommodityCode=row.goodsCode" class="d-text-blue d-pointer">{{row.goodsCode}}</span>
+              <span @click="showCommodityDetail=true,currentCommodityCode=row.goodsCode" class="d-text-blue d-pointer">{{row.goodsCode|codeSlice}}</span>
             </template>
           </el-table-column>
           <el-table-column label="商品名称" min-width="100" prop="goodsName" show-overflow-tooltip>

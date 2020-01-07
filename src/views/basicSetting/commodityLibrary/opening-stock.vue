@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-30 10:28:41
+ * @LastEditTime : 2020-01-02 18:23:03
  * @Description: 新增目标
  -->
 <template>
@@ -60,7 +60,7 @@
 
             <el-table-column prop="goodsCode" label="商品编号" min-width="140" show-overflow-tooltip>
               <template slot-scope="scope">
-                <span class="d-text-blue">{{scope.row.goodsCode}}</span>
+                <span class="d-text-blue">{{scope.row.goodsCode | codeSlice}}</span>
               </template>
             </el-table-column>
             <el-table-column label="商品类别" min-width="110" prop="categoryCode">

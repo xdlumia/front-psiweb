@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-14 17:34:44
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2020-01-06 10:20:33
  * @Description: 销售-销售换货单
  */
 <template>
@@ -27,13 +27,13 @@
           class="d-text-blue d-pointer"
           v-if="column.columnFields=='alterationCode'"
           @click="eventHandle('exchangeVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
         <!-- 销售出库单编号 -->
         <span
           class="d-text-blue d-pointer"
           v-else-if="column.columnFields=='salesShipmentCode'"
           @click="eventHandle('outLibVisible',row)"
-        > {{value}}</span>
+        > {{value | codeSlice}}</span>
         <span v-else-if="column.columnFields=='refundNumber'">
           {{value}}/{{row.totalRefundNumber}}
         </span>

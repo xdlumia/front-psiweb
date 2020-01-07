@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 11:22:42
+ * @LastEditTime: 2020-01-06 11:26:35
  * @Description: 采购-换货单
 */
 <template>
@@ -24,7 +24,7 @@
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='createTime'">{{value}}</span>
         <span v-else-if="prop=='swapOrderCode'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value|codeSlice}}</el-link>
         </span>
         <span v-else-if="prop=='swapState'">{{stateText[value]}}</span>
         <span v-else>{{value}}</span>

@@ -19,11 +19,21 @@
       title="整机配置单"
     >
       <template slot="button">
-        <el-button @click="showEdit=true" size="mini" type="primary" v-if="authorityButtons.includes('psi_pricelist_zj_001')">新增</el-button>
+        <el-button
+          @click="showEdit=true"
+          size="mini"
+          type="primary"
+          v-if="authorityButtons.includes('psi_pricelist_zj_001')"
+        >新增</el-button>
       </template>
       <template slot-scope="{column,row,value,prop}">
         <span v-if="prop=='code'">
-          <el-link :underline="false" @click="showDetail=true,currentCode=value" class="f12" type="primary">{{value}}</el-link>
+          <el-link
+            :underline="false"
+            @click="showDetail=true,currentCode=value"
+            class="f12"
+            type="primary"
+          >{{value | codeSlice}}</el-link>
         </span>
         <span v-else>{{value}}</span>
       </template>
@@ -53,7 +63,7 @@ export default {
       default: () => ({ page: 1, limit: 20 })
     }
   },
-  data() {
+  data () {
     return {
       status: [],
       showDetail: false,
@@ -81,10 +91,10 @@ export default {
   },
   methods: {
     // 多选
-    selectionChange(val) {
+    selectionChange (val) {
       this.$emit('selection-change', val);
     },
-    reload() {
+    reload () {
       this.$refs.tableView.reload(1);
     }
   }

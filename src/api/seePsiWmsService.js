@@ -1243,6 +1243,12 @@ export default {
     'url': '/wmsinventorycommodityinitialinfo/list',
     'mock': false
   },
+  // 删除期初商品信息
+  wmsinventorydetailLogicDelete: {
+    'url': '/wmsinventorydetail/logicDelete',
+    'mock': false,
+    'methods': 'delete'
+  },
   /* =============库房商品期初信息end=========== */
 
   /* =============库房商品明细start=========== */

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-10 17:54:28
+ * @LastEditTime: 2020-01-06 11:23:19
  * @Description: 采购-请购明细表
 */
 <template>
@@ -34,7 +34,7 @@
           <span v-else-if="prop=='categoryCode'">{{value|dictionary('PSI_SP_KIND')}}</span>
           <span v-else-if="prop=='className'">{{value||''}}</span>
           <span v-else-if="prop=='commodityCode'">
-            <el-link :underline="false" @click="showCommodityDetail=true,currentCommodityCode=value" class="f12" type="primary">{{value}}</el-link>
+            <el-link :underline="false" @click="showCommodityDetail=true,currentCommodityCode=value" class="f12" type="primary">{{value|codeSlice}}</el-link>
           </span>
           <span v-else-if="['applyNum','purchaseNum','borrowNum','waitPutinNum','inventoryNumber'].includes(prop)">
             <span>{{value||0}}</span>

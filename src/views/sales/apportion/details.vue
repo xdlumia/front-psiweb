@@ -8,7 +8,7 @@
 <template>
   <div>
     <side-detail
-      :title="`费用分摊单详情: ${code}`"
+      :title="`费用分摊单详情: ${codeSlice(code)}`"
       :visible.sync="showDetailPage"
       width="920px"
       :status="status"

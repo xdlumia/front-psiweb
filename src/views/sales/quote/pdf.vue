@@ -41,7 +41,7 @@
                 <el-table :data="detail.commodityEntityList" style="width:100%">
                   <el-table-column label="商品名称" min-width="200" prop="goodsName"></el-table-column>
                   <el-table-column label="单价" min-width="100" prop="preDiscountSprice" v-if="showPrice"></el-table-column>
-                  <el-table-column label="数量" min-width="80" prop="commodityNumber"></el-table-column>
+                  <el-table-column :align="showPrice?'left':'right'" label="数量" min-width="80" prop="commodityNumber"></el-table-column>
                   <el-table-column align="right" label="总价" min-width="100" prop="taxTotalAmount" v-if="showPrice">
                     <template slot-scope="{row}">{{+Number(row.commodityNumber*row.preDiscountSprice).toFixed(2)}}</template>
                   </el-table-column>
@@ -68,7 +68,7 @@
                 <el-table :data="[item]" :show-header="false" style="width:100%">
                   <el-table-column label="商品名称" min-width="200" prop="goodsName"></el-table-column>
                   <el-table-column label="单价" min-width="100" prop="preDiscountSprice" v-if="showPrice"></el-table-column>
-                  <el-table-column label="数量" min-width="80" prop="commodityNumber"></el-table-column>
+                  <el-table-column :align="showPrice?'left':'right'" label="数量" min-width="80" prop="commodityNumber"></el-table-column>
                   <el-table-column align="right" label="总价" min-width="100" prop="taxTotalAmount" v-if="showPrice">
                     <template slot-scope="{row}">{{+Number(row.commodityNumber*row.preDiscountSprice).toFixed(2)}}</template>
                   </el-table-column>
@@ -79,7 +79,7 @@
                 <el-table :data="item.children" :show-header="false" class="no-border" style="width:100%">
                   <el-table-column label="商品名称" min-width="200" prop="goodsName"></el-table-column>
                   <el-table-column label min-width="100" prop v-if="showPrice"></el-table-column>
-                  <el-table-column label="数量" min-width="80" prop="commodityNum">
+                  <el-table-column :align="showPrice?'left':'right'" label="数量" min-width="80" prop="commodityNum">
                     <template slot-scope="{row}">X{{row.commodityNum}}</template>
                   </el-table-column>
                   <el-table-column label min-width="100" prop v-if="showPrice"></el-table-column>
@@ -116,7 +116,7 @@ export default {
       if (!this.detail) return 0;
       else {
         return this.detail.commodityEntityList.reduce(
-          (total, item) => total + item.discountSprice,
+          (total, item) => total + (item.discountSprice * item.commodityNumber),
           0
         );
       }
@@ -133,15 +133,15 @@ export default {
     taxMoney(){
       if (!this.detail) return '';
       return +Number(this.detail.commodityEntityList.reduce((total, item) => {
-        return total + +Number((item.preDiscountSprice*item.taxRate/100)*item.commodityNumber) || 0;
+        return total + +Number((item.preDiscountSprice*(this.detail.isTax?0:item.taxRate)/100)*item.commodityNumber) || 0;
       }, 0)).toFixed(2);
     },
     // prettier-ignore
     taxRate(){
       if (!this.detail) return '';
       let prodata = this.detail.commodityEntityList.reduce((data, item) => {
-        data.total += Number(item.discountSprice/(1+(+item.taxRate/100))) || 0;
-        data.taxTotal += Number(item.discountSprice) || 0
+        data.total += (Number(item.discountSprice/(1+(+(this.detail.isTax?0:item.taxRate)/100))) || 0)*item.commodityNumber;
+        data.taxTotal += (Number(item.discountSprice) || 0)*item.commodityNumber
         return data;
       }, {
         total:0,
@@ -156,7 +156,7 @@ export default {
         let data = JSON.parse(JSON.stringify(this.rowData));
         data.commodityEntityList.map(item => {
           item.preDiscountSprice = +Number(
-            item.discountSprice / (1 + item.taxRate / 100)
+            item.discountSprice / (1 + (data.isTax?0:item.taxRate) / 100)
           ).toFixed(2);
           (item.children || []).map(
             item => (item.commodityNum = item.commodityNumber)
@@ -200,33 +200,6 @@ export default {
         }
         return { ...data, client, company };
       }
-    },
-    // prettier-ignore
-    getSummarys(params) {
-      const { columns, data } = params;
-      const sums = [];
-      columns.forEach((col, index) => {
-        let prop = col.property;
-        if (['taxTotalAmount'].includes(prop)) {
-          sums[index] = '税金: ' + +Number(data.reduce((total, item) => {
-            return total + +Number((item.preDiscountSprice*item.taxRate/100)*item.commodityNumber) || 0;
-          }, 0)).toFixed(2);
-        } else if (['commodityNumber'].includes(prop)) {
-          // o*(1+rate)=n/o-1
-          let prodata = data.reduce((data, item) => {
-            data.total += Number(item.discountSprice/(1+(+item.taxRate/100))) || 0;
-            data.taxTotal += Number(item.discountSprice) || 0
-            return data;
-          }, {
-            total:0,
-            taxTotal:0,
-          });
-          sums[index] = '税率: ' + +(Number(prodata.taxTotal/prodata.total-1)*100).toFixed(0) + '%';
-        } else {
-          sums[index] = '';
-        }
-      });
-      return sums;
     },
     print() {
       Print(this.$refs.detail, {

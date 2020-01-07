@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-25 13:37:41
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 16:18:03
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2020-01-06 11:28:42
  * @Description: 采购-采购入库单
 */
 <template>
@@ -26,7 +26,7 @@
             @click="showDetail=true,currentCode=value"
             class="f12"
             type="primary"
-          >{{value}}</el-link>
+          >{{value|codeSlice}}</el-link>
         </span>
         <span v-else-if="prop=='joinCode'">
           <el-link
@@ -34,7 +34,7 @@
             @click="openJoin(row)"
             class="f12"
             type="primary"
-          >{{value}}</el-link>
+          >{{value|codeSlice}}</el-link>
         </span>
         <!-- 销售库用到这个页面但是接口没有返回状态 -->
         <span v-else-if="prop=='state'">
