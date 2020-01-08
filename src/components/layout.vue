@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-31 18:55:33
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2020-01-08 15:57:49
+ * @LastEditTime : 2020-01-08 16:02:56
  * @Description: description
  -->
 /*
@@ -478,11 +478,13 @@ export default {
     }
   }
 }
+// 隐藏系统文字
 @media screen and (max-width: 1350px) {
   .logo-text {
     display: none;
   }
 }
+// 隐藏待办按钮文字
 @media screen and (max-width: 1250px) {
   .backlog-wrapper {
     .backlog {
@@ -501,6 +503,7 @@ export default {
     }
   }
 }
+// 缩小导航两边间隔，缩小文字间隔
 @media screen and (max-width: 1154px) {
   .el-header {
     padding: 0 10px 0 0;
