@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-07 22:08:57
+ * @LastEditTime: 2020-01-08 14:38:55
  * @Description: 账期信息
  */
 <template>
@@ -111,7 +111,7 @@
             :prop="`shipmentFinanceSaveVoList.${scope.$index}.payAmount`"
           >
             <el-input
-              :disabled="disabled || (billDisable&&!preBills.includes(scope.row.paymenDays)) || scope.$index==firstBillIndex"
+              :disabled="disabled || billDisable || scope.$index==firstBillIndex || preBills.includes(scope.row.paymenDays)"
               size="mini"
               placeholder="请输入"
               @input="payAmountChange(scope)"
