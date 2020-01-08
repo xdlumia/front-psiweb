@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-29 20:31:01
+ * @LastEditTime: 2020-01-08 11:49:52
  * @Description: 直发单发货
 */
 <template>
@@ -11,11 +11,12 @@
       <span>直发单发货</span>
     </div>
     <el-form ref="form" style="max-height:calc(100vh - 130px)" v-model="form">
-      <deliverGoods :data="form" id="deliverGoods"></deliverGoods>
+      <deliverGoods :data="form" id="deliverGoods" :disabled="viewMode"></deliverGoods>
     </el-form>
     <div class="ac" slot="footer">
-      <el-button @click="save" size="mini" type="primary">确定</el-button>
-      <el-button @click="close" size="mini">取消</el-button>
+      <el-button @click="save" size="mini" type="primary" v-if="!viewMode">确定</el-button>
+      <el-button @click="close" size="mini" v-if="!viewMode">取消</el-button>
+      <el-button @click="close" size="mini" v-if="viewMode">关闭</el-button>
     </div>
   </el-dialog>
 </template>
@@ -25,6 +26,9 @@ import VisibleMixin from '@/utils/visibleMixin';
 export default {
   mixins: [VisibleMixin],
   components: {},
+  props: {
+    viewMode: Boolean
+  },
   computed: {
     maxHeight() {
       return window.innerHeight - 240;
@@ -148,7 +152,7 @@ export default {
               });
             });
           }
-          if (preNum < listNum) {
+          if (preNum < listNum&&!this.viewMode) {
             Array(listNum - preNum)
               .fill('')
               .map(() => {

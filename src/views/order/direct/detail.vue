@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-06 11:26:14
+ * @LastEditTime: 2020-01-08 11:47:42
  * @Description: 直发单详情
 */
 <template>
@@ -16,11 +16,17 @@
   >
     <template slot="button">
       <el-button
-        @click="showDeliverGoods=true"
+        @click="showDeliverGoods=true,showDeliverMode=false"
         size="mini"
         type="primary"
-        v-if="detail&&[0,1].includes(detail.state)&&authorityButtons.includes('psi_purchase_direct_03')"
-      >发货</el-button>
+        v-if="detail&&[0,1,2].includes(detail.state)&&authorityButtons.includes('psi_purchase_direct_03')"
+      >{{detail.state==2?'修改发货':'发货'}}</el-button>
+      <el-button
+        @click="showDeliverGoods=true,showDeliverMode=true"
+        size="mini"
+        type="primary"
+        v-if="detail&&authorityButtons.includes('psi_purchase_direct_03')"
+      >查看发货</el-button>
       <el-button
         :disabled="waitBuyingNumber>0?false:true"
         @click="showAddOrderStorage=true"
@@ -74,6 +80,7 @@
     <deliverEdit
       :code="detail.directCode||code"
       :rowData="detail"
+      :viewMode="showDeliverMode"
       :visible.sync="showDeliverGoods"
       @reload="setEdit(),$reload()"
       v-if="showDeliverGoods"
@@ -98,6 +105,7 @@ export default {
       showEdit: false,
       showAddOrderStorage: false,
       showDeliverGoods: false,
+      showDeliverMode: false,
       stateText: {
         '0': '待完成',
         '1': '部分完成',

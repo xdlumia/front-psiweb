@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-02 11:44:11
+ * @LastEditTime: 2020-01-08 11:50:20
  * @Description: 商品发货信息
 */  
 <template>
@@ -50,14 +50,14 @@
       <el-table-column fixed="right" label="序列号" min-width="200" prop="snCode">
         <template slot-scope="{row,$index}">
           <el-form-item :prop="`delivers.${$index}.deliverInfo.snCode`">
-            <el-input size="mini" v-model="row.deliverInfo.snCode"></el-input>
+            <el-input size="mini" v-model="row.deliverInfo.snCode" :disabled="disabled"></el-input>
           </el-form-item>
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="订单号" min-width="200" prop="orderCode">
         <template slot-scope="{row,$index}">
           <el-form-item :prop="`delivers.${$index}.deliverInfo.orderCode`">
-            <el-input size="mini" v-model="row.deliverInfo.orderCode"></el-input>
+            <el-input size="mini" v-model="row.deliverInfo.orderCode" :disabled="disabled"></el-input>
           </el-form-item>
         </template>
       </el-table-column>
