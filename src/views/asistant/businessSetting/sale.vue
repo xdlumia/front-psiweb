@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2020-01-02 15:36:47
+ * @LastEditTime : 2020-01-08 14:30:13
  * @Description: 业务设置-销售
  -->
 <template>
@@ -64,6 +64,20 @@
               :precision="0"
               setp="1"
             ></el-input-number>天
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-col :span="14">
+            <span>【报价单自动生成请购单】报价单审核通过后，根据库存判断，如库存不足，不足的部分自动生成请购单</span>
+          </el-col>
+          <el-col :span="6">
+            <el-switch
+              v-model="sellEntity.createBuyingOrderStatus"
+              active-text="开"
+              inactive-text="关"
+              :active-value="1"
+              :inactive-value="0"
+            ></el-switch>
           </el-col>
         </el-form-item>
       </fieldset>
@@ -170,6 +184,7 @@ export default {
         quotationTime: 15,
         stockOutState: 0,
         stockStandardState: 0,
+        createBuyingOrderStatus: 0,
         additionalInvoiceRateArray: []
       },
       taxRate: [
@@ -222,7 +237,14 @@ export default {
     commonsystemconfigInfo () {
       this.loading = true
       this.$api.seePsiCommonService.commonsystemconfigInfo(null, 1).then(res => {
-        this.tempObj = JSON.parse(res.data.configJson)
+        this.tempObj = Object.assign({
+          quotationState: 0,
+          quotationTime: 15,
+          stockOutState: 0,
+          stockStandardState: 0,
+          createBuyingOrderStatus: 0,
+          additionalInvoiceRateArray: []
+        }, JSON.parse(res.data.configJson))
         this.handleDefault()
       }).finally(() => {
         this.loading = false
