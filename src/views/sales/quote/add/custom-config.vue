@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-24 15:43:40
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-07 11:52:58
+ * @LastEditTime: 2020-01-08 11:40:36
  * @Description: 自由模式确定配置单
 */
 <template>
@@ -12,9 +12,10 @@
         :customColumns="customColumns"
         :data="{commodityList:data}"
         :show="['!formTitle','className','commodityCode','goodsName','specOne','commodityNumber','saleReferencePrice']"
-        :sort="['className','commodityCode','goodsName','specOne','commodityNumber','saleReferencePrice','choose']"
+        :sort="['className','choose','commodityCode','goodsName','specOne','commodityNumber','saleReferencePrice']"
         :summary-method="getSummarys"
         no-card
+        ref="goodsTable"
       >
       <template slot="commodityNumber" slot-scope="{row,prop,formProp}">
         <el-form-item :prop="formProp" :rules="[{validator:checkCommodityNumber.bind(this,row)}]" size="mini">
@@ -84,7 +85,6 @@ export default {
       return all;
     },
     checkCommodityNumber(row,rule,value,cb){
-      console.log(row)
       if(row.selected){
         value = Number(value)||0
         if(value>0&&value<=row.maxcommodityNumber){
@@ -97,8 +97,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 .custom-config{
-  /deep/ .hide-expanded .el-table__expand-icon{
-    display: inline-block !important;
+  /deep/{
+     .hide-expanded .el-table__expand-icon{
+      display: inline-block !important;
+    }
+    .buying-goods-selector .el-table__row{
+      height: auto;
+    }
   }
 }
 </style>

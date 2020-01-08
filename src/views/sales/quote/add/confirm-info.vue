@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 13:16:09
+ * @LastEditTime: 2020-01-08 11:38:53
  * @Description: 确定配置信息
 */
 <template>
@@ -29,6 +29,8 @@
       <span slot="title" v-if="!item.noConfig">
         <el-button @click="chooseNotConfig(item,index)" size="mini" type="primary" v-if="!item.disabled">不选择此配置</el-button>
         <el-button @click="recoveryConfig(item,index)" size="mini" type="primary" v-else>挑选配置</el-button>
+        <el-button @click="expandConfigGoods(index,true)" size="mini" type="primary" v-if="!item.disabled" plain>全部展开</el-button>
+        <el-button @click="expandConfigGoods(index,false)" size="mini" type="primary" v-if="!item.disabled" plain>全部收起</el-button>
       </span>
       <div slot="body">
         <SimpleGoods :data="item.children" v-if="item.disabled" />
@@ -50,6 +52,16 @@
               <span>{{row.className||row.secondClassName}}</span>
             </template>
           </el-table-column>
+          <el-table-column label="操作" prop="actions" min-width="120" v-if="!item.disabled">
+            <template slot-scope="scope">
+              <el-checkbox
+                :disabled="!(avaliableConfig(item).indexOf(`${scope.row.commodityCode}-${scope.row.commodityNum}`)>=0)"
+                :label="scope.row.commodityCode"
+                @change="checkOther(item,$event)"
+                v-model="scope.row.checked"
+              >{{&nbsp;}}</el-checkbox>
+            </template>
+          </el-table-column>
           <el-table-column label="商品编号" min-width="100" show-overflow-tooltip>
             <template slot-scope="scope">
               <span class="d-text-blue">{{scope.row.commodityCode}}</span>
@@ -64,16 +76,6 @@
           <el-table-column label="规格" min-width="80" prop="specOne"></el-table-column>
           <el-table-column label="商品数量" min-width="80" prop="commodityNum" />
           <el-table-column label="销售参考价" prop="saleReferencePrice" width="90"></el-table-column>
-          <el-table-column label="操作" min-width="120" v-if="!item.disabled">
-            <template slot-scope="scope">
-              <el-checkbox
-                :disabled="!(avaliableConfig(item).indexOf(`${scope.row.commodityCode}-${scope.row.commodityNum}`)>=0)"
-                :label="scope.row.commodityCode"
-                @change="checkOther(item,$event)"
-                v-model="scope.row.checked"
-              >{{&nbsp;}}</el-checkbox>
-            </template>
-          </el-table-column>
         </el-table>
         <CustomConfig :data="item.children" v-else @totalAmountChange="setTotalAmount(item,$event)" ref="customConfig"/>
       </div>
@@ -135,6 +137,12 @@ export default {
     }
   },
   methods: {
+    expandConfigGoods(index,isExpanded){
+      let tree = this.strictConfirmConfig?this.$refs.kind1table[index]:this.$refs.customConfig[index].$refs.goodsTable.$refs.table
+      let data = tree.data;
+      let expands = tree.store.states.expandRows
+      data.map(item=>tree.toggleRowExpansion(item,isExpanded))
+    },
     setTotalAmount(item,money){
       item.totalAmount = money
     },
@@ -169,13 +177,12 @@ export default {
                   .reduce((sum, item) => sum + item, 0)
               ).toFixed(2) || '-';
           }
-        } else if (index == 1) {
+        } else if(col.property=='actions'){
+          sums[index] = configName ? configName : '未确定配置';
+        } else if (index == 0) {
           sums[0] = '总计';
         } else sums[index] = '';
       });
-      if (!row.disabled) {
-        sums[sums.length - 1] = configName ? configName : '未确定配置';
-      }
       return sums;
     },
     getCurrentConfig(row) {
