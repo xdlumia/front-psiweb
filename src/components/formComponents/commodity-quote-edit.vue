@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-06 17:10:18
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2020-01-07 15:12:06
  * @Description: 新增销售报价单 商品信息 可编辑
 */  
 <template>
@@ -14,8 +14,15 @@
       <span>商品信息</span>
     </div>
     <div class="mb10">
-      <el-form-item prop="isTax" label="是否含税">
-        <el-select placeholder="请选择" v-model="data.isTax" @change="taxStatusChange">
+      <el-form-item
+        prop="isTax"
+        label="是否含税"
+      >
+        <el-select
+          placeholder="请选择"
+          v-model="data.isTax"
+          @change="taxStatusChange"
+        >
           <el-option
             :key="item.value"
             :label="item.label"
@@ -385,7 +392,7 @@ export default {
       visible: false,
       preCommodityBussinessInfo: {},
       timer: null,
-      goodsInfos:{}
+      goodsInfos: {}
     };
   },
   watch: {
@@ -406,33 +413,33 @@ export default {
     }
   },
   methods: {
-    async taxStatusChange(){
-      if(this.data.isTax==0){
+    async taxStatusChange() {
+      if (this.data.isTax == 0) {
         let codes = []
-        this.flatCallback(item=>{
-          if(!this.goodsInfos[item.commodityCode]){
+        this.flatCallback(item => {
+          if (!this.goodsInfos[item.commodityCode]) {
             codes.push(item.commodityCode);
           }
         })
-        if(codes.length){
-          let {data} = await this.$api.seeGoodsService.goodsGetGoodsByCodes(codes)
-          data.map(item=>{
-            this.goodsInfos[item.goodsCode]=item;
+        if (codes.length) {
+          let { data } = await this.$api.seeGoodsService.goodsGetGoodsByCodes(codes)
+          data.map(item => {
+            this.goodsInfos[item.goodsCode] = item;
           })
         }
-        this.flatCallback(item=>{
+        this.flatCallback(item => {
           let good = this.goodsInfos[item.commodityCode]
-          if(good){
+          if (good) {
             item.taxRate = good.taxRate;
-            if(!item.parentCommodityCode){
+            if (!item.parentCommodityCode) {
               this.numberChange(item)
             }
           }
         })
-      }else{
-        this.flatCallback(item=>{
+      } else {
+        this.flatCallback(item => {
           item.taxRate = 0;
-          if(!item.parentCommodityCode){
+          if (!item.parentCommodityCode) {
             this.numberChange(item)
           }
         })
@@ -530,7 +537,7 @@ export default {
         }
         if (this.preCommodityBussinessInfo[item.commodityCode]) {
           this.$set(item, 'inventoryPrice', item.inventoryPrice || this.preCommodityBussinessInfo[item.commodityCode].inventoryPrice)
-          this.$set(item, 'taxRate', this.data.isTax==0?(item.taxRate || this.preCommodityBussinessInfo[item.commodityCode].taxRate):0)
+          this.$set(item, 'taxRate', this.data.isTax == 0 ? (item.taxRate || this.preCommodityBussinessInfo[item.commodityCode].taxRate) : 0)
           this.$set(item, 'inventoryNumber', item.inventoryNumber || this.preCommodityBussinessInfo[item.commodityCode].inventoryNumber || 0)
           this.$set(item, 'recentDiscountSprice', this.preCommodityBussinessInfo[item.commodityCode].recentDiscountSprice || 0)
         }
