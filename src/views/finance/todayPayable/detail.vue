@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-06 11:23:47
+ * @LastEditTime: 2020-01-09 11:52:43
  * @Description: 今日应付账单
 */
 <template>
@@ -19,7 +19,7 @@
         @click="showLateAmount=true"
         size="mini"
         type="primary"
-        v-if="detail&&detail.settleStatus!=2&&authorityButtons.includes(pageConfig.func.lateFee)"
+        v-if="detail&&![2,3].includes(detail.settleStatus)&&authorityButtons.includes(pageConfig.func.lateFee)"
       >滞纳金</el-button>
       <el-button @click="showLog=true" size="mini" type="primary" v-if="authorityButtons.includes(pageConfig.func.operateRec)">操作记录</el-button>
     </template>
@@ -43,7 +43,7 @@
             :type="pageConfig.type"
             @reload="setEdit(),$reload()"
           />
-          <invoice-log :busCode="detail.busCode" :data="detail" :pageConfig="pageConfig" :type="pageConfig.type" />
+          <invoice-log :busCode="detail.busCode" :data="detail" :pageConfig="pageConfig" :type="pageConfig.type" :hide="[3].includes(detail.settleStatus)?['addInvoice']:[]" />
           <paybill-log :billId="detail.id" v-if="pageConfig.show.includes('paybillLog')" />
           <extras-info :can-modify="authorityButtons.includes(pageConfig.func.edit)" :data="detail" @change="saveExtras" disabled />
         </el-form>

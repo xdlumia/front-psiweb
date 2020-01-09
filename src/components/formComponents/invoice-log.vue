@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 15:57:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-11 16:21:52
+ * @LastEditTime: 2020-01-09 11:52:08
  * @Description: 开票/收票 记录 已绑定 1
 */
 <template>
@@ -15,7 +15,7 @@
           @click="add()"
           class="mr10"
           type="primary"
-          v-if="pageConfig&&authorityButtons.includes(pageConfig.func.addInvoice)"
+          v-if="pageConfig&&authorityButtons.includes(pageConfig.func.addInvoice)&&!hide.includes('addInvoice')"
         >+新增</el-link>
       </span>
     </div>
@@ -60,7 +60,11 @@ export default {
     },
     type: [Number, String],
     busCode: String,
-    pageConfig: Object
+    pageConfig: Object,
+    hide:{
+      type:Array,
+      default:()=>[]
+    }
   },
   data() {
     return {

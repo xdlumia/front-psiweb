@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-07 10:47:10
+ * @LastEditTime: 2020-01-08 15:04:14
  * @Description: 生成请购单商品信息
 */
 <template>
@@ -105,6 +105,25 @@
           label="含税总价"
           show-overflow-tooltip
         />
+
+        <el-table-column
+          show-overflow-tooltip
+          label="是否组装"
+          min-width="110"
+        >
+          <template
+            slot-scope="{row}"
+            v-if="!row.parentCommodityCode&&row.categoryCode=='PSI_SP_KIND-1'"
+          >
+            <el-switch
+              :active-value="1"
+              :inactive-value="0"
+              disabled
+              v-model="row.isAssembly"
+            ></el-switch>
+          </template>
+        </el-table-column>
+
         <el-table-column
           prop="inventoryNumber"
           min-width="120"

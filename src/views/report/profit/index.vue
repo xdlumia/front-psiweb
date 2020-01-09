@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-19 14:25:38
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-06 11:30:08
+ * @LastEditTime: 2020-01-08 15:08:01
  * @Description: 利润分析报表
 */
 <template>
@@ -53,7 +53,7 @@
           <span>{{dataTypeText[row.dataType]}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建人" min-width="140" prop="creatorName"></el-table-column>
+      <el-table-column label="销售人员" min-width="140" prop="creatorName"></el-table-column>
       <el-table-column label="创建时间" min-width="160" prop="createTime">
         <template slot-scope="{row}">{{row.createTime|timeToStr('YYYY-MM-DD HH:mm:ss')}}</template>
       </el-table-column>

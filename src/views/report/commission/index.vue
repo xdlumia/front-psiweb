@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-22 16:40:16
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-20 13:47:41
+ * @LastEditTime: 2020-01-08 15:08:58
  * @Description: description
 */
 <template>
@@ -29,7 +29,7 @@
       :autoInit="false"
       api="seePsiReportService.royaltyUser"
     >
-      <el-table-column label="员工" prop="name"></el-table-column>
+      <el-table-column label="销售人员" prop="name"></el-table-column>
       <el-table-column width="140" label="回款销售出库单数量" prop="paidNum"></el-table-column>
       <el-table-column width="140" label="周期回款金额" prop="paidAmount"></el-table-column>
       <el-table-column label="销售额" prop="saleAmount"></el-table-column>
