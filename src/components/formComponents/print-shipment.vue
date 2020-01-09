@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-21 09:20:26
+ * @LastEditTime: 2020-01-09 09:45:05
  * @Description: 打印销售出库单号
 */
 <template>
@@ -20,7 +20,7 @@
       >
         <div ref='detail'>
           <span>销售出库单号：</span>
-          <span>{{code}}</span>
+          <span>{{code | codeSlice}}</span>
         </div>
       </el-main>
     </el-container>
