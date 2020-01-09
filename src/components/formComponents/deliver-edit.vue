@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-11-06 20:01:19
+ * @LastEditTime: 2020-01-08 09:25:47
  * @Description: 发货信息 可编辑 
 */
 <template>
@@ -24,7 +24,8 @@
             v-model="data.salesShipmentCode"
             disabled
             placeholder="请输入销售出库单编号"
-          />
+          >
+          </el-input>
         </el-form-item>
       </el-col>
       <el-col

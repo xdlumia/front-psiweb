@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-22 09:38:51
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-31 14:59:22
+ * @LastEditTime: 2020-01-08 16:13:28
  * @Description: 销售方/购买方信息 已绑定 1
 */ 
 <template>
@@ -15,7 +15,7 @@
           label="名称"
         >
           <el-select
-            :disabled="true"
+            :disabled="disabled"
             :loading="searching"
             :placeholder="`请选择`"
             :remote="[3,2].includes(type)?false:true"

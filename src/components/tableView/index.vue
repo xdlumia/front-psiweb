@@ -260,6 +260,8 @@ export default {
     // 重新加载
     reload() {
       this.$refs.table && this.$refs.table.reload(1);
+      //库存查询有用到，查询库存成本总额的接口需要跟着查询表格的接口参数改变而改变
+      this.$emit('reload', this.params)
     },
     // 排序
     sortChange(a) {

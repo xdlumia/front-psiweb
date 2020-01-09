@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-07 23:06:21
+ * @LastEditTime: 2020-01-08 09:26:24
  * @Description: 生成发货单
 */
 <template>
@@ -128,8 +128,8 @@ export default {
     this.getinfoByCode()
   },
   mounted() {
-    // this.addForm.salesShipmentCode = this.$options.filters.codeSlice(this.form.shipmentCode)
-    this.addForm.salesShipmentCode = this.form.shipmentCode
+    this.addForm.salesShipmentCode = this.$options.filters.codeSlice(this.form.shipmentCode)
+    // this.addForm.salesShipmentCode = this.form.shipmentCode
     this.addForm.requireShipmentsTime = this.form.salesQuotationEntity.salesExpectedShipmentsTime
   },
   methods: {
@@ -160,6 +160,7 @@ export default {
     submit() {
       this.addForm.clientName = this.form.clientName
       this.addForm.salesSheetCode = this.form.salesSheetCode
+      this.addForm.salesShipmentCode = this.form.shipmentCode
       this.$refs.addForm.validate((valid) => {
         if (valid) {
           this.loading = true

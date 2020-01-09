@@ -9,6 +9,7 @@
   <div class="buying-requisition-page wfull hfull">
     <!-- 右侧滑出 -->
     <TableView
+      @reload='getIndexInventoryPrice'
       class="stockTable"
       @response='response'
       style="height:calc(100vh - 150px)"
@@ -87,7 +88,10 @@
       <!-- </el-container> -->
       <!-- </template> -->
     </TableView>
-    <span class="f18 d-text-blue b mt20 fr">库存成本总额：<span>{{totalInventoryPrice}}</span></span>
+    <span
+      v-loading='priceLoading'
+      class="f18 d-text-blue b mt20 fr"
+    >库存成本总额：<span>{{totalInventoryPrice}}</span></span>
     <Details
       :drawerData='drawerData'
       :visible.sync='tableVisible'
@@ -134,6 +138,7 @@ export default {
         label: 'className'
       },
       snCode: '',
+      priceLoading: false,
       queryForm: {
         page: 1,
         limit: 20,
@@ -243,13 +248,14 @@ export default {
   },
   created() {
     this.getTreeData()
+    this.getIndexInventoryPrice()
   },
   mounted() {
 
   },
   methods: {
     response(res) {
-      this.totalInventoryPrice = res.totalInventoryPrice
+      // this.totalInventoryPrice = res.totalInventoryPrice
     },
     //tab换组件
     handleClick() {
@@ -257,6 +263,17 @@ export default {
     },
     filterNode() {
 
+    },
+    //查询
+    getIndexInventoryPrice(params) {
+      this.priceLoading = true
+      this.$api.seePsiReportService.indexInventoryPrice(params)
+        .then(res => {
+          this.totalInventoryPrice = res.data || 0
+        })
+        .finally(() => {
+          this.priceLoading = false
+        })
     },
     //点击编码
     changeTableVisible(row) {
@@ -281,7 +298,6 @@ export default {
           this.treeData = res.data || []
         })
         .finally(() => {
-
         })
     },
     reload() {
