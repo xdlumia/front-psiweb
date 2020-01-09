@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-03 15:25:43
+ * @LastEditTime: 2020-01-08 16:14:41
  * @Description: 收票申请
 */
 <template>
@@ -64,17 +64,19 @@
             id="invoice"
           />
           <make-buyer
+            :disabled="type!='edit'"
             :data="form"
             id="buyer"
             prefix="purchase"
           />
           <make-buyer
+            :disabled="type!='edit'"
             :data="form"
             id="saler"
             prefix="market"
           />
           <make-goods
-            :disabled="disabled"
+            :disabled="type!='edit'"
             :data="form"
             id="goods"
           />

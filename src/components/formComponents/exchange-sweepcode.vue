@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-07 14:55:22
+ * @LastEditTime: 2020-01-09 09:58:44
  * @Description: 换货任务 换货扫码公共弹窗 
 */
 <template>
@@ -11,7 +11,7 @@
     v-if='visible'
     :visible.sync="visible"
     @close='close'
-    :title="'换货扫码-'+data.swapOrderCode"
+    :title="`换货扫码-${codeSlice(data.swapTaskCode)}`"
     v-dialogDrag
   >
     <el-container>
@@ -404,6 +404,9 @@ export default {
     this.getCalculation()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     //查询上一次选择的仓库，下一次不能更改
     getLastWmId() {
       this.$api.seePsiWmsService.wmsflowrecordList({ page: 1, limit: 2, commodityCode: this.data.putinCommodityList[0].commodityCode, businessCode: this.data.swapOrderCode })

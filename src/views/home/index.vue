@@ -1,12 +1,12 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-10-28 17:11:46
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-20 10:01:53
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2020-01-08 16:01:55
  * @Description: 首页
  -->
 <template>
-  <div class="p20" style="box-sizing: border-box">
+  <div class="p20" style="box-sizing: border-box;min-width:1565px;">
     <function-entry></function-entry>
     <basic-data></basic-data>
     <salesStatistics></salesStatistics>

@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-07 14:54:42
+ * @LastEditTime: 2020-01-09 09:55:35
  * @Description: 采购单 详情  拆卸任务 拆卸公共弹窗 
 */
 <template>
@@ -11,7 +11,7 @@
     v-loading="loading"
     :visible.sync="visible"
     @close='close'
-    :title="'拆卸-'+data.commodityCode"
+    :title="`拆卸-${codeSlice(data.commodityCode)}`"
     v-dialogDrag
   >
     <el-container>
@@ -383,6 +383,9 @@ export default {
     this.commonwmsmanagerUsableList()
   },
   methods: {
+    codeSlice(code) {
+      return this.$options.filters.codeSlice(code)
+    },
     //查询上一次选择的仓库，下一次不能更改
     getLastWmId() {
       this.$api.seePsiWmsService.wmsflowrecordList({ page: 1, limit: 2, commodityCode: this.data.commodityCode, businessCode: this.allData.disassemblyTaskCode })

@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-07 20:10:38
+ * @LastEditTime: 2020-01-08 09:29:47
  * @Description: 组装任务组装弹窗 
 */
 <template>
@@ -11,7 +11,7 @@
       v-loading="loading"
       :visible.sync="visible"
       @close='close'
-      :title="`组装-${data.commodityCode}`"
+      :title="`组装-${$options.filters.codeSlice(data.commodityCode)}`"
       v-dialogDrag
     >
       <el-container>
