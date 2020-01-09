@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2019-12-25 14:01:25
+ * @LastEditTime : 2020-01-08 16:51:50
  * @Description: 新增报价单
  -->
 <template>
@@ -89,6 +89,10 @@ export default {
     commonquotationconfigSave () {
       this.$refs.quotationForm.validate(valid => {
         if (valid) {
+          if (!this.quotationForm.commonQuotationConfigDetailsEntitys.length) {
+            this.$message.error('请选择配置')
+            return
+          }
           this.loading = true
           const method = this.quotationForm.id ? 'commonquotationconfigUpdate' : 'commonquotationconfigSave'
           this.$api.seePsiCommonService[method](this.quotationForm).then(res => {
