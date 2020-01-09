@@ -169,7 +169,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.businessCode | codeSlice}}</span>
+            <span>{{arrCode(scope.row.businessCode)}}</span>
           </template>
         </el-table-column>
       </d-table>
@@ -193,6 +193,19 @@ export default {
       },
       showInFullscreen: false,
       dialogVisible: false,
+    }
+  },
+  computed: {
+    arrCode(value) {
+      return function (value) {
+        if (!value) return ''
+        value = value.split(',')
+        let arrCode = []
+        for (let i = 0; i < value.length; i++) {
+          arrCode.push(this.$options.filters.codeSlice(value[i]))
+        }
+        return arrCode.join(',')
+      }
     }
   },
   methods: {

@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-07 14:37:19
+ * @LastEditTime: 2020-01-09 10:48:38
  * @Description: 商品查询
 */
 <template>
@@ -118,7 +118,9 @@
               min-width="120"
               prop="businessCode"
               show-overflow-tooltip
-            ></el-table-column>
+            >
+              <template slot-scope="scope">{{arrCode(scope.row.businessCode)}}</template>
+            </el-table-column>
           </d-table>
         </form-card>
       </el-main>
@@ -148,8 +150,16 @@ export default {
     snCode: ''
   },
   computed: {
-    maxHeight() {
-      return window.innerHeight - 130;
+    arrCode(value) {
+      return function (value) {
+        if (!value) return ''
+        value = value.split(',')
+        let arrCode = []
+        for (let i = 0; i < value.length; i++) {
+          arrCode.push(this.$options.filters.codeSlice(value[i]))
+        }
+        return arrCode.join(',')
+      }
     }
   },
   data() {
