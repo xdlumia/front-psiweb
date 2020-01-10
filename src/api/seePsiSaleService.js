@@ -3,6 +3,15 @@ const MOCK_ADDRESS = '/mock/5dbfdd1bbc54fc3da273f35d/see-psi-sale-service'
 export default {
   __mockAddress: MOCK_ADDRESS,
 
+    /**
+     * @tag 报价单
+     * @description 获取可生成请购单的商品
+     */
+    salesquotationGetPurchaseCommodity: {
+      url: '/salesquotation/getPurchaseCommodity',
+      methods: 'get',
+      mock: false
+  },
   /**
    * @tag 报价单
    * @description 获取附加发票账期

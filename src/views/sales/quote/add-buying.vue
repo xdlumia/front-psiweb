@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-16 16:35:28
+ * @LastEditors: 赵伦
+ * @LastEditTime: 2020-01-10 15:43:51
  * @Description: 生成请购单
 */
 <template>
@@ -74,7 +74,7 @@
           </form-card>
           <goods-buying-quote
             :data="form"
-            :params="{busCode:rowData.quotationCode,busType:1,putawayType:0}"
+            :params="{quotationCode :rowData.quotationCode}"
             id="commodityInfo"
           />
           <customInfo

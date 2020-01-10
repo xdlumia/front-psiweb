@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-08 15:04:14
+ * @LastEditTime: 2020-01-10 15:43:05
  * @Description: 生成请购单商品信息
 */
 <template>
@@ -107,24 +107,6 @@
         />
 
         <el-table-column
-          show-overflow-tooltip
-          label="是否组装"
-          min-width="110"
-        >
-          <template
-            slot-scope="{row}"
-            v-if="!row.parentCommodityCode&&row.categoryCode=='PSI_SP_KIND-1'"
-          >
-            <el-switch
-              :active-value="1"
-              :inactive-value="0"
-              disabled
-              v-model="row.isAssembly"
-            ></el-switch>
-          </template>
-        </el-table-column>
-
-        <el-table-column
           prop="inventoryNumber"
           min-width="120"
           label="总库存"
@@ -174,23 +156,21 @@ export default {
   },
   methods: {
     businesscommodityGetBusinessCommodityList() {
-      this.$api.seePsiSaleService.businesscommodityGetBusinessCommodityList(this.params)
+      this.$api.seePsiSaleService.salesquotationGetPurchaseCommodity(this.params)
         .then(res => {
-          let data = res.data || []
-          this.tableData = res.data || []
           // 清空商品数量
-          this.data.commodityList = []
-          this.tableData = this.$$util.formatCommodity(data)
-          this.tableData.forEach(item => {
-            // 商品数量-总库存大于0的商品才生成请购单
-            let commodityNumber = (item.commodityNumber || 0) - (item.inventoryNumber || 0)
-            if (commodityNumber > 0&&item.isDirect!=1) {
-              // 生成请购单商品数量是 请求过来的商品数量-总库存数量
-              item.commodityNumber = commodityNumber
-              item.preTaxAmount = +Number(item.reference*commodityNumber*(1+item.taxRate/100)).toFixed(2)
-              this.data.commodityList.push(item)
-            }
-          })
+          this.data.commodityList = res.data
+          // this.tableData = this.$$util.formatCommodity(data)
+          // this.tableData.forEach(item => {
+          //   // 商品数量-总库存大于0的商品才生成请购单
+          //   let commodityNumber = (item.commodityNumber || 0) - (item.inventoryNumber || 0)
+          //   if (commodityNumber > 0&&item.isDirect!=1) {
+          //     // 生成请购单商品数量是 请求过来的商品数量-总库存数量
+          //     item.commodityNumber = commodityNumber
+          //     item.preTaxAmount = +Number(item.reference*commodityNumber*(1+item.taxRate/100)).toFixed(2)
+          //     this.data.commodityList.push(item)
+          //   }
+          // })
         })
     },
     // 自定义账单金额数据
