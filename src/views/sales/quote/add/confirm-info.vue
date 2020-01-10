@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-08 11:38:53
+ * @LastEditTime: 2020-01-10 11:25:26
  * @Description: 确定配置信息
 */
 <template>
@@ -27,7 +27,7 @@
         @click="resetConfig(item,index)"
       >重置</el-button>-->
       <span slot="title" v-if="!item.noConfig">
-        <el-button @click="chooseNotConfig(item,index)" size="mini" type="primary" v-if="!item.disabled">不选择此配置</el-button>
+        <el-button @click="chooseNotConfig(item,index)" size="mini" type="primary" v-if="!item.disabled">不挑选配置</el-button>
         <el-button @click="recoveryConfig(item,index)" size="mini" type="primary" v-else>挑选配置</el-button>
         <el-button @click="expandConfigGoods(index,true)" size="mini" type="primary" v-if="!item.disabled" plain>全部展开</el-button>
         <el-button @click="expandConfigGoods(index,false)" size="mini" type="primary" v-if="!item.disabled" plain>全部收起</el-button>
