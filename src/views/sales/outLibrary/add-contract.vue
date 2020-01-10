@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-10 17:30:53
+ * @LastEditTime: 2020-01-10 17:35:15
  * @Description: 生成合同
 */
 <template>
@@ -371,8 +371,6 @@ export default {
     },
     // 获取公司信息
     getCompanyInfo(data) {
-      console.log(data);
-
       this.previewParams.corporation = data
     },
     getByShipmentCode() {
