@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-07 16:05:30
+ * @LastEditTime: 2020-01-10 12:25:58
  * @Description: 生成合同
 */
 <template>
@@ -155,14 +155,12 @@ export default {
   },
   mounted() {
     // 获取合同模板
-    this.getTemplateList(2)
+    this.getTemplateList(1)
 
   },
   watch: {
     visible(val) {
       if (val && this.type == 'editContract') {
-        console.log(22);
-
         this.getByShipmentCode()
       }
     }
@@ -211,7 +209,12 @@ export default {
         return
       }
       this.templateData = this.templateOptions.find(item => item.id == this.form.templateId)
-      this.previewVisible = true
+      this.$api.seePsiContractService.contractpurchasePreview(this.form)
+        .then(res => {
+          this.templateData.context = res.data || ''
+          this.previewVisible = true
+        })
+
     },
     // 保存表单数据
     saveHandle() {
