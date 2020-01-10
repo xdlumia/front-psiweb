@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-05 16:57:15
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-06 11:34:52
+ * @LastEditTime: 2020-01-10 17:17:56
  * @Description: 可供商品 以调试 1
 */
 <template>
@@ -12,7 +12,7 @@
         <commodity-cat :mainCat.sync="params.categoryCode" :subCat.sync="params.goodClassId" @change="getSupplierGoods()" />
       </el-aside>
       <el-main>
-        <div>
+        <div v-if="params.categoryCode">
           <commodity-selector @choose="onChoose" />
         </div>
         <component

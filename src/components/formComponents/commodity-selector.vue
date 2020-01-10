@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-31 15:05:34
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-02 18:45:40
+ * @LastEditTime: 2020-01-10 17:13:21
  * @Description: 商品输入选框 字段已绑定 1
 */
 <template>
@@ -134,6 +134,12 @@ export default {
         this.selectGood=this.$options.filters.codeSlice(this.selectGood)
       }
       this.preSelectGoods = this.value || '';
+    },
+    kinds:{
+      deep:true,
+      handler(){
+        this.search()
+      }
     }
   },
   methods: {
@@ -162,8 +168,10 @@ export default {
     },
     async search(words = '') {
       words = String(words).trim();
-      if (this.searchTable[words]) {
-        return (this.options = this.searchTable[words]);
+      let categoryCode = this.kinds && this.kinds.length ? this.kinds[0].value : ''
+      let searchKey = `${words}_${categoryCode}`
+      if (this.searchTable[searchKey]) {
+        return (this.options = this.searchTable[searchKey]);
       }
       this.loading = true;
       const api = this.sn ? 'wmsinventorydetailList' : 'wmsinventoryList';
@@ -174,16 +182,17 @@ export default {
             page: 1,
             limit: 50,
             goodsName: words,
-            categoryCode:
-              this.kinds && this.kinds.length ? this.kinds[0].value : ''
+            categoryCode
           },
           this.params
         )
       );
-      this.options = data || [];
-      this.loading = false;
-      this.searchTable[words] = data;
-      this.$emit('response', data);
+      if(categoryCode==(this.kinds && this.kinds.length ? this.kinds[0].value : '')){
+        this.options = data || [];
+        this.loading = false;
+        this.searchTable[searchKey] = data;
+        this.$emit('response', data);
+      }
     },
     onSelect(e) {
       const goods = !this.sn ? this.options.filter(
