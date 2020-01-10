@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 11:42:20
+ * @LastEditTime: 2020-01-10 15:17:04
  * @Description: 销售-待收票
  */
 <template>
@@ -56,7 +56,7 @@
           class="d-text-blue d-pointer"
           v-if="column.columnFields=='invoiceCode'"
           @click="eventHandle('detailVisible',row)"
-        > {{value | codeSlice}}</span>
+        > {{value}}</span>
 
         <span v-else-if="column.columnFields=='busCode'">
           <!-- 关联单据编号 -->
