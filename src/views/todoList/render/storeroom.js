@@ -1,13 +1,13 @@
 /*
  * @Author: 高大鹏
  * @Date: 2019-11-12 15:20:55
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-18 10:50:00
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2020-01-10 10:31:49
  * @Description: description
  */
 const storeroom = [
   {
-    label: '带发货销售单',
+    label: '待发货销售单',
     key: 'psi_wms_sales_04',
     component: 'StorageSales',
     authorityCode: '',
