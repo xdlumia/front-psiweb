@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-07 18:38:09
+ * @LastEditTime: 2020-01-09 17:54:05
  * @Description: 销售出库单详情-详情
 */
 <template>
@@ -35,7 +35,10 @@
         v-if="rowData.quotationCodes"
         :options="rowData.quotationCodes || []"
       />
-
+      <sales-force
+        disabled
+        :data="data"
+      />
       <!-- 收款滞纳金 -->
       <payment-late-sales
         disabled

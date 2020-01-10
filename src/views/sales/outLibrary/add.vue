@@ -1,8 +1,8 @@
 /*
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
- * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-07 22:16:49
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2020-01-09 18:04:28
  * @Description: 生成销售出库单出库单
 */
 <template>
@@ -63,9 +63,11 @@
         />
         <!-- 报价单信息 -->
         <quote-info
+          id="quoteInfo"
           v-if="quoteCodes && quoteCodes.length"
           :options="quoteCodes"
         />
+        <sales-force :data="form" />
         <!-- 收款滞纳金 -->
         <payment-late-sales
           id="paymentLateSales"
@@ -130,6 +132,7 @@ export default {
         procurementExpectedArrivalTime: '', // 采购预计到货时间
         quotationIds: [], // 报价单ids
         salesExpectedShipmentsTime: '', // 销售预计发货时间
+        salesForceId: '', // 销售人员id
         salesRequireArrivalTime: '', // 销售要求到货时间,
         shipmentFinanceSaveVoList: [ //账期集合
           {
@@ -160,7 +163,6 @@ export default {
   },
   computed: {
     // 客户 账单信息 
-
     quoteCodes() {
       let quotationCodes = null
       // 如果是编辑 详情数据里会带多个quotationCodes
@@ -173,6 +175,8 @@ export default {
       }
       //  如果是新增 那操作的是出库单的数据 是一条数据
       else if (this.type == 'add') {
+        // 销售人员列表
+        this.form.salesForceId = this.rowData.creator
         quotationCodes = [this.rowData].map(item => item.quotationCode)
       }
       return quotationCodes
