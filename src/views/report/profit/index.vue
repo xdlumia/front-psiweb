@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-19 14:25:38
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-08 15:08:01
+ * @LastEditTime: 2020-01-10 09:20:54
  * @Description: 利润分析报表
 */
 <template>
@@ -41,7 +41,7 @@
       api="seePsiReportService.saleprofitreportList"
       class="d-table"
       ref="table"
-      style="height:calc(100% - 100px);max-height:calc(100% - 100px) !important;width:100%;"
+      style="height:calc(100vh - 192px) !important;max-height:calc(100vh - 192px) !important;width:100%;"
     >
       <el-table-column label="单据编号" min-width="220" prop="dataCode">
         <template slot-scope="{row}">
