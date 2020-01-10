@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-06 11:35:36
+ * @LastEditTime: 2020-01-10 15:59:34
  * @Description: 其他合同
 */
 <template>
@@ -14,7 +14,7 @@
           <contract-signer :data="detail" disabled id="firstClass" name="甲方" type="A" />
           <contract-signer :data="detail" disabled id="secondClass" name="乙方" type="B" />
           <contract-expire :data="detail" disabled id="expire" />
-          <contract-extras :data="detail" disabled id="desc" />
+          <contract-extras :data="detail" disabled id="desc" type="3"/>
           <extrasInfo :data="detail" disabled id="extrasInfo" />
         </el-form>
       </el-tab-pane>
