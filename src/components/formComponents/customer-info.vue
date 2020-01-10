@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-18 09:36:32
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-31 14:36:33
+ * @LastEditors: web.王晓冬
+ * @LastEditTime: 2020-01-10 16:52:51
  * @Description: 客户信息 1  //传入 data:{clientId:'1'} 会自动查询详情
  */
 <template>
@@ -127,14 +127,15 @@ export default {
       this.$api.seePsiCommonService.commonclientinfoInfo(null, id)
         .then(res => {
           this.clientInfo = res.data || {}
+          this.$emit('res', this.clientInfo)
         })
         .finally(() => {
           this.loading = false
         })
     },
-    selectCustomer(id){
-      let client = this.clientOptions.find(({id:clientId})=>clientId==id)
-      if(client) this.$emit('change',client)
+    selectCustomer(id) {
+      let client = this.clientOptions.find(({ id: clientId }) => clientId == id)
+      if (client) this.$emit('change', client)
     }
   }
 }
