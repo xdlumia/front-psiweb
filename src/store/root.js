@@ -1,8 +1,8 @@
 /*
  * @Author: 高大鹏
  * @Date: 2019-10-25 11:23:44
- * @LastEditors  : web.王晓冬
- * @LastEditTime : 2019-12-30 09:40:00
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2020-01-13 16:32:14
  * @Description: description
  */
 import Api from 'see-web-basic/dist/api/index'
@@ -19,7 +19,7 @@ function recursionNav(list) {
 export const state = {
   navData: [],
   backlogNum: 0,
-  userInfo: {},
+  userInfo: {}
 }
 export const getters = {
   navData: state => state.navData
@@ -31,7 +31,7 @@ export const mutations = {
   },
   setNavData(state, list) {
     list = list || JSON.parse(localStorage.getItem('navData')) || []
-    const navList = recursionNav(list).concat(['/home', '/404', '/403', '/500', '/login', '/todo'])
+    const navList = recursionNav(list).concat(['/home', '/404', '/403', '/500', '/login', '/todo', '/version'])
     state.navData = navList
   },
   setBacklogNum(state, num) {
