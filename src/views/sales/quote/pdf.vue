@@ -16,7 +16,7 @@
         <div class="d-bg-white print-pdf">
           <div class="header">
             <h1>报价单</h1>
-            <div class="code">报价单编号: {{detail.quotationCode}}</div>
+            <div class="code">报价单编号: {{detail.quotationCode|codeSlice}}</div>
           </div>
           <div class="border-line wfull">
             <div class="p20">
