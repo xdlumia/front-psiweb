@@ -55,6 +55,11 @@
           size="mini"
           @click="obsolete = true"
           v-if="button && authorityButtons.includes('psi_billing_1001')"
+        >合并开票</el-button>
+        <el-button
+          size="mini"
+          @click="obsolete = true"
+          v-if="button && authorityButtons.includes('psi_billing_1001')"
         >发票作废</el-button>
         <el-button
           size="mini"

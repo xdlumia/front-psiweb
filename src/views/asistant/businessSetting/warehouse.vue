@@ -1,8 +1,8 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-10-29 11:02:47
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-12-10 10:38:23
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2020-01-14 15:22:01
  * @Description: 业务设置-库房
  -->
 <template>
@@ -217,6 +217,42 @@
       <fieldset class="d-fieldset mb20">
         <legend>
           <i class="d-round12 d-circle d-bg-blue"></i>
+          <span>拣货责任人</span>
+        </legend>
+        <div style="display: flex;" class="mb10 ml10 pt10">
+          <div
+            v-for="(item,index) in warehouseEntity.pickUserIds"
+            :key="index"
+            style="display:flex;flex-direction: column;align-items: center;margin-right:20px;"
+          >
+            <div
+              style="width:40px;height:40px;display:flex;justify-content: center;align-items: center;border-radius: 50%;"
+              class="mb5"
+            >
+              <img style="width:100%;height:100%" src="@/assets/img/adminimg.png" />
+            </div>
+            <span class="d-text-qgray">{{item.employeeName}}</span>
+          </div>
+
+          <employees-chosen
+            v-model="warehouseEntity.pickUserIds"
+            :isEdit="true"
+            :closeOnSelect="false"
+          >
+            <el-button type="text" style="padding:0">
+              <div
+                style="width:40px;height:40px;display:flex;justify-content: center;align-items: center;border-radius: 50%;"
+                class="ba"
+              >
+                <i class="el-icon-plus" style="font-size:20px;"></i>
+              </div>
+            </el-button>
+          </employees-chosen>
+        </div>
+      </fieldset>
+      <fieldset class="d-fieldset mb20">
+        <legend>
+          <i class="d-round12 d-circle d-bg-blue"></i>
           <span class="mr5">自定义项设置</span>
         </legend>
         <el-col :span="24">
@@ -268,7 +304,8 @@ export default {
         exchangeState: 0,
         pickingOrdersConfigArray: [],
         disassemblyUserId: [],
-        assembleUserId: []
+        assembleUserId: [],
+        pickUserIds: []
       }
     }
   },
@@ -307,7 +344,6 @@ export default {
       Object.keys(this.warehouseEntity).forEach(key => {
         this.warehouseEntity[key] = this.tempObj[key] || this.warehouseEntity[key]
       })
-      console.log(this.warehouseEntity)
     },
     commonsystemconfigInfo () {
       this.loading = true
