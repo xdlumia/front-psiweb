@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-14 15:17:11
+ * @LastEditTime: 2020-01-14 15:56:11
  * @Description: 直发单发货
 */
 <template>
@@ -71,16 +71,18 @@ export default {
             bcId: item.bcId || item.id,
             directCode: this.code || this.rowData.directCode
           });
-          if (item.deliverInfo.snCode && item.deliverInfo.orderCode && item.deliverInfo.expressNumber) {
-            data[currentCode].completeNumber++;
-          }
+          data[currentCode].completeNumber+=[
+            item.deliverInfo.snCode,
+            item.deliverInfo.orderCode,
+            item.deliverInfo.expressNumber
+          ].filter(Boolean).length;
         }
       });
       // 是否完成 0全部为空 1部分为空 2全部不为空
       let flag = 0;
       let flagStatus = delivers.reduce(
         (data, item) => {
-          data.total += item.commodityNumber;
+          data.total += item.commodityNumber*3;
           data.complete += item.completeNumber;
           return data;
         },
