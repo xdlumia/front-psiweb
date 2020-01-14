@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-14 15:11:51
+ * @LastEditTime: 2020-01-06 13:52:04
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -23,18 +23,14 @@
           />
           <span
             class="fr"
+            v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')"
           >
-            <span
-              class="fr"
-              v-if="!hide.includes('fullscreen')&&!show.includes('!fullscreen')">
+            <span>
               <el-link
                 :underline="false"
                 @click="showInFull=true"
                 type="primary"
               >全屏显示</el-link>
-            </span>
-            <span class="mr10 fr" ref="additionButtons">
-              <slot name="addition-buttons"></slot>
             </span>
           </span>
         </span>
@@ -206,10 +202,10 @@
               <el-form-item
                 :prop="`${getCurrentFormProp(row,item.prop)}`"
                 size="mini"
-                v-if="isChildShowColumn(row)&&(item.canShowSelection?item.canShowSelection(row,getParentInfo(row)):true)"
+                v-if="isChildShowColumn(row)&&(item.canShowSelection?item.canShowSelection(row):true)"
               >
                 <el-checkbox
-                  :disabled="item.forceShow?false:disabled"
+                  :disabled="disabled"
                   :false-label="0"
                   :true-label="1"
                   @change="columnSelect(item,$event)"
@@ -263,13 +259,12 @@
             v-if="item.type=='selection'"
           >
             <el-checkbox
-              :disabled="item.forceShow?false:disabled"
+              :disabled="disabled"
               :false-label="0"
               :true-label="1"
               @change="headerSelect(item,$event)"
               v-if="!item.hideHeaderSelection"
               v-model="item.selected"
-              style="width:14px;"
             >{{item.label}}</el-checkbox>
             <span v-else>{{item.label}}</span>
           </template>
@@ -278,7 +273,6 @@
     </form-card>
     <FullscreenElement
       :element="$refs.table"
-      :additionButtons="$refs.additionButtons"
       :visible.sync="showInFull"
     />
     <CommodityDetail
@@ -668,7 +662,7 @@ export default {
     // 头部选择
     headerSelect({ prop, canShowSelection }, select) {
       this.data[this.fkey].map(item => {
-        if (canShowSelection ? canShowSelection(item,this.getParentInfo(item)) : true) {
+        if (canShowSelection ? canShowSelection(item) : true) {
           this.reactiveSet(item, prop, select);
         }
       });
@@ -686,13 +680,12 @@ export default {
     // 某一行选择
     columnSelect(item, select) {
       let { prop } = item;
-      let first = 1;
+      let first = 0;
       if (this.data[this.fkey].length > 1) {
         if (
-          this.data[this.fkey]
-          .filter(good=>item.canShowSelection(good,this.getParentInfo(good)))
-          .some((item, i) => {
-            return first != item[prop];
+          this.data[this.fkey].some((item, i) => {
+            if (i == 0) first = item[prop];
+            else return first != item[prop];
           })
         ) {
           item.selected = 0;
@@ -702,6 +695,7 @@ export default {
       } else if (this.data[this.fkey].length == 1) {
         item.selected = this.data[this.fkey][0][prop];
       }
+      this.reactiveSet(item, 'selected', item.selected);
       this.$refs.table.store.updateColumns();
     }
   }

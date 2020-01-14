@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-14 15:13:42
+ * @LastEditTime: 2020-01-08 11:50:20
  * @Description: 商品发货信息
 */  
 <template>
@@ -58,13 +58,6 @@
         <template slot-scope="{row,$index}">
           <el-form-item :prop="`delivers.${$index}.deliverInfo.orderCode`">
             <el-input size="mini" v-model="row.deliverInfo.orderCode" :disabled="disabled"></el-input>
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" label="发货单号" min-width="200" prop="expressNumber">
-        <template slot-scope="{row,$index}">
-          <el-form-item :prop="`delivers.${$index}.deliverInfo.expressNumber`">
-            <el-input size="mini" v-model="row.deliverInfo.expressNumber" :disabled="disabled"></el-input>
           </el-form-item>
         </template>
       </el-table-column>

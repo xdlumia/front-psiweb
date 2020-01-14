@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-14 15:17:11
+ * @LastEditTime: 2020-01-08 11:49:52
  * @Description: 直发单发货
 */
 <template>
@@ -65,13 +65,13 @@ export default {
           };
           delivers.push(data[currentCode]);
         }
-        if (item.deliverInfo.snCode || item.deliverInfo.orderCode || item.deliverInfo.expressNumber) {
+        if (item.deliverInfo.snCode || item.deliverInfo.orderCode) {
           data[currentCode].directDeliverList.push({
             ...item.deliverInfo,
             bcId: item.bcId || item.id,
             directCode: this.code || this.rowData.directCode
           });
-          if (item.deliverInfo.snCode && item.deliverInfo.orderCode && item.deliverInfo.expressNumber) {
+          if (item.deliverInfo.snCode && item.deliverInfo.orderCode) {
             data[currentCode].completeNumber++;
           }
         }
@@ -136,8 +136,7 @@ export default {
         data.map(item => {
           item.deliverInfo = {
             snCode: '',
-            orderCode: '',
-            expressNumber: ''
+            orderCode: ''
           };
           delivers.push(item);
           let listNum = item.commodityNumber || 0;
@@ -160,8 +159,7 @@ export default {
                 delivers.push({
                   deliverInfo: {
                     snCode: '',
-                    orderCode: '',
-                    expressNumber: ''
+                    orderCode: ''
                   },
                   fake: true,
                   commodityCode: item.commodityCode

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-14 15:08:17
+ * @LastEditTime: 2020-01-06 11:23:01
  * @Description: 采购单详情
 */
 <template>
@@ -48,18 +48,13 @@
             </el-row>
           </form-card>
           <buying-goods-edit
-            :customColumns="customColumns"
             :data="detail"
             :show="[
               'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','waitPurchaseNumber','inventoryNumber'
             ]"
-            :sort="['expanded','isSelect']"
+            :sort="['expanded']"
             disabled
-          >
-            <template slot="addition-buttons">
-              <el-link :underline="false" @click="makeOrderStorage" type="primary" v-if="waitBuyingNumber>0">采购选中商品</el-link>
-            </template>
-          </buying-goods-edit>
+          />
           <customInfo :busType="27" :data="detail" disabled />
           <extrasInfo :data="detail" disabled />
         </el-form>
@@ -76,14 +71,11 @@
       </el-tab-pane>
       <el-tab-pane label="借入单" name="borrow">
         <FullscreenWrap v-if="isDataReady&&tabStatus.borrow">
-          <orderBorrow
-            :button="false"
-            :params="{page:1,limit:15,businessCode:detail.purchaseApplyCode,businessType:1,relationCode:detail.purchaseApplyCode}"
-          />
+          <orderBorrow :button="false" :params="{page:1,limit:15,businessCode:detail.purchaseApplyCode,businessType:1,relationCode:detail.purchaseApplyCode}" />
         </FullscreenWrap>
       </el-tab-pane>
     </el-tabs>
-    <OrderStorageAdd :joinCode="code" :joinGoods="joinGoods" :visible.sync="orderStorageVisible" @reload="setEdit(),$reload()" from="请购单" />
+    <OrderStorageAdd :joinCode="code" :visible.sync="orderStorageVisible" @reload="setEdit(),$reload()" from="请购单" />
     <!-- borrowLoanNum: '',
           commodityCode: '',
     costUnivalence: ''-->
@@ -127,22 +119,7 @@ export default {
         1: '部分完成',
         2: '完成',
         3: '终止'
-      },
-      customColumns: [
-        {
-          label: '',
-          key: 'isSelect',
-          align: 'center',
-          width: 80,
-          prop: 'isSelect',
-          type: 'selection',
-          selected: 0,
-          fixed: true,
-          forceShow: true,
-          canShowSelection: (row, info) => ((row.waitPurchaseNumber>0&&!info.isChild) ? true : false)
-        }
-      ],
-      joinGoods: []
+      }
     };
   },
   computed: {
@@ -166,26 +143,14 @@ export default {
           null,
           this.code
         );
-        data.commodityList.map(item => {
-          item.isSelect = 0;
-        });
+        // data.commodityList.map(item=>{
+        //   if(item.commodityCode=='ZC1P0009RCSP20191125000001'){
+        //     item.configName="ZC1P0009RCSP20191125000001"
+        //   }
+        // })
         return data;
       } else if (this.rowData) {
         return this.rowData;
-      }
-    },
-    makeOrderStorage() {
-      this.joinGoods = this.detail.commodityList
-        .filter(item => item.isSelect == 1)
-        .map(item => item.commodityCode);
-      if (this.joinGoods.length) {
-        this.orderStorageVisible = true;
-      } else {
-        this.$message({
-          message: '请选择商品',
-          type: 'warning',
-          showClose: true
-        });
       }
     }
   }
