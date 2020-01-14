@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-18 15:14:33
+ * @LastEditTime: 2020-01-14 17:41:25
  * @Description: 账单调整
  */
 <template>
@@ -22,7 +22,7 @@
               <el-input
                 :disabled="true"
                 placeholder="请输入"
-                v-model="data.fbillCode"
+                :value="$options.filters.codeSlice(data.fbillCode)"
               >
                 <el-button
                   slot="append"
