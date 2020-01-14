@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-14 15:11:51
+ * @LastEditTime: 2020-01-14 16:23:11
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -690,7 +690,7 @@ export default {
       if (this.data[this.fkey].length > 1) {
         if (
           this.data[this.fkey]
-          .filter(good=>item.canShowSelection(good,this.getParentInfo(good)))
+          .filter(good=>item.canShowSelection?item.canShowSelection(good,this.getParentInfo(good)):true)
           .some((item, i) => {
             return first != item[prop];
           })

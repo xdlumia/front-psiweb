@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-12-19 14:25:38
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-10 09:20:54
+ * @LastEditTime: 2020-01-14 16:36:31
  * @Description: 利润分析报表
 */
 <template>
@@ -65,8 +65,8 @@
       <el-table-column label="价税合计" min-width="100" prop="preTaxAmount"></el-table-column>
       <el-table-column label="成本单价" min-width="100" prop="costPrice"></el-table-column>
       <el-table-column label="毛利" min-width="100" prop="profitAmount"></el-table-column>
-      <el-table-column label="毛利率" min-width="100" prop="profitRate">
-        <template slot-scope="{row}">{{row.profitRate}}%</template>
+      <el-table-column label="毛利率" min-width="120" prop="profitRate">
+        <template slot-scope="{row}">{{+Number(row.profitRate).toFixed(2)}}%</template>
       </el-table-column>
       <el-table-column label="备注" min-width="140" prop="note"></el-table-column>
     </d-table>
@@ -199,14 +199,18 @@ export default {
           showClose: true
         });
       }
-      let { data } = await this.$api.seePsiReportService.saleprofitreportExport(
-        this.queryForm
-      );
-      let a = document.createElement('a');
-      a.href = data;
-      a.download = '利润分析报表';
-      a.target = '_blank';
-      a.click();
+      this.loading = true
+      try {
+        let { data } = await this.$api.seePsiReportService.saleprofitreportExport(
+          this.queryForm
+        );
+        let a = document.createElement('a');
+        a.href = data;
+        a.download = '利润分析报表';
+        a.target = '_blank';
+        a.click();
+      } catch (error) { }
+      this.loading = false
     }
   }
 };
