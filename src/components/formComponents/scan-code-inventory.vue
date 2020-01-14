@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-14 14:37:00
+ * @LastEditTime: 2020-01-14 14:43:41
  * @Description: 扫码盘点
 */
 <template>
@@ -127,7 +127,7 @@
         <el-table-column
           prop="snCode"
           label="SN码"
-          min-width="120"
+          min-width="100"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
@@ -137,11 +137,16 @@
         <el-table-column
           prop="robotCode"
           label="机器号"
-          min-width="120"
+          min-width="150"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <span>{{scope.row.robotCode}}</span>
+            <el-input
+              class="wfull"
+              v-model="scope.row.robotCode"
+              size='mini'
+              placeholder="请输入"
+            ></el-input>
           </template>
         </el-table-column>
         <el-table-column

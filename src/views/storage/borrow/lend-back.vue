@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-14 14:20:36
+ * @LastEditTime: 2020-01-14 15:17:09
  * @Description: 借出返还
 */
 <template>
@@ -170,7 +170,12 @@
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span>{{scope.row.robotCode}}</span>
+                <el-input
+                  class="wfull"
+                  v-model="scope.row.robotCode"
+                  size='mini'
+                  placeholder="请输入"
+                ></el-input>
               </template>
             </el-table-column>
             <el-table-column

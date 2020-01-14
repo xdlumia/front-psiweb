@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-14 14:36:42
+ * @LastEditTime: 2020-01-14 15:14:11
  * @Description: 报溢报损扫码公共弹窗
 */
 <template>
@@ -142,11 +142,17 @@
             <el-table-column
               prop="robotCode"
               label="机器号"
-              min-width="120"
+              min-width="150"
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span>{{scope.row.robotCode}}</span>
+                <el-input
+                  :disabled="type != 1"
+                  class="wfull"
+                  v-model="scope.row.robotCode"
+                  size='mini'
+                  placeholder="请输入"
+                ></el-input>
               </template>
             </el-table-column>
             <el-table-column

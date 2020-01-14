@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-14 14:31:12
+ * @LastEditTime: 2020-01-14 15:08:09
  * @Description: 采购单 详情  拆卸任务 拆卸公共弹窗 
 */
 <template>
@@ -275,7 +275,13 @@
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span>{{scope.row.robotCode}}</span>
+                <el-input
+                  class="wfull"
+                  :disabled='scope.row.operation == 1'
+                  v-model="scope.row.robotCode"
+                  size='mini'
+                  placeholder="请输入"
+                ></el-input>
               </template>
             </el-table-column>
             <el-table-column

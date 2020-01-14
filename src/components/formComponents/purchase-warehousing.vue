@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-14 14:35:47
+ * @LastEditTime: 2020-01-14 14:49:31
  * @Description: 采购单 详情  入库商品  点击入库或者SN码公共弹窗
 */
 <template>
@@ -188,7 +188,12 @@
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span>{{scope.row.robotCode}}</span>
+                <el-input
+                  class="wfull"
+                  v-model="scope.row.robotCode"
+                  size='mini'
+                  placeholder="请输入"
+                ></el-input>
               </template>
             </el-table-column>
             <el-table-column

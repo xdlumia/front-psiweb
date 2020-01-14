@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-14 14:33:12
+ * @LastEditTime: 2020-01-14 14:57:32
  * @Description: 换货任务 换货扫码公共弹窗 
 */
 <template>
@@ -275,12 +275,18 @@
             </el-table-column>
             <el-table-column
               prop="robotCode"
-              label="扫SN码"
+              label="机器号"
               min-width="160"
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span>{{scope.row.robotCode}}</span>
+                <el-input
+                  class="wfull"
+                  :disabled="scope.row.operation == 1"
+                  v-model="scope.row.robotCode"
+                  size='mini'
+                  placeholder="请输入"
+                ></el-input>
               </template>
             </el-table-column>
             <el-table-column
