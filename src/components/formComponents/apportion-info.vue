@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 22:11:14
+ * @LastEditTime: 2020-01-14 15:42:58
  * @Description: 分摊信息
  */
 <template>
@@ -15,21 +15,16 @@
             label="费用单"
             prop="costCode"
           >
-            <div
-              class="not-disabled-class"
-              @click="eventHandle('financeFee')"
+            <el-input
+              :disabled="disabled"
+              :value="$options.filters.codeSlice(data.costCode)"
             >
-              <el-input
-                :disabled="true"
-                v-model="data.costCode"
-              >
-                <el-button
-                  slot="append"
-                  @click="eventHandle('financeFee')"
-                  icon="el-icon-plus"
-                ></el-button>
-              </el-input>
-            </div>
+              <el-button
+                slot="append"
+                @click="eventHandle('financeFee')"
+                icon="el-icon-plus"
+              ></el-button>
+            </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -92,21 +87,21 @@
             :label="dialogData.title"
             prop="busCode"
           >
-            <div
+            <!-- <div
               class="not-disabled-class"
               @click="eventHandle(data.busType)"
+            > -->
+            <el-input
+              :disabled="disabled"
+              :value="$options.filters.codeSlice(data.busCode)"
             >
-              <el-input
-                :disabled="true"
-                v-model="data.busCode"
-              >
-                <el-button
-                  slot="append"
-                  @click="eventHandle(data.busType)"
-                  icon="el-icon-plus"
-                ></el-button>
-              </el-input>
-            </div>
+              <el-button
+                slot="append"
+                @click="eventHandle(data.busType)"
+                icon="el-icon-plus"
+              ></el-button>
+            </el-input>
+            <!-- </div> -->
           </el-form-item>
         </el-col>
       </el-row>
