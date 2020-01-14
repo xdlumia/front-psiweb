@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 14:51:01
+ * @LastEditTime: 2020-01-14 10:34:13
  * @Description: 基本信息 1
  */
 <template>
@@ -36,7 +36,7 @@
             defaultExpandAll
             :props="{children:'employeeList', label:'employeeName'}"
             :data="treeData"
-            placeholder="请选择部门"
+            placeholder="请选择人员"
           >
             <div
               class="d-pointer"
