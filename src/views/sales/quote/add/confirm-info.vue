@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-10 11:25:26
+ * @LastEditTime: 2020-01-14 16:57:35
  * @Description: 确定配置信息
 */
 <template>
@@ -64,7 +64,7 @@
           </el-table-column>
           <el-table-column label="商品编号" min-width="100" show-overflow-tooltip>
             <template slot-scope="scope">
-              <span class="d-text-blue">{{scope.row.commodityCode}}</span>
+              <span class="d-text-blue">{{scope.row.commodityCode|codeSlice}}</span>
             </template>
           </el-table-column>
           <el-table-column label="商品名称" min-width="80" prop="goodsName"></el-table-column>
