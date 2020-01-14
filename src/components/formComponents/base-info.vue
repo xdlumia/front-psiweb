@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-14 10:34:13
+ * @LastEditTime: 2020-01-14 17:12:13
  * @Description: 基本信息 1
  */
 <template>
@@ -19,10 +19,17 @@
           :prop="item.prop"
         >
           <el-input
-            v-if="item.type =='input'"
+            v-if="item.type =='input' && !disabled"
             :disabled='disabled'
             :maxlength="item.maxlength"
             v-model.trim="data[item.prop]"
+            :placeholder="`请输入${item.label}`"
+          />
+          <el-input
+            v-if="item.type =='input' && disabled"
+            :disabled='disabled'
+            :maxlength="item.maxlength"
+            :value="item.prop=='code'?$options.filters.codeSlice(data[item.prop]):data[item.prop]"
             :placeholder="`请输入${item.label}`"
           />
           <tree-select
