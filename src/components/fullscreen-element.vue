@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-24 16:20:33
  * @LastEditors: 赵伦
- * @LastEditTime: 2019-11-27 17:30:17
+ * @LastEditTime: 2020-01-14 14:28:41
  * @Description: 全屏化某个局部dom节点
 */
 <template>
@@ -10,6 +10,9 @@
     <el-container class="wfull hfull">
       <el-header style="height:30px;line-height: 30px;padding:0;">
         <el-link :underline="false" @click="exitFullscreen" class="fr" type="primary">取消全屏</el-link>
+        <span class="fr">
+          <span ref="additionButtons"></span>
+        </span>
       </el-header>
       <el-main style="padding:0;">
         <!-- 占位节点，用于放置原节点 -->
@@ -36,11 +39,13 @@ class FullscreenEvent extends Event {
 export default {
   props: {
     visible: Boolean, // 显示全屏弹框
-    element: Object // 需要全屏化的dom节点
+    element: null, // 需要全屏化的dom节点
+    additionButtons: null,// 附属按钮
   },
   data() {
     return {
-      commentDom: document.createComment('placeholder') // 占位节点，用于替换原节点
+      commentDom: document.createComment('placeholder'), // 占位节点，用于替换原节点
+      additionCommentDom: document.createElement('placeholder')
     };
   },
   watch: {
@@ -56,16 +61,22 @@ export default {
     },
     // 检查节点状态
     checkView() {
-      const target = this.getElement(this.element);
-      if (!target) return;
-      if (this.visible) {
-        target.replaceWith(this.commentDom);
-        this.$refs.placeholder.replaceWith(target);
-      } else {
-        target.replaceWith(this.$refs.placeholder);
-        this.commentDom.replaceWith(target);
+      this.exchange(this.$refs.placeholder,this.element,this.commentDom)
+      this.exchange(this.$refs.additionButtons,this.additionButtons,this.additionCommentDom)
+      if(this.getElement(this.element)){
+        this.getElement(this.element).__vue__.$emit('fullscreen', new FullscreenEvent(this.visible));
       }
-      target.__vue__.$emit('fullscreen', new FullscreenEvent(this.visible));
+    },
+    exchange(placeholder,target,commentDom){
+      target = this.getElement(target)
+      if(!target) return
+      if(this.visible){
+        target.replaceWith(commentDom)
+        placeholder.replaceWith(target)
+      }else{
+        target.replaceWith(placeholder)
+        commentDom.replaceWith(target)
+      }
     },
     // 获取节点
     getElement(node) {

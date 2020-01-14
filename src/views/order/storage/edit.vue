@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 11:05:26
+ * @LastEditTime: 2020-01-14 14:51:10
  * @Description: 采购入库单
 */
 <template>
@@ -81,7 +81,8 @@ export default {
       default: false
     },
     joinCode: String,
-    from: String // 来源
+    from: String, // 来源
+    joinGoods: Array
   },
   computed: {},
   data() {
@@ -202,6 +203,7 @@ export default {
         );
         commodityList = (data.commodityList || data.commodityEntityList)
           .filter(item => item.waitPurchaseNumber)
+          .filter(item => this.joinGoods.includes(item.commodityCode))
           .map(item => {
             item.purchasePrice = item.costAmount;
             item.commodityNumber = item.waitPurchaseNumber;
