@@ -55,7 +55,7 @@
         <el-table-column
           fixed
           prop="num"
-          label="机器号/SN码"
+          label="SN码"
           min-width="100"
           show-overflow-tooltip
         >

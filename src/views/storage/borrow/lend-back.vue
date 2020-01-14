@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-07 14:36:14
+ * @LastEditTime: 2020-01-14 14:20:36
  * @Description: 借出返还
 */
 <template>
@@ -104,7 +104,7 @@
           </el-table>
 
           <div class="mt10 mb10">
-            <span class="b mt5">机器号/扫SN码</span>
+            <span class="b mt5">扫SN码</span>
             <el-input
               v-on:keyup.13.native="shipmentCommodityCheck(item)"
               v-model="item.snCode"
@@ -125,7 +125,7 @@
         </form-card>
 
         <!-- 机器号/SN码 -->
-        <form-card title='机器号/SN码'>
+        <form-card title='SN码'>
           <el-table
             border
             size="mini"

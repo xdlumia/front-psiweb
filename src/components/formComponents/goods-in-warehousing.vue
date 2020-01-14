@@ -88,7 +88,7 @@
           </el-table-column>
         </el-table>
         <div class="mt10 mb10">
-          <span class="b mt5">机器号/SN码</span>
+          <span class="b mt5">SN码</span>
           <el-input
             :disabled="item.alterationNumber == item.commodityNumber || !item.commodityNumber"
             @keyup.native.13="commodityCheck(item,'return')"
@@ -201,7 +201,7 @@
           </el-table-column>
         </el-table>
         <div class="mt10 mb10">
-          <span class="b mt5">机器号/SN码</span>
+          <span class="b mt5">SN码</span>
           <el-input
             :disabled="item.alterationNumber == item.commodityNumber || !item.commodityNumber"
             @keyup.native.13="commodityCheck(item,'exchange')"

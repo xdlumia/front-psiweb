@@ -60,7 +60,7 @@
         <template slot-scope="scope">{{scope.row.accomplishDisassemblyNum || 0}}/{{scope.row.disassemblyNum}}</template>
       </el-table-column>
       <el-table-column
-        label="机器号/SN码"
+        label="SN码"
         min-width="100"
         prop="name"
       >

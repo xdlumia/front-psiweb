@@ -43,7 +43,7 @@
           fixed
           prop="total"
           min-width="100"
-          label="机器号/SN码"
+          label="SN码"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
@@ -70,7 +70,7 @@
           fixed
           prop="total"
           min-width="100"
-          label="机器号/SN码"
+          label="SN码"
           show-overflow-tooltip
         >
           <template slot-scope="scope">

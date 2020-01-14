@@ -25,7 +25,7 @@
             :sort="['expanded']"
             title="拆卸信息"
           ></buying-goods-edit>
-          <form-card title="机器号/SN记录">
+          <form-card title="SN记录">
             <d-table
               :params="queryForm"
               :tree-props="{children: 'id', hasChildren: 'id'}"

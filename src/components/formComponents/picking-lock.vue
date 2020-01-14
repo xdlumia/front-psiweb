@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-07 14:58:23
+ * @LastEditTime: 2020-01-14 14:35:17
  * @Description: 拣货单 拣货商品 点击 锁库量
 */
 <template>
@@ -94,7 +94,7 @@
             </el-table>
           </form-card>
 
-          <form-card title='已锁定的机器号/SN码'>
+          <form-card title='已锁定的SN码'>
             <d-table
               api="seePsiWmsService.wmsflowrecordList"
               :params="{commodityCode:data.commodityCode,businessCode:drawerData.pickingOrderCode,page:1,limit:15}"

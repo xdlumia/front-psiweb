@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-28 17:05:01
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-04 10:54:39
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2020-01-14 14:24:30
  * @Description: 借入/借出商品
 */  
 <template>
@@ -11,12 +11,12 @@
       :customColumns="[
         { label:`${(data&&data.borrowLoanType==0)?'借入数量':'借出数量'}`, key:'borrowLoanNum',fixed:true, width:70, prop:'borrowLoanNum',format:(a,b,info)=>!info.isChild?`${b.borrowLoanAccomplishNum||0}/${b.borrowLoanNum||0}`:'' },
         { label:`${(data&&data.borrowLoanType==0)?'借入库房':'借出库房'}`, key:'borrowWmsName',fixed:true, width:120, prop:'borrowWmsName',showOverflowTip:true },
-        { label:'机器号/SN码', key:'borrowLoanAccomplishNum',fixed:true, width:100, prop:'borrowLoanAccomplishNum',showOverflowTip:true,
+        { label:'SN码', key:'borrowLoanAccomplishNum',fixed:true, width:100, prop:'borrowLoanAccomplishNum',showOverflowTip:true,
           click:(row)=>(visible=true,currentCode=row.commodityCode,operationType=0),
         },
         { label:`${(data&&data.borrowLoanType==0)?'归还数量':'返还数量'}`, key:'returnNum',fixed:true, width:70, prop:'returnNum',format:(a,b,info)=>!info.isChild?`${b.returnAccomplishNum||0}/${b.returnNum||0}`:'' },
         { label:`${(data&&data.borrowLoanType==0)?'归还库房':'返还库房'}`, key:'returnWmsName',fixed:true, width:120, prop:'returnWmsName',showOverflowTip:true },
-        { label:'机器号/SN码', key:'returnAccomplishNum',fixed:true, width:100, prop:'returnAccomplishNum',showOverflowTip:true,
+        { label:'SN码', key:'returnAccomplishNum',fixed:true, width:100, prop:'returnAccomplishNum',showOverflowTip:true,
           click:(row)=>(visible=true,currentCode=row.commodityCode,operationType=0),
         },
       ]"

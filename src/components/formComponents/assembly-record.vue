@@ -95,7 +95,7 @@
             </el-table>
           </form-card>
 
-          <form-card title='机器号/SN记录'>
+          <form-card title='SN记录'>
             <d-table
               api="seePsiWmsService.wmsflowrecordList"
               :params="{commodityCode:data.commodityCode,businessCode:drawerData.assembleTaskCode ? drawerData.assembleTaskCode : drawerData.assembleOrderCode,page:1,limit:15,operation:0}"

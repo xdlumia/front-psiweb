@@ -1,8 +1,8 @@
 /*
  * @Author: 王晓冬
  * @Date: 2019-10-30 17:26:29
- * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 16:03:13
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2020-01-14 14:34:08
  * @Description: 退货记录里
 */
 <template>
@@ -102,7 +102,7 @@
         </el-table>
       </form-card>
 
-      <form-card title='机器号/SN记录'>
+      <form-card title='SN记录'>
         <d-table
           api="seePsiWmsService.wmsflowrecordList"
           :params="{commodityCode:rowData.commodityCode,businessCode:code,page:1,limit:15}"

@@ -13,7 +13,7 @@
     v-dialogDrag
   >
     <!-- 机器号/SN码 -->
-    <form-card title='机器号/SN码'>
+    <form-card title='SN码'>
       <el-form
         v-if="dialogData.type == 'able'"
         :inline="true"

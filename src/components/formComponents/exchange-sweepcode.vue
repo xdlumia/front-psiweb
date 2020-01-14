@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-09 09:58:44
+ * @LastEditTime: 2020-01-14 14:33:12
  * @Description: 换货任务 换货扫码公共弹窗 
 */
 <template>
@@ -119,7 +119,7 @@
           </el-table>
 
           <div class="mt10 mb10">
-            <span class="b mt5">机器号</span>
+            <span class="b mt5">扫SN码</span>
             <el-input
               v-on:keyup.13.native="getCommodityBySnCode(item)"
               size="mini"
@@ -204,7 +204,7 @@
             </el-table-column>
           </el-table>
           <div class="mt10 mb10">
-            <span class="b mt5">机器号</span>
+            <span class="b mt5">扫SN码</span>
             <el-input
               v-on:keyup.13.native="shipmentCommodityCheck"
               size="mini"
@@ -225,7 +225,7 @@
         </form-card>
 
         <!-- 机器号/SN码 -->
-        <form-card title='机器号/SN码'>
+        <form-card title='SN码'>
           <el-table
             border
             :data='tableData'
@@ -275,7 +275,7 @@
             </el-table-column>
             <el-table-column
               prop="robotCode"
-              label="机器号"
+              label="扫SN码"
               min-width="160"
               show-overflow-tooltip
             >

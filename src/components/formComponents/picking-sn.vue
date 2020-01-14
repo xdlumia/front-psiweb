@@ -7,8 +7,8 @@
  */
 <template>
   <div>
-    <form-card title='机器号/SN码'>
-      <span class="b mt5">机器号/扫SN码</span>
+    <form-card title='SN码'>
+      <span class="b mt5">扫SN码</span>
       <el-input
         v-model='snCode'
         size="mini"

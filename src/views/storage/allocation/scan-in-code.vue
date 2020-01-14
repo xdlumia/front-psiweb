@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-07 14:34:11
+ * @LastEditTime: 2020-01-14 14:22:06
  * @Description: 调入商品
 */
 <template>
@@ -15,7 +15,7 @@
         v-for="(item,index) of dialogData.allocationCommodityList"
         :key="index"
         class="borrow-goods-info mt10"
-        title="机器号/SN"
+        title="SN码"
       >
         <el-table
           :data='[item]'

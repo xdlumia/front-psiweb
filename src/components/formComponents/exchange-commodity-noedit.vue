@@ -39,7 +39,7 @@
           <el-table-column
             fixed
             prop="title"
-            label="机器号/SN码"
+            label="SN码"
             min-width="140"
             show-overflow-tooltip
           >
@@ -150,7 +150,7 @@
           <el-table-column
             fixed
             prop="title"
-            label="机器号/SN码"
+            label="SN码"
             min-width="140"
             show-overflow-tooltip
           >

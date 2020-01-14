@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-07 14:57:49
+ * @LastEditTime: 2020-01-14 14:34:43
  * @Description: 调出商品
 */
 <template>
@@ -13,7 +13,7 @@
       title="调出商品"
     >
       <div class="mt10 mb10">
-        <span class="b mt5">机器号/扫SN码</span>
+        <span class="b mt5">扫SN码</span>
         <el-input
           size="mini"
           style="width:200px;"

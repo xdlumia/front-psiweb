@@ -17,7 +17,7 @@
     >
       <el-container>
         <el-main style="padding:0;max-height:500px;">
-          <form-card title='机器号/SN记录'>
+          <form-card title='SN记录'>
             <d-table
               api="seePsiWmsService.wmsflowrecordList"
               :params="form"

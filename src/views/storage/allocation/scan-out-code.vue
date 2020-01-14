@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-07 14:35:02
+ * @LastEditTime: 2020-01-14 14:20:10
  * @Description: 调出扫码
 */
 <template>
@@ -76,7 +76,7 @@
       </form-card>
 
       <!-- 机器号/SN码 -->
-      <form-card title='机器号/SN码'>
+      <form-card title='SN码'>
 
         <div class="mt10 mb10">
           <span class="b mt5">扫SN码/机器码</span>
