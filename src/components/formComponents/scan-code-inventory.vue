@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-07 14:59:21
+ * @LastEditTime: 2020-01-14 14:37:00
  * @Description: 扫码盘点
 */
 <template>
@@ -17,10 +17,10 @@
     <!-- 换入库商品 -->
     <form-card
       class="borrow-goods-info mt10"
-      title="机器号/SN"
+      title="SN码"
     >
       <div class="mt10 mb10">
-        <span class="b mt5">机器号/扫SN码</span>
+        <span class="b mt5">扫SN码</span>
         <el-input
           v-model='snCode'
           size="mini"
@@ -96,7 +96,7 @@
     </form-card>
 
     <!-- 机器号/SN码 -->
-    <form-card title='机器号/SN码'>
+    <form-card title='SN码'>
       <el-table
         border
         size='mini'
@@ -268,7 +268,7 @@ export default {
       if (this.tableData.length == 0) {
         this.$message({
           type: 'error',
-          message: '请至少扫一个SN码或机器号'
+          message: '请至少扫一个SN码'
         })
       } else {
         this.$emit('sumitSn', this.tableData)

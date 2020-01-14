@@ -70,7 +70,7 @@
           fixed
           prop="accomplishNum"
           min-width="130"
-          label="机器号/SN码"
+          label="SN码"
           show-overflow-tooltip
         >
           <template slot-scope="scope">

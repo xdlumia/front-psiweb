@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-28 17:05:01
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-09 09:54:45
+ * @LastEditTime: 2020-01-14 14:31:22
  * @Description: 选择拆卸商品
 */  
 <template>
@@ -64,7 +64,7 @@
               <template slot-scope="scope">{{scope.row.accomplishDisassemblyNum || 0}}/{{scope.row.disassemblyNum}}</template>
             </el-table-column>
             <el-table-column
-              label="机器号/SN码"
+              label="SN码"
               min-width="100"
               prop="name"
             >

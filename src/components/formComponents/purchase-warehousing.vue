@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-07 14:58:52
+ * @LastEditTime: 2020-01-14 14:35:47
  * @Description: 采购单 详情  入库商品  点击入库或者SN码公共弹窗
 */
 <template>
@@ -120,7 +120,7 @@
             </el-table-column>
           </el-table>
           <div class="mt10 mb10">
-            <span class="b mt5">机器号</span>
+            <span class="b mt5">扫SN码</span>
             <el-input
               v-on:keyup.13.native="shipmentCommodityCheck"
               size="mini"
@@ -141,7 +141,7 @@
         </form-card>
 
         <!-- 机器号/SN码 -->
-        <form-card title='机器号/SN码'>
+        <form-card title='SN码'>
           <el-table
             border
             size="mini"

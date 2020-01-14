@@ -82,7 +82,7 @@
         ></el-table-column>
       </d-table>
       <el-dialog
-        title="机器号/SN码记录"
+        title="SN码记录"
         :visible.sync="commDialogVisible"
         width="600"
         v-dialogDrag

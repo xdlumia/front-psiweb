@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: web.徐贺
- * @LastEditTime: 2019-12-21 08:10:13
+ * @LastEditTime: 2020-01-14 14:35:07
  * @Description: 拣货单 拣货商品 点击 SN码
 机器号/SN码记录
 */
@@ -12,12 +12,12 @@
       :visible.sync="visible"
       v-if="visible"
       @close='close'
-      title="机器号/SN码记录"
+      title="SN码记录"
       v-dialogDrag
     >
       <el-container>
         <el-main style="padding:0;max-height:500px;">
-          <form-card title='机器号/SN记录'>
+          <form-card title='SN记录'>
             <el-table
               border
               size='mini'
@@ -95,7 +95,7 @@
             </el-table>
           </form-card>
 
-          <form-card title='机器号/SN记录'>
+          <form-card title='SN记录'>
             <d-table
               api="seePsiWmsService.wmsflowrecordList"
               :params="{commodityCode:data.commodityCode,businessCode:drawerData.pickingOrderCode,page:1,limit:15}"

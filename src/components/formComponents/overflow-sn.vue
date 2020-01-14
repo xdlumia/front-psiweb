@@ -1,8 +1,8 @@
 /*
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
- * @LastEditors: 徐贺
- * @LastEditTime: 2019-10-30 17:43:52
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2020-01-14 14:34:51
  * @Description: 
 报溢商品记录 
 */
@@ -17,7 +17,7 @@
     >
       <el-container>
         <el-main style="padding:0;max-height:500px;">
-          <form-card title='机器号/SN记录'>
+          <form-card title='SN记录'>
             <d-table
               api="seePsiWmsService.wmsflowrecordList"
               :params="form"

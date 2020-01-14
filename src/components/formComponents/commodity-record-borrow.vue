@@ -2,7 +2,7 @@
  * @Author: 徐贺
  * @Date: 2019-10-30 17:26:29
  * @LastEditors: web.徐贺
- * @LastEditTime: 2020-01-07 14:54:20
+ * @LastEditTime: 2020-01-14 14:26:29
  * @Description: 
 借入/借出商品记录 
 */
@@ -17,7 +17,7 @@
     >
       <el-container>
         <el-main style="padding:0;max-height:600px;">
-          <form-card title="机器号/SN记录">
+          <form-card title="SN记录">
             <d-table
               :params="queryForm"
               :tree-props="{children: 'id', hasChildren: 'id'}"

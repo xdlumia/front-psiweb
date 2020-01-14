@@ -9,7 +9,7 @@
   <el-dialog
     :visible.sync="visible"
     @close="close"
-    title="机器号/SN码记录"
+    title="SN码记录"
     v-dialogDrag
   >
     <!-- 入库仓库 -->
@@ -123,7 +123,7 @@
     </form-card>
 
     <!-- 机器号/SN码 -->
-    <form-card title='机器号/SN码'>
+    <form-card title='SN码'>
       <d-table
         api="seePsiWmsService.wmsflowrecordList"
         :params="{page:1,limit:20,commodityCode:dialogData.commodityCode,businessCode:drawerData.purchaseCode}"

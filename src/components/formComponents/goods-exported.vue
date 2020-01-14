@@ -65,7 +65,7 @@
         <el-table-column
           fixed
           prop="snCode"
-          label="机器号/SN码"
+          label="SN码"
           min-width="100"
           show-overflow-tooltip
         >
@@ -164,21 +164,12 @@
         :visible.sync="showInFullscreen"
       />
       <el-dialog
-        title="机器号/SN码记录"
+        title="SN码记录"
         :visible.sync="dialogVisible"
         width="600"
         v-if="dialogVisible"
         v-dialogDrag
       >
-        <!-- <div slot="title">
-          <span>机器号/SN码记录</span>
-          <span class="fr mr20">
-            <el-button
-              @click="dialogVisible = false"
-              size="mini"
-            >关 闭</el-button>
-          </span>
-        </div> -->
         <commodityPicking :data='rowData' />
         <machineSn
           :data='rowData'

@@ -1,8 +1,8 @@
 /*
  * @Author: 赵伦
  * @Date: 2019-10-30 17:26:29
- * @LastEditors: 赵伦
- * @LastEditTime: 2019-12-12 17:59:21
+ * @LastEditors: web.徐贺
+ * @LastEditTime: 2020-01-14 14:35:59
  * @Description: 换退货商品扫码卡片 
 */
 <template>
@@ -26,7 +26,7 @@
       disabled
     />
     <div class="mt10 mb20">
-      <span class="b">扫SN码/机器号</span>
+      <span class="b">扫SN码</span>
       <el-input
         @keypress.13.native="checkSN"
         class="ml10"
@@ -45,7 +45,7 @@
         <span>件</span>
       </span>
     </div>
-    <div class="b">机器号/SN记录</div>
+    <div class="b">SN记录</div>
     <el-table
       :data="snList"
       :row-class-name="getRowClassName"
