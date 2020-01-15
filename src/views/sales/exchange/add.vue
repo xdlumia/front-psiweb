@@ -70,6 +70,7 @@
         <return-bill-info
           id="returnBillInfo"
           :data="form"
+          :hide="['actualRefundAmount']"
         />
         <!-- 其他费用 -->
         <other-fee
