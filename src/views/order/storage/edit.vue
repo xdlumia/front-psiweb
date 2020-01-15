@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-14 14:51:10
+ * @LastEditTime: 2020-01-15 17:04:02
  * @Description: 采购入库单
 */
 <template>
@@ -203,7 +203,7 @@ export default {
         );
         commodityList = (data.commodityList || data.commodityEntityList)
           .filter(item => item.waitPurchaseNumber)
-          .filter(item => this.joinGoods.includes(item.commodityCode))
+          .filter(item => this.joinGoods instanceof Array?this.joinGoods.includes(item.commodityCode):true)
           .map(item => {
             item.purchasePrice = item.costAmount;
             item.commodityNumber = item.waitPurchaseNumber;
