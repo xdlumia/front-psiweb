@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-10 15:17:04
+ * @LastEditTime: 2020-01-16 10:47:37
  * @Description: 销售-待收票
  */
 <template>
@@ -49,7 +49,15 @@
           </el-col>
         </el-row>
       </template>
-
+      <template
+        v-slot:button
+        v-if="authorityButtons.includes('psi_quote_1001')"
+      >
+        <el-button
+          size="mini"
+          @click="editId = null,visible = true"
+        >退票</el-button>
+      </template>
       <template slot-scope="{column,row,value}">
         <!-- 发票号码 -->
         <span

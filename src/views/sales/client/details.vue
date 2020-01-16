@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-16 09:25:27
+ * @LastEditTime: 2020-01-16 10:42:41
  * @Description: 客户详情
 */
 <template>
@@ -56,7 +56,8 @@
             :code="code"
             :data="detail || {}"
             :title="activeName=='financeBilling'?'发票记录':''"
-            :params="activeName=='financeBilling'?{purchaseId:detail.id}:{clientId:detail.id}"
+            :params="activeName=='financeBilling'?{purchaseId:detail.id}:
+            activeName=='financePayable'|| activeName=='financeReceivable' ? {clientId:detail.id,clientType: 0}:{clientId:detail.id}"
             :rowData="rowData"
             :button="false"
           ></components>
