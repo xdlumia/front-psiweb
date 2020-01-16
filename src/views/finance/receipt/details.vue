@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-16 11:14:51
+ * @LastEditTime: 2020-01-16 14:47:13
  * @Description: 财务-收入流水详情
 <template>
   <div>
