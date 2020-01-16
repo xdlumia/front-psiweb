@@ -32,14 +32,8 @@
             <span style="line-height:28px;">发票账户：</span>
           </el-col>
           <el-col :span="18">
-            <el-select
-              size="mini"
-              v-model="queryForm.marketId"
-            >
-              <el-option
-                value
-                label="全部"
-              ></el-option>
+            <el-select size="mini" v-model="queryForm.marketId">
+              <el-option value label="全部"></el-option>
               <el-option
                 v-for="(item, index) in accountList"
                 :key="index"
@@ -53,7 +47,7 @@
       <template v-slot:button>
         <el-button
           size="mini"
-          @click="obsolete = true"
+          @click="mergeBilling"
           v-if="button && authorityButtons.includes('psi_billing_1001')"
         >合并开票</el-button>
         <el-button
@@ -85,15 +79,13 @@
         </span>
 
         <span v-else-if="column.columnFields=='state'">{{stateText[row.state]}}</span>
-        <span v-else-if="column.columnFields=='invoiceTypeCode'">{{row.invoiceTypeCode | dictionary('CW_FP_LX')}}</span>
+        <span
+          v-else-if="column.columnFields=='invoiceTypeCode'"
+        >{{row.invoiceTypeCode | dictionary('CW_FP_LX')}}</span>
         <span v-else>{{value}}</span>
       </template>
     </table-view>
-    <cancellation
-      :visible.sync="obsolete"
-      v-if="obsolete"
-      @refresh="$refs.table.reload"
-    ></cancellation>
+    <cancellation :visible.sync="obsolete" v-if="obsolete" @refresh="$refs.table.reload"></cancellation>
     <detail
       @refresh="$refs.table.reload(queryForm.page)"
       v-if="showDetail"
@@ -108,18 +100,28 @@
       @reload="$refs.table.reload"
       v-if="showBusDetail"
     />
+    <billing
+      :visible.sync="showBilling"
+      v-if="showBilling"
+      @refresh="$refs.table.reload"
+      :detailForm="billingForm"
+      :type="true"
+    ></billing>
   </div>
 </template>
 
 <script>
 import invoiceMixin from '../invoice-mixins'
 import detail from './detail'
+import billing from './billing'
 import cancellation from './cancellation'
 import BusMixin from '@/views/finance/payment/busMixin';
 
 const filterOptions = [
-  {    label: '发票类型', prop: 'invoiceTyepCode', default: true, type: 'dict',
-    dictName: 'CW_FP_LX'  },
+  {
+    label: '发票类型', prop: 'invoiceTyepCode', default: true, type: 'dict',
+    dictName: 'CW_FP_LX'
+  },
   { label: '发票号码', prop: 'invoiceCode', default: true },
   { label: '购方名称', prop: 'purchaseName', default: true },
   { label: '商品金额', prop: 'CommodityTotalAmount', default: true, type: 'numberrange' },
@@ -134,7 +136,8 @@ export default {
   name: 'Return',
   components: {
     detail,
-    cancellation
+    cancellation,
+    billing
   },
   props: {
     // 客户详情引用
@@ -155,8 +158,9 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
+      showBilling: false,
       obsolete: false,
       showDetail: false,
       visible: false,
@@ -186,22 +190,49 @@ export default {
         '2': '已结清',
         '3': '已关闭'
       },
-      selectList: []
+      selectList: [],
+      billingForm: {
+        ids: [],
+        invoiceTypeCode: ''
+      }
     };
   },
   computed: {
   },
   watch: {
     'queryForm.marketId': {
-      handler(newValue) {
+      handler (newValue) {
         this.$refs.table.reload();
       }
     }
   },
-  mounted() {
+  mounted () {
   },
   methods: {
-    finvoicebillingDilution() {
+    mergeBilling () {
+      if (!this.selectList.length || this.selectList.length < 2) {
+        this.$message.error('请选择发票,最少两项进行合并开票')
+        return
+      }
+      const result = this.validateMergeBilling(this.selectList)
+      if (result) {
+        this.$message.error('请选择相同的发票类型，相同购买方下待开票的发票')
+        return
+      }
+      this.billingForm.ids = this.selectList.map(item => {
+        return item.id
+      })
+      this.billingForm.invoiceTypeCode = this.selectList[0].invoiceTypeCode
+      this.showBilling = true
+    },
+    validateMergeBilling (array) {
+      const temp = array[0]
+      return array.some(item => {
+        return (item.invoiceTypeCode !== temp.invoiceTypeCode) || (item.purchaseId !== temp.purchaseId) ||
+          (item.state !== 2)
+      })
+    },
+    finvoicebillingDilution () {
       if (!this.selectList.length) {
         this.$message.error('请选择发票')
         return
@@ -227,17 +258,17 @@ export default {
         })
       })
     },
-    selectionChange(val) {
+    selectionChange (val) {
       console.log(val)
       this.selectList = val
     },
-    detail(row) {
+    detail (row) {
       this.rowData = row
       this.code = row.id
       this.showDetail = true
     },
     // 按钮功能操作
-    eventHandle(type, row) {
+    eventHandle (type, row) {
       this[type] = true
       this.rowData = row || {}
       return
