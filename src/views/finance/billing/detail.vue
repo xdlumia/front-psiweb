@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-11-06 14:07:33
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2020-01-03 13:37:34
+ * @LastEditTime : 2020-01-16 11:02:07
  * @Description: description
  -->
 <template>
@@ -64,7 +64,15 @@
         <el-form disabled size="mini" v-if="activeTab == 'detail' && !loading">
           <approve-panel ref="approve" :busType="59" :id="detailForm.id" :data="detailForm"></approve-panel>
           <!-- 开票申请 -->
-          <make-invoice-info :invoiceType="0" :data="detailForm" id="invoice" />
+          <div class="invoice-wrapper">
+            <make-invoice-info
+              v-for="(item,index) in detailForm.fInvoiceRelationEntityList"
+              :invoiceType="0"
+              :data="Object.assign(item, {invoiceDate: detailForm.invoiceDate})"
+              class="invoice mb10"
+              :key="index"
+            />
+          </div>
           <make-buyer disabled :data="detailForm" id="saler" prefix="purchase" />
           <make-buyer disabled :data="detailForm" id="buyer" prefix="market" />
           <make-goods disabled :data="detailForm" id="goods" />
@@ -316,4 +324,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+/deep/ .invoice-wrapper {
+  .invoice + .invoice {
+    .form-card-title {
+      display: none;
+    }
+  }
+}
 </style>

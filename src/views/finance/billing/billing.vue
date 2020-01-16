@@ -1,12 +1,12 @@
 <!--
  * @Author: 高大鹏
  * @Date: 2019-11-05 17:46:46
- * @LastEditors: 高大鹏
- * @LastEditTime: 2019-11-22 15:51:10
+ * @LastEditors  : 高大鹏
+ * @LastEditTime : 2020-01-16 09:38:34
  * @Description: 新增报价单
  -->
 <template>
-  <el-row class>
+  <div class>
     <el-dialog
       v-loading="loading"
       :visible.sync="visible"
@@ -23,21 +23,34 @@
         </div>
       </div>
       <el-form ref="invoiceForm" size="mini" :model="invoiceForm" :rules="invoiceFormRule">
-        <form-card title="发票信息">
+        <form-card
+          :title="key < 1"
+          v-for="(invoice, key) in invoiceForm.fInvoiceRelationEntityList"
+          :key="key"
+          class="mb10 d-relative"
+        >
+          <div v-if="key < 1" slot="title">发票信息</div>
           <el-row :gutter="10">
             <el-col :span="8">
-              <el-form-item prop="invoiceTypeCode" label="发票类型">
-                <d-select
-                  size="mini"
-                  v-model="invoiceForm.invoiceTypeCode"
-                  dicCode="CW_FP_LX"
-                  disabled
-                ></d-select>
+              <el-form-item
+                :prop="'fInvoiceRelationEntityList.' + key + '.invoiceTypeCode'"
+                label="发票类型"
+              >
+                <d-select size="mini" v-model="invoice.invoiceTypeCode" dicCode="CW_FP_LX" disabled></d-select>
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item prop="invoiceCoding" label="发票代码">
-                <el-select size="mini" v-model="invoiceForm.invoiceCoding" class="wfull">
+              <el-form-item
+                :prop="'fInvoiceRelationEntityList.' + key + '.invoiceCoding'"
+                label="发票代码"
+                :rules="{ required: true, message: '请选择', trigger: 'change' }"
+              >
+                <el-select
+                  size="mini"
+                  v-model="invoice.invoiceCoding"
+                  class="wfull"
+                  @change="invoiceCodingChange(key)"
+                >
                   <el-option
                     v-for="(item, index) in quoteList"
                     :key="index"
@@ -48,17 +61,21 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="发票号码" prop="invoiceCode">
+              <el-form-item
+                label="发票号码"
+                :prop="'fInvoiceRelationEntityList.' + key + '.invoiceCode'"
+                :rules="{ required: true, message: '请选择', trigger: 'change' }"
+              >
                 <el-select
-                  :remote-method="finvoicecodingList"
+                  :remote-method="data => finvoicecodingList(data, key)"
                   class="wfull"
                   filterable
                   remote
                   size="mini"
-                  v-model="invoiceForm.invoiceCode"
+                  v-model="invoice.invoiceCode"
                 >
                   <el-option
-                    v-for="(item, index) in invoiceCodeList"
+                    v-for="(item, index) in invoiceCodeList[key]"
                     :key="index"
                     :value="item.code"
                     :label="item.code"
@@ -67,7 +84,24 @@
               </el-form-item>
             </el-col>
           </el-row>
+          <el-button
+            v-if="key > 0"
+            round
+            style="padding:0;border:none;position:absolute;right:-5px;top:-5px"
+            @click="deleteOne(key)"
+          >
+            <i class="el-icon-remove" style="font-size:16px;"></i>
+          </el-button>
         </form-card>
+        <el-button
+          type="text"
+          class="d-text-gray"
+          @click="addInvoice"
+          v-if="invoiceForm.fInvoiceRelationEntityList.length < 10"
+        >
+          <i class="el-icon-circle-plus"></i>
+          <span>增加发票</span>
+        </el-button>
         <form-card :title="true">
           <div slot="title" style="display:flex;justify-content: space-between;align-items: center">
             <span>物流信息</span>
@@ -121,7 +155,7 @@
         </form-card>
       </el-form>
     </el-dialog>
-  </el-row>
+  </div>
 </template>
 
 <script type='text/ecmascript-6'>
@@ -136,6 +170,10 @@ export default {
       default: () => {
         return {}
       }
+    },
+    type: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -144,6 +182,7 @@ export default {
       serviceLoading: false,
       invoiceForm: {
         id: '',
+        ids: [],
         isLogistics: 1,
         trackingCode: '',
         transportAmount: '',
@@ -152,10 +191,17 @@ export default {
         invoiceCoding: '',
         invoiceCode: '',
         bmcId: '',
-        bmcName: ''
+        bmcName: '',
+        fInvoiceRelationEntityList: [
+          {
+            invoiceCode: '',
+            invoiceCoding: '',
+            invoiceTypeCode: ''
+          }
+        ]
       },
       quoteList: [],
-      invoiceCodeList: [],
+      invoiceCodeList: [[]],
       invoiceFormRule: {
         invoiceCoding: { required: true, message: '请选择', trigger: 'change' },
         invoiceSum: { required: true, message: '请选择', trigger: 'blur' },
@@ -170,12 +216,6 @@ export default {
   components: {
   },
   watch: {
-    'invoiceForm.invoiceCoding': {
-      handler (newValue) {
-        console.log(newValue)
-        this.finvoicecodingList()
-      }
-    },
     'invoiceForm.isLogistics': {
       handler (newValue) {
         if (!newValue) {
@@ -194,13 +234,29 @@ export default {
     }
   },
   mounted () {
-    this.invoiceForm.invoiceTypeCode = this.detailForm.invoiceTypeCode
-    this.invoiceForm.id = this.detailForm.id
+    if (!this.type) {
+      this.invoiceForm.id = this.detailForm.id
+    } else {
+      this.invoiceForm.ids = this.detailForm.ids
+    }
+    this.invoiceForm.fInvoiceRelationEntityList[0].invoiceTypeCode = this.detailForm.invoiceTypeCode
     this.finvoicedatumList()
     this.getServiceProvider()
-    this.finvoicecodingList()
+    // this.finvoicecodingList(this.invoiceForm.fInvoiceRelationEntityList[0].invoiceCoding)
   },
   methods: {
+    addInvoice () {
+      this.invoiceForm.fInvoiceRelationEntityList.push({
+        invoiceCode: '',
+        invoiceCoding: '',
+        invoiceTypeCode: this.detailForm.invoiceTypeCode
+      })
+      this.invoiceCodeList.push([])
+    },
+    deleteOne (index) {
+      this.invoiceForm.fInvoiceRelationEntityList.splice(index, 1)
+      this.invoiceCodeList.splice(index, 1)
+    },
     bmcIdChange (val) {
       this.invoiceForm.bmcName = this.serviceOptions.find(item => item.id === val).serviceName
     },
@@ -216,12 +272,15 @@ export default {
         this.serviceLoading = false;
       });
     },
-    finvoicecodingList (words = '') {
-      if (!this.invoiceForm.invoiceCoding) {
+    invoiceCodingChange (key) {
+      this.finvoicecodingList('', key)
+    },
+    finvoicecodingList (words = '', key) {
+      if (!this.invoiceForm.fInvoiceRelationEntityList[key].invoiceCoding) {
         return
       }
-      this.$api.seePsiFinanceService.finvoicecodingList({ page: 1, limit: 20, coding: this.invoiceForm.invoiceCoding, code: words.trim() }).then(res => {
-        this.invoiceCodeList = res.data
+      this.$api.seePsiFinanceService.finvoicecodingList({ page: 1, limit: 20, coding: this.invoiceForm.fInvoiceRelationEntityList[key].invoiceCoding, code: words.trim() }).then(res => {
+        this.$set(this.invoiceCodeList, key, res.data)
       })
     },
     finvoicedatumList () {
@@ -233,7 +292,7 @@ export default {
       this.$refs.invoiceForm.validate(valid => {
         if (valid) {
           this.loading = true
-          const method = 'finvoicebillingBilling'
+          const method = this.type ? 'finvoicebillingMergeBilling' : 'finvoicebillingBilling'
           this.$api.seePsiFinanceService[method](this.invoiceForm).then(res => {
             this.$emit('refresh')
             this.$emit('update:visible', false)
