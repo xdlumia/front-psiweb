@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 10:18:54
+ * @LastEditTime: 2020-01-16 09:25:27
  * @Description: 客户详情
 */
 <template>
@@ -126,6 +126,7 @@ export default {
         salesExchange: '销售换货单',
         storageDeliver: '发货单',
         financePayable: '应付账单',
+        financeReceivable: '应收账单',
         financeBilling: '发票记录',
       },
       // tabs 默认显示项
