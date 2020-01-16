@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-16 17:05:26
+ * @LastEditTime: 2020-01-16 17:42:27
  * @Description: 退货商品商品信息
 */
 <template>
@@ -170,7 +170,7 @@
         <el-table-column
           prop="alterationPrice"
           min-width="100"
-          label="税前单价"
+          label="税前退货单价"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
@@ -203,7 +203,7 @@
         <el-table-column
           prop="taxPrice"
           min-width="120"
-          label="退货单价"
+          label="税后退货单价"
           show-overflow-tooltip
         />
         <el-table-column
