@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-29 17:19:40
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2020-01-16 17:51:33
+ * @LastEditTime : 2020-01-16 17:57:33
  * @Description: 新增商品
  -->
 <template>
@@ -380,7 +380,6 @@ export default {
     inventoryChange (value) {
       if (value === 1 && this.goodForm.classId) {
         this.handleInventoryConfig()
-        this.handleSalesConfig()
       } else {
         this.goodForm.values[0].inventoryPrice = 0
         this.inventoryPriceChange()
@@ -392,7 +391,9 @@ export default {
       this.goodForm.values[0].inventoryPriceFormula = `${temp.purchaseAvgPrice || 0} * ${this.classConfig.inventoryPriceFormulaRatio} + ${this.classConfig.inventoryPriceFormulaFixedValue} = `
       this.goodForm.values[0].inventoryPrice = ((temp.purchaseAvgPrice || 0) * this.classConfig.inventoryPriceFormulaRatio + this.classConfig.inventoryPriceFormulaFixedValue).toFixed(2)
       this.inventoryPriceChange()
-      this.handleSalesConfig()
+      if (temp.saleRefPriceConfig === 1) {
+        this.handleSalesConfig()
+      }
     },
     // 销售参考价 计算值切换
     salesChange (value) {
@@ -430,7 +431,6 @@ export default {
       } else {
         this.goodForm.values[0].profitRate = parseFloat(temp.inventoryPrice) ? 0 : 100
       }
-      this.handleSalesConfig()
     },
     // 销售参考价改变
     saleReferencePriceChange () {
