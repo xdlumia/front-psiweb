@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-28 15:44:58
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-07 13:53:46
+ * @LastEditTime: 2020-01-16 17:05:26
  * @Description: 退货商品商品信息
 */
 <template>
@@ -170,7 +170,7 @@
         <el-table-column
           prop="alterationPrice"
           min-width="100"
-          label="退货单价"
+          label="税前单价"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
@@ -203,16 +203,14 @@
         <el-table-column
           prop="taxPrice"
           min-width="120"
-          label="税后退货单价"
+          label="退货单价"
           show-overflow-tooltip
-          :formatter="formatTaxPrice"
         />
         <el-table-column
           prop="taxTotalAmount"
           min-width="120"
           label="税后总价"
           show-overflow-tooltip
-          :formatter="formatTaxTotalAmount"
         />
         <el-table-column
           prop="note"
@@ -356,31 +354,14 @@ export default {
           this.data.businessCommoditySaveVoList.map(item => {
             item.customNumber = item.commodityNumber
             item.commodityNumber = item.actionableNumber || 0
-            item.alterationPrice = item.discountSprice
+            item.alterationPrice = +Number(item.discountSprice/(1+(item.taxRate||0)/100)).toFixed(2)
+            // price*(1+tax)=taxPrice
+            item.taxPrice = item.discountSprice
+            item.taxTotalAmount = +Number(item.discountSprice*item.commodityNumber).toFixed(2)
           })
           // 直接使用this.data.businessCommoditySaveVoList数据响应不过来
           this.returnTableData = this.data.businessCommoditySaveVoList
         })
-    },
-    // 税后销售单价
-    formatTaxPrice(row) {
-      let taxRate = ((row.taxRate || 100) / 100)  ///税率
-      let commodityNumber = row.commodityNumber || 0 //退货数量
-      let alterationPrice = row.alterationPrice || 0 //退货单价
-      // 税后销售单价  公式:销售单价 * (1-税率)
-      row.taxPrice = (alterationPrice * (1 - taxRate)).toFixed(2)
-      return (alterationPrice * (1 - taxRate)).toFixed(2)
-    },
-    // 销售税后总价
-    formatTaxTotalAmount(row) {
-      let taxRate = ((row.taxRate || 100) / 100)  ///税率
-      let commodityNumber = row.commodityNumber || 0 //退货数量
-      let alterationPrice = row.alterationPrice || 0 //退货单价
-      let taxPrice = (alterationPrice * (1 - taxRate))
-      // 销售税后总价  公式:税后销售单价 * 退货数量
-      let taxTotalAmount = (commodityNumber * taxPrice).toFixed(2)
-      row.taxTotalAmount = taxTotalAmount
-      return taxTotalAmount
     },
     sumTaxPrice(row, index) {
       if (row.commodityNumber > row.actionableNumber) {

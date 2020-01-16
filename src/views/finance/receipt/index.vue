@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-10 15:17:04
+ * @LastEditTime: 2020-01-16 11:13:10
  * @Description: 销售-待收票
  */
 <template>
@@ -19,6 +19,7 @@
       :params="Object.assign(queryForm,params)"
       :mergeFilter="true"
       :filterOptions="filterOptions"
+      @selection-change="selectionChange"
     >
       <template slot="top-filter">
         <el-row
@@ -49,7 +50,17 @@
           </el-col>
         </el-row>
       </template>
-
+      <template
+        v-slot:button
+        v-if="authorityButtons.includes('psi_quote_1001')"
+      >
+        <el-button
+          title="对已收票状态的收票记录,每次只能退一个,退票成功后不可恢复"
+          size="mini"
+          :disabled="selectionData.length!=1"
+          @click="returnVoice"
+        >退票</el-button>
+      </template>
       <template slot-scope="{column,row,value}">
         <!-- 发票号码 -->
         <span
@@ -142,6 +153,7 @@ export default {
       // 当前行数据
       rowData: {},
       detailVisible: false,
+      selectionData: []
     };
   },
   computed: {
@@ -155,6 +167,33 @@ export default {
     }
   },
   methods: {
+    // 退票
+    returnVoice() {
+      let [row] = this.selectionData
+      if (row.state != 3) {
+        this.$message({
+          message: '已收票状态的收票记录 才能退票',
+          type: 'warning',
+          showClose: true,
+        });
+        return
+      }
+      this.$confirm('您确定要对此收票记录执行退票操作么?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        center: true,
+        type: 'warning'
+      }).then(() => {
+        this.$api.seePsiFinanceService.finvoicereceivableRefund({ id: row.id })
+          .then(res => {
+
+          })
+      }).catch(() => { });
+    },
+    // 多选
+    selectionChange(val) {
+      this.selectionData = val
+    },
     // 按钮功能操作
     eventHandle(type, row) {
       this[type] = true
