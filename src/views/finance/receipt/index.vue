@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-16 11:13:10
+ * @LastEditTime: 2020-01-16 17:26:36
  * @Description: 销售-待收票
  */
 <template>
@@ -186,7 +186,7 @@ export default {
       }).then(() => {
         this.$api.seePsiFinanceService.finvoicereceivableRefund({ id: row.id })
           .then(res => {
-
+            this.$refs.table.reload()
           })
       }).catch(() => { });
     },
