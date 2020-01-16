@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-05 16:57:15
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-10 17:17:56
+ * @LastEditTime: 2020-01-16 17:32:19
  * @Description: 可供商品 以调试 1
 */
 <template>
@@ -142,7 +142,7 @@ export default {
     },
     async addGoods(item) {
       await this.$api.seePsiCommonService.commonsuppliercommoditySave({
-        commodityCode: item.goodsCode,
+        commodityCode: item.commodityCode,
         commodityId: item.id,
         supplierId: this.supplierId
       });
