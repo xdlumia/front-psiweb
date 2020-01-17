@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-17 12:54:54
+ * @LastEditTime: 2020-01-17 13:59:36
  * @Description: 采购入库单
 */
 <template>
@@ -283,7 +283,7 @@ export default {
           .reduce((data, item) => {
             data.putinNum = data.putinNum || 0;
             data.putinNum += parseInt(item.commodityNumber) || 0;
-            item.taxTotalAmount = +Number(
+            item.taxTotalAmount = item.preTaxAmount?item.preTaxAmount:+Number(
               item.purchasePrice *
                 (1 + item.taxRate / 100) *
                 item.commodityNumber || 0
