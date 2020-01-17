@@ -135,6 +135,9 @@ export default {
                 if (busType == 0) {
                     data.price = +Number(item.discountSprice / (1 + item.taxRate / 100)).toFixed(2);
                 }
+                if([4,5].includes(busType) && item.preTaxAmount){
+                    data.price = +Number(item.preTaxAmount / ((1 + item.taxRate / 100)*item.commodityNumber)).toFixed(2);
+                }
                 if (!Array.isArray(data)) {
                     if (data.isTax == 1) {
                         data.taxRate = 0
