@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-15 17:04:02
+ * @LastEditTime: 2020-01-17 10:32:17
  * @Description: 采购入库单
 */
 <template>
@@ -158,10 +158,8 @@ export default {
     },
     supplierChange(e) {
       if (!this.form.logistics) this.$set(this.form, 'logistics', {});
-      if (!this.form.logistics.supplierLinkman) {
-        this.$set(this.form.logistics, 'supplierLinkman', e.linkManName || '');
-        this.$set(this.form.logistics, 'supplierPhone', e.phone || '');
-      }
+      this.$set(this.form.logistics, 'supplierLinkman', e.linkManName || '');
+      this.$set(this.form.logistics, 'supplierPhone', e.phone || '');
     },
     async getDetail() {
       if (this.code) {
