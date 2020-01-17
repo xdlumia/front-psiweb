@@ -2,7 +2,7 @@
  * @Author: 高大鹏
  * @Date: 2019-10-30 14:44:55
  * @LastEditors  : 高大鹏
- * @LastEditTime : 2020-01-07 17:49:18
+ * @LastEditTime : 2020-01-16 17:46:17
  * @Description: 商品分类
  -->
 <template>
@@ -241,7 +241,7 @@
               v-if="istype === 'child' || isEditChild"
             >
               <div style="display:flex;" ref="saleFormula">
-                <span style="white-space: nowrap;">销售均价*</span>
+                <span style="white-space: nowrap;">库存成本*</span>
                 <el-form-item prop="saleRefPriceFormulaRatio">
                   <el-input-number
                     controls-position="right"
