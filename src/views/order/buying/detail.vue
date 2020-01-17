@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-14 15:08:17
+ * @LastEditTime: 2020-01-17 08:32:42
  * @Description: 采购单详情
 */
 <template>
@@ -17,7 +17,7 @@
     <template slot="button">
       <el-button
         :disabled="!(waitBuyingNumber>0)"
-        @click="orderStorageVisible=true"
+        @click="addStorage"
         size="mini"
         type="primary"
         v-if="authorityButtons.includes('psi_purchase_apply_04')"
@@ -173,6 +173,10 @@ export default {
       } else if (this.rowData) {
         return this.rowData;
       }
+    },
+    addStorage(){
+      this.joinGoods = null
+      this.orderStorageVisible = true
     },
     makeOrderStorage() {
       this.joinGoods = this.detail.commodityList
