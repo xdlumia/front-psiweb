@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 10:12:11
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-06 11:28:00
+ * @LastEditTime: 2020-01-17 12:51:42
  * @Description: 采购退货单
 */
 <template>
@@ -202,7 +202,7 @@ export default {
             data
               .map(
                 item =>
-                  +Number(
+                  item.preTaxAmount?item.preTaxAmount:+Number(
                     item.alterationPrice *
                       (1 + item.taxRate / 100) *
                       item.alterationNumber || 0

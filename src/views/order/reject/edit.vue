@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-03 11:05:08
+ * @LastEditTime: 2020-01-17 12:52:14
  * @Description: 采购退货单
 */
 <template>
@@ -32,10 +32,12 @@
           <buyingGoodsEdit
             :data="form"
             :show="[
-              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmount','inventoryNumber','isAssembly','action','!add','isTax'
+              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','costAmount','alterationNumber','alterationPrice','taxRate','rejectPreTaxAmountEdit','inventoryNumber','isAssembly','action','!add','isTax'
             ]"
             :sort="['expanded']"
             :summaryMethod="getSummarys"
+            @inputChange="onPriceChange"
+            @isTaxChange="isTaxChange"
             id="commodityInfo"
           />
           <orderStorageBill :data="form" :hide="['isBillFee']" :max="rejectAmount" :type="1" feeDetailCode="ZD_DY_LX-4-2" id="billInfo" />
@@ -67,6 +69,24 @@ export default {
   },
   mounted() {},
   methods: {
+    isTaxChange() {
+      []
+        .concat(
+          this.form.commodityList || [],
+        )
+        .map(item => {
+          this.onPriceChange('', item);
+        });
+    },
+    // prettier-ignore
+    onPriceChange({prop, item}) {
+      prop=prop||''
+      if(['alterationPrice','alterationNumber',''].includes(prop)){
+        item.preTaxAmount = +Number( item.alterationPrice * (1 + (!this.form.isTax?item.taxRate:0) / 100) * (item.alterationNumber || 0) ).toFixed(2);
+      }else if(['preTaxAmount'].includes(prop)){
+        item.alterationPrice = +Number( item.preTaxAmount / ((1 + (!this.form.isTax?item.taxRate:0) / 100) * (item.alterationNumber || 0)) ).toFixed(2);
+      }
+    },
     supplierChange(e) {
       if (!this.form.logistics) this.$set(this.form, 'logistics', {});
       if (!this.form.logistics.supplierLinkman) {
@@ -141,7 +161,7 @@ export default {
             data
               .map(
                 item =>
-                  +Number(
+                  item.preTaxAmount?item.preTaxAmount:+Number(
                     item.alterationPrice *
                       (1 + ((!this.form.isTax)?item.taxRate:0) / 100) *
                       item.alterationNumber || 0

@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-11-08 10:30:28
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-14 16:23:11
+ * @LastEditTime: 2020-01-17 12:37:10
  * @Description: 采购模块用的商品信息 1
 */
 <template>
@@ -58,7 +58,7 @@
       </div>
       <div class="mb10" v-if="hide.includes('!isTax')||show.includes(`isTax`)">
         <el-form-item prop="isTax" label="是否含税">
-          <el-select placeholder="请选择" v-model="data.isTax" :disabled="disabled">
+          <el-select placeholder="请选择" v-model="data.isTax" :disabled="disabled" @change="isTaxChange">
             <el-option
               :key="item.value"
               :label="item.label"
@@ -170,6 +170,7 @@
                   class="wfull"
                   maxlength="100"
                   v-model="row[item.prop]"
+                  @change="()=>onInputChange(item.prop,row)"
                 />
               </el-form-item>
             </template>
@@ -191,6 +192,7 @@
                   :disabled="disabled"
                   class="wfull"
                   v-model="row[item.prop]"
+                  @change="()=>onInputChange(item.prop,row)"
                 ></el-input>
               </el-form-item>
             </template>
@@ -346,7 +348,7 @@ export default {
     buttonChoose: Boolean,
     kinds: Array,
     noCard: Boolean,
-    preChooseGoodCheck: Function
+    preChooseGoodCheck: Function,
   },
   data() {
     // prettier-ignore
@@ -388,9 +390,11 @@ export default {
       { label: '含税总价', key: 'purchasePreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { costAmount, taxRate, commodityNumber }) => +Number((costAmount * (1 + (((!this.data.isTax)?taxRate:0) / 100)) * commodityNumber) || 0).toFixed(2)
       },
+      { label: '含税总价', key: 'preTaxAmountEdit', width: 100, prop: 'preTaxAmount', type: 'input', showOverflowTip: true, rules: [{ required: true }, { type: 'price' }] },
       { label: '退货含税总价', key: 'rejectPreTaxAmount', width: 120, prop: 'preTaxAmount', showOverflowTip: true,
         format: (a, { alterationPrice, taxRate, alterationNumber }) => +Number((alterationPrice * (1 + (((!this.data.isTax)?taxRate:0) / 100)) * alterationNumber) || 0).toFixed(2)
       },
+      { label: '退货含税总价', key: 'rejectPreTaxAmountEdit', width: 100, prop: 'preTaxAmount', type: 'input', showOverflowTip: true, rules: [{ required: true }, { type: 'price' }] },
       { label: '总库存', key: 'inventoryNumber', width: 100, prop: 'inventoryNumber', format: (a) => a || 0, showOverflowTip: true, },
       { label: '备注', key: 'note', width: 200, prop: 'note', type: 'input', rules: [{ type: 'string', min: 0, max: 100 }] },
       {        label: '是否组装', key: 'isAssembly', align: "center", width: 120, prop: 'isAssembly', type: 'selection', selected: 0,
@@ -467,6 +471,9 @@ export default {
   },
   mounted() { },
   methods: {
+    onInputChange(prop,item){
+      this.$emit('inputChange',{prop,item})
+    },
     isChildShowColumn(row) {
       return (this.sort || []).includes('expanded') &&
         this.getParentInfo(row).isChild
@@ -609,7 +616,7 @@ export default {
             data
               .map(
                 item =>
-                  +Number(
+                  item.preTaxAmount?item.preTaxAmount:+Number(
                     item[this.priceKey] *
                     (1 + ((!this.data.isTax)?item.taxRate:0) / 100) *
                     item.commodityNumber || 0
@@ -703,6 +710,9 @@ export default {
         item.selected = this.data[this.fkey][0][prop];
       }
       this.$refs.table.store.updateColumns();
+    },
+    isTaxChange(){
+      this.$emit('isTaxChange',this.data.isTax)
     }
   }
 };

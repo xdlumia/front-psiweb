@@ -2,7 +2,7 @@
  * @Author: 赵伦
  * @Date: 2019-10-26 15:33:41
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-15 17:04:02
+ * @LastEditTime: 2020-01-17 12:54:54
  * @Description: 采购入库单
 */
 <template>
@@ -42,9 +42,11 @@
           <buying-goods-edit
             :data="form"
             :show="[
-              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber','!add','action','isTax'
+              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmountEdit','inventoryNumber','!add','action','isTax'
             ]"
             :sort="form.source=='备货单'?[]:['expanded']"
+            @inputChange="onPriceChange"
+            @isTaxChange="isTaxChange"
             @totalAmountChange="setGoodsTotalPrice(0,$event)"
             id="commodityInfo"
             priceKey="purchasePrice"
@@ -52,9 +54,10 @@
           <buying-goods-edit
             :data="form"
             :show="[
-              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmount','inventoryNumber','action'
+              'commodityCode','goodsPic','goodsName','categoryCode','className','specOne','configName','noteText','purchasePrice','commodityNumber','taxRate','preTaxAmountEdit','inventoryNumber','action'
             ]"
             :sort="form.source=='备货单'?[]:['expanded']"
+            @inputChange="onPriceChange"
             @totalAmountChange="setGoodsTotalPrice(1,$event)"
             fkey="additionalCommodityList"
             priceKey="purchasePrice"
@@ -149,6 +152,25 @@ export default {
   },
   mounted() {},
   methods: {
+    isTaxChange() {
+      []
+        .concat(
+          this.form.commodityList || [],
+          this.form.additionalCommodityList || []
+        )
+        .map(item => {
+          this.onPriceChange('', item);
+        });
+    },
+    // prettier-ignore
+    onPriceChange({prop, item}) {
+      prop=prop||''
+      if(['purchasePrice','commodityNumber',''].includes(prop)){
+        item.preTaxAmount = +Number( item.purchasePrice * (1 + (!this.form.isTax?item.taxRate:0) / 100) * (item.commodityNumber || 0) ).toFixed(2);
+      }else if(['preTaxAmount'].includes(prop)){
+        item.purchasePrice = +Number( item.preTaxAmount / ((1 + (!this.form.isTax?item.taxRate:0) / 100) * (item.commodityNumber || 0)) ).toFixed(2);
+      }
+    },
     handleClick({ label, name }) {
       this.activeName = '';
     },
@@ -158,10 +180,8 @@ export default {
     },
     supplierChange(e) {
       if (!this.form.logistics) this.$set(this.form, 'logistics', {});
-      if (!this.form.logistics.supplierLinkman) {
-        this.$set(this.form.logistics, 'supplierLinkman', e.linkManName || '');
-        this.$set(this.form.logistics, 'supplierPhone', e.phone || '');
-      }
+      this.$set(this.form.logistics, 'supplierLinkman', e.linkManName || '');
+      this.$set(this.form.logistics, 'supplierPhone', e.phone || '');
     },
     async getDetail() {
       if (this.code) {
