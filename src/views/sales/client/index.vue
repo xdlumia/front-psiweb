@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-08-23 14:12:30
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2020-01-06 10:19:13
+ * @LastEditTime: 2020-01-19 13:54:31
  * @Description: 销售-客户管理
  */
 <template>
@@ -72,6 +72,7 @@
           @click="handleNodeClick({userId:-1})"
         >公共</p>
         <el-tree
+          :expand-on-click-node="false"
           style="height: calc(100vh - 242px);"
           class="ml10 d-auto-x"
           :data="treeData"
@@ -188,9 +189,15 @@ export default {
     },
     //点击树节点
     handleNodeClick(data) {
-      // 点击人员的时候才能查询
+      // 点击人员的查询
       if (!data.totalCode) {
         this.queryForm.responsibleUser = data.userId
+        this.queryForm.responsibleDeptCode = ''
+        this.reload()
+      } else {
+        // 部门查询
+        this.queryForm.responsibleUser = ''
+        this.queryForm.responsibleDeptCode = data.totalCode
         this.reload()
       }
     },
