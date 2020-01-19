@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-18 09:36:32
  * @LastEditors: 赵伦
- * @LastEditTime: 2020-01-08 14:38:55
+ * @LastEditTime: 2020-01-19 15:52:13
  * @Description: 账期信息
  */
 <template>
@@ -202,7 +202,10 @@ export default {
         const val = Number(curr.payAmount)
         return sum + val
       }, 0)
-      this.data.shipmentFinanceSaveVoList[this.firstBillIndex].payAmount = +Number(this.data.totalAmount - total).toFixed(2)
+      let leftTotal = +Number(this.data.totalAmount - total).toFixed(2)
+      if(leftTotal>0){
+        this.data.shipmentFinanceSaveVoList[this.firstBillIndex].payAmount = leftTotal
+      }
     },
     // 删除账单
     delBill(index) {
