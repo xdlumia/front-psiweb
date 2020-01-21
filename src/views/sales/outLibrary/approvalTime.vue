@@ -2,7 +2,7 @@
  * @Author: web.王晓冬
  * @Date: 2019-10-24 12:33:49
  * @LastEditors: web.王晓冬
- * @LastEditTime: 2019-12-13 17:25:32
+ * @LastEditTime: 2020-01-20 15:48:35
  * @Description: 审核采购时间
 */
 <template>
@@ -18,6 +18,7 @@
       <!-- 报价单信息 -->
       <div class="dialog">
         <tableView
+          :selection="false"
           :customHeaders="customHeaders"
           :filter="false"
           :exportButton="false"
